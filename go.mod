@@ -1,4 +1,4 @@
-module github.com/nilathedragon/glinear
+module codeberg.org/dergs/tidalwave
 
 go 1.25.4
 
