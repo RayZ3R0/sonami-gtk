@@ -6,8 +6,6 @@ github.com/diamondburned/gotk4/pkg v0.3.2-0.20250224044601-c9afb0585e3f h1:SaRuR
 github.com/diamondburned/gotk4/pkg v0.3.2-0.20250224044601-c9afb0585e3f/go.mod h1:AWGT7Zn+6+tGw3AELwDvEEX4RLFDXgHNzLHHc4pR85s=
 github.com/diamondburned/gotkit v0.0.0-20250223060613-69614d9e70a9 h1:wSmQpvhq+4WPPrGYGbgU4mjH/VlV/GAtZMRcYWL3tWo=
 github.com/diamondburned/gotkit v0.0.0-20250223060613-69614d9e70a9/go.mod h1:q1dOQM23dU0bHO6W2iwEy1dwxQBw3so4H0CZRp4O58Q=
-github.com/diamondburned/gotkit v0.0.0-20251117175153-2d4b7b3192d2 h1:8HQxDqk58pJkpGjSqRw98oA+RxoWUy9A/LS0Y6kveD4=
-github.com/diamondburned/gotkit v0.0.0-20251117175153-2d4b7b3192d2/go.mod h1:q1dOQM23dU0bHO6W2iwEy1dwxQBw3so4H0CZRp4O58Q=
 github.com/infinytum/injector v0.0.3 h1:E7oj58MCr0emxPSNoRgGvAUdLwJP797vbD1mRSoOBQg=
 github.com/infinytum/injector v0.0.3/go.mod h1:/8absiTs7Afl21cGagOLkXPrypVGZrOSkH4qu/IsP28=
 github.com/infinytum/structures v0.0.1 h1:DgwnAkvodCn2Zn07/PGM+vZZIlhCZJ+602KudwbQSt8=
