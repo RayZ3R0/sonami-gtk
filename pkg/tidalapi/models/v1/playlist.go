@@ -1,0 +1,36 @@
+package v1
+
+type Playlist struct {
+	Creator struct {
+		ID   int    `json:"id"`
+		Name string `json:"name,omitempty"`
+	} `json:"creator"`
+	Description    string `json:"description"`
+	Duration       int    `json:"duration"`
+	NumberOfTracks int    `json:"numberOfTracks"`
+	SquareImage    string `json:"image"`
+	Title          string `json:"title"`
+	UUID           string `json:"uuid"`
+}
+
+type PlaylistItems struct {
+	Items              []PlaylistItem `json:"items"`
+	Limit              int            `json:"limit"`
+	Offset             int            `json:"offset"`
+	TotalNumberOfItems int            `json:"totalNumberOfItems"`
+}
+
+type PlaylistItem struct {
+	Album struct {
+		ID    int    `json:"id"`
+		Title string `json:"title"`
+	} `json:"album"`
+	Artists []struct {
+		ID   int    `json:"id"`
+		Name string `json:"name"`
+	} `json:"artists"`
+	Duration    int    `json:"duration"`
+	ID          int    `json:"id"`
+	Title       string `json:"title"`
+	TrackNumber int    `json:"trackNumber"`
+}

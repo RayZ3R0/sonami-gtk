@@ -1,0 +1,141 @@
+package v2
+
+import (
+	"encoding/json"
+	"fmt"
+)
+
+type baseItem struct {
+	Following         bool            `json:"following"`
+	NumberOfFollowers int             `json:"numberOfFollowers"`
+	Type              ItemType        `json:"type"`
+	RawData           json.RawMessage `json:"data"`
+}
+
+type Item struct {
+	baseItem
+	Data ItemData
+}
+
+func (i *Item) MarshalJSON() ([]byte, error) {
+	switch i.Type {
+	case ItemTypeDeepLink:
+		if raw, err := json.Marshal(i.Data.DeepLink); err != nil {
+			return nil, err
+		} else {
+			i.RawData = raw
+		}
+	case ItemTypePlaylist:
+		if raw, err := json.Marshal(i.Data.Playlist); err != nil {
+			return nil, err
+		} else {
+			i.RawData = raw
+		}
+	case ItemTypeTrack:
+		if raw, err := json.Marshal(i.Data.Track); err != nil {
+			return nil, err
+		} else {
+			i.RawData = raw
+		}
+	case ItemTypeAlbum:
+		if raw, err := json.Marshal(i.Data.Album); err != nil {
+			return nil, err
+		} else {
+			i.RawData = raw
+		}
+	default:
+		return nil, fmt.Errorf("Unknown item type %s", i.Type)
+	}
+	return json.Marshal(i.baseItem)
+}
+
+func (i *Item) UnmarshalJSON(data []byte) error {
+	if err := json.Unmarshal(data, &i.baseItem); err != nil {
+		return err
+	}
+
+	i.Following = i.baseItem.Following
+	i.NumberOfFollowers = i.baseItem.NumberOfFollowers
+	i.Type = i.baseItem.Type
+	i.Data = ItemData{}
+	switch i.baseItem.Type {
+	case ItemTypeDeepLink:
+		if err := json.Unmarshal(i.baseItem.RawData, &i.Data.DeepLink); err != nil {
+			return err
+		}
+	case ItemTypePlaylist:
+		if err := json.Unmarshal(i.baseItem.RawData, &i.Data.Playlist); err != nil {
+			return err
+		}
+	case ItemTypeTrack:
+		if err := json.Unmarshal(i.baseItem.RawData, &i.Data.Track); err != nil {
+			return err
+		}
+	case ItemTypeAlbum:
+		if err := json.Unmarshal(i.baseItem.RawData, &i.Data.Album); err != nil {
+			return err
+		}
+	default:
+		return fmt.Errorf("Unknown item type %s", i.baseItem.Type)
+	}
+	return nil
+}
+
+type ItemData struct {
+	Album    *AlbumItemData
+	DeepLink *DeepLinkItemData
+	Playlist *PlaylistItemData
+	Track    *TrackItemData
+}
+
+type AlbumItemData struct {
+	Artists []struct {
+		ID   int    `json:"id"`
+		Name string `json:"name,omitempty"`
+	} `json:"artists"`
+	Cover       string `json:"cover"`
+	Id          int    `json:"id"`
+	Duration    int    `json:"duration"`
+	ReleaseDate string `json:"releaseDate"`
+	Title       string `json:"title"`
+	Type        string `json:"type"`
+}
+
+type DeepLinkItemData struct {
+	ExternalURL bool   `json:"externalUrl"`
+	Id          string `json:"id"`
+	Title       string `json:"title"`
+	URL         string `json:"url"`
+}
+
+type PlaylistItemData struct {
+	Creator struct {
+		ID      int    `json:"id"`
+		Name    string `json:"name,omitempty"`
+		Picture string `json:"picture,omitempty"`
+		Type    string `json:"type"`
+	}
+	Description    string `json:"description,omitempty"`
+	NumberOfTracks int    `json:"numberOfTracks"`
+	SquareImage    string `json:"squareImage"`
+	Title          string `json:"title"`
+	Type           string `json:"type"`
+	UUID           string `json:"uuid"`
+}
+
+type TrackItemData struct {
+	Album struct {
+		Cover string `json:"cover"`
+		ID    int    `json:"id"`
+		Title string `json:"title"`
+	}
+	Artists []struct {
+		ID   int    `json:"id"`
+		Name string `json:"name,omitempty"`
+	} `json:"artists"`
+	Duration int `json:"duration"`
+	// In UI terms: Indicates whether the track has been "heart"-ed
+	Following bool   `json:"following"`
+	ID        int    `json:"id"`
+	Title     string `json:"title"`
+}
