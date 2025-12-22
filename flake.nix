@@ -35,10 +35,10 @@
             ++ runtimeDependencies;
         };
 
-        packages.tidal-wave = pkgs.buildGoModule {
+        packages.tidalwave = pkgs.buildGoModule {
           pname = "tidalwave";
           version = "0.0.1";
-          src = "./.";
+          src = ./.;
           vendorHash = "sha256-QNXf32swHYKjfl8Zf5ufRi1rGtHm/N0RspqP5VJ9H34=";
 
           buildInputs = cgoDependencies;
@@ -77,7 +77,7 @@
           };
         };
 
-        packages.default = self.packages.${system}.tidal-wave;
+        packages.default = self.packages.${system}.tidalwave;
       }
     );
 }
