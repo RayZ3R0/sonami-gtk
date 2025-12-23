@@ -1,0 +1,30 @@
+package player
+
+import (
+	"time"
+
+	"github.com/go-gst/go-gst/gst"
+)
+
+func Scrub(percent float64) {
+	if percent < 0 || percent > 100 {
+		panic("percent must be between 0 and 100")
+	}
+
+	position := float64(OnState.current.Duration) * percent / 100.0
+	playbin.SeekTime(time.Duration(position)*time.Second, gst.SeekFlagFlush)
+}
+
+func PlayPause() {
+	if OnState.current.Status == StatusPlaying {
+		playbin.SetState(gst.StatePaused)
+		OnState.Notify(func(state *State) {
+			state.Status = StatusPaused
+		})
+	} else if OnState.current.Status == StatusPaused {
+		playbin.SetState(gst.StatePlaying)
+		OnState.Notify(func(state *State) {
+			state.Status = StatusPlaying
+		})
+	}
+}

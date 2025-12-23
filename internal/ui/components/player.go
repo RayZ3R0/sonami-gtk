@@ -67,10 +67,19 @@ func NewPlayer() *Player {
 	slider.SetHExpand(true)
 	slider.SetRange(0, 100)
 	slider.SetValue(50)
+	slider.ConnectChangeValue(func(scroll gtk.ScrollType, value float64) (ok bool) {
+		player.Scrub(value)
+		return false
+	})
 	guiSlider := gui.Wrapper(slider)
 
 	position := gui.Text("00:00")
 	duration := gui.Text("00:00")
+
+	playButton := gtk.NewButtonFromIconName("media-playback-start-symbolic")
+	playButton.ConnectClicked(func() {
+		player.PlayPause()
+	})
 
 	playerWidget := &Player{
 		gui.VStack(
@@ -114,7 +123,7 @@ func NewPlayer() *Player {
 					CSS(`button { min-width: 34px; min-height: 34px; } button:not(:hover) { background-color: transparent; }`),
 				gui.Wrapper(gtk.NewButtonFromIconName("media-seek-backward-symbolic")).
 					CSS(`button { min-width: 34px; min-height: 34px; } button:not(:hover) { background-color: transparent; }`),
-				gui.Wrapper(gtk.NewButtonFromIconName("media-playback-start-symbolic")).
+				gui.Wrapper(playButton).
 					CSS(`
 						button {
 							padding: 9px 32px;
@@ -157,6 +166,17 @@ func NewPlayer() *Player {
 			slider.SetValue(100.0 / float64(state.Duration) * float64(state.Position))
 		} else {
 			slider.SetValue(0)
+		}
+
+		switch state.Status {
+		case player.StatusPlaying:
+			playButton.SetSensitive(true)
+			playButton.SetIconName("media-playback-pause-symbolic")
+		case player.StatusPaused:
+			playButton.SetSensitive(true)
+			playButton.SetIconName("media-playback-start-symbolic")
+		default:
+			playButton.SetSensitive(false)
 		}
 
 		return signals.Continue
