@@ -7,6 +7,7 @@ import (
 
 	"codeberg.org/dergs/tidalwave/internal/router"
 	"codeberg.org/dergs/tidalwave/internal/ui/components"
+	"codeberg.org/dergs/tidalwave/pkg/tidalapi"
 	v2 "codeberg.org/dergs/tidalwave/pkg/tidalapi/models/v2"
 	"github.com/diamondburned/gotk4/pkg/gtk/v4"
 )
@@ -24,7 +25,7 @@ func ForItem(item v2.Item) gtk.Widgetter {
 
 		releaseDate, _ := time.Parse(time.DateOnly, item.Data.Album.ReleaseDate)
 		card.SetSubTitle(fmt.Sprintf("%s\n%s", strings.Join(artists, ", "), releaseDate.Format("2006")))
-		card.LoadImage("https://resources.tidal.com/images/" + strings.ReplaceAll(item.Data.Album.Cover, "-", "/") + "/320x320.jpg")
+		card.LoadImage(tidalapi.ImageURL(item.Data.Album.Cover))
 		card.ConnectClicked(func() {
 			router.NavigateTo("album", router.Params{
 				"id": item.Data.Album.Id,
@@ -41,7 +42,7 @@ func ForItem(item v2.Item) gtk.Widgetter {
 		}
 
 		card.SetSubTitle(fmt.Sprintf("%s\n%d Tracks", creator, item.Data.Playlist.NumberOfTracks))
-		card.LoadImage("https://resources.tidal.com/images/" + strings.ReplaceAll(item.Data.Playlist.SquareImage, "-", "/") + "/320x320.jpg")
+		card.LoadImage(tidalapi.ImageURL(item.Data.Playlist.SquareImage))
 		card.ConnectClicked(func() {
 			router.NavigateTo("playlist", router.Params{
 				"uuid": item.Data.Playlist.UUID,
@@ -76,7 +77,7 @@ func ForPageItem(item v2.PageItem) gtk.Widgetter {
 			trackListEntry := NewTrackListEntry().
 				SetAlbum(data.Album.Title).
 				SetArtist(strings.Join(artists, ", ")).
-				SetCoverFromURL("https://resources.tidal.com/images/" + strings.ReplaceAll(data.Album.Cover, "-", "/") + "/320x320.jpg").
+				SetCoverFromURL(tidalapi.ImageURL(data.Album.Cover)).
 				SetTime(parsedDuration.Round(time.Second).String()).
 				SetTitle(data.Title)
 			list.Append(trackListEntry, i)
