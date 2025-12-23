@@ -6,6 +6,7 @@ require (
 	github.com/diamondburned/gotk4-adwaita/pkg v0.0.0-20240712143708-824c3ce8a5f4
 	github.com/diamondburned/gotk4/pkg v0.3.2-0.20250224044601-c9afb0585e3f
 	github.com/diamondburned/gotkit v0.0.0-20250223060613-69614d9e70a9
+	github.com/google/uuid v1.6.0
 	github.com/infinytum/injector v0.0.3
 	github.com/jeandeaual/go-locale v0.0.0-20250612000132-0ef82f21eade
 )
