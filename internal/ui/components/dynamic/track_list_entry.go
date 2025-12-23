@@ -22,21 +22,11 @@ var trackListEntryCSS = cssutil.Applier("track-list-entry", `
 	}
 
 	.track-list-entry:hover {
-		background-color: var(--button_hover_color);
+		background-color: alpha(var(--window-fg-color), 0.15);
 	}
 
 	.track-list-entry:focus:active {
-		background-color: rgba(255,255,255,0.3);
-	}
-
-	@media (prefers-color-scheme: light) {
-		.track-list-entry:hover {
-			background-color: color(srgb 0 0 0.0235294 / 0.12);
-		}
-
-		.track-list-entry:focus:active {
-			background-color: color(srgb 0 0 0.0235294 / 0.24);
-		}
+		background-color: alpha(var(--window-fg-color), 0.30);
 	}
 `)
 
