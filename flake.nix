@@ -29,6 +29,7 @@
             with pkgs;
             [
               go
+              gopls
               pkg-config
             ]
             ++ cgoDependencies
@@ -39,7 +40,7 @@
           pname = "tidalwave";
           version = "0.0.1";
           src = ./.;
-          vendorHash = "sha256-QNXf32swHYKjfl8Zf5ufRi1rGtHm/N0RspqP5VJ9H34=";
+          vendorHash = "sha256-iyr88oK4LdrFYNX5bvjAzwz0CYlGnte9ZSwvDntgz/o=";
 
           buildInputs = cgoDependencies;
           doCheck = false;
