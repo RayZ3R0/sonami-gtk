@@ -50,6 +50,7 @@ func Play(trackId int) error {
 		state.Track = track
 		state.Status = StatusBuffering
 		state.Duration = track.Duration
+		state.Position = 0
 	})
 
 	switch playbackInfo.ManifestMimeType {
