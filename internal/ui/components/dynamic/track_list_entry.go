@@ -5,6 +5,7 @@ import (
 
 	. "codeberg.org/dergs/tidalwave/pkg/gui"
 	"github.com/diamondburned/gotk4/pkg/gtk/v4"
+	"github.com/diamondburned/gotk4/pkg/pango"
 	"github.com/diamondburned/gotkit/gtkutil/cssutil"
 	"github.com/diamondburned/gotkit/gtkutil/imgutil"
 	"github.com/infinytum/injector"
@@ -20,11 +21,21 @@ var trackListEntryCSS = cssutil.Applier("track-list-entry", `
 	}
 
 	.track-list-entry:hover {
-		background-color: rgba(255,255,255,0.15);
+		background-color: var(--button_hover_color);
 	}
 
 	.track-list-entry:focus:active {
 		background-color: rgba(255,255,255,0.3);
+	}
+
+	@media (prefers-color-scheme: light) {
+		.track-list-entry:hover {
+			background-color: color(srgb 0 0 0.0235294 / 0.12);
+		}
+
+		.track-list-entry:focus:active {
+			background-color: color(srgb 0 0 0.0235294 / 0.24);
+		}
 	}
 `)
 
@@ -44,12 +55,12 @@ type TrackListEntry struct {
 
 func (t *TrackListEntry) AttachToGrid(grid *gtk.Grid, row int) {
 	titleAlbumStack := VStack(
-		t.title.HAlign(gtk.AlignStart),
-		t.album.HAlign(gtk.AlignStart),
+		t.title.Ellipsis(pango.EllipsizeEnd).HAlign(gtk.AlignStart),
+		t.album.Ellipsis(pango.EllipsizeEnd).HAlign(gtk.AlignStart),
 	).Spacing(3).VAlign(gtk.AlignCenter)
 
 	grid.Attach(titleAlbumStack.MarginLeft(84).HAlign(gtk.AlignStart), 0, row, 3, 1)
-	grid.Attach(t.artist.HAlign(gtk.AlignStart), 3, row, 2, 1)
+	grid.Attach(t.artist.HAlign(gtk.AlignStart).MarginLeft(10), 3, row, 2, 1)
 	grid.Attach(t.time.MarginRight(88).HAlign(gtk.AlignEnd), 5, row, 1, 1)
 	grid.Attach(t.box, 0, row, 6, 1)
 }

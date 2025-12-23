@@ -4,6 +4,7 @@ import (
 	"fmt"
 
 	"github.com/diamondburned/gotk4/pkg/gtk/v4"
+	"github.com/diamondburned/gotk4/pkg/pango"
 	"github.com/diamondburned/gotkit/gtkutil/cssutil"
 )
 
@@ -24,8 +25,8 @@ var Text = func(text string) *TextImpl {
 	return impl
 }
 
-func (t *TextImpl) Text(text string) *TextImpl {
-	t.label.SetText(text)
+func (t *TextImpl) Ellipsis(mode pango.EllipsizeMode) *TextImpl {
+	t.label.SetEllipsize(mode)
 	return t
 }
 
@@ -41,4 +42,9 @@ func (t *TextImpl) FontWeight(weight int) *TextImpl {
 
 func (t *TextImpl) GTKWidget() *gtk.Label {
 	return t.label
+}
+
+func (t *TextImpl) Text(text string) *TextImpl {
+	t.label.SetText(text)
+	return t
 }
