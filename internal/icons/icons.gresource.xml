@@ -1,11 +1,9 @@
 <?xml version='1.0' encoding='utf-8'?>
 <gresources>
   <gresource prefix="/org/codeberg/dergs/tidalwave/icons/scalable/actions/">
-    <file alias="logo.png">hicolor/scalable/apps/logo.svg</file>
+    <file alias="logo.png">hicolor/scalable/apps/logo.png</file>
   </gresource>
   <gresource prefix="/org/codeberg/dergs/tidalwave/icons/scalable/actions/">
-    <file preprocess="xml-stripblanks" alias="battery-symbolic.svg">scalable/actions/battery-symbolic.svg</file>
-    <file preprocess="xml-stripblanks" alias="sensors-fan-symbolic.svg">scalable/actions/sensors-fan-symbolic.svg</file>
     <file preprocess="xml-stripblanks" alias="go-home-symbolic.svg">scalable/actions/go-home-symbolic.svg</file>
     <file preprocess="xml-stripblanks" alias="plus-square-filled-symbolic.svg">scalable/actions/plus-square-filled-symbolic.svg</file>
     <file preprocess="xml-stripblanks" alias="loupe-symbolic.svg">scalable/actions/loupe-symbolic.svg</file>
