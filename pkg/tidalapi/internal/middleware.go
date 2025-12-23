@@ -14,11 +14,11 @@ type MiddlewareRoundTripper struct {
 
 func (m MiddlewareRoundTripper) RoundTrip(req *http.Request) (*http.Response, error) {
 	// Configure the TIDAL Client version we currently replicate
-	req.Header.Set("x-tidal-client-version", "2025.12.13")
-	req.Header.Set("x-tidal-token", "txNoH4kkV41MfH25")
+	req.Header.Set("x-tidal-client-version", ClientVersion)
+	req.Header.Set("x-tidal-token", ClientID)
 
 	// Identify ourselves to TIDAL, we want to be a friendly citizen on their API.
-	req.Header.Set("User-Agent", "TidalWave/2025.12.13 Mozilla/5.0 (Linux x86_64; rv:146.0) Gecko/20100101 Firefox/146.0")
+	req.Header.Set("User-Agent", "TidalWave/"+ClientVersion+" Mozilla/5.0 (Linux x86_64; rv:146.0) Gecko/20100101 Firefox/146.0")
 
 	// Configure the base URL
 	req.URL.Scheme = "https"
