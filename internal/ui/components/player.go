@@ -3,7 +3,6 @@ package components
 import (
 	"context"
 	"strings"
-	"time"
 
 	"codeberg.org/dergs/tidalwave/internal/player"
 	"codeberg.org/dergs/tidalwave/internal/ui/signals"
@@ -106,7 +105,7 @@ func NewPlayer() *Player {
 				MarginTop(24).
 				MarginLeft(24).
 				MarginRight(24).
-				CSS(`scale { background-color: transparent; }`),
+				CSS(`scale { background-color: transparent; padding-left: 0px; padding-right: 0px; }`),
 			gui.HStack(
 				position,
 				gui.Spacer().VExpand(false),
@@ -161,8 +160,8 @@ func NewPlayer() *Player {
 		}
 
 		if state.Duration > 0 {
-			duration.GTKWidget().SetText((time.Duration(state.Duration) * time.Second).String())
-			position.GTKWidget().SetText((time.Duration(state.Position) * time.Second).String())
+			duration.GTKWidget().SetText(tidalapi.FormatDuration(state.Duration))
+			position.GTKWidget().SetText(tidalapi.FormatDuration(state.Position))
 			slider.SetValue(100.0 / float64(state.Duration) * float64(state.Position))
 		} else {
 			slider.SetValue(0)
@@ -172,10 +171,11 @@ func NewPlayer() *Player {
 		case player.StatusPlaying:
 			playButton.SetSensitive(true)
 			playButton.SetIconName("media-playback-pause-symbolic")
-		case player.StatusPaused:
+		case player.StatusPaused, player.StatusStopped:
 			playButton.SetSensitive(true)
 			playButton.SetIconName("media-playback-start-symbolic")
 		default:
+			playButton.SetIconName("media-playback-start-symbolic")
 			playButton.SetSensitive(false)
 		}
 

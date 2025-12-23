@@ -32,8 +32,5 @@ func onBusStreamEnd() {
 	stopUpdateRunner()
 	OnState.Notify(func(state *State) {
 		state.Status = StatusStopped
-		state.Position = 0
-		state.Duration = 0
-		state.Track = nil
 	})
 }
