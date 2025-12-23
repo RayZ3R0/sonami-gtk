@@ -72,6 +72,7 @@
           meta = {
             description = "Tidal Wave is a GTK client for TIDAL written in GoLang.";
             homepage = "https://codeberg.org/Dergs/TidalWave";
+            license = pkgs.lib.licenses.gpl3;
             maintainers = with pkgs.lib.maintainers; [ nilathedragon ];
             mainProgram = "tidalwave";
           };
