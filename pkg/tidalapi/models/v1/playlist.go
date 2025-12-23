@@ -1,6 +1,11 @@
 package v1
 
+import (
+	"codeberg.org/dergs/tidalwave/pkg/tidalapi/helper"
+)
+
 type Playlist struct {
+	Created helper.TidalDateTime `json:"created"`
 	Creator struct {
 		ID   int    `json:"id"`
 		Name string `json:"name,omitempty"`
@@ -8,7 +13,7 @@ type Playlist struct {
 	Description    string `json:"description"`
 	Duration       int    `json:"duration"`
 	NumberOfTracks int    `json:"numberOfTracks"`
-	SquareImage    string `json:"image"`
+	SquareImage    string `json:"squareImage"`
 	Title          string `json:"title"`
 	UUID           string `json:"uuid"`
 }
