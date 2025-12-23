@@ -74,7 +74,7 @@ func ForPageItem(item v2.PageItem) gtk.Widgetter {
 			parsedDuration := time.Second * time.Duration(data.Duration)
 
 			// Track Lists are special and will always use a TrackListEntry
-			trackListEntry := NewTrackListEntry().
+			trackListEntry := NewTrackListEntry(data.ID).
 				SetAlbum(data.Album.Title).
 				SetArtist(strings.Join(artists, ", ")).
 				SetCoverFromURL(tidalapi.ImageURL(data.Album.Cover)).

@@ -3,6 +3,7 @@ package dynamic
 import (
 	"context"
 
+	"codeberg.org/dergs/tidalwave/internal/player"
 	. "codeberg.org/dergs/tidalwave/pkg/gui"
 	"github.com/diamondburned/gotk4/pkg/gtk/v4"
 	"github.com/diamondburned/gotk4/pkg/pango"
@@ -90,7 +91,7 @@ func (t *TrackListEntry) SetTime(time string) *TrackListEntry {
 	return t
 }
 
-func NewTrackListEntry() *TrackListEntry {
+func NewTrackListEntry(trackId int) *TrackListEntry {
 	trackListEntry := &TrackListEntry{
 		boxGestureClick: gtk.NewGestureClick(),
 
@@ -135,7 +136,7 @@ func NewTrackListEntry() *TrackListEntry {
 		box.SetStateFlags(gtk.StateFlagActive, false)
 	})
 	ctrl.ConnectReleased(func(nPress int, x, y float64) {
-		// TODO: Implement "Play Track"
+		player.Play(trackId)
 	})
 	trackListEntry.box.GTKWidget().AddController(ctrl)
 
