@@ -91,7 +91,7 @@ func NewPlayer() *Player {
 				CornerRadius(10).
 				Overflow(gtk.OverflowHidden).
 				HAlign(gtk.AlignCenter).
-				Background("color(srgb 1 1 1 / 0.1)"),
+				Background("alpha(var(--view-fg-color), 0.1)"),
 			gui.Wrapper(title).MarginTop(35),
 			artistName,
 			gui.HStack(
