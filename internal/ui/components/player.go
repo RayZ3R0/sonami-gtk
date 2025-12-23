@@ -2,9 +2,15 @@ package components
 
 import (
 	"context"
+	"strings"
+	"time"
 
+	"codeberg.org/dergs/tidalwave/internal/player"
+	"codeberg.org/dergs/tidalwave/internal/ui/signals"
 	"codeberg.org/dergs/tidalwave/pkg/gui"
+	"codeberg.org/dergs/tidalwave/pkg/tidalapi"
 	"github.com/diamondburned/gotk4/pkg/gtk/v4"
+	"github.com/diamondburned/gotk4/pkg/pango"
 	"github.com/diamondburned/gotkit/gtkutil/cssutil"
 	"github.com/diamondburned/gotkit/gtkutil/imgutil"
 	"github.com/infinytum/injector"
@@ -45,19 +51,17 @@ func (m *Player) LoadCover(url string) {
 func NewPlayer() *Player {
 	trackImage := gtk.NewImage()
 	trackImage.SetPixelSize(319)
-	trackImage.SetOverflow(gtk.OverflowHidden)
-
-	frame := gtk.NewAspectFrame(0.5, 0, 1, false)
-	frame.SetCSSClasses([]string{"player-media-frame"})
-	frame.SetChild(trackImage)
-	frame.SetHExpand(true)
-	frame.SetOverflow(gtk.OverflowHidden)
 
 	title := gtk.NewLabel("[Track Title]")
 	title.SetCSSClasses([]string{"player-track-title"})
+	title.SetWrap(true)
+	title.SetWrapMode(pango.WrapWordChar)
+	title.SetHAlign(gtk.AlignCenter)
 
 	artistName := gtk.NewLabel("[Artist Name]")
 	artistName.SetCSSClasses([]string{"player-track-artist"})
+	artistName.SetWrap(true)
+	artistName.SetWrapMode(pango.WrapWordChar)
 
 	slider := gtk.NewScale(gtk.OrientationHorizontal, nil)
 	slider.SetHExpand(true)
@@ -65,10 +69,14 @@ func NewPlayer() *Player {
 	slider.SetValue(50)
 	guiSlider := gui.Wrapper(slider)
 
-	player := &Player{
+	position := gui.Text("00:00")
+	duration := gui.Text("00:00")
+
+	playerWidget := &Player{
 		gui.VStack(
-			frame,
-			title,
+			gui.Spacer(),
+			gui.AspectFrame(trackImage).CornerRadius(10).Overflow(gtk.OverflowHidden).HAlign(gtk.AlignCenter),
+			gui.Wrapper(title).MarginTop(35),
 			artistName,
 			gui.HStack(
 				gui.Wrapper(gtk.NewButtonFromIconName("audio-speakers-symbolic")).
@@ -91,9 +99,9 @@ func NewPlayer() *Player {
 				MarginRight(24).
 				CSS(`scale { background-color: transparent; }`),
 			gui.HStack(
-				gui.Text("00:00"),
+				position,
 				gui.Spacer().VExpand(false),
-				gui.Text("99:99"),
+				duration,
 			).
 				MarginLeft(24).
 				MarginRight(24),
@@ -101,7 +109,6 @@ func NewPlayer() *Player {
 				CSS("label { background-color: #DAC100; border-radius: 11px; padding: 2px 6px; }").
 				HExpand(false).
 				HAlign(gtk.AlignCenter),
-			gui.Spacer(),
 			gui.HStack(
 				gui.Wrapper(gtk.NewButtonFromIconName("media-playlist-shuffle-symbolic")).
 					CSS(`button { min-width: 34px; min-height: 34px; } button:not(:hover) { background-color: transparent; }`),
@@ -132,7 +139,28 @@ func NewPlayer() *Player {
 		artistName,
 	}
 
-	playerCSS(player)
+	playerCSS(playerWidget)
+	player.OnState.On(func(state player.State) bool {
+		if state.Track != nil {
+			playerWidget.LoadCover(tidalapi.ImageURL(state.Track.Album.Cover))
+			artists := make([]string, 0)
+			for _, artist := range state.Track.Artists {
+				artists = append(artists, artist.Name)
+			}
+			playerWidget.artistName.SetText(strings.Join(artists, ", "))
+			playerWidget.title.SetText(state.Track.Title)
+		}
 
-	return player
+		if state.Duration > 0 {
+			duration.GTKWidget().SetText((time.Duration(state.Duration) * time.Second).String())
+			position.GTKWidget().SetText((time.Duration(state.Position) * time.Second).String())
+			slider.SetValue(100.0 / float64(state.Duration) * float64(state.Position))
+		} else {
+			slider.SetValue(0)
+		}
+
+		return signals.Continue
+	})
+
+	return playerWidget
 }
