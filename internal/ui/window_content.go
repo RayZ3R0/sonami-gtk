@@ -44,6 +44,11 @@ func (w *Window) buildContentHeader() gtk.Widgetter {
 	defaultTopBar.Append(routeButton3)
 	headerbar.SetTitleWidget(defaultTopBar)
 
+	router.OnNavigate.On(func(path string) bool {
+		headerbar.SetTitleWidget(defaultTopBar)
+		return signals.Continue
+	})
+
 	router.NavigationComplete.On(func(response *router.Response) bool {
 		if response.Toolbar != nil {
 			headerbar.SetTitleWidget(response.Toolbar)
