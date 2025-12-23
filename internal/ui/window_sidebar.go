@@ -46,7 +46,7 @@ func (w *Window) buildSidebarHeader() gtk.Widgetter {
 
 func (w *Window) buildSidebar() *adw.ViewStack {
 	viewStack := adw.NewViewStack()
-	viewStack.AddTitledWithIcon(gtk.NewSpinner(), "player", "Player", "music-note-outline-symbolic")
+	viewStack.AddTitledWithIcon(components.NewPlayer(), "player", "Player", "music-note-outline-symbolic")
 	viewStack.AddTitledWithIcon(gtk.NewSpinner(), "lyrics", "Lyrics", "chat-bubble-text-symbolic")
 	viewStack.AddTitledWithIcon(gtk.NewSpinner(), "queue", "Queue", "music-queue-symbolic")
 	return viewStack
