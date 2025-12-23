@@ -28,6 +28,7 @@ var playerCSS = cssutil.Applier("player", `
 		font-size: 24px;
 		line-height: 1.2;
 		font-weight: 800;
+		margin: 0 2rem;
 	}
 
 	.player-track-artist {
@@ -53,9 +54,10 @@ func NewPlayer() *Player {
 
 	title := gtk.NewLabel("[Track Title]")
 	title.SetCSSClasses([]string{"player-track-title"})
-	title.SetWrap(true)
 	title.SetWrapMode(pango.WrapWordChar)
 	title.SetHAlign(gtk.AlignCenter)
+	title.SetEllipsize(pango.EllipsizeEnd)
+	title.SetWrap(false)
 
 	artistName := gtk.NewLabel("[Artist Name]")
 	artistName.SetCSSClasses([]string{"player-track-artist"})
