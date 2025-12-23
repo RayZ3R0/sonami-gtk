@@ -51,6 +51,8 @@ func (m *Player) LoadCover(url string) {
 func NewPlayer() *Player {
 	trackImage := gtk.NewImage()
 	trackImage.SetPixelSize(319)
+	trackImage.SetOverflow(gtk.OverflowHidden)
+	trackImage.SetFromResource("/org/codeberg/dergs/tidalwave/icons/scalable/state/missing-album.svg")
 
 	title := gtk.NewLabel("[Track Title]")
 	title.SetCSSClasses([]string{"player-track-title"})
@@ -84,8 +86,12 @@ func NewPlayer() *Player {
 
 	playerWidget := &Player{
 		gui.VStack(
-			gui.Spacer(),
-			gui.AspectFrame(trackImage).CornerRadius(10).Overflow(gtk.OverflowHidden).HAlign(gtk.AlignCenter),
+			gui.Spacer().MinHeight(24),
+			gui.AspectFrame(trackImage).
+				CornerRadius(10).
+				Overflow(gtk.OverflowHidden).
+				HAlign(gtk.AlignCenter).
+				Background("color(srgb 1 1 1 / 0.1)"),
 			gui.Wrapper(title).MarginTop(35),
 			artistName,
 			gui.HStack(

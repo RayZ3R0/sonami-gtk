@@ -13,6 +13,11 @@ type WidgetImpl[T any] struct {
 	real   T
 }
 
+func (w *WidgetImpl[T]) Background(color string) T {
+	cssutil.Apply(w, fmt.Sprintf("%s { background-color: %s; }", w.widget.CSSName(), color))
+	return w.real
+}
+
 func (w *WidgetImpl[T]) CornerRadius(radius int) T {
 	cssutil.Apply(w, fmt.Sprintf(w.widget.CSSName()+` { border-radius: %dpx; }`, radius))
 	return w.real

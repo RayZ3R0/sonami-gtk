@@ -17,4 +17,7 @@
     <file preprocess="xml-stripblanks" alias="plus-symbolic.svg">scalable/actions/plus-symbolic.svg</file>
     <file preprocess="xml-stripblanks" alias="heart-outline-thick-symbolic.svg">scalable/actions/heart-outline-thick-symbolic.svg</file>
   </gresource>
+  <gresource prefix="/org/codeberg/dergs/tidalwave/icons/scalable/state/">
+    <file preprocess="xml-stripblanks" alias="missing-album.svg">scalable/state/missing-album.svg</file>
+  </gresource>
 </gresources>

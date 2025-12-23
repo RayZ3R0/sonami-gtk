@@ -1,7 +1,10 @@
 package gui
 
 import (
+	"fmt"
+
 	"github.com/diamondburned/gotk4/pkg/gtk/v4"
+	"github.com/diamondburned/gotkit/gtkutil/cssutil"
 )
 
 type BoxFunc func(children ...gtk.Widgetter) *BoxImpl
@@ -46,5 +49,15 @@ func (b *BoxImpl) Orientation(orientation gtk.Orientation) *BoxImpl {
 
 func (b *BoxImpl) Spacing(spacing int) *BoxImpl {
 	b.box.SetSpacing(spacing)
+	return b
+}
+
+func (b *BoxImpl) MinHeight(minHeightPx int) *BoxImpl {
+	cssutil.Apply(b, fmt.Sprintf("%s { min-height: %dpx; }", b.widget.CSSName(), minHeightPx))
+	return b
+}
+
+func (b *BoxImpl) MinWidth(minWidthPx int) *BoxImpl {
+	cssutil.Apply(b, fmt.Sprintf("%s { min-width: %dpx; }", b.widget.CSSName(), minWidthPx))
 	return b
 }
