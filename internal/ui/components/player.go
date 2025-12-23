@@ -147,7 +147,9 @@ func NewPlayer() *Player {
 					CSS(`button { min-width: 34px; min-height: 34px; } button:not(:hover) { background-color: transparent; }`),
 			).
 				Spacing(7).
-				HAlign(gtk.AlignCenter).MarginTop(36).MarginBottom(36),
+				HAlign(gtk.AlignCenter).
+				MarginTop(42).
+				MarginBottom(42),
 			gui.Spacer(),
 		),
 		trackImage,
