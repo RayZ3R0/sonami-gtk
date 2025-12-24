@@ -22,11 +22,11 @@ var trackListEntryCSS = cssutil.Applier("track-list-entry", `
 	}
 
 	.track-list-entry:hover {
-		background-color: alpha(var(--window-fg-color), 0.15);
+		background-color: alpha(var(--view-fg-color), 0.15);
 	}
 
 	.track-list-entry:focus:active {
-		background-color: alpha(var(--window-fg-color), 0.30);
+		background-color: alpha(var(--view-fg-color), 0.30);
 	}
 `)
 
