@@ -1,21 +1,25 @@
 package internal
 
-import "net/http"
+import (
+	"net/http"
+
+	"codeberg.org/dergs/tidalwave/pkg/tidalapi/auth"
+)
 
 type Client struct {
 	*http.Client
-	countryCode string
-	token       string
+	authStrategies []auth.AuthStrategy
+	countryCode    string
 }
 
-func NewClient(countryCode string, token string) *Client {
+func NewClient(countryCode string, authStrategies ...auth.AuthStrategy) *Client {
 	client := &http.Client{
-		Transport: MiddlewareRoundTripper{countryCode: countryCode},
+		Transport: MiddlewareRoundTripper{authStrategies: append(authStrategies, auth.NewOpenAPIClientAuthStrategy(ClientID, ClientSecret)), countryCode: countryCode},
 	}
 
 	return &Client{
-		Client:      client,
-		countryCode: countryCode,
-		token:       token,
+		Client:         client,
+		authStrategies: authStrategies,
+		countryCode:    countryCode,
 	}
 }

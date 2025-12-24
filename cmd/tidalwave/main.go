@@ -48,7 +48,6 @@ func main() {
 		<-ctx.Done()
 		glib.IdleAdd(app.Quit)
 	}()
-
 	injector.Singleton(func() *tidalapi.TidalAPI {
 		countryCode, err := tidalapi.FetchCountryCode()
 		if err != nil {
@@ -56,7 +55,7 @@ func main() {
 			countryCode = "WW"
 		}
 		slog.Info("Discovered country code", "countryCode", countryCode)
-		return tidalapi.NewClient(countryCode, "")
+		return tidalapi.NewClient(countryCode)
 	})
 
 	if code := app.Run(os.Args); code > 0 {

@@ -5,11 +5,13 @@ import (
 	"net/http"
 	"time"
 
+	"codeberg.org/dergs/tidalwave/pkg/tidalapi/auth"
 	"github.com/jeandeaual/go-locale"
 )
 
 type MiddlewareRoundTripper struct {
-	countryCode string
+	authStrategies []auth.AuthStrategy
+	countryCode    string
 }
 
 func (m MiddlewareRoundTripper) RoundTrip(req *http.Request) (*http.Response, error) {
@@ -20,9 +22,13 @@ func (m MiddlewareRoundTripper) RoundTrip(req *http.Request) (*http.Response, er
 	// Identify ourselves to TIDAL, we want to be a friendly citizen on their API.
 	req.Header.Set("User-Agent", "TidalWave/"+ClientVersion+" Mozilla/5.0 (Linux x86_64; rv:146.0) Gecko/20100101 Firefox/146.0")
 
-	// Configure the base URL
-	req.URL.Scheme = "https"
-	req.URL.Host = "tidal.com"
+	// Configure the base URL unless set
+	if req.URL.Scheme == "" {
+		req.URL.Scheme = "https"
+	}
+	if req.URL.Host == "" {
+		req.URL.Host = "tidal.com"
+	}
 
 	// Configure default query params
 	queryParams := req.URL.Query()
@@ -39,6 +45,13 @@ func (m MiddlewareRoundTripper) RoundTrip(req *http.Request) (*http.Response, er
 	}
 
 	req.URL.RawQuery = queryParams.Encode()
+
+	// Execute all auth strategies
+	for _, strategy := range m.authStrategies {
+		if err := strategy.Authenticate(req); err != nil {
+			return nil, err
+		}
+	}
 
 	// Hand off to the default transport
 	return http.DefaultTransport.RoundTrip(req)
