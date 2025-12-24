@@ -4,7 +4,6 @@ import (
 	"context"
 	"errors"
 	"fmt"
-	"time"
 
 	"codeberg.org/dergs/tidalwave/internal/router"
 	. "codeberg.org/dergs/tidalwave/pkg/gui"
@@ -26,29 +25,31 @@ func Playlist(params router.Params) *router.Response {
 
 	tidal := injector.MustInject[*tidalapi.TidalAPI]()
 
-	playlist, err := tidal.V1.Playlists.Playlist(context.Background(), playlistUUID)
+	playlist, err := tidal.OpenAPI.V2.Playlists.Playlist(context.Background(), playlistUUID, "coverArt", "ownerProfiles")
 	if err != nil {
 		return router.FromError("Playlist", err)
 	}
 
 	creator := "TIDAL"
-	if playlist.Creator.Name != "" {
-		creator = playlist.Creator.Name
-	}
-
-	duration := time.Duration(playlist.Duration) * time.Second
-
 	cover := gtk.NewImage()
 	cover.SetPixelSize(146)
-	imgutil.AsyncGET(injector.MustInject[context.Context](), tidalapi.ImageURL(playlist.SquareImage), imgutil.ImageSetterFromImage(cover))
+
+	for _, item := range playlist.Included {
+		if item.Attributes.Artworks != nil {
+			imgutil.AsyncGET(injector.MustInject[context.Context](), item.Attributes.Artworks.Files.AtLeast(320).Href, imgutil.ImageSetterFromImage(cover))
+		}
+		if item.Attributes.Artist != nil {
+			creator = item.Attributes.Artist.Name
+		}
+	}
 
 	return &router.Response{
-		PageTitle: playlist.Title,
+		PageTitle: playlist.Data.Attributes.Name,
 		View: VStack(
 			HStack(
 				AspectFrame(cover).CornerRadius(10).Overflow(gtk.OverflowHidden),
 				VStack(
-					Text(playlist.Title).
+					Text(playlist.Data.Attributes.Name).
 						FontSize(18).
 						FontWeight(700).
 						HAlign(gtk.AlignStart),
@@ -56,11 +57,11 @@ func Playlist(params router.Params) *router.Response {
 						FontSize(16).
 						FontWeight(500).
 						HAlign(gtk.AlignStart),
-					Text(playlist.Created.Format("2006")).
+					Text(playlist.Data.Attributes.CreatedAt.Format("2006")).
 						FontSize(16).
 						FontWeight(500).
 						HAlign(gtk.AlignStart),
-					Text(fmt.Sprintf("%d Tracks (%s)", playlist.NumberOfTracks, duration.String())).
+					Text(fmt.Sprintf("%d Tracks (%s)", playlist.Data.Attributes.NumberOfItems, tidalapi.FormatDuration(int(playlist.Data.Attributes.Duration.Seconds())))).
 						FontSize(14).
 						FontWeight(600).
 						HAlign(gtk.AlignStart).
