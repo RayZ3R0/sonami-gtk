@@ -43,6 +43,9 @@ func asyncRouteHandler(handler Handler, params Params) {
 	if response == nil {
 		response = &Response{Error: errors.New("handler did not generate any response")}
 	}
+	if response.Error != nil {
+		response.View = getErrorView(response.Error)
+	}
 
 	glib.IdleAdd(func() bool {
 		NavigationComplete.Notify(response)
