@@ -9,6 +9,7 @@ import (
 	"codeberg.org/dergs/tidalwave/internal/player"
 	"codeberg.org/dergs/tidalwave/internal/ui/signals"
 	"codeberg.org/dergs/tidalwave/pkg/gui"
+	"codeberg.org/dergs/tidalwave/pkg/tidalapi"
 	"github.com/diamondburned/gotk4/pkg/gtk/v4"
 	"github.com/diamondburned/gotk4/pkg/pango"
 	"github.com/diamondburned/gotkit/gtkutil/cssutil"
@@ -32,7 +33,7 @@ type LyricLine struct {
 var LyricsLineCSS = cssutil.Applier("lyrics-panel", `
 box.lyric {
    background-color: alpha(var(--view-fg-color), 0.05);
-   color: alpha(var(--view-fg-color), 0.8);
+   color: alpha(var(--view-fg-color), 0.5);
    transition-property: background, color;
    transition-duration: 300ms;
    transition-timing-function: ease-in-out;
@@ -90,22 +91,44 @@ func NewLyricsPanel() *LyricsPanel {
 		nil,
 	}
 
-	// const lyrics = "Oh oh oh oh oh\nOh oh oh oh oh\n\nI remember the night in the heat of July, we were strangers\nAfter the thunder cracked the lightning was kind of amazing\nI got lost in your glow, felt so high even though I was sober\nYou had a reckless style, your smile was wearing a gold dust\nThe way we hold on it's a miracle\nThis is a love song forever in making\n\nOh, the years go by but you still light up, light up my heart\nOh, you know time flies but you still light up, light up my dark\nIt's been the wildest dream, a masterpiece, let's ride around the sun\nDarling, after all this time, you're still the one\n\nOh oh oh oh oh\nOh oh oh oh oh\n\nPeople come, people go, nothing lasts anymore\nIt's a strange world\nBut dreaming side by side, I wake up believing in angels\nYes, you know the way sparks still fly\nHow you read my mind, it's electric (it's electric)\nAnd when I leave this life\nI'll know loving you was always the best bit\nThe way we hold on it's a miracle\nThis is a love song forever in making\n\nOh, years go by but you still light up, light up my heart\nOh, you know time flies but you still light up, light up my dark\nIt's been the wildest dream, a masterpiece, let's ride around the sun\nDarling, after all this time, you're still the one\n\nStill the one (light up, light up my heart)\n\nIt's been the wildest dream, a masterpiece, let's ride around the sun\nDarling, after all this time\nYou know I need you by my side, I tell ya\nAfter all this time, you're still the one"
-	const lyrics = "[00:01.50]Oh oh oh oh oh\n[00:04.82]Oh oh oh oh oh\n\n[00:08.33]I remember the night in the heat of July, we were strangers\n[00:15.48]After the thunder cracked the lightning was kind of amazing\n[00:23.25]I got lost in your glow, felt so high even though I was sober\n[00:30.14]You had a reckless style, your smile was wearing a gold dust\n[00:37.60]The way we hold on it's a miracle\n[00:41.39]This is a love song forever in making\n\n[00:45.52]Oh, the years go by but you still light up, light up my heart\n[00:52.88]Oh, you know time flies but you still light up, light up my dark\n[00:59.65]It's been the wildest dream, a masterpiece, let's ride around the sun\n[01:06.62]Darling, after all this time, you're still the one\n\n[01:11.22]Oh oh oh oh oh\n[01:12.62]Oh oh oh oh oh\n\n[01:14.69]People come, people go, nothing lasts anymore\n[01:21.27]It's a strange world\n[01:24.75]But dreaming side by side, I wake up believing in angels\n[01:31.14]Yes, you know the way sparks still fly\n[01:34.11]How you read my mind, it's electric (it's electric)\n[01:39.55]And when I leave this life\n[01:41.20]I'll know loving you was always the best bit\n[01:46.68]The way we hold on it's a miracle\n[01:50.36]This is a love song forever in making\n\n[01:54.68]Oh, years go by but you still light up, light up my heart\n[02:01.54]Oh, you know time flies but you still light up, light up my dark\n[02:08.38]It's been the wildest dream, a masterpiece, let's ride around the sun\n[02:15.52]Darling, after all this time, you're still the one\n[02:22.43]\n[02:26.35]Still the one (light up, light up my heart)\n\n[02:33.86]It's been the wildest dream, a masterpiece, let's ride around the sun\n[02:40.91]Darling, after all this time\n[02:44.15]You know I need you by my side, I tell ya\n[02:49.15]After all this time, you're still the one\n[02:53.33]"
-
-	player.OnTrackChanged.On(func(track player.TrackInformation) bool {
+	player.OnTrackChanged.On(func(trackInfo player.TrackInformation) bool {
 		imgutil.AsyncGET(
 			injector.MustInject[context.Context](),
-			track.CoverURL,
+			trackInfo.CoverURL,
 			imgutil.ImageSetterFromImage(trackImage),
 		)
 
-		trackArtists.Text(track.ArtistNames())
-		trackTitle.Text(track.Title)
+		trackArtists.Text(trackInfo.ArtistNames())
+		trackTitle.Text(trackInfo.Title)
+
+		tidal := injector.MustInject[*tidalapi.TidalAPI]()
+		track, err := tidal.OpenAPI.V2.Tracks.Track(context.Background(), trackInfo.ID, "lyrics")
+		if err != nil {
+			fmt.Errorf("", err)
+			return signals.Continue
+		}
+
+		lyrics := ""
+		isTimestamped := false
+
+		for _, item := range track.Included {
+			if lyricsAttribute := item.Attributes.Lyrics; lyricsAttribute != nil {
+				if lyricsAttribute.LRCText != "" {
+					isTimestamped = true
+					lyrics = item.Attributes.Lyrics.LRCText
+				} else if lyricsAttribute.Text != "" {
+					isTimestamped = false
+					lyrics = item.Attributes.Lyrics.Text
+				} else {
+					continue
+				}
+				break
+			}
+		}
 
 		if lyrics == "" {
 			lyricsView.SetChild(gui.Text("No lyrics available"))
-		} else if ok, _ := regexp.MatchString(`\d{2}:\d{2}\.\d{2}\]`, lyrics); ok {
+		} else if isTimestamped {
 			// Handle lyrics with timings
 			// Remove timing tags and split into lines
 			timingRegex := regexp.MustCompile(`\[(\d{2}:\d{2}\.\d{2})\](.*)`)
