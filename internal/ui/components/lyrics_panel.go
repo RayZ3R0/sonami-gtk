@@ -2,6 +2,7 @@ package components
 
 import (
 	"context"
+	"fmt"
 	"regexp"
 	"strings"
 
@@ -184,10 +185,13 @@ func NewLyricsPanel() *LyricsPanel {
 		return signals.Continue
 	})
 
+	var lastActiveLyricIndex = -1
+
 	player.OnStateChanged.On(func(state player.State) bool {
 		// Update lyrics highlighting based on current playback time
 		if len(lyricsPanelWidget.lyricLines) > 0 {
 			currentTime := state.Position
+			var activeLyricIndex = -1
 
 			for i, lyricLine := range lyricsPanelWidget.lyricLines {
 				// Parse timestamp to seconds
@@ -216,10 +220,49 @@ func NewLyricsPanel() *LyricsPanel {
 				// Check if current time is within this lyric's time range
 				if currentTime >= lyricTime && currentTime < endTime {
 					lyricLine.BoxWidget.AddCSSClass("active")
+					activeLyricIndex = i
 				} else {
 					// Dim non-current lyrics
 					lyricLine.BoxWidget.RemoveCSSClass("active")
 				}
+			}
+
+			// Auto-scroll to the active lyric only if the active index changed
+			if activeLyricIndex >= 0 && activeLyricIndex != lastActiveLyricIndex {
+				activeWidget := lyricsPanelWidget.lyricLines[activeLyricIndex].BoxWidget
+				vadj := lyricsView.VAdjustment()
+
+				// Get widget allocation and scroll window allocation
+				widgetAlloc, _ := activeWidget.GTKWidget().ComputeBounds(activeWidget.GTKWidget().Parent())
+				scollViewHeight := lyricsView.Height()
+				currentScrollPosition := vadj.Value()
+
+				// Check if the active lyric is outside the visible area
+				widgetTop := float64(widgetAlloc.Y())
+				widgetBottom := float64(widgetAlloc.Y() + widgetAlloc.Height())
+				visibleTop := currentScrollPosition
+				visibleBottom := currentScrollPosition + float64(scollViewHeight)
+
+				fmt.Println(visibleTop, visibleBottom, widgetTop, widgetBottom)
+
+				// Only scroll if the widget is outside the visible area
+				if widgetTop < visibleTop || widgetBottom > visibleBottom {
+					// Calculate the position to center the active lyric
+					widgetCenter := float64(widgetAlloc.Y() + widgetAlloc.Height()/2)
+					scrollCenter := float64(scollViewHeight / 2)
+					targetPosition := widgetCenter - scrollCenter
+
+					// Clamp the target position within valid bounds
+					if targetPosition < vadj.Lower() {
+						targetPosition = vadj.Lower()
+					} else if targetPosition > vadj.Upper()-vadj.PageSize() {
+						targetPosition = vadj.Upper() - vadj.PageSize()
+					}
+
+					vadj.SetValue(targetPosition)
+				}
+
+				lastActiveLyricIndex = activeLyricIndex
 			}
 		}
 		return signals.Continue
