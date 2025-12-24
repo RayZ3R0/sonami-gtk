@@ -21,6 +21,16 @@ func Scrub(percent float64) {
 	})
 }
 
+func SeekTo(timestamp time.Duration) {
+	playbin.SeekTime(timestamp, gst.SeekFlagFlush)
+	OnStateChanged.Notify(func(state *State) {
+		state.Position = int(timestamp.Seconds())
+		if state.Status == StatusStopped {
+			state.Status = StatusPlaying
+		}
+	})
+}
+
 func PlayPause() {
 	if OnStateChanged.current.Status == StatusPlaying {
 		playbin.SetState(gst.StatePaused)

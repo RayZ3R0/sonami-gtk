@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"regexp"
 	"strings"
+	"time"
 
 	"codeberg.org/dergs/tidalwave/internal/player"
 	"codeberg.org/dergs/tidalwave/internal/ui/signals"
@@ -27,11 +28,11 @@ type LyricsPanel struct {
 type LyricLine struct {
 	Timestamp  string
 	TextWidget *gui.TextImpl
-	BoxWidget  *gui.BoxImpl
+	BoxWidget  *gui.WrapperImpl
 }
 
 var LyricsLineCSS = cssutil.Applier("lyrics-panel", `
-box.lyric {
+button.lyric {
    background-color: alpha(var(--view-fg-color), 0.05);
    color: alpha(var(--view-fg-color), 0.5);
    transition-property: background, color;
@@ -39,8 +40,12 @@ box.lyric {
    transition-timing-function: ease-in-out;
 }
 
-box.lyric.active {
+button.lyric:hover {
    background-color: alpha(var(--view-fg-color), 0.1);
+}
+
+button.lyric.active {
+   background-color: alpha(var(--view-fg-color), 0.2);
    color: var(--view-fg-color);
 }
 `)
@@ -166,7 +171,9 @@ func NewLyricsPanel() *LyricsPanel {
 					Wrap(true).
 					Justify(gtk.JustifyCenter)
 
-				boxWidget := gui.Box(textWidget).
+				button := gtk.NewButton()
+				button.SetChild(textWidget)
+				boxWidget := gui.Wrapper(button).
 					HExpand(true).
 					PaddingTop(24).
 					PaddingBottom(24).
@@ -174,6 +181,22 @@ func NewLyricsPanel() *LyricsPanel {
 					PaddingEnd(16).
 					CornerRadius(12).
 					AddCSSClass("lyric")
+
+				button.ConnectClicked(func() {
+					if len(matches) >= 2 {
+						// Parse the timestamp string (format: MM:SS.CC)
+						timeStr := matches[1]
+						var minutes, seconds, centiseconds int
+						if n := regexp.MustCompile(`(\d{2}):(\d{2})\.(\d{2})`).FindStringSubmatch(timeStr); len(n) == 4 {
+							minutes = int(n[1][0]-'0')*10 + int(n[1][1]-'0')
+							seconds = int(n[2][0]-'0')*10 + int(n[2][1]-'0')
+							centiseconds = int(n[3][0]-'0')*10 + int(n[3][1]-'0')
+						}
+						totalSeconds := float64(minutes*60+seconds) + float64(centiseconds)/100.0
+						duration := time.Duration(totalSeconds * float64(time.Second))
+						player.SeekTo(duration)
+					}
+				})
 
 				// Store the timestamp and text widget for later reference
 				lyricsPanelWidget.lyricLines = append(lyricsPanelWidget.lyricLines, LyricLine{
