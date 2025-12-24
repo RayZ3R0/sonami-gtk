@@ -1,5 +1,7 @@
 package openapi
 
+import "codeberg.org/dergs/tidalwave/pkg/tidalapi/helper"
+
 type Track struct {
 	Data     TypedObject[TrackAttributes] `json:"data"`
 	Included []Object
@@ -7,8 +9,8 @@ type Track struct {
 }
 
 type TrackAttributes struct {
-	Duration  string   `json:"duration"`
-	Explicit  bool     `json:"explicit"`
-	MediaTags []string `json:"media_tags"`
-	Title     string   `json:"title"`
+	Duration  helper.DurationISO8601 `json:"duration"`
+	Explicit  bool                   `json:"explicit"`
+	MediaTags []string               `json:"media_tags"`
+	Title     string                 `json:"title"`
 }

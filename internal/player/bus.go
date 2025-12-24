@@ -30,7 +30,7 @@ func onBusStateChanged(_, newState gst.State) {
 
 func onBusStreamEnd() {
 	stopUpdateRunner()
-	OnState.Notify(func(state *State) {
+	OnStateChanged.Notify(func(state *State) {
 		state.Status = StatusStopped
 	})
 }

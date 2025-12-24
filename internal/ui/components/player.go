@@ -2,7 +2,6 @@ package components
 
 import (
 	"context"
-	"strings"
 
 	"codeberg.org/dergs/tidalwave/internal/player"
 	"codeberg.org/dergs/tidalwave/internal/ui/signals"
@@ -54,14 +53,14 @@ func NewPlayer() *Player {
 	trackImage.SetOverflow(gtk.OverflowHidden)
 	trackImage.SetFromResource("/org/codeberg/dergs/tidalwave/icons/scalable/state/missing-album.svg")
 
-	title := gtk.NewLabel("[Track Title]")
+	title := gtk.NewLabel("No Track")
 	title.SetCSSClasses([]string{"player-track-title"})
 	title.SetWrapMode(pango.WrapWordChar)
 	title.SetHAlign(gtk.AlignCenter)
 	title.SetEllipsize(pango.EllipsizeEnd)
 	title.SetWrap(false)
 
-	artistName := gtk.NewLabel("[Artist Name]")
+	artistName := gtk.NewLabel("")
 	artistName.SetCSSClasses([]string{"player-track-artist"})
 	artistName.SetWrap(true)
 	artistName.SetWrapMode(pango.WrapWordChar)
@@ -158,20 +157,22 @@ func NewPlayer() *Player {
 	}
 
 	playerCSS(playerWidget)
-	player.OnState.On(func(state player.State) bool {
-		if state.Track != nil {
-			playerWidget.LoadCover(tidalapi.ImageURL(state.Track.Album.Cover))
-			artists := make([]string, 0)
-			for _, artist := range state.Track.Artists {
-				artists = append(artists, artist.Name)
-			}
-			playerWidget.artistName.SetText(strings.Join(artists, ", "))
-			playerWidget.title.SetText(state.Track.Title)
-		}
 
+	player.OnTrackChanged.On(func(trackInfo player.TrackInformation) {
+		if trackInfo.CoverURL != "" {
+			playerWidget.LoadCover(trackInfo.CoverURL)
+		} else {
+			trackImage.SetFromResource("/org/codeberg/dergs/tidalwave/icons/scalable/state/missing-album.svg")
+		}
+		duration.GTKWidget().SetText(tidalapi.FormatDuration(int(trackInfo.Duration.Seconds())))
+		playerWidget.artistName.SetText(trackInfo.ArtistNames())
+		playerWidget.title.SetText(trackInfo.Title)
+	})
+
+	player.OnStateChanged.On(func(state player.State) bool {
+		position.GTKWidget().SetText(tidalapi.FormatDuration(state.Position))
 		if state.Duration > 0 {
-			duration.GTKWidget().SetText(tidalapi.FormatDuration(state.Duration))
-			position.GTKWidget().SetText(tidalapi.FormatDuration(state.Position))
+			duration.GTKWidget().SetText(tidalapi.FormatDuration(int(state.Duration)))
 			slider.SetValue(100.0 / float64(state.Duration) * float64(state.Position))
 		} else {
 			slider.SetValue(0)

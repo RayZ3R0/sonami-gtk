@@ -11,9 +11,9 @@ func Scrub(percent float64) {
 		panic("percent must be between 0 and 100")
 	}
 
-	position := float64(OnState.current.Duration) * percent / 100.0
+	position := float64(OnStateChanged.current.Duration) * percent / 100.0
 	playbin.SeekTime(time.Duration(position)*time.Second, gst.SeekFlagFlush)
-	OnState.Notify(func(state *State) {
+	OnStateChanged.Notify(func(state *State) {
 		state.Position = int(position)
 		if state.Status == StatusStopped {
 			state.Status = StatusPlaying
@@ -22,17 +22,17 @@ func Scrub(percent float64) {
 }
 
 func PlayPause() {
-	if OnState.current.Status == StatusPlaying {
+	if OnStateChanged.current.Status == StatusPlaying {
 		playbin.SetState(gst.StatePaused)
-		OnState.Notify(func(state *State) {
+		OnStateChanged.Notify(func(state *State) {
 			state.Status = StatusPaused
 		})
-	} else if OnState.current.Status == StatusPaused {
+	} else if OnStateChanged.current.Status == StatusPaused {
 		playbin.SetState(gst.StatePlaying)
-		OnState.Notify(func(state *State) {
+		OnStateChanged.Notify(func(state *State) {
 			state.Status = StatusPlaying
 		})
-	} else if OnState.current.Status == StatusStopped {
+	} else if OnStateChanged.current.Status == StatusStopped {
 		Scrub(0)
 	}
 }

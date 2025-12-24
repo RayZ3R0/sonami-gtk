@@ -3,21 +3,25 @@ package player
 import (
 	"context"
 	"fmt"
+	"log/slog"
+	"os"
 
 	"codeberg.org/dergs/tidalwave/pkg/tidalapi"
+	"codeberg.org/dergs/tidalwave/pkg/tidalapi/models/openapi"
 	v1 "codeberg.org/dergs/tidalwave/pkg/tidalapi/models/v1"
-	"codeberg.org/dergs/tidalwave/pkg/tidalapi/v1/tracks"
+	tracksv1 "codeberg.org/dergs/tidalwave/pkg/tidalapi/v1/tracks"
 	"github.com/go-gst/go-gst/gst"
 	"github.com/infinytum/injector"
 )
 
 var (
 	playbin *gst.Element
+	logger  *slog.Logger
 )
 
 func init() {
 	gst.Init(nil)
-
+	logger = slog.New(slog.NewTextHandler(os.Stdout, &slog.HandlerOptions{Level: slog.LevelDebug})).With("module", "player")
 	pb, err := gst.NewElement("playbin")
 	if err != nil {
 		panic(err)
@@ -35,21 +39,34 @@ func Play(trackId int) error {
 		return err
 	}
 
-	track, err := tidal.V1.Tracks.Track(context.Background(), trackId)
+	openTrack, err := tidal.OpenAPI.V2.Tracks.Track(context.Background(), trackId, "albums.coverArt", "artists")
 	if err != nil {
 		return err
 	}
+	OnTrackChanged.Notify(func(trackInfo *TrackInformation) {
+		trackInfo.Artists = []openapi.ArtistAttributes{}
+		trackInfo.CoverURL = ""
+		trackInfo.Duration = openTrack.Data.Attributes.Duration.Duration
+		trackInfo.ID = trackId
+		trackInfo.Title = openTrack.Data.Attributes.Title
+		for _, item := range openTrack.Included {
+			if item.Attributes.Artist != nil {
+				trackInfo.Artists = append(trackInfo.Artists, *item.Attributes.Artist)
+			}
+			if item.Attributes.Artworks != nil {
+				trackInfo.CoverURL = item.Attributes.Artworks.Files.AtLeast(320).Href
+			}
+		}
+	})
 
-	playbackInfo, err := tidal.V1.Tracks.PlaybackInfo(context.Background(), trackId, tracks.PlaybackInfoOptions{})
+	playbackInfo, err := tidal.V1.Tracks.PlaybackInfo(context.Background(), trackId, tracksv1.PlaybackInfoOptions{})
 	if err != nil {
 		return err
 	}
 
 	playbin.SetState(gst.StateReady)
-	OnState.Notify(func(state *State) {
-		state.Track = track
+	OnStateChanged.Notify(func(state *State) {
 		state.Status = StatusBuffering
-		state.Duration = track.Duration
 		state.Position = 0
 	})
 
@@ -60,7 +77,7 @@ func Play(trackId int) error {
 		return fmt.Errorf("unsupported manifest mime type: %s", playbackInfo.ManifestMimeType)
 	}
 
-	OnState.Notify(func(state *State) {
+	OnStateChanged.Notify(func(state *State) {
 		state.Status = StatusPlaying
 	})
 

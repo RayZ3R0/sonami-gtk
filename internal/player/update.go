@@ -15,6 +15,7 @@ func startUpdateRunner() {
 	}
 
 	playbackStateUpdater, _ = glib.TimeoutAdd(250, onUpdateTick, nil)
+	logger.Debug("started playbin update runner", "source_handle", playbackStateUpdater)
 }
 
 func stopUpdateRunner() {
@@ -23,11 +24,12 @@ func stopUpdateRunner() {
 	}
 
 	glib.SourceRemove(playbackStateUpdater)
+	logger.Debug("stopped playbin update runner", "source_handle", playbackStateUpdater)
 	playbackStateUpdater = 0
 }
 
 func onUpdateTick() bool {
-	OnState.Notify(func(state *State) {
+	OnStateChanged.Notify(func(state *State) {
 		if ok, duration := playbin.QueryDuration(gst.FormatTime); ok {
 			state.Duration = int(time.Duration(duration).Seconds())
 		}
@@ -40,9 +42,10 @@ func onUpdateTick() bool {
 }
 
 func onVolumeChange() {
-	OnState.Notify(func(state *State) {
+	OnVolumeChanged.Notify(func(previous float64) float64 {
 		if volume, err := playbin.GetProperty("volume"); err == nil {
-			state.Volume = volume.(float64)
+			return volume.(float64)
 		}
+		return previous
 	})
 }

@@ -4,25 +4,23 @@ import (
 	"sync"
 
 	"codeberg.org/dergs/tidalwave/internal/ui/signals"
-	v1 "codeberg.org/dergs/tidalwave/pkg/tidalapi/models/v1"
 )
 
-var OnState = stateSignal{
+var OnStateChanged = stateChangedSignal{
 	signals.NewSignal[func(state State) bool](),
 	State{
 		Status: StatusStopped,
-		Track:  nil,
 	},
 	sync.Mutex{},
 }
 
-type stateSignal struct {
+type stateChangedSignal struct {
 	signals.Signal[func(state State) bool]
 	current State
 	lock    sync.Mutex
 }
 
-func (r *stateSignal) Notify(callback func(state *State)) {
+func (r *stateChangedSignal) Notify(callback func(state *State)) {
 	r.lock.Lock()
 	defer r.lock.Unlock()
 	newState := r.current
@@ -30,11 +28,12 @@ func (r *stateSignal) Notify(callback func(state *State)) {
 	if newState.Equals(r.current) {
 		return
 	}
+	logger.Debug("state changed", "duration", newState.Duration, "position", newState.Position, "status", newState.Status)
 	r.current = newState
 	r.Signal.Notify(newState)
 }
 
-func (r *stateSignal) On(handler func(state State) bool) *signals.Subscription {
+func (r *stateChangedSignal) On(handler func(state State) bool) *signals.Subscription {
 	handler(r.current)
 	return r.Signal.On(handler)
 }
@@ -43,12 +42,10 @@ type State struct {
 	Duration int
 	Position int
 	Status   Status
-	Track    *v1.Track
-	Volume   float64
 }
 
 func (s State) Equals(other State) bool {
-	return s.Status == other.Status && s.Track == other.Track && s.Duration == other.Duration && s.Position == other.Position && s.Volume == other.Volume
+	return s.Status == other.Status && s.Duration == other.Duration && s.Position == other.Position
 }
 
 type Status string
