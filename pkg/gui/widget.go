@@ -13,6 +13,11 @@ type WidgetImpl[T any] struct {
 	real   T
 }
 
+func (w *WidgetImpl[T]) AddCSSClass(class string) T {
+	w.widget.AddCSSClass(class)
+	return w.real
+}
+
 func (w *WidgetImpl[T]) Background(color string) T {
 	cssutil.Apply(w, fmt.Sprintf("%s { background-color: %s; }", w.widget.CSSName(), color))
 	return w.real
@@ -82,8 +87,43 @@ func (w *WidgetImpl[T]) MarginBottom(bottom int) T {
 	return w.real
 }
 
+func (w *WidgetImpl[T]) Opacity(opacity float64) T {
+	w.widget.SetOpacity(opacity)
+	return w.real
+}
+
 func (w *WidgetImpl[T]) Overflow(overflow gtk.Overflow) T {
 	w.widget.SetOverflow(overflow)
+	return w.real
+}
+
+func (w *WidgetImpl[T]) Padding(paddingPx int) T {
+	cssutil.Apply(w, fmt.Sprintf("%s { padding: %dpx; }", w.widget.CSSName(), paddingPx))
+	return w.real
+}
+
+func (w *WidgetImpl[T]) PaddingStart(paddingPx int) T {
+	cssutil.Apply(w, fmt.Sprintf("%s { padding-left: %dpx; }", w.widget.CSSName(), paddingPx))
+	return w.real
+}
+
+func (w *WidgetImpl[T]) PaddingEnd(paddingPx int) T {
+	cssutil.Apply(w, fmt.Sprintf("%s { padding-right: %dpx; }", w.widget.CSSName(), paddingPx))
+	return w.real
+}
+
+func (w *WidgetImpl[T]) PaddingTop(paddingPx int) T {
+	cssutil.Apply(w, fmt.Sprintf("%s { padding-top: %dpx; }", w.widget.CSSName(), paddingPx))
+	return w.real
+}
+
+func (w *WidgetImpl[T]) PaddingBottom(paddingPx int) T {
+	cssutil.Apply(w, fmt.Sprintf("%s { padding-bottom: %dpx; }", w.widget.CSSName(), paddingPx))
+	return w.real
+}
+
+func (w *WidgetImpl[T]) RemoveCSSClass(className string) T {
+	w.widget.RemoveCSSClass(className)
 	return w.real
 }
 

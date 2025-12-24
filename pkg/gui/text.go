@@ -44,7 +44,17 @@ func (t *TextImpl) GTKWidget() *gtk.Label {
 	return t.label
 }
 
+func (t *TextImpl) Justify(justify gtk.Justification) *TextImpl {
+	t.label.SetJustify(justify)
+	return t
+}
+
 func (t *TextImpl) Text(text string) *TextImpl {
 	t.label.SetText(text)
+	return t
+}
+
+func (t *TextImpl) Wrap(wrap bool) *TextImpl {
+	t.label.SetWrap(wrap)
 	return t
 }

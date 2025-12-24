@@ -42,6 +42,10 @@ func (b *BoxImpl) Append(child gtk.Widgetter) *BoxImpl {
 	return b
 }
 
+func (b *BoxImpl) GTKWidget() *gtk.Box {
+	return b.box
+}
+
 func (b *BoxImpl) Orientation(orientation gtk.Orientation) *BoxImpl {
 	b.box.SetOrientation(orientation)
 	return b
