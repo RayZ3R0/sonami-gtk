@@ -11,13 +11,13 @@ import (
 )
 
 var OnTrackChanged = trackChangedSignal{
-	signals.NewSignal[func(trackInfo TrackInformation)](),
+	signals.NewSignal[func(trackInfo TrackInformation) bool](),
 	TrackInformation{},
 	sync.Mutex{},
 }
 
 type trackChangedSignal struct {
-	signals.Signal[func(trackInfo TrackInformation)]
+	signals.Signal[func(trackInfo TrackInformation) bool]
 	current TrackInformation
 	lock    sync.Mutex
 }
@@ -35,7 +35,7 @@ func (r *trackChangedSignal) Notify(callback func(trackInfo *TrackInformation)) 
 	r.Signal.Notify(newState)
 }
 
-func (r *trackChangedSignal) On(handler func(trackInfo TrackInformation)) *signals.Subscription {
+func (r *trackChangedSignal) On(handler func(trackInfo TrackInformation) bool) *signals.Subscription {
 	handler(r.current)
 	return r.Signal.On(handler)
 }

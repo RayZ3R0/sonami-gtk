@@ -158,7 +158,7 @@ func NewPlayer() *Player {
 
 	playerCSS(playerWidget)
 
-	player.OnTrackChanged.On(func(trackInfo player.TrackInformation) {
+	player.OnTrackChanged.On(func(trackInfo player.TrackInformation) bool {
 		if trackInfo.CoverURL != "" {
 			playerWidget.LoadCover(trackInfo.CoverURL)
 		} else {
@@ -167,6 +167,7 @@ func NewPlayer() *Player {
 		duration.GTKWidget().SetText(tidalapi.FormatDuration(int(trackInfo.Duration.Seconds())))
 		playerWidget.artistName.SetText(trackInfo.ArtistNames())
 		playerWidget.title.SetText(trackInfo.Title)
+		return signals.Continue
 	})
 
 	player.OnStateChanged.On(func(state player.State) bool {
