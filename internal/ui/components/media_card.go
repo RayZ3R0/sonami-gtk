@@ -70,24 +70,30 @@ func NewMediaCard() *MediaCard {
 	titleLabel.AddCSSClass("media-card-title")
 	titleLabel.SetMarginTop(10)
 	titleLabel.SetEllipsize(pango.EllipsizeEnd)
+	titleLabel.SetLines(1)
+	titleLabel.SetMaxWidthChars(15)
 
-	subTitleLabel := gtk.NewLabel("Embark Studios\n2024")
+	subTitleLabel := gtk.NewLabel("")
 	subTitleLabel.SetHAlign(gtk.AlignStart)
 	subTitleLabel.AddCSSClass("media-card-subtitle")
 	subTitleLabel.SetEllipsize(pango.EllipsizeEnd)
 	subTitleLabel.SetMarginTop(2)
+	subTitleLabel.SetLines(1)
+	subTitleLabel.SetMaxWidthChars(15)
 
 	box := gtk.NewBox(gtk.OrientationVertical, 0)
 	box.Append(frame)
 	box.Append(titleLabel)
 	box.Append(subTitleLabel)
 	box.SetHAlign(gtk.AlignStart)
+	box.SetSizeRequest(172, -1)
 
 	button := gtk.NewButton()
 	button.AddCSSClass("image-button")
 	button.SetChild(box)
 	button.SetHExpand(false)
 	button.SetVExpand(false)
+	button.SetSizeRequest(192, -1)
 
 	mediaCard := &MediaCard{
 		button,
