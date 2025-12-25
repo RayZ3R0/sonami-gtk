@@ -30,7 +30,7 @@ type AlbumAttributes struct {
 	Copyright    struct {
 		Text string `json:"text"`
 	}
-	Duration        string              `json:"duration"`
+	Duration        Duration            `json:"duration"`
 	Explicit        bool                `json:"explicit"`
 	ExternalLinks   []AlbumExternalLink `json:"externalLinks"`
 	MediaTags       []string            `json:"media_tags"`
