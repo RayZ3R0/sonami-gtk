@@ -5,7 +5,25 @@ import (
 	"codeberg.org/dergs/tidalwave/internal/ui/signals"
 	"github.com/diamondburned/gotk4-adwaita/pkg/adw"
 	"github.com/diamondburned/gotk4/pkg/gtk/v4"
+	"github.com/diamondburned/gotkit/gtkutil/cssutil"
 )
+
+var routeButtonCSS = cssutil.Applier("route-button", `
+	.route-button {
+		padding-left: 0px;
+		padding-right: 0px;
+		min-height: 24px;
+	}
+
+	.route-button.title {
+		padding-left: 7px;
+		padding-right: 7px;
+	}
+
+	.route-button:not(:hover):not(.active) {
+		background-color: transparent;
+	}
+`)
 
 type RouteButton struct {
 	*gtk.Button
@@ -16,19 +34,20 @@ type RouteButton struct {
 
 func (r *RouteButton) SetActive(active bool) {
 	if active {
-		r.RemoveCSSClass("image-button")
-		r.box.SetMarginStart(7)
-		r.box.SetMarginEnd(7)
+		r.AddCSSClass("active")
 	} else {
-		r.SetCSSClasses([]string{"image-button"})
-		r.box.SetMarginStart(12)
-		r.box.SetMarginEnd(12)
+		r.RemoveCSSClass("active")
 	}
 }
 
 func (r *RouteButton) SetTitle(title string) {
 	r.label.SetText(title)
 	r.label.SetVisible(title != "")
+	if title == "" {
+		r.RemoveCSSClass("title")
+	} else {
+		r.AddCSSClass("title")
+	}
 }
 
 func (r *RouteButton) SetIcon(iconName string) {
@@ -38,9 +57,9 @@ func (r *RouteButton) SetIcon(iconName string) {
 func NewRouteButton(path string) *RouteButton {
 	box := gtk.NewBox(gtk.OrientationHorizontal, 7)
 	box.SetMarginBottom(2)
-	box.SetMarginStart(12)
-	box.SetMarginEnd(12)
 	box.SetMarginTop(2)
+	box.SetMarginStart(9)
+	box.SetMarginEnd(9)
 
 	image := gtk.NewImageFromIconName("sidebar-show-symbolic")
 
@@ -56,10 +75,10 @@ func NewRouteButton(path string) *RouteButton {
 
 	button := gtk.NewButton()
 	button.SetChild(box)
-	button.AddCSSClass("image-button")
 	button.ConnectClicked(func() {
 		router.Navigate(path, nil)
 	})
+	routeButtonCSS(button)
 
 	routeButton := &RouteButton{button, box, label, clamp}
 
