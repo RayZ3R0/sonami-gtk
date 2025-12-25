@@ -3,6 +3,7 @@ package v2
 import (
 	"encoding/json"
 	"fmt"
+	"log/slog"
 )
 
 type baseItem struct {
@@ -76,7 +77,7 @@ func (i *Item) UnmarshalJSON(data []byte) error {
 			return err
 		}
 	default:
-		return fmt.Errorf("Unknown item type %s", i.baseItem.Type)
+		slog.Error("Unknown item type", "item_type", i.Type)
 	}
 	return nil
 }
