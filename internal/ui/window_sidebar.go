@@ -38,7 +38,7 @@ func (w *Window) buildSidebarHeader() gtk.Widgetter {
 
 	btn2 := gtk.NewButtonFromIconName("loupe-symbolic")
 	btn2.ConnectClicked(func() {
-		router.NavigateTo("search", nil)
+		router.Navigate("search", nil)
 	})
 	headerbar.PackEnd(searchButton)
 	return headerbar

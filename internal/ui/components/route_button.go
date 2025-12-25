@@ -58,7 +58,7 @@ func NewRouteButton(path string) *RouteButton {
 	button.SetChild(box)
 	button.AddCSSClass("image-button")
 	button.ConnectClicked(func() {
-		router.NavigateTo(path, nil)
+		router.Navigate(path, nil)
 	})
 
 	routeButton := &RouteButton{button, box, label, clamp}

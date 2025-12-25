@@ -28,7 +28,7 @@ func ForItem(item v2.Item) gtk.Widgetter {
 		card.SetSubTitle(fmt.Sprintf("%s\n%s", strings.Join(artists, ", "), releaseDate.Format("2006")))
 		card.LoadImage(tidalapi.ImageURL(item.Data.Album.Cover))
 		card.ConnectClicked(func() {
-			router.NavigateTo("album", router.Params{
+			router.Navigate("album", router.Params{
 				"id": item.Data.Album.Id,
 			})
 		})
@@ -45,7 +45,7 @@ func ForItem(item v2.Item) gtk.Widgetter {
 		card.SetSubTitle(fmt.Sprintf("%s\n%d Tracks", creator, item.Data.Playlist.NumberOfTracks))
 		card.LoadImage(tidalapi.ImageURL(item.Data.Playlist.SquareImage))
 		card.ConnectClicked(func() {
-			router.NavigateTo("playlist", router.Params{
+			router.Navigate("playlist", router.Params{
 				"uuid": item.Data.Playlist.UUID,
 			})
 		})

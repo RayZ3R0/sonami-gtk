@@ -1,59 +1,51 @@
 package router
 
 import (
-	"errors"
-	"runtime"
-
-	"github.com/diamondburned/gotk4/pkg/core/glib"
+	"log/slog"
+	"time"
 )
 
-type Handler func(params Params) *Response
+var logger = slog.With("module", "router")
 
-type Params map[string]any
-
-var routeMap = map[string]Handler{}
-
-func NavigateTo(path string, params Params) {
+func Navigate(path string, params Params) {
+	logger.Debug("navigation started")
+	// We are starting to navigate, notify the rest of the application
 	OnNavigate.Notify(path)
-	history.Push(HistoryEntry{Path: path, Params: params})
-	if handler, ok := routeMap[path]; !ok {
-		NavigationComplete.Notify(&Response{
-			PageTitle: "Not Found",
-			View:      getNotFoundView(),
-		})
+
+	// If the route is not registered, use the not found handler
+	handler, ok := routeMap[path]
+	if !ok {
+		logger.Info("no handler found", "path", path)
+		handler = notFoundHandler
+	}
+
+	startTime := time.Now()
+	go func(path string, params Params, handler Handler) {
+		response, shouldCache := executeHandler(handler, params)
+		logger.Info("navigation completed", "path", path, "params", params, "duration_ms", time.Since(startTime).Milliseconds(), "should_cache", shouldCache)
+		if shouldCache {
+			history.Push(HistoryEntry{Path: path, Params: params, Response: response})
+		} else {
+			history.Push(HistoryEntry{Path: path, Params: params})
+		}
+		handleResponse(path, params, response)
+
+	}(path, params, handler)
+}
+
+func Back() {
+	if len(history.array) < 1 {
+		return
+	}
+
+	previous := history.Pop()
+	if previous == nil {
+		return
+	}
+
+	if previous.Response != nil {
+		handleResponse(previous.Path, previous.Params, previous.Response)
 	} else {
-		go asyncRouteHandler(handler, params)
+		Navigate(previous.Path, previous.Params)
 	}
-}
-
-func asyncRouteHandler(handler Handler, params Params) {
-	var response *Response
-	var errorResponse *Response
-	response = func() *Response {
-		defer func() {
-			if err := recover(); err != nil {
-				errorResponse = &Response{Error: err.(error)}
-			}
-		}()
-		return handler(params)
-	}()
-	if errorResponse != nil {
-		response = errorResponse
-	}
-	if response == nil {
-		response = &Response{Error: errors.New("handler did not generate any response")}
-	}
-	if response.Error != nil {
-		response.View = getErrorView(response.Error)
-	}
-
-	glib.IdleAdd(func() bool {
-		NavigationComplete.Notify(response)
-		runtime.GC()
-		return false
-	})
-}
-
-func Register(path string, handler Handler) {
-	routeMap[path] = handler
 }

@@ -28,7 +28,7 @@ func NewWindow(ctx context.Context) *Window {
 	window.SetIconName("logo")
 	window.SetDefaultSize(1280, 720)
 
-	router.NavigateTo("home", nil)
+	router.Navigate("home", nil)
 
 	return window
 }
@@ -51,7 +51,7 @@ func (w *Window) build() gtk.Widgetter {
 
 	navigateBackAction := gio.NewSimpleAction("navigate-back", nil)
 	navigateBackAction.ConnectActivate(func(parameter *glib.Variant) {
-		router.GoBack()
+		router.Back()
 	})
 	w.AddAction(navigateBackAction)
 	w.Application().SetAccelsForAction("win.navigate-back", []string{"<Alt>Left"})

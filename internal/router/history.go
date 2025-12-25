@@ -6,8 +6,9 @@ import (
 )
 
 type HistoryEntry struct {
-	Path   string
-	Params Params
+	Path     string
+	Params   Params
+	Response *Response
 }
 
 type History struct {
@@ -49,16 +50,12 @@ func (h *History) Pop() *HistoryEntry {
 	defer h.Unlock()
 	defer HistoryUpdated.Notify(h)
 
-	if len(h.array) < 2 {
-		if len(h.array) < 1 {
-			return nil
-		}
-		return &h.array[0]
+	if len(h.array) < 1 {
+		return nil
 	}
 
 	h.array = h.array[:len(h.array)-1]
 	previous := &h.array[len(h.array)-1]
-	h.array = h.array[:len(h.array)-1]
 
 	return previous
 }
@@ -67,17 +64,4 @@ var history = &History{
 	sync.Mutex{},
 	make([]HistoryEntry, 0),
 	10,
-}
-
-func GoBack() {
-	if len(history.array) <= 1 {
-		return
-	}
-
-	previous := history.Pop()
-	if previous == nil {
-		return
-	}
-
-	NavigateTo(previous.Path, previous.Params)
 }
