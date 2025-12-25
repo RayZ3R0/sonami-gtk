@@ -64,7 +64,7 @@ func newTrackList(trackList *TrackList) *TrackList {
 				MarginBottom(10).
 				FontWeight(600).
 				FontSize(20),
-			Spacer(),
+			Spacer().VExpand(false),
 		),
 		trackList.container,
 	)
