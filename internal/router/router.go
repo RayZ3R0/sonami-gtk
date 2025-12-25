@@ -8,6 +8,11 @@ import (
 var logger = slog.With("module", "router")
 
 func Navigate(path string, params Params) {
+	if history.IsCurrentlyOn(path, params) {
+		logger.Debug("skipped navigation as we are already on the same page")
+		return
+	}
+
 	logger.Debug("navigation started")
 	// We are starting to navigate, notify the rest of the application
 	OnNavigate.Notify(path)
@@ -43,6 +48,7 @@ func Back() {
 		return
 	}
 
+	OnNavigate.Notify(previous.Path)
 	if previous.Response != nil {
 		handleResponse(previous.Path, previous.Params, previous.Response)
 	} else {
