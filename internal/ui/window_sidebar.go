@@ -22,6 +22,7 @@ func (w *Window) buildSidebarHeader() gtk.Widgetter {
 	headerbar.SetTitleWidget(windowTitle)
 	headerbar.SetShowBackButton(false)
 	headerbar.SetShowEndTitleButtons(false)
+	headerbar.SetCenteringPolicy(adw.CenteringPolicyStrict)
 
 	mainMenu := gio.NewMenu()
 	mainMenu.Append("Preferences", "app.preferences")
