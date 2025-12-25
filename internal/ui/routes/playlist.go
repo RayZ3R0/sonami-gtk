@@ -6,6 +6,7 @@ import (
 	"fmt"
 
 	"codeberg.org/dergs/tidalwave/internal/router"
+	"codeberg.org/dergs/tidalwave/internal/ui/components/tracklist"
 	. "codeberg.org/dergs/tidalwave/pkg/gui"
 	"codeberg.org/dergs/tidalwave/pkg/tidalapi"
 	"github.com/diamondburned/gotk4/pkg/gtk/v4"
@@ -30,18 +31,41 @@ func Playlist(params router.Params) *router.Response {
 		return router.FromError("Playlist", err)
 	}
 
+	// TODO: Handle pagination with scroll events
+	items, err := tidal.OpenAPI.V2.Playlists.Items(context.Background(), playlistUUID, "", "items", "items.artists", "items.albums", "items.albums.coverArt")
+	if err != nil {
+		return router.FromError("Playlist", err)
+	}
+
 	creator := "TIDAL"
+	for _, artist := range playlist.Included.PlainArtists(playlist.Data.Relationships.OwnerProfiles.Data...) {
+		creator = artist.Attributes.Name
+		break
+	}
+
 	cover := gtk.NewImage()
 	cover.SetPixelSize(146)
-
-	for _, item := range playlist.Included {
-		if item.Attributes.Artworks != nil {
-			imgutil.AsyncGET(injector.MustInject[context.Context](), item.Attributes.Artworks.Files.AtLeast(320).Href, imgutil.ImageSetterFromImage(cover))
-		}
-		if item.Attributes.Artist != nil {
-			creator = item.Attributes.Artist.Name
-		}
+	for _, artwork := range playlist.Included.PlainArtworks(playlist.Data.Relationships.CoverArt.Data...) {
+		imgutil.AsyncGET(injector.MustInject[context.Context](), artwork.Attributes.Files.AtLeast(320).Href, imgutil.ImageSetterFromImage(cover))
+		break
 	}
+
+	list := tracklist.NewTrackList(
+		tracklist.CoverColumn,
+		tracklist.TitleAlbumColumn,
+		tracklist.ArtistsColumn,
+		tracklist.DurationColumn,
+		tracklist.BoxColumn,
+		tracklist.ControlsColumn,
+	)
+
+	for _, track := range items.Included.Tracks(items.Data...) {
+		list.AddTrack(&track)
+	}
+
+	scroll := gtk.NewScrolledWindow()
+	scroll.SetPolicy(gtk.PolicyNever, gtk.PolicyAutomatic)
+	scroll.SetChild(list.SetTitle(""))
 
 	return &router.Response{
 		PageTitle: playlist.Data.Attributes.Name,
@@ -68,7 +92,7 @@ func Playlist(params router.Params) *router.Response {
 						MarginTop(10),
 				).MarginLeft(20).VAlign(gtk.AlignCenter),
 			),
-			Spacer(),
+			Wrapper(scroll).MarginTop(20),
 		).HMargin(40).VMargin(20),
 	}
 }
