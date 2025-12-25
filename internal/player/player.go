@@ -4,7 +4,6 @@ import (
 	"context"
 	"fmt"
 	"log/slog"
-	"os"
 
 	"codeberg.org/dergs/tidalwave/pkg/tidalapi"
 	"codeberg.org/dergs/tidalwave/pkg/tidalapi/models/openapi"
@@ -21,7 +20,7 @@ var (
 
 func init() {
 	gst.Init(nil)
-	logger = slog.New(slog.NewTextHandler(os.Stdout, &slog.HandlerOptions{Level: slog.LevelDebug})).With("module", "player")
+	logger = slog.With("module", "player")
 	pb, err := gst.NewElement("playbin")
 	if err != nil {
 		panic(err)
