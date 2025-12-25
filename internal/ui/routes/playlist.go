@@ -92,7 +92,7 @@ func Playlist(params router.Params) *router.Response {
 						MarginTop(10),
 				).MarginLeft(20).VAlign(gtk.AlignCenter),
 			),
-			Wrapper(scroll).MarginTop(20),
+			Wrapper(scroll).VExpand(true).MarginTop(20),
 		).HMargin(40).VMargin(20),
 	}
 }
