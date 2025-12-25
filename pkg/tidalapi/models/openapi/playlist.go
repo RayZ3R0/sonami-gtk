@@ -1,18 +1,77 @@
 package openapi
 
-import "codeberg.org/dergs/tidalwave/pkg/tidalapi/helper"
+import "encoding/json"
 
-type Playlist struct {
-	Data     TypedObject[PlaylistAttributes] `json:"data"`
-	Included []Object
-	Links    map[string]string `json:"links"`
+type Playlist Response[PlaylistData]
+
+const ObjectTypePlaylists = "playlists"
+
+type PlaylistType string
+
+const (
+	PlaylistTypeEditorial PlaylistType = "EDITORIAL"
+	PlaylistTypeUser      PlaylistType = "USER"
+)
+
+type PlaylistExternalLinkType string
+
+const (
+	PlaylistExternalLinkTypeTidalSharing         PlaylistExternalLinkType = "TIDAL_SHARING"
+	PlaylistExternalLinkTypeTidalAutoplayAndroid PlaylistExternalLinkType = "TIDAL_AUTOPLAY_ANDROID"
+	PlaylistExternalLinkTypeTidalAutoplayIOS     PlaylistExternalLinkType = "TIDAL_AUTOPLAY_IOS"
+	PlaylistExternalLinkTypeTidalAutoplayWeb     PlaylistExternalLinkType = "TIDAL_AUTOPLAY_WEB"
+)
+
+type PlaylistData struct {
+	Attributes    PlaylistAttributes    `json:"attributes"`
+	ID            string                `json:"id"`
+	Relationships PlaylistRelationships `json:"relationships"`
+	Type          string                `json:"type"`
 }
 
 type PlaylistAttributes struct {
-	CreatedAt         helper.OpenAPIDateTime `json:"createdAt"`
+	AccessType        string                 `json:"accessType"`
+	Bounded           bool                   `json:"bounded"`
+	CreatedAt         DateTime               `json:"createdAt"`
 	Description       string                 `json:"description"`
-	Duration          helper.DurationISO8601 `json:"duration"`
+	Duration          *Duration              `json:"duration,omitempty"`
+	ExternalLinks     []PlaylistExternalLink `json:"externalLinks"`
+	LastModifiedAt    DateTime               `json:"lastModifiedAt"`
 	Name              string                 `json:"name"`
 	NumberOfFollowers int                    `json:"numberOfFollowers"`
 	NumberOfItems     int                    `json:"numberOfItems"`
+	PlaylistType      PlaylistType           `json:"playlistType"`
+}
+
+type PlaylistRelationships struct {
+	CoverArt      Response[[]Relationship] `json:"coverArt"`
+	Items         Response[[]Relationship] `json:"items"`
+	OwnerProfiles Response[[]Relationship] `json:"ownerProfiles"`
+	Owners        Response[[]Relationship] `json:"owners"`
+}
+
+type PlaylistExternalLink struct {
+	Href string `json:"href"`
+	Meta struct {
+		Type PlaylistExternalLinkType `json:"type"`
+	} `json:"meta"`
+}
+
+func (i IncludedObjects) Playlists(relationships ...Relationship) []PlaylistData {
+	var objects IncludedObjects
+	if len(relationships) > 0 {
+		objects = i.FromRelationships(relationships, ObjectTypePlaylists)
+	} else {
+		objects = i.FromType(ObjectTypePlaylists)
+	}
+
+	var playlists []PlaylistData
+	for _, obj := range objects {
+		var playlist PlaylistData
+		if err := json.Unmarshal(obj.Raw, &playlist); err != nil {
+			continue
+		}
+		playlists = append(playlists, playlist)
+	}
+	return playlists
 }

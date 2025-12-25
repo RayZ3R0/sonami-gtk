@@ -7,6 +7,7 @@ import (
 
 	"codeberg.org/dergs/tidalwave/internal/router"
 	"codeberg.org/dergs/tidalwave/internal/ui/components"
+	"codeberg.org/dergs/tidalwave/internal/ui/components/tracklist"
 	"codeberg.org/dergs/tidalwave/pkg/tidalapi"
 	v2 "codeberg.org/dergs/tidalwave/pkg/tidalapi/models/v2"
 	"github.com/diamondburned/gotk4/pkg/gtk/v4"
@@ -63,24 +64,16 @@ func ForPageItem(item v2.PageItem) gtk.Widgetter {
 		}
 		return list
 	case v2.ItemTypeTrackList:
-		list := NewTrackList().SetTitle(item.Title)
-		for i, track := range item.Items {
-			data := track.Data.Track
-			artists := make([]string, 0)
-			for _, artist := range data.Artists {
-				artists = append(artists, artist.Name)
-			}
-
-			parsedDuration := time.Second * time.Duration(data.Duration)
-
-			// Track Lists are special and will always use a TrackListEntry
-			trackListEntry := NewTrackListEntry(data.ID).
-				SetAlbum(data.Album.Title).
-				SetArtist(strings.Join(artists, ", ")).
-				SetCoverFromURL(tidalapi.ImageURL(data.Album.Cover)).
-				SetTime(parsedDuration.Round(time.Second).String()).
-				SetTitle(data.Title)
-			list.Append(trackListEntry, i)
+		list := tracklist.NewLegacyTrackList(
+			tracklist.LegacyCoverColumn,
+			tracklist.LegacyTitleAlbumColumn,
+			tracklist.LegacyArtistsColumn,
+			tracklist.LegacyDurationColumn,
+			tracklist.LegacyBoxColumn,
+			tracklist.LegacyControlsColumn,
+		).SetTitle(item.Title)
+		for _, track := range item.Items {
+			list.AddLegacyTrack(track.Data.Track)
 		}
 		return list.HMargin(40)
 	default:

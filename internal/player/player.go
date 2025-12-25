@@ -49,12 +49,14 @@ func Play(trackId int) error {
 		trackInfo.Duration = openTrack.Data.Attributes.Duration.Duration
 		trackInfo.ID = trackId
 		trackInfo.Title = openTrack.Data.Attributes.Title
-		for _, item := range openTrack.Included {
-			if item.Attributes.Artist != nil {
-				trackInfo.Artists = append(trackInfo.Artists, *item.Attributes.Artist)
-			}
-			if item.Attributes.Artworks != nil {
-				trackInfo.CoverURL = item.Attributes.Artworks.Files.AtLeast(320).Href
+
+		for _, artist := range openTrack.Included.PlainArtists(openTrack.Data.Relationships.Artists.Data...) {
+			trackInfo.Artists = append(trackInfo.Artists, artist.Attributes)
+		}
+
+		for _, album := range openTrack.Included.Albums(openTrack.Data.Relationships.Albums.Data...) {
+			for _, artwork := range album.Included.PlainArtworks(album.Data.Relationships.CoverArt.Data...) {
+				trackInfo.CoverURL = artwork.Attributes.Files.AtLeast(320).Href
 			}
 		}
 	})

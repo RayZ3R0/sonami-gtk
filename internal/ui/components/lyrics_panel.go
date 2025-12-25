@@ -116,19 +116,15 @@ func NewLyricsPanel() *LyricsPanel {
 		lyrics := ""
 		isTimestamped := false
 
-		for _, item := range track.Included {
-			if lyricsAttribute := item.Attributes.Lyrics; lyricsAttribute != nil {
-				if lyricsAttribute.LRCText != "" {
-					isTimestamped = true
-					lyrics = item.Attributes.Lyrics.LRCText
-				} else if lyricsAttribute.Text != "" {
-					isTimestamped = false
-					lyrics = item.Attributes.Lyrics.Text
-				} else {
-					continue
-				}
-				break
+		for _, lyric := range track.Included.PlainLyrics(track.Data.Relationships.Lyrics.Data...) {
+			if lyric.Attributes.LRCText != "" {
+				isTimestamped = true
+				lyrics = lyric.Attributes.LRCText
+			} else if lyric.Attributes.Text != "" {
+				isTimestamped = false
+				lyrics = lyric.Attributes.Text
 			}
+			break
 		}
 
 		if lyrics == "" {
