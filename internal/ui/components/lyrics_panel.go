@@ -285,8 +285,6 @@ func NewLyricsPanel() *LyricsPanel {
 				visibleTop := currentScrollPosition
 				visibleBottom := currentScrollPosition + float64(scollViewHeight)
 
-				fmt.Println(visibleTop, visibleBottom, widgetTop, widgetBottom)
-
 				// Only scroll if the widget is outside the visible area
 				if widgetTop < visibleTop || widgetBottom > visibleBottom {
 					// Calculate the position to center the active lyric
