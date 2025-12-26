@@ -2,7 +2,9 @@ package router
 
 import (
 	"errors"
+	"fmt"
 	"runtime"
+	"runtime/debug"
 
 	"github.com/diamondburned/gotk4/pkg/core/glib"
 )
@@ -16,6 +18,7 @@ func executeHandler(handler Handler, params Params) (response *Response, shouldC
 	defer func() {
 		if err := recover(); err != nil {
 			logger.Error("handler panicked", "error", err)
+			fmt.Println(string(debug.Stack()))
 			response = errorHandler(err.(error))
 			shouldCache = false
 		}
@@ -34,6 +37,7 @@ func executeHandler(handler Handler, params Params) (response *Response, shouldC
 	// If the handler returned an error, we generate an error page for it
 	if response.Error != nil {
 		logger.Error("handler failed", "error", response.Error)
+		fmt.Println(string(debug.Stack()))
 		response = errorHandler(response.Error)
 		shouldCache = false
 		return
