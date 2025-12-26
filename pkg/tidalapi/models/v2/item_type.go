@@ -6,6 +6,7 @@ const (
 	ItemTypeAlbum          ItemType = "ALBUM"
 	ItemTypeDeepLink       ItemType = "DEEP_LINK"
 	ItemTypeHorizontalList ItemType = "HORIZONTAL_LIST"
+	ItemTypeMix            ItemType = "MIX"
 	ItemTypePlaylist       ItemType = "PLAYLIST"
 	ItemTypeShortcutList   ItemType = "SHORTCUT_LIST"
 	ItemTypeTrack          ItemType = "TRACK"
