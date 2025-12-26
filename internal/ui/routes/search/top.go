@@ -55,7 +55,7 @@ func TopHits(res *openapi.SearchResult) gtk.Widgetter {
 			break
 		}
 
-		card.SetSubTitle(fmt.Sprintf("%s\n%s", strings.Join(artists, ", "), album.Data.Attributes.ReleaseDate.Format("2006")))
+		card.SetSubTitle(fmt.Sprintf("%s\n%s", strings.Join(artists, ", "), album.Data.Attributes.ReleaseDate.Format("2006")), 1)
 		card.ConnectClicked(func() {
 			id, _ := strconv.Atoi(album.Data.ID)
 			router.Navigate("album", router.Params{
@@ -81,7 +81,7 @@ func TopHits(res *openapi.SearchResult) gtk.Widgetter {
 			break
 		}
 
-		card.SetSubTitle(fmt.Sprintf("%s\n%d Tracks", creator, playlist.Data.Attributes.NumberOfItems))
+		card.SetSubTitle(fmt.Sprintf("%s\n%d Tracks", creator, playlist.Data.Attributes.NumberOfItems), 1)
 		card.ConnectClicked(func() {
 			router.Navigate("playlist", router.Params{
 				"uuid": playlist.Data.ID,

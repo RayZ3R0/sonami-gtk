@@ -51,13 +51,15 @@ func (m *MediaCard) SetTitle(title string) {
 	m.titleLabel.SetTooltipText(title)
 }
 
-func (m *MediaCard) SetSubTitle(artist string) {
+func (m *MediaCard) SetSubTitle(artist string, lines int) {
 	m.subTitleLabel.SetText(artist)
 	m.subTitleLabel.SetTooltipText(artist)
+	m.subTitleLabel.SetVisible(artist != "")
+	m.subTitleLabel.SetLines(lines)
 }
 
 func NewMediaCard() *MediaCard {
-	cover := gtk.NewImage()
+	cover := gtk.NewImageFromResource("/org/codeberg/dergs/tidalwave/icons/scalable/state/missing-album.svg")
 	cover.SetPixelSize(172)
 
 	frame := gtk.NewAspectFrame(0.5, 0.5, 1, false)
@@ -80,6 +82,7 @@ func NewMediaCard() *MediaCard {
 	subTitleLabel.SetMarginTop(2)
 	subTitleLabel.SetLines(1)
 	subTitleLabel.SetMaxWidthChars(15)
+	subTitleLabel.SetVisible(false)
 
 	box := gtk.NewBox(gtk.OrientationVertical, 0)
 	box.Append(frame)

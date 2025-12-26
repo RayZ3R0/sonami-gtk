@@ -26,7 +26,7 @@ func ForLegacyItem(item v2.Item) gtk.Widgetter {
 		}
 
 		releaseDate, _ := time.Parse(time.DateOnly, item.Data.Album.ReleaseDate)
-		card.SetSubTitle(fmt.Sprintf("%s\n%s", strings.Join(artists, ", "), releaseDate.Format("2006")))
+		card.SetSubTitle(fmt.Sprintf("%s\n%s", strings.Join(artists, ", "), releaseDate.Format("2006")), 1)
 		card.LoadImage(tidalapi.ImageURL(item.Data.Album.Cover))
 		card.ConnectClicked(func() {
 			router.Navigate("album", router.Params{
@@ -43,7 +43,7 @@ func ForLegacyItem(item v2.Item) gtk.Widgetter {
 			creator = item.Data.Playlist.Creator.Name
 		}
 
-		card.SetSubTitle(fmt.Sprintf("%s\n%d Tracks", creator, item.Data.Playlist.NumberOfTracks))
+		card.SetSubTitle(fmt.Sprintf("%s\n%d Tracks", creator, item.Data.Playlist.NumberOfTracks), 1)
 		card.LoadImage(tidalapi.ImageURL(item.Data.Playlist.SquareImage))
 		card.ConnectClicked(func() {
 			router.Navigate("playlist", router.Params{
@@ -54,11 +54,21 @@ func ForLegacyItem(item v2.Item) gtk.Widgetter {
 	case v2.ItemTypeMix:
 		card := components.NewMediaCard()
 		card.SetTitle(item.Data.Mix.TitleTextInfo.Text)
-		card.SetSubTitle(item.Data.Mix.ShortSubtitleTextInfo.Text)
+		card.SetSubTitle(item.Data.Mix.SubtitleTextInfo.Text, 2)
 		card.LoadImage(item.Data.Mix.MixImages[0].URL)
 		card.ConnectClicked(func() {
 			router.Navigate("playlist", router.Params{
 				"uuid": item.Data.Mix.Id,
+			})
+		})
+		return card
+	case v2.ItemTypeArtist:
+		card := components.NewMediaCard()
+		card.SetTitle(item.Data.Artist.Name)
+		card.LoadImage(tidalapi.ImageURL(item.Data.Artist.Picture))
+		card.ConnectClicked(func() {
+			router.Navigate("artist", router.Params{
+				"id": item.Data.Artist.Id,
 			})
 		})
 		return card
