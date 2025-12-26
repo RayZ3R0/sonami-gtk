@@ -67,7 +67,7 @@ func (s *OpenAPIClientAuthStrategy) GetToken() (string, error) {
 
 func (s *OpenAPIClientAuthStrategy) Authenticate(req *http.Request) error {
 	// This auth is only valid for openapi.tidal.com
-	if req.URL.Host == "openapi.tidal.com" {
+	if req.URL.Host == "openapi.tidal.com" && req.Header.Get("Authorization") == "" {
 		token, err := s.GetToken()
 		if err != nil {
 			return err
