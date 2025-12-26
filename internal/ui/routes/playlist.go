@@ -9,6 +9,7 @@ import (
 	"codeberg.org/dergs/tidalwave/internal/ui/components/tracklist"
 	. "codeberg.org/dergs/tidalwave/pkg/gui"
 	"codeberg.org/dergs/tidalwave/pkg/tidalapi"
+	"codeberg.org/dergs/tidalwave/pkg/tidalapi/models/openapi"
 	"github.com/diamondburned/gotk4/pkg/gtk/v4"
 	"github.com/diamondburned/gotkit/gtkutil/imgutil"
 	"github.com/infinytum/injector"
@@ -67,6 +68,13 @@ func Playlist(params router.Params) *router.Response {
 	scroll.SetPolicy(gtk.PolicyNever, gtk.PolicyAutomatic)
 	scroll.SetChild(list.SetTitle(""))
 
+	var playlistMetadata *TextImpl
+	if playlist.Data.Attributes.PlaylistType != openapi.PlaylistTypeMix {
+		playlistMetadata = Text(fmt.Sprintf("%d Tracks (%s)", playlist.Data.Attributes.NumberOfItems, tidalapi.FormatDuration(int(playlist.Data.Attributes.Duration.Seconds()))))
+	} else {
+		playlistMetadata = Text("Personal Mix")
+	}
+
 	return &router.Response{
 		PageTitle: playlist.Data.Attributes.Name,
 		View: VStack(
@@ -85,7 +93,7 @@ func Playlist(params router.Params) *router.Response {
 						FontSize(16).
 						FontWeight(500).
 						HAlign(gtk.AlignStart),
-					Text(fmt.Sprintf("%d Tracks (%s)", playlist.Data.Attributes.NumberOfItems, tidalapi.FormatDuration(int(playlist.Data.Attributes.Duration.Seconds())))).
+					playlistMetadata.
 						FontSize(14).
 						FontWeight(600).
 						HAlign(gtk.AlignStart).

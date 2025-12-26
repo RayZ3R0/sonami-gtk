@@ -51,6 +51,17 @@ func ForLegacyItem(item v2.Item) gtk.Widgetter {
 			})
 		})
 		return card
+	case v2.ItemTypeMix:
+		card := components.NewMediaCard()
+		card.SetTitle(item.Data.Mix.TitleTextInfo.Text)
+		card.SetSubTitle(item.Data.Mix.ShortSubtitleTextInfo.Text)
+		card.LoadImage(item.Data.Mix.MixImages[0].URL)
+		card.ConnectClicked(func() {
+			router.Navigate("playlist", router.Params{
+				"uuid": item.Data.Mix.Id,
+			})
+		})
+		return card
 	default:
 		return gtk.NewLabel("Not implemented")
 	}
