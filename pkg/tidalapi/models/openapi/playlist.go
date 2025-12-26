@@ -10,6 +10,7 @@ type PlaylistType string
 
 const (
 	PlaylistTypeEditorial PlaylistType = "EDITORIAL"
+	PlaylistTypeMix       PlaylistType = "MIX"
 	PlaylistTypeUser      PlaylistType = "USER"
 )
 
