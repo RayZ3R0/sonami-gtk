@@ -65,7 +65,10 @@ func Play(trackId int) error {
 		return err
 	}
 
-	playbin.SetState(gst.StateReady)
+	// Free up resources taken up by previous stream
+	playbin.SetState(gst.StateNull)
+	playbin.SetArg("uri", "")
+
 	OnStateChanged.Notify(func(state *State) {
 		state.Status = StatusBuffering
 		state.Position = 0
