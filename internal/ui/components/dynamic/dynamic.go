@@ -8,12 +8,13 @@ import (
 	"codeberg.org/dergs/tidalwave/internal/router"
 	"codeberg.org/dergs/tidalwave/internal/ui/components"
 	"codeberg.org/dergs/tidalwave/internal/ui/components/tracklist"
+	"codeberg.org/dergs/tidalwave/pkg/gui"
 	"codeberg.org/dergs/tidalwave/pkg/tidalapi"
 	v2 "codeberg.org/dergs/tidalwave/pkg/tidalapi/models/v2"
 	"github.com/diamondburned/gotk4/pkg/gtk/v4"
 )
 
-func ForItem(item v2.Item) gtk.Widgetter {
+func ForLegacyItem(item v2.Item) gtk.Widgetter {
 	switch item.Type {
 	case v2.ItemTypeAlbum:
 		card := components.NewMediaCard()
@@ -60,7 +61,7 @@ func ForPageItem(item v2.PageItem) gtk.Widgetter {
 	case v2.ItemTypeHorizontalList:
 		list := NewHorizontalList().SetTitle(item.Title).HMargin(40)
 		for _, child := range item.Items {
-			list.Append(ForItem(child))
+			list.Append(ForLegacyItem(child))
 		}
 		return list
 	case v2.ItemTypeTrackList:
@@ -76,7 +77,32 @@ func ForPageItem(item v2.PageItem) gtk.Widgetter {
 			list.AddLegacyTrack(track.Data.Track)
 		}
 		return list.HMargin(40)
+	case v2.ItemTypeShortcutList:
+		list := NewHorizontalList().SetTitle(item.Title).HMargin(40)
+		for i := 0; i < len(item.Items); i += 2 {
+			stack := gui.VStack(forShortcut(item.Items[i])).Spacing(10).HMargin(5)
+
+			if i+1 < len(item.Items) {
+				second := item.Items[i+1]
+				stack.Append(forShortcut(second))
+			}
+
+			list.Append(stack)
+		}
+		return list
 	default:
 		return nil
 	}
+}
+
+func forShortcut(child v2.Item) gtk.Widgetter {
+	shortcut := components.NewShortcut()
+	switch child.Type {
+	case v2.ItemTypeDeepLink:
+		shortcut.SetTitle(child.Data.DeepLink.Title)
+	default:
+		shortcut.SetTitle("Unsupported")
+		shortcut.SetSubTitle("Element not supported")
+	}
+	return shortcut
 }
