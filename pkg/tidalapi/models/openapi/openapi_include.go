@@ -27,10 +27,12 @@ func (i IncludedObjects) FromRelationships(relationships []Relationship, t strin
 		ids = append(ids, rel.ID)
 	}
 
+	var seenIds = []string{}
 	var included IncludedObjects
 	for _, obj := range i {
-		if slices.Contains(ids, obj.ID) && (obj.Type == t || t == "") {
+		if slices.Contains(ids, obj.ID) && (obj.Type == t || t == "") && !slices.Contains(seenIds, obj.ID) {
 			included = append(included, obj)
+			seenIds = append(seenIds, obj.ID)
 		}
 	}
 	return included
