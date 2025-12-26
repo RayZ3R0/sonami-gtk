@@ -57,13 +57,8 @@ type PlaylistExternalLink struct {
 	} `json:"meta"`
 }
 
-func (i IncludedObjects) Playlists(relationships ...Relationship) []PlaylistData {
-	var objects IncludedObjects
-	if len(relationships) > 0 {
-		objects = i.FromRelationships(relationships, ObjectTypePlaylists)
-	} else {
-		objects = i.FromType(ObjectTypePlaylists)
-	}
+func (i IncludedObjects) PlainPlaylists(relationships ...Relationship) []PlaylistData {
+	var objects = i.FromRelationships(relationships, ObjectTypePlaylists)
 
 	var playlists []PlaylistData
 	for _, obj := range objects {
@@ -74,4 +69,14 @@ func (i IncludedObjects) Playlists(relationships ...Relationship) []PlaylistData
 		playlists = append(playlists, playlist)
 	}
 	return playlists
+}
+
+func (i IncludedObjects) Playlists(relationships ...Relationship) (responses []Playlist) {
+	for _, playlists := range i.PlainPlaylists(relationships...) {
+		responses = append(responses, Playlist{
+			Data:     playlists,
+			Included: i,
+		})
+	}
+	return
 }

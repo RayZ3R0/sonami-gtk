@@ -47,12 +47,7 @@ type LyricsAttributesProvider struct {
 }
 
 func (i IncludedObjects) PlainLyrics(relationships ...Relationship) []LyricsData {
-	var objects IncludedObjects
-	if len(relationships) > 0 {
-		objects = i.FromRelationships(relationships, ObjectTypeLyrics)
-	} else {
-		objects = i.FromType(ObjectTypeLyrics)
-	}
+	var objects = i.FromRelationships(relationships, ObjectTypeLyrics)
 
 	var lyrics []LyricsData
 	for _, obj := range objects {

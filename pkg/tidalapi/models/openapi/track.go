@@ -67,12 +67,7 @@ type TrackExternalLink struct {
 }
 
 func (i IncludedObjects) PlainTracks(relationships ...Relationship) []TrackData {
-	var objects IncludedObjects
-	if len(relationships) > 0 {
-		objects = i.FromRelationships(relationships, ObjectTypeTracks)
-	} else {
-		objects = i.FromType(ObjectTypeTracks)
-	}
+	var objects = i.FromRelationships(relationships, ObjectTypeTracks)
 
 	var tracks []TrackData
 	for _, obj := range objects {

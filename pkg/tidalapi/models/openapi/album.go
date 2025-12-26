@@ -61,12 +61,7 @@ type AlbumExternalLink struct {
 }
 
 func (i IncludedObjects) PlainAlbums(relationships ...Relationship) []AlbumData {
-	var objects IncludedObjects
-	if len(relationships) > 0 {
-		objects = i.FromRelationships(relationships, ObjectTypeAlbums)
-	} else {
-		objects = i.FromType(ObjectTypeAlbums)
-	}
+	var objects = i.FromRelationships(relationships, ObjectTypeAlbums)
 
 	var albums []AlbumData
 	for _, obj := range objects {

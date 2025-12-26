@@ -50,12 +50,7 @@ type ArtistExternalLink struct {
 }
 
 func (i IncludedObjects) PlainArtists(relationships ...Relationship) []ArtistData {
-	var objects IncludedObjects
-	if len(relationships) > 0 {
-		objects = i.FromRelationships(relationships, ObjectTypeArtists)
-	} else {
-		objects = i.FromType(ObjectTypeArtists)
-	}
+	var objects = i.FromRelationships(relationships, ObjectTypeArtists)
 
 	var artists []ArtistData
 	for _, obj := range objects {

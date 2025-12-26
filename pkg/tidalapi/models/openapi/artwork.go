@@ -42,12 +42,7 @@ func (files ArtworkFiles) AtLeast(size int) ArtworkFile {
 }
 
 func (i IncludedObjects) PlainArtworks(relationships ...Relationship) []ArtworkData {
-	var objects IncludedObjects
-	if len(relationships) > 0 {
-		objects = i.FromRelationships(relationships, ObjectTypeArtworks)
-	} else {
-		objects = i.FromType(ObjectTypeArtworks)
-	}
+	var objects = i.FromRelationships(relationships, ObjectTypeArtworks)
 
 	var artworks []ArtworkData
 	for _, obj := range objects {
