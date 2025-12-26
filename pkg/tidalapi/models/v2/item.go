@@ -20,6 +20,12 @@ type Item struct {
 
 func (i *Item) MarshalJSON() ([]byte, error) {
 	switch i.Type {
+	case ItemTypeArtist:
+		if raw, err := json.Marshal(i.Data.Artist); err != nil {
+			return nil, err
+		} else {
+			i.RawData = raw
+		}
 	case ItemTypeDeepLink:
 		if raw, err := json.Marshal(i.Data.DeepLink); err != nil {
 			return nil, err
@@ -66,6 +72,10 @@ func (i *Item) UnmarshalJSON(data []byte) error {
 	i.Type = i.baseItem.Type
 	i.Data = ItemData{}
 	switch i.baseItem.Type {
+	case ItemTypeArtist:
+		if err := json.Unmarshal(i.baseItem.RawData, &i.Data.Artist); err != nil {
+			return err
+		}
 	case ItemTypeDeepLink:
 		if err := json.Unmarshal(i.baseItem.RawData, &i.Data.DeepLink); err != nil {
 			return err
@@ -93,11 +103,18 @@ func (i *Item) UnmarshalJSON(data []byte) error {
 }
 
 type ItemData struct {
+	Artist   *ArtistItemData
 	Album    *AlbumItemData
 	DeepLink *DeepLinkItemData
 	Mix      *MixItemData
 	Playlist *PlaylistItemData
 	Track    *TrackItemData
+}
+
+type ArtistItemData struct {
+	Id      int    `json:"id"`
+	Name    string `json:"name"`
+	Picture string `json:"picture"`
 }
 
 type AlbumItemData struct {
@@ -128,6 +145,9 @@ type MixItemData struct {
 	TitleTextInfo struct {
 		Text string `json:"text"`
 	} `json:"titleTextInfo"`
+	SubtitleTextInfo struct {
+		Text string `json:"text"`
+	} `json:"subtitleTextInfo"`
 	ShortSubtitleTextInfo struct {
 		Text string `json:"text"`
 	} `json:"shortSubtitleTextInfo"`

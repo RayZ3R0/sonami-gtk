@@ -4,6 +4,7 @@ type ItemType string
 
 const (
 	ItemTypeAlbum          ItemType = "ALBUM"
+	ItemTypeArtist         ItemType = "ARTIST"
 	ItemTypeDeepLink       ItemType = "DEEP_LINK"
 	ItemTypeHorizontalList ItemType = "HORIZONTAL_LIST"
 	ItemTypeMix            ItemType = "MIX"
