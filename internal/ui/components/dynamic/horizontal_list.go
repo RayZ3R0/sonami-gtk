@@ -88,7 +88,7 @@ func NewHorizontalList() *HorizontalList {
 			FontWeight(600).
 			FontSize(20).
 			VAlign(gtk.AlignCenter),
-		Spacer(),
+		Spacer().VExpand(false),
 		HStack(
 			leftButton,
 			rightButton,
