@@ -10,7 +10,7 @@ import (
 )
 
 func positionColumn(grid *gtk.Grid, row int, column int) int {
-	widget := gui.Text(strconv.Itoa(row)).FontWeight(500).HAlign(gtk.AlignStart).HExpand(false).Margin(10)
+	widget := gui.Text(strconv.Itoa(row + 1)).FontWeight(500).HAlign(gtk.AlignStart).HExpand(false).Margin(10)
 	grid.Attach(widget, column, row, 1, 1)
 	return 1
 }
