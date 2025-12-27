@@ -2,12 +2,15 @@ package components
 
 import (
 	"context"
+	"fmt"
 	"math"
 
 	"codeberg.org/dergs/tidalwave/internal/player"
 	"codeberg.org/dergs/tidalwave/internal/ui/signals"
 	"codeberg.org/dergs/tidalwave/pkg/gui"
 	"codeberg.org/dergs/tidalwave/pkg/tidalapi"
+	"github.com/diamondburned/gotk4/pkg/core/glib"
+	"github.com/diamondburned/gotk4/pkg/gdk/v4"
 	"github.com/diamondburned/gotk4/pkg/gtk/v4"
 	"github.com/diamondburned/gotk4/pkg/pango"
 	"github.com/diamondburned/gotkit/gtkutil/cssutil"
@@ -105,6 +108,11 @@ func NewPlayer() *Player {
 		return signals.Continue
 	})
 
+	shareButton := gtk.NewButtonFromIconName("folder-publicshare-symbolic")
+	shareEvent := shareButton.ConnectClicked(func() {
+		signals.OnDisplayToast.Notify("No song could be shared.")
+	})
+
 	playerWidget := &Player{
 		gui.VStack(
 			gui.Spacer().MinHeight(24),
@@ -131,7 +139,7 @@ func NewPlayer() *Player {
 					CSS(`button:not(:hover) { background-color: transparent; }`),
 				gui.Wrapper(gtk.NewButtonFromIconName("library-symbolic")).
 					CSS(`button:not(:hover) { background-color: transparent; }`),
-				gui.Wrapper(gtk.NewButtonFromIconName("folder-publicshare-symbolic")).
+				gui.Wrapper(shareButton).
 					CSS(`button:not(:hover) { background-color: transparent; }`),
 			).
 				HAlign(gtk.AlignCenter).
@@ -196,6 +204,20 @@ func NewPlayer() *Player {
 		duration.GTKWidget().SetText(tidalapi.FormatDuration(int(trackInfo.Duration.Seconds())))
 		playerWidget.artistName.SetText(trackInfo.ArtistNames())
 		playerWidget.title.SetText(trackInfo.Title)
+
+		shareButton.HandlerDisconnect(shareEvent)
+		if id := trackInfo.ID; id == 0 {
+			shareEvent = shareButton.ConnectClicked(func() {
+				signals.OnDisplayToast.Notify("No song could be shared.")
+			})
+		} else {
+			shareEvent = shareButton.ConnectClicked(func() {
+				signals.OnDisplayToast.Notify("Share link copied to clipboard.")
+				link := glib.NewValue(fmt.Sprintf("https://tidal.com/track/%d?u", id))
+				gdk.DisplayGetDefault().Clipboard().Set(link)
+			})
+		}
+
 		return signals.Continue
 	})
 

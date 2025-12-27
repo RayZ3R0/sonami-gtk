@@ -56,7 +56,19 @@ func (w *Window) build() gtk.Widgetter {
 	w.AddAction(navigateBackAction)
 	w.Application().SetAccelsForAction("win.navigate-back", []string{"<Alt>Left"})
 
-	return layout
+	toastLayout := adw.NewToastOverlay()
+	toastLayout.SetChild(layout)
+
+	signals.OnDisplayToast.On(func(val string) bool {
+		toast := adw.NewToast(val)
+		toast.SetTimeout(2)
+
+		toastLayout.AddToast(toast)
+
+		return signals.Continue
+	})
+
+	return toastLayout
 }
 
 func (w *Window) buildContentLayout() gtk.Widgetter {
