@@ -67,7 +67,7 @@ func newTrackList(trackList *TrackList) *TrackList {
 			Spacer().VExpand(false),
 		),
 		trackList.container,
-	)
+	).VAlign(gtk.AlignStart)
 	trackList.title.GTKWidget().SetVisible(false)
 	return trackList
 }
