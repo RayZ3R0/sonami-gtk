@@ -96,7 +96,7 @@ func TopHits(res *openapi.SearchResult) gtk.Widgetter {
 		albumList,
 		playlistList,
 		gui.Spacer(),
-	).Spacing(25).VMargin(20)
+	).Spacing(25).VMargin(20).VAlign(gtk.AlignStart)
 }
 
 func forArtist(artist *openapi.Artist) gtk.Widgetter {
