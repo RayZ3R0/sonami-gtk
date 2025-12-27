@@ -35,6 +35,7 @@
               go
               gopls
               pkg-config
+              graphviz
             ]
             ++ cgoDependencies
             ++ runtimeDependencies;
