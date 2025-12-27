@@ -23,6 +23,11 @@ func (w *WidgetImpl[T]) Background(color string) T {
 	return w.real
 }
 
+func (w *WidgetImpl[T]) CallCSSApplier(applier func(gtk.Widgetter)) T {
+	applier(w)
+	return w.real
+}
+
 func (w *WidgetImpl[T]) CornerRadius(radius int) T {
 	cssutil.Apply(w, fmt.Sprintf(w.widget.CSSName()+` { border-radius: %dpx; }`, radius))
 	return w.real

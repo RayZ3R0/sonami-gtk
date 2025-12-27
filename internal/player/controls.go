@@ -46,3 +46,13 @@ func PlayPause() {
 		Scrub(0)
 	}
 }
+
+func SetVolume(volume float64) {
+	if volume < 0 {
+		logger.Info("Volume is lower than 0, overriding back to 0.")
+		volume = 0
+	} else if volume > 1 {
+		logger.Warn("Volume is higher than 1. This will cause overdrive to the speakers.")
+	}
+	playbin.SetProperty("volume", volume)
+}

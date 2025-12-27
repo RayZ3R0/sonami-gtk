@@ -2,6 +2,7 @@ package components
 
 import (
 	"context"
+	"math"
 
 	"codeberg.org/dergs/tidalwave/internal/player"
 	"codeberg.org/dergs/tidalwave/internal/ui/signals"
@@ -47,6 +48,11 @@ func (m *Player) LoadCover(url string) {
 	imgutil.AsyncGET(injector.MustInject[context.Context](), url, imgutil.ImageSetterFromImage(m.cover))
 }
 
+var transparentMenuButton = cssutil.Applier("volume-button", `
+.volume-button button:not(:hover) {
+	background-color: transparent;
+}`)
+
 func NewPlayer() *Player {
 	trackImage := gtk.NewImage()
 	trackImage.SetPixelSize(319)
@@ -65,15 +71,14 @@ func NewPlayer() *Player {
 	artistName.SetWrap(true)
 	artistName.SetWrapMode(pango.WrapWordChar)
 
-	slider := gtk.NewScale(gtk.OrientationHorizontal, nil)
-	slider.SetHExpand(true)
-	slider.SetRange(0, 100)
-	slider.SetValue(50)
-	slider.ConnectChangeValue(func(scroll gtk.ScrollType, value float64) (ok bool) {
-		player.Scrub(value)
-		return false
-	})
-	guiSlider := gui.Wrapper(slider)
+	slider := gui.Scale(gtk.OrientationHorizontal).
+		HExpand(true).
+		Range(0, 100).
+		DefaultValue(50).
+		OnChange(func(scroll gtk.ScrollType, value float64) (ok bool) {
+			player.Scrub(value)
+			return false
+		})
 
 	position := gui.Text("00:00")
 	duration := gui.Text("00:00")
@@ -81,6 +86,23 @@ func NewPlayer() *Player {
 	playButton := gtk.NewButtonFromIconName("media-playback-start-symbolic")
 	playButton.ConnectClicked(func() {
 		player.PlayPause()
+	})
+
+	volumeSlider := gui.Scale(gtk.OrientationVertical).
+		Invert().
+		Range(0, 1).
+		DefaultValue(0.5).
+		OnChange(func(_ gtk.ScrollType, value float64) (prevent bool) {
+			// Cube the value to account for the logarithmic nature of human volume perception
+			player.SetVolume(math.Pow(value, 3))
+			return false
+		})
+
+	player.OnVolumeChanged.On(func(volume float64) bool {
+		// Cube root the volume to account for the logarithmic nature of human volume perception
+		volumeSlider.GTKWidget().SetValue(math.Pow(volume, 1.0/3.0))
+
+		return signals.Continue
 	})
 
 	playerWidget := &Player{
@@ -94,8 +116,15 @@ func NewPlayer() *Player {
 			gui.Wrapper(title).MarginTop(35),
 			artistName,
 			gui.HStack(
-				gui.Wrapper(gtk.NewButtonFromIconName("audio-speakers-symbolic")).
-					CSS(`button:not(:hover) { background-color: transparent; }`),
+				gui.MenuButton(
+					gui.Popover(
+						volumeSlider.
+							CSS(`scale { min-height: 100px; } scale:active { background-color: transparent; }`).
+							HExpand(true),
+					),
+				).
+					SetIcon("audio-speakers-symbolic").
+					CallCSSApplier(transparentMenuButton),
 				gui.Wrapper(gtk.NewButtonFromIconName("heart-outline-thick-symbolic")).
 					CSS(`button:not(:hover) { background-color: transparent; }`),
 				gui.Wrapper(gtk.NewButtonFromIconName("compass2-symbolic")).
@@ -108,7 +137,7 @@ func NewPlayer() *Player {
 				HAlign(gtk.AlignCenter).
 				Spacing(7).
 				MarginTop(27),
-			guiSlider.
+			slider.
 				MarginTop(24).
 				MarginLeft(24).
 				MarginRight(24).
@@ -174,9 +203,9 @@ func NewPlayer() *Player {
 		position.GTKWidget().SetText(tidalapi.FormatDuration(state.Position))
 		if state.Duration > 0 {
 			duration.GTKWidget().SetText(tidalapi.FormatDuration(int(state.Duration)))
-			slider.SetValue(100.0 / float64(state.Duration) * float64(state.Position))
+			slider.GTKWidget().SetValue(100.0 / float64(state.Duration) * float64(state.Position))
 		} else {
-			slider.SetValue(0)
+			slider.GTKWidget().SetValue(0)
 		}
 
 		switch state.Status {
