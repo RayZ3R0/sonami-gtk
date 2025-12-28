@@ -1,49 +1,36 @@
 package schwifty
 
 import (
-	"fmt"
-
+	"codeberg.org/dergs/tidalwave/internal/g"
 	"codeberg.org/dergs/tidalwave/pkg/schwifty/css"
+	"codeberg.org/dergs/tidalwave/pkg/schwifty/state"
+	"fmt"
 	"github.com/jwijenbergh/puregotk/v4/gtk"
 )
+
 
 type Box func() *gtk.Box
 
 func (f Box) AddController(controller *gtk.EventController) Box {
- return func() *gtk.Box {
-  widget := f()
-  widget.AddController(controller)
-  return widget
- }
-}
-
-func (f Box) Background(color string) Box {
- return func() *gtk.Box {
-  widget := f()
-  css.Apply(&widget.Widget, fmt.Sprintf("%s { background-color: %s; }", widget.GetCssName(), color))
-  return widget
- }
-}
-
-func (f Box) CornerRadius(radius int) Box {
- return func() *gtk.Box {
-  widget := f()
-  css.Apply(&widget.Widget, fmt.Sprintf("%s { border-radius: %dpx; }", widget.GetCssName(), radius))
-  return widget
- }
-}
-
-func (f Box) CSS(css string) Box {
 	return func() *gtk.Box {
 		widget := f()
-		widget.Ref()
-		defer widget.Unref()
+		widget.AddController(controller)
+		return widget
+	}
+}
 
-		provider := gtk.NewCssProvider()
-		provider.LoadFromString(css)
-		widget.GetStyleContext().AddProvider(provider, uint(gtk.STYLE_PROVIDER_PRIORITY_APPLICATION))
-		provider.Unref()
+func (f Box) ConnectConstruct(cb func(*gtk.Box)) Box {
+	return func() *gtk.Box {
+		widget := f()
+		cb(widget)
+		return widget
+	}
+}
 
+func (f Box) ConnectDestroy(cb func(gtk.Widget)) Box {
+	return func() *gtk.Box {
+		widget := f()
+		widget.ConnectDestroy(&cb)
 		return widget
 	}
 }
@@ -89,14 +76,6 @@ func (f Box) HMargin(horizontal int) Box {
 	}
 }
 
-func (f Box) HPadding(padding int) Box {
- return func() *gtk.Box {
-  widget := f()
-  css.Apply(&widget.Widget, fmt.Sprintf("%s { padding-left: %dpx; padding-right: %dpx; }", widget.GetCssName(), padding, padding))
-  return widget
- }
-}
-
 func (f Box) Margin(margin int) Box {
 	return func() *gtk.Box {
 		widget := f()
@@ -140,76 +119,20 @@ func (f Box) MarginTop(top int) Box {
 	}
 }
 
-func (f Box) MinHeight(minHeight int) Box {
- return func() *gtk.Box {
-  widget := f()
-  css.Apply(&widget.Widget, fmt.Sprintf("%s { min-height: %dpx; }", widget.GetCssName(), minHeight))
-  return widget
- }
-}
-
-func (f Box) MinWidth(minWidth int) Box {
- return func() *gtk.Box {
-  widget := f()
-  css.Apply(&widget.Widget, fmt.Sprintf("%s { min-width: %dpx; }", widget.GetCssName(), minWidth))
-  return widget
- }
-}
-
 func (f Box) Opacity(opacity float64) Box {
- return func() *gtk.Box {
-  widget := f()
-  widget.SetOpacity(opacity)
-  return widget
- }
+	return func() *gtk.Box {
+		widget := f()
+		widget.SetOpacity(opacity)
+		return widget
+	}
 }
 
 func (f Box) Overflow(overflow gtk.Overflow) Box {
- return func() *gtk.Box {
-  widget := f()
-  widget.SetOverflow(overflow)
-  return widget
- }
-}
-
-func (f Box) Padding(padding int) Box {
- return func() *gtk.Box {
-  widget := f()
-  css.Apply(&widget.Widget, fmt.Sprintf("%s { padding: %dpx; }", widget.GetCssName(), padding))
-  return widget
- }
-}
-
-func (f Box) PaddingBottom(padding int) Box {
- return func() *gtk.Box {
-  widget := f()
-  css.Apply(&widget.Widget, fmt.Sprintf("%s { padding-bottom: %dpx; }", widget.GetCssName(), padding))
-  return widget
- }
-}
-
-func (f Box) PaddingEnd(padding int) Box {
- return func() *gtk.Box {
-  widget := f()
-  css.Apply(&widget.Widget, fmt.Sprintf("%s { padding-right: %dpx; }", widget.GetCssName(), padding))
-  return widget
- }
-}
-
-func (f Box) PaddingStart(padding int) Box {
- return func() *gtk.Box {
-  widget := f()
-  css.Apply(&widget.Widget, fmt.Sprintf("%s { padding-left: %dpx; }", widget.GetCssName(), padding))
-  return widget
- }
-}
-
-func (f Box) PaddingTop(padding int) Box {
- return func() *gtk.Box {
-  widget := f()
-  css.Apply(&widget.Widget, fmt.Sprintf("%s { padding-top: %dpx; }", widget.GetCssName(), padding))
-  return widget
- }
+	return func() *gtk.Box {
+		widget := f()
+		widget.SetOverflow(overflow)
+		return widget
+	}
 }
 
 func (f Box) ToGTK() *gtk.Widget {
@@ -218,43 +141,177 @@ func (f Box) ToGTK() *gtk.Widget {
 }
 
 func (f Box) VAlign(align gtk.Align) Box {
- return func() *gtk.Box {
-  widget := f()
-  widget.SetValign(align)
-  return widget
- }
+	return func() *gtk.Box {
+		widget := f()
+		widget.SetValign(align)
+		return widget
+	}
 }
 
 func (f Box) VExpand(expand bool) Box {
- return func() *gtk.Box {
-  widget := f()
-  widget.SetVexpand(expand)
-  return widget
- }
+	return func() *gtk.Box {
+		widget := f()
+		widget.SetVexpand(expand)
+		return widget
+	}
 }
 
 func (f Box) Visible(visible bool) Box {
- return func() *gtk.Box {
-  widget := f()
-  widget.SetVisible(visible)
-  return widget
- }
+	return func() *gtk.Box {
+		widget := f()
+		widget.SetVisible(visible)
+		return widget
+	}
 }
 
 func (f Box) VMargin(vertical int) Box {
- return func() *gtk.Box {
-  widget := f()
-  widget.SetMarginTop(vertical)
-  widget.SetMarginBottom(vertical)
-  return widget
- }
+	return func() *gtk.Box {
+		widget := f()
+		widget.SetMarginTop(vertical)
+		widget.SetMarginBottom(vertical)
+		return widget
+	}
+}
+
+
+
+func (f Box) Background(color string) Box {
+	return func() *gtk.Box {
+		widget := f()
+		css.Apply(&widget.Widget, fmt.Sprintf("%s { background-color: %s; }", widget.GetCssName(), color))
+		return widget
+	}
+}
+
+func (f Box) CornerRadius(radius int) Box {
+	return func() *gtk.Box {
+		widget := f()
+		css.Apply(&widget.Widget, fmt.Sprintf("%s { border-radius: %dpx; }", widget.GetCssName(), radius))
+		return widget
+	}
+}
+
+func (f Box) CSS(css string) Box {
+	return func() *gtk.Box {
+		widget := f()
+		widget.Ref()
+		defer widget.Unref()
+
+		provider := gtk.NewCssProvider()
+		provider.LoadFromString(css)
+		widget.GetStyleContext().AddProvider(provider, uint(gtk.STYLE_PROVIDER_PRIORITY_APPLICATION))
+		provider.Unref()
+
+		return widget
+	}
+}
+
+func (f Box) HPadding(padding int) Box {
+	return func() *gtk.Box {
+		widget := f()
+		css.Apply(&widget.Widget, fmt.Sprintf("%s { padding-left: %dpx; padding-right: %dpx; }", widget.GetCssName(), padding, padding))
+		return widget
+	}
+}
+
+func (f Box) MinHeight(minHeight int) Box {
+	return func() *gtk.Box {
+		widget := f()
+		css.Apply(&widget.Widget, fmt.Sprintf("%s { min-height: %dpx; }", widget.GetCssName(), minHeight))
+		return widget
+	}
+}
+
+func (f Box) MinWidth(minWidth int) Box {
+	return func() *gtk.Box {
+		widget := f()
+		css.Apply(&widget.Widget, fmt.Sprintf("%s { min-width: %dpx; }", widget.GetCssName(), minWidth))
+		return widget
+	}
+}
+
+func (f Box) Padding(padding int) Box {
+	return func() *gtk.Box {
+		widget := f()
+		css.Apply(&widget.Widget, fmt.Sprintf("%s { padding: %dpx; }", widget.GetCssName(), padding))
+		return widget
+	}
+}
+
+func (f Box) PaddingBottom(padding int) Box {
+	return func() *gtk.Box {
+		widget := f()
+		css.Apply(&widget.Widget, fmt.Sprintf("%s { padding-bottom: %dpx; }", widget.GetCssName(), padding))
+		return widget
+	}
+}
+
+func (f Box) PaddingEnd(padding int) Box {
+	return func() *gtk.Box {
+		widget := f()
+		css.Apply(&widget.Widget, fmt.Sprintf("%s { padding-right: %dpx; }", widget.GetCssName(), padding))
+		return widget
+	}
+}
+
+func (f Box) PaddingStart(padding int) Box {
+	return func() *gtk.Box {
+		widget := f()
+		css.Apply(&widget.Widget, fmt.Sprintf("%s { padding-left: %dpx; }", widget.GetCssName(), padding))
+		return widget
+	}
+}
+
+func (f Box) PaddingTop(padding int) Box {
+	return func() *gtk.Box {
+		widget := f()
+		css.Apply(&widget.Widget, fmt.Sprintf("%s { padding-top: %dpx; }", widget.GetCssName(), padding))
+		return widget
+	}
 }
 
 func (f Box) VPadding(padding int) Box {
- return func() *gtk.Box {
-  widget := f()
-  css.Apply(&widget.Widget, fmt.Sprintf("%s { padding-bottom: %dpx; padding-top: %dpx; }", widget.GetCssName(), padding, padding))
-  return widget
- }
+	return func() *gtk.Box {
+		widget := f()
+		css.Apply(&widget.Widget, fmt.Sprintf("%s { padding-bottom: %dpx; padding-top: %dpx; }", widget.GetCssName(), padding, padding))
+		return widget
+	}
 }
 
+
+
+func (f Box) BindVisible(state *state.State[bool]) Box {
+	return func() *gtk.Box {
+		widget := f()
+
+		var callbackId string
+		widget.ConnectRealize(g.Ptr(func(a gtk.Widget) {
+			callbackId = state.AddCallback(func(newValue bool) {
+				a.SetVisible(newValue)
+			})
+		}))
+		widget.ConnectUnrealize(g.Ptr(func(gtk.Widget) {
+			state.RemoveCallback(callbackId)
+		}))
+
+		return widget
+	}
+}
+
+func (f Box) BindSensitive(state *state.State[bool]) Box {
+	return func() *gtk.Box {
+		widget := f()
+
+		var callbackId string
+		widget.ConnectRealize(g.Ptr(func(a gtk.Widget) {
+			callbackId = state.AddCallback(func(newValue bool) {
+				a.SetSensitive(newValue)
+			})
+		}))
+		widget.ConnectUnrealize(g.Ptr(func(gtk.Widget) {
+			state.RemoveCallback(callbackId)
+		}))
+
+		return widget
+	}
+}

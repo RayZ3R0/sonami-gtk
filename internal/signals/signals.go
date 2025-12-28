@@ -33,10 +33,6 @@ func (b *Signal[T]) removeHandler(sub *Subscription) {
 	delete(b.handlers, sub)
 }
 
-func (b *Signal[T]) On(handler T) *Subscription {
-	return b.addHandler(handler)
-}
-
 func (b *Signal[T]) Notify(args ...any) {
 	b.mutex.Lock()
 	defer b.mutex.Unlock()
@@ -50,6 +46,14 @@ func (b *Signal[T]) Notify(args ...any) {
 			b.removeHandler(sub)
 		}
 	}
+}
+
+func (b *Signal[T]) On(handler T) *Subscription {
+	return b.addHandler(handler)
+}
+
+func (b *Signal[T]) Unsubscribe(sub *Subscription) {
+	b.removeHandler(sub)
 }
 
 func NewSignal[T any]() Signal[T] {

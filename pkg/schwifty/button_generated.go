@@ -1,49 +1,36 @@
 package schwifty
 
 import (
-	"fmt"
-
+	"codeberg.org/dergs/tidalwave/internal/g"
 	"codeberg.org/dergs/tidalwave/pkg/schwifty/css"
+	"codeberg.org/dergs/tidalwave/pkg/schwifty/state"
+	"fmt"
 	"github.com/jwijenbergh/puregotk/v4/gtk"
 )
+
 
 type Button func() *gtk.Button
 
 func (f Button) AddController(controller *gtk.EventController) Button {
- return func() *gtk.Button {
-  widget := f()
-  widget.AddController(controller)
-  return widget
- }
-}
-
-func (f Button) Background(color string) Button {
- return func() *gtk.Button {
-  widget := f()
-  css.Apply(&widget.Widget, fmt.Sprintf("%s { background-color: %s; }", widget.GetCssName(), color))
-  return widget
- }
-}
-
-func (f Button) CornerRadius(radius int) Button {
- return func() *gtk.Button {
-  widget := f()
-  css.Apply(&widget.Widget, fmt.Sprintf("%s { border-radius: %dpx; }", widget.GetCssName(), radius))
-  return widget
- }
-}
-
-func (f Button) CSS(css string) Button {
 	return func() *gtk.Button {
 		widget := f()
-		widget.Ref()
-		defer widget.Unref()
+		widget.AddController(controller)
+		return widget
+	}
+}
 
-		provider := gtk.NewCssProvider()
-		provider.LoadFromString(css)
-		widget.GetStyleContext().AddProvider(provider, uint(gtk.STYLE_PROVIDER_PRIORITY_APPLICATION))
-		provider.Unref()
+func (f Button) ConnectConstruct(cb func(*gtk.Button)) Button {
+	return func() *gtk.Button {
+		widget := f()
+		cb(widget)
+		return widget
+	}
+}
 
+func (f Button) ConnectDestroy(cb func(gtk.Widget)) Button {
+	return func() *gtk.Button {
+		widget := f()
+		widget.ConnectDestroy(&cb)
 		return widget
 	}
 }
@@ -89,14 +76,6 @@ func (f Button) HMargin(horizontal int) Button {
 	}
 }
 
-func (f Button) HPadding(padding int) Button {
- return func() *gtk.Button {
-  widget := f()
-  css.Apply(&widget.Widget, fmt.Sprintf("%s { padding-left: %dpx; padding-right: %dpx; }", widget.GetCssName(), padding, padding))
-  return widget
- }
-}
-
 func (f Button) Margin(margin int) Button {
 	return func() *gtk.Button {
 		widget := f()
@@ -140,76 +119,20 @@ func (f Button) MarginTop(top int) Button {
 	}
 }
 
-func (f Button) MinHeight(minHeight int) Button {
- return func() *gtk.Button {
-  widget := f()
-  css.Apply(&widget.Widget, fmt.Sprintf("%s { min-height: %dpx; }", widget.GetCssName(), minHeight))
-  return widget
- }
-}
-
-func (f Button) MinWidth(minWidth int) Button {
- return func() *gtk.Button {
-  widget := f()
-  css.Apply(&widget.Widget, fmt.Sprintf("%s { min-width: %dpx; }", widget.GetCssName(), minWidth))
-  return widget
- }
-}
-
 func (f Button) Opacity(opacity float64) Button {
- return func() *gtk.Button {
-  widget := f()
-  widget.SetOpacity(opacity)
-  return widget
- }
+	return func() *gtk.Button {
+		widget := f()
+		widget.SetOpacity(opacity)
+		return widget
+	}
 }
 
 func (f Button) Overflow(overflow gtk.Overflow) Button {
- return func() *gtk.Button {
-  widget := f()
-  widget.SetOverflow(overflow)
-  return widget
- }
-}
-
-func (f Button) Padding(padding int) Button {
- return func() *gtk.Button {
-  widget := f()
-  css.Apply(&widget.Widget, fmt.Sprintf("%s { padding: %dpx; }", widget.GetCssName(), padding))
-  return widget
- }
-}
-
-func (f Button) PaddingBottom(padding int) Button {
- return func() *gtk.Button {
-  widget := f()
-  css.Apply(&widget.Widget, fmt.Sprintf("%s { padding-bottom: %dpx; }", widget.GetCssName(), padding))
-  return widget
- }
-}
-
-func (f Button) PaddingEnd(padding int) Button {
- return func() *gtk.Button {
-  widget := f()
-  css.Apply(&widget.Widget, fmt.Sprintf("%s { padding-right: %dpx; }", widget.GetCssName(), padding))
-  return widget
- }
-}
-
-func (f Button) PaddingStart(padding int) Button {
- return func() *gtk.Button {
-  widget := f()
-  css.Apply(&widget.Widget, fmt.Sprintf("%s { padding-left: %dpx; }", widget.GetCssName(), padding))
-  return widget
- }
-}
-
-func (f Button) PaddingTop(padding int) Button {
- return func() *gtk.Button {
-  widget := f()
-  css.Apply(&widget.Widget, fmt.Sprintf("%s { padding-top: %dpx; }", widget.GetCssName(), padding))
-  return widget
- }
+	return func() *gtk.Button {
+		widget := f()
+		widget.SetOverflow(overflow)
+		return widget
+	}
 }
 
 func (f Button) ToGTK() *gtk.Widget {
@@ -218,43 +141,177 @@ func (f Button) ToGTK() *gtk.Widget {
 }
 
 func (f Button) VAlign(align gtk.Align) Button {
- return func() *gtk.Button {
-  widget := f()
-  widget.SetValign(align)
-  return widget
- }
+	return func() *gtk.Button {
+		widget := f()
+		widget.SetValign(align)
+		return widget
+	}
 }
 
 func (f Button) VExpand(expand bool) Button {
- return func() *gtk.Button {
-  widget := f()
-  widget.SetVexpand(expand)
-  return widget
- }
+	return func() *gtk.Button {
+		widget := f()
+		widget.SetVexpand(expand)
+		return widget
+	}
 }
 
 func (f Button) Visible(visible bool) Button {
- return func() *gtk.Button {
-  widget := f()
-  widget.SetVisible(visible)
-  return widget
- }
+	return func() *gtk.Button {
+		widget := f()
+		widget.SetVisible(visible)
+		return widget
+	}
 }
 
 func (f Button) VMargin(vertical int) Button {
- return func() *gtk.Button {
-  widget := f()
-  widget.SetMarginTop(vertical)
-  widget.SetMarginBottom(vertical)
-  return widget
- }
+	return func() *gtk.Button {
+		widget := f()
+		widget.SetMarginTop(vertical)
+		widget.SetMarginBottom(vertical)
+		return widget
+	}
+}
+
+
+
+func (f Button) Background(color string) Button {
+	return func() *gtk.Button {
+		widget := f()
+		css.Apply(&widget.Widget, fmt.Sprintf("%s { background-color: %s; }", widget.GetCssName(), color))
+		return widget
+	}
+}
+
+func (f Button) CornerRadius(radius int) Button {
+	return func() *gtk.Button {
+		widget := f()
+		css.Apply(&widget.Widget, fmt.Sprintf("%s { border-radius: %dpx; }", widget.GetCssName(), radius))
+		return widget
+	}
+}
+
+func (f Button) CSS(css string) Button {
+	return func() *gtk.Button {
+		widget := f()
+		widget.Ref()
+		defer widget.Unref()
+
+		provider := gtk.NewCssProvider()
+		provider.LoadFromString(css)
+		widget.GetStyleContext().AddProvider(provider, uint(gtk.STYLE_PROVIDER_PRIORITY_APPLICATION))
+		provider.Unref()
+
+		return widget
+	}
+}
+
+func (f Button) HPadding(padding int) Button {
+	return func() *gtk.Button {
+		widget := f()
+		css.Apply(&widget.Widget, fmt.Sprintf("%s { padding-left: %dpx; padding-right: %dpx; }", widget.GetCssName(), padding, padding))
+		return widget
+	}
+}
+
+func (f Button) MinHeight(minHeight int) Button {
+	return func() *gtk.Button {
+		widget := f()
+		css.Apply(&widget.Widget, fmt.Sprintf("%s { min-height: %dpx; }", widget.GetCssName(), minHeight))
+		return widget
+	}
+}
+
+func (f Button) MinWidth(minWidth int) Button {
+	return func() *gtk.Button {
+		widget := f()
+		css.Apply(&widget.Widget, fmt.Sprintf("%s { min-width: %dpx; }", widget.GetCssName(), minWidth))
+		return widget
+	}
+}
+
+func (f Button) Padding(padding int) Button {
+	return func() *gtk.Button {
+		widget := f()
+		css.Apply(&widget.Widget, fmt.Sprintf("%s { padding: %dpx; }", widget.GetCssName(), padding))
+		return widget
+	}
+}
+
+func (f Button) PaddingBottom(padding int) Button {
+	return func() *gtk.Button {
+		widget := f()
+		css.Apply(&widget.Widget, fmt.Sprintf("%s { padding-bottom: %dpx; }", widget.GetCssName(), padding))
+		return widget
+	}
+}
+
+func (f Button) PaddingEnd(padding int) Button {
+	return func() *gtk.Button {
+		widget := f()
+		css.Apply(&widget.Widget, fmt.Sprintf("%s { padding-right: %dpx; }", widget.GetCssName(), padding))
+		return widget
+	}
+}
+
+func (f Button) PaddingStart(padding int) Button {
+	return func() *gtk.Button {
+		widget := f()
+		css.Apply(&widget.Widget, fmt.Sprintf("%s { padding-left: %dpx; }", widget.GetCssName(), padding))
+		return widget
+	}
+}
+
+func (f Button) PaddingTop(padding int) Button {
+	return func() *gtk.Button {
+		widget := f()
+		css.Apply(&widget.Widget, fmt.Sprintf("%s { padding-top: %dpx; }", widget.GetCssName(), padding))
+		return widget
+	}
 }
 
 func (f Button) VPadding(padding int) Button {
- return func() *gtk.Button {
-  widget := f()
-  css.Apply(&widget.Widget, fmt.Sprintf("%s { padding-bottom: %dpx; padding-top: %dpx; }", widget.GetCssName(), padding, padding))
-  return widget
- }
+	return func() *gtk.Button {
+		widget := f()
+		css.Apply(&widget.Widget, fmt.Sprintf("%s { padding-bottom: %dpx; padding-top: %dpx; }", widget.GetCssName(), padding, padding))
+		return widget
+	}
 }
 
+
+
+func (f Button) BindVisible(state *state.State[bool]) Button {
+	return func() *gtk.Button {
+		widget := f()
+
+		var callbackId string
+		widget.ConnectRealize(g.Ptr(func(a gtk.Widget) {
+			callbackId = state.AddCallback(func(newValue bool) {
+				a.SetVisible(newValue)
+			})
+		}))
+		widget.ConnectUnrealize(g.Ptr(func(gtk.Widget) {
+			state.RemoveCallback(callbackId)
+		}))
+
+		return widget
+	}
+}
+
+func (f Button) BindSensitive(state *state.State[bool]) Button {
+	return func() *gtk.Button {
+		widget := f()
+
+		var callbackId string
+		widget.ConnectRealize(g.Ptr(func(a gtk.Widget) {
+			callbackId = state.AddCallback(func(newValue bool) {
+				a.SetSensitive(newValue)
+			})
+		}))
+		widget.ConnectUnrealize(g.Ptr(func(gtk.Widget) {
+			state.RemoveCallback(callbackId)
+		}))
+
+		return widget
+	}
+}

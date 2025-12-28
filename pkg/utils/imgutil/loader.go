@@ -22,3 +22,13 @@ func (i *ImgUtil) Load(url string) (*gdkpixbuf.PixbufLoader, error) {
 
 	return loader, nil
 }
+
+func (i *ImgUtil) LoadPixbuf(url string) (*gdkpixbuf.Pixbuf, error) {
+	loader, err := i.Load(url)
+	if err != nil {
+		return nil, err
+	}
+	defer loader.Unref()
+
+	return loader.GetAnimation().GetStaticImage(), nil
+}

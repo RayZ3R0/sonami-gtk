@@ -4,6 +4,7 @@ import (
 	"strconv"
 
 	"codeberg.org/dergs/tidalwave/pkg/schwifty"
+	"codeberg.org/dergs/tidalwave/pkg/schwifty/state"
 	. "codeberg.org/dergs/tidalwave/pkg/schwifty/syntax"
 	"codeberg.org/dergs/tidalwave/pkg/tidalapi/models/openapi"
 	v2 "codeberg.org/dergs/tidalwave/pkg/tidalapi/models/v2"
@@ -16,8 +17,9 @@ type LegacyColumnFunc func(track *v2.TrackItemData, grid *gtk.Grid, row int, col
 type TrackList struct {
 	schwifty.Box
 
-	container *gtk.Grid
-	title     *gtk.Label
+	container       *gtk.Grid
+	titleVisibility *state.State[bool]
+	titleText       *state.State[string]
 
 	// Will be called per-track to generate their columns
 	columnFuncs       []ColumnFunc
@@ -49,47 +51,50 @@ func (t *TrackList) AddLegacyTrack(track *v2.TrackItemData) {
 
 func (t *TrackList) SetTitle(title string) *TrackList {
 	if title == "" {
-		t.title.SetVisible(false)
+		t.titleVisibility.SetValue(false)
 		return t
 	}
-	t.title.SetText(title)
-	t.title.SetVisible(true)
+	t.titleText.SetValue(title)
+	t.titleVisibility.SetValue(true)
 	return t
 }
 
-func newTrackList(trackList *TrackList, title string) *TrackList {
-	trackList.container = gtk.NewGrid()
+func newTrackList(title string) *TrackList {
+	titleText := state.New[string](title)
+	titleVisibility := state.New[bool](title != "")
+	container := gtk.NewGrid()
 
-	trackList.title = Label(title).
-		VAlign(gtk.AlignCenterValue).
-		MarginStart(10).
-		MarginBottom(10).
-		FontWeight(600).
-		FontSize(20).
-		Visible(title != "")()
-
-	trackList.Box = VStack(
-		HStack(
-			ManagedWidget(&trackList.title.Widget),
-			Spacer().VExpand(false),
-		),
-		ManagedWidget(&trackList.container.Widget),
-	).VAlign(gtk.AlignStartValue)
-	return trackList
+	return &TrackList{
+		titleVisibility: titleVisibility,
+		titleText:       titleText,
+		container:       container,
+		rowMap:          make(map[string]int),
+		Box: VStack(
+			HStack(
+				Label(title).
+					BindText(titleText).
+					BindVisible(titleVisibility).
+					VAlign(gtk.AlignCenterValue).
+					MarginStart(10).
+					MarginBottom(10).
+					FontWeight(600).
+					FontSize(20).
+					Visible(title != ""),
+				Spacer().VExpand(false),
+			),
+			ManagedWidget(&container.Widget),
+		).VAlign(gtk.AlignStartValue),
+	}
 }
 
 func NewTrackList(title string, columns ...ColumnFunc) *TrackList {
-	trackList := &TrackList{
-		columnFuncs: columns,
-		rowMap:      make(map[string]int),
-	}
-	return newTrackList(trackList, title)
+	trackList := newTrackList(title)
+	trackList.columnFuncs = columns
+	return trackList
 }
 
 func NewLegacyTrackList(title string, columns ...LegacyColumnFunc) *TrackList {
-	trackList := &TrackList{
-		legacyColumnFuncs: columns,
-		rowMap:            make(map[string]int),
-	}
-	return newTrackList(trackList, title)
+	trackList := newTrackList(title)
+	trackList.legacyColumnFuncs = columns
+	return trackList
 }

@@ -1,50 +1,37 @@
 package schwifty
 
 import (
-	"fmt"
-
+	"codeberg.org/dergs/tidalwave/internal/g"
 	"codeberg.org/dergs/tidalwave/pkg/schwifty/css"
-	"github.com/jwijenbergh/puregotk/v4/gtk"
+	"codeberg.org/dergs/tidalwave/pkg/schwifty/state"
+	"fmt"
 	"github.com/jwijenbergh/puregotk/v4/adw"
+	"github.com/jwijenbergh/puregotk/v4/gtk"
 )
+
 
 type HeaderBar func() *adw.HeaderBar
 
 func (f HeaderBar) AddController(controller *gtk.EventController) HeaderBar {
- return func() *adw.HeaderBar {
-  widget := f()
-  widget.AddController(controller)
-  return widget
- }
-}
-
-func (f HeaderBar) Background(color string) HeaderBar {
- return func() *adw.HeaderBar {
-  widget := f()
-  css.Apply(&widget.Widget, fmt.Sprintf("%s { background-color: %s; }", widget.GetCssName(), color))
-  return widget
- }
-}
-
-func (f HeaderBar) CornerRadius(radius int) HeaderBar {
- return func() *adw.HeaderBar {
-  widget := f()
-  css.Apply(&widget.Widget, fmt.Sprintf("%s { border-radius: %dpx; }", widget.GetCssName(), radius))
-  return widget
- }
-}
-
-func (f HeaderBar) CSS(css string) HeaderBar {
 	return func() *adw.HeaderBar {
 		widget := f()
-		widget.Ref()
-		defer widget.Unref()
+		widget.AddController(controller)
+		return widget
+	}
+}
 
-		provider := gtk.NewCssProvider()
-		provider.LoadFromString(css)
-		widget.GetStyleContext().AddProvider(provider, uint(gtk.STYLE_PROVIDER_PRIORITY_APPLICATION))
-		provider.Unref()
+func (f HeaderBar) ConnectConstruct(cb func(*adw.HeaderBar)) HeaderBar {
+	return func() *adw.HeaderBar {
+		widget := f()
+		cb(widget)
+		return widget
+	}
+}
 
+func (f HeaderBar) ConnectDestroy(cb func(gtk.Widget)) HeaderBar {
+	return func() *adw.HeaderBar {
+		widget := f()
+		widget.ConnectDestroy(&cb)
 		return widget
 	}
 }
@@ -90,14 +77,6 @@ func (f HeaderBar) HMargin(horizontal int) HeaderBar {
 	}
 }
 
-func (f HeaderBar) HPadding(padding int) HeaderBar {
- return func() *adw.HeaderBar {
-  widget := f()
-  css.Apply(&widget.Widget, fmt.Sprintf("%s { padding-left: %dpx; padding-right: %dpx; }", widget.GetCssName(), padding, padding))
-  return widget
- }
-}
-
 func (f HeaderBar) Margin(margin int) HeaderBar {
 	return func() *adw.HeaderBar {
 		widget := f()
@@ -141,76 +120,20 @@ func (f HeaderBar) MarginTop(top int) HeaderBar {
 	}
 }
 
-func (f HeaderBar) MinHeight(minHeight int) HeaderBar {
- return func() *adw.HeaderBar {
-  widget := f()
-  css.Apply(&widget.Widget, fmt.Sprintf("%s { min-height: %dpx; }", widget.GetCssName(), minHeight))
-  return widget
- }
-}
-
-func (f HeaderBar) MinWidth(minWidth int) HeaderBar {
- return func() *adw.HeaderBar {
-  widget := f()
-  css.Apply(&widget.Widget, fmt.Sprintf("%s { min-width: %dpx; }", widget.GetCssName(), minWidth))
-  return widget
- }
-}
-
 func (f HeaderBar) Opacity(opacity float64) HeaderBar {
- return func() *adw.HeaderBar {
-  widget := f()
-  widget.SetOpacity(opacity)
-  return widget
- }
+	return func() *adw.HeaderBar {
+		widget := f()
+		widget.SetOpacity(opacity)
+		return widget
+	}
 }
 
 func (f HeaderBar) Overflow(overflow gtk.Overflow) HeaderBar {
- return func() *adw.HeaderBar {
-  widget := f()
-  widget.SetOverflow(overflow)
-  return widget
- }
-}
-
-func (f HeaderBar) Padding(padding int) HeaderBar {
- return func() *adw.HeaderBar {
-  widget := f()
-  css.Apply(&widget.Widget, fmt.Sprintf("%s { padding: %dpx; }", widget.GetCssName(), padding))
-  return widget
- }
-}
-
-func (f HeaderBar) PaddingBottom(padding int) HeaderBar {
- return func() *adw.HeaderBar {
-  widget := f()
-  css.Apply(&widget.Widget, fmt.Sprintf("%s { padding-bottom: %dpx; }", widget.GetCssName(), padding))
-  return widget
- }
-}
-
-func (f HeaderBar) PaddingEnd(padding int) HeaderBar {
- return func() *adw.HeaderBar {
-  widget := f()
-  css.Apply(&widget.Widget, fmt.Sprintf("%s { padding-right: %dpx; }", widget.GetCssName(), padding))
-  return widget
- }
-}
-
-func (f HeaderBar) PaddingStart(padding int) HeaderBar {
- return func() *adw.HeaderBar {
-  widget := f()
-  css.Apply(&widget.Widget, fmt.Sprintf("%s { padding-left: %dpx; }", widget.GetCssName(), padding))
-  return widget
- }
-}
-
-func (f HeaderBar) PaddingTop(padding int) HeaderBar {
- return func() *adw.HeaderBar {
-  widget := f()
-  css.Apply(&widget.Widget, fmt.Sprintf("%s { padding-top: %dpx; }", widget.GetCssName(), padding))
-  return widget
- }
+	return func() *adw.HeaderBar {
+		widget := f()
+		widget.SetOverflow(overflow)
+		return widget
+	}
 }
 
 func (f HeaderBar) ToGTK() *gtk.Widget {
@@ -219,43 +142,177 @@ func (f HeaderBar) ToGTK() *gtk.Widget {
 }
 
 func (f HeaderBar) VAlign(align gtk.Align) HeaderBar {
- return func() *adw.HeaderBar {
-  widget := f()
-  widget.SetValign(align)
-  return widget
- }
+	return func() *adw.HeaderBar {
+		widget := f()
+		widget.SetValign(align)
+		return widget
+	}
 }
 
 func (f HeaderBar) VExpand(expand bool) HeaderBar {
- return func() *adw.HeaderBar {
-  widget := f()
-  widget.SetVexpand(expand)
-  return widget
- }
+	return func() *adw.HeaderBar {
+		widget := f()
+		widget.SetVexpand(expand)
+		return widget
+	}
 }
 
 func (f HeaderBar) Visible(visible bool) HeaderBar {
- return func() *adw.HeaderBar {
-  widget := f()
-  widget.SetVisible(visible)
-  return widget
- }
+	return func() *adw.HeaderBar {
+		widget := f()
+		widget.SetVisible(visible)
+		return widget
+	}
 }
 
 func (f HeaderBar) VMargin(vertical int) HeaderBar {
- return func() *adw.HeaderBar {
-  widget := f()
-  widget.SetMarginTop(vertical)
-  widget.SetMarginBottom(vertical)
-  return widget
- }
+	return func() *adw.HeaderBar {
+		widget := f()
+		widget.SetMarginTop(vertical)
+		widget.SetMarginBottom(vertical)
+		return widget
+	}
+}
+
+
+
+func (f HeaderBar) Background(color string) HeaderBar {
+	return func() *adw.HeaderBar {
+		widget := f()
+		css.Apply(&widget.Widget, fmt.Sprintf("%s { background-color: %s; }", widget.GetCssName(), color))
+		return widget
+	}
+}
+
+func (f HeaderBar) CornerRadius(radius int) HeaderBar {
+	return func() *adw.HeaderBar {
+		widget := f()
+		css.Apply(&widget.Widget, fmt.Sprintf("%s { border-radius: %dpx; }", widget.GetCssName(), radius))
+		return widget
+	}
+}
+
+func (f HeaderBar) CSS(css string) HeaderBar {
+	return func() *adw.HeaderBar {
+		widget := f()
+		widget.Ref()
+		defer widget.Unref()
+
+		provider := gtk.NewCssProvider()
+		provider.LoadFromString(css)
+		widget.GetStyleContext().AddProvider(provider, uint(gtk.STYLE_PROVIDER_PRIORITY_APPLICATION))
+		provider.Unref()
+
+		return widget
+	}
+}
+
+func (f HeaderBar) HPadding(padding int) HeaderBar {
+	return func() *adw.HeaderBar {
+		widget := f()
+		css.Apply(&widget.Widget, fmt.Sprintf("%s { padding-left: %dpx; padding-right: %dpx; }", widget.GetCssName(), padding, padding))
+		return widget
+	}
+}
+
+func (f HeaderBar) MinHeight(minHeight int) HeaderBar {
+	return func() *adw.HeaderBar {
+		widget := f()
+		css.Apply(&widget.Widget, fmt.Sprintf("%s { min-height: %dpx; }", widget.GetCssName(), minHeight))
+		return widget
+	}
+}
+
+func (f HeaderBar) MinWidth(minWidth int) HeaderBar {
+	return func() *adw.HeaderBar {
+		widget := f()
+		css.Apply(&widget.Widget, fmt.Sprintf("%s { min-width: %dpx; }", widget.GetCssName(), minWidth))
+		return widget
+	}
+}
+
+func (f HeaderBar) Padding(padding int) HeaderBar {
+	return func() *adw.HeaderBar {
+		widget := f()
+		css.Apply(&widget.Widget, fmt.Sprintf("%s { padding: %dpx; }", widget.GetCssName(), padding))
+		return widget
+	}
+}
+
+func (f HeaderBar) PaddingBottom(padding int) HeaderBar {
+	return func() *adw.HeaderBar {
+		widget := f()
+		css.Apply(&widget.Widget, fmt.Sprintf("%s { padding-bottom: %dpx; }", widget.GetCssName(), padding))
+		return widget
+	}
+}
+
+func (f HeaderBar) PaddingEnd(padding int) HeaderBar {
+	return func() *adw.HeaderBar {
+		widget := f()
+		css.Apply(&widget.Widget, fmt.Sprintf("%s { padding-right: %dpx; }", widget.GetCssName(), padding))
+		return widget
+	}
+}
+
+func (f HeaderBar) PaddingStart(padding int) HeaderBar {
+	return func() *adw.HeaderBar {
+		widget := f()
+		css.Apply(&widget.Widget, fmt.Sprintf("%s { padding-left: %dpx; }", widget.GetCssName(), padding))
+		return widget
+	}
+}
+
+func (f HeaderBar) PaddingTop(padding int) HeaderBar {
+	return func() *adw.HeaderBar {
+		widget := f()
+		css.Apply(&widget.Widget, fmt.Sprintf("%s { padding-top: %dpx; }", widget.GetCssName(), padding))
+		return widget
+	}
 }
 
 func (f HeaderBar) VPadding(padding int) HeaderBar {
- return func() *adw.HeaderBar {
-  widget := f()
-  css.Apply(&widget.Widget, fmt.Sprintf("%s { padding-bottom: %dpx; padding-top: %dpx; }", widget.GetCssName(), padding, padding))
-  return widget
- }
+	return func() *adw.HeaderBar {
+		widget := f()
+		css.Apply(&widget.Widget, fmt.Sprintf("%s { padding-bottom: %dpx; padding-top: %dpx; }", widget.GetCssName(), padding, padding))
+		return widget
+	}
 }
 
+
+
+func (f HeaderBar) BindVisible(state *state.State[bool]) HeaderBar {
+	return func() *adw.HeaderBar {
+		widget := f()
+
+		var callbackId string
+		widget.ConnectRealize(g.Ptr(func(a gtk.Widget) {
+			callbackId = state.AddCallback(func(newValue bool) {
+				a.SetVisible(newValue)
+			})
+		}))
+		widget.ConnectUnrealize(g.Ptr(func(gtk.Widget) {
+			state.RemoveCallback(callbackId)
+		}))
+
+		return widget
+	}
+}
+
+func (f HeaderBar) BindSensitive(state *state.State[bool]) HeaderBar {
+	return func() *adw.HeaderBar {
+		widget := f()
+
+		var callbackId string
+		widget.ConnectRealize(g.Ptr(func(a gtk.Widget) {
+			callbackId = state.AddCallback(func(newValue bool) {
+				a.SetSensitive(newValue)
+			})
+		}))
+		widget.ConnectUnrealize(g.Ptr(func(gtk.Widget) {
+			state.RemoveCallback(callbackId)
+		}))
+
+		return widget
+	}
+}

@@ -2,271 +2,30 @@ package main
 
 import (
 	"fmt"
+	"go/parser"
+	"go/token"
 	"os"
+	"regexp"
+	"sort"
 	"strings"
+
+	_ "embed"
 )
 
-var glue = `package schwifty
+//go:embed template/template.go
+var template string
 
-import (
-	"fmt"
+//go:embed template/css.go
+var css string
 
-	"codeberg.org/dergs/tidalwave/pkg/schwifty/css"
-	"github.com/jwijenbergh/puregotk/v4/gtk"{{IMPORTS}}
-)
+//go:embed template/state.go
+var state string
 
-type {{TYPE}} func() {{BASE_TYPE}}
-
-func (f {{TYPE}}) AddController(controller *gtk.EventController) {{TYPE}} {
- return func() {{BASE_TYPE}} {
-  widget := f()
-  widget.AddController(controller)
-  return widget
- }
+var templateList = []string{
+	template,
+	css,
+	state,
 }
-
-func (f {{TYPE}}) Background(color string) {{TYPE}} {
- return func() {{BASE_TYPE}} {
-  widget := f()
-  css.Apply(&widget.Widget, fmt.Sprintf("%s { background-color: %s; }", widget.GetCssName(), color))
-  return widget
- }
-}
-
-func (f {{TYPE}}) CornerRadius(radius int) {{TYPE}} {
- return func() {{BASE_TYPE}} {
-  widget := f()
-  css.Apply(&widget.Widget, fmt.Sprintf("%s { border-radius: %dpx; }", widget.GetCssName(), radius))
-  return widget
- }
-}
-
-func (f {{TYPE}}) CSS(css string) {{TYPE}} {
-	return func() {{BASE_TYPE}} {
-		widget := f()
-		widget.Ref()
-		defer widget.Unref()
-
-		provider := gtk.NewCssProvider()
-		provider.LoadFromString(css)
-		widget.GetStyleContext().AddProvider(provider, uint(gtk.STYLE_PROVIDER_PRIORITY_APPLICATION))
-		provider.Unref()
-
-		return widget
-	}
-}
-
-func (f {{TYPE}}) Focusable(focusable bool) {{TYPE}} {
-	return func() {{BASE_TYPE}} {
-		widget := f()
-		widget.SetFocusable(focusable)
-		return widget
-	}
-}
-
-func (f {{TYPE}}) FocusOnClick(focusOnClick bool) {{TYPE}} {
-	return func() {{BASE_TYPE}} {
-		widget := f()
-		widget.SetFocusOnClick(focusOnClick)
-		return widget
-	}
-}
-
-func (f {{TYPE}}) HAlign(align gtk.Align) {{TYPE}} {
-	return func() {{BASE_TYPE}} {
-		widget := f()
-		widget.SetHalign(align)
-		return widget
-	}
-}
-
-func (f {{TYPE}}) HExpand(expand bool) {{TYPE}} {
-	return func() {{BASE_TYPE}} {
-		widget := f()
-		widget.SetHexpand(expand)
-		return widget
-	}
-}
-
-func (f {{TYPE}}) HMargin(horizontal int) {{TYPE}} {
-	return func() {{BASE_TYPE}} {
-		widget := f()
-		widget.SetMarginEnd(horizontal)
-		widget.SetMarginStart(horizontal)
-		return widget
-	}
-}
-
-func (f {{TYPE}}) HPadding(padding int) {{TYPE}} {
- return func() {{BASE_TYPE}} {
-  widget := f()
-  css.Apply(&widget.Widget, fmt.Sprintf("%s { padding-left: %dpx; padding-right: %dpx; }", widget.GetCssName(), padding, padding))
-  return widget
- }
-}
-
-func (f {{TYPE}}) Margin(margin int) {{TYPE}} {
-	return func() {{BASE_TYPE}} {
-		widget := f()
-		widget.SetMarginBottom(margin)
-		widget.SetMarginEnd(margin)
-		widget.SetMarginStart(margin)
-		widget.SetMarginTop(margin)
-		return widget
-	}
-}
-
-func (f {{TYPE}}) MarginBottom(bottom int) {{TYPE}} {
-	return func() {{BASE_TYPE}} {
-		widget := f()
-		widget.SetMarginBottom(bottom)
-		return widget
-	}
-}
-
-func (f {{TYPE}}) MarginEnd(end int) {{TYPE}} {
-	return func() {{BASE_TYPE}} {
-		widget := f()
-		widget.SetMarginEnd(end)
-		return widget
-	}
-}
-
-func (f {{TYPE}}) MarginStart(start int) {{TYPE}} {
-	return func() {{BASE_TYPE}} {
-		widget := f()
-		widget.SetMarginStart(start)
-		return widget
-	}
-}
-
-func (f {{TYPE}}) MarginTop(top int) {{TYPE}} {
-	return func() {{BASE_TYPE}} {
-		widget := f()
-		widget.SetMarginTop(top)
-		return widget
-	}
-}
-
-func (f {{TYPE}}) MinHeight(minHeight int) {{TYPE}} {
- return func() {{BASE_TYPE}} {
-  widget := f()
-  css.Apply(&widget.Widget, fmt.Sprintf("%s { min-height: %dpx; }", widget.GetCssName(), minHeight))
-  return widget
- }
-}
-
-func (f {{TYPE}}) MinWidth(minWidth int) {{TYPE}} {
- return func() {{BASE_TYPE}} {
-  widget := f()
-  css.Apply(&widget.Widget, fmt.Sprintf("%s { min-width: %dpx; }", widget.GetCssName(), minWidth))
-  return widget
- }
-}
-
-func (f {{TYPE}}) Opacity(opacity float64) {{TYPE}} {
- return func() {{BASE_TYPE}} {
-  widget := f()
-  widget.SetOpacity(opacity)
-  return widget
- }
-}
-
-func (f {{TYPE}}) Overflow(overflow gtk.Overflow) {{TYPE}} {
- return func() {{BASE_TYPE}} {
-  widget := f()
-  widget.SetOverflow(overflow)
-  return widget
- }
-}
-
-func (f {{TYPE}}) Padding(padding int) {{TYPE}} {
- return func() {{BASE_TYPE}} {
-  widget := f()
-  css.Apply(&widget.Widget, fmt.Sprintf("%s { padding: %dpx; }", widget.GetCssName(), padding))
-  return widget
- }
-}
-
-func (f {{TYPE}}) PaddingBottom(padding int) {{TYPE}} {
- return func() {{BASE_TYPE}} {
-  widget := f()
-  css.Apply(&widget.Widget, fmt.Sprintf("%s { padding-bottom: %dpx; }", widget.GetCssName(), padding))
-  return widget
- }
-}
-
-func (f {{TYPE}}) PaddingEnd(padding int) {{TYPE}} {
- return func() {{BASE_TYPE}} {
-  widget := f()
-  css.Apply(&widget.Widget, fmt.Sprintf("%s { padding-right: %dpx; }", widget.GetCssName(), padding))
-  return widget
- }
-}
-
-func (f {{TYPE}}) PaddingStart(padding int) {{TYPE}} {
- return func() {{BASE_TYPE}} {
-  widget := f()
-  css.Apply(&widget.Widget, fmt.Sprintf("%s { padding-left: %dpx; }", widget.GetCssName(), padding))
-  return widget
- }
-}
-
-func (f {{TYPE}}) PaddingTop(padding int) {{TYPE}} {
- return func() {{BASE_TYPE}} {
-  widget := f()
-  css.Apply(&widget.Widget, fmt.Sprintf("%s { padding-top: %dpx; }", widget.GetCssName(), padding))
-  return widget
- }
-}
-
-func (f {{TYPE}}) ToGTK() *gtk.Widget {
-	val := f()
-	return &val.Widget
-}
-
-func (f {{TYPE}}) VAlign(align gtk.Align) {{TYPE}} {
- return func() {{BASE_TYPE}} {
-  widget := f()
-  widget.SetValign(align)
-  return widget
- }
-}
-
-func (f {{TYPE}}) VExpand(expand bool) {{TYPE}} {
- return func() {{BASE_TYPE}} {
-  widget := f()
-  widget.SetVexpand(expand)
-  return widget
- }
-}
-
-func (f {{TYPE}}) Visible(visible bool) {{TYPE}} {
- return func() {{BASE_TYPE}} {
-  widget := f()
-  widget.SetVisible(visible)
-  return widget
- }
-}
-
-func (f {{TYPE}}) VMargin(vertical int) {{TYPE}} {
- return func() {{BASE_TYPE}} {
-  widget := f()
-  widget.SetMarginTop(vertical)
-  widget.SetMarginBottom(vertical)
-  return widget
- }
-}
-
-func (f {{TYPE}}) VPadding(padding int) {{TYPE}} {
- return func() {{BASE_TYPE}} {
-  widget := f()
-  css.Apply(&widget.Widget, fmt.Sprintf("%s { padding-bottom: %dpx; padding-top: %dpx; }", widget.GetCssName(), padding, padding))
-  return widget
- }
-}
-
-`
 
 func main() {
 	if len(os.Args) != 3 {
@@ -277,13 +36,90 @@ func main() {
 	typ := os.Args[1]
 	baseType := os.Args[2]
 
-	imports := ""
+	additionalImports := []string{}
 	if strings.Contains(baseType, "adw.") {
-		imports += "\n\t\"github.com/jwijenbergh/puregotk/v4/adw\""
+		additionalImports = append(additionalImports, "\"github.com/jwijenbergh/puregotk/v4/adw\"")
 	}
 
-	output := strings.ReplaceAll(glue, "{{TYPE}}", typ)
-	output = strings.ReplaceAll(output, "{{BASE_TYPE}}", baseType)
-	output = strings.ReplaceAll(output, "{{IMPORTS}}", imports)
+	parsedTemplates := make([]string, len(templateList))
+	for i, template := range templateList {
+		parsedTemplates[i] = parseTemplate(template, typ, baseType)
+	}
+
+	cleanedTemplates := make([]string, len(parsedTemplates))
+	for i, template := range parsedTemplates {
+		cleanedTemplates[i] = cleanTemplate(template)
+	}
+
+	output := "package schwifty\n\n"
+	output += "import (\n"
+	output += generateFinalImports(parsedTemplates, additionalImports)
+	output += "\n)\n\n"
+	output += strings.Join(cleanedTemplates, "\n\n")
 	os.WriteFile(strings.ToLower(typ)+"_generated.go", []byte(output), 0644)
+}
+
+func parseTemplate(template string, typ string, baseType string) string {
+	// Get rid of temporary type definitions
+	output := strings.ReplaceAll(template, "type TEMPLATE_BASE_TYPE struct{ gtk.Widget }\n\n", "")
+
+	// Insert real type names
+	output = strings.ReplaceAll(output, "TEMPLATE_TYPE", typ)
+	output = strings.ReplaceAll(output, "TEMPLATE_BASE_TYPE", baseType)
+	return output
+}
+
+func parseImports(parsedTemplate string) []string {
+	fset := token.NewFileSet()
+
+	file, err := parser.ParseFile(
+		fset,
+		"",             // filename (can be empty)
+		parsedTemplate, // source code as string
+		parser.ImportsOnly,
+	)
+	if err != nil {
+		return nil
+	}
+
+	var imports []string
+	for _, imp := range file.Imports {
+		imports = append(imports, imp.Path.Value)
+	}
+
+	return imports
+}
+
+func generateFinalImports(parsedTemplates []string, additionalImports []string) string {
+	importList := additionalImports
+	importSet := make(map[string]bool)
+	for _, template := range parsedTemplates {
+		templateImports := parseImports(template)
+		for _, imp := range templateImports {
+			if !importSet[imp] {
+				importSet[imp] = true
+				importList = append(importList, imp)
+			}
+		}
+	}
+
+	// Sort imports according to go fmt rules
+	sort.Strings(importList)
+
+	return "\t" + strings.Join(importList, "\n\t")
+}
+
+func cleanTemplate(template string) string {
+	// Remove package declaration
+	output := strings.ReplaceAll(template, "package schwifty\n", "")
+
+	// Remove imports block using regex
+	re := regexp.MustCompile(`(?s)import\s*\([^)]*\)\s*`)
+	output = re.ReplaceAllString(output, "")
+
+	// Remove single line imports using regex
+	singleImportRe := regexp.MustCompile(`(?m)^import\s+"[^"]*"\s*$`)
+	output = singleImportRe.ReplaceAllString(output, "")
+
+	return output
 }

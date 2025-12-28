@@ -1,49 +1,36 @@
 package schwifty
 
 import (
-	"fmt"
-
+	"codeberg.org/dergs/tidalwave/internal/g"
 	"codeberg.org/dergs/tidalwave/pkg/schwifty/css"
+	"codeberg.org/dergs/tidalwave/pkg/schwifty/state"
+	"fmt"
 	"github.com/jwijenbergh/puregotk/v4/gtk"
 )
+
 
 type Widget func() *WrappedWidget
 
 func (f Widget) AddController(controller *gtk.EventController) Widget {
- return func() *WrappedWidget {
-  widget := f()
-  widget.AddController(controller)
-  return widget
- }
-}
-
-func (f Widget) Background(color string) Widget {
- return func() *WrappedWidget {
-  widget := f()
-  css.Apply(&widget.Widget, fmt.Sprintf("%s { background-color: %s; }", widget.GetCssName(), color))
-  return widget
- }
-}
-
-func (f Widget) CornerRadius(radius int) Widget {
- return func() *WrappedWidget {
-  widget := f()
-  css.Apply(&widget.Widget, fmt.Sprintf("%s { border-radius: %dpx; }", widget.GetCssName(), radius))
-  return widget
- }
-}
-
-func (f Widget) CSS(css string) Widget {
 	return func() *WrappedWidget {
 		widget := f()
-		widget.Ref()
-		defer widget.Unref()
+		widget.AddController(controller)
+		return widget
+	}
+}
 
-		provider := gtk.NewCssProvider()
-		provider.LoadFromString(css)
-		widget.GetStyleContext().AddProvider(provider, uint(gtk.STYLE_PROVIDER_PRIORITY_APPLICATION))
-		provider.Unref()
+func (f Widget) ConnectConstruct(cb func(*WrappedWidget)) Widget {
+	return func() *WrappedWidget {
+		widget := f()
+		cb(widget)
+		return widget
+	}
+}
 
+func (f Widget) ConnectDestroy(cb func(gtk.Widget)) Widget {
+	return func() *WrappedWidget {
+		widget := f()
+		widget.ConnectDestroy(&cb)
 		return widget
 	}
 }
@@ -89,14 +76,6 @@ func (f Widget) HMargin(horizontal int) Widget {
 	}
 }
 
-func (f Widget) HPadding(padding int) Widget {
- return func() *WrappedWidget {
-  widget := f()
-  css.Apply(&widget.Widget, fmt.Sprintf("%s { padding-left: %dpx; padding-right: %dpx; }", widget.GetCssName(), padding, padding))
-  return widget
- }
-}
-
 func (f Widget) Margin(margin int) Widget {
 	return func() *WrappedWidget {
 		widget := f()
@@ -140,76 +119,20 @@ func (f Widget) MarginTop(top int) Widget {
 	}
 }
 
-func (f Widget) MinHeight(minHeight int) Widget {
- return func() *WrappedWidget {
-  widget := f()
-  css.Apply(&widget.Widget, fmt.Sprintf("%s { min-height: %dpx; }", widget.GetCssName(), minHeight))
-  return widget
- }
-}
-
-func (f Widget) MinWidth(minWidth int) Widget {
- return func() *WrappedWidget {
-  widget := f()
-  css.Apply(&widget.Widget, fmt.Sprintf("%s { min-width: %dpx; }", widget.GetCssName(), minWidth))
-  return widget
- }
-}
-
 func (f Widget) Opacity(opacity float64) Widget {
- return func() *WrappedWidget {
-  widget := f()
-  widget.SetOpacity(opacity)
-  return widget
- }
+	return func() *WrappedWidget {
+		widget := f()
+		widget.SetOpacity(opacity)
+		return widget
+	}
 }
 
 func (f Widget) Overflow(overflow gtk.Overflow) Widget {
- return func() *WrappedWidget {
-  widget := f()
-  widget.SetOverflow(overflow)
-  return widget
- }
-}
-
-func (f Widget) Padding(padding int) Widget {
- return func() *WrappedWidget {
-  widget := f()
-  css.Apply(&widget.Widget, fmt.Sprintf("%s { padding: %dpx; }", widget.GetCssName(), padding))
-  return widget
- }
-}
-
-func (f Widget) PaddingBottom(padding int) Widget {
- return func() *WrappedWidget {
-  widget := f()
-  css.Apply(&widget.Widget, fmt.Sprintf("%s { padding-bottom: %dpx; }", widget.GetCssName(), padding))
-  return widget
- }
-}
-
-func (f Widget) PaddingEnd(padding int) Widget {
- return func() *WrappedWidget {
-  widget := f()
-  css.Apply(&widget.Widget, fmt.Sprintf("%s { padding-right: %dpx; }", widget.GetCssName(), padding))
-  return widget
- }
-}
-
-func (f Widget) PaddingStart(padding int) Widget {
- return func() *WrappedWidget {
-  widget := f()
-  css.Apply(&widget.Widget, fmt.Sprintf("%s { padding-left: %dpx; }", widget.GetCssName(), padding))
-  return widget
- }
-}
-
-func (f Widget) PaddingTop(padding int) Widget {
- return func() *WrappedWidget {
-  widget := f()
-  css.Apply(&widget.Widget, fmt.Sprintf("%s { padding-top: %dpx; }", widget.GetCssName(), padding))
-  return widget
- }
+	return func() *WrappedWidget {
+		widget := f()
+		widget.SetOverflow(overflow)
+		return widget
+	}
 }
 
 func (f Widget) ToGTK() *gtk.Widget {
@@ -218,43 +141,177 @@ func (f Widget) ToGTK() *gtk.Widget {
 }
 
 func (f Widget) VAlign(align gtk.Align) Widget {
- return func() *WrappedWidget {
-  widget := f()
-  widget.SetValign(align)
-  return widget
- }
+	return func() *WrappedWidget {
+		widget := f()
+		widget.SetValign(align)
+		return widget
+	}
 }
 
 func (f Widget) VExpand(expand bool) Widget {
- return func() *WrappedWidget {
-  widget := f()
-  widget.SetVexpand(expand)
-  return widget
- }
+	return func() *WrappedWidget {
+		widget := f()
+		widget.SetVexpand(expand)
+		return widget
+	}
 }
 
 func (f Widget) Visible(visible bool) Widget {
- return func() *WrappedWidget {
-  widget := f()
-  widget.SetVisible(visible)
-  return widget
- }
+	return func() *WrappedWidget {
+		widget := f()
+		widget.SetVisible(visible)
+		return widget
+	}
 }
 
 func (f Widget) VMargin(vertical int) Widget {
- return func() *WrappedWidget {
-  widget := f()
-  widget.SetMarginTop(vertical)
-  widget.SetMarginBottom(vertical)
-  return widget
- }
+	return func() *WrappedWidget {
+		widget := f()
+		widget.SetMarginTop(vertical)
+		widget.SetMarginBottom(vertical)
+		return widget
+	}
+}
+
+
+
+func (f Widget) Background(color string) Widget {
+	return func() *WrappedWidget {
+		widget := f()
+		css.Apply(&widget.Widget, fmt.Sprintf("%s { background-color: %s; }", widget.GetCssName(), color))
+		return widget
+	}
+}
+
+func (f Widget) CornerRadius(radius int) Widget {
+	return func() *WrappedWidget {
+		widget := f()
+		css.Apply(&widget.Widget, fmt.Sprintf("%s { border-radius: %dpx; }", widget.GetCssName(), radius))
+		return widget
+	}
+}
+
+func (f Widget) CSS(css string) Widget {
+	return func() *WrappedWidget {
+		widget := f()
+		widget.Ref()
+		defer widget.Unref()
+
+		provider := gtk.NewCssProvider()
+		provider.LoadFromString(css)
+		widget.GetStyleContext().AddProvider(provider, uint(gtk.STYLE_PROVIDER_PRIORITY_APPLICATION))
+		provider.Unref()
+
+		return widget
+	}
+}
+
+func (f Widget) HPadding(padding int) Widget {
+	return func() *WrappedWidget {
+		widget := f()
+		css.Apply(&widget.Widget, fmt.Sprintf("%s { padding-left: %dpx; padding-right: %dpx; }", widget.GetCssName(), padding, padding))
+		return widget
+	}
+}
+
+func (f Widget) MinHeight(minHeight int) Widget {
+	return func() *WrappedWidget {
+		widget := f()
+		css.Apply(&widget.Widget, fmt.Sprintf("%s { min-height: %dpx; }", widget.GetCssName(), minHeight))
+		return widget
+	}
+}
+
+func (f Widget) MinWidth(minWidth int) Widget {
+	return func() *WrappedWidget {
+		widget := f()
+		css.Apply(&widget.Widget, fmt.Sprintf("%s { min-width: %dpx; }", widget.GetCssName(), minWidth))
+		return widget
+	}
+}
+
+func (f Widget) Padding(padding int) Widget {
+	return func() *WrappedWidget {
+		widget := f()
+		css.Apply(&widget.Widget, fmt.Sprintf("%s { padding: %dpx; }", widget.GetCssName(), padding))
+		return widget
+	}
+}
+
+func (f Widget) PaddingBottom(padding int) Widget {
+	return func() *WrappedWidget {
+		widget := f()
+		css.Apply(&widget.Widget, fmt.Sprintf("%s { padding-bottom: %dpx; }", widget.GetCssName(), padding))
+		return widget
+	}
+}
+
+func (f Widget) PaddingEnd(padding int) Widget {
+	return func() *WrappedWidget {
+		widget := f()
+		css.Apply(&widget.Widget, fmt.Sprintf("%s { padding-right: %dpx; }", widget.GetCssName(), padding))
+		return widget
+	}
+}
+
+func (f Widget) PaddingStart(padding int) Widget {
+	return func() *WrappedWidget {
+		widget := f()
+		css.Apply(&widget.Widget, fmt.Sprintf("%s { padding-left: %dpx; }", widget.GetCssName(), padding))
+		return widget
+	}
+}
+
+func (f Widget) PaddingTop(padding int) Widget {
+	return func() *WrappedWidget {
+		widget := f()
+		css.Apply(&widget.Widget, fmt.Sprintf("%s { padding-top: %dpx; }", widget.GetCssName(), padding))
+		return widget
+	}
 }
 
 func (f Widget) VPadding(padding int) Widget {
- return func() *WrappedWidget {
-  widget := f()
-  css.Apply(&widget.Widget, fmt.Sprintf("%s { padding-bottom: %dpx; padding-top: %dpx; }", widget.GetCssName(), padding, padding))
-  return widget
- }
+	return func() *WrappedWidget {
+		widget := f()
+		css.Apply(&widget.Widget, fmt.Sprintf("%s { padding-bottom: %dpx; padding-top: %dpx; }", widget.GetCssName(), padding, padding))
+		return widget
+	}
 }
 
+
+
+func (f Widget) BindVisible(state *state.State[bool]) Widget {
+	return func() *WrappedWidget {
+		widget := f()
+
+		var callbackId string
+		widget.ConnectRealize(g.Ptr(func(a gtk.Widget) {
+			callbackId = state.AddCallback(func(newValue bool) {
+				a.SetVisible(newValue)
+			})
+		}))
+		widget.ConnectUnrealize(g.Ptr(func(gtk.Widget) {
+			state.RemoveCallback(callbackId)
+		}))
+
+		return widget
+	}
+}
+
+func (f Widget) BindSensitive(state *state.State[bool]) Widget {
+	return func() *WrappedWidget {
+		widget := f()
+
+		var callbackId string
+		widget.ConnectRealize(g.Ptr(func(a gtk.Widget) {
+			callbackId = state.AddCallback(func(newValue bool) {
+				a.SetSensitive(newValue)
+			})
+		}))
+		widget.ConnectUnrealize(g.Ptr(func(gtk.Widget) {
+			state.RemoveCallback(callbackId)
+		}))
+
+		return widget
+	}
+}

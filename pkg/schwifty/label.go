@@ -3,7 +3,9 @@ package schwifty
 import (
 	"fmt"
 
+	"codeberg.org/dergs/tidalwave/internal/g"
 	"codeberg.org/dergs/tidalwave/pkg/schwifty/css"
+	"codeberg.org/dergs/tidalwave/pkg/schwifty/state"
 	"github.com/jwijenbergh/puregotk/v4/gtk"
 	"github.com/jwijenbergh/puregotk/v4/pango"
 )
@@ -99,6 +101,24 @@ func (f Label) Text(text string) Label {
 	return func() *gtk.Label {
 		label := f()
 		label.SetText(text)
+		return label
+	}
+}
+
+func (f Label) BindText(state *state.State[string]) Label {
+	return func() *gtk.Label {
+		label := f()
+
+		var callbackId string
+		label.ConnectRealize(g.Ptr(func(a gtk.Widget) {
+			callbackId = state.AddCallback(func(newValue string) {
+				gtk.LabelNewFromInternalPtr(a.GoPointer()).SetText(newValue)
+			})
+		}))
+		label.ConnectUnrealize(g.Ptr(func(gtk.Widget) {
+			state.RemoveCallback(callbackId)
+		}))
+
 		return label
 	}
 }

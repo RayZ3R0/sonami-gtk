@@ -1,49 +1,36 @@
 package schwifty
 
 import (
-	"fmt"
-
+	"codeberg.org/dergs/tidalwave/internal/g"
 	"codeberg.org/dergs/tidalwave/pkg/schwifty/css"
+	"codeberg.org/dergs/tidalwave/pkg/schwifty/state"
+	"fmt"
 	"github.com/jwijenbergh/puregotk/v4/gtk"
 )
+
 
 type Label func() *gtk.Label
 
 func (f Label) AddController(controller *gtk.EventController) Label {
- return func() *gtk.Label {
-  widget := f()
-  widget.AddController(controller)
-  return widget
- }
-}
-
-func (f Label) Background(color string) Label {
- return func() *gtk.Label {
-  widget := f()
-  css.Apply(&widget.Widget, fmt.Sprintf("%s { background-color: %s; }", widget.GetCssName(), color))
-  return widget
- }
-}
-
-func (f Label) CornerRadius(radius int) Label {
- return func() *gtk.Label {
-  widget := f()
-  css.Apply(&widget.Widget, fmt.Sprintf("%s { border-radius: %dpx; }", widget.GetCssName(), radius))
-  return widget
- }
-}
-
-func (f Label) CSS(css string) Label {
 	return func() *gtk.Label {
 		widget := f()
-		widget.Ref()
-		defer widget.Unref()
+		widget.AddController(controller)
+		return widget
+	}
+}
 
-		provider := gtk.NewCssProvider()
-		provider.LoadFromString(css)
-		widget.GetStyleContext().AddProvider(provider, uint(gtk.STYLE_PROVIDER_PRIORITY_APPLICATION))
-		provider.Unref()
+func (f Label) ConnectConstruct(cb func(*gtk.Label)) Label {
+	return func() *gtk.Label {
+		widget := f()
+		cb(widget)
+		return widget
+	}
+}
 
+func (f Label) ConnectDestroy(cb func(gtk.Widget)) Label {
+	return func() *gtk.Label {
+		widget := f()
+		widget.ConnectDestroy(&cb)
 		return widget
 	}
 }
@@ -89,14 +76,6 @@ func (f Label) HMargin(horizontal int) Label {
 	}
 }
 
-func (f Label) HPadding(padding int) Label {
- return func() *gtk.Label {
-  widget := f()
-  css.Apply(&widget.Widget, fmt.Sprintf("%s { padding-left: %dpx; padding-right: %dpx; }", widget.GetCssName(), padding, padding))
-  return widget
- }
-}
-
 func (f Label) Margin(margin int) Label {
 	return func() *gtk.Label {
 		widget := f()
@@ -140,76 +119,20 @@ func (f Label) MarginTop(top int) Label {
 	}
 }
 
-func (f Label) MinHeight(minHeight int) Label {
- return func() *gtk.Label {
-  widget := f()
-  css.Apply(&widget.Widget, fmt.Sprintf("%s { min-height: %dpx; }", widget.GetCssName(), minHeight))
-  return widget
- }
-}
-
-func (f Label) MinWidth(minWidth int) Label {
- return func() *gtk.Label {
-  widget := f()
-  css.Apply(&widget.Widget, fmt.Sprintf("%s { min-width: %dpx; }", widget.GetCssName(), minWidth))
-  return widget
- }
-}
-
 func (f Label) Opacity(opacity float64) Label {
- return func() *gtk.Label {
-  widget := f()
-  widget.SetOpacity(opacity)
-  return widget
- }
+	return func() *gtk.Label {
+		widget := f()
+		widget.SetOpacity(opacity)
+		return widget
+	}
 }
 
 func (f Label) Overflow(overflow gtk.Overflow) Label {
- return func() *gtk.Label {
-  widget := f()
-  widget.SetOverflow(overflow)
-  return widget
- }
-}
-
-func (f Label) Padding(padding int) Label {
- return func() *gtk.Label {
-  widget := f()
-  css.Apply(&widget.Widget, fmt.Sprintf("%s { padding: %dpx; }", widget.GetCssName(), padding))
-  return widget
- }
-}
-
-func (f Label) PaddingBottom(padding int) Label {
- return func() *gtk.Label {
-  widget := f()
-  css.Apply(&widget.Widget, fmt.Sprintf("%s { padding-bottom: %dpx; }", widget.GetCssName(), padding))
-  return widget
- }
-}
-
-func (f Label) PaddingEnd(padding int) Label {
- return func() *gtk.Label {
-  widget := f()
-  css.Apply(&widget.Widget, fmt.Sprintf("%s { padding-right: %dpx; }", widget.GetCssName(), padding))
-  return widget
- }
-}
-
-func (f Label) PaddingStart(padding int) Label {
- return func() *gtk.Label {
-  widget := f()
-  css.Apply(&widget.Widget, fmt.Sprintf("%s { padding-left: %dpx; }", widget.GetCssName(), padding))
-  return widget
- }
-}
-
-func (f Label) PaddingTop(padding int) Label {
- return func() *gtk.Label {
-  widget := f()
-  css.Apply(&widget.Widget, fmt.Sprintf("%s { padding-top: %dpx; }", widget.GetCssName(), padding))
-  return widget
- }
+	return func() *gtk.Label {
+		widget := f()
+		widget.SetOverflow(overflow)
+		return widget
+	}
 }
 
 func (f Label) ToGTK() *gtk.Widget {
@@ -218,43 +141,177 @@ func (f Label) ToGTK() *gtk.Widget {
 }
 
 func (f Label) VAlign(align gtk.Align) Label {
- return func() *gtk.Label {
-  widget := f()
-  widget.SetValign(align)
-  return widget
- }
+	return func() *gtk.Label {
+		widget := f()
+		widget.SetValign(align)
+		return widget
+	}
 }
 
 func (f Label) VExpand(expand bool) Label {
- return func() *gtk.Label {
-  widget := f()
-  widget.SetVexpand(expand)
-  return widget
- }
+	return func() *gtk.Label {
+		widget := f()
+		widget.SetVexpand(expand)
+		return widget
+	}
 }
 
 func (f Label) Visible(visible bool) Label {
- return func() *gtk.Label {
-  widget := f()
-  widget.SetVisible(visible)
-  return widget
- }
+	return func() *gtk.Label {
+		widget := f()
+		widget.SetVisible(visible)
+		return widget
+	}
 }
 
 func (f Label) VMargin(vertical int) Label {
- return func() *gtk.Label {
-  widget := f()
-  widget.SetMarginTop(vertical)
-  widget.SetMarginBottom(vertical)
-  return widget
- }
+	return func() *gtk.Label {
+		widget := f()
+		widget.SetMarginTop(vertical)
+		widget.SetMarginBottom(vertical)
+		return widget
+	}
+}
+
+
+
+func (f Label) Background(color string) Label {
+	return func() *gtk.Label {
+		widget := f()
+		css.Apply(&widget.Widget, fmt.Sprintf("%s { background-color: %s; }", widget.GetCssName(), color))
+		return widget
+	}
+}
+
+func (f Label) CornerRadius(radius int) Label {
+	return func() *gtk.Label {
+		widget := f()
+		css.Apply(&widget.Widget, fmt.Sprintf("%s { border-radius: %dpx; }", widget.GetCssName(), radius))
+		return widget
+	}
+}
+
+func (f Label) CSS(css string) Label {
+	return func() *gtk.Label {
+		widget := f()
+		widget.Ref()
+		defer widget.Unref()
+
+		provider := gtk.NewCssProvider()
+		provider.LoadFromString(css)
+		widget.GetStyleContext().AddProvider(provider, uint(gtk.STYLE_PROVIDER_PRIORITY_APPLICATION))
+		provider.Unref()
+
+		return widget
+	}
+}
+
+func (f Label) HPadding(padding int) Label {
+	return func() *gtk.Label {
+		widget := f()
+		css.Apply(&widget.Widget, fmt.Sprintf("%s { padding-left: %dpx; padding-right: %dpx; }", widget.GetCssName(), padding, padding))
+		return widget
+	}
+}
+
+func (f Label) MinHeight(minHeight int) Label {
+	return func() *gtk.Label {
+		widget := f()
+		css.Apply(&widget.Widget, fmt.Sprintf("%s { min-height: %dpx; }", widget.GetCssName(), minHeight))
+		return widget
+	}
+}
+
+func (f Label) MinWidth(minWidth int) Label {
+	return func() *gtk.Label {
+		widget := f()
+		css.Apply(&widget.Widget, fmt.Sprintf("%s { min-width: %dpx; }", widget.GetCssName(), minWidth))
+		return widget
+	}
+}
+
+func (f Label) Padding(padding int) Label {
+	return func() *gtk.Label {
+		widget := f()
+		css.Apply(&widget.Widget, fmt.Sprintf("%s { padding: %dpx; }", widget.GetCssName(), padding))
+		return widget
+	}
+}
+
+func (f Label) PaddingBottom(padding int) Label {
+	return func() *gtk.Label {
+		widget := f()
+		css.Apply(&widget.Widget, fmt.Sprintf("%s { padding-bottom: %dpx; }", widget.GetCssName(), padding))
+		return widget
+	}
+}
+
+func (f Label) PaddingEnd(padding int) Label {
+	return func() *gtk.Label {
+		widget := f()
+		css.Apply(&widget.Widget, fmt.Sprintf("%s { padding-right: %dpx; }", widget.GetCssName(), padding))
+		return widget
+	}
+}
+
+func (f Label) PaddingStart(padding int) Label {
+	return func() *gtk.Label {
+		widget := f()
+		css.Apply(&widget.Widget, fmt.Sprintf("%s { padding-left: %dpx; }", widget.GetCssName(), padding))
+		return widget
+	}
+}
+
+func (f Label) PaddingTop(padding int) Label {
+	return func() *gtk.Label {
+		widget := f()
+		css.Apply(&widget.Widget, fmt.Sprintf("%s { padding-top: %dpx; }", widget.GetCssName(), padding))
+		return widget
+	}
 }
 
 func (f Label) VPadding(padding int) Label {
- return func() *gtk.Label {
-  widget := f()
-  css.Apply(&widget.Widget, fmt.Sprintf("%s { padding-bottom: %dpx; padding-top: %dpx; }", widget.GetCssName(), padding, padding))
-  return widget
- }
+	return func() *gtk.Label {
+		widget := f()
+		css.Apply(&widget.Widget, fmt.Sprintf("%s { padding-bottom: %dpx; padding-top: %dpx; }", widget.GetCssName(), padding, padding))
+		return widget
+	}
 }
 
+
+
+func (f Label) BindVisible(state *state.State[bool]) Label {
+	return func() *gtk.Label {
+		widget := f()
+
+		var callbackId string
+		widget.ConnectRealize(g.Ptr(func(a gtk.Widget) {
+			callbackId = state.AddCallback(func(newValue bool) {
+				a.SetVisible(newValue)
+			})
+		}))
+		widget.ConnectUnrealize(g.Ptr(func(gtk.Widget) {
+			state.RemoveCallback(callbackId)
+		}))
+
+		return widget
+	}
+}
+
+func (f Label) BindSensitive(state *state.State[bool]) Label {
+	return func() *gtk.Label {
+		widget := f()
+
+		var callbackId string
+		widget.ConnectRealize(g.Ptr(func(a gtk.Widget) {
+			callbackId = state.AddCallback(func(newValue bool) {
+				a.SetSensitive(newValue)
+			})
+		}))
+		widget.ConnectUnrealize(g.Ptr(func(gtk.Widget) {
+			state.RemoveCallback(callbackId)
+		}))
+
+		return widget
+	}
+}
