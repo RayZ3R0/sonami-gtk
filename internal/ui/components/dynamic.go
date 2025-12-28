@@ -11,13 +11,14 @@ func ForPageItem(pageItem v2.PageItem) schwifty.BaseWidgetable {
 	switch pageItem.Type {
 	case v2.ItemTypeTrackList:
 		list := tracklist.NewLegacyTrackList(
+			pageItem.Title,
 			tracklist.LegacyCoverColumn,
 			tracklist.LegacyTitleAlbumColumn,
 			tracklist.LegacyArtistsColumn,
 			tracklist.LegacyDurationColumn,
 			tracklist.LegacyButtonColumn,
 			tracklist.LegacyControlsColumn,
-		).SetTitle(pageItem.Title)
+		)
 		for _, track := range pageItem.Items {
 			list.AddLegacyTrack(track.Data.Track)
 		}

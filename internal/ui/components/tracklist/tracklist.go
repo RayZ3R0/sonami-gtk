@@ -57,20 +57,20 @@ func (t *TrackList) SetTitle(title string) *TrackList {
 	return t
 }
 
-func newTrackList(trackList *TrackList) *TrackList {
+func newTrackList(trackList *TrackList, title string) *TrackList {
 	trackList.container = gtk.NewGrid()
 
-	trackList.title = Label("").
+	trackList.title = Label(title).
 		VAlign(gtk.AlignCenterValue).
 		MarginStart(10).
 		MarginBottom(10).
 		FontWeight(600).
 		FontSize(20).
-		Visible(false)()
+		Visible(title != "")()
 
 	trackList.Box = VStack(
 		HStack(
-			trackList.title,
+			ManagedWidget(&trackList.title.Widget),
 			Spacer().VExpand(false),
 		),
 		ManagedWidget(&trackList.container.Widget),
@@ -78,18 +78,18 @@ func newTrackList(trackList *TrackList) *TrackList {
 	return trackList
 }
 
-func NewTrackList(columns ...ColumnFunc) *TrackList {
+func NewTrackList(title string, columns ...ColumnFunc) *TrackList {
 	trackList := &TrackList{
 		columnFuncs: columns,
 		rowMap:      make(map[string]int),
 	}
-	return newTrackList(trackList)
+	return newTrackList(trackList, title)
 }
 
-func NewLegacyTrackList(columns ...LegacyColumnFunc) *TrackList {
+func NewLegacyTrackList(title string, columns ...LegacyColumnFunc) *TrackList {
 	trackList := &TrackList{
 		legacyColumnFuncs: columns,
 		rowMap:            make(map[string]int),
 	}
-	return newTrackList(trackList)
+	return newTrackList(trackList, title)
 }
