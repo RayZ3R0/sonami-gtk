@@ -10,7 +10,7 @@ import (
 	"github.com/jwijenbergh/puregotk/v4/gtk"
 )
 
-func coverButton(trackId int, grid *gtk.Grid, row int, column int) int {
+func buttonColumn(trackId int, grid *gtk.Grid, row int, column int) int {
 	grid.Attach(
 		Button().
 			ActionName("win.player.play-track").
@@ -30,9 +30,9 @@ func ButtonColumn(track *openapi.Track, grid *gtk.Grid, row int, column int) int
 	if parsed, err := strconv.Atoi(track.Data.ID); err == nil {
 		trackId = parsed
 	}
-	return coverButton(trackId, grid, row, column)
+	return buttonColumn(trackId, grid, row, column)
 }
 
 func LegacyButtonColumn(track *v2.TrackItemData, grid *gtk.Grid, row int, column int) int {
-	return coverButton(track.ID, grid, row, column)
+	return buttonColumn(track.ID, grid, row, column)
 }
