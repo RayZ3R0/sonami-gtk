@@ -89,6 +89,14 @@ func (f ScrolledWindow) HMargin(horizontal int) ScrolledWindow {
 	}
 }
 
+func (f ScrolledWindow) HPadding(padding int) ScrolledWindow {
+ return func() *gtk.ScrolledWindow {
+  widget := f()
+  css.Apply(&widget.Widget, fmt.Sprintf("%s { padding-left: %dpx; padding-right: %dpx; }", widget.GetCssName(), padding, padding))
+  return widget
+ }
+}
+
 func (f ScrolledWindow) Margin(margin int) ScrolledWindow {
 	return func() *gtk.ScrolledWindow {
 		widget := f()
@@ -238,6 +246,14 @@ func (f ScrolledWindow) VMargin(vertical int) ScrolledWindow {
   widget := f()
   widget.SetMarginTop(vertical)
   widget.SetMarginBottom(vertical)
+  return widget
+ }
+}
+
+func (f ScrolledWindow) VPadding(padding int) ScrolledWindow {
+ return func() *gtk.ScrolledWindow {
+  widget := f()
+  css.Apply(&widget.Widget, fmt.Sprintf("%s { padding-bottom: %dpx; padding-top: %dpx; }", widget.GetCssName(), padding, padding))
   return widget
  }
 }

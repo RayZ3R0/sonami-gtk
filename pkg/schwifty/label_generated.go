@@ -89,6 +89,14 @@ func (f Label) HMargin(horizontal int) Label {
 	}
 }
 
+func (f Label) HPadding(padding int) Label {
+ return func() *gtk.Label {
+  widget := f()
+  css.Apply(&widget.Widget, fmt.Sprintf("%s { padding-left: %dpx; padding-right: %dpx; }", widget.GetCssName(), padding, padding))
+  return widget
+ }
+}
+
 func (f Label) Margin(margin int) Label {
 	return func() *gtk.Label {
 		widget := f()
@@ -238,6 +246,14 @@ func (f Label) VMargin(vertical int) Label {
   widget := f()
   widget.SetMarginTop(vertical)
   widget.SetMarginBottom(vertical)
+  return widget
+ }
+}
+
+func (f Label) VPadding(padding int) Label {
+ return func() *gtk.Label {
+  widget := f()
+  css.Apply(&widget.Widget, fmt.Sprintf("%s { padding-bottom: %dpx; padding-top: %dpx; }", widget.GetCssName(), padding, padding))
   return widget
  }
 }

@@ -89,6 +89,14 @@ func (f Image) HMargin(horizontal int) Image {
 	}
 }
 
+func (f Image) HPadding(padding int) Image {
+ return func() *gtk.Image {
+  widget := f()
+  css.Apply(&widget.Widget, fmt.Sprintf("%s { padding-left: %dpx; padding-right: %dpx; }", widget.GetCssName(), padding, padding))
+  return widget
+ }
+}
+
 func (f Image) Margin(margin int) Image {
 	return func() *gtk.Image {
 		widget := f()
@@ -238,6 +246,14 @@ func (f Image) VMargin(vertical int) Image {
   widget := f()
   widget.SetMarginTop(vertical)
   widget.SetMarginBottom(vertical)
+  return widget
+ }
+}
+
+func (f Image) VPadding(padding int) Image {
+ return func() *gtk.Image {
+  widget := f()
+  css.Apply(&widget.Widget, fmt.Sprintf("%s { padding-bottom: %dpx; padding-top: %dpx; }", widget.GetCssName(), padding, padding))
   return widget
  }
 }

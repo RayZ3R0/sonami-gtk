@@ -97,6 +97,14 @@ func (f {{TYPE}}) HMargin(horizontal int) {{TYPE}} {
 	}
 }
 
+func (f {{TYPE}}) HPadding(padding int) {{TYPE}} {
+ return func() {{BASE_TYPE}} {
+  widget := f()
+  css.Apply(&widget.Widget, fmt.Sprintf("%s { padding-left: %dpx; padding-right: %dpx; }", widget.GetCssName(), padding, padding))
+  return widget
+ }
+}
+
 func (f {{TYPE}}) Margin(margin int) {{TYPE}} {
 	return func() {{BASE_TYPE}} {
 		widget := f()
@@ -246,6 +254,14 @@ func (f {{TYPE}}) VMargin(vertical int) {{TYPE}} {
   widget := f()
   widget.SetMarginTop(vertical)
   widget.SetMarginBottom(vertical)
+  return widget
+ }
+}
+
+func (f {{TYPE}}) VPadding(padding int) {{TYPE}} {
+ return func() {{BASE_TYPE}} {
+  widget := f()
+  css.Apply(&widget.Widget, fmt.Sprintf("%s { padding-bottom: %dpx; padding-top: %dpx; }", widget.GetCssName(), padding, padding))
   return widget
  }
 }

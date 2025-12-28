@@ -90,6 +90,14 @@ func (f StatusPage) HMargin(horizontal int) StatusPage {
 	}
 }
 
+func (f StatusPage) HPadding(padding int) StatusPage {
+ return func() *adw.StatusPage {
+  widget := f()
+  css.Apply(&widget.Widget, fmt.Sprintf("%s { padding-left: %dpx; padding-right: %dpx; }", widget.GetCssName(), padding, padding))
+  return widget
+ }
+}
+
 func (f StatusPage) Margin(margin int) StatusPage {
 	return func() *adw.StatusPage {
 		widget := f()
@@ -239,6 +247,14 @@ func (f StatusPage) VMargin(vertical int) StatusPage {
   widget := f()
   widget.SetMarginTop(vertical)
   widget.SetMarginBottom(vertical)
+  return widget
+ }
+}
+
+func (f StatusPage) VPadding(padding int) StatusPage {
+ return func() *adw.StatusPage {
+  widget := f()
+  css.Apply(&widget.Widget, fmt.Sprintf("%s { padding-bottom: %dpx; padding-top: %dpx; }", widget.GetCssName(), padding, padding))
   return widget
  }
 }

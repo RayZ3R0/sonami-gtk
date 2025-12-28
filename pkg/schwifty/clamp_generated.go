@@ -90,6 +90,14 @@ func (f Clamp) HMargin(horizontal int) Clamp {
 	}
 }
 
+func (f Clamp) HPadding(padding int) Clamp {
+ return func() *adw.Clamp {
+  widget := f()
+  css.Apply(&widget.Widget, fmt.Sprintf("%s { padding-left: %dpx; padding-right: %dpx; }", widget.GetCssName(), padding, padding))
+  return widget
+ }
+}
+
 func (f Clamp) Margin(margin int) Clamp {
 	return func() *adw.Clamp {
 		widget := f()
@@ -239,6 +247,14 @@ func (f Clamp) VMargin(vertical int) Clamp {
   widget := f()
   widget.SetMarginTop(vertical)
   widget.SetMarginBottom(vertical)
+  return widget
+ }
+}
+
+func (f Clamp) VPadding(padding int) Clamp {
+ return func() *adw.Clamp {
+  widget := f()
+  css.Apply(&widget.Widget, fmt.Sprintf("%s { padding-bottom: %dpx; padding-top: %dpx; }", widget.GetCssName(), padding, padding))
   return widget
  }
 }

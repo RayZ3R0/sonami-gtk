@@ -90,6 +90,14 @@ func (f HeaderBar) HMargin(horizontal int) HeaderBar {
 	}
 }
 
+func (f HeaderBar) HPadding(padding int) HeaderBar {
+ return func() *adw.HeaderBar {
+  widget := f()
+  css.Apply(&widget.Widget, fmt.Sprintf("%s { padding-left: %dpx; padding-right: %dpx; }", widget.GetCssName(), padding, padding))
+  return widget
+ }
+}
+
 func (f HeaderBar) Margin(margin int) HeaderBar {
 	return func() *adw.HeaderBar {
 		widget := f()
@@ -239,6 +247,14 @@ func (f HeaderBar) VMargin(vertical int) HeaderBar {
   widget := f()
   widget.SetMarginTop(vertical)
   widget.SetMarginBottom(vertical)
+  return widget
+ }
+}
+
+func (f HeaderBar) VPadding(padding int) HeaderBar {
+ return func() *adw.HeaderBar {
+  widget := f()
+  css.Apply(&widget.Widget, fmt.Sprintf("%s { padding-bottom: %dpx; padding-top: %dpx; }", widget.GetCssName(), padding, padding))
   return widget
  }
 }

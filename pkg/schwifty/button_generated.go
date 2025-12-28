@@ -89,6 +89,14 @@ func (f Button) HMargin(horizontal int) Button {
 	}
 }
 
+func (f Button) HPadding(padding int) Button {
+ return func() *gtk.Button {
+  widget := f()
+  css.Apply(&widget.Widget, fmt.Sprintf("%s { padding-left: %dpx; padding-right: %dpx; }", widget.GetCssName(), padding, padding))
+  return widget
+ }
+}
+
 func (f Button) Margin(margin int) Button {
 	return func() *gtk.Button {
 		widget := f()
@@ -238,6 +246,14 @@ func (f Button) VMargin(vertical int) Button {
   widget := f()
   widget.SetMarginTop(vertical)
   widget.SetMarginBottom(vertical)
+  return widget
+ }
+}
+
+func (f Button) VPadding(padding int) Button {
+ return func() *gtk.Button {
+  widget := f()
+  css.Apply(&widget.Widget, fmt.Sprintf("%s { padding-bottom: %dpx; padding-top: %dpx; }", widget.GetCssName(), padding, padding))
   return widget
  }
 }

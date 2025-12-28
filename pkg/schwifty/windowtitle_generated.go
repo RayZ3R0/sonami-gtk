@@ -90,6 +90,14 @@ func (f WindowTitle) HMargin(horizontal int) WindowTitle {
 	}
 }
 
+func (f WindowTitle) HPadding(padding int) WindowTitle {
+ return func() *adw.WindowTitle {
+  widget := f()
+  css.Apply(&widget.Widget, fmt.Sprintf("%s { padding-left: %dpx; padding-right: %dpx; }", widget.GetCssName(), padding, padding))
+  return widget
+ }
+}
+
 func (f WindowTitle) Margin(margin int) WindowTitle {
 	return func() *adw.WindowTitle {
 		widget := f()
@@ -239,6 +247,14 @@ func (f WindowTitle) VMargin(vertical int) WindowTitle {
   widget := f()
   widget.SetMarginTop(vertical)
   widget.SetMarginBottom(vertical)
+  return widget
+ }
+}
+
+func (f WindowTitle) VPadding(padding int) WindowTitle {
+ return func() *adw.WindowTitle {
+  widget := f()
+  css.Apply(&widget.Widget, fmt.Sprintf("%s { padding-bottom: %dpx; padding-top: %dpx; }", widget.GetCssName(), padding, padding))
   return widget
  }
 }
