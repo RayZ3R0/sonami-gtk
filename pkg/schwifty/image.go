@@ -30,3 +30,11 @@ func (f Image) FromResource(resource string) Image {
 		return image
 	}
 }
+
+func (f Image) PixelSize(size int) Image {
+	return func() *gtk.Image {
+		image := f()
+		image.SetPixelSize(size)
+		return image
+	}
+}
