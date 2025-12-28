@@ -5,6 +5,7 @@ import (
 	"runtime"
 
 	"codeberg.org/dergs/tidalwave/internal/g"
+	"codeberg.org/dergs/tidalwave/pkg/schwifty/tracking"
 	"github.com/jwijenbergh/puregotk/v4/gtk"
 )
 
@@ -17,9 +18,12 @@ type unrefable interface {
 }
 
 func finalize[T unrefable](tag string, widgetToBeFinalized T) {
-	logger.Debug("now managing cleanup for object", "ptr", widgetToBeFinalized.GoPointer(), "tag", tag)
+	ptr := widgetToBeFinalized.GoPointer()
+	tracking.Track(ptr, tag)
+	logger.Debug("now managing cleanup for object", "ptr", ptr, "tag", tag)
 	widgetToBeFinalized.ConnectDestroy(g.Ptr(func(a gtk.Widget) {
 		logger.Debug("object was destroyed by GTK", "ptr", a.GoPointer(), "tag", tag)
+		tracking.Untrack(ptr)
 	}))
 	runtime.SetFinalizer(widgetToBeFinalized, func(finalizedWidget T) {
 		logger.Debug("releasing reference on schwifty-managed object, GTK may still hold a reference to this object", "tag", tag, "ptr", finalizedWidget.GoPointer())
