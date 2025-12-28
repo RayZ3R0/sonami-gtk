@@ -5,7 +5,6 @@ import (
 	"log/slog"
 	"reflect"
 
-	"codeberg.org/dergs/tidalwave/internal/g"
 	"github.com/jwijenbergh/puregotk/v4/gtk"
 )
 
@@ -37,13 +36,19 @@ func ResolveWidget(value any) *gtk.Widget {
 	return nil
 }
 
-func UnrefOnDestroy(onWidget *gtk.Widget, widget *gtk.Widget) *func(gtk.Widget) {
-	var id uint32
-	cb := g.Ptr(func(w gtk.Widget) {
-		widget.Unref()
-		widget = nil
-		w.DisconnectSignal(id)
-	})
-	id = onWidget.ConnectDestroy(cb)
-	return cb
+func ResolvePopover(value any) *gtk.Popover {
+	t := reflect.TypeOf(value)
+
+	if t.AssignableTo(reflect.TypeFor[*gtk.Popover]()) {
+		logger.Debug("resolved popover from *gtk.Popover")
+		return value.(*gtk.Popover)
+	}
+
+	if t.AssignableTo(reflect.TypeFor[Popover]()) {
+		logger.Debug("resolved popover from Popover")
+		return value.(Popover)()
+	}
+
+	logger.Warn("failed to resolve widget")
+	return nil
 }

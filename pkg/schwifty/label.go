@@ -10,6 +10,14 @@ import (
 
 //go:generate go run codeberg.org/dergs/tidalwave/pkg/schwifty/gen Label *gtk.Label
 
+func (f Label) Color(color string) Label {
+	return func() *gtk.Label {
+		label := f()
+		css.Apply(&label.Widget, fmt.Sprintf("label { color: %s; }", color))
+		return label
+	}
+}
+
 // Sets the mode used to ellipsize the text.
 //
 // The text will be ellipsized if there is not
@@ -71,6 +79,14 @@ func (f Label) Justify(justify gtk.Justification) Label {
 	}
 }
 
+func (f Label) LineHeight(height float64) Label {
+	return func() *gtk.Label {
+		label := f()
+		css.Apply(&label.Widget, fmt.Sprintf("label { line-height: %.2f; }", height))
+		return label
+	}
+}
+
 // Sets the text for the label.
 //
 // It overwrites any text that was there before and clears any
@@ -83,6 +99,14 @@ func (f Label) Text(text string) Label {
 	return func() *gtk.Label {
 		label := f()
 		label.SetText(text)
+		return label
+	}
+}
+
+func (f Label) TextDecoration(decoration string) Label {
+	return func() *gtk.Label {
+		label := f()
+		css.Apply(&label.Widget, fmt.Sprintf("label { text-decoration: %s; }", decoration))
 		return label
 	}
 }
@@ -102,6 +126,24 @@ func (f Label) Wrap(wrap bool) Label {
 	return func() *gtk.Label {
 		label := f()
 		label.SetWrap(wrap)
+		return label
+	}
+}
+
+// Controls how line wrapping is done.
+//
+// This only affects the label if line wrapping is on. (See
+// [method@Gtk.Label.set_wrap])
+//
+// The default is [enum@Pango.WrapMode.word], which means
+// wrap on word boundaries.
+//
+// For sizing behavior, also consider the
+// [property@Gtk.Label:natural-wrap-mode] property.
+func (f Label) WrapMode(wrapMode pango.WrapMode) Label {
+	return func() *gtk.Label {
+		label := f()
+		label.SetWrapMode(wrapMode)
 		return label
 	}
 }
