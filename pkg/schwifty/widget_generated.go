@@ -132,6 +132,22 @@ func (f Widget) MarginTop(top int) Widget {
 	}
 }
 
+func (f Widget) MinHeight(minHeight int) Widget {
+ return func() *WrappedWidget {
+  widget := f()
+  css.Apply(&widget.Widget, fmt.Sprintf("%s { min-height: %dpx; }", widget.GetCssName(), minHeight))
+  return widget
+ }
+}
+
+func (f Widget) MinWidth(minWidth int) Widget {
+ return func() *WrappedWidget {
+  widget := f()
+  css.Apply(&widget.Widget, fmt.Sprintf("%s { min-width: %dpx; }", widget.GetCssName(), minWidth))
+  return widget
+ }
+}
+
 func (f Widget) Opacity(opacity float64) Widget {
  return func() *WrappedWidget {
   widget := f()
@@ -144,6 +160,46 @@ func (f Widget) Overflow(overflow gtk.Overflow) Widget {
  return func() *WrappedWidget {
   widget := f()
   widget.SetOverflow(overflow)
+  return widget
+ }
+}
+
+func (f Widget) Padding(padding int) Widget {
+ return func() *WrappedWidget {
+  widget := f()
+  css.Apply(&widget.Widget, fmt.Sprintf("%s { padding: %dpx; }", widget.GetCssName(), padding))
+  return widget
+ }
+}
+
+func (f Widget) PaddingBottom(padding int) Widget {
+ return func() *WrappedWidget {
+  widget := f()
+  css.Apply(&widget.Widget, fmt.Sprintf("%s { padding-bottom: %dpx; }", widget.GetCssName(), padding))
+  return widget
+ }
+}
+
+func (f Widget) PaddingEnd(padding int) Widget {
+ return func() *WrappedWidget {
+  widget := f()
+  css.Apply(&widget.Widget, fmt.Sprintf("%s { padding-right: %dpx; }", widget.GetCssName(), padding))
+  return widget
+ }
+}
+
+func (f Widget) PaddingStart(padding int) Widget {
+ return func() *WrappedWidget {
+  widget := f()
+  css.Apply(&widget.Widget, fmt.Sprintf("%s { padding-left: %dpx; }", widget.GetCssName(), padding))
+  return widget
+ }
+}
+
+func (f Widget) PaddingTop(padding int) Widget {
+ return func() *WrappedWidget {
+  widget := f()
+  css.Apply(&widget.Widget, fmt.Sprintf("%s { padding-top: %dpx; }", widget.GetCssName(), padding))
   return widget
  }
 }

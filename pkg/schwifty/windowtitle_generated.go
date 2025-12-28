@@ -133,6 +133,22 @@ func (f WindowTitle) MarginTop(top int) WindowTitle {
 	}
 }
 
+func (f WindowTitle) MinHeight(minHeight int) WindowTitle {
+ return func() *adw.WindowTitle {
+  widget := f()
+  css.Apply(&widget.Widget, fmt.Sprintf("%s { min-height: %dpx; }", widget.GetCssName(), minHeight))
+  return widget
+ }
+}
+
+func (f WindowTitle) MinWidth(minWidth int) WindowTitle {
+ return func() *adw.WindowTitle {
+  widget := f()
+  css.Apply(&widget.Widget, fmt.Sprintf("%s { min-width: %dpx; }", widget.GetCssName(), minWidth))
+  return widget
+ }
+}
+
 func (f WindowTitle) Opacity(opacity float64) WindowTitle {
  return func() *adw.WindowTitle {
   widget := f()
@@ -145,6 +161,46 @@ func (f WindowTitle) Overflow(overflow gtk.Overflow) WindowTitle {
  return func() *adw.WindowTitle {
   widget := f()
   widget.SetOverflow(overflow)
+  return widget
+ }
+}
+
+func (f WindowTitle) Padding(padding int) WindowTitle {
+ return func() *adw.WindowTitle {
+  widget := f()
+  css.Apply(&widget.Widget, fmt.Sprintf("%s { padding: %dpx; }", widget.GetCssName(), padding))
+  return widget
+ }
+}
+
+func (f WindowTitle) PaddingBottom(padding int) WindowTitle {
+ return func() *adw.WindowTitle {
+  widget := f()
+  css.Apply(&widget.Widget, fmt.Sprintf("%s { padding-bottom: %dpx; }", widget.GetCssName(), padding))
+  return widget
+ }
+}
+
+func (f WindowTitle) PaddingEnd(padding int) WindowTitle {
+ return func() *adw.WindowTitle {
+  widget := f()
+  css.Apply(&widget.Widget, fmt.Sprintf("%s { padding-right: %dpx; }", widget.GetCssName(), padding))
+  return widget
+ }
+}
+
+func (f WindowTitle) PaddingStart(padding int) WindowTitle {
+ return func() *adw.WindowTitle {
+  widget := f()
+  css.Apply(&widget.Widget, fmt.Sprintf("%s { padding-left: %dpx; }", widget.GetCssName(), padding))
+  return widget
+ }
+}
+
+func (f WindowTitle) PaddingTop(padding int) WindowTitle {
+ return func() *adw.WindowTitle {
+  widget := f()
+  css.Apply(&widget.Widget, fmt.Sprintf("%s { padding-top: %dpx; }", widget.GetCssName(), padding))
   return widget
  }
 }

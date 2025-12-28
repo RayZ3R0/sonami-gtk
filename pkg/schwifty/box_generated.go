@@ -132,6 +132,22 @@ func (f Box) MarginTop(top int) Box {
 	}
 }
 
+func (f Box) MinHeight(minHeight int) Box {
+ return func() *gtk.Box {
+  widget := f()
+  css.Apply(&widget.Widget, fmt.Sprintf("%s { min-height: %dpx; }", widget.GetCssName(), minHeight))
+  return widget
+ }
+}
+
+func (f Box) MinWidth(minWidth int) Box {
+ return func() *gtk.Box {
+  widget := f()
+  css.Apply(&widget.Widget, fmt.Sprintf("%s { min-width: %dpx; }", widget.GetCssName(), minWidth))
+  return widget
+ }
+}
+
 func (f Box) Opacity(opacity float64) Box {
  return func() *gtk.Box {
   widget := f()
@@ -144,6 +160,46 @@ func (f Box) Overflow(overflow gtk.Overflow) Box {
  return func() *gtk.Box {
   widget := f()
   widget.SetOverflow(overflow)
+  return widget
+ }
+}
+
+func (f Box) Padding(padding int) Box {
+ return func() *gtk.Box {
+  widget := f()
+  css.Apply(&widget.Widget, fmt.Sprintf("%s { padding: %dpx; }", widget.GetCssName(), padding))
+  return widget
+ }
+}
+
+func (f Box) PaddingBottom(padding int) Box {
+ return func() *gtk.Box {
+  widget := f()
+  css.Apply(&widget.Widget, fmt.Sprintf("%s { padding-bottom: %dpx; }", widget.GetCssName(), padding))
+  return widget
+ }
+}
+
+func (f Box) PaddingEnd(padding int) Box {
+ return func() *gtk.Box {
+  widget := f()
+  css.Apply(&widget.Widget, fmt.Sprintf("%s { padding-right: %dpx; }", widget.GetCssName(), padding))
+  return widget
+ }
+}
+
+func (f Box) PaddingStart(padding int) Box {
+ return func() *gtk.Box {
+  widget := f()
+  css.Apply(&widget.Widget, fmt.Sprintf("%s { padding-left: %dpx; }", widget.GetCssName(), padding))
+  return widget
+ }
+}
+
+func (f Box) PaddingTop(padding int) Box {
+ return func() *gtk.Box {
+  widget := f()
+  css.Apply(&widget.Widget, fmt.Sprintf("%s { padding-top: %dpx; }", widget.GetCssName(), padding))
   return widget
  }
 }

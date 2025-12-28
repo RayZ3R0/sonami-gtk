@@ -20,10 +20,22 @@ func (f HeaderBar) DecorationLayout(layout string) HeaderBar {
 	}
 }
 
-func (f HeaderBar) PackEnd(widget any) HeaderBar {
+func (f HeaderBar) PackEnd(widget ...any) HeaderBar {
 	return func() *adw.HeaderBar {
 		hb := f()
-		hb.PackEnd(ResolveWidget(widget))
+		for _, w := range widget {
+			hb.PackEnd(ResolveWidget(w))
+		}
+		return hb
+	}
+}
+
+func (f HeaderBar) PackStart(widget ...any) HeaderBar {
+	return func() *adw.HeaderBar {
+		hb := f()
+		for _, w := range widget {
+			hb.PackStart(ResolveWidget(w))
+		}
 		return hb
 	}
 }
@@ -40,6 +52,14 @@ func (f HeaderBar) ShowEndTitleButtons(show bool) HeaderBar {
 	return func() *adw.HeaderBar {
 		hb := f()
 		hb.SetShowEndTitleButtons(show)
+		return hb
+	}
+}
+
+func (f HeaderBar) ShowStartTitleButtons(show bool) HeaderBar {
+	return func() *adw.HeaderBar {
+		hb := f()
+		hb.SetShowStartTitleButtons(show)
 		return hb
 	}
 }

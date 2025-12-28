@@ -5,37 +5,36 @@ import (
 
 	"codeberg.org/dergs/tidalwave/pkg/schwifty/css"
 	"github.com/jwijenbergh/puregotk/v4/gtk"
-	"github.com/jwijenbergh/puregotk/v4/adw"
 )
 
-type StatusPage func() *adw.StatusPage
+type Button func() *gtk.Button
 
-func (f StatusPage) AddController(controller *gtk.EventController) StatusPage {
- return func() *adw.StatusPage {
+func (f Button) AddController(controller *gtk.EventController) Button {
+ return func() *gtk.Button {
   widget := f()
   widget.AddController(controller)
   return widget
  }
 }
 
-func (f StatusPage) Background(color string) StatusPage {
- return func() *adw.StatusPage {
+func (f Button) Background(color string) Button {
+ return func() *gtk.Button {
   widget := f()
   css.Apply(&widget.Widget, fmt.Sprintf("%s { background-color: %s; }", widget.GetCssName(), color))
   return widget
  }
 }
 
-func (f StatusPage) CornerRadius(radius int) StatusPage {
- return func() *adw.StatusPage {
+func (f Button) CornerRadius(radius int) Button {
+ return func() *gtk.Button {
   widget := f()
   css.Apply(&widget.Widget, fmt.Sprintf("%s { border-radius: %dpx; }", widget.GetCssName(), radius))
   return widget
  }
 }
 
-func (f StatusPage) CSS(css string) StatusPage {
-	return func() *adw.StatusPage {
+func (f Button) CSS(css string) Button {
+	return func() *gtk.Button {
 		widget := f()
 		widget.Ref()
 		defer widget.Unref()
@@ -49,40 +48,40 @@ func (f StatusPage) CSS(css string) StatusPage {
 	}
 }
 
-func (f StatusPage) Focusable(focusable bool) StatusPage {
-	return func() *adw.StatusPage {
+func (f Button) Focusable(focusable bool) Button {
+	return func() *gtk.Button {
 		widget := f()
 		widget.SetFocusable(focusable)
 		return widget
 	}
 }
 
-func (f StatusPage) FocusOnClick(focusOnClick bool) StatusPage {
-	return func() *adw.StatusPage {
+func (f Button) FocusOnClick(focusOnClick bool) Button {
+	return func() *gtk.Button {
 		widget := f()
 		widget.SetFocusOnClick(focusOnClick)
 		return widget
 	}
 }
 
-func (f StatusPage) HAlign(align gtk.Align) StatusPage {
-	return func() *adw.StatusPage {
+func (f Button) HAlign(align gtk.Align) Button {
+	return func() *gtk.Button {
 		widget := f()
 		widget.SetHalign(align)
 		return widget
 	}
 }
 
-func (f StatusPage) HExpand(expand bool) StatusPage {
-	return func() *adw.StatusPage {
+func (f Button) HExpand(expand bool) Button {
+	return func() *gtk.Button {
 		widget := f()
 		widget.SetHexpand(expand)
 		return widget
 	}
 }
 
-func (f StatusPage) HMargin(horizontal int) StatusPage {
-	return func() *adw.StatusPage {
+func (f Button) HMargin(horizontal int) Button {
+	return func() *gtk.Button {
 		widget := f()
 		widget.SetMarginEnd(horizontal)
 		widget.SetMarginStart(horizontal)
@@ -90,8 +89,8 @@ func (f StatusPage) HMargin(horizontal int) StatusPage {
 	}
 }
 
-func (f StatusPage) Margin(margin int) StatusPage {
-	return func() *adw.StatusPage {
+func (f Button) Margin(margin int) Button {
+	return func() *gtk.Button {
 		widget := f()
 		widget.SetMarginBottom(margin)
 		widget.SetMarginEnd(margin)
@@ -101,141 +100,141 @@ func (f StatusPage) Margin(margin int) StatusPage {
 	}
 }
 
-func (f StatusPage) MarginBottom(bottom int) StatusPage {
-	return func() *adw.StatusPage {
+func (f Button) MarginBottom(bottom int) Button {
+	return func() *gtk.Button {
 		widget := f()
 		widget.SetMarginBottom(bottom)
 		return widget
 	}
 }
 
-func (f StatusPage) MarginEnd(end int) StatusPage {
-	return func() *adw.StatusPage {
+func (f Button) MarginEnd(end int) Button {
+	return func() *gtk.Button {
 		widget := f()
 		widget.SetMarginEnd(end)
 		return widget
 	}
 }
 
-func (f StatusPage) MarginStart(start int) StatusPage {
-	return func() *adw.StatusPage {
+func (f Button) MarginStart(start int) Button {
+	return func() *gtk.Button {
 		widget := f()
 		widget.SetMarginStart(start)
 		return widget
 	}
 }
 
-func (f StatusPage) MarginTop(top int) StatusPage {
-	return func() *adw.StatusPage {
+func (f Button) MarginTop(top int) Button {
+	return func() *gtk.Button {
 		widget := f()
 		widget.SetMarginTop(top)
 		return widget
 	}
 }
 
-func (f StatusPage) MinHeight(minHeight int) StatusPage {
- return func() *adw.StatusPage {
+func (f Button) MinHeight(minHeight int) Button {
+ return func() *gtk.Button {
   widget := f()
   css.Apply(&widget.Widget, fmt.Sprintf("%s { min-height: %dpx; }", widget.GetCssName(), minHeight))
   return widget
  }
 }
 
-func (f StatusPage) MinWidth(minWidth int) StatusPage {
- return func() *adw.StatusPage {
+func (f Button) MinWidth(minWidth int) Button {
+ return func() *gtk.Button {
   widget := f()
   css.Apply(&widget.Widget, fmt.Sprintf("%s { min-width: %dpx; }", widget.GetCssName(), minWidth))
   return widget
  }
 }
 
-func (f StatusPage) Opacity(opacity float64) StatusPage {
- return func() *adw.StatusPage {
+func (f Button) Opacity(opacity float64) Button {
+ return func() *gtk.Button {
   widget := f()
   widget.SetOpacity(opacity)
   return widget
  }
 }
 
-func (f StatusPage) Overflow(overflow gtk.Overflow) StatusPage {
- return func() *adw.StatusPage {
+func (f Button) Overflow(overflow gtk.Overflow) Button {
+ return func() *gtk.Button {
   widget := f()
   widget.SetOverflow(overflow)
   return widget
  }
 }
 
-func (f StatusPage) Padding(padding int) StatusPage {
- return func() *adw.StatusPage {
+func (f Button) Padding(padding int) Button {
+ return func() *gtk.Button {
   widget := f()
   css.Apply(&widget.Widget, fmt.Sprintf("%s { padding: %dpx; }", widget.GetCssName(), padding))
   return widget
  }
 }
 
-func (f StatusPage) PaddingBottom(padding int) StatusPage {
- return func() *adw.StatusPage {
+func (f Button) PaddingBottom(padding int) Button {
+ return func() *gtk.Button {
   widget := f()
   css.Apply(&widget.Widget, fmt.Sprintf("%s { padding-bottom: %dpx; }", widget.GetCssName(), padding))
   return widget
  }
 }
 
-func (f StatusPage) PaddingEnd(padding int) StatusPage {
- return func() *adw.StatusPage {
+func (f Button) PaddingEnd(padding int) Button {
+ return func() *gtk.Button {
   widget := f()
   css.Apply(&widget.Widget, fmt.Sprintf("%s { padding-right: %dpx; }", widget.GetCssName(), padding))
   return widget
  }
 }
 
-func (f StatusPage) PaddingStart(padding int) StatusPage {
- return func() *adw.StatusPage {
+func (f Button) PaddingStart(padding int) Button {
+ return func() *gtk.Button {
   widget := f()
   css.Apply(&widget.Widget, fmt.Sprintf("%s { padding-left: %dpx; }", widget.GetCssName(), padding))
   return widget
  }
 }
 
-func (f StatusPage) PaddingTop(padding int) StatusPage {
- return func() *adw.StatusPage {
+func (f Button) PaddingTop(padding int) Button {
+ return func() *gtk.Button {
   widget := f()
   css.Apply(&widget.Widget, fmt.Sprintf("%s { padding-top: %dpx; }", widget.GetCssName(), padding))
   return widget
  }
 }
 
-func (f StatusPage) ToGTK() *gtk.Widget {
+func (f Button) ToGTK() *gtk.Widget {
 	val := f()
 	return &val.Widget
 }
 
-func (f StatusPage) VAlign(align gtk.Align) StatusPage {
- return func() *adw.StatusPage {
+func (f Button) VAlign(align gtk.Align) Button {
+ return func() *gtk.Button {
   widget := f()
   widget.SetValign(align)
   return widget
  }
 }
 
-func (f StatusPage) VExpand(expand bool) StatusPage {
- return func() *adw.StatusPage {
+func (f Button) VExpand(expand bool) Button {
+ return func() *gtk.Button {
   widget := f()
   widget.SetVexpand(expand)
   return widget
  }
 }
 
-func (f StatusPage) Visible(visible bool) StatusPage {
- return func() *adw.StatusPage {
+func (f Button) Visible(visible bool) Button {
+ return func() *gtk.Button {
   widget := f()
   widget.SetVisible(visible)
   return widget
  }
 }
 
-func (f StatusPage) VMargin(vertical int) StatusPage {
- return func() *adw.StatusPage {
+func (f Button) VMargin(vertical int) Button {
+ return func() *gtk.Button {
   widget := f()
   widget.SetMarginTop(vertical)
   widget.SetMarginBottom(vertical)

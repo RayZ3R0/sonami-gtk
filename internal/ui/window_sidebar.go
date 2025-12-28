@@ -3,6 +3,7 @@ package ui
 import (
 	"codeberg.org/dergs/tidalwave/internal/router"
 	"codeberg.org/dergs/tidalwave/internal/signals"
+	"codeberg.org/dergs/tidalwave/internal/ui/components"
 	. "codeberg.org/dergs/tidalwave/pkg/schwifty/syntax"
 	"github.com/jwijenbergh/puregotk/v4/adw"
 	"github.com/jwijenbergh/puregotk/v4/gio"
@@ -25,21 +26,17 @@ func (w *Window) buildSidebarHeader() *gtk.Widget {
 	menuButton.SetIconName("menu-symbolic")
 	menuButton.SetMenuModel(&mainMenu.MenuModel)
 
-	// searchButton := components.NewRouteButton("search")
-	// searchButton.SetIcon("loupe-symbolic")
+	searchButton := components.NewRouteButton("search")
+	searchButton.SetIcon("loupe-symbolic")
 
-	// // btn2 := gtk.NewButtonFromIconName("loupe-symbolic")
-	// // btn2.ConnectClicked(func() {
-	// // 	router.Navigate("search", nil)
-	// // })
-	// headerbar.PackEnd(searchButton.Button)
 	return HeaderBar().
 		DecorationLayout("icon").
 		TitleWidget(Widget(&windowTitle.Widget)).
 		ShowBackButton(false).
 		ShowEndTitleButtons(false).
 		CenteringPolicy(adw.CenteringPolicyStrictValue).
-		PackEnd(Widget(&menuButton.Widget)).ToGTK()
+		PackEnd(menuButton, searchButton).
+		ToGTK()
 }
 
 func (w *Window) buildSidebar() *adw.ViewStack {

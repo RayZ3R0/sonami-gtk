@@ -132,6 +132,22 @@ func (f ScrolledWindow) MarginTop(top int) ScrolledWindow {
 	}
 }
 
+func (f ScrolledWindow) MinHeight(minHeight int) ScrolledWindow {
+ return func() *gtk.ScrolledWindow {
+  widget := f()
+  css.Apply(&widget.Widget, fmt.Sprintf("%s { min-height: %dpx; }", widget.GetCssName(), minHeight))
+  return widget
+ }
+}
+
+func (f ScrolledWindow) MinWidth(minWidth int) ScrolledWindow {
+ return func() *gtk.ScrolledWindow {
+  widget := f()
+  css.Apply(&widget.Widget, fmt.Sprintf("%s { min-width: %dpx; }", widget.GetCssName(), minWidth))
+  return widget
+ }
+}
+
 func (f ScrolledWindow) Opacity(opacity float64) ScrolledWindow {
  return func() *gtk.ScrolledWindow {
   widget := f()
@@ -144,6 +160,46 @@ func (f ScrolledWindow) Overflow(overflow gtk.Overflow) ScrolledWindow {
  return func() *gtk.ScrolledWindow {
   widget := f()
   widget.SetOverflow(overflow)
+  return widget
+ }
+}
+
+func (f ScrolledWindow) Padding(padding int) ScrolledWindow {
+ return func() *gtk.ScrolledWindow {
+  widget := f()
+  css.Apply(&widget.Widget, fmt.Sprintf("%s { padding: %dpx; }", widget.GetCssName(), padding))
+  return widget
+ }
+}
+
+func (f ScrolledWindow) PaddingBottom(padding int) ScrolledWindow {
+ return func() *gtk.ScrolledWindow {
+  widget := f()
+  css.Apply(&widget.Widget, fmt.Sprintf("%s { padding-bottom: %dpx; }", widget.GetCssName(), padding))
+  return widget
+ }
+}
+
+func (f ScrolledWindow) PaddingEnd(padding int) ScrolledWindow {
+ return func() *gtk.ScrolledWindow {
+  widget := f()
+  css.Apply(&widget.Widget, fmt.Sprintf("%s { padding-right: %dpx; }", widget.GetCssName(), padding))
+  return widget
+ }
+}
+
+func (f ScrolledWindow) PaddingStart(padding int) ScrolledWindow {
+ return func() *gtk.ScrolledWindow {
+  widget := f()
+  css.Apply(&widget.Widget, fmt.Sprintf("%s { padding-left: %dpx; }", widget.GetCssName(), padding))
+  return widget
+ }
+}
+
+func (f ScrolledWindow) PaddingTop(padding int) ScrolledWindow {
+ return func() *gtk.ScrolledWindow {
+  widget := f()
+  css.Apply(&widget.Widget, fmt.Sprintf("%s { padding-top: %dpx; }", widget.GetCssName(), padding))
   return widget
  }
 }
