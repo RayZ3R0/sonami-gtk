@@ -11,13 +11,17 @@ import (
 )
 
 func coverButton(trackId int, grid *gtk.Grid, row int, column int) int {
-	button := gtk.NewButton()
-	button.SetActionName("win.player.play-track")
-	button.SetActionTargetValue(glib.NewVariantInt64(int64(trackId)))
-	button.SetFocusable(true)
-	button.SetFocusOnClick(true)
-	grid.Attach(ManagedWidget(&button.Widget).
-		CSS(`button:not(:hover) { background-color: transparent; }`).ToGTK(), 0, row, column, 1)
+	grid.Attach(
+		Button().
+			ActionName("win.player.play-track").
+			ActionTargetValue(glib.NewVariantInt64(int64(trackId))).
+			CSS(`button:not(:hover) { background-color: transparent; }`).
+			ToGTK(),
+		0,
+		row,
+		column,
+		1,
+	)
 	return 1
 }
 

@@ -8,19 +8,15 @@ import (
 )
 
 func controlsColumn(grid *gtk.Grid, row int, column int) int {
-	addToCollection := gtk.NewButtonFromIconName("heart-outline-thick-symbolic")
-	defer addToCollection.Unref()
-
-	addToQueue := gtk.NewButtonFromIconName("plus-symbolic")
-	defer addToQueue.Unref()
-
 	grid.Attach(
 		HStack(
-			Widget(&addToCollection.Widget).
+			Button().
+				IconName("heart-outline-thick-symbolic").
 				HAlign(gtk.AlignCenterValue).
 				VAlign(gtk.AlignCenterValue).
 				CSS(`button:not(:hover) { background-color: transparent; }`),
-			Widget(&addToQueue.Widget).
+			Button().
+				IconName("plus-symbolic").
 				HAlign(gtk.AlignCenterValue).
 				VAlign(gtk.AlignCenterValue).
 				CSS(`button:not(:hover) { background-color: transparent; }`),
