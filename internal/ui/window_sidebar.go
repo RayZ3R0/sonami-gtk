@@ -2,27 +2,20 @@ package ui
 
 import (
 	"codeberg.org/dergs/tidalwave/internal/router"
-	"codeberg.org/dergs/tidalwave/internal/ui/components"
-	"codeberg.org/dergs/tidalwave/internal/ui/signals"
-	"github.com/diamondburned/gotk4-adwaita/pkg/adw"
-	"github.com/diamondburned/gotk4/pkg/gio/v2"
-	"github.com/diamondburned/gotk4/pkg/gtk/v4"
+	"codeberg.org/dergs/tidalwave/internal/signals"
+	. "codeberg.org/dergs/tidalwave/pkg/schwifty/syntax"
+	"github.com/jwijenbergh/puregotk/v4/adw"
+	"github.com/jwijenbergh/puregotk/v4/gio"
+	"github.com/jwijenbergh/puregotk/v4/gtk"
 )
 
-func (w *Window) buildSidebarHeader() gtk.Widgetter {
-	windowTitle := adw.NewWindowTitle("Tidal Wave", "")
-	router.NavigationComplete.On(func(response *router.Response) bool {
-		windowTitle.SetSubtitle(response.PageTitle)
-		w.SetTitle("Tidal Wave - " + response.PageTitle)
+func (w *Window) buildSidebarHeader() *gtk.Widget {
+	windowTitle := WindowTitle("Tidal Wave", "")()
+	router.NavigationComplete.On(func(entry router.HistoryEntry) bool {
+		windowTitle.SetSubtitle(entry.Response.PageTitle)
+		w.SetTitle("Tidal Wave - " + entry.Response.PageTitle)
 		return signals.Continue
 	})
-
-	headerbar := adw.NewHeaderBar()
-	headerbar.SetDecorationLayout("icon")
-	headerbar.SetTitleWidget(windowTitle)
-	headerbar.SetShowBackButton(false)
-	headerbar.SetShowEndTitleButtons(false)
-	headerbar.SetCenteringPolicy(adw.CenteringPolicyStrict)
 
 	mainMenu := gio.NewMenu()
 	mainMenu.Append("Preferences", "app.preferences")
@@ -32,30 +25,34 @@ func (w *Window) buildSidebarHeader() gtk.Widgetter {
 	menuButton.SetIconName("menu-symbolic")
 	menuButton.SetMenuModel(&mainMenu.MenuModel)
 
-	headerbar.PackEnd(menuButton)
+	// searchButton := components.NewRouteButton("search")
+	// searchButton.SetIcon("loupe-symbolic")
 
-	searchButton := components.NewRouteButton("search")
-	searchButton.SetIcon("loupe-symbolic")
-
-	btn2 := gtk.NewButtonFromIconName("loupe-symbolic")
-	btn2.ConnectClicked(func() {
-		router.Navigate("search", nil)
-	})
-	headerbar.PackEnd(searchButton)
-	return headerbar
+	// // btn2 := gtk.NewButtonFromIconName("loupe-symbolic")
+	// // btn2.ConnectClicked(func() {
+	// // 	router.Navigate("search", nil)
+	// // })
+	// headerbar.PackEnd(searchButton.Button)
+	return HeaderBar().
+		DecorationLayout("icon").
+		TitleWidget(Widget(&windowTitle.Widget)).
+		ShowBackButton(false).
+		ShowEndTitleButtons(false).
+		CenteringPolicy(adw.CenteringPolicyStrictValue).
+		PackEnd(Widget(&menuButton.Widget)).ToGTK()
 }
 
 func (w *Window) buildSidebar() *adw.ViewStack {
 	viewStack := adw.NewViewStack()
-	viewStack.AddTitledWithIcon(components.NewPlayer(), "player", "Player", "music-note-outline-symbolic")
-	viewStack.AddTitledWithIcon(components.NewLyricsPanel(), "lyrics", "Lyrics", "chat-bubble-text-symbolic")
-	viewStack.AddTitledWithIcon(gtk.NewSpinner(), "queue", "Queue", "music-queue-symbolic")
+	// viewStack.AddTitledWithIcon(components.NewPlayer(), "player", "Player", "music-note-outline-symbolic")
+	// viewStack.AddTitledWithIcon(components.NewLyricsPanel(), "lyrics", "Lyrics", "chat-bubble-text-symbolic")
+	// viewStack.AddTitledWithIcon(gtk.NewSpinner(), "queue", "Queue", "music-queue-symbolic")
 	return viewStack
 }
 
-func (w *Window) buildSidebarFooter(viewStack *adw.ViewStack) gtk.Widgetter {
+func (w *Window) buildSidebarFooter(viewStack *adw.ViewStack) *gtk.Widget {
 	viewSwitcher := adw.NewViewSwitcher()
-	viewSwitcher.SetPolicy(adw.ViewSwitcherPolicyWide)
+	viewSwitcher.SetPolicy(adw.ViewSwitcherPolicyWideValue)
 	viewSwitcher.SetStack(viewStack)
-	return viewSwitcher
+	return &viewSwitcher.Widget
 }

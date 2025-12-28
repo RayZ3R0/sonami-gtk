@@ -17,18 +17,34 @@
         pkgs = import nixpkgs { inherit system; };
         cgoDependencies = with pkgs; [
           gtk4
-          gtk3
           gobject-introspection
           libadwaita
+        ];
+        runtimeDependencies = with pkgs; [
           gst_all_1.gstreamer
           gst_all_1.gst-plugins-base
           gst_all_1.gst-plugins-good
           gst_all_1.gst-plugins-bad
+          librsvg
         ];
-        runtimeDependencies = with pkgs; [ librsvg ];
+        libraryPath = pkgs.symlinkJoin {
+          name = "tidalwave-puregotk-lib-folder";
+          paths =
+            (with pkgs; [
+              cairo
+              gdk-pixbuf
+              glib.out
+              graphene
+              pango.out
+              vulkan-loader
+            ])
+            ++ cgoDependencies
+            ++ runtimeDependencies;
+        };
       in
       {
         devShell = pkgs.mkShell {
+          PUREGOTK_LIB_FOLDER = "${libraryPath}/lib";
           buildInputs =
             with pkgs;
             [
@@ -37,7 +53,6 @@
               pkg-config
               graphviz
             ]
-            ++ cgoDependencies
             ++ runtimeDependencies;
         };
 
@@ -74,6 +89,11 @@
               ];
             })
           ];
+
+          postInstall = ''
+            wrapProgram $out/bin/tidalwave \
+              --set-default PUREGOTK_LIB_FOLDER ${libraryPath}/lib
+          '';
 
           meta = {
             description = "Tidal Wave is a GTK client for TIDAL written in GoLang.";

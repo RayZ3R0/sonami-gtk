@@ -1,0 +1,28 @@
+package ui
+
+import (
+	"unsafe"
+
+	"codeberg.org/dergs/tidalwave/internal/g"
+	"codeberg.org/dergs/tidalwave/internal/player"
+	"codeberg.org/dergs/tidalwave/internal/router"
+	"github.com/jwijenbergh/puregotk/v4/gio"
+	"github.com/jwijenbergh/puregotk/v4/glib"
+)
+
+func (w *Window) installActions() {
+	navigateBackAction := gio.NewSimpleAction("navigate-back", nil)
+	navigateBackAction.ConnectActivate(g.Ptr(func(action gio.SimpleAction, parameter uintptr) {
+		router.Back()
+	}))
+	w.AddAction(navigateBackAction)
+	w.GetApplication().SetAccelsForAction("win.navigate-back", []string{"<Alt>Left"})
+
+	playTrackAction := gio.NewSimpleAction("player.play-track", glib.NewVariantType("x"))
+	playTrackAction.ConnectActivate(g.Ptr(func(action gio.SimpleAction, parameter uintptr) {
+		variant := (*glib.Variant)(unsafe.Pointer(parameter))
+		id := variant.GetInt64()
+		player.Play(int(id))
+	}))
+	w.AddAction(playTrackAction)
+}

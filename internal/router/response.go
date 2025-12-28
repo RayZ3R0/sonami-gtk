@@ -1,12 +1,14 @@
 package router
 
-import "github.com/diamondburned/gotk4/pkg/gtk/v4"
+import (
+	"codeberg.org/dergs/tidalwave/pkg/schwifty"
+)
 
 type Response struct {
 	Error     error
 	PageTitle string
-	Toolbar   gtk.Widgetter
-	View      gtk.Widgetter
+	Toolbar   schwifty.BaseWidgetable
+	View      schwifty.BaseWidgetable
 }
 
 func FromError(pageTitle string, err error) *Response {

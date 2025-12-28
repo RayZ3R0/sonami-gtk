@@ -1,15 +1,15 @@
 package router
 
-import "github.com/diamondburned/gotk4-adwaita/pkg/adw"
+import (
+	. "codeberg.org/dergs/tidalwave/pkg/schwifty/syntax"
+)
 
 func notFoundHandler(params Params) *Response {
-	notFoundView := adw.NewStatusPage()
-	notFoundView.SetTitle("Not found")
-	notFoundView.SetDescription("The requested deeplink did not have any available handlers.")
-	notFoundView.SetIconName("face-sad-symbolic")
-
 	return &Response{
 		PageTitle: "Not Found",
-		View:      notFoundView,
+		View: StatusPage().
+			Title("Not found").
+			Description("The requested deeplink did not have any available handlers.").
+			IconName("face-sad-symbolic"),
 	}
 }

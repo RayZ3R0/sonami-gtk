@@ -3,18 +3,33 @@ package router
 import (
 	"maps"
 	"sync"
+
+	"github.com/jwijenbergh/puregotk/v4/gtk"
 )
 
 type HistoryEntry struct {
 	Path     string
 	Params   Params
 	Response *Response
+	View     *gtk.Widget
+	Toolbar  *gtk.Widget
 }
 
 type History struct {
 	sync.Mutex
 	array     []HistoryEntry
 	maxLength int
+}
+
+func (h *History) Current() *HistoryEntry {
+	h.Lock()
+	defer h.Unlock()
+
+	if len(h.array) < 1 {
+		return nil
+	}
+
+	return &h.array[len(h.array)-1]
 }
 
 func (h *History) IsCurrentlyOn(path string, params Params) bool {

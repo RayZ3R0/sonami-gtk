@@ -1,0 +1,188 @@
+package schwifty
+
+import (
+	"fmt"
+
+	"codeberg.org/dergs/tidalwave/pkg/schwifty/css"
+	"github.com/jwijenbergh/puregotk/v4/gtk"
+)
+
+type ScrolledWindow func() *gtk.ScrolledWindow
+
+func (f ScrolledWindow) AddController(controller *gtk.EventController) ScrolledWindow {
+ return func() *gtk.ScrolledWindow {
+  widget := f()
+  widget.AddController(controller)
+  return widget
+ }
+}
+
+func (f ScrolledWindow) Background(color string) ScrolledWindow {
+ return func() *gtk.ScrolledWindow {
+  widget := f()
+  css.Apply(&widget.Widget, fmt.Sprintf("%s { background-color: %s; }", widget.GetCssName(), color))
+  return widget
+ }
+}
+
+func (f ScrolledWindow) CornerRadius(radius int) ScrolledWindow {
+ return func() *gtk.ScrolledWindow {
+  widget := f()
+  css.Apply(&widget.Widget, fmt.Sprintf("%s { border-radius: %dpx; }", widget.GetCssName(), radius))
+  return widget
+ }
+}
+
+func (f ScrolledWindow) CSS(css string) ScrolledWindow {
+	return func() *gtk.ScrolledWindow {
+		widget := f()
+		widget.Ref()
+		defer widget.Unref()
+
+		provider := gtk.NewCssProvider()
+		provider.LoadFromString(css)
+		widget.GetStyleContext().AddProvider(provider, uint(gtk.STYLE_PROVIDER_PRIORITY_APPLICATION))
+		provider.Unref()
+
+		return widget
+	}
+}
+
+func (f ScrolledWindow) Focusable(focusable bool) ScrolledWindow {
+	return func() *gtk.ScrolledWindow {
+		widget := f()
+		widget.SetFocusable(focusable)
+		return widget
+	}
+}
+
+func (f ScrolledWindow) FocusOnClick(focusOnClick bool) ScrolledWindow {
+	return func() *gtk.ScrolledWindow {
+		widget := f()
+		widget.SetFocusOnClick(focusOnClick)
+		return widget
+	}
+}
+
+func (f ScrolledWindow) HAlign(align gtk.Align) ScrolledWindow {
+	return func() *gtk.ScrolledWindow {
+		widget := f()
+		widget.SetHalign(align)
+		return widget
+	}
+}
+
+func (f ScrolledWindow) HExpand(expand bool) ScrolledWindow {
+	return func() *gtk.ScrolledWindow {
+		widget := f()
+		widget.SetHexpand(expand)
+		return widget
+	}
+}
+
+func (f ScrolledWindow) HMargin(horizontal int) ScrolledWindow {
+	return func() *gtk.ScrolledWindow {
+		widget := f()
+		widget.SetMarginEnd(horizontal)
+		widget.SetMarginStart(horizontal)
+		return widget
+	}
+}
+
+func (f ScrolledWindow) Margin(margin int) ScrolledWindow {
+	return func() *gtk.ScrolledWindow {
+		widget := f()
+		widget.SetMarginBottom(margin)
+		widget.SetMarginEnd(margin)
+		widget.SetMarginStart(margin)
+		widget.SetMarginTop(margin)
+		return widget
+	}
+}
+
+func (f ScrolledWindow) MarginBottom(bottom int) ScrolledWindow {
+	return func() *gtk.ScrolledWindow {
+		widget := f()
+		widget.SetMarginBottom(bottom)
+		return widget
+	}
+}
+
+func (f ScrolledWindow) MarginEnd(end int) ScrolledWindow {
+	return func() *gtk.ScrolledWindow {
+		widget := f()
+		widget.SetMarginEnd(end)
+		return widget
+	}
+}
+
+func (f ScrolledWindow) MarginStart(start int) ScrolledWindow {
+	return func() *gtk.ScrolledWindow {
+		widget := f()
+		widget.SetMarginStart(start)
+		return widget
+	}
+}
+
+func (f ScrolledWindow) MarginTop(top int) ScrolledWindow {
+	return func() *gtk.ScrolledWindow {
+		widget := f()
+		widget.SetMarginTop(top)
+		return widget
+	}
+}
+
+func (f ScrolledWindow) Opacity(opacity float64) ScrolledWindow {
+ return func() *gtk.ScrolledWindow {
+  widget := f()
+  widget.SetOpacity(opacity)
+  return widget
+ }
+}
+
+func (f ScrolledWindow) Overflow(overflow gtk.Overflow) ScrolledWindow {
+ return func() *gtk.ScrolledWindow {
+  widget := f()
+  widget.SetOverflow(overflow)
+  return widget
+ }
+}
+
+func (f ScrolledWindow) ToGTK() *gtk.Widget {
+	val := f()
+	return &val.Widget
+}
+
+func (f ScrolledWindow) VAlign(align gtk.Align) ScrolledWindow {
+ return func() *gtk.ScrolledWindow {
+  widget := f()
+  widget.SetValign(align)
+  return widget
+ }
+}
+
+func (f ScrolledWindow) VExpand(expand bool) ScrolledWindow {
+ return func() *gtk.ScrolledWindow {
+  widget := f()
+  widget.SetVexpand(expand)
+  return widget
+ }
+}
+
+func (f ScrolledWindow) Visible(visible bool) ScrolledWindow {
+ return func() *gtk.ScrolledWindow {
+  widget := f()
+  widget.SetVisible(visible)
+  return widget
+ }
+}
+
+func (f ScrolledWindow) VMargin(vertical int) ScrolledWindow {
+ return func() *gtk.ScrolledWindow {
+  widget := f()
+  widget.SetMarginTop(vertical)
+  widget.SetMarginBottom(vertical)
+  return widget
+ }
+}
+

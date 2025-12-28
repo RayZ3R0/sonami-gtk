@@ -3,10 +3,10 @@ package router
 import (
 	"errors"
 	"fmt"
-	"runtime"
 	"runtime/debug"
 
-	"github.com/diamondburned/gotk4/pkg/core/glib"
+	"codeberg.org/dergs/tidalwave/internal/g"
+	"github.com/jwijenbergh/puregotk/v4/glib"
 )
 
 type Handler func(params Params) *Response
@@ -47,10 +47,11 @@ func executeHandler(handler Handler, params Params) (response *Response, shouldC
 	return
 }
 
-func handleResponse(path string, params Params, response *Response) {
-	glib.IdleAdd(func() bool {
-		NavigationComplete.Notify(response)
-		runtime.GC()
-		return false
-	})
+func handleNavigationComplete(entry *HistoryEntry) {
+	glib.IdleAddOnce(
+		g.Ptr[glib.SourceOnceFunc](func(u uintptr) {
+			NavigationComplete.Notify(*entry)
+		}),
+		0,
+	)
 }

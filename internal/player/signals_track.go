@@ -6,7 +6,7 @@ import (
 	"sync"
 	"time"
 
-	"codeberg.org/dergs/tidalwave/internal/ui/signals"
+	"codeberg.org/dergs/tidalwave/internal/signals"
 	"codeberg.org/dergs/tidalwave/pkg/tidalapi/models/openapi"
 )
 

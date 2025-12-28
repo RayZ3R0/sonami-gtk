@@ -1,19 +1,19 @@
 package tracklist
 
 import (
-	"codeberg.org/dergs/tidalwave/pkg/gui"
+	. "codeberg.org/dergs/tidalwave/pkg/schwifty/syntax"
 	"codeberg.org/dergs/tidalwave/pkg/tidalapi/models/openapi"
 	v2 "codeberg.org/dergs/tidalwave/pkg/tidalapi/models/v2"
-	"github.com/diamondburned/gotk4/pkg/gtk/v4"
-	"github.com/diamondburned/gotk4/pkg/pango"
+	"github.com/jwijenbergh/puregotk/v4/gtk"
+	"github.com/jwijenbergh/puregotk/v4/pango"
 )
 
 func titleAlbumColumn(title string, album string, grid *gtk.Grid, row int, column int) int {
-	frame := gui.VStack(
-		gui.Text(title).FontWeight(500).Ellipsis(pango.EllipsizeEnd).HAlign(gtk.AlignStart),
-		gui.Text(album).CSS(`label { color: #939393; }`).Ellipsis(pango.EllipsizeEnd).HAlign(gtk.AlignStart),
-	).Spacing(3).VAlign(gtk.AlignCenter).HAlign(gtk.AlignStart).HExpand(true).Margin(10)
-	grid.Attach(gui.HStack(frame, gui.Spacer()), column, row, 1, 1)
+	frame := VStack(
+		Label(title).FontWeight(500).Ellipsis(pango.EllipsizeEndValue).HAlign(gtk.AlignStartValue),
+		Label(album).CSS(`label { color: #939393; }`).Ellipsis(pango.EllipsizeEndValue).HAlign(gtk.AlignStartValue),
+	).Spacing(3).VAlign(gtk.AlignCenterValue).HAlign(gtk.AlignStartValue).HExpand(true).Margin(10)
+	grid.Attach(HStack(frame, Spacer()).ToGTK(), column, row, 1, 1)
 	return 1
 }
 

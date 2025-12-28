@@ -1,26 +1,38 @@
 package tracklist
 
 import (
-	"codeberg.org/dergs/tidalwave/pkg/gui"
+	. "codeberg.org/dergs/tidalwave/pkg/schwifty/syntax"
 	"codeberg.org/dergs/tidalwave/pkg/tidalapi/models/openapi"
 	v2 "codeberg.org/dergs/tidalwave/pkg/tidalapi/models/v2"
-	"github.com/diamondburned/gotk4/pkg/gtk/v4"
+	"github.com/jwijenbergh/puregotk/v4/gtk"
 )
 
 func controlsColumn(grid *gtk.Grid, row int, column int) int {
 	addToCollection := gtk.NewButtonFromIconName("heart-outline-thick-symbolic")
+	defer addToCollection.Unref()
+
 	addToQueue := gtk.NewButtonFromIconName("plus-symbolic")
-	widget := gui.HStack(
-		gui.Wrapper(addToCollection).
-			HAlign(gtk.AlignCenter).
-			VAlign(gtk.AlignCenter).
-			CSS(`button:not(:hover) { background-color: transparent; }`),
-		gui.Wrapper(addToQueue).
-			HAlign(gtk.AlignCenter).
-			VAlign(gtk.AlignCenter).
-			CSS(`button:not(:hover) { background-color: transparent; }`),
+	defer addToQueue.Unref()
+
+	grid.Attach(
+		HStack(
+			Widget(&addToCollection.Widget).
+				HAlign(gtk.AlignCenterValue).
+				VAlign(gtk.AlignCenterValue).
+				CSS(`button:not(:hover) { background-color: transparent; }`),
+			Widget(&addToQueue.Widget).
+				HAlign(gtk.AlignCenterValue).
+				VAlign(gtk.AlignCenterValue).
+				CSS(`button:not(:hover) { background-color: transparent; }`),
+		).
+			Margin(10).
+			HAlign(gtk.AlignEndValue).
+			ToGTK(),
+		column,
+		row,
+		1,
+		1,
 	)
-	grid.Attach(widget.Margin(10).HAlign(gtk.AlignEnd), column, row, 1, 1)
 	return 1
 }
 

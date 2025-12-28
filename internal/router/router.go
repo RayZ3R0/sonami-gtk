@@ -28,12 +28,18 @@ func Navigate(path string, params Params) {
 	go func(path string, params Params, handler Handler) {
 		response, shouldCache := executeHandler(handler, params)
 		logger.Info("navigation completed", "path", path, "params", params, "duration_ms", time.Since(startTime).Milliseconds(), "should_cache", shouldCache)
-		if shouldCache {
-			history.Push(HistoryEntry{Path: path, Params: params, Response: response})
-		} else {
-			history.Push(HistoryEntry{Path: path, Params: params})
+		entry := HistoryEntry{Path: path, Params: params}
+		if response.Toolbar != nil {
+			entry.Toolbar = response.Toolbar.ToGTK()
 		}
-		handleResponse(path, params, response)
+		if response.View != nil {
+			entry.View = response.View.ToGTK()
+		}
+		if shouldCache {
+			entry.Response = response
+		}
+		history.Push(entry)
+		handleNavigationComplete(&entry)
 
 	}(path, params, handler)
 }
@@ -43,14 +49,25 @@ func Back() {
 		return
 	}
 
+	current := history.Current()
 	previous := history.Pop()
 	if previous == nil {
 		return
 	}
 
+	// Ensure we are unmapping whatever we were showing previously
+	defer func(entry HistoryEntry) {
+		if entry.Toolbar != nil {
+			entry.Toolbar.Unref()
+		}
+		if entry.View != nil {
+			entry.View.Unref()
+		}
+	}(*current)
+
 	OnNavigate.Notify(previous.Path)
 	if previous.Response != nil {
-		handleResponse(previous.Path, previous.Params, previous.Response)
+		handleNavigationComplete(previous)
 	} else {
 		Navigate(previous.Path, previous.Params)
 	}

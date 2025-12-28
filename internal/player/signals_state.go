@@ -3,7 +3,7 @@ package player
 import (
 	"sync"
 
-	"codeberg.org/dergs/tidalwave/internal/ui/signals"
+	"codeberg.org/dergs/tidalwave/internal/signals"
 )
 
 var OnStateChanged = stateChangedSignal{
