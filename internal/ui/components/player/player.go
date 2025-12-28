@@ -14,9 +14,7 @@ func NewPlayer() schwifty.Box {
 		trackArtists(),
 		HStack(
 			MenuButton().
-				Popover(
-					Popover(controlsVolumeSlider()),
-				).
+				Popover(controlsVolumeSlider()).
 				IconName("audio-speakers-symbolic").
 				CSS("button:not(:hover) { background-color: transparent; }"),
 			Button().

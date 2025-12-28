@@ -21,17 +21,20 @@ func init() {
 	})
 }
 
-func controlsVolumeSlider() schwifty.Scale {
-	return Scale(gtk.OrientationVerticalValue).
-		Inverted(true).
-		Range(0, 1).
-		Value(0.5).
-		MinHeight(100).
-		HExpand(true).
-		CSS(`scale:active { background-color: transparent; }`).
-		ConnectChangeValue(func(r gtk.Range, st gtk.ScrollType, value float64) bool {
-			// Cube the value to account for the logarithmic nature of human volume perception
-			player.SetVolume(math.Pow(value, 3))
-			return false
-		})
+func controlsVolumeSlider() schwifty.Popover {
+	return Popover(
+		Scale(gtk.OrientationVerticalValue).
+			Inverted(true).
+			Range(0, 1).
+			Value(0.5).
+			MinHeight(100).
+			HExpand(true).
+			CSS(`scale:active { background-color: transparent; }`).
+			BindValue(volumeState).
+			ConnectChangeValue(func(r gtk.Range, st gtk.ScrollType, value float64) bool {
+				// Cube the value to account for the logarithmic nature of human volume perception
+				player.SetVolume(math.Pow(value, 3))
+				return false
+			}),
+	)
 }
