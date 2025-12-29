@@ -1,0 +1,406 @@
+package schwifty
+
+import (
+	"codeberg.org/dergs/tidalwave/pkg/schwifty/callback"
+	"codeberg.org/dergs/tidalwave/pkg/schwifty/css"
+	"codeberg.org/dergs/tidalwave/pkg/schwifty/state"
+	"fmt"
+	"github.com/jwijenbergh/puregotk/v4/adw"
+	"github.com/jwijenbergh/puregotk/v4/gtk"
+)
+
+
+type WrapBox func() *adw.WrapBox
+
+func (f WrapBox) AddController(controller *gtk.EventController) WrapBox {
+	return func() *adw.WrapBox {
+		widget := f()
+		widget.AddController(controller)
+		return widget
+	}
+}
+
+func (f WrapBox) ConnectConstruct(cb func(*adw.WrapBox)) WrapBox {
+	return func() *adw.WrapBox {
+		widget := f()
+		cb(widget)
+		return widget
+	}
+}
+
+func (f WrapBox) ConnectDestroy(cb func(gtk.Widget)) WrapBox {
+	return func() *adw.WrapBox {
+		widget := f()
+		callback.HandleCallback(widget.Widget, "destroy", cb)
+		return widget
+	}
+}
+
+func (f WrapBox) ConnectRealize(cb func(gtk.Widget)) WrapBox {
+	return func() *adw.WrapBox {
+		widget := f()
+		callback.HandleCallback(widget.Widget, "realize", cb)
+		return widget
+	}
+}
+
+func (f WrapBox) ConnectUnrealize(cb func(gtk.Widget)) WrapBox {
+	return func() *adw.WrapBox {
+		widget := f()
+		callback.HandleCallback(widget.Widget, "unrealize", cb)
+		return widget
+	}
+}
+
+func (f WrapBox) Focusable(focusable bool) WrapBox {
+	return func() *adw.WrapBox {
+		widget := f()
+		widget.SetFocusable(focusable)
+		return widget
+	}
+}
+
+func (f WrapBox) FocusOnClick(focusOnClick bool) WrapBox {
+	return func() *adw.WrapBox {
+		widget := f()
+		widget.SetFocusOnClick(focusOnClick)
+		return widget
+	}
+}
+
+func (f WrapBox) HAlign(align gtk.Align) WrapBox {
+	return func() *adw.WrapBox {
+		widget := f()
+		widget.SetHalign(align)
+		return widget
+	}
+}
+
+func (f WrapBox) HExpand(expand bool) WrapBox {
+	return func() *adw.WrapBox {
+		widget := f()
+		widget.SetHexpand(expand)
+		return widget
+	}
+}
+
+func (f WrapBox) HMargin(horizontal int) WrapBox {
+	return func() *adw.WrapBox {
+		widget := f()
+		widget.SetMarginEnd(horizontal)
+		widget.SetMarginStart(horizontal)
+		return widget
+	}
+}
+
+func (f WrapBox) Margin(margin int) WrapBox {
+	return func() *adw.WrapBox {
+		widget := f()
+		widget.SetMarginBottom(margin)
+		widget.SetMarginEnd(margin)
+		widget.SetMarginStart(margin)
+		widget.SetMarginTop(margin)
+		return widget
+	}
+}
+
+func (f WrapBox) MarginBottom(bottom int) WrapBox {
+	return func() *adw.WrapBox {
+		widget := f()
+		widget.SetMarginBottom(bottom)
+		return widget
+	}
+}
+
+func (f WrapBox) MarginEnd(end int) WrapBox {
+	return func() *adw.WrapBox {
+		widget := f()
+		widget.SetMarginEnd(end)
+		return widget
+	}
+}
+
+func (f WrapBox) MarginStart(start int) WrapBox {
+	return func() *adw.WrapBox {
+		widget := f()
+		widget.SetMarginStart(start)
+		return widget
+	}
+}
+
+func (f WrapBox) MarginTop(top int) WrapBox {
+	return func() *adw.WrapBox {
+		widget := f()
+		widget.SetMarginTop(top)
+		return widget
+	}
+}
+
+func (f WrapBox) Opacity(opacity float64) WrapBox {
+	return func() *adw.WrapBox {
+		widget := f()
+		widget.SetOpacity(opacity)
+		return widget
+	}
+}
+
+func (f WrapBox) Overflow(overflow gtk.Overflow) WrapBox {
+	return func() *adw.WrapBox {
+		widget := f()
+		widget.SetOverflow(overflow)
+		return widget
+	}
+}
+
+func (f WrapBox) ToGTK() *gtk.Widget {
+	val := f()
+	return &val.Widget
+}
+
+func (f WrapBox) VAlign(align gtk.Align) WrapBox {
+	return func() *adw.WrapBox {
+		widget := f()
+		widget.SetValign(align)
+		return widget
+	}
+}
+
+func (f WrapBox) VExpand(expand bool) WrapBox {
+	return func() *adw.WrapBox {
+		widget := f()
+		widget.SetVexpand(expand)
+		return widget
+	}
+}
+
+func (f WrapBox) Visible(visible bool) WrapBox {
+	return func() *adw.WrapBox {
+		widget := f()
+		widget.SetVisible(visible)
+		return widget
+	}
+}
+
+func (f WrapBox) VMargin(vertical int) WrapBox {
+	return func() *adw.WrapBox {
+		widget := f()
+		widget.SetMarginTop(vertical)
+		widget.SetMarginBottom(vertical)
+		return widget
+	}
+}
+
+
+
+func (f WrapBox) Background(color string) WrapBox {
+	return func() *adw.WrapBox {
+		widget := f()
+		css.Apply(&widget.Widget, fmt.Sprintf("%s { background-color: %s; }", widget.GetCssName(), color))
+		return widget
+	}
+}
+
+func (f WrapBox) CornerRadius(radius int) WrapBox {
+	return func() *adw.WrapBox {
+		widget := f()
+		css.Apply(&widget.Widget, fmt.Sprintf("%s { border-radius: %dpx; }", widget.GetCssName(), radius))
+		return widget
+	}
+}
+
+func (f WrapBox) CSS(css string) WrapBox {
+	return func() *adw.WrapBox {
+		widget := f()
+		widget.Ref()
+		defer widget.Unref()
+
+		provider := gtk.NewCssProvider()
+		provider.LoadFromString(css)
+		widget.GetStyleContext().AddProvider(provider, uint(gtk.STYLE_PROVIDER_PRIORITY_APPLICATION))
+		provider.Unref()
+
+		return widget
+	}
+}
+
+func (f WrapBox) HPadding(padding int) WrapBox {
+	return func() *adw.WrapBox {
+		widget := f()
+		css.Apply(&widget.Widget, fmt.Sprintf("%s { padding-left: %dpx; padding-right: %dpx; }", widget.GetCssName(), padding, padding))
+		return widget
+	}
+}
+
+func (f WrapBox) MinHeight(minHeight int) WrapBox {
+	return func() *adw.WrapBox {
+		widget := f()
+		css.Apply(&widget.Widget, fmt.Sprintf("%s { min-height: %dpx; }", widget.GetCssName(), minHeight))
+		return widget
+	}
+}
+
+func (f WrapBox) MinWidth(minWidth int) WrapBox {
+	return func() *adw.WrapBox {
+		widget := f()
+		css.Apply(&widget.Widget, fmt.Sprintf("%s { min-width: %dpx; }", widget.GetCssName(), minWidth))
+		return widget
+	}
+}
+
+func (f WrapBox) Padding(padding int) WrapBox {
+	return func() *adw.WrapBox {
+		widget := f()
+		css.Apply(&widget.Widget, fmt.Sprintf("%s { padding: %dpx; }", widget.GetCssName(), padding))
+		return widget
+	}
+}
+
+func (f WrapBox) PaddingBottom(padding int) WrapBox {
+	return func() *adw.WrapBox {
+		widget := f()
+		css.Apply(&widget.Widget, fmt.Sprintf("%s { padding-bottom: %dpx; }", widget.GetCssName(), padding))
+		return widget
+	}
+}
+
+func (f WrapBox) PaddingEnd(padding int) WrapBox {
+	return func() *adw.WrapBox {
+		widget := f()
+		css.Apply(&widget.Widget, fmt.Sprintf("%s { padding-right: %dpx; }", widget.GetCssName(), padding))
+		return widget
+	}
+}
+
+func (f WrapBox) PaddingStart(padding int) WrapBox {
+	return func() *adw.WrapBox {
+		widget := f()
+		css.Apply(&widget.Widget, fmt.Sprintf("%s { padding-left: %dpx; }", widget.GetCssName(), padding))
+		return widget
+	}
+}
+
+func (f WrapBox) PaddingTop(padding int) WrapBox {
+	return func() *adw.WrapBox {
+		widget := f()
+		css.Apply(&widget.Widget, fmt.Sprintf("%s { padding-top: %dpx; }", widget.GetCssName(), padding))
+		return widget
+	}
+}
+
+func (f WrapBox) VPadding(padding int) WrapBox {
+	return func() *adw.WrapBox {
+		widget := f()
+		css.Apply(&widget.Widget, fmt.Sprintf("%s { padding-bottom: %dpx; padding-top: %dpx; }", widget.GetCssName(), padding, padding))
+		return widget
+	}
+}
+
+
+
+func (f WrapBox) BindVisible(state *state.State[bool]) WrapBox {
+	return func() *adw.WrapBox {
+		var callbackId string
+		return f.ConnectRealize(func(w gtk.Widget) {
+			callbackId = state.AddCallback(func(newValue bool) {
+				w.SetVisible(newValue)
+			})
+		}).ConnectUnrealize(func(w gtk.Widget) {
+			state.RemoveCallback(callbackId)
+		})()
+	}
+}
+
+func (f WrapBox) BindHMargin(state *state.State[int]) WrapBox {
+	return func() *adw.WrapBox {
+		var callbackId string
+		return f.ConnectRealize(func(w gtk.Widget) {
+			callbackId = state.AddCallback(func(newValue int) {
+				w.SetMarginEnd(newValue)
+				w.SetMarginStart(newValue)
+			})
+		}).ConnectUnrealize(func(w gtk.Widget) {
+			state.RemoveCallback(callbackId)
+		})()
+	}
+}
+
+func (f WrapBox) BindMargin(state *state.State[int]) WrapBox {
+	return func() *adw.WrapBox {
+		var callbackId string
+		return f.ConnectRealize(func(widget gtk.Widget) {
+			callbackId = state.AddCallback(func(newValue int) {
+				widget.SetMarginBottom(newValue)
+				widget.SetMarginEnd(newValue)
+				widget.SetMarginStart(newValue)
+				widget.SetMarginTop(newValue)
+			})
+		}).ConnectUnrealize(func(gtk.Widget) {
+			state.RemoveCallback(callbackId)
+		})()
+	}
+}
+
+func (f WrapBox) BindMarginBottom(state *state.State[int]) WrapBox {
+	return func() *adw.WrapBox {
+		var callbackId string
+		return f.ConnectRealize(func(w gtk.Widget) {
+			callbackId = state.AddCallback(func(newValue int) {
+				w.SetMarginBottom(newValue)
+			})
+		}).ConnectUnrealize(func(w gtk.Widget) {
+			state.RemoveCallback(callbackId)
+		})()
+	}
+}
+
+func (f WrapBox) BindMarginEnd(state *state.State[int]) WrapBox {
+	return func() *adw.WrapBox {
+		var callbackId string
+		return f.ConnectRealize(func(w gtk.Widget) {
+			callbackId = state.AddCallback(func(newValue int) {
+				w.SetMarginEnd(newValue)
+			})
+		}).ConnectUnrealize(func(w gtk.Widget) {
+			state.RemoveCallback(callbackId)
+		})()
+	}
+}
+
+func (f WrapBox) BindMarginStart(state *state.State[int]) WrapBox {
+	return func() *adw.WrapBox {
+		var callbackId string
+		return f.ConnectRealize(func(w gtk.Widget) {
+			callbackId = state.AddCallback(func(newValue int) {
+				w.SetMarginStart(newValue)
+			})
+		}).ConnectUnrealize(func(w gtk.Widget) {
+			state.RemoveCallback(callbackId)
+		})()
+	}
+}
+
+func (f WrapBox) BindMarginTop(state *state.State[int]) WrapBox {
+	return func() *adw.WrapBox {
+		var callbackId string
+		return f.ConnectRealize(func(w gtk.Widget) {
+			callbackId = state.AddCallback(func(newValue int) {
+				w.SetMarginTop(newValue)
+			})
+		}).ConnectUnrealize(func(w gtk.Widget) {
+			state.RemoveCallback(callbackId)
+		})()
+	}
+}
+
+func (f WrapBox) BindSensitive(state *state.State[bool]) WrapBox {
+	return func() *adw.WrapBox {
+		var callbackId string
+		return f.ConnectRealize(func(w gtk.Widget) {
+			callbackId = state.AddCallback(func(newValue bool) {
+				w.SetSensitive(newValue)
+			})
+		}).ConnectUnrealize(func(w gtk.Widget) {
+			state.RemoveCallback(callbackId)
+		})()
+	}
+}
