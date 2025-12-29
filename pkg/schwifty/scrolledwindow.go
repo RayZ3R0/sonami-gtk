@@ -19,3 +19,19 @@ func (f ScrolledWindow) Policy(hPolicy, vPolicy gtk.PolicyType) ScrolledWindow {
 		return scrolledWindow
 	}
 }
+
+func (f ScrolledWindow) PropagateNaturalHeight(propagate bool) ScrolledWindow {
+	return func() *gtk.ScrolledWindow {
+		scrolledWindow := f()
+		scrolledWindow.SetPropagateNaturalHeight(propagate)
+		return scrolledWindow
+	}
+}
+
+func (f ScrolledWindow) PropagateNaturalWidth(propagate bool) ScrolledWindow {
+	return func() *gtk.ScrolledWindow {
+		scrolledWindow := f()
+		scrolledWindow.SetPropagateNaturalWidth(propagate)
+		return scrolledWindow
+	}
+}

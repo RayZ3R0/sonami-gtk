@@ -1,7 +1,6 @@
 package schwifty
 
 import (
-	"codeberg.org/dergs/tidalwave/internal/g"
 	"codeberg.org/dergs/tidalwave/pkg/schwifty/state"
 	"github.com/jwijenbergh/puregotk/v4/gdkpixbuf"
 	"github.com/jwijenbergh/puregotk/v4/gtk"
@@ -11,19 +10,14 @@ import (
 
 func (f Image) BindPixbuf(state *state.State[*gdkpixbuf.Pixbuf]) Image {
 	return func() *gtk.Image {
-		image := f()
-
 		var callbackId string
-		image.ConnectRealize(g.Ptr(func(a gtk.Widget) {
+		return f.ConnectRealize(func(w gtk.Widget) {
 			callbackId = state.AddCallback(func(newValue *gdkpixbuf.Pixbuf) {
-				gtk.ImageNewFromInternalPtr(a.GoPointer()).SetFromPixbuf(newValue)
+				gtk.ImageNewFromInternalPtr(w.GoPointer()).SetFromPixbuf(newValue)
 			})
-		}))
-		image.ConnectUnrealize(g.Ptr(func(gtk.Widget) {
+		}).ConnectUnrealize(func(w gtk.Widget) {
 			state.RemoveCallback(callbackId)
-		}))
-
-		return image
+		})()
 	}
 }
 

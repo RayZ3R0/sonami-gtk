@@ -3,7 +3,6 @@ package schwifty
 import (
 	"fmt"
 
-	"codeberg.org/dergs/tidalwave/internal/g"
 	"codeberg.org/dergs/tidalwave/pkg/schwifty/css"
 	"codeberg.org/dergs/tidalwave/pkg/schwifty/state"
 	"github.com/jwijenbergh/puregotk/v4/gtk"
@@ -107,19 +106,22 @@ func (f Label) Text(text string) Label {
 
 func (f Label) BindText(state *state.State[string]) Label {
 	return func() *gtk.Label {
-		label := f()
-
 		var callbackId string
-		label.ConnectRealize(g.Ptr(func(a gtk.Widget) {
+		return f.ConnectRealize(func(w gtk.Widget) {
 			callbackId = state.AddCallback(func(newValue string) {
-				gtk.LabelNewFromInternalPtr(a.GoPointer()).SetText(newValue)
+				gtk.LabelNewFromInternalPtr(w.GoPointer()).SetText(newValue)
 			})
-		}))
-		label.ConnectUnrealize(g.Ptr(func(gtk.Widget) {
+		}).ConnectUnrealize(func(w gtk.Widget) {
 			state.RemoveCallback(callbackId)
-		}))
+		})()
+	}
+}
 
-		return label
+func (f Label) MaxWidthChars(chars int) Label {
+	return func() *gtk.Label {
+		widget := f()
+		widget.SetMaxWidthChars(chars)
+		return widget
 	}
 }
 

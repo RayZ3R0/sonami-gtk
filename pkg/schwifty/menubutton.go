@@ -1,7 +1,6 @@
 package schwifty
 
 import (
-	"codeberg.org/dergs/tidalwave/internal/g"
 	"codeberg.org/dergs/tidalwave/pkg/schwifty/state"
 	"github.com/jwijenbergh/puregotk/v4/gtk"
 )
@@ -10,19 +9,14 @@ import (
 
 func (f MenuButton) BindIconName(state *state.State[string]) MenuButton {
 	return func() *gtk.MenuButton {
-		label := f()
-
 		var callbackId string
-		label.ConnectRealize(g.Ptr(func(a gtk.Widget) {
+		return f.ConnectRealize(func(w gtk.Widget) {
 			callbackId = state.AddCallback(func(newValue string) {
-				gtk.MenuButtonNewFromInternalPtr(a.GoPointer()).SetIconName(newValue)
+				gtk.MenuButtonNewFromInternalPtr(w.GoPointer()).SetIconName(newValue)
 			})
-		}))
-		label.ConnectUnrealize(g.Ptr(func(gtk.Widget) {
+		}).ConnectUnrealize(func(w gtk.Widget) {
 			state.RemoveCallback(callbackId)
-		}))
-
-		return label
+		})()
 	}
 }
 

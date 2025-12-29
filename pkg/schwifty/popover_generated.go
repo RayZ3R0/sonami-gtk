@@ -1,7 +1,7 @@
 package schwifty
 
 import (
-	"codeberg.org/dergs/tidalwave/internal/g"
+	"codeberg.org/dergs/tidalwave/pkg/schwifty/callback"
 	"codeberg.org/dergs/tidalwave/pkg/schwifty/css"
 	"codeberg.org/dergs/tidalwave/pkg/schwifty/state"
 	"fmt"
@@ -30,7 +30,23 @@ func (f Popover) ConnectConstruct(cb func(*gtk.Popover)) Popover {
 func (f Popover) ConnectDestroy(cb func(gtk.Widget)) Popover {
 	return func() *gtk.Popover {
 		widget := f()
-		widget.ConnectDestroy(&cb)
+		callback.HandleCallback(widget.Widget, "destroy", cb)
+		return widget
+	}
+}
+
+func (f Popover) ConnectRealize(cb func(gtk.Widget)) Popover {
+	return func() *gtk.Popover {
+		widget := f()
+		callback.HandleCallback(widget.Widget, "realize", cb)
+		return widget
+	}
+}
+
+func (f Popover) ConnectUnrealize(cb func(gtk.Widget)) Popover {
+	return func() *gtk.Popover {
+		widget := f()
+		callback.HandleCallback(widget.Widget, "unrealize", cb)
 		return widget
 	}
 }
@@ -282,36 +298,108 @@ func (f Popover) VPadding(padding int) Popover {
 
 func (f Popover) BindVisible(state *state.State[bool]) Popover {
 	return func() *gtk.Popover {
-		widget := f()
-
 		var callbackId string
-		widget.ConnectRealize(g.Ptr(func(a gtk.Widget) {
+		return f.ConnectRealize(func(w gtk.Widget) {
 			callbackId = state.AddCallback(func(newValue bool) {
-				a.SetVisible(newValue)
+				w.SetVisible(newValue)
 			})
-		}))
-		widget.ConnectUnrealize(g.Ptr(func(gtk.Widget) {
+		}).ConnectUnrealize(func(w gtk.Widget) {
 			state.RemoveCallback(callbackId)
-		}))
+		})()
+	}
+}
 
-		return widget
+func (f Popover) BindHMargin(state *state.State[int]) Popover {
+	return func() *gtk.Popover {
+		var callbackId string
+		return f.ConnectRealize(func(w gtk.Widget) {
+			callbackId = state.AddCallback(func(newValue int) {
+				w.SetMarginEnd(newValue)
+				w.SetMarginStart(newValue)
+			})
+		}).ConnectUnrealize(func(w gtk.Widget) {
+			state.RemoveCallback(callbackId)
+		})()
+	}
+}
+
+func (f Popover) BindMargin(state *state.State[int]) Popover {
+	return func() *gtk.Popover {
+		var callbackId string
+		return f.ConnectRealize(func(widget gtk.Widget) {
+			callbackId = state.AddCallback(func(newValue int) {
+				widget.SetMarginBottom(newValue)
+				widget.SetMarginEnd(newValue)
+				widget.SetMarginStart(newValue)
+				widget.SetMarginTop(newValue)
+			})
+		}).ConnectUnrealize(func(gtk.Widget) {
+			state.RemoveCallback(callbackId)
+		})()
+	}
+}
+
+func (f Popover) BindMarginBottom(state *state.State[int]) Popover {
+	return func() *gtk.Popover {
+		var callbackId string
+		return f.ConnectRealize(func(w gtk.Widget) {
+			callbackId = state.AddCallback(func(newValue int) {
+				w.SetMarginBottom(newValue)
+			})
+		}).ConnectUnrealize(func(w gtk.Widget) {
+			state.RemoveCallback(callbackId)
+		})()
+	}
+}
+
+func (f Popover) BindMarginEnd(state *state.State[int]) Popover {
+	return func() *gtk.Popover {
+		var callbackId string
+		return f.ConnectRealize(func(w gtk.Widget) {
+			callbackId = state.AddCallback(func(newValue int) {
+				w.SetMarginEnd(newValue)
+			})
+		}).ConnectUnrealize(func(w gtk.Widget) {
+			state.RemoveCallback(callbackId)
+		})()
+	}
+}
+
+func (f Popover) BindMarginStart(state *state.State[int]) Popover {
+	return func() *gtk.Popover {
+		var callbackId string
+		return f.ConnectRealize(func(w gtk.Widget) {
+			callbackId = state.AddCallback(func(newValue int) {
+				w.SetMarginStart(newValue)
+			})
+		}).ConnectUnrealize(func(w gtk.Widget) {
+			state.RemoveCallback(callbackId)
+		})()
+	}
+}
+
+func (f Popover) BindMarginTop(state *state.State[int]) Popover {
+	return func() *gtk.Popover {
+		var callbackId string
+		return f.ConnectRealize(func(w gtk.Widget) {
+			callbackId = state.AddCallback(func(newValue int) {
+				w.SetMarginTop(newValue)
+			})
+		}).ConnectUnrealize(func(w gtk.Widget) {
+			state.RemoveCallback(callbackId)
+		})()
 	}
 }
 
 func (f Popover) BindSensitive(state *state.State[bool]) Popover {
 	return func() *gtk.Popover {
-		widget := f()
-
 		var callbackId string
-		widget.ConnectRealize(g.Ptr(func(a gtk.Widget) {
+		return f.ConnectRealize(func(w gtk.Widget) {
 			callbackId = state.AddCallback(func(newValue bool) {
-				a.SetSensitive(newValue)
+				w.SetSensitive(newValue)
 			})
-		}))
-		widget.ConnectUnrealize(g.Ptr(func(gtk.Widget) {
+		}).ConnectUnrealize(func(w gtk.Widget) {
 			state.RemoveCallback(callbackId)
-		}))
-
-		return widget
+		})()
 	}
 }

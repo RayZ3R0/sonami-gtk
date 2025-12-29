@@ -1,7 +1,7 @@
 package schwifty
 
 import (
-	"codeberg.org/dergs/tidalwave/internal/g"
+	"codeberg.org/dergs/tidalwave/pkg/schwifty/callback"
 	"codeberg.org/dergs/tidalwave/pkg/schwifty/css"
 	"codeberg.org/dergs/tidalwave/pkg/schwifty/state"
 	"fmt"
@@ -31,7 +31,23 @@ func (f StatusPage) ConnectConstruct(cb func(*adw.StatusPage)) StatusPage {
 func (f StatusPage) ConnectDestroy(cb func(gtk.Widget)) StatusPage {
 	return func() *adw.StatusPage {
 		widget := f()
-		widget.ConnectDestroy(&cb)
+		callback.HandleCallback(widget.Widget, "destroy", cb)
+		return widget
+	}
+}
+
+func (f StatusPage) ConnectRealize(cb func(gtk.Widget)) StatusPage {
+	return func() *adw.StatusPage {
+		widget := f()
+		callback.HandleCallback(widget.Widget, "realize", cb)
+		return widget
+	}
+}
+
+func (f StatusPage) ConnectUnrealize(cb func(gtk.Widget)) StatusPage {
+	return func() *adw.StatusPage {
+		widget := f()
+		callback.HandleCallback(widget.Widget, "unrealize", cb)
 		return widget
 	}
 }
@@ -283,36 +299,108 @@ func (f StatusPage) VPadding(padding int) StatusPage {
 
 func (f StatusPage) BindVisible(state *state.State[bool]) StatusPage {
 	return func() *adw.StatusPage {
-		widget := f()
-
 		var callbackId string
-		widget.ConnectRealize(g.Ptr(func(a gtk.Widget) {
+		return f.ConnectRealize(func(w gtk.Widget) {
 			callbackId = state.AddCallback(func(newValue bool) {
-				a.SetVisible(newValue)
+				w.SetVisible(newValue)
 			})
-		}))
-		widget.ConnectUnrealize(g.Ptr(func(gtk.Widget) {
+		}).ConnectUnrealize(func(w gtk.Widget) {
 			state.RemoveCallback(callbackId)
-		}))
+		})()
+	}
+}
 
-		return widget
+func (f StatusPage) BindHMargin(state *state.State[int]) StatusPage {
+	return func() *adw.StatusPage {
+		var callbackId string
+		return f.ConnectRealize(func(w gtk.Widget) {
+			callbackId = state.AddCallback(func(newValue int) {
+				w.SetMarginEnd(newValue)
+				w.SetMarginStart(newValue)
+			})
+		}).ConnectUnrealize(func(w gtk.Widget) {
+			state.RemoveCallback(callbackId)
+		})()
+	}
+}
+
+func (f StatusPage) BindMargin(state *state.State[int]) StatusPage {
+	return func() *adw.StatusPage {
+		var callbackId string
+		return f.ConnectRealize(func(widget gtk.Widget) {
+			callbackId = state.AddCallback(func(newValue int) {
+				widget.SetMarginBottom(newValue)
+				widget.SetMarginEnd(newValue)
+				widget.SetMarginStart(newValue)
+				widget.SetMarginTop(newValue)
+			})
+		}).ConnectUnrealize(func(gtk.Widget) {
+			state.RemoveCallback(callbackId)
+		})()
+	}
+}
+
+func (f StatusPage) BindMarginBottom(state *state.State[int]) StatusPage {
+	return func() *adw.StatusPage {
+		var callbackId string
+		return f.ConnectRealize(func(w gtk.Widget) {
+			callbackId = state.AddCallback(func(newValue int) {
+				w.SetMarginBottom(newValue)
+			})
+		}).ConnectUnrealize(func(w gtk.Widget) {
+			state.RemoveCallback(callbackId)
+		})()
+	}
+}
+
+func (f StatusPage) BindMarginEnd(state *state.State[int]) StatusPage {
+	return func() *adw.StatusPage {
+		var callbackId string
+		return f.ConnectRealize(func(w gtk.Widget) {
+			callbackId = state.AddCallback(func(newValue int) {
+				w.SetMarginEnd(newValue)
+			})
+		}).ConnectUnrealize(func(w gtk.Widget) {
+			state.RemoveCallback(callbackId)
+		})()
+	}
+}
+
+func (f StatusPage) BindMarginStart(state *state.State[int]) StatusPage {
+	return func() *adw.StatusPage {
+		var callbackId string
+		return f.ConnectRealize(func(w gtk.Widget) {
+			callbackId = state.AddCallback(func(newValue int) {
+				w.SetMarginStart(newValue)
+			})
+		}).ConnectUnrealize(func(w gtk.Widget) {
+			state.RemoveCallback(callbackId)
+		})()
+	}
+}
+
+func (f StatusPage) BindMarginTop(state *state.State[int]) StatusPage {
+	return func() *adw.StatusPage {
+		var callbackId string
+		return f.ConnectRealize(func(w gtk.Widget) {
+			callbackId = state.AddCallback(func(newValue int) {
+				w.SetMarginTop(newValue)
+			})
+		}).ConnectUnrealize(func(w gtk.Widget) {
+			state.RemoveCallback(callbackId)
+		})()
 	}
 }
 
 func (f StatusPage) BindSensitive(state *state.State[bool]) StatusPage {
 	return func() *adw.StatusPage {
-		widget := f()
-
 		var callbackId string
-		widget.ConnectRealize(g.Ptr(func(a gtk.Widget) {
+		return f.ConnectRealize(func(w gtk.Widget) {
 			callbackId = state.AddCallback(func(newValue bool) {
-				a.SetSensitive(newValue)
+				w.SetSensitive(newValue)
 			})
-		}))
-		widget.ConnectUnrealize(g.Ptr(func(gtk.Widget) {
+		}).ConnectUnrealize(func(w gtk.Widget) {
 			state.RemoveCallback(callbackId)
-		}))
-
-		return widget
+		})()
 	}
 }

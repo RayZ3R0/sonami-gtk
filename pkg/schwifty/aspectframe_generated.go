@@ -1,7 +1,7 @@
 package schwifty
 
 import (
-	"codeberg.org/dergs/tidalwave/internal/g"
+	"codeberg.org/dergs/tidalwave/pkg/schwifty/callback"
 	"codeberg.org/dergs/tidalwave/pkg/schwifty/css"
 	"codeberg.org/dergs/tidalwave/pkg/schwifty/state"
 	"fmt"
@@ -30,7 +30,23 @@ func (f AspectFrame) ConnectConstruct(cb func(*gtk.AspectFrame)) AspectFrame {
 func (f AspectFrame) ConnectDestroy(cb func(gtk.Widget)) AspectFrame {
 	return func() *gtk.AspectFrame {
 		widget := f()
-		widget.ConnectDestroy(&cb)
+		callback.HandleCallback(widget.Widget, "destroy", cb)
+		return widget
+	}
+}
+
+func (f AspectFrame) ConnectRealize(cb func(gtk.Widget)) AspectFrame {
+	return func() *gtk.AspectFrame {
+		widget := f()
+		callback.HandleCallback(widget.Widget, "realize", cb)
+		return widget
+	}
+}
+
+func (f AspectFrame) ConnectUnrealize(cb func(gtk.Widget)) AspectFrame {
+	return func() *gtk.AspectFrame {
+		widget := f()
+		callback.HandleCallback(widget.Widget, "unrealize", cb)
 		return widget
 	}
 }
@@ -282,36 +298,108 @@ func (f AspectFrame) VPadding(padding int) AspectFrame {
 
 func (f AspectFrame) BindVisible(state *state.State[bool]) AspectFrame {
 	return func() *gtk.AspectFrame {
-		widget := f()
-
 		var callbackId string
-		widget.ConnectRealize(g.Ptr(func(a gtk.Widget) {
+		return f.ConnectRealize(func(w gtk.Widget) {
 			callbackId = state.AddCallback(func(newValue bool) {
-				a.SetVisible(newValue)
+				w.SetVisible(newValue)
 			})
-		}))
-		widget.ConnectUnrealize(g.Ptr(func(gtk.Widget) {
+		}).ConnectUnrealize(func(w gtk.Widget) {
 			state.RemoveCallback(callbackId)
-		}))
+		})()
+	}
+}
 
-		return widget
+func (f AspectFrame) BindHMargin(state *state.State[int]) AspectFrame {
+	return func() *gtk.AspectFrame {
+		var callbackId string
+		return f.ConnectRealize(func(w gtk.Widget) {
+			callbackId = state.AddCallback(func(newValue int) {
+				w.SetMarginEnd(newValue)
+				w.SetMarginStart(newValue)
+			})
+		}).ConnectUnrealize(func(w gtk.Widget) {
+			state.RemoveCallback(callbackId)
+		})()
+	}
+}
+
+func (f AspectFrame) BindMargin(state *state.State[int]) AspectFrame {
+	return func() *gtk.AspectFrame {
+		var callbackId string
+		return f.ConnectRealize(func(widget gtk.Widget) {
+			callbackId = state.AddCallback(func(newValue int) {
+				widget.SetMarginBottom(newValue)
+				widget.SetMarginEnd(newValue)
+				widget.SetMarginStart(newValue)
+				widget.SetMarginTop(newValue)
+			})
+		}).ConnectUnrealize(func(gtk.Widget) {
+			state.RemoveCallback(callbackId)
+		})()
+	}
+}
+
+func (f AspectFrame) BindMarginBottom(state *state.State[int]) AspectFrame {
+	return func() *gtk.AspectFrame {
+		var callbackId string
+		return f.ConnectRealize(func(w gtk.Widget) {
+			callbackId = state.AddCallback(func(newValue int) {
+				w.SetMarginBottom(newValue)
+			})
+		}).ConnectUnrealize(func(w gtk.Widget) {
+			state.RemoveCallback(callbackId)
+		})()
+	}
+}
+
+func (f AspectFrame) BindMarginEnd(state *state.State[int]) AspectFrame {
+	return func() *gtk.AspectFrame {
+		var callbackId string
+		return f.ConnectRealize(func(w gtk.Widget) {
+			callbackId = state.AddCallback(func(newValue int) {
+				w.SetMarginEnd(newValue)
+			})
+		}).ConnectUnrealize(func(w gtk.Widget) {
+			state.RemoveCallback(callbackId)
+		})()
+	}
+}
+
+func (f AspectFrame) BindMarginStart(state *state.State[int]) AspectFrame {
+	return func() *gtk.AspectFrame {
+		var callbackId string
+		return f.ConnectRealize(func(w gtk.Widget) {
+			callbackId = state.AddCallback(func(newValue int) {
+				w.SetMarginStart(newValue)
+			})
+		}).ConnectUnrealize(func(w gtk.Widget) {
+			state.RemoveCallback(callbackId)
+		})()
+	}
+}
+
+func (f AspectFrame) BindMarginTop(state *state.State[int]) AspectFrame {
+	return func() *gtk.AspectFrame {
+		var callbackId string
+		return f.ConnectRealize(func(w gtk.Widget) {
+			callbackId = state.AddCallback(func(newValue int) {
+				w.SetMarginTop(newValue)
+			})
+		}).ConnectUnrealize(func(w gtk.Widget) {
+			state.RemoveCallback(callbackId)
+		})()
 	}
 }
 
 func (f AspectFrame) BindSensitive(state *state.State[bool]) AspectFrame {
 	return func() *gtk.AspectFrame {
-		widget := f()
-
 		var callbackId string
-		widget.ConnectRealize(g.Ptr(func(a gtk.Widget) {
+		return f.ConnectRealize(func(w gtk.Widget) {
 			callbackId = state.AddCallback(func(newValue bool) {
-				a.SetSensitive(newValue)
+				w.SetSensitive(newValue)
 			})
-		}))
-		widget.ConnectUnrealize(g.Ptr(func(gtk.Widget) {
+		}).ConnectUnrealize(func(w gtk.Widget) {
 			state.RemoveCallback(callbackId)
-		}))
-
-		return widget
+		})()
 	}
 }

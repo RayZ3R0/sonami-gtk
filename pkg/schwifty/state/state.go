@@ -9,11 +9,15 @@ type StateCallback[T any] func(newValue T)
 type State[T any] struct {
 	value     T
 	callbacks map[string]StateCallback[T]
+	stateful  bool
 }
 
 func (s *State[T]) AddCallback(callback StateCallback[T]) string {
 	id := uuid.NewString()
 	s.callbacks[id] = callback
+	if s.stateful {
+		callback(s.value)
+	}
 	return id
 }
 
@@ -36,5 +40,13 @@ func New[T any](value T) *State[T] {
 	return &State[T]{
 		value:     value,
 		callbacks: make(map[string]StateCallback[T]),
+	}
+}
+
+func NewStateful[T any](value T) *State[T] {
+	return &State[T]{
+		value:     value,
+		callbacks: make(map[string]StateCallback[T]),
+		stateful:  true,
 	}
 }

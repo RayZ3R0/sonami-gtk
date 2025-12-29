@@ -1,6 +1,7 @@
 package schwifty
 
 import (
+	"codeberg.org/dergs/tidalwave/pkg/schwifty/callback"
 	"github.com/jwijenbergh/puregotk/v4/gtk"
 )
 
@@ -27,7 +28,23 @@ func (f TEMPLATE_TYPE) ConnectConstruct(cb func(TEMPLATE_BASE_TYPE)) TEMPLATE_TY
 func (f TEMPLATE_TYPE) ConnectDestroy(cb func(gtk.Widget)) TEMPLATE_TYPE {
 	return func() TEMPLATE_BASE_TYPE {
 		widget := f()
-		widget.ConnectDestroy(&cb)
+		callback.HandleCallback(widget.Widget, "destroy", cb)
+		return widget
+	}
+}
+
+func (f TEMPLATE_TYPE) ConnectRealize(cb func(gtk.Widget)) TEMPLATE_TYPE {
+	return func() TEMPLATE_BASE_TYPE {
+		widget := f()
+		callback.HandleCallback(widget.Widget, "realize", cb)
+		return widget
+	}
+}
+
+func (f TEMPLATE_TYPE) ConnectUnrealize(cb func(gtk.Widget)) TEMPLATE_TYPE {
+	return func() TEMPLATE_BASE_TYPE {
+		widget := f()
+		callback.HandleCallback(widget.Widget, "unrealize", cb)
 		return widget
 	}
 }

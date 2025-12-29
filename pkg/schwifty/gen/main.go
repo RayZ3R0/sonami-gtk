@@ -79,6 +79,7 @@ func parseImports(parsedTemplate string) []string {
 		parser.ImportsOnly,
 	)
 	if err != nil {
+		fmt.Printf("Error parsing imports: %v\n", err)
 		return nil
 	}
 
