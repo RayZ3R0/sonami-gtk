@@ -3,7 +3,6 @@ package schwifty
 import (
 	"fmt"
 
-	"codeberg.org/dergs/tidalwave/pkg/schwifty/css"
 	"codeberg.org/dergs/tidalwave/pkg/schwifty/state"
 	"github.com/jwijenbergh/puregotk/v4/gtk"
 	"github.com/jwijenbergh/puregotk/v4/pango"
@@ -13,9 +12,9 @@ import (
 
 func (f Label) Color(color string) Label {
 	return func() *gtk.Label {
-		label := f()
-		css.Apply(&label.Widget, fmt.Sprintf("label { color: %s; }", color))
-		return label
+		return f.CSSWithCallback(func(elementName string) string {
+			return fmt.Sprintf("%s { color: %s; }", elementName, color)
+		})()
 	}
 }
 
@@ -41,9 +40,9 @@ func (f Label) Ellipsis(ellipsis pango.EllipsizeMode) Label {
 // the specified size to the displayed text.
 func (f Label) FontSize(size int) Label {
 	return func() *gtk.Label {
-		label := f()
-		css.Apply(&label.Widget, fmt.Sprintf("label { font-size: %dpx; }", size))
-		return label
+		return f.CSSWithCallback(func(elementName string) string {
+			return fmt.Sprintf("%s { font-size: %dpx; }", elementName, size)
+		})()
 	}
 }
 
@@ -57,9 +56,9 @@ func (f Label) FontSize(size int) Label {
 // the specified weight to the displayed text.
 func (f Label) FontWeight(weight int) Label {
 	return func() *gtk.Label {
-		label := f()
-		css.Apply(&label.Widget, fmt.Sprintf("label { font-weight: %d; }", weight))
-		return label
+		return f.CSSWithCallback(func(elementName string) string {
+			return fmt.Sprintf("%s { font-weight: %d; }", elementName, weight)
+		})()
 	}
 }
 
@@ -82,9 +81,9 @@ func (f Label) Justify(justify gtk.Justification) Label {
 
 func (f Label) LineHeight(height float64) Label {
 	return func() *gtk.Label {
-		label := f()
-		css.Apply(&label.Widget, fmt.Sprintf("label { line-height: %.2f; }", height))
-		return label
+		return f.CSSWithCallback(func(elementName string) string {
+			return fmt.Sprintf("%s { line-height: %.2f; }", elementName, height)
+		})()
 	}
 }
 
@@ -127,9 +126,9 @@ func (f Label) MaxWidthChars(chars int) Label {
 
 func (f Label) TextDecoration(decoration string) Label {
 	return func() *gtk.Label {
-		label := f()
-		css.Apply(&label.Widget, fmt.Sprintf("label { text-decoration: %s; }", decoration))
-		return label
+		return f.CSSWithCallback(func(elementName string) string {
+			return fmt.Sprintf("%s { text-decoration: %s; }", elementName, decoration)
+		})()
 	}
 }
 

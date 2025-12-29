@@ -2,7 +2,6 @@ package schwifty
 
 import (
 	"codeberg.org/dergs/tidalwave/pkg/schwifty/callback"
-	"codeberg.org/dergs/tidalwave/pkg/schwifty/css"
 	"codeberg.org/dergs/tidalwave/pkg/schwifty/state"
 	"fmt"
 	"github.com/jwijenbergh/puregotk/v4/adw"
@@ -194,104 +193,111 @@ func (f WindowTitle) VMargin(vertical int) WindowTitle {
 
 func (f WindowTitle) Background(color string) WindowTitle {
 	return func() *adw.WindowTitle {
-		widget := f()
-		css.Apply(&widget.Widget, fmt.Sprintf("%s { background-color: %s; }", widget.GetCssName(), color))
-		return widget
+		return f.CSSWithCallback(func(elementName string) string {
+			return fmt.Sprintf("%s { background-color: %s; }", elementName, color)
+		})()
 	}
 }
 
 func (f WindowTitle) CornerRadius(radius int) WindowTitle {
 	return func() *adw.WindowTitle {
-		widget := f()
-		css.Apply(&widget.Widget, fmt.Sprintf("%s { border-radius: %dpx; }", widget.GetCssName(), radius))
-		return widget
+		return f.CSSWithCallback(func(elementName string) string {
+			return fmt.Sprintf("%s { border-radius: %dpx; }", elementName, radius)
+		})()
 	}
 }
 
 func (f WindowTitle) CSS(css string) WindowTitle {
 	return func() *adw.WindowTitle {
-		widget := f()
-		widget.Ref()
-		defer widget.Unref()
+		return f.CSSWithCallback(func(elementName string) string {
+			return css
+		})()
+	}
+}
 
+func (f WindowTitle) CSSWithCallback(cb func(elementName string) string) WindowTitle {
+	return func() *adw.WindowTitle {
 		provider := gtk.NewCssProvider()
-		provider.LoadFromString(css)
-		widget.GetStyleContext().AddProvider(provider, uint(gtk.STYLE_PROVIDER_PRIORITY_APPLICATION))
-		provider.Unref()
-
-		return widget
+		return f.ConnectConstruct(func(t *adw.WindowTitle) {
+			provider.LoadFromString(cb(t.GetCssName()))
+			t.GetStyleContext().AddProvider(provider, uint(gtk.STYLE_PROVIDER_PRIORITY_APPLICATION))
+		}).ConnectDestroy(func(w gtk.Widget) {
+			w.GetStyleContext().RemoveProvider(provider)
+			provider.Unref()
+			provider = nil
+		})()
 	}
 }
 
 func (f WindowTitle) HPadding(padding int) WindowTitle {
 	return func() *adw.WindowTitle {
-		widget := f()
-		css.Apply(&widget.Widget, fmt.Sprintf("%s { padding-left: %dpx; padding-right: %dpx; }", widget.GetCssName(), padding, padding))
-		return widget
+		return f.CSSWithCallback(func(elementName string) string {
+			return fmt.Sprintf("%s { padding-left: %dpx; padding-right: %dpx; }", elementName, padding, padding)
+		})()
 	}
 }
 
 func (f WindowTitle) MinHeight(minHeight int) WindowTitle {
 	return func() *adw.WindowTitle {
-		widget := f()
-		css.Apply(&widget.Widget, fmt.Sprintf("%s { min-height: %dpx; }", widget.GetCssName(), minHeight))
-		return widget
+		return f.CSSWithCallback(func(elementName string) string {
+			return fmt.Sprintf("%s { min-height: %dpx; }", elementName, minHeight)
+		})()
 	}
 }
 
 func (f WindowTitle) MinWidth(minWidth int) WindowTitle {
 	return func() *adw.WindowTitle {
-		widget := f()
-		css.Apply(&widget.Widget, fmt.Sprintf("%s { min-width: %dpx; }", widget.GetCssName(), minWidth))
-		return widget
+		return f.CSSWithCallback(func(elementName string) string {
+			return fmt.Sprintf("%s { min-width: %dpx; }", elementName, minWidth)
+		})()
 	}
 }
 
 func (f WindowTitle) Padding(padding int) WindowTitle {
 	return func() *adw.WindowTitle {
-		widget := f()
-		css.Apply(&widget.Widget, fmt.Sprintf("%s { padding: %dpx; }", widget.GetCssName(), padding))
-		return widget
+		return f.CSSWithCallback(func(elementName string) string {
+			return fmt.Sprintf("%s { padding: %dpx; }", elementName, padding)
+		})()
 	}
 }
 
 func (f WindowTitle) PaddingBottom(padding int) WindowTitle {
 	return func() *adw.WindowTitle {
-		widget := f()
-		css.Apply(&widget.Widget, fmt.Sprintf("%s { padding-bottom: %dpx; }", widget.GetCssName(), padding))
-		return widget
+		return f.CSSWithCallback(func(elementName string) string {
+			return fmt.Sprintf("%s { padding-bottom: %dpx; }", elementName, padding)
+		})()
 	}
 }
 
 func (f WindowTitle) PaddingEnd(padding int) WindowTitle {
 	return func() *adw.WindowTitle {
-		widget := f()
-		css.Apply(&widget.Widget, fmt.Sprintf("%s { padding-right: %dpx; }", widget.GetCssName(), padding))
-		return widget
+		return f.CSSWithCallback(func(elementName string) string {
+			return fmt.Sprintf("%s { padding-right: %dpx; }", elementName, padding)
+		})()
 	}
 }
 
 func (f WindowTitle) PaddingStart(padding int) WindowTitle {
 	return func() *adw.WindowTitle {
-		widget := f()
-		css.Apply(&widget.Widget, fmt.Sprintf("%s { padding-left: %dpx; }", widget.GetCssName(), padding))
-		return widget
+		return f.CSSWithCallback(func(elementName string) string {
+			return fmt.Sprintf("%s { padding-left: %dpx; }", elementName, padding)
+		})()
 	}
 }
 
 func (f WindowTitle) PaddingTop(padding int) WindowTitle {
 	return func() *adw.WindowTitle {
-		widget := f()
-		css.Apply(&widget.Widget, fmt.Sprintf("%s { padding-top: %dpx; }", widget.GetCssName(), padding))
-		return widget
+		return f.CSSWithCallback(func(elementName string) string {
+			return fmt.Sprintf("%s { padding-top: %dpx; }", elementName, padding)
+		})()
 	}
 }
 
 func (f WindowTitle) VPadding(padding int) WindowTitle {
 	return func() *adw.WindowTitle {
-		widget := f()
-		css.Apply(&widget.Widget, fmt.Sprintf("%s { padding-bottom: %dpx; padding-top: %dpx; }", widget.GetCssName(), padding, padding))
-		return widget
+		return f.CSSWithCallback(func(elementName string) string {
+			return fmt.Sprintf("%s { padding-bottom: %dpx; padding-top: %dpx; }", elementName, padding, padding)
+		})()
 	}
 }
 

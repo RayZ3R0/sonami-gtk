@@ -2,7 +2,6 @@ package schwifty
 
 import (
 	"codeberg.org/dergs/tidalwave/pkg/schwifty/callback"
-	"codeberg.org/dergs/tidalwave/pkg/schwifty/css"
 	"codeberg.org/dergs/tidalwave/pkg/schwifty/state"
 	"fmt"
 	"github.com/jwijenbergh/puregotk/v4/gtk"
@@ -193,104 +192,111 @@ func (f AspectFrame) VMargin(vertical int) AspectFrame {
 
 func (f AspectFrame) Background(color string) AspectFrame {
 	return func() *gtk.AspectFrame {
-		widget := f()
-		css.Apply(&widget.Widget, fmt.Sprintf("%s { background-color: %s; }", widget.GetCssName(), color))
-		return widget
+		return f.CSSWithCallback(func(elementName string) string {
+			return fmt.Sprintf("%s { background-color: %s; }", elementName, color)
+		})()
 	}
 }
 
 func (f AspectFrame) CornerRadius(radius int) AspectFrame {
 	return func() *gtk.AspectFrame {
-		widget := f()
-		css.Apply(&widget.Widget, fmt.Sprintf("%s { border-radius: %dpx; }", widget.GetCssName(), radius))
-		return widget
+		return f.CSSWithCallback(func(elementName string) string {
+			return fmt.Sprintf("%s { border-radius: %dpx; }", elementName, radius)
+		})()
 	}
 }
 
 func (f AspectFrame) CSS(css string) AspectFrame {
 	return func() *gtk.AspectFrame {
-		widget := f()
-		widget.Ref()
-		defer widget.Unref()
+		return f.CSSWithCallback(func(elementName string) string {
+			return css
+		})()
+	}
+}
 
+func (f AspectFrame) CSSWithCallback(cb func(elementName string) string) AspectFrame {
+	return func() *gtk.AspectFrame {
 		provider := gtk.NewCssProvider()
-		provider.LoadFromString(css)
-		widget.GetStyleContext().AddProvider(provider, uint(gtk.STYLE_PROVIDER_PRIORITY_APPLICATION))
-		provider.Unref()
-
-		return widget
+		return f.ConnectConstruct(func(t *gtk.AspectFrame) {
+			provider.LoadFromString(cb(t.GetCssName()))
+			t.GetStyleContext().AddProvider(provider, uint(gtk.STYLE_PROVIDER_PRIORITY_APPLICATION))
+		}).ConnectDestroy(func(w gtk.Widget) {
+			w.GetStyleContext().RemoveProvider(provider)
+			provider.Unref()
+			provider = nil
+		})()
 	}
 }
 
 func (f AspectFrame) HPadding(padding int) AspectFrame {
 	return func() *gtk.AspectFrame {
-		widget := f()
-		css.Apply(&widget.Widget, fmt.Sprintf("%s { padding-left: %dpx; padding-right: %dpx; }", widget.GetCssName(), padding, padding))
-		return widget
+		return f.CSSWithCallback(func(elementName string) string {
+			return fmt.Sprintf("%s { padding-left: %dpx; padding-right: %dpx; }", elementName, padding, padding)
+		})()
 	}
 }
 
 func (f AspectFrame) MinHeight(minHeight int) AspectFrame {
 	return func() *gtk.AspectFrame {
-		widget := f()
-		css.Apply(&widget.Widget, fmt.Sprintf("%s { min-height: %dpx; }", widget.GetCssName(), minHeight))
-		return widget
+		return f.CSSWithCallback(func(elementName string) string {
+			return fmt.Sprintf("%s { min-height: %dpx; }", elementName, minHeight)
+		})()
 	}
 }
 
 func (f AspectFrame) MinWidth(minWidth int) AspectFrame {
 	return func() *gtk.AspectFrame {
-		widget := f()
-		css.Apply(&widget.Widget, fmt.Sprintf("%s { min-width: %dpx; }", widget.GetCssName(), minWidth))
-		return widget
+		return f.CSSWithCallback(func(elementName string) string {
+			return fmt.Sprintf("%s { min-width: %dpx; }", elementName, minWidth)
+		})()
 	}
 }
 
 func (f AspectFrame) Padding(padding int) AspectFrame {
 	return func() *gtk.AspectFrame {
-		widget := f()
-		css.Apply(&widget.Widget, fmt.Sprintf("%s { padding: %dpx; }", widget.GetCssName(), padding))
-		return widget
+		return f.CSSWithCallback(func(elementName string) string {
+			return fmt.Sprintf("%s { padding: %dpx; }", elementName, padding)
+		})()
 	}
 }
 
 func (f AspectFrame) PaddingBottom(padding int) AspectFrame {
 	return func() *gtk.AspectFrame {
-		widget := f()
-		css.Apply(&widget.Widget, fmt.Sprintf("%s { padding-bottom: %dpx; }", widget.GetCssName(), padding))
-		return widget
+		return f.CSSWithCallback(func(elementName string) string {
+			return fmt.Sprintf("%s { padding-bottom: %dpx; }", elementName, padding)
+		})()
 	}
 }
 
 func (f AspectFrame) PaddingEnd(padding int) AspectFrame {
 	return func() *gtk.AspectFrame {
-		widget := f()
-		css.Apply(&widget.Widget, fmt.Sprintf("%s { padding-right: %dpx; }", widget.GetCssName(), padding))
-		return widget
+		return f.CSSWithCallback(func(elementName string) string {
+			return fmt.Sprintf("%s { padding-right: %dpx; }", elementName, padding)
+		})()
 	}
 }
 
 func (f AspectFrame) PaddingStart(padding int) AspectFrame {
 	return func() *gtk.AspectFrame {
-		widget := f()
-		css.Apply(&widget.Widget, fmt.Sprintf("%s { padding-left: %dpx; }", widget.GetCssName(), padding))
-		return widget
+		return f.CSSWithCallback(func(elementName string) string {
+			return fmt.Sprintf("%s { padding-left: %dpx; }", elementName, padding)
+		})()
 	}
 }
 
 func (f AspectFrame) PaddingTop(padding int) AspectFrame {
 	return func() *gtk.AspectFrame {
-		widget := f()
-		css.Apply(&widget.Widget, fmt.Sprintf("%s { padding-top: %dpx; }", widget.GetCssName(), padding))
-		return widget
+		return f.CSSWithCallback(func(elementName string) string {
+			return fmt.Sprintf("%s { padding-top: %dpx; }", elementName, padding)
+		})()
 	}
 }
 
 func (f AspectFrame) VPadding(padding int) AspectFrame {
 	return func() *gtk.AspectFrame {
-		widget := f()
-		css.Apply(&widget.Widget, fmt.Sprintf("%s { padding-bottom: %dpx; padding-top: %dpx; }", widget.GetCssName(), padding, padding))
-		return widget
+		return f.CSSWithCallback(func(elementName string) string {
+			return fmt.Sprintf("%s { padding-bottom: %dpx; padding-top: %dpx; }", elementName, padding, padding)
+		})()
 	}
 }
 

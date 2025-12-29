@@ -2,7 +2,6 @@ package schwifty
 
 import (
 	"codeberg.org/dergs/tidalwave/pkg/schwifty/callback"
-	"codeberg.org/dergs/tidalwave/pkg/schwifty/css"
 	"codeberg.org/dergs/tidalwave/pkg/schwifty/state"
 	"fmt"
 	"github.com/jwijenbergh/puregotk/v4/gtk"
@@ -193,104 +192,111 @@ func (f Scale) VMargin(vertical int) Scale {
 
 func (f Scale) Background(color string) Scale {
 	return func() *gtk.Scale {
-		widget := f()
-		css.Apply(&widget.Widget, fmt.Sprintf("%s { background-color: %s; }", widget.GetCssName(), color))
-		return widget
+		return f.CSSWithCallback(func(elementName string) string {
+			return fmt.Sprintf("%s { background-color: %s; }", elementName, color)
+		})()
 	}
 }
 
 func (f Scale) CornerRadius(radius int) Scale {
 	return func() *gtk.Scale {
-		widget := f()
-		css.Apply(&widget.Widget, fmt.Sprintf("%s { border-radius: %dpx; }", widget.GetCssName(), radius))
-		return widget
+		return f.CSSWithCallback(func(elementName string) string {
+			return fmt.Sprintf("%s { border-radius: %dpx; }", elementName, radius)
+		})()
 	}
 }
 
 func (f Scale) CSS(css string) Scale {
 	return func() *gtk.Scale {
-		widget := f()
-		widget.Ref()
-		defer widget.Unref()
+		return f.CSSWithCallback(func(elementName string) string {
+			return css
+		})()
+	}
+}
 
+func (f Scale) CSSWithCallback(cb func(elementName string) string) Scale {
+	return func() *gtk.Scale {
 		provider := gtk.NewCssProvider()
-		provider.LoadFromString(css)
-		widget.GetStyleContext().AddProvider(provider, uint(gtk.STYLE_PROVIDER_PRIORITY_APPLICATION))
-		provider.Unref()
-
-		return widget
+		return f.ConnectConstruct(func(t *gtk.Scale) {
+			provider.LoadFromString(cb(t.GetCssName()))
+			t.GetStyleContext().AddProvider(provider, uint(gtk.STYLE_PROVIDER_PRIORITY_APPLICATION))
+		}).ConnectDestroy(func(w gtk.Widget) {
+			w.GetStyleContext().RemoveProvider(provider)
+			provider.Unref()
+			provider = nil
+		})()
 	}
 }
 
 func (f Scale) HPadding(padding int) Scale {
 	return func() *gtk.Scale {
-		widget := f()
-		css.Apply(&widget.Widget, fmt.Sprintf("%s { padding-left: %dpx; padding-right: %dpx; }", widget.GetCssName(), padding, padding))
-		return widget
+		return f.CSSWithCallback(func(elementName string) string {
+			return fmt.Sprintf("%s { padding-left: %dpx; padding-right: %dpx; }", elementName, padding, padding)
+		})()
 	}
 }
 
 func (f Scale) MinHeight(minHeight int) Scale {
 	return func() *gtk.Scale {
-		widget := f()
-		css.Apply(&widget.Widget, fmt.Sprintf("%s { min-height: %dpx; }", widget.GetCssName(), minHeight))
-		return widget
+		return f.CSSWithCallback(func(elementName string) string {
+			return fmt.Sprintf("%s { min-height: %dpx; }", elementName, minHeight)
+		})()
 	}
 }
 
 func (f Scale) MinWidth(minWidth int) Scale {
 	return func() *gtk.Scale {
-		widget := f()
-		css.Apply(&widget.Widget, fmt.Sprintf("%s { min-width: %dpx; }", widget.GetCssName(), minWidth))
-		return widget
+		return f.CSSWithCallback(func(elementName string) string {
+			return fmt.Sprintf("%s { min-width: %dpx; }", elementName, minWidth)
+		})()
 	}
 }
 
 func (f Scale) Padding(padding int) Scale {
 	return func() *gtk.Scale {
-		widget := f()
-		css.Apply(&widget.Widget, fmt.Sprintf("%s { padding: %dpx; }", widget.GetCssName(), padding))
-		return widget
+		return f.CSSWithCallback(func(elementName string) string {
+			return fmt.Sprintf("%s { padding: %dpx; }", elementName, padding)
+		})()
 	}
 }
 
 func (f Scale) PaddingBottom(padding int) Scale {
 	return func() *gtk.Scale {
-		widget := f()
-		css.Apply(&widget.Widget, fmt.Sprintf("%s { padding-bottom: %dpx; }", widget.GetCssName(), padding))
-		return widget
+		return f.CSSWithCallback(func(elementName string) string {
+			return fmt.Sprintf("%s { padding-bottom: %dpx; }", elementName, padding)
+		})()
 	}
 }
 
 func (f Scale) PaddingEnd(padding int) Scale {
 	return func() *gtk.Scale {
-		widget := f()
-		css.Apply(&widget.Widget, fmt.Sprintf("%s { padding-right: %dpx; }", widget.GetCssName(), padding))
-		return widget
+		return f.CSSWithCallback(func(elementName string) string {
+			return fmt.Sprintf("%s { padding-right: %dpx; }", elementName, padding)
+		})()
 	}
 }
 
 func (f Scale) PaddingStart(padding int) Scale {
 	return func() *gtk.Scale {
-		widget := f()
-		css.Apply(&widget.Widget, fmt.Sprintf("%s { padding-left: %dpx; }", widget.GetCssName(), padding))
-		return widget
+		return f.CSSWithCallback(func(elementName string) string {
+			return fmt.Sprintf("%s { padding-left: %dpx; }", elementName, padding)
+		})()
 	}
 }
 
 func (f Scale) PaddingTop(padding int) Scale {
 	return func() *gtk.Scale {
-		widget := f()
-		css.Apply(&widget.Widget, fmt.Sprintf("%s { padding-top: %dpx; }", widget.GetCssName(), padding))
-		return widget
+		return f.CSSWithCallback(func(elementName string) string {
+			return fmt.Sprintf("%s { padding-top: %dpx; }", elementName, padding)
+		})()
 	}
 }
 
 func (f Scale) VPadding(padding int) Scale {
 	return func() *gtk.Scale {
-		widget := f()
-		css.Apply(&widget.Widget, fmt.Sprintf("%s { padding-bottom: %dpx; padding-top: %dpx; }", widget.GetCssName(), padding, padding))
-		return widget
+		return f.CSSWithCallback(func(elementName string) string {
+			return fmt.Sprintf("%s { padding-bottom: %dpx; padding-top: %dpx; }", elementName, padding, padding)
+		})()
 	}
 }
 
