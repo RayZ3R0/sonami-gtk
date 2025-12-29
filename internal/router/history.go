@@ -8,11 +8,12 @@ import (
 )
 
 type HistoryEntry struct {
-	Path     string
-	Params   Params
-	Response *Response
-	View     *gtk.Widget
-	Toolbar  *gtk.Widget
+	Path      string
+	Params    Params
+	Response  *Response
+	PageTitle string
+	View      *gtk.Widget
+	Toolbar   *gtk.Widget
 }
 
 type History struct {

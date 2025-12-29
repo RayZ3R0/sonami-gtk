@@ -14,8 +14,8 @@ import (
 func (w *Window) buildSidebarHeader() *gtk.Widget {
 	windowTitle := WindowTitle("Tidal Wave", "")()
 	router.NavigationComplete.On(func(entry router.HistoryEntry) bool {
-		windowTitle.SetSubtitle(entry.Response.PageTitle)
-		w.SetTitle("Tidal Wave - " + entry.Response.PageTitle)
+		windowTitle.SetSubtitle(entry.PageTitle)
+		w.SetTitle("Tidal Wave - " + entry.PageTitle)
 		return signals.Continue
 	})
 

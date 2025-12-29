@@ -28,7 +28,7 @@ func Navigate(path string, params Params) {
 	go func(path string, params Params, handler Handler) {
 		response, shouldCache := executeHandler(handler, params)
 		logger.Info("navigation completed", "path", path, "params", params, "duration_ms", time.Since(startTime).Milliseconds(), "should_cache", shouldCache)
-		entry := HistoryEntry{Path: path, Params: params}
+		entry := HistoryEntry{Path: path, Params: params, PageTitle: response.PageTitle}
 		if response.Toolbar != nil {
 			entry.Toolbar = response.Toolbar.ToGTK()
 		}
@@ -39,7 +39,7 @@ func Navigate(path string, params Params) {
 			entry.Response = response
 		}
 		history.Push(entry)
-		handleNavigationComplete(&entry)
+		handleNavigationComplete(entry)
 
 	}(path, params, handler)
 }
@@ -67,7 +67,7 @@ func Back() {
 
 	OnNavigate.Notify(previous.Path)
 	if previous.Response != nil {
-		handleNavigationComplete(previous)
+		handleNavigationComplete(*previous)
 	} else {
 		Navigate(previous.Path, previous.Params)
 	}

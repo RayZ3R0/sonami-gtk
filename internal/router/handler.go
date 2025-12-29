@@ -47,10 +47,10 @@ func executeHandler(handler Handler, params Params) (response *Response, shouldC
 	return
 }
 
-func handleNavigationComplete(entry *HistoryEntry) {
+func handleNavigationComplete(entry HistoryEntry) {
 	glib.IdleAddOnce(
 		g.Ptr[glib.SourceOnceFunc](func(u uintptr) {
-			NavigationComplete.Notify(*entry)
+			NavigationComplete.Notify(entry)
 		}),
 		0,
 	)
