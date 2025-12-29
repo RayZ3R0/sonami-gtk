@@ -4,6 +4,7 @@ import (
 	"codeberg.org/dergs/tidalwave/internal/g"
 	"codeberg.org/dergs/tidalwave/internal/router"
 	"codeberg.org/dergs/tidalwave/internal/signals"
+	"codeberg.org/dergs/tidalwave/pkg/schwifty/syntax"
 	"github.com/jwijenbergh/puregotk/v4/adw"
 	"github.com/jwijenbergh/puregotk/v4/gio"
 	"github.com/jwijenbergh/puregotk/v4/glib"
@@ -15,6 +16,8 @@ import (
 type Window struct {
 	*adw.ApplicationWindow
 }
+
+var loadingView = syntax.Clamp().MaximumSize(50).Child(syntax.Spinner())
 
 func NewWindow(app *adw.Application) *Window {
 	window := &Window{
@@ -56,19 +59,16 @@ func (w *Window) buildContentLayout() *gtk.Widget {
 	toolbarView := adw.NewToolbarView()
 	toolbarView.AddTopBar(w.buildContentHeader())
 
-	// router.OnNavigate.On(func(path string) bool {
-	// 	spinner := gtk.NewSpinner()
-	// 	spinner.SetSpinning(true)
-	// 	spinner.Start()
-
-	// 	clamp := adw.NewClamp()
-	// 	clamp.SetMaximumSize(50)
-	// 	clamp.SetChild(&spinner.Widget)
-	// 	toolbarView.SetContent(&clamp.Widget)
-	// 	clamp.Unref()
-	// 	spinner.Unref()
-	// 	return signals.Continue
-	// })
+	router.OnNavigate.On(func(path string) bool {
+		glib.IdleAddOnce(
+			g.Ptr[glib.SourceOnceFunc](func(u uintptr) {
+				view := loadingView.ToGTK()
+				toolbarView.SetContent(view)
+			}),
+			0,
+		)
+		return signals.Continue
+	})
 
 	router.NavigationComplete.On(func(entry router.HistoryEntry) bool {
 		toolbarView.SetContent(entry.View)
