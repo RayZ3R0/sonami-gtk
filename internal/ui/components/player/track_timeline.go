@@ -11,9 +11,9 @@ import (
 )
 
 var (
-	durationState       = state.New("00:00")
-	positionState       = state.New("00:00")
-	timelineSliderState = state.New(0.0)
+	durationState       = state.NewStateful("00:00")
+	positionState       = state.NewStateful("00:00")
+	timelineSliderState = state.NewStateful(0.0)
 )
 
 func init() {

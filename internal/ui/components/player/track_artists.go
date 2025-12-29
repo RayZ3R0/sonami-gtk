@@ -8,7 +8,7 @@ import (
 	. "codeberg.org/dergs/tidalwave/pkg/schwifty/syntax"
 )
 
-var artistsState = state.New("")
+var artistsState = state.NewStateful("")
 
 func init() {
 	player.OnTrackChanged.On(func(trackInfo player.TrackInformation) bool {

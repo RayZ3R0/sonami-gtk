@@ -10,8 +10,8 @@ import (
 )
 
 var (
-	playPauseIconState      = state.New("media-playback-start-symbolic")
-	playPauseSensitiveState = state.New(true)
+	playPauseIconState      = state.NewStateful("media-playback-start-symbolic")
+	playPauseSensitiveState = state.NewStateful(true)
 )
 
 func init() {

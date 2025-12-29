@@ -11,7 +11,7 @@ import (
 	"github.com/jwijenbergh/puregotk/v4/gtk"
 )
 
-var volumeState = state.New(1.0)
+var volumeState = state.NewStateful(1.0)
 
 func init() {
 	player.OnVolumeChanged.On(func(volume float64) bool {

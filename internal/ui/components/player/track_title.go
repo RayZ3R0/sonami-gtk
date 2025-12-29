@@ -10,7 +10,7 @@ import (
 	"github.com/jwijenbergh/puregotk/v4/pango"
 )
 
-var titleState = state.New("No Track")
+var titleState = state.NewStateful("No Track")
 
 func init() {
 	player.OnTrackChanged.On(func(trackInfo player.TrackInformation) bool {
