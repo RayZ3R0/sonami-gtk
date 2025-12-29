@@ -48,8 +48,6 @@ func Album(params router.Params) *router.Response {
 		artists = append(artists, artist.Attributes.Name)
 	}
 
-	cover := gtk.NewImage()
-	cover.SetPixelSize(146)
 	coverState := state.NewStateful[*gdkpixbuf.Pixbuf](nil)
 	for _, artwork := range album.Included.PlainArtworks(album.Data.Relationships.CoverArt.Data...) {
 		go func() {
