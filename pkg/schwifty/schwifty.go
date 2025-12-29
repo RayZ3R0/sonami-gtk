@@ -1,7 +1,6 @@
 package schwifty
 
 import (
-	"fmt"
 	"log/slog"
 	"reflect"
 
@@ -15,7 +14,6 @@ func ResolveWidget(value any) *gtk.Widget {
 
 	if t.AssignableTo(reflect.TypeFor[*gtk.Widget]()) {
 		logger.Debug("resolved widget from *gtk.Widget")
-		fmt.Println("Was Widget", value.(*gtk.Widget).GoPointer())
 		return value.(*gtk.Widget)
 	}
 
