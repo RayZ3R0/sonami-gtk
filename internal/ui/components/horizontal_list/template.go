@@ -26,7 +26,9 @@ func SubTitle(text string) schwifty.Label {
 }
 
 func Card[T any](title string, subTitle schwifty.Widgetable[T], coverUrl string) schwifty.Button {
-	coverState := state.NewStateful[*gdkpixbuf.Pixbuf](nil)
+	// TODO: This might be a memory leak. Ideally we just load this "missing" picture once globally and then share it instead of doing this.
+	defaultPixbuf, _ := gdkpixbuf.NewPixbufFromResource("/org/codeberg/dergs/tidalwave/icons/scalable/state/missing-album.svg")
+	coverState := state.NewStateful[*gdkpixbuf.Pixbuf](defaultPixbuf)
 	if coverUrl != "" {
 		go func() {
 			pixbuf, err := injector.MustInject[*imgutil.ImgUtil]().LoadPixbuf(coverUrl)
@@ -50,7 +52,6 @@ func Card[T any](title string, subTitle schwifty.Widgetable[T], coverUrl string)
 				AspectFrame(
 					Image().
 						PixelSize(172).
-						FromResource("/org/codeberg/dergs/tidalwave/icons/scalable/state/missing-album.svg").
 						BindPixbuf(coverState),
 				).CornerRadius(10).Overflow(gtk.OverflowHiddenValue),
 				Label(title).
