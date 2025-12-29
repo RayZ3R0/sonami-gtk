@@ -20,8 +20,14 @@ func ForPageItem(pageItem v2.PageItem) schwifty.BaseWidgetable {
 			} else if item.Type == v2.ItemTypePlaylist {
 				playlist := item.Data.Playlist
 				list.Append(horizontal_list.NewPlaylist(playlist))
+			} else if item.Type == v2.ItemTypeArtist {
+				artist := item.Data.Artist
+				list.Append(horizontal_list.NewLegacyArtist(artist))
+			} else if item.Type == v2.ItemTypeMix {
+				mix := item.Data.Mix
+				list.Append(horizontal_list.NewLegacyMix(mix))
 			} else {
-				list.Append(syntax.Label(string(item.Type)).HMargin(10))
+				list.Append(syntax.Label("Unsupported: " + string(item.Type)).HMargin(10))
 			}
 		}
 		return list.SetPageMargin(40)
@@ -41,9 +47,9 @@ func ForPageItem(pageItem v2.PageItem) schwifty.BaseWidgetable {
 		return list.HMargin(40)
 	default:
 		return HStack(
-			Spacer().VExpand(false),
-			Label("Unsupported Element").VMargin(30),
-			Spacer().VExpand(false),
-		)
+			Label("Unsupported Element").
+				Background("alpha(var(--view-fg-color), 0.1)").
+				Padding(30).HExpand(true).CornerRadius(10),
+		).HExpand(true).HMargin(40)
 	}
 }
