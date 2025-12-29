@@ -25,4 +25,22 @@ func (w *Window) installActions() {
 		player.Play(int(id))
 	}))
 	w.AddAction(playTrackAction)
+
+	routeAlbumAction := gio.NewSimpleAction("route.album", glib.NewVariantType("s"))
+	routeAlbumAction.ConnectActivate(g.Ptr(func(action gio.SimpleAction, parameter uintptr) {
+		variant := (*glib.Variant)(unsafe.Pointer(parameter))
+		router.Navigate("album", router.Params{
+			"id": variant.GetString(nil),
+		})
+	}))
+	w.AddAction(routeAlbumAction)
+
+	routePlaylistAction := gio.NewSimpleAction("route.playlist", glib.NewVariantType("s"))
+	routePlaylistAction.ConnectActivate(g.Ptr(func(action gio.SimpleAction, parameter uintptr) {
+		variant := (*glib.Variant)(unsafe.Pointer(parameter))
+		router.Navigate("playlist", router.Params{
+			"id": variant.GetString(nil),
+		})
+	}))
+	w.AddAction(routePlaylistAction)
 }
