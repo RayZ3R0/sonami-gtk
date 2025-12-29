@@ -1,16 +1,12 @@
 package components
 
 import (
-	"fmt"
-	"strings"
-
 	"codeberg.org/dergs/tidalwave/internal/ui/components/horizontal_list"
 	"codeberg.org/dergs/tidalwave/internal/ui/components/shortcut_list"
 	"codeberg.org/dergs/tidalwave/internal/ui/components/tracklist"
 	"codeberg.org/dergs/tidalwave/pkg/schwifty"
 	"codeberg.org/dergs/tidalwave/pkg/schwifty/syntax"
 	. "codeberg.org/dergs/tidalwave/pkg/schwifty/syntax"
-	"codeberg.org/dergs/tidalwave/pkg/tidalapi"
 	v2 "codeberg.org/dergs/tidalwave/pkg/tidalapi/models/v2"
 )
 
@@ -54,24 +50,15 @@ func ForPageItem(pageItem v2.PageItem) schwifty.BaseWidgetable {
 		list := shortcut_list.NewShortcutList()
 		for _, item := range pageItem.Items {
 			if item.Type == v2.ItemTypeDeepLink {
-				deeplink := item.Data.DeepLink
-				list.Append(shortcut_list.NewShortcut(deeplink.Title, "", ""))
+				list.Append(shortcut_list.NewLegacyDeepLink(item.Data.DeepLink))
 			} else if item.Type == v2.ItemTypeAlbum {
-				album := item.Data.Album
-				artists := make([]string, 0)
-				for _, artist := range album.Artists {
-					artists = append(artists, artist.Name)
-				}
-				list.Append(shortcut_list.NewShortcut(album.Title, strings.Join(artists, ", "), tidalapi.ImageURL(album.Cover)))
+				list.Append(shortcut_list.NewLegacyAlbum(item.Data.Album))
 			} else if item.Type == v2.ItemTypeArtist {
-				artist := item.Data.Artist
-				list.Append(shortcut_list.NewShortcut(artist.Name, "", tidalapi.ImageURL(artist.Picture)))
+				list.Append(shortcut_list.NewLegacyArtist(item.Data.Artist))
 			} else if item.Type == v2.ItemTypePlaylist {
-				playlist := item.Data.Playlist
-				list.Append(shortcut_list.NewShortcut(playlist.Title, fmt.Sprintf("%d Tracks", playlist.NumberOfTracks), tidalapi.ImageURL(playlist.SquareImage)))
+				list.Append(shortcut_list.NewLegacyPlaylist(item.Data.Playlist))
 			} else if item.Type == v2.ItemTypeMix {
-				mix := item.Data.Mix
-				list.Append(shortcut_list.NewShortcut(mix.TitleTextInfo.Text, mix.SubtitleTextInfo.Text, mix.MixImages[0].URL))
+				list.Append(shortcut_list.NewLegacyMix(item.Data.Mix))
 			} else {
 				list.Append(syntax.Label("Unsupported: " + string(item.Type)).HMargin(10))
 			}
