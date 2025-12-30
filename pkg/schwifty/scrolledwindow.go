@@ -1,8 +1,33 @@
 package schwifty
 
-import "github.com/jwijenbergh/puregotk/v4/gtk"
+import (
+	"codeberg.org/dergs/tidalwave/internal/g"
+	"codeberg.org/dergs/tidalwave/pkg/schwifty/state"
+	"github.com/jwijenbergh/puregotk/v4/glib"
+	"github.com/jwijenbergh/puregotk/v4/gtk"
+)
 
 //go:generate go run codeberg.org/dergs/tidalwave/pkg/schwifty/gen ScrolledWindow *gtk.ScrolledWindow
+
+func (f ScrolledWindow) BindChild(state *state.State[any]) ScrolledWindow {
+	return func() *gtk.ScrolledWindow {
+		var callbackId string
+		return f.ConnectRealize(func(w gtk.Widget) {
+			callbackId = state.AddCallback(func(newValue any) {
+				widget := ResolveWidget(newValue)
+				glib.IdleAddOnce(
+					g.Ptr[glib.SourceOnceFunc](func(u uintptr) {
+						gtk.ScrolledWindowNewFromInternalPtr(u).SetChild(widget)
+						widget.Unref()
+					}),
+					w.GoPointer(),
+				)
+			})
+		}).ConnectUnrealize(func(w gtk.Widget) {
+			state.RemoveCallback(callbackId)
+		})()
+	}
+}
 
 func (f ScrolledWindow) Child(widget any) ScrolledWindow {
 	return func() *gtk.ScrolledWindow {
