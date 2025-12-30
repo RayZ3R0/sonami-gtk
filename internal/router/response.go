@@ -1,11 +1,14 @@
 package router
 
 import (
+	"time"
+
 	"codeberg.org/dergs/tidalwave/pkg/schwifty"
 )
 
 type Response struct {
 	Error     error
+	ExpiresAt *time.Time
 	PageTitle string
 	Toolbar   schwifty.BaseWidgetable
 	View      schwifty.BaseWidgetable

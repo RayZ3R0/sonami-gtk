@@ -17,7 +17,7 @@ func (w *Window) buildContentHeader() *gtk.Widget {
 	backButton.SetActionName("win.navigate-back")
 	backButton.SetVisible(false)
 	router.HistoryUpdated.On(func(history *router.History) bool {
-		backButton.SetVisible(history.Length() > 1)
+		backButton.SetVisible(len(history.Entries) > 1)
 		return signals.Continue
 	})
 
