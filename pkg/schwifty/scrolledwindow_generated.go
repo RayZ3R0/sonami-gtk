@@ -150,6 +150,14 @@ func (f ScrolledWindow) Overflow(overflow gtk.Overflow) ScrolledWindow {
 	}
 }
 
+func (f ScrolledWindow) SizeRequest(width, height int) ScrolledWindow {
+	return func() *gtk.ScrolledWindow {
+		widget := f()
+		widget.SetSizeRequest(width, height)
+		return widget
+	}
+}
+
 func (f ScrolledWindow) ToGTK() *gtk.Widget {
 	val := f()
 	return &val.Widget

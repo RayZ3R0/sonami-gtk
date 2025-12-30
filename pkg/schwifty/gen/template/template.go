@@ -149,6 +149,14 @@ func (f TEMPLATE_TYPE) Overflow(overflow gtk.Overflow) TEMPLATE_TYPE {
 	}
 }
 
+func (f TEMPLATE_TYPE) SizeRequest(width, height int) TEMPLATE_TYPE {
+	return func() TEMPLATE_BASE_TYPE {
+		widget := f()
+		widget.SetSizeRequest(width, height)
+		return widget
+	}
+}
+
 func (f TEMPLATE_TYPE) ToGTK() *gtk.Widget {
 	val := f()
 	return &val.Widget

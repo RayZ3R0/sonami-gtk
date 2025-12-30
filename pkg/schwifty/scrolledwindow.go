@@ -13,11 +13,17 @@ func (f ScrolledWindow) BindChild(state *state.State[any]) ScrolledWindow {
 		return f.ConnectRealize(func(w gtk.Widget) {
 			callbackId = state.AddCallback(func(newValue any) {
 				widget := ResolveWidget(newValue)
-				widget.Ref()
-				OnMainThreadOnce(func(u uintptr) {
-					gtk.ScrolledWindowNewFromInternalPtr(u).SetChild(widget)
-					widget.Unref()
-				}, w.GoPointer())
+				if widget == nil {
+					OnMainThreadOnce(func(u uintptr) {
+						gtk.ScrolledWindowNewFromInternalPtr(u).SetChild(nil)
+					}, w.GoPointer())
+				} else {
+					widget.Ref()
+					OnMainThreadOnce(func(u uintptr) {
+						gtk.ScrolledWindowNewFromInternalPtr(u).SetChild(widget)
+						widget.Unref()
+					}, w.GoPointer())
+				}
 			})
 		}).ConnectUnrealize(func(w gtk.Widget) {
 			state.RemoveCallback(callbackId)

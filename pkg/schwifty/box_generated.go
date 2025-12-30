@@ -150,6 +150,14 @@ func (f Box) Overflow(overflow gtk.Overflow) Box {
 	}
 }
 
+func (f Box) SizeRequest(width, height int) Box {
+	return func() *gtk.Box {
+		widget := f()
+		widget.SetSizeRequest(width, height)
+		return widget
+	}
+}
+
 func (f Box) ToGTK() *gtk.Widget {
 	val := f()
 	return &val.Widget

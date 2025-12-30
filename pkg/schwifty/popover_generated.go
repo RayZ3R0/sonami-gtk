@@ -150,6 +150,14 @@ func (f Popover) Overflow(overflow gtk.Overflow) Popover {
 	}
 }
 
+func (f Popover) SizeRequest(width, height int) Popover {
+	return func() *gtk.Popover {
+		widget := f()
+		widget.SetSizeRequest(width, height)
+		return widget
+	}
+}
+
 func (f Popover) ToGTK() *gtk.Widget {
 	val := f()
 	return &val.Widget

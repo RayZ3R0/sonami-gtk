@@ -151,6 +151,14 @@ func (f StatusPage) Overflow(overflow gtk.Overflow) StatusPage {
 	}
 }
 
+func (f StatusPage) SizeRequest(width, height int) StatusPage {
+	return func() *adw.StatusPage {
+		widget := f()
+		widget.SetSizeRequest(width, height)
+		return widget
+	}
+}
+
 func (f StatusPage) ToGTK() *gtk.Widget {
 	val := f()
 	return &val.Widget

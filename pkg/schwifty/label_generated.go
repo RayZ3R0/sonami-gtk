@@ -150,6 +150,14 @@ func (f Label) Overflow(overflow gtk.Overflow) Label {
 	}
 }
 
+func (f Label) SizeRequest(width, height int) Label {
+	return func() *gtk.Label {
+		widget := f()
+		widget.SetSizeRequest(width, height)
+		return widget
+	}
+}
+
 func (f Label) ToGTK() *gtk.Widget {
 	val := f()
 	return &val.Widget

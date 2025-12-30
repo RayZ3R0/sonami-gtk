@@ -150,6 +150,14 @@ func (f SearchEntry) Overflow(overflow gtk.Overflow) SearchEntry {
 	}
 }
 
+func (f SearchEntry) SizeRequest(width, height int) SearchEntry {
+	return func() *gtk.SearchEntry {
+		widget := f()
+		widget.SetSizeRequest(width, height)
+		return widget
+	}
+}
+
 func (f SearchEntry) ToGTK() *gtk.Widget {
 	val := f()
 	return &val.Widget

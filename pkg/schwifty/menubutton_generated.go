@@ -150,6 +150,14 @@ func (f MenuButton) Overflow(overflow gtk.Overflow) MenuButton {
 	}
 }
 
+func (f MenuButton) SizeRequest(width, height int) MenuButton {
+	return func() *gtk.MenuButton {
+		widget := f()
+		widget.SetSizeRequest(width, height)
+		return widget
+	}
+}
+
 func (f MenuButton) ToGTK() *gtk.Widget {
 	val := f()
 	return &val.Widget

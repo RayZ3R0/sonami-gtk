@@ -150,6 +150,14 @@ func (f AspectFrame) Overflow(overflow gtk.Overflow) AspectFrame {
 	}
 }
 
+func (f AspectFrame) SizeRequest(width, height int) AspectFrame {
+	return func() *gtk.AspectFrame {
+		widget := f()
+		widget.SetSizeRequest(width, height)
+		return widget
+	}
+}
+
 func (f AspectFrame) ToGTK() *gtk.Widget {
 	val := f()
 	return &val.Widget

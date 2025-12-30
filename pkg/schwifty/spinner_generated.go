@@ -150,6 +150,14 @@ func (f Spinner) Overflow(overflow gtk.Overflow) Spinner {
 	}
 }
 
+func (f Spinner) SizeRequest(width, height int) Spinner {
+	return func() *gtk.Spinner {
+		widget := f()
+		widget.SetSizeRequest(width, height)
+		return widget
+	}
+}
+
 func (f Spinner) ToGTK() *gtk.Widget {
 	val := f()
 	return &val.Widget
