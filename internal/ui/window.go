@@ -42,8 +42,8 @@ func (w *Window) build() *gtk.Widget {
 	layout.SetSidebar(w.buildSidebarLayout())
 	layout.SetContent(w.buildContentLayout())
 	layout.SetSidebarWidthFraction(0.4)
-	layout.SetMaxSidebarWidth(367)
-	layout.SetMinSidebarWidth(367)
+	layout.SetMaxSidebarWidth(420)
+	layout.SetMinSidebarWidth(420)
 
 	sidebarAction := gio.NewSimpleActionStateful("toggle-sidebar", nil, glib.NewVariantBoolean(true))
 	sidebarAction.ConnectActivate(g.Ptr(func(action gio.SimpleAction, _ uintptr) {

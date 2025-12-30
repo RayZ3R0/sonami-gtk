@@ -37,7 +37,7 @@ func init() {
 func trackCover() schwifty.AspectFrame {
 	return AspectFrame(
 		Image().
-			PixelSize(319).
+			PixelSize(380).
 			Overflow(gtk.OverflowHiddenValue).
 			FromPaintable(resources.MissingAlbum()).
 			BindPaintable(coverState),
