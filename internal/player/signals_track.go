@@ -44,7 +44,7 @@ type TrackInformation struct {
 	Artists  []openapi.ArtistAttributes
 	CoverURL string
 	Duration time.Duration
-	ID       int
+	ID       string
 	Title    string
 }
 

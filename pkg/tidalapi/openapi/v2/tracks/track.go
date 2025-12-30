@@ -10,8 +10,8 @@ import (
 	"codeberg.org/dergs/tidalwave/pkg/tidalapi/models/openapi"
 )
 
-func (t *Tracks) Track(ctx context.Context, id int, include ...string) (*openapi.Track, error) {
-	req, err := http.NewRequestWithContext(ctx, http.MethodGet, fmt.Sprintf("https://openapi.tidal.com/v2/tracks/%d", id), nil)
+func (t *Tracks) Track(ctx context.Context, id string, include ...string) (*openapi.Track, error) {
+	req, err := http.NewRequestWithContext(ctx, http.MethodGet, fmt.Sprintf("https://openapi.tidal.com/v2/tracks/%s", id), nil)
 	if err != nil {
 		return nil, err
 	}

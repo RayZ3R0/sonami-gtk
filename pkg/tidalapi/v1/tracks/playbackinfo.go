@@ -16,8 +16,8 @@ type PlaybackInfoOptions struct {
 	PlaybackMode      v1.PlaybackMode      `json:"playbackMode"`
 }
 
-func (p *Tracks) PlaybackInfo(ctx context.Context, trackId int, opts PlaybackInfoOptions) (*v1.PlaybackInfo, error) {
-	req, err := http.NewRequestWithContext(ctx, http.MethodGet, fmt.Sprintf("/v1/tracks/%d/playbackinfo", trackId), nil)
+func (p *Tracks) PlaybackInfo(ctx context.Context, trackId string, opts PlaybackInfoOptions) (*v1.PlaybackInfo, error) {
+	req, err := http.NewRequestWithContext(ctx, http.MethodGet, fmt.Sprintf("/v1/tracks/%s/playbackinfo", trackId), nil)
 	if err != nil {
 		return nil, err
 	}

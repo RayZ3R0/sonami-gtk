@@ -32,7 +32,7 @@ func init() {
 	onVolumeChange()
 }
 
-func Play(trackId int) error {
+func Play(trackId string) error {
 	tidal, err := injector.Inject[*tidalapi.TidalAPI]()
 	if err != nil {
 		return err

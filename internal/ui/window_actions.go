@@ -18,11 +18,11 @@ func (w *Window) installActions() {
 	w.AddAction(navigateBackAction)
 	w.GetApplication().SetAccelsForAction("win.navigate-back", []string{"<Alt>Left"})
 
-	playTrackAction := gio.NewSimpleAction("player.play-track", glib.NewVariantType("x"))
+	playTrackAction := gio.NewSimpleAction("player.play-track", glib.NewVariantType("s"))
 	playTrackAction.ConnectActivate(g.Ptr(func(action gio.SimpleAction, parameter uintptr) {
 		variant := (*glib.Variant)(unsafe.Pointer(parameter))
-		id := variant.GetInt64()
-		player.Play(int(id))
+		id := variant.GetString(nil)
+		player.Play(id)
 	}))
 	w.AddAction(playTrackAction)
 

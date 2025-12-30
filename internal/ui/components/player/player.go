@@ -15,7 +15,7 @@ import (
 	"github.com/jwijenbergh/puregotk/v4/gtk"
 )
 
-var trackID = state.NewStateful(0)
+var trackID = state.NewStateful("")
 
 func init() {
 	player.OnTrackChanged.On(func(trackInfo player.TrackInformation) bool {
@@ -49,7 +49,7 @@ func NewPlayer() schwifty.Box {
 				CSS(`button:not(:hover) { background-color: transparent; }`).
 				ConnectClicked(func(gtk.Button) {
 					id := trackID.Value()
-					if id == 0 {
+					if id == "" {
 						notifications.OnToast.Notify("No track is currently playing.")
 						return
 					}
@@ -59,7 +59,7 @@ func NewPlayer() schwifty.Box {
 					clipboard := display.GetClipboard()
 					defer clipboard.Unref()
 
-					clipboard.Set(types.GType(glib.TYPE_STRING), fmt.Sprintf("https://tidal.com/track/%d?u", id))
+					clipboard.Set(types.GType(glib.TYPE_STRING), fmt.Sprintf("https://tidal.com/track/%s?u", id))
 					notifications.OnToast.Notify("Copied track URL to clipboard.")
 				}),
 		).
