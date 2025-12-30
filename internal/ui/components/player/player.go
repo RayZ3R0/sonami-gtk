@@ -9,9 +9,7 @@ import (
 	"codeberg.org/dergs/tidalwave/pkg/schwifty"
 	"codeberg.org/dergs/tidalwave/pkg/schwifty/state"
 	. "codeberg.org/dergs/tidalwave/pkg/schwifty/syntax"
-	"github.com/go-gst/go-glib/glib"
 	"github.com/jwijenbergh/puregotk/v4/gdk"
-	"github.com/jwijenbergh/puregotk/v4/gobject/types"
 	"github.com/jwijenbergh/puregotk/v4/gtk"
 )
 
@@ -59,7 +57,7 @@ func NewPlayer() schwifty.Box {
 					clipboard := display.GetClipboard()
 					defer clipboard.Unref()
 
-					clipboard.Set(types.GType(glib.TYPE_STRING), fmt.Sprintf("https://tidal.com/track/%s?u", id))
+					clipboard.SetText(fmt.Sprintf("https://tidal.com/track/%s?u", id))
 					notifications.OnToast.Notify("Copied track URL to clipboard.")
 				}),
 		).

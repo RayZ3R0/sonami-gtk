@@ -6,6 +6,7 @@ import (
 	"fmt"
 	"math/rand/v2"
 
+	"codeberg.org/dergs/tidalwave/internal/notifications"
 	"codeberg.org/dergs/tidalwave/internal/player"
 	"codeberg.org/dergs/tidalwave/internal/resources"
 	"codeberg.org/dergs/tidalwave/internal/router"
@@ -16,6 +17,7 @@ import (
 	"codeberg.org/dergs/tidalwave/pkg/tidalapi/models/openapi"
 	"codeberg.org/dergs/tidalwave/pkg/utils/imgutil"
 	"github.com/infinytum/injector"
+	"github.com/jwijenbergh/puregotk/v4/gdk"
 	"github.com/jwijenbergh/puregotk/v4/gtk"
 )
 
@@ -109,37 +111,67 @@ func Playlist(params router.Params) *router.Response {
 				).MarginStart(20).VAlign(gtk.AlignCenterValue),
 				Spacer().
 					VExpand(false),
-				HStack(
-					Button().
-						IconName("media-playlist-shuffle-symbolic").
-						MinWidth(81).
-						CornerRadius(21).
-						Padding(9).
-						VAlign(gtk.AlignCenterValue).
-						ConnectClicked(func(b gtk.Button) {
-							i := rand.IntN(len(items.Data))
-							player.Play(items.Included.Tracks(items.Data[i])[0].Data.ID)
-						}),
-					Button().
-						IconName("media-playback-start-symbolic").
-						MinWidth(81).
-						CornerRadius(21).
-						Padding(9).
-						CSS(`
-							button {
-								background-color: var(--accent-bg-color);
-							}
+				VStack(
+					HStack(
+						Button().
+							IconName("media-playlist-shuffle-symbolic").
+							MinWidth(81).
+							CornerRadius(21).
+							Padding(9).
+							VAlign(gtk.AlignCenterValue).
+							ConnectClicked(func(b gtk.Button) {
+								i := rand.IntN(len(items.Data))
+								player.Play(items.Included.Tracks(items.Data[i])[0].Data.ID)
+							}),
+						Button().
+							IconName("media-playback-start-symbolic").
+							MinWidth(81).
+							CornerRadius(21).
+							Padding(9).
+							CSS(`
+								button {
+									background-color: var(--accent-bg-color);
+								}
 
-							button:hover {
-								background-color: var(--accent-color);
-							}
-						`).
-						VAlign(gtk.AlignCenterValue).
-						ConnectClicked(func(b gtk.Button) {
-							player.Play(items.Included.Tracks(items.Data[0])[0].Data.ID)
-						}),
+								button:hover {
+									background-color: var(--accent-color);
+								}
+							`).
+							VAlign(gtk.AlignCenterValue).
+							ConnectClicked(func(b gtk.Button) {
+								player.Play(items.Included.Tracks(items.Data[0])[0].Data.ID)
+							}),
+					).
+						Spacing(5).
+						HAlign(gtk.AlignEndValue),
+					HStack(
+						Button().
+							IconName("heart-outline-thick-symbolic").
+							CSS("button:not(:hover) { background-color: transparent; }"),
+						Button().
+							IconName("folder-publicshare-symbolic").
+							CSS("button:not(:hover) { background-color: transparent; }").
+							ConnectClicked(func(gtk.Button) {
+								id := playlist.Data.ID
+								if id == "" {
+									notifications.OnToast.Notify("No playlist could be shared.")
+									return
+								}
+
+								display := gdk.DisplayGetDefault()
+								defer display.Unref()
+								clipboard := display.GetClipboard()
+								defer clipboard.Unref()
+
+								clipboard.SetText(fmt.Sprintf("https://tidal.com/playlist/%s", id))
+								notifications.OnToast.Notify("Copied playlist URL to clipboard.")
+							}),
+					).
+						Spacing(10).
+						HAlign(gtk.AlignEndValue),
 				).
-					Spacing(5),
+					Spacing(20).
+					VAlign(gtk.AlignCenterValue),
 			),
 			ScrolledWindow().
 				Child(list).
