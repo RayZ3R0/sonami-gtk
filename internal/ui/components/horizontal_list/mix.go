@@ -9,7 +9,7 @@ import (
 func newMix(id string, title string, subtitle string, coverUrl string) schwifty.Button {
 	return Card(
 		title,
-		SubTitle(subtitle),
+		SubTitle(subtitle).Lines(2),
 		coverUrl,
 	).ActionName("win.route.playlist").ActionTargetValue(glib.NewVariantString(id))
 }

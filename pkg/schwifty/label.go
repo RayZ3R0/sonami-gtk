@@ -116,6 +116,14 @@ func (f Label) BindText(state *state.State[string]) Label {
 	}
 }
 
+func (f Label) Lines(lines int) Label {
+	return func() *gtk.Label {
+		widget := f()
+		widget.SetLines(lines)
+		return widget
+	}
+}
+
 func (f Label) MaxWidthChars(chars int) Label {
 	return func() *gtk.Label {
 		widget := f()
