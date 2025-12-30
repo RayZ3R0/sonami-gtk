@@ -2,6 +2,7 @@ package ui
 
 import (
 	"codeberg.org/dergs/tidalwave/internal/g"
+	"codeberg.org/dergs/tidalwave/internal/notifications"
 	"codeberg.org/dergs/tidalwave/internal/router"
 	"codeberg.org/dergs/tidalwave/internal/signals"
 	"codeberg.org/dergs/tidalwave/pkg/schwifty/syntax"
@@ -52,7 +53,20 @@ func (w *Window) build() *gtk.Widget {
 	w.AddAction(sidebarAction)
 	w.GetApplication().SetAccelsForAction("win.toggle-sidebar", []string{"<Ctrl>B"})
 
-	return &layout.Widget
+	toastLayout := adw.NewToastOverlay()
+	toastLayout.SetChild(&layout.Widget)
+	layout.Unref()
+
+	notifications.OnToast.On(func(title string) bool {
+		toast := adw.NewToast(title)
+		toast.SetTimeout(3)
+
+		toastLayout.AddToast(toast)
+
+		return signals.Continue
+	})
+
+	return &toastLayout.Widget
 }
 
 func (w *Window) buildContentLayout() *gtk.Widget {
