@@ -42,7 +42,7 @@ func (r *trackChangedSignal) On(handler func(trackInfo TrackInformation) bool) *
 }
 
 type TrackInformation struct {
-	Artists  []openapi.ArtistAttributes
+	Artists  []openapi.ArtistData
 	CoverURL string
 	Duration time.Duration
 	ID       string
@@ -53,7 +53,7 @@ type TrackInformation struct {
 func (t TrackInformation) ArtistNames() string {
 	names := make([]string, len(t.Artists))
 	for i, artist := range t.Artists {
-		names[i] = artist.Name
+		names[i] = artist.Attributes.Name
 	}
 	return strings.Join(names, ", ")
 }

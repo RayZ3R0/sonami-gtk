@@ -49,7 +49,7 @@ func Play(trackId string) error {
 	}
 
 	OnTrackChanged.Notify(func(trackInfo *TrackInformation) {
-		trackInfo.Artists = []openapi.ArtistAttributes{}
+		trackInfo.Artists = []openapi.ArtistData{}
 		trackInfo.CoverURL = ""
 		trackInfo.Duration = openTrack.Data.Attributes.Duration.Duration
 		trackInfo.ID = trackId
@@ -57,7 +57,7 @@ func Play(trackId string) error {
 		trackInfo.Quality = playbackInfo.AudioQuality
 
 		for _, artist := range openTrack.Included.PlainArtists(openTrack.Data.Relationships.Artists.Data...) {
-			trackInfo.Artists = append(trackInfo.Artists, artist.Attributes)
+			trackInfo.Artists = append(trackInfo.Artists, artist)
 		}
 
 		for _, album := range openTrack.Included.Albums(openTrack.Data.Relationships.Albums.Data...) {
