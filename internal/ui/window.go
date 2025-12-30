@@ -85,7 +85,14 @@ func (w *Window) buildContentLayout() *gtk.Widget {
 	})
 
 	router.NavigationComplete.On(func(entry router.HistoryEntry) bool {
-		toolbarView.SetContent(entry.View)
+		entry.View.Ref()
+		glib.IdleAddOnce(
+			g.Ptr[glib.SourceOnceFunc](func(u uintptr) {
+				toolbarView.SetContent(entry.View)
+				entry.View.Unref()
+			}),
+			0,
+		)
 		return signals.Continue
 	})
 
