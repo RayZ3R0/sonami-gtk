@@ -4,7 +4,9 @@ import (
 	"context"
 	"errors"
 	"fmt"
+	"math/rand/v2"
 
+	"codeberg.org/dergs/tidalwave/internal/player"
 	"codeberg.org/dergs/tidalwave/internal/resources"
 	"codeberg.org/dergs/tidalwave/internal/router"
 	"codeberg.org/dergs/tidalwave/internal/ui/components/tracklist"
@@ -105,6 +107,39 @@ func Playlist(params router.Params) *router.Response {
 						HAlign(gtk.AlignStartValue).
 						MarginTop(10),
 				).MarginStart(20).VAlign(gtk.AlignCenterValue),
+				Spacer().
+					VExpand(false),
+				HStack(
+					Button().
+						IconName("media-playlist-shuffle-symbolic").
+						MinWidth(81).
+						CornerRadius(21).
+						Padding(9).
+						VAlign(gtk.AlignCenterValue).
+						ConnectClicked(func(b gtk.Button) {
+							i := rand.IntN(len(items.Data))
+							player.Play(items.Included.Tracks(items.Data[i])[0].Data.ID)
+						}),
+					Button().
+						IconName("media-playback-start-symbolic").
+						MinWidth(81).
+						CornerRadius(21).
+						Padding(9).
+						CSS(`
+							button {
+								background-color: var(--accent-bg-color);
+							}
+
+							button:hover {
+								background-color: var(--accent-color);
+							}
+						`).
+						VAlign(gtk.AlignCenterValue).
+						ConnectClicked(func(b gtk.Button) {
+							player.Play(items.Included.Tracks(items.Data[0])[0].Data.ID)
+						}),
+				).
+					Spacing(5),
 			),
 			ScrolledWindow().
 				Child(list).
