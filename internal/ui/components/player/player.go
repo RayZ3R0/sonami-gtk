@@ -90,27 +90,8 @@ func NewPlayer() schwifty.Box {
 			MarginTop(27),
 		trackTimeline(),
 		Label("Max").
+			WithCSSClass("quality-label").
 			BindText(playbackQualityText).
-			CSS(`
-				label {
-					text-transform: uppercase;
-				}
-
-				label.low {
-					background-color: #ffffff1a;
-					color: #e4e4e7;
-				}
-
-				label.high {
-					background-color: #21feec1a;
-					color: #33ffee;
-				}
-
-				label.max {
-					background-color: #ffd4321a;
-					color: #ffd432;
-				}
-			`).
 			FontSize(10).
 			FontWeight(700).
 			BindCSSClass(playbackQualityClass).
@@ -147,5 +128,6 @@ func NewPlayer() schwifty.Box {
 			MarginTop(42).
 			MarginBottom(42),
 		Spacer(),
-	)
+	).
+		WithCSSClass("player")
 }

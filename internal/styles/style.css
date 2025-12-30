@@ -1,0 +1,35 @@
+.player label.quality-label {
+    text-transform: uppercase;
+}
+
+.player label.quality-label.low {
+    background-color: #ffffff1a;
+    color: #e4e4e7;
+}
+
+.player label.quality-label.high {
+    background-color: #21feec1a;
+    color: #33ffee;
+}
+
+.player label.quality-label.max {
+    background-color: #ffd4321a;
+    color: #ffd432;
+}
+
+@media (prefers-color-scheme: light) {
+    .player label.quality-label.low {
+        background-color: #0000001a;
+        color: #1b1b18;
+    }
+
+    .player label.quality-label.high {
+        background-color: #04a69a1a; /* Light cyan */
+        color: #039187; /* Darker teal */
+    }
+
+    .player label.quality-label.max {
+        background-color: #ffd4327a; /* Soft yellow */
+        color: #905300; /* Dark yellow/brown */
+    }
+}
