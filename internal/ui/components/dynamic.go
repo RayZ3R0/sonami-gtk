@@ -20,7 +20,7 @@ func ForPageItem(pageItem v2.PageItem) schwifty.BaseWidgetable {
 				list.Append(horizontal_list.NewLegacyAlbum(album))
 			} else if item.Type == v2.ItemTypePlaylist {
 				playlist := item.Data.Playlist
-				list.Append(horizontal_list.NewPlaylist(playlist))
+				list.Append(horizontal_list.NewLegacyPlaylist(playlist))
 			} else if item.Type == v2.ItemTypeArtist {
 				artist := item.Data.Artist
 				list.Append(horizontal_list.NewLegacyArtist(artist))
