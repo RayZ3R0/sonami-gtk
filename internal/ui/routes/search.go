@@ -1,0 +1,74 @@
+package routes
+
+import (
+	"context"
+	"log/slog"
+	"time"
+
+	"codeberg.org/dergs/tidalwave/internal/router"
+	"codeberg.org/dergs/tidalwave/internal/ui/routes/search"
+	"codeberg.org/dergs/tidalwave/pkg/schwifty/state"
+	. "codeberg.org/dergs/tidalwave/pkg/schwifty/syntax"
+	"codeberg.org/dergs/tidalwave/pkg/tidalapi"
+	"github.com/infinytum/injector"
+	"github.com/jwijenbergh/puregotk/v4/gtk"
+)
+
+func init() {
+	router.Register("search", func(params router.Params) *router.Response {
+		scrollChildState := state.NewStateful[any](search.PromptView())
+		searchState := state.NewStateful(false)
+		searchHandler := OnSearch(scrollChildState)
+
+		return &router.Response{
+			PageTitle: "Search",
+			Toolbar: SearchEntry().
+				HExpand(true).
+				MarginEnd(40).
+				PlaceholderText("E.g. Fox Stevenson").
+				SearchDelay(1000).
+				ConnectActivate(func(se gtk.SearchEntry) {
+					searchState.SetValue(true)
+					time.AfterFunc(time.Second, func() {
+						searchState.SetValue(false)
+					})
+					searchHandler(se)
+				}).
+				ConnectSearchChanged(func(se gtk.SearchEntry) {
+					if searchState.Value() && se.GetText() != "" {
+						return
+					}
+					searchHandler(se)
+				}),
+			View: ScrolledWindow().
+				BindChild(scrollChildState).
+				Policy(gtk.PolicyNeverValue, gtk.PolicyAutomaticValue),
+		}
+	})
+}
+
+var searchIncludes = []string{
+	"topHits", "topHits.profileArt", "topHits.coverArt", "topHits.albums.coverArt",
+	"topHits.albums.artists",
+}
+
+func OnSearch(scrollChildState *state.State[any]) func(gtk.SearchEntry) {
+	tidal := injector.MustInject[*tidalapi.TidalAPI]()
+	return func(searchBar gtk.SearchEntry) {
+		query := searchBar.GetText()
+		if query == "" {
+			scrollChildState.SetValue(search.PromptView())
+			return
+		}
+		scrollChildState.SetValue(search.LoadingView())
+		go func() {
+			searchResults, err := tidal.OpenAPI.V2.SearchResults.Search(context.Background(), query, searchIncludes...)
+			if err != nil {
+				slog.Error("search failed", "error", err)
+				scrollChildState.SetValue(search.PromptView())
+				return
+			}
+			scrollChildState.SetValue(search.TopHits(searchResults))
+		}()
+	}
+}
