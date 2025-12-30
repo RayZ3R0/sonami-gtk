@@ -214,6 +214,28 @@ func (f SearchEntry) CSS(css string) SearchEntry {
 	}
 }
 
+func (f SearchEntry) BindCSSClass(state *state.State[string]) SearchEntry {
+	return func() *gtk.SearchEntry {
+		var callbackId string
+		return f.ConnectRealize(func(w gtk.Widget) {
+			callbackId = state.AddCallback(func(newValue string) {
+				w.GetStyleContext().RemoveClass(state.Value())
+				w.GetStyleContext().AddClass(newValue)
+			})
+		}).ConnectUnrealize(func(w gtk.Widget) {
+			state.RemoveCallback(callbackId)
+		})()
+	}
+}
+
+func (f SearchEntry) WithCSSClass(className string) SearchEntry {
+	return func() *gtk.SearchEntry {
+		w := f()
+		w.GetStyleContext().AddClass(className)
+		return w
+	}
+}
+
 func (f SearchEntry) CSSWithCallback(cb func(elementName string) string) SearchEntry {
 	return func() *gtk.SearchEntry {
 		provider := gtk.NewCssProvider()

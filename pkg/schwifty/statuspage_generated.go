@@ -229,6 +229,14 @@ func (f StatusPage) BindCSSClass(state *state.State[string]) StatusPage {
 	}
 }
 
+func (f StatusPage) WithCSSClass(className string) StatusPage {
+	return func() *adw.StatusPage {
+		w := f()
+		w.GetStyleContext().AddClass(className)
+		return w
+	}
+}
+
 func (f StatusPage) CSSWithCallback(cb func(elementName string) string) StatusPage {
 	return func() *adw.StatusPage {
 		provider := gtk.NewCssProvider()

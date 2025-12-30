@@ -228,6 +228,14 @@ func (f AspectFrame) BindCSSClass(state *state.State[string]) AspectFrame {
 	}
 }
 
+func (f AspectFrame) WithCSSClass(className string) AspectFrame {
+	return func() *gtk.AspectFrame {
+		w := f()
+		w.GetStyleContext().AddClass(className)
+		return w
+	}
+}
+
 func (f AspectFrame) CSSWithCallback(cb func(elementName string) string) AspectFrame {
 	return func() *gtk.AspectFrame {
 		provider := gtk.NewCssProvider()

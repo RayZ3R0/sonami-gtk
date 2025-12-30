@@ -228,6 +228,14 @@ func (f Image) BindCSSClass(state *state.State[string]) Image {
 	}
 }
 
+func (f Image) WithCSSClass(className string) Image {
+	return func() *gtk.Image {
+		w := f()
+		w.GetStyleContext().AddClass(className)
+		return w
+	}
+}
+
 func (f Image) CSSWithCallback(cb func(elementName string) string) Image {
 	return func() *gtk.Image {
 		provider := gtk.NewCssProvider()

@@ -228,6 +228,14 @@ func (f Label) BindCSSClass(state *state.State[string]) Label {
 	}
 }
 
+func (f Label) WithCSSClass(className string) Label {
+	return func() *gtk.Label {
+		w := f()
+		w.GetStyleContext().AddClass(className)
+		return w
+	}
+}
+
 func (f Label) CSSWithCallback(cb func(elementName string) string) Label {
 	return func() *gtk.Label {
 		provider := gtk.NewCssProvider()

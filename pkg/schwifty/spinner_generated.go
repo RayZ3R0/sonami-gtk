@@ -228,6 +228,14 @@ func (f Spinner) BindCSSClass(state *state.State[string]) Spinner {
 	}
 }
 
+func (f Spinner) WithCSSClass(className string) Spinner {
+	return func() *gtk.Spinner {
+		w := f()
+		w.GetStyleContext().AddClass(className)
+		return w
+	}
+}
+
 func (f Spinner) CSSWithCallback(cb func(elementName string) string) Spinner {
 	return func() *gtk.Spinner {
 		provider := gtk.NewCssProvider()

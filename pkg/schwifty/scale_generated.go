@@ -228,6 +228,14 @@ func (f Scale) BindCSSClass(state *state.State[string]) Scale {
 	}
 }
 
+func (f Scale) WithCSSClass(className string) Scale {
+	return func() *gtk.Scale {
+		w := f()
+		w.GetStyleContext().AddClass(className)
+		return w
+	}
+}
+
 func (f Scale) CSSWithCallback(cb func(elementName string) string) Scale {
 	return func() *gtk.Scale {
 		provider := gtk.NewCssProvider()

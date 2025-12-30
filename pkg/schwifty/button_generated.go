@@ -228,6 +228,14 @@ func (f Button) BindCSSClass(state *state.State[string]) Button {
 	}
 }
 
+func (f Button) WithCSSClass(className string) Button {
+	return func() *gtk.Button {
+		w := f()
+		w.GetStyleContext().AddClass(className)
+		return w
+	}
+}
+
 func (f Button) CSSWithCallback(cb func(elementName string) string) Button {
 	return func() *gtk.Button {
 		provider := gtk.NewCssProvider()

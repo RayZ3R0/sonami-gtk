@@ -229,6 +229,14 @@ func (f Clamp) BindCSSClass(state *state.State[string]) Clamp {
 	}
 }
 
+func (f Clamp) WithCSSClass(className string) Clamp {
+	return func() *adw.Clamp {
+		w := f()
+		w.GetStyleContext().AddClass(className)
+		return w
+	}
+}
+
 func (f Clamp) CSSWithCallback(cb func(elementName string) string) Clamp {
 	return func() *adw.Clamp {
 		provider := gtk.NewCssProvider()

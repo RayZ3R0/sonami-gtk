@@ -229,6 +229,14 @@ func (f WindowTitle) BindCSSClass(state *state.State[string]) WindowTitle {
 	}
 }
 
+func (f WindowTitle) WithCSSClass(className string) WindowTitle {
+	return func() *adw.WindowTitle {
+		w := f()
+		w.GetStyleContext().AddClass(className)
+		return w
+	}
+}
+
 func (f WindowTitle) CSSWithCallback(cb func(elementName string) string) WindowTitle {
 	return func() *adw.WindowTitle {
 		provider := gtk.NewCssProvider()

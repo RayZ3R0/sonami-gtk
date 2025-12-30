@@ -228,6 +228,14 @@ func (f ScrolledWindow) BindCSSClass(state *state.State[string]) ScrolledWindow 
 	}
 }
 
+func (f ScrolledWindow) WithCSSClass(className string) ScrolledWindow {
+	return func() *gtk.ScrolledWindow {
+		w := f()
+		w.GetStyleContext().AddClass(className)
+		return w
+	}
+}
+
 func (f ScrolledWindow) CSSWithCallback(cb func(elementName string) string) ScrolledWindow {
 	return func() *gtk.ScrolledWindow {
 		provider := gtk.NewCssProvider()

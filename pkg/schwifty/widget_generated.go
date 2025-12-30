@@ -228,6 +228,14 @@ func (f Widget) BindCSSClass(state *state.State[string]) Widget {
 	}
 }
 
+func (f Widget) WithCSSClass(className string) Widget {
+	return func() *WrappedWidget {
+		w := f()
+		w.GetStyleContext().AddClass(className)
+		return w
+	}
+}
+
 func (f Widget) CSSWithCallback(cb func(elementName string) string) Widget {
 	return func() *WrappedWidget {
 		provider := gtk.NewCssProvider()

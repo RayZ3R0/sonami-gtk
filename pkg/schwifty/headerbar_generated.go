@@ -229,6 +229,14 @@ func (f HeaderBar) BindCSSClass(state *state.State[string]) HeaderBar {
 	}
 }
 
+func (f HeaderBar) WithCSSClass(className string) HeaderBar {
+	return func() *adw.HeaderBar {
+		w := f()
+		w.GetStyleContext().AddClass(className)
+		return w
+	}
+}
+
 func (f HeaderBar) CSSWithCallback(cb func(elementName string) string) HeaderBar {
 	return func() *adw.HeaderBar {
 		provider := gtk.NewCssProvider()

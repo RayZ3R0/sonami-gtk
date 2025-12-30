@@ -228,6 +228,14 @@ func (f Popover) BindCSSClass(state *state.State[string]) Popover {
 	}
 }
 
+func (f Popover) WithCSSClass(className string) Popover {
+	return func() *gtk.Popover {
+		w := f()
+		w.GetStyleContext().AddClass(className)
+		return w
+	}
+}
+
 func (f Popover) CSSWithCallback(cb func(elementName string) string) Popover {
 	return func() *gtk.Popover {
 		provider := gtk.NewCssProvider()

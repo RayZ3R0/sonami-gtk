@@ -45,6 +45,14 @@ func (f TEMPLATE_TYPE) BindCSSClass(state *state.State[string]) TEMPLATE_TYPE {
 	}
 }
 
+func (f TEMPLATE_TYPE) WithCSSClass(className string) TEMPLATE_TYPE {
+	return func() TEMPLATE_BASE_TYPE {
+		w := f()
+		w.GetStyleContext().AddClass(className)
+		return w
+	}
+}
+
 func (f TEMPLATE_TYPE) CSSWithCallback(cb func(elementName string) string) TEMPLATE_TYPE {
 	return func() TEMPLATE_BASE_TYPE {
 		provider := gtk.NewCssProvider()

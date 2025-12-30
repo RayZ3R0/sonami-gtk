@@ -228,6 +228,14 @@ func (f Box) BindCSSClass(state *state.State[string]) Box {
 	}
 }
 
+func (f Box) WithCSSClass(className string) Box {
+	return func() *gtk.Box {
+		w := f()
+		w.GetStyleContext().AddClass(className)
+		return w
+	}
+}
+
 func (f Box) CSSWithCallback(cb func(elementName string) string) Box {
 	return func() *gtk.Box {
 		provider := gtk.NewCssProvider()

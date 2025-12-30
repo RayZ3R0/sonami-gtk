@@ -228,6 +228,14 @@ func (f MenuButton) BindCSSClass(state *state.State[string]) MenuButton {
 	}
 }
 
+func (f MenuButton) WithCSSClass(className string) MenuButton {
+	return func() *gtk.MenuButton {
+		w := f()
+		w.GetStyleContext().AddClass(className)
+		return w
+	}
+}
+
 func (f MenuButton) CSSWithCallback(cb func(elementName string) string) MenuButton {
 	return func() *gtk.MenuButton {
 		provider := gtk.NewCssProvider()
