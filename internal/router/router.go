@@ -49,21 +49,10 @@ func Back() {
 		return
 	}
 
-	current := history.Current()
 	previous := history.Pop()
 	if previous == nil {
 		return
 	}
-
-	// Ensure we are unmapping whatever we were showing previously
-	defer func(entry HistoryEntry) {
-		if entry.Toolbar != nil {
-			entry.Toolbar.Unref()
-		}
-		if entry.View != nil {
-			entry.View.Unref()
-		}
-	}(*current)
 
 	OnNavigate.Notify(previous.Path)
 	if previous.Response != nil {

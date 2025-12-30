@@ -4,10 +4,23 @@ import (
 	"log/slog"
 	"reflect"
 
+	"codeberg.org/dergs/tidalwave/pkg/schwifty/callback"
+	"github.com/jwijenbergh/puregotk/v4/glib"
 	"github.com/jwijenbergh/puregotk/v4/gtk"
 )
 
 var logger = slog.With("library", "schwifty")
+
+func OnMainThread(cb callback.MainThreadCallback, param uintptr) uint {
+	return callback.OnMainThread(cb, param)
+}
+
+func OnMainThreadOnce(cb func(u uintptr), param uintptr) uint {
+	return callback.OnMainThread(func(u uintptr) bool {
+		cb(param)
+		return glib.SOURCE_REMOVE
+	}, param)
+}
 
 func ResolveWidget(value any) *gtk.Widget {
 	t := reflect.TypeOf(value)

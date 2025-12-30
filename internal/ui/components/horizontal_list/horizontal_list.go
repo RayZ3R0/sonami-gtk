@@ -69,7 +69,7 @@ func NewHorizontalList(title string) *HorizontalList {
 				).BindHMargin(marginState),
 			).HMargin(10).MarginBottom(10),
 			ScrolledWindow().
-				Child(ManagedWidget(&container.Widget)).
+				Child(Widget(&container.Widget)).
 				VAlign(gtk.AlignStartValue).
 				Policy(gtk.PolicyExternalValue, gtk.PolicyNeverValue).
 				PropagateNaturalWidth(true).

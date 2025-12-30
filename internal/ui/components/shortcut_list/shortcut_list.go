@@ -21,7 +21,7 @@ func NewShortcutList() *ShortcutList {
 		ChildSpacing(10).
 		LineSpacing(10)()
 	return &ShortcutList{
-		Widget:    ManagedWidget(&container.Widget),
+		Widget:    Widget(&container.Widget),
 		container: container,
 	}
 }

@@ -34,9 +34,9 @@ func (w *Window) buildContentHeader() *gtk.Widget {
 	collectionButton.SetIcon("library-symbolic")
 
 	defaultToolbar := HStack(
-		ManagedWidget(&homeButton.Widget),
-		ManagedWidget(&exploreButton.Widget),
-		ManagedWidget(&collectionButton.Widget),
+		Widget(&homeButton.Widget),
+		Widget(&exploreButton.Widget),
+		Widget(&collectionButton.Widget),
 	).Spacing(3)()
 
 	// We never want to delete the default toolbar. NEVER.

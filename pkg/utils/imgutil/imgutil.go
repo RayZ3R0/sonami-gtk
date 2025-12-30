@@ -1,9 +1,8 @@
 package imgutil
 
 import (
-	"codeberg.org/dergs/tidalwave/internal/g"
+	"codeberg.org/dergs/tidalwave/pkg/schwifty"
 	"codeberg.org/dergs/tidalwave/pkg/utils/cacheutil"
-	"github.com/jwijenbergh/puregotk/v4/glib"
 	"github.com/jwijenbergh/puregotk/v4/gtk"
 )
 
@@ -21,16 +20,13 @@ func (i *ImgUtil) LoadIntoImage(url string, image *gtk.Image) {
 			return
 		}
 
-		glib.IdleAddOnce(
-			g.Ptr[glib.SourceOnceFunc](func(u uintptr) {
-				image.SetFromPaintable(texture)
-				texture.Unref()
-				texture = nil
-				image.Unref()
-				image = nil
-			}),
-			0,
-		)
+		schwifty.OnMainThreadOnce(func(u uintptr) {
+			image.SetFromPaintable(texture)
+			texture.Unref()
+			texture = nil
+			image.Unref()
+			image = nil
+		}, 0)
 	}()
 }
 

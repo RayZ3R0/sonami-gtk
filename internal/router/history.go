@@ -70,6 +70,7 @@ func (h *History) Pop() *HistoryEntry {
 		return nil
 	}
 
+	h.array[len(h.array)-1] = HistoryEntry{}
 	h.array = h.array[:len(h.array)-1]
 	previous := &h.array[len(h.array)-1]
 

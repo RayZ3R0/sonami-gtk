@@ -5,6 +5,7 @@ import (
 	"codeberg.org/dergs/tidalwave/internal/notifications"
 	"codeberg.org/dergs/tidalwave/internal/router"
 	"codeberg.org/dergs/tidalwave/internal/signals"
+	"codeberg.org/dergs/tidalwave/pkg/schwifty"
 	"codeberg.org/dergs/tidalwave/pkg/schwifty/syntax"
 	"github.com/jwijenbergh/puregotk/v4/adw"
 	"github.com/jwijenbergh/puregotk/v4/gio"
@@ -74,25 +75,14 @@ func (w *Window) buildContentLayout() *gtk.Widget {
 	toolbarView.AddTopBar(w.buildContentHeader())
 
 	router.OnNavigate.On(func(path string) bool {
-		glib.IdleAddOnce(
-			g.Ptr[glib.SourceOnceFunc](func(u uintptr) {
-				view := loadingView.ToGTK()
-				toolbarView.SetContent(view)
-			}),
-			0,
-		)
+		schwifty.OnMainThreadOnce(func(u uintptr) {
+			toolbarView.SetContent(loadingView.ToGTK())
+		}, 0)
 		return signals.Continue
 	})
 
 	router.NavigationComplete.On(func(entry router.HistoryEntry) bool {
-		entry.View.Ref()
-		glib.IdleAddOnce(
-			g.Ptr[glib.SourceOnceFunc](func(u uintptr) {
-				toolbarView.SetContent(entry.View)
-				entry.View.Unref()
-			}),
-			0,
-		)
+		toolbarView.SetContent(entry.View)
 		return signals.Continue
 	})
 

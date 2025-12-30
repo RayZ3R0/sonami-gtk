@@ -5,8 +5,7 @@ import (
 	"fmt"
 	"runtime/debug"
 
-	"codeberg.org/dergs/tidalwave/internal/g"
-	"github.com/jwijenbergh/puregotk/v4/glib"
+	"codeberg.org/dergs/tidalwave/pkg/schwifty"
 )
 
 type Handler func(params Params) *Response
@@ -48,10 +47,7 @@ func executeHandler(handler Handler, params Params) (response *Response, shouldC
 }
 
 func handleNavigationComplete(entry HistoryEntry) {
-	glib.IdleAddOnce(
-		g.Ptr[glib.SourceOnceFunc](func(u uintptr) {
-			NavigationComplete.Notify(entry)
-		}),
-		0,
-	)
+	schwifty.OnMainThreadOnce(func(u uintptr) {
+		NavigationComplete.Notify(entry)
+	}, 0)
 }
