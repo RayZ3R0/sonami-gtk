@@ -27,6 +27,9 @@ func ForPageItem(pageItem v2.PageItem) schwifty.BaseWidgetable {
 			} else if item.Type == v2.ItemTypeMix {
 				mix := item.Data.Mix
 				list.Append(horizontal_list.NewLegacyMix(mix))
+			} else if item.Type == v2.ItemTypeTrack {
+				track := item.Data.Track
+				list.Append(horizontal_list.NewLegacyTrack(track))
 			} else {
 				list.Append(syntax.Label("Unsupported: " + string(item.Type)).HMargin(10))
 			}
