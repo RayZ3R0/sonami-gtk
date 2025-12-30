@@ -14,7 +14,7 @@ type ImgUtil struct {
 func (i *ImgUtil) LoadIntoImage(url string, image *gtk.Image) {
 	image.Ref()
 	go func() {
-		loader, err := i.Load(url)
+		texture, err := i.Load(url)
 		if err != nil {
 			image.Unref()
 			image = nil
@@ -23,8 +23,9 @@ func (i *ImgUtil) LoadIntoImage(url string, image *gtk.Image) {
 
 		glib.IdleAddOnce(
 			g.Ptr[glib.SourceOnceFunc](func(u uintptr) {
-				image.SetFromPixbuf(loader.GetAnimation().GetStaticImage())
-				loader.Unref()
+				image.SetFromPaintable(texture)
+				texture.Unref()
+				texture = nil
 				image.Unref()
 				image = nil
 			}),

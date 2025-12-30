@@ -1,6 +1,7 @@
 package tracklist
 
 import (
+	"codeberg.org/dergs/tidalwave/internal/resources"
 	. "codeberg.org/dergs/tidalwave/pkg/schwifty/syntax"
 	"codeberg.org/dergs/tidalwave/pkg/tidalapi"
 	"codeberg.org/dergs/tidalwave/pkg/tidalapi/models/openapi"
@@ -11,25 +12,26 @@ import (
 )
 
 func coverColumn(url string, grid *gtk.Grid, row int, column int) int {
-	cover := gtk.NewImageFromResource("/org/codeberg/dergs/tidalwave/icons/scalable/state/missing-album.svg")
-	cover.SetPixelSize(54)
-	cover.SetHexpand(false)
-	cover.SetVexpand(false)
-	defer cover.Unref()
-
-	aspectFrame := gtk.NewAspectFrame(0.5, 0.5, 1.0, false)
-	aspectFrame.SetChild(&cover.Widget)
-
-	if url != "" {
-		injector.MustInject[*imgutil.ImgUtil]().LoadIntoImage(url, cover)
-	}
-
-	frame := ManagedWidget(&aspectFrame.Widget).
-		CornerRadius(10).
-		Margin(10).
-		HAlign(gtk.AlignStartValue).
-		Overflow(gtk.OverflowHiddenValue)
-	grid.Attach(frame.ToGTK(), column, row, 1, 1)
+	grid.Attach(
+		AspectFrame(
+			Image().
+				FromPaintable(resources.MissingAlbum()).
+				PixelSize(54).
+				HExpand(false).
+				VExpand(false).
+				ConnectConstruct(func(i *gtk.Image) {
+					injector.MustInject[*imgutil.ImgUtil]().LoadIntoImage(url, i)
+				}),
+		).
+			CornerRadius(10).
+			Margin(10).
+			HAlign(gtk.AlignStartValue).
+			Overflow(gtk.OverflowHiddenValue).ToGTK(),
+		column,
+		row,
+		1,
+		1,
+	)
 	return 1
 }
 

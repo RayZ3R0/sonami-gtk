@@ -1,34 +1,19 @@
 package imgutil
 
 import (
-	"github.com/jwijenbergh/puregotk/v4/gdkpixbuf"
+	"github.com/jwijenbergh/puregotk/v4/gdk"
+	"github.com/jwijenbergh/puregotk/v4/glib"
 )
 
-func (i *ImgUtil) Load(url string) (*gdkpixbuf.PixbufLoader, error) {
+func (i *ImgUtil) Load(url string) (*gdk.Texture, error) {
 	image, err := i.fetch(url)
 	if err != nil {
 		return nil, err
 	}
 
-	loader := gdkpixbuf.NewPixbufLoader()
-	if _, err := loader.Write(image, uint(len(image))); err != nil {
-		loader.Close()
-		return nil, err
-	}
+	gBytes := glib.NewBytes(image, uint(len(image)))
+	texture, err := gdk.NewTextureFromBytes(gBytes)
+	gBytes.Unref()
 
-	if _, err := loader.Close(); err != nil {
-		return nil, err
-	}
-
-	return loader, nil
-}
-
-func (i *ImgUtil) LoadPixbuf(url string) (*gdkpixbuf.Pixbuf, error) {
-	loader, err := i.Load(url)
-	if err != nil {
-		return nil, err
-	}
-	defer loader.Unref()
-
-	return loader.GetAnimation().GetStaticImage(), nil
+	return texture, err
 }

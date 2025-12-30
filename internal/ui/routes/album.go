@@ -4,19 +4,15 @@ import (
 	"context"
 	"errors"
 	"fmt"
-	"log/slog"
 	"strings"
 
-	"codeberg.org/dergs/tidalwave/internal/g"
+	"codeberg.org/dergs/tidalwave/internal/resources"
 	"codeberg.org/dergs/tidalwave/internal/router"
 	"codeberg.org/dergs/tidalwave/internal/ui/components/tracklist"
-	"codeberg.org/dergs/tidalwave/pkg/schwifty/state"
 	. "codeberg.org/dergs/tidalwave/pkg/schwifty/syntax"
 	"codeberg.org/dergs/tidalwave/pkg/tidalapi"
 	"codeberg.org/dergs/tidalwave/pkg/utils/imgutil"
 	"github.com/infinytum/injector"
-	"github.com/jwijenbergh/puregotk/v4/gdkpixbuf"
-	"github.com/jwijenbergh/puregotk/v4/glib"
 	"github.com/jwijenbergh/puregotk/v4/gtk"
 )
 
@@ -48,23 +44,9 @@ func Album(params router.Params) *router.Response {
 		artists = append(artists, artist.Attributes.Name)
 	}
 
-	coverState := state.NewStateful[*gdkpixbuf.Pixbuf](nil)
+	coverUrl := ""
 	for _, artwork := range album.Included.PlainArtworks(album.Data.Relationships.CoverArt.Data...) {
-		go func() {
-			pixbuf, err := injector.MustInject[*imgutil.ImgUtil]().LoadPixbuf(artwork.Attributes.Files.AtLeast(320).Href)
-			if err != nil {
-				slog.Error("failed to load album cover", "error", err)
-				return
-			}
-			glib.IdleAddOnce(
-				g.Ptr[glib.SourceOnceFunc](func(u uintptr) {
-					coverState.SetValue(pixbuf)
-					pixbuf.Unref()
-				}),
-				0,
-			)
-		}()
-		break
+		coverUrl = artwork.Attributes.Files.AtLeast(320).Href
 	}
 
 	list := tracklist.NewTrackList(
@@ -87,8 +69,13 @@ func Album(params router.Params) *router.Response {
 			HStack(
 				AspectFrame(
 					Image().
-						BindPixbuf(coverState).
-						PixelSize(146),
+						PixelSize(146).
+						FromPaintable(resources.MissingAlbum()).
+						ConnectConstruct(func(i *gtk.Image) {
+							if coverUrl != "" {
+								injector.MustInject[*imgutil.ImgUtil]().LoadIntoImage(coverUrl, i)
+							}
+						}),
 				).CornerRadius(10).Overflow(gtk.OverflowHiddenValue),
 				VStack(
 					Label(album.Data.Attributes.Title).
