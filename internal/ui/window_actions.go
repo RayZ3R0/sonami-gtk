@@ -43,4 +43,13 @@ func (w *Window) installActions() {
 		})
 	}))
 	w.AddAction(routePlaylistAction)
+
+	routeArtistAction := gio.NewSimpleAction("route.artist", glib.NewVariantType("s"))
+	routeArtistAction.ConnectActivate(g.Ptr(func(action gio.SimpleAction, parameter uintptr) {
+		variant := (*glib.Variant)(unsafe.Pointer(parameter))
+		router.Navigate("artist", router.Params{
+			"id": variant.GetString(nil),
+		})
+	}))
+	w.AddAction(routeArtistAction)
 }
