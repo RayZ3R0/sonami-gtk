@@ -8,6 +8,7 @@ import (
 
 	"codeberg.org/dergs/tidalwave/internal/signals"
 	"codeberg.org/dergs/tidalwave/pkg/tidalapi/models/openapi"
+	v1 "codeberg.org/dergs/tidalwave/pkg/tidalapi/models/v1"
 )
 
 var OnTrackChanged = trackChangedSignal{
@@ -46,6 +47,7 @@ type TrackInformation struct {
 	Duration time.Duration
 	ID       string
 	Title    string
+	Quality  v1.AudioQuality
 }
 
 func (t TrackInformation) ArtistNames() string {

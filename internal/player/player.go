@@ -42,12 +42,19 @@ func Play(trackId string) error {
 	if err != nil {
 		return err
 	}
+
+	playbackInfo, err := tidal.V1.Tracks.PlaybackInfo(context.Background(), trackId, tracksv1.PlaybackInfoOptions{})
+	if err != nil {
+		return err
+	}
+
 	OnTrackChanged.Notify(func(trackInfo *TrackInformation) {
 		trackInfo.Artists = []openapi.ArtistAttributes{}
 		trackInfo.CoverURL = ""
 		trackInfo.Duration = openTrack.Data.Attributes.Duration.Duration
 		trackInfo.ID = trackId
 		trackInfo.Title = openTrack.Data.Attributes.Title
+		trackInfo.Quality = playbackInfo.AudioQuality
 
 		for _, artist := range openTrack.Included.PlainArtists(openTrack.Data.Relationships.Artists.Data...) {
 			trackInfo.Artists = append(trackInfo.Artists, artist.Attributes)
@@ -59,11 +66,6 @@ func Play(trackId string) error {
 			}
 		}
 	})
-
-	playbackInfo, err := tidal.V1.Tracks.PlaybackInfo(context.Background(), trackId, tracksv1.PlaybackInfoOptions{})
-	if err != nil {
-		return err
-	}
 
 	// Free up resources taken up by previous stream
 	playbin.SetState(gst.StateNull)

@@ -2,6 +2,7 @@ package player
 
 import (
 	"fmt"
+	"log/slog"
 
 	"codeberg.org/dergs/tidalwave/internal/notifications"
 	"codeberg.org/dergs/tidalwave/internal/player"
@@ -9,15 +10,38 @@ import (
 	"codeberg.org/dergs/tidalwave/pkg/schwifty"
 	"codeberg.org/dergs/tidalwave/pkg/schwifty/state"
 	. "codeberg.org/dergs/tidalwave/pkg/schwifty/syntax"
+
+	v1 "codeberg.org/dergs/tidalwave/pkg/tidalapi/models/v1"
 	"github.com/jwijenbergh/puregotk/v4/gdk"
 	"github.com/jwijenbergh/puregotk/v4/gtk"
 )
 
 var trackID = state.NewStateful("")
 
+var (
+	playbackQualityText  = state.NewStateful("High")
+	playbackQualityClass = state.NewStateful("high")
+)
+
 func init() {
 	player.OnTrackChanged.On(func(trackInfo player.TrackInformation) bool {
+		slog.Debug(fmt.Sprintf("Quality: %s", trackInfo.Quality))
 		trackID.SetValue(trackInfo.ID)
+		switch trackInfo.Quality {
+		case v1.AudioQualityLossy:
+			playbackQualityText.SetValue("Low (96 kbps)")
+			playbackQualityClass.SetValue("low")
+		case v1.AudioQualityHighRes:
+			playbackQualityText.SetValue("Low (320 kbps)")
+			playbackQualityClass.SetValue("low")
+		case v1.AudioQualityLossless:
+			playbackQualityText.SetValue("High")
+			playbackQualityClass.SetValue("high")
+		case v1.AudioQualityHighResLossless:
+			playbackQualityText.SetValue("Max")
+			playbackQualityClass.SetValue("max")
+		}
+
 		return signals.Continue
 	})
 }
@@ -66,10 +90,33 @@ func NewPlayer() schwifty.Box {
 			MarginTop(27),
 		trackTimeline(),
 		Label("Max").
-			Background("#DAC100").
+			BindText(playbackQualityText).
+			CSS(`
+				label {
+					text-transform: uppercase;
+				}
+
+				label.low {
+					background-color: #ffffff1a;
+					color: #e4e4e7;
+				}
+
+				label.high {
+					background-color: #21feec1a;
+					color: #33ffee;
+				}
+
+				label.max {
+					background-color: #ffd4321a;
+					color: #ffd432;
+				}
+			`).
+			FontSize(10).
+			FontWeight(700).
+			BindCSSClass(playbackQualityClass).
 			CornerRadius(10).
-			HPadding(6).
-			VPadding(2).
+			HPadding(8).
+			VPadding(4).
 			HExpand(false).
 			HAlign(gtk.AlignCenterValue),
 		HStack(

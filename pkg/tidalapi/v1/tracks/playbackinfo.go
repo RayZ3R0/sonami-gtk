@@ -24,7 +24,7 @@ func (p *Tracks) PlaybackInfo(ctx context.Context, trackId string, opts Playback
 
 	params := req.URL.Query()
 	params.Set("assetpresentation", helper.OptionalString(string(opts.AssetPresentation), string(v1.AssetPresentationFull)))
-	params.Set("audioquality", helper.OptionalString(string(opts.AudioQuality), string(v1.AudioQualityHighResLossess)))
+	params.Set("audioquality", helper.OptionalString(string(opts.AudioQuality), string(v1.AudioQualityHighResLossless)))
 	params.Set("playbackmode", helper.OptionalString(string(opts.PlaybackMode), string(v1.PlaybackModeStream)))
 	req.URL.RawQuery = params.Encode()
 
