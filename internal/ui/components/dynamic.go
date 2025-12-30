@@ -66,7 +66,7 @@ func ForPageItem(pageItem v2.PageItem) schwifty.BaseWidgetable {
 				list.Append(syntax.Label("Unsupported: " + string(item.Type)).HMargin(10))
 			}
 		}
-		return list.HMargin(40)
+		return list.HMargin(50)
 	default:
 		return HStack(
 			Label("Unsupported Element").
