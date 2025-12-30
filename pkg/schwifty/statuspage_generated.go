@@ -215,6 +215,20 @@ func (f StatusPage) CSS(css string) StatusPage {
 	}
 }
 
+func (f StatusPage) BindCSSClass(state *state.State[string]) StatusPage {
+	return func() *adw.StatusPage {
+		var callbackId string
+		return f.ConnectRealize(func(w gtk.Widget) {
+			callbackId = state.AddCallback(func(newValue string) {
+				w.GetStyleContext().RemoveClass(state.Value())
+				w.GetStyleContext().AddClass(newValue)
+			})
+		}).ConnectUnrealize(func(w gtk.Widget) {
+			state.RemoveCallback(callbackId)
+		})()
+	}
+}
+
 func (f StatusPage) CSSWithCallback(cb func(elementName string) string) StatusPage {
 	return func() *adw.StatusPage {
 		provider := gtk.NewCssProvider()

@@ -214,6 +214,20 @@ func (f Scale) CSS(css string) Scale {
 	}
 }
 
+func (f Scale) BindCSSClass(state *state.State[string]) Scale {
+	return func() *gtk.Scale {
+		var callbackId string
+		return f.ConnectRealize(func(w gtk.Widget) {
+			callbackId = state.AddCallback(func(newValue string) {
+				w.GetStyleContext().RemoveClass(state.Value())
+				w.GetStyleContext().AddClass(newValue)
+			})
+		}).ConnectUnrealize(func(w gtk.Widget) {
+			state.RemoveCallback(callbackId)
+		})()
+	}
+}
+
 func (f Scale) CSSWithCallback(cb func(elementName string) string) Scale {
 	return func() *gtk.Scale {
 		provider := gtk.NewCssProvider()

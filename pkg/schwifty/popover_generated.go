@@ -214,6 +214,20 @@ func (f Popover) CSS(css string) Popover {
 	}
 }
 
+func (f Popover) BindCSSClass(state *state.State[string]) Popover {
+	return func() *gtk.Popover {
+		var callbackId string
+		return f.ConnectRealize(func(w gtk.Widget) {
+			callbackId = state.AddCallback(func(newValue string) {
+				w.GetStyleContext().RemoveClass(state.Value())
+				w.GetStyleContext().AddClass(newValue)
+			})
+		}).ConnectUnrealize(func(w gtk.Widget) {
+			state.RemoveCallback(callbackId)
+		})()
+	}
+}
+
 func (f Popover) CSSWithCallback(cb func(elementName string) string) Popover {
 	return func() *gtk.Popover {
 		provider := gtk.NewCssProvider()

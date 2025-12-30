@@ -214,6 +214,20 @@ func (f Button) CSS(css string) Button {
 	}
 }
 
+func (f Button) BindCSSClass(state *state.State[string]) Button {
+	return func() *gtk.Button {
+		var callbackId string
+		return f.ConnectRealize(func(w gtk.Widget) {
+			callbackId = state.AddCallback(func(newValue string) {
+				w.GetStyleContext().RemoveClass(state.Value())
+				w.GetStyleContext().AddClass(newValue)
+			})
+		}).ConnectUnrealize(func(w gtk.Widget) {
+			state.RemoveCallback(callbackId)
+		})()
+	}
+}
+
 func (f Button) CSSWithCallback(cb func(elementName string) string) Button {
 	return func() *gtk.Button {
 		provider := gtk.NewCssProvider()

@@ -26,10 +26,10 @@ func (s *State[T]) RemoveCallback(id string) {
 }
 
 func (s *State[T]) SetValue(value T) {
-	s.value = value
 	for _, callback := range s.callbacks {
 		callback(value)
 	}
+	s.value = value
 }
 
 func (s *State[T]) Value() T {

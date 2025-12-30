@@ -3,6 +3,7 @@ package schwifty
 import (
 	"fmt"
 
+	"codeberg.org/dergs/tidalwave/pkg/schwifty/state"
 	"github.com/jwijenbergh/puregotk/v4/gtk"
 )
 
@@ -26,6 +27,20 @@ func (f TEMPLATE_TYPE) CSS(css string) TEMPLATE_TYPE {
 	return func() TEMPLATE_BASE_TYPE {
 		return f.CSSWithCallback(func(elementName string) string {
 			return css
+		})()
+	}
+}
+
+func (f TEMPLATE_TYPE) BindCSSClass(state *state.State[string]) TEMPLATE_TYPE {
+	return func() TEMPLATE_BASE_TYPE {
+		var callbackId string
+		return f.ConnectRealize(func(w gtk.Widget) {
+			callbackId = state.AddCallback(func(newValue string) {
+				w.GetStyleContext().RemoveClass(state.Value())
+				w.GetStyleContext().AddClass(newValue)
+			})
+		}).ConnectUnrealize(func(w gtk.Widget) {
+			state.RemoveCallback(callbackId)
 		})()
 	}
 }

@@ -214,6 +214,20 @@ func (f Widget) CSS(css string) Widget {
 	}
 }
 
+func (f Widget) BindCSSClass(state *state.State[string]) Widget {
+	return func() *WrappedWidget {
+		var callbackId string
+		return f.ConnectRealize(func(w gtk.Widget) {
+			callbackId = state.AddCallback(func(newValue string) {
+				w.GetStyleContext().RemoveClass(state.Value())
+				w.GetStyleContext().AddClass(newValue)
+			})
+		}).ConnectUnrealize(func(w gtk.Widget) {
+			state.RemoveCallback(callbackId)
+		})()
+	}
+}
+
 func (f Widget) CSSWithCallback(cb func(elementName string) string) Widget {
 	return func() *WrappedWidget {
 		provider := gtk.NewCssProvider()

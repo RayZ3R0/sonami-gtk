@@ -214,6 +214,20 @@ func (f Spinner) CSS(css string) Spinner {
 	}
 }
 
+func (f Spinner) BindCSSClass(state *state.State[string]) Spinner {
+	return func() *gtk.Spinner {
+		var callbackId string
+		return f.ConnectRealize(func(w gtk.Widget) {
+			callbackId = state.AddCallback(func(newValue string) {
+				w.GetStyleContext().RemoveClass(state.Value())
+				w.GetStyleContext().AddClass(newValue)
+			})
+		}).ConnectUnrealize(func(w gtk.Widget) {
+			state.RemoveCallback(callbackId)
+		})()
+	}
+}
+
 func (f Spinner) CSSWithCallback(cb func(elementName string) string) Spinner {
 	return func() *gtk.Spinner {
 		provider := gtk.NewCssProvider()

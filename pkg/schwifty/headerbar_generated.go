@@ -215,6 +215,20 @@ func (f HeaderBar) CSS(css string) HeaderBar {
 	}
 }
 
+func (f HeaderBar) BindCSSClass(state *state.State[string]) HeaderBar {
+	return func() *adw.HeaderBar {
+		var callbackId string
+		return f.ConnectRealize(func(w gtk.Widget) {
+			callbackId = state.AddCallback(func(newValue string) {
+				w.GetStyleContext().RemoveClass(state.Value())
+				w.GetStyleContext().AddClass(newValue)
+			})
+		}).ConnectUnrealize(func(w gtk.Widget) {
+			state.RemoveCallback(callbackId)
+		})()
+	}
+}
+
 func (f HeaderBar) CSSWithCallback(cb func(elementName string) string) HeaderBar {
 	return func() *adw.HeaderBar {
 		provider := gtk.NewCssProvider()

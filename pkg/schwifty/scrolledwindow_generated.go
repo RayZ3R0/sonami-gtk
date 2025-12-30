@@ -214,6 +214,20 @@ func (f ScrolledWindow) CSS(css string) ScrolledWindow {
 	}
 }
 
+func (f ScrolledWindow) BindCSSClass(state *state.State[string]) ScrolledWindow {
+	return func() *gtk.ScrolledWindow {
+		var callbackId string
+		return f.ConnectRealize(func(w gtk.Widget) {
+			callbackId = state.AddCallback(func(newValue string) {
+				w.GetStyleContext().RemoveClass(state.Value())
+				w.GetStyleContext().AddClass(newValue)
+			})
+		}).ConnectUnrealize(func(w gtk.Widget) {
+			state.RemoveCallback(callbackId)
+		})()
+	}
+}
+
 func (f ScrolledWindow) CSSWithCallback(cb func(elementName string) string) ScrolledWindow {
 	return func() *gtk.ScrolledWindow {
 		provider := gtk.NewCssProvider()

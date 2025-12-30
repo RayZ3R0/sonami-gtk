@@ -215,6 +215,20 @@ func (f Clamp) CSS(css string) Clamp {
 	}
 }
 
+func (f Clamp) BindCSSClass(state *state.State[string]) Clamp {
+	return func() *adw.Clamp {
+		var callbackId string
+		return f.ConnectRealize(func(w gtk.Widget) {
+			callbackId = state.AddCallback(func(newValue string) {
+				w.GetStyleContext().RemoveClass(state.Value())
+				w.GetStyleContext().AddClass(newValue)
+			})
+		}).ConnectUnrealize(func(w gtk.Widget) {
+			state.RemoveCallback(callbackId)
+		})()
+	}
+}
+
 func (f Clamp) CSSWithCallback(cb func(elementName string) string) Clamp {
 	return func() *adw.Clamp {
 		provider := gtk.NewCssProvider()

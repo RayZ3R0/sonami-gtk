@@ -215,6 +215,20 @@ func (f WindowTitle) CSS(css string) WindowTitle {
 	}
 }
 
+func (f WindowTitle) BindCSSClass(state *state.State[string]) WindowTitle {
+	return func() *adw.WindowTitle {
+		var callbackId string
+		return f.ConnectRealize(func(w gtk.Widget) {
+			callbackId = state.AddCallback(func(newValue string) {
+				w.GetStyleContext().RemoveClass(state.Value())
+				w.GetStyleContext().AddClass(newValue)
+			})
+		}).ConnectUnrealize(func(w gtk.Widget) {
+			state.RemoveCallback(callbackId)
+		})()
+	}
+}
+
 func (f WindowTitle) CSSWithCallback(cb func(elementName string) string) WindowTitle {
 	return func() *adw.WindowTitle {
 		provider := gtk.NewCssProvider()

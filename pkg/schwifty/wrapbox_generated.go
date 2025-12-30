@@ -215,6 +215,20 @@ func (f WrapBox) CSS(css string) WrapBox {
 	}
 }
 
+func (f WrapBox) BindCSSClass(state *state.State[string]) WrapBox {
+	return func() *adw.WrapBox {
+		var callbackId string
+		return f.ConnectRealize(func(w gtk.Widget) {
+			callbackId = state.AddCallback(func(newValue string) {
+				w.GetStyleContext().RemoveClass(state.Value())
+				w.GetStyleContext().AddClass(newValue)
+			})
+		}).ConnectUnrealize(func(w gtk.Widget) {
+			state.RemoveCallback(callbackId)
+		})()
+	}
+}
+
 func (f WrapBox) CSSWithCallback(cb func(elementName string) string) WrapBox {
 	return func() *adw.WrapBox {
 		provider := gtk.NewCssProvider()
