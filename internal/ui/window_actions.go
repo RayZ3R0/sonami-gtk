@@ -52,4 +52,12 @@ func (w *Window) installActions() {
 		})
 	}))
 	w.AddAction(routeArtistAction)
+
+	queueTrackAction := gio.NewSimpleAction("player.queue-track", glib.NewVariantType("s"))
+	queueTrackAction.ConnectActivate(g.Ptr(func(action gio.SimpleAction, parameter uintptr) {
+		variant := (*glib.Variant)(unsafe.Pointer(parameter))
+		id := variant.GetString(nil)
+		go player.AddToQueue(id, false)
+	}))
+	w.AddAction(queueTrackAction)
 }
