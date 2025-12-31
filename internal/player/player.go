@@ -2,13 +2,9 @@ package player
 
 import (
 	"context"
-	"fmt"
 	"log/slog"
 
 	"codeberg.org/dergs/tidalwave/pkg/tidalapi"
-	"codeberg.org/dergs/tidalwave/pkg/tidalapi/models/openapi"
-	v1 "codeberg.org/dergs/tidalwave/pkg/tidalapi/models/v1"
-	tracksv1 "codeberg.org/dergs/tidalwave/pkg/tidalapi/v1/tracks"
 	"github.com/go-gst/go-gst/gst"
 	"github.com/infinytum/injector"
 )
@@ -32,61 +28,44 @@ func init() {
 	onVolumeChange()
 }
 
-func Play(trackId string) error {
+func PlayTrack(trackId string) error {
 	tidal, err := injector.Inject[*tidalapi.TidalAPI]()
 	if err != nil {
 		return err
 	}
 
-	openTrack, err := tidal.OpenAPI.V2.Tracks.Track(context.Background(), trackId, "albums.coverArt", "artists")
+	track, err := tidal.OpenAPI.V2.Tracks.Track(context.Background(), trackId, "albums.coverArt", "artists")
 	if err != nil {
 		return err
 	}
 
-	playbackInfo, err := tidal.V1.Tracks.PlaybackInfo(context.Background(), trackId, tracksv1.PlaybackInfoOptions{})
+	BaseQueue.Clear()
+
+	return playTrack(track)
+}
+
+func PlayPlaylist(playlistId string) error {
+	tidal, err := injector.Inject[*tidalapi.TidalAPI]()
 	if err != nil {
 		return err
 	}
 
-	OnTrackChanged.Notify(func(trackInfo *TrackInformation) {
-		trackInfo.Artists = []openapi.ArtistData{}
-		trackInfo.CoverURL = ""
-		trackInfo.Duration = openTrack.Data.Attributes.Duration.Duration
-		trackInfo.ID = trackId
-		trackInfo.Title = openTrack.Data.Attributes.Title
-		trackInfo.Quality = playbackInfo.AudioQuality
-
-		for _, artist := range openTrack.Included.PlainArtists(openTrack.Data.Relationships.Artists.Data...) {
-			trackInfo.Artists = append(trackInfo.Artists, artist)
-		}
-
-		for _, album := range openTrack.Included.Albums(openTrack.Data.Relationships.Albums.Data...) {
-			for _, artwork := range album.Included.PlainArtworks(album.Data.Relationships.CoverArt.Data...) {
-				trackInfo.CoverURL = artwork.Attributes.Files.AtLeast(320).Href
-			}
-		}
-	})
-
-	// Free up resources taken up by previous stream
-	playbin.SetState(gst.StateNull)
-	playbin.SetArg("uri", "")
-
-	OnStateChanged.Notify(func(state *State) {
-		state.Status = StatusBuffering
-		state.Position = 0
-	})
-
-	switch playbackInfo.ManifestMimeType {
-	case v1.ManifestMimeTypeAudioMPD:
-		enqueueMPDStream(playbackInfo)
-	default:
-		return fmt.Errorf("unsupported manifest mime type: %s", playbackInfo.ManifestMimeType)
+	items, err := tidal.OpenAPI.V2.Playlists.Items(context.Background(), playlistId, "", "items", "items.artists", "items.albums.coverArt")
+	if err != nil {
+		return err
 	}
 
-	OnStateChanged.Notify(func(state *State) {
-		state.Status = StatusPlaying
-	})
+	BaseQueue.Clear()
 
-	playbin.SetState(gst.StatePlaying)
+	tracks := items.Included.Tracks(items.Data...)
+	firstTrack := tracks[0]
+	if err := playTrack(&firstTrack); err != nil {
+		return err
+	}
+
+	for _, track := range tracks[1:] {
+		BaseQueue.AddTrack(&track, false)
+	}
+
 	return nil
 }

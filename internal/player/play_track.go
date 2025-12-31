@@ -1,0 +1,72 @@
+package player
+
+import (
+	"context"
+	"fmt"
+
+	"codeberg.org/dergs/tidalwave/pkg/tidalapi"
+	"codeberg.org/dergs/tidalwave/pkg/tidalapi/models/openapi"
+	v1 "codeberg.org/dergs/tidalwave/pkg/tidalapi/models/v1"
+	tracksv1 "codeberg.org/dergs/tidalwave/pkg/tidalapi/v1/tracks"
+	"github.com/go-gst/go-gst/gst"
+	"github.com/infinytum/injector"
+)
+
+func playTrack(track *openapi.Track) error {
+	tidal, err := injector.Inject[*tidalapi.TidalAPI]()
+
+	OnTrackChanged.Notify(func(trackInfo *TrackInformation) {
+		trackInfo.Artists = []openapi.ArtistData{}
+		trackInfo.CoverURL = ""
+		trackInfo.Duration = track.Data.Attributes.Duration.Duration
+		trackInfo.ID = track.Data.ID
+		trackInfo.Title = track.Data.Attributes.Title
+
+		for _, artist := range track.Included.PlainArtists(track.Data.Relationships.Artists.Data...) {
+			trackInfo.Artists = append(trackInfo.Artists, artist)
+		}
+
+		for _, album := range track.Included.Albums(track.Data.Relationships.Albums.Data...) {
+			for _, artwork := range album.Included.PlainArtworks(album.Data.Relationships.CoverArt.Data...) {
+				trackInfo.CoverURL = artwork.Attributes.Files.AtLeast(320).Href
+			}
+		}
+	})
+
+	playbackInfo, err := tidal.V1.Tracks.PlaybackInfo(context.Background(), track.Data.ID, tracksv1.PlaybackInfoOptions{})
+	if err != nil {
+		return err
+	}
+
+	return play(playbackInfo)
+}
+
+func play(playbackInfo *v1.PlaybackInfo) error {
+	// Inform the UI about the track quality we got from TIDAL.
+	OnTrackChanged.Notify(func(trackInfo *TrackInformation) {
+		trackInfo.Quality = playbackInfo.AudioQuality
+	})
+
+	// Free up resources taken up by previous stream
+	playbin.SetState(gst.StateNull)
+	playbin.SetArg("uri", "")
+
+	OnStateChanged.Notify(func(state *State) {
+		state.Status = StatusBuffering
+		state.Position = 0
+	})
+
+	switch playbackInfo.ManifestMimeType {
+	case v1.ManifestMimeTypeAudioMPD:
+		enqueueMPDStream(playbackInfo)
+	default:
+		return fmt.Errorf("unsupported manifest mime type: %s", playbackInfo.ManifestMimeType)
+	}
+
+	OnStateChanged.Notify(func(state *State) {
+		state.Status = StatusPlaying
+	})
+
+	playbin.SetState(gst.StatePlaying)
+	return nil
+}

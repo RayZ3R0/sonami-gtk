@@ -11,11 +11,20 @@ import (
 	"github.com/jwijenbergh/puregotk/v4/gtk"
 )
 
+var baseQueueState = state.NewStateful([]*openapi.Track{})
 var userQueueState = state.NewStateful([]*openapi.Track{})
 
 func init() {
+	player.OnBaseQueueChanged.On(func(tracks []*openapi.Track) bool {
+		schwifty.OnMainThreadOnce(func(u uintptr) {
+			baseQueueState.SetValue(tracks)
+		}, 0)
+		return signals.Continue
+	})
 	player.OnUserQueueChanged.On(func(tracks []*openapi.Track) bool {
-		userQueueState.SetValue(tracks)
+		schwifty.OnMainThreadOnce(func(u uintptr) {
+			userQueueState.SetValue(tracks)
+		}, 0)
 		return signals.Continue
 	})
 }
@@ -24,9 +33,10 @@ func NewQueue() schwifty.ScrolledWindow {
 	trackList := tracklist.NewTrackList("", tracklist.CoverColumn, tracklist.TitleAlbumColumn, tracklist.DurationColumn)
 	trackList.BindTracks(userQueueState)
 
-	trackListBase := tracklist.NewLegacyTrackList("", tracklist.LegacyCoverColumn, tracklist.LegacyTitleAlbumColumn, tracklist.LegacyDurationColumn)
+	trackListBase := tracklist.NewTrackList("", tracklist.CoverColumn, tracklist.TitleAlbumColumn, tracklist.DurationColumn)
+	trackListBase.BindTracks(baseQueueState)
 	return ScrolledWindow().
-		HMargin(10).VMargin(10).
+		HMargin(10).
 		Child(
 			VStack(
 				trackList.Background("alpha(var(--view-bg-color), 0.9)").CornerRadius(10),

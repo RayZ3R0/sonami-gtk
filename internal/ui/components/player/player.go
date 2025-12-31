@@ -116,7 +116,9 @@ func NewPlayer() schwifty.Box {
 				IconName("media-seek-forward-symbolic").
 				MinHeight(34).
 				MinWidth(34).
-				CSS(`button:not(:hover) { background-color: transparent; }`),
+				CSS(`button:not(:hover) { background-color: transparent; }`).ConnectClicked(func(b gtk.Button) {
+				player.Next()
+			}),
 			Button().
 				IconName("media-playlist-repeat-song-symbolic").
 				MinHeight(34).

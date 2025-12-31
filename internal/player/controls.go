@@ -56,3 +56,7 @@ func SetVolume(volume float64) {
 	}
 	playbin.SetProperty("volume", volume)
 }
+
+func Next() {
+	nextTrack()
+}

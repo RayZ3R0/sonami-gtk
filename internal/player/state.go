@@ -24,16 +24,25 @@ func init() {
 
 func onTrackFinished() {
 	defer logger.Debug("done handling track end")
+	go nextTrack()
+}
 
+func nextTrack() {
 	logger.Debug("attempting to pop next track from user queue")
-	nextTrack := PopFromQueue()
+	nextTrack := UserQueue.Pop()
 	if nextTrack != nil {
 		logger.Info("playing next track from user queue", "track_id", nextTrack.Data.ID)
-		go Play(nextTrack.Data.ID)
+		playTrack(nextTrack)
 		return
 	}
 
-	// TODO: Check Base Queue once implemented
+	logger.Debug("attempting to pop next track from base queue")
+	nextTrack = BaseQueue.Pop()
+	if nextTrack != nil {
+		logger.Info("playing next track from base queue", "track_id", nextTrack.Data.ID)
+		playTrack(nextTrack)
+		return
+	}
 
 	// Since no other songs are left in the queue, retrieve mix to play from API
 	tidal := injector.MustInject[*tidalapi.TidalAPI]()
@@ -49,6 +58,5 @@ func onTrackFinished() {
 		return
 	}
 	logger.Info("starting track radio", "mix_id", mix.ID)
-	// FIXME: Player does not yet support "starting" a list of tracks.
-	// This is required before we can actually start a track radio
+	PlayPlaylist(mix.ID)
 }

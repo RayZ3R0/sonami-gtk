@@ -22,7 +22,7 @@ func (w *Window) installActions() {
 	playTrackAction.ConnectActivate(g.Ptr(func(action gio.SimpleAction, parameter uintptr) {
 		variant := (*glib.Variant)(unsafe.Pointer(parameter))
 		id := variant.GetString(nil)
-		player.Play(id)
+		player.PlayTrack(id)
 	}))
 	w.AddAction(playTrackAction)
 
@@ -57,7 +57,7 @@ func (w *Window) installActions() {
 	queueTrackAction.ConnectActivate(g.Ptr(func(action gio.SimpleAction, parameter uintptr) {
 		variant := (*glib.Variant)(unsafe.Pointer(parameter))
 		id := variant.GetString(nil)
-		go player.AddToQueue(id, false)
+		go player.UserQueue.AddTrackID(id, false)
 	}))
 	w.AddAction(queueTrackAction)
 }

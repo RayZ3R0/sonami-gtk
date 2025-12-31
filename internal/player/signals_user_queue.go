@@ -7,6 +7,12 @@ import (
 	"codeberg.org/dergs/tidalwave/pkg/tidalapi/models/openapi"
 )
 
+var OnBaseQueueChanged = userQueueChangedSignal{
+	signals.NewSignal[func(tracks []*openapi.Track) bool](),
+	[]*openapi.Track{},
+	sync.Mutex{},
+}
+
 var OnUserQueueChanged = userQueueChangedSignal{
 	signals.NewSignal[func(tracks []*openapi.Track) bool](),
 	[]*openapi.Track{},
