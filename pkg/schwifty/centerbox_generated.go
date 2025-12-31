@@ -225,12 +225,12 @@ func (f CenterBox) CSS(css string) CenterBox {
 func (f CenterBox) BindCSSClass(state *state.State[string]) CenterBox {
 	return func() *gtk.CenterBox {
 		var callbackId string
-		return f.ConnectRealize(func(w gtk.Widget) {
+		return f.ConnectConstruct(func(w *gtk.CenterBox) {
 			callbackId = state.AddCallback(func(newValue string) {
 				w.GetStyleContext().RemoveClass(state.Value())
 				w.GetStyleContext().AddClass(newValue)
 			})
-		}).ConnectUnrealize(func(w gtk.Widget) {
+		}).ConnectDestroy(func(w gtk.Widget) {
 			state.RemoveCallback(callbackId)
 		})()
 	}
@@ -335,11 +335,11 @@ func (f CenterBox) VPadding(padding int) CenterBox {
 func (f CenterBox) BindVisible(state *state.State[bool]) CenterBox {
 	return func() *gtk.CenterBox {
 		var callbackId string
-		return f.ConnectRealize(func(w gtk.Widget) {
+		return f.ConnectConstruct(func(w *gtk.CenterBox) {
 			callbackId = state.AddCallback(func(newValue bool) {
 				w.SetVisible(newValue)
 			})
-		}).ConnectUnrealize(func(w gtk.Widget) {
+		}).ConnectDestroy(func(w gtk.Widget) {
 			state.RemoveCallback(callbackId)
 		})()
 	}
@@ -348,12 +348,12 @@ func (f CenterBox) BindVisible(state *state.State[bool]) CenterBox {
 func (f CenterBox) BindHMargin(state *state.State[int]) CenterBox {
 	return func() *gtk.CenterBox {
 		var callbackId string
-		return f.ConnectRealize(func(w gtk.Widget) {
+		return f.ConnectConstruct(func(w *gtk.CenterBox) {
 			callbackId = state.AddCallback(func(newValue int) {
 				w.SetMarginEnd(newValue)
 				w.SetMarginStart(newValue)
 			})
-		}).ConnectUnrealize(func(w gtk.Widget) {
+		}).ConnectDestroy(func(w gtk.Widget) {
 			state.RemoveCallback(callbackId)
 		})()
 	}
@@ -362,14 +362,14 @@ func (f CenterBox) BindHMargin(state *state.State[int]) CenterBox {
 func (f CenterBox) BindMargin(state *state.State[int]) CenterBox {
 	return func() *gtk.CenterBox {
 		var callbackId string
-		return f.ConnectRealize(func(widget gtk.Widget) {
+		return f.ConnectConstruct(func(widget *gtk.CenterBox) {
 			callbackId = state.AddCallback(func(newValue int) {
 				widget.SetMarginBottom(newValue)
 				widget.SetMarginEnd(newValue)
 				widget.SetMarginStart(newValue)
 				widget.SetMarginTop(newValue)
 			})
-		}).ConnectUnrealize(func(gtk.Widget) {
+		}).ConnectDestroy(func(gtk.Widget) {
 			state.RemoveCallback(callbackId)
 		})()
 	}
@@ -378,11 +378,11 @@ func (f CenterBox) BindMargin(state *state.State[int]) CenterBox {
 func (f CenterBox) BindMarginBottom(state *state.State[int]) CenterBox {
 	return func() *gtk.CenterBox {
 		var callbackId string
-		return f.ConnectRealize(func(w gtk.Widget) {
+		return f.ConnectConstruct(func(w *gtk.CenterBox) {
 			callbackId = state.AddCallback(func(newValue int) {
 				w.SetMarginBottom(newValue)
 			})
-		}).ConnectUnrealize(func(w gtk.Widget) {
+		}).ConnectDestroy(func(w gtk.Widget) {
 			state.RemoveCallback(callbackId)
 		})()
 	}
@@ -391,11 +391,11 @@ func (f CenterBox) BindMarginBottom(state *state.State[int]) CenterBox {
 func (f CenterBox) BindMarginEnd(state *state.State[int]) CenterBox {
 	return func() *gtk.CenterBox {
 		var callbackId string
-		return f.ConnectRealize(func(w gtk.Widget) {
+		return f.ConnectConstruct(func(w *gtk.CenterBox) {
 			callbackId = state.AddCallback(func(newValue int) {
 				w.SetMarginEnd(newValue)
 			})
-		}).ConnectUnrealize(func(w gtk.Widget) {
+		}).ConnectDestroy(func(w gtk.Widget) {
 			state.RemoveCallback(callbackId)
 		})()
 	}
@@ -404,11 +404,11 @@ func (f CenterBox) BindMarginEnd(state *state.State[int]) CenterBox {
 func (f CenterBox) BindMarginStart(state *state.State[int]) CenterBox {
 	return func() *gtk.CenterBox {
 		var callbackId string
-		return f.ConnectRealize(func(w gtk.Widget) {
+		return f.ConnectConstruct(func(w *gtk.CenterBox) {
 			callbackId = state.AddCallback(func(newValue int) {
 				w.SetMarginStart(newValue)
 			})
-		}).ConnectUnrealize(func(w gtk.Widget) {
+		}).ConnectDestroy(func(w gtk.Widget) {
 			state.RemoveCallback(callbackId)
 		})()
 	}
@@ -417,11 +417,11 @@ func (f CenterBox) BindMarginStart(state *state.State[int]) CenterBox {
 func (f CenterBox) BindMarginTop(state *state.State[int]) CenterBox {
 	return func() *gtk.CenterBox {
 		var callbackId string
-		return f.ConnectRealize(func(w gtk.Widget) {
+		return f.ConnectConstruct(func(w *gtk.CenterBox) {
 			callbackId = state.AddCallback(func(newValue int) {
 				w.SetMarginTop(newValue)
 			})
-		}).ConnectUnrealize(func(w gtk.Widget) {
+		}).ConnectDestroy(func(w gtk.Widget) {
 			state.RemoveCallback(callbackId)
 		})()
 	}
@@ -430,11 +430,11 @@ func (f CenterBox) BindMarginTop(state *state.State[int]) CenterBox {
 func (f CenterBox) BindSensitive(state *state.State[bool]) CenterBox {
 	return func() *gtk.CenterBox {
 		var callbackId string
-		return f.ConnectRealize(func(w gtk.Widget) {
+		return f.ConnectConstruct(func(w *gtk.CenterBox) {
 			callbackId = state.AddCallback(func(newValue bool) {
 				w.SetSensitive(newValue)
 			})
-		}).ConnectUnrealize(func(w gtk.Widget) {
+		}).ConnectDestroy(func(w gtk.Widget) {
 			state.RemoveCallback(callbackId)
 		})()
 	}

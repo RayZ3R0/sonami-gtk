@@ -12,11 +12,11 @@ import (
 func (f Image) BindPaintable(state *state.State[gdk.Paintable]) Image {
 	return func() *gtk.Image {
 		var callbackId string
-		return f.ConnectRealize(func(w gtk.Widget) {
+		return f.ConnectConstruct(func(w *gtk.Image) {
 			callbackId = state.AddCallback(func(newValue gdk.Paintable) {
 				gtk.ImageNewFromInternalPtr(w.GoPointer()).SetFromPaintable(newValue)
 			})
-		}).ConnectUnrealize(func(w gtk.Widget) {
+		}).ConnectDestroy(func(w gtk.Widget) {
 			state.RemoveCallback(callbackId)
 		})()
 	}
@@ -25,11 +25,11 @@ func (f Image) BindPaintable(state *state.State[gdk.Paintable]) Image {
 func (f Image) BindPixbuf(state *state.State[*gdkpixbuf.Pixbuf]) Image {
 	return func() *gtk.Image {
 		var callbackId string
-		return f.ConnectRealize(func(w gtk.Widget) {
+		return f.ConnectConstruct(func(w *gtk.Image) {
 			callbackId = state.AddCallback(func(newValue *gdkpixbuf.Pixbuf) {
 				gtk.ImageNewFromInternalPtr(w.GoPointer()).SetFromPixbuf(newValue)
 			})
-		}).ConnectUnrealize(func(w gtk.Widget) {
+		}).ConnectDestroy(func(w gtk.Widget) {
 			state.RemoveCallback(callbackId)
 		})()
 	}

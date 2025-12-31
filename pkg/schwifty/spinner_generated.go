@@ -225,12 +225,12 @@ func (f Spinner) CSS(css string) Spinner {
 func (f Spinner) BindCSSClass(state *state.State[string]) Spinner {
 	return func() *gtk.Spinner {
 		var callbackId string
-		return f.ConnectRealize(func(w gtk.Widget) {
+		return f.ConnectConstruct(func(w *gtk.Spinner) {
 			callbackId = state.AddCallback(func(newValue string) {
 				w.GetStyleContext().RemoveClass(state.Value())
 				w.GetStyleContext().AddClass(newValue)
 			})
-		}).ConnectUnrealize(func(w gtk.Widget) {
+		}).ConnectDestroy(func(w gtk.Widget) {
 			state.RemoveCallback(callbackId)
 		})()
 	}
@@ -335,11 +335,11 @@ func (f Spinner) VPadding(padding int) Spinner {
 func (f Spinner) BindVisible(state *state.State[bool]) Spinner {
 	return func() *gtk.Spinner {
 		var callbackId string
-		return f.ConnectRealize(func(w gtk.Widget) {
+		return f.ConnectConstruct(func(w *gtk.Spinner) {
 			callbackId = state.AddCallback(func(newValue bool) {
 				w.SetVisible(newValue)
 			})
-		}).ConnectUnrealize(func(w gtk.Widget) {
+		}).ConnectDestroy(func(w gtk.Widget) {
 			state.RemoveCallback(callbackId)
 		})()
 	}
@@ -348,12 +348,12 @@ func (f Spinner) BindVisible(state *state.State[bool]) Spinner {
 func (f Spinner) BindHMargin(state *state.State[int]) Spinner {
 	return func() *gtk.Spinner {
 		var callbackId string
-		return f.ConnectRealize(func(w gtk.Widget) {
+		return f.ConnectConstruct(func(w *gtk.Spinner) {
 			callbackId = state.AddCallback(func(newValue int) {
 				w.SetMarginEnd(newValue)
 				w.SetMarginStart(newValue)
 			})
-		}).ConnectUnrealize(func(w gtk.Widget) {
+		}).ConnectDestroy(func(w gtk.Widget) {
 			state.RemoveCallback(callbackId)
 		})()
 	}
@@ -362,14 +362,14 @@ func (f Spinner) BindHMargin(state *state.State[int]) Spinner {
 func (f Spinner) BindMargin(state *state.State[int]) Spinner {
 	return func() *gtk.Spinner {
 		var callbackId string
-		return f.ConnectRealize(func(widget gtk.Widget) {
+		return f.ConnectConstruct(func(widget *gtk.Spinner) {
 			callbackId = state.AddCallback(func(newValue int) {
 				widget.SetMarginBottom(newValue)
 				widget.SetMarginEnd(newValue)
 				widget.SetMarginStart(newValue)
 				widget.SetMarginTop(newValue)
 			})
-		}).ConnectUnrealize(func(gtk.Widget) {
+		}).ConnectDestroy(func(gtk.Widget) {
 			state.RemoveCallback(callbackId)
 		})()
 	}
@@ -378,11 +378,11 @@ func (f Spinner) BindMargin(state *state.State[int]) Spinner {
 func (f Spinner) BindMarginBottom(state *state.State[int]) Spinner {
 	return func() *gtk.Spinner {
 		var callbackId string
-		return f.ConnectRealize(func(w gtk.Widget) {
+		return f.ConnectConstruct(func(w *gtk.Spinner) {
 			callbackId = state.AddCallback(func(newValue int) {
 				w.SetMarginBottom(newValue)
 			})
-		}).ConnectUnrealize(func(w gtk.Widget) {
+		}).ConnectDestroy(func(w gtk.Widget) {
 			state.RemoveCallback(callbackId)
 		})()
 	}
@@ -391,11 +391,11 @@ func (f Spinner) BindMarginBottom(state *state.State[int]) Spinner {
 func (f Spinner) BindMarginEnd(state *state.State[int]) Spinner {
 	return func() *gtk.Spinner {
 		var callbackId string
-		return f.ConnectRealize(func(w gtk.Widget) {
+		return f.ConnectConstruct(func(w *gtk.Spinner) {
 			callbackId = state.AddCallback(func(newValue int) {
 				w.SetMarginEnd(newValue)
 			})
-		}).ConnectUnrealize(func(w gtk.Widget) {
+		}).ConnectDestroy(func(w gtk.Widget) {
 			state.RemoveCallback(callbackId)
 		})()
 	}
@@ -404,11 +404,11 @@ func (f Spinner) BindMarginEnd(state *state.State[int]) Spinner {
 func (f Spinner) BindMarginStart(state *state.State[int]) Spinner {
 	return func() *gtk.Spinner {
 		var callbackId string
-		return f.ConnectRealize(func(w gtk.Widget) {
+		return f.ConnectConstruct(func(w *gtk.Spinner) {
 			callbackId = state.AddCallback(func(newValue int) {
 				w.SetMarginStart(newValue)
 			})
-		}).ConnectUnrealize(func(w gtk.Widget) {
+		}).ConnectDestroy(func(w gtk.Widget) {
 			state.RemoveCallback(callbackId)
 		})()
 	}
@@ -417,11 +417,11 @@ func (f Spinner) BindMarginStart(state *state.State[int]) Spinner {
 func (f Spinner) BindMarginTop(state *state.State[int]) Spinner {
 	return func() *gtk.Spinner {
 		var callbackId string
-		return f.ConnectRealize(func(w gtk.Widget) {
+		return f.ConnectConstruct(func(w *gtk.Spinner) {
 			callbackId = state.AddCallback(func(newValue int) {
 				w.SetMarginTop(newValue)
 			})
-		}).ConnectUnrealize(func(w gtk.Widget) {
+		}).ConnectDestroy(func(w gtk.Widget) {
 			state.RemoveCallback(callbackId)
 		})()
 	}
@@ -430,11 +430,11 @@ func (f Spinner) BindMarginTop(state *state.State[int]) Spinner {
 func (f Spinner) BindSensitive(state *state.State[bool]) Spinner {
 	return func() *gtk.Spinner {
 		var callbackId string
-		return f.ConnectRealize(func(w gtk.Widget) {
+		return f.ConnectConstruct(func(w *gtk.Spinner) {
 			callbackId = state.AddCallback(func(newValue bool) {
 				w.SetSensitive(newValue)
 			})
-		}).ConnectUnrealize(func(w gtk.Widget) {
+		}).ConnectDestroy(func(w gtk.Widget) {
 			state.RemoveCallback(callbackId)
 		})()
 	}

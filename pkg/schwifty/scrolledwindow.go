@@ -10,7 +10,7 @@ import (
 func (f ScrolledWindow) BindChild(state *state.State[any]) ScrolledWindow {
 	return func() *gtk.ScrolledWindow {
 		var callbackId string
-		return f.ConnectRealize(func(w gtk.Widget) {
+		return f.ConnectConstruct(func(w *gtk.ScrolledWindow) {
 			callbackId = state.AddCallback(func(newValue any) {
 				widget := ResolveWidget(newValue)
 				if widget == nil {
@@ -25,7 +25,7 @@ func (f ScrolledWindow) BindChild(state *state.State[any]) ScrolledWindow {
 					}, w.GoPointer())
 				}
 			})
-		}).ConnectUnrealize(func(w gtk.Widget) {
+		}).ConnectDestroy(func(w gtk.Widget) {
 			state.RemoveCallback(callbackId)
 		})()
 	}

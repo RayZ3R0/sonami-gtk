@@ -28,11 +28,11 @@ func (f Button) ActionTargetValue(targetValue *glib.Variant) Button {
 func (f Button) BindIconName(state *state.State[string]) Button {
 	return func() *gtk.Button {
 		var callbackId string
-		return f.ConnectRealize(func(w gtk.Widget) {
+		return f.ConnectConstruct(func(w *gtk.Button) {
 			callbackId = state.AddCallback(func(newValue string) {
 				gtk.ButtonNewFromInternalPtr(w.GoPointer()).SetIconName(newValue)
 			})
-		}).ConnectUnrealize(func(w gtk.Widget) {
+		}).ConnectDestroy(func(w gtk.Widget) {
 			state.RemoveCallback(callbackId)
 		})()
 	}

@@ -226,12 +226,12 @@ func (f WrapBox) CSS(css string) WrapBox {
 func (f WrapBox) BindCSSClass(state *state.State[string]) WrapBox {
 	return func() *adw.WrapBox {
 		var callbackId string
-		return f.ConnectRealize(func(w gtk.Widget) {
+		return f.ConnectConstruct(func(w *adw.WrapBox) {
 			callbackId = state.AddCallback(func(newValue string) {
 				w.GetStyleContext().RemoveClass(state.Value())
 				w.GetStyleContext().AddClass(newValue)
 			})
-		}).ConnectUnrealize(func(w gtk.Widget) {
+		}).ConnectDestroy(func(w gtk.Widget) {
 			state.RemoveCallback(callbackId)
 		})()
 	}
@@ -336,11 +336,11 @@ func (f WrapBox) VPadding(padding int) WrapBox {
 func (f WrapBox) BindVisible(state *state.State[bool]) WrapBox {
 	return func() *adw.WrapBox {
 		var callbackId string
-		return f.ConnectRealize(func(w gtk.Widget) {
+		return f.ConnectConstruct(func(w *adw.WrapBox) {
 			callbackId = state.AddCallback(func(newValue bool) {
 				w.SetVisible(newValue)
 			})
-		}).ConnectUnrealize(func(w gtk.Widget) {
+		}).ConnectDestroy(func(w gtk.Widget) {
 			state.RemoveCallback(callbackId)
 		})()
 	}
@@ -349,12 +349,12 @@ func (f WrapBox) BindVisible(state *state.State[bool]) WrapBox {
 func (f WrapBox) BindHMargin(state *state.State[int]) WrapBox {
 	return func() *adw.WrapBox {
 		var callbackId string
-		return f.ConnectRealize(func(w gtk.Widget) {
+		return f.ConnectConstruct(func(w *adw.WrapBox) {
 			callbackId = state.AddCallback(func(newValue int) {
 				w.SetMarginEnd(newValue)
 				w.SetMarginStart(newValue)
 			})
-		}).ConnectUnrealize(func(w gtk.Widget) {
+		}).ConnectDestroy(func(w gtk.Widget) {
 			state.RemoveCallback(callbackId)
 		})()
 	}
@@ -363,14 +363,14 @@ func (f WrapBox) BindHMargin(state *state.State[int]) WrapBox {
 func (f WrapBox) BindMargin(state *state.State[int]) WrapBox {
 	return func() *adw.WrapBox {
 		var callbackId string
-		return f.ConnectRealize(func(widget gtk.Widget) {
+		return f.ConnectConstruct(func(widget *adw.WrapBox) {
 			callbackId = state.AddCallback(func(newValue int) {
 				widget.SetMarginBottom(newValue)
 				widget.SetMarginEnd(newValue)
 				widget.SetMarginStart(newValue)
 				widget.SetMarginTop(newValue)
 			})
-		}).ConnectUnrealize(func(gtk.Widget) {
+		}).ConnectDestroy(func(gtk.Widget) {
 			state.RemoveCallback(callbackId)
 		})()
 	}
@@ -379,11 +379,11 @@ func (f WrapBox) BindMargin(state *state.State[int]) WrapBox {
 func (f WrapBox) BindMarginBottom(state *state.State[int]) WrapBox {
 	return func() *adw.WrapBox {
 		var callbackId string
-		return f.ConnectRealize(func(w gtk.Widget) {
+		return f.ConnectConstruct(func(w *adw.WrapBox) {
 			callbackId = state.AddCallback(func(newValue int) {
 				w.SetMarginBottom(newValue)
 			})
-		}).ConnectUnrealize(func(w gtk.Widget) {
+		}).ConnectDestroy(func(w gtk.Widget) {
 			state.RemoveCallback(callbackId)
 		})()
 	}
@@ -392,11 +392,11 @@ func (f WrapBox) BindMarginBottom(state *state.State[int]) WrapBox {
 func (f WrapBox) BindMarginEnd(state *state.State[int]) WrapBox {
 	return func() *adw.WrapBox {
 		var callbackId string
-		return f.ConnectRealize(func(w gtk.Widget) {
+		return f.ConnectConstruct(func(w *adw.WrapBox) {
 			callbackId = state.AddCallback(func(newValue int) {
 				w.SetMarginEnd(newValue)
 			})
-		}).ConnectUnrealize(func(w gtk.Widget) {
+		}).ConnectDestroy(func(w gtk.Widget) {
 			state.RemoveCallback(callbackId)
 		})()
 	}
@@ -405,11 +405,11 @@ func (f WrapBox) BindMarginEnd(state *state.State[int]) WrapBox {
 func (f WrapBox) BindMarginStart(state *state.State[int]) WrapBox {
 	return func() *adw.WrapBox {
 		var callbackId string
-		return f.ConnectRealize(func(w gtk.Widget) {
+		return f.ConnectConstruct(func(w *adw.WrapBox) {
 			callbackId = state.AddCallback(func(newValue int) {
 				w.SetMarginStart(newValue)
 			})
-		}).ConnectUnrealize(func(w gtk.Widget) {
+		}).ConnectDestroy(func(w gtk.Widget) {
 			state.RemoveCallback(callbackId)
 		})()
 	}
@@ -418,11 +418,11 @@ func (f WrapBox) BindMarginStart(state *state.State[int]) WrapBox {
 func (f WrapBox) BindMarginTop(state *state.State[int]) WrapBox {
 	return func() *adw.WrapBox {
 		var callbackId string
-		return f.ConnectRealize(func(w gtk.Widget) {
+		return f.ConnectConstruct(func(w *adw.WrapBox) {
 			callbackId = state.AddCallback(func(newValue int) {
 				w.SetMarginTop(newValue)
 			})
-		}).ConnectUnrealize(func(w gtk.Widget) {
+		}).ConnectDestroy(func(w gtk.Widget) {
 			state.RemoveCallback(callbackId)
 		})()
 	}
@@ -431,11 +431,11 @@ func (f WrapBox) BindMarginTop(state *state.State[int]) WrapBox {
 func (f WrapBox) BindSensitive(state *state.State[bool]) WrapBox {
 	return func() *adw.WrapBox {
 		var callbackId string
-		return f.ConnectRealize(func(w gtk.Widget) {
+		return f.ConnectConstruct(func(w *adw.WrapBox) {
 			callbackId = state.AddCallback(func(newValue bool) {
 				w.SetSensitive(newValue)
 			})
-		}).ConnectUnrealize(func(w gtk.Widget) {
+		}).ConnectDestroy(func(w gtk.Widget) {
 			state.RemoveCallback(callbackId)
 		})()
 	}

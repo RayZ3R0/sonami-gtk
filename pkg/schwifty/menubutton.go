@@ -10,11 +10,11 @@ import (
 func (f MenuButton) BindIconName(state *state.State[string]) MenuButton {
 	return func() *gtk.MenuButton {
 		var callbackId string
-		return f.ConnectRealize(func(w gtk.Widget) {
+		return f.ConnectConstruct(func(w *gtk.MenuButton) {
 			callbackId = state.AddCallback(func(newValue string) {
 				gtk.MenuButtonNewFromInternalPtr(w.GoPointer()).SetIconName(newValue)
 			})
-		}).ConnectUnrealize(func(w gtk.Widget) {
+		}).ConnectDestroy(func(w gtk.Widget) {
 			state.RemoveCallback(callbackId)
 		})()
 	}

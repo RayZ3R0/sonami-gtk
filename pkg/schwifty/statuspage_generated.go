@@ -226,12 +226,12 @@ func (f StatusPage) CSS(css string) StatusPage {
 func (f StatusPage) BindCSSClass(state *state.State[string]) StatusPage {
 	return func() *adw.StatusPage {
 		var callbackId string
-		return f.ConnectRealize(func(w gtk.Widget) {
+		return f.ConnectConstruct(func(w *adw.StatusPage) {
 			callbackId = state.AddCallback(func(newValue string) {
 				w.GetStyleContext().RemoveClass(state.Value())
 				w.GetStyleContext().AddClass(newValue)
 			})
-		}).ConnectUnrealize(func(w gtk.Widget) {
+		}).ConnectDestroy(func(w gtk.Widget) {
 			state.RemoveCallback(callbackId)
 		})()
 	}
@@ -336,11 +336,11 @@ func (f StatusPage) VPadding(padding int) StatusPage {
 func (f StatusPage) BindVisible(state *state.State[bool]) StatusPage {
 	return func() *adw.StatusPage {
 		var callbackId string
-		return f.ConnectRealize(func(w gtk.Widget) {
+		return f.ConnectConstruct(func(w *adw.StatusPage) {
 			callbackId = state.AddCallback(func(newValue bool) {
 				w.SetVisible(newValue)
 			})
-		}).ConnectUnrealize(func(w gtk.Widget) {
+		}).ConnectDestroy(func(w gtk.Widget) {
 			state.RemoveCallback(callbackId)
 		})()
 	}
@@ -349,12 +349,12 @@ func (f StatusPage) BindVisible(state *state.State[bool]) StatusPage {
 func (f StatusPage) BindHMargin(state *state.State[int]) StatusPage {
 	return func() *adw.StatusPage {
 		var callbackId string
-		return f.ConnectRealize(func(w gtk.Widget) {
+		return f.ConnectConstruct(func(w *adw.StatusPage) {
 			callbackId = state.AddCallback(func(newValue int) {
 				w.SetMarginEnd(newValue)
 				w.SetMarginStart(newValue)
 			})
-		}).ConnectUnrealize(func(w gtk.Widget) {
+		}).ConnectDestroy(func(w gtk.Widget) {
 			state.RemoveCallback(callbackId)
 		})()
 	}
@@ -363,14 +363,14 @@ func (f StatusPage) BindHMargin(state *state.State[int]) StatusPage {
 func (f StatusPage) BindMargin(state *state.State[int]) StatusPage {
 	return func() *adw.StatusPage {
 		var callbackId string
-		return f.ConnectRealize(func(widget gtk.Widget) {
+		return f.ConnectConstruct(func(widget *adw.StatusPage) {
 			callbackId = state.AddCallback(func(newValue int) {
 				widget.SetMarginBottom(newValue)
 				widget.SetMarginEnd(newValue)
 				widget.SetMarginStart(newValue)
 				widget.SetMarginTop(newValue)
 			})
-		}).ConnectUnrealize(func(gtk.Widget) {
+		}).ConnectDestroy(func(gtk.Widget) {
 			state.RemoveCallback(callbackId)
 		})()
 	}
@@ -379,11 +379,11 @@ func (f StatusPage) BindMargin(state *state.State[int]) StatusPage {
 func (f StatusPage) BindMarginBottom(state *state.State[int]) StatusPage {
 	return func() *adw.StatusPage {
 		var callbackId string
-		return f.ConnectRealize(func(w gtk.Widget) {
+		return f.ConnectConstruct(func(w *adw.StatusPage) {
 			callbackId = state.AddCallback(func(newValue int) {
 				w.SetMarginBottom(newValue)
 			})
-		}).ConnectUnrealize(func(w gtk.Widget) {
+		}).ConnectDestroy(func(w gtk.Widget) {
 			state.RemoveCallback(callbackId)
 		})()
 	}
@@ -392,11 +392,11 @@ func (f StatusPage) BindMarginBottom(state *state.State[int]) StatusPage {
 func (f StatusPage) BindMarginEnd(state *state.State[int]) StatusPage {
 	return func() *adw.StatusPage {
 		var callbackId string
-		return f.ConnectRealize(func(w gtk.Widget) {
+		return f.ConnectConstruct(func(w *adw.StatusPage) {
 			callbackId = state.AddCallback(func(newValue int) {
 				w.SetMarginEnd(newValue)
 			})
-		}).ConnectUnrealize(func(w gtk.Widget) {
+		}).ConnectDestroy(func(w gtk.Widget) {
 			state.RemoveCallback(callbackId)
 		})()
 	}
@@ -405,11 +405,11 @@ func (f StatusPage) BindMarginEnd(state *state.State[int]) StatusPage {
 func (f StatusPage) BindMarginStart(state *state.State[int]) StatusPage {
 	return func() *adw.StatusPage {
 		var callbackId string
-		return f.ConnectRealize(func(w gtk.Widget) {
+		return f.ConnectConstruct(func(w *adw.StatusPage) {
 			callbackId = state.AddCallback(func(newValue int) {
 				w.SetMarginStart(newValue)
 			})
-		}).ConnectUnrealize(func(w gtk.Widget) {
+		}).ConnectDestroy(func(w gtk.Widget) {
 			state.RemoveCallback(callbackId)
 		})()
 	}
@@ -418,11 +418,11 @@ func (f StatusPage) BindMarginStart(state *state.State[int]) StatusPage {
 func (f StatusPage) BindMarginTop(state *state.State[int]) StatusPage {
 	return func() *adw.StatusPage {
 		var callbackId string
-		return f.ConnectRealize(func(w gtk.Widget) {
+		return f.ConnectConstruct(func(w *adw.StatusPage) {
 			callbackId = state.AddCallback(func(newValue int) {
 				w.SetMarginTop(newValue)
 			})
-		}).ConnectUnrealize(func(w gtk.Widget) {
+		}).ConnectDestroy(func(w gtk.Widget) {
 			state.RemoveCallback(callbackId)
 		})()
 	}
@@ -431,11 +431,11 @@ func (f StatusPage) BindMarginTop(state *state.State[int]) StatusPage {
 func (f StatusPage) BindSensitive(state *state.State[bool]) StatusPage {
 	return func() *adw.StatusPage {
 		var callbackId string
-		return f.ConnectRealize(func(w gtk.Widget) {
+		return f.ConnectConstruct(func(w *adw.StatusPage) {
 			callbackId = state.AddCallback(func(newValue bool) {
 				w.SetSensitive(newValue)
 			})
-		}).ConnectUnrealize(func(w gtk.Widget) {
+		}).ConnectDestroy(func(w gtk.Widget) {
 			state.RemoveCallback(callbackId)
 		})()
 	}

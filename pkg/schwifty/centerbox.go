@@ -10,7 +10,7 @@ import (
 func (f CenterBox) BindCenterWidget(state *state.State[any]) CenterBox {
 	return func() *gtk.CenterBox {
 		var callbackId string
-		return f.ConnectRealize(func(w gtk.Widget) {
+		return f.ConnectConstruct(func(w *gtk.CenterBox) {
 			callbackId = state.AddCallback(func(newValue any) {
 				widget := ResolveWidget(newValue)
 				if widget == nil {
@@ -25,7 +25,7 @@ func (f CenterBox) BindCenterWidget(state *state.State[any]) CenterBox {
 					}, w.GoPointer())
 				}
 			})
-		}).ConnectUnrealize(func(w gtk.Widget) {
+		}).ConnectDestroy(func(w gtk.Widget) {
 			state.RemoveCallback(callbackId)
 		})()
 	}
