@@ -1,13 +1,16 @@
 package g
 
-import "reflect"
-
 func Lazy[T any](fn func() T) func() T {
 	var result T
+	var initialized bool = false
 	return func() T {
-		if reflect.TypeOf(result) == nil {
-			result = fn()
+		if initialized {
+			return result
 		}
+
+		result = fn()
+		initialized = true
+
 		return result
 	}
 }
