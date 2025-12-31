@@ -1,6 +1,7 @@
 package tracklist
 
 import (
+	"slices"
 	"strconv"
 
 	"codeberg.org/dergs/tidalwave/pkg/schwifty"
@@ -26,12 +27,12 @@ type TrackList struct {
 	legacyColumnFuncs []LegacyColumnFunc
 
 	// rowMap maps track IDs to their row indices in the grid.
-	rowMap map[string]int
+	rowMap []string
 }
 
 func (t *TrackList) AddTrack(track *openapi.Track) {
 	row := len(t.rowMap)
-	t.rowMap[track.Data.ID] = row
+	t.rowMap = append(t.rowMap, track.Data.ID)
 
 	width := 0
 	for _, columnFunc := range t.columnFuncs {
@@ -41,7 +42,7 @@ func (t *TrackList) AddTrack(track *openapi.Track) {
 
 func (t *TrackList) AddLegacyTrack(track *v2.TrackItemData) {
 	row := len(t.rowMap)
-	t.rowMap[strconv.Itoa(track.ID)] = row
+	t.rowMap = append(t.rowMap, strconv.Itoa(track.ID))
 
 	width := 0
 	for _, columnFunc := range t.legacyColumnFuncs {
@@ -51,22 +52,26 @@ func (t *TrackList) AddLegacyTrack(track *v2.TrackItemData) {
 
 func (t *TrackList) BindTracks(state *state.State[[]*openapi.Track]) {
 	state.AddCallback(func(newValue []*openapi.Track) {
-		trackIds := map[string]*openapi.Track{}
+		trackIds := map[string]bool{}
 		for _, track := range newValue {
-			trackIds[track.Data.ID] = track
+			trackIds[track.Data.ID] = true
 		}
 
-		for trackId, row := range t.rowMap {
+		newRowMap := []string{}
+		for row, trackId := range t.rowMap {
 			if _, ok := trackIds[trackId]; !ok {
 				t.container.RemoveRow(row)
-				delete(t.rowMap, trackId)
+			} else {
+				newRowMap = append(newRowMap, trackId)
 			}
 		}
+		t.rowMap = newRowMap
 
 		for _, track := range newValue {
-			if _, ok := t.rowMap[track.Data.ID]; !ok {
-				t.AddTrack(track)
+			if slices.Contains(t.rowMap, track.Data.ID) {
+				continue
 			}
+			t.AddTrack(track)
 		}
 	})
 }
@@ -75,7 +80,7 @@ func (t *TrackList) Clear() {
 	for i := len(t.rowMap) - 1; i >= 0; i-- {
 		t.container.RemoveRow(i)
 	}
-	t.rowMap = make(map[string]int)
+	t.rowMap = []string{}
 }
 
 func (t *TrackList) SetTitle(title string) *TrackList {
@@ -97,7 +102,7 @@ func newTrackList(title string) *TrackList {
 		titleVisibility: titleVisibility,
 		titleText:       titleText,
 		container:       container,
-		rowMap:          make(map[string]int),
+		rowMap:          []string{},
 		Box: VStack(
 			HStack(
 				Label(title).
