@@ -44,5 +44,5 @@ func Card[T any](title string, subTitle schwifty.Widgetable[T], coverUrl string)
 		Padding(10).
 		HExpand(false).
 		VExpand(false).
-		CSS("button:not(:hover) { background-color: transparent; }")
+		WithCSSClass("transparent")
 }

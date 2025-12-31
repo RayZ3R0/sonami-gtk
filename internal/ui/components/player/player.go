@@ -56,19 +56,19 @@ func NewPlayer() schwifty.Box {
 			MenuButton().
 				Popover(controlsVolumeSlider()).
 				IconName("audio-speakers-symbolic").
-				CSS("button:not(:hover) { background-color: transparent; }"),
+				WithCSSClass("transparent"),
 			Button().
 				IconName("heart-outline-thick-symbolic").
-				CSS(`button:not(:hover) { background-color: transparent; }`),
+				WithCSSClass("transparent"),
 			Button().
 				IconName("compass2-symbolic").
-				CSS(`button:not(:hover) { background-color: transparent; }`),
+				WithCSSClass("transparent"),
 			Button().
 				IconName("library-symbolic").
-				CSS(`button:not(:hover) { background-color: transparent; }`),
+				WithCSSClass("transparent"),
 			Button().
 				IconName("folder-publicshare-symbolic").
-				CSS(`button:not(:hover) { background-color: transparent; }`).
+				WithCSSClass("transparent").
 				ConnectClicked(func(gtk.Button) {
 					id := trackID.Value()
 					if id == "" {
@@ -105,25 +105,25 @@ func NewPlayer() schwifty.Box {
 				IconName("media-playlist-shuffle-symbolic").
 				MinHeight(34).
 				MinWidth(34).
-				CSS(`button:not(:hover) { background-color: transparent; }`),
+				WithCSSClass("transparent"),
 			Button().
 				IconName("media-seek-backward-symbolic").
 				MinHeight(34).
 				MinWidth(34).
-				CSS(`button:not(:hover) { background-color: transparent; }`),
+				WithCSSClass("transparent"),
 			controlsPlayPause(),
 			Button().
 				IconName("media-seek-forward-symbolic").
 				MinHeight(34).
 				MinWidth(34).
-				CSS(`button:not(:hover) { background-color: transparent; }`).ConnectClicked(func(b gtk.Button) {
+				WithCSSClass("transparent").ConnectClicked(func(b gtk.Button) {
 				player.Next()
 			}),
 			Button().
 				IconName("media-playlist-repeat-song-symbolic").
 				MinHeight(34).
 				MinWidth(34).
-				CSS(`button:not(:hover) { background-color: transparent; }`),
+				WithCSSClass("transparent"),
 		).
 			Spacing(7).
 			HAlign(gtk.AlignCenterValue).

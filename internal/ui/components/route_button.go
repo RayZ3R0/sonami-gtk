@@ -56,7 +56,7 @@ func NewRouteButton(path string) *RouteButton {
 				HMargin(9).
 				VMargin(2),
 		).
-		CSS(`button:not(:hover):not(.active) { background-color: transparent; }`)()
+		WithCSSClass("transparent")()
 
 	router.OnNavigate.On(func(newPath string) bool {
 		routeButton.SetActive(path == newPath)

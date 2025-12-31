@@ -17,14 +17,14 @@ func controlsColumn(trackId string, grid *gtk.Grid, row int, column int) int {
 				IconName("heart-outline-thick-symbolic").
 				HAlign(gtk.AlignCenterValue).
 				VAlign(gtk.AlignCenterValue).
-				CSS(`button:not(:hover) { background-color: transparent; }`),
+				WithCSSClass("transparent"),
 			Button().
 				IconName("plus-symbolic").
 				HAlign(gtk.AlignCenterValue).
 				VAlign(gtk.AlignCenterValue).
 				ActionName("win.player.queue-track").
 				ActionTargetValue(glib.NewVariantString(trackId)).
-				CSS(`button:not(:hover) { background-color: transparent; }`),
+				WithCSSClass("transparent"),
 		).
 			Margin(10).
 			HAlign(gtk.AlignEndValue).
