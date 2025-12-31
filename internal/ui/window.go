@@ -30,7 +30,7 @@ func NewWindow(app *adw.Application) *Window {
 	window.SetContent(window.build())
 	window.SetTitle("Tidal Wave")
 	window.SetIconName("logo")
-	window.SetDefaultSize(1280, 720)
+	window.SetDefaultSize(1460, 920)
 
 	router.Navigate("home", nil)
 
