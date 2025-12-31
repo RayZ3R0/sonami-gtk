@@ -20,6 +20,7 @@ func AddToQueue(trackId string, addToFront bool) error {
 
 	// If we added a song to the queue and nothing is playing, the user likely wants to start playing the queue
 	if OnStateChanged.current.Status == StatusStopped {
+		logger.Info("no track is currently playing, immediately playing track", "track_id", trackId)
 		Play(trackId)
 		return nil
 	}
@@ -28,6 +29,7 @@ func AddToQueue(trackId string, addToFront bool) error {
 	for _, track := range userQueue {
 		if track.Data.ID == trackId {
 			userQueueMutex.RUnlock()
+			logger.Debug("track is already in user-queue", "track_id", trackId)
 			return nil
 		}
 	}
@@ -50,6 +52,7 @@ func AddToQueue(trackId string, addToFront bool) error {
 			return append(t, openTrack)
 		}
 	})
+	logger.Info("added track to user-queue", "track_id", trackId)
 
 	return nil
 }
@@ -58,6 +61,7 @@ func PopFromQueue() *openapi.Track {
 	userQueueMutex.RLock()
 	if len(userQueue) == 0 {
 		userQueueMutex.RUnlock()
+		logger.Debug("pop from user-queue failed, queue is empty")
 		return nil
 	}
 	nextTrack := userQueue[0]
@@ -66,6 +70,7 @@ func PopFromQueue() *openapi.Track {
 	modifyUserQueue(func(t []*openapi.Track) []*openapi.Track {
 		return t[1:]
 	})
+	logger.Debug("popped track from user-queue", "track_id", nextTrack.Data.ID)
 
 	return nextTrack
 }
