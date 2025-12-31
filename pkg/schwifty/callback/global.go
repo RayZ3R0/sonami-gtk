@@ -2,10 +2,11 @@ package callback
 
 import (
 	"sync"
-	"unsafe"
 
 	"github.com/jwijenbergh/puregotk/v4/glib"
 )
+
+var callbackIdPool = NewIntPool()
 
 type MainThreadCallback func(u uintptr) bool
 
@@ -30,13 +31,13 @@ var mainLoopHandler = glib.SourceFunc(func(ptr uintptr) bool {
 	if !shouldContinue {
 		mainThreadCallbacksLock.Lock()
 		delete(mainThreadCallbacks, ptr)
+		callbackIdPool.Return(int(ptr))
 		mainThreadCallbacksLock.Unlock()
 	}
 	return shouldContinue
 })
 
 func OnMainThread(callback MainThreadCallback, params uintptr) uint {
-
 	mainThreadCallbacksLock.RLock()
 	if len(mainThreadCallbacks) >= 4096 {
 		mainThreadCallbacksLock.RUnlock()
@@ -44,7 +45,7 @@ func OnMainThread(callback MainThreadCallback, params uintptr) uint {
 	}
 	mainThreadCallbacksLock.RUnlock()
 
-	id := uintptr(unsafe.Pointer(&callback))
+	id := uintptr(callbackIdPool.Get())
 	mainThreadCallbacksLock.Lock()
 	mainThreadCallbacks[id] = MainThreadCallbackEntry{
 		Callback: callback,
@@ -53,4 +54,50 @@ func OnMainThread(callback MainThreadCallback, params uintptr) uint {
 	mainThreadCallbacksLock.Unlock()
 
 	return glib.IdleAdd(&mainLoopHandler, id)
+}
+
+// IntPool manages a pool of integers that can be checked out and returned
+type IntPool struct {
+	mu       sync.Mutex
+	inUse    map[int]bool
+	nextID   int
+	returned []int
+}
+
+func NewIntPool() *IntPool {
+	return &IntPool{
+		inUse:    make(map[int]bool),
+		nextID:   1,
+		returned: make([]int, 0),
+	}
+}
+
+func (p *IntPool) Get() int {
+	p.mu.Lock()
+	defer p.mu.Unlock()
+
+	var id int
+
+	// First try to reuse a returned ID
+	if len(p.returned) > 0 {
+		id = p.returned[len(p.returned)-1]
+		p.returned = p.returned[:len(p.returned)-1]
+	} else {
+		// Otherwise use the next available ID
+		id = p.nextID
+		p.nextID++
+	}
+
+	p.inUse[id] = true
+	return id
+}
+
+func (p *IntPool) Return(id int) {
+	p.mu.Lock()
+	defer p.mu.Unlock()
+
+	if p.inUse[id] {
+		delete(p.inUse, id)
+		p.returned = append(p.returned, id)
+	}
 }
