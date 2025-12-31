@@ -49,6 +49,35 @@ func (t *TrackList) AddLegacyTrack(track *v2.TrackItemData) {
 	}
 }
 
+func (t *TrackList) BindTracks(state *state.State[[]*openapi.Track]) {
+	state.AddCallback(func(newValue []*openapi.Track) {
+		trackIds := map[string]*openapi.Track{}
+		for _, track := range newValue {
+			trackIds[track.Data.ID] = track
+		}
+
+		for trackId, row := range t.rowMap {
+			if _, ok := trackIds[trackId]; !ok {
+				t.container.RemoveRow(row)
+				delete(t.rowMap, trackId)
+			}
+		}
+
+		for _, track := range newValue {
+			if _, ok := t.rowMap[track.Data.ID]; !ok {
+				t.AddTrack(track)
+			}
+		}
+	})
+}
+
+func (t *TrackList) Clear() {
+	for i := len(t.rowMap) - 1; i >= 0; i-- {
+		t.container.RemoveRow(i)
+	}
+	t.rowMap = make(map[string]int)
+}
+
 func (t *TrackList) SetTitle(title string) *TrackList {
 	if title == "" {
 		t.titleVisibility.SetValue(false)
