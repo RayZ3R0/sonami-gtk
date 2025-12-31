@@ -107,8 +107,9 @@ func (f Label) BindText(state *state.State[string]) Label {
 	return func() *gtk.Label {
 		var callbackId string
 		return f.ConnectConstruct(func(w *gtk.Label) {
+			widgetPtr := w.GoPointer()
 			callbackId = state.AddCallback(func(newValue string) {
-				gtk.LabelNewFromInternalPtr(w.GoPointer()).SetText(newValue)
+				gtk.LabelNewFromInternalPtr(widgetPtr).SetText(newValue)
 			})
 		}).ConnectDestroy(func(w gtk.Widget) {
 			state.RemoveCallback(callbackId)

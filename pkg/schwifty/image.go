@@ -13,8 +13,9 @@ func (f Image) BindPaintable(state *state.State[gdk.Paintable]) Image {
 	return func() *gtk.Image {
 		var callbackId string
 		return f.ConnectConstruct(func(w *gtk.Image) {
+			widgetPtr := w.GoPointer()
 			callbackId = state.AddCallback(func(newValue gdk.Paintable) {
-				gtk.ImageNewFromInternalPtr(w.GoPointer()).SetFromPaintable(newValue)
+				gtk.ImageNewFromInternalPtr(widgetPtr).SetFromPaintable(newValue)
 			})
 		}).ConnectDestroy(func(w gtk.Widget) {
 			state.RemoveCallback(callbackId)
@@ -26,8 +27,9 @@ func (f Image) BindPixbuf(state *state.State[*gdkpixbuf.Pixbuf]) Image {
 	return func() *gtk.Image {
 		var callbackId string
 		return f.ConnectConstruct(func(w *gtk.Image) {
+			widgetPtr := w.GoPointer()
 			callbackId = state.AddCallback(func(newValue *gdkpixbuf.Pixbuf) {
-				gtk.ImageNewFromInternalPtr(w.GoPointer()).SetFromPixbuf(newValue)
+				gtk.ImageNewFromInternalPtr(widgetPtr).SetFromPixbuf(newValue)
 			})
 		}).ConnectDestroy(func(w gtk.Widget) {
 			state.RemoveCallback(callbackId)

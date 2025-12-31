@@ -226,9 +226,10 @@ func (f Scale) BindCSSClass(state *state.State[string]) Scale {
 	return func() *gtk.Scale {
 		var callbackId string
 		return f.ConnectConstruct(func(w *gtk.Scale) {
+			widgetPtr := w.GoPointer()
 			callbackId = state.AddCallback(func(newValue string) {
-				w.GetStyleContext().RemoveClass(state.Value())
-				w.GetStyleContext().AddClass(newValue)
+				gtk.WidgetNewFromInternalPtr(widgetPtr).GetStyleContext().RemoveClass(state.Value())
+				gtk.WidgetNewFromInternalPtr(widgetPtr).GetStyleContext().AddClass(newValue)
 			})
 		}).ConnectDestroy(func(w gtk.Widget) {
 			state.RemoveCallback(callbackId)
@@ -336,8 +337,9 @@ func (f Scale) BindVisible(state *state.State[bool]) Scale {
 	return func() *gtk.Scale {
 		var callbackId string
 		return f.ConnectConstruct(func(w *gtk.Scale) {
+			widgetPtr := w.GoPointer()
 			callbackId = state.AddCallback(func(newValue bool) {
-				w.SetVisible(newValue)
+				gtk.WidgetNewFromInternalPtr(widgetPtr).SetVisible(newValue)
 			})
 		}).ConnectDestroy(func(w gtk.Widget) {
 			state.RemoveCallback(callbackId)
@@ -349,9 +351,10 @@ func (f Scale) BindHMargin(state *state.State[int]) Scale {
 	return func() *gtk.Scale {
 		var callbackId string
 		return f.ConnectConstruct(func(w *gtk.Scale) {
+			widgetPtr := w.GoPointer()
 			callbackId = state.AddCallback(func(newValue int) {
-				w.SetMarginEnd(newValue)
-				w.SetMarginStart(newValue)
+				gtk.WidgetNewFromInternalPtr(widgetPtr).SetMarginEnd(newValue)
+				gtk.WidgetNewFromInternalPtr(widgetPtr).SetMarginStart(newValue)
 			})
 		}).ConnectDestroy(func(w gtk.Widget) {
 			state.RemoveCallback(callbackId)
@@ -363,11 +366,12 @@ func (f Scale) BindMargin(state *state.State[int]) Scale {
 	return func() *gtk.Scale {
 		var callbackId string
 		return f.ConnectConstruct(func(widget *gtk.Scale) {
+			widgetPtr := widget.GoPointer()
 			callbackId = state.AddCallback(func(newValue int) {
-				widget.SetMarginBottom(newValue)
-				widget.SetMarginEnd(newValue)
-				widget.SetMarginStart(newValue)
-				widget.SetMarginTop(newValue)
+				gtk.WidgetNewFromInternalPtr(widgetPtr).SetMarginBottom(newValue)
+				gtk.WidgetNewFromInternalPtr(widgetPtr).SetMarginEnd(newValue)
+				gtk.WidgetNewFromInternalPtr(widgetPtr).SetMarginStart(newValue)
+				gtk.WidgetNewFromInternalPtr(widgetPtr).SetMarginTop(newValue)
 			})
 		}).ConnectDestroy(func(gtk.Widget) {
 			state.RemoveCallback(callbackId)
@@ -379,8 +383,9 @@ func (f Scale) BindMarginBottom(state *state.State[int]) Scale {
 	return func() *gtk.Scale {
 		var callbackId string
 		return f.ConnectConstruct(func(w *gtk.Scale) {
+			widgetPtr := w.GoPointer()
 			callbackId = state.AddCallback(func(newValue int) {
-				w.SetMarginBottom(newValue)
+				gtk.WidgetNewFromInternalPtr(widgetPtr).SetMarginBottom(newValue)
 			})
 		}).ConnectDestroy(func(w gtk.Widget) {
 			state.RemoveCallback(callbackId)
@@ -392,8 +397,9 @@ func (f Scale) BindMarginEnd(state *state.State[int]) Scale {
 	return func() *gtk.Scale {
 		var callbackId string
 		return f.ConnectConstruct(func(w *gtk.Scale) {
+			widgetPtr := w.GoPointer()
 			callbackId = state.AddCallback(func(newValue int) {
-				w.SetMarginEnd(newValue)
+				gtk.WidgetNewFromInternalPtr(widgetPtr).SetMarginEnd(newValue)
 			})
 		}).ConnectDestroy(func(w gtk.Widget) {
 			state.RemoveCallback(callbackId)
@@ -405,8 +411,9 @@ func (f Scale) BindMarginStart(state *state.State[int]) Scale {
 	return func() *gtk.Scale {
 		var callbackId string
 		return f.ConnectConstruct(func(w *gtk.Scale) {
+			widgetPtr := w.GoPointer()
 			callbackId = state.AddCallback(func(newValue int) {
-				w.SetMarginStart(newValue)
+				gtk.WidgetNewFromInternalPtr(widgetPtr).SetMarginStart(newValue)
 			})
 		}).ConnectDestroy(func(w gtk.Widget) {
 			state.RemoveCallback(callbackId)
@@ -418,8 +425,9 @@ func (f Scale) BindMarginTop(state *state.State[int]) Scale {
 	return func() *gtk.Scale {
 		var callbackId string
 		return f.ConnectConstruct(func(w *gtk.Scale) {
+			widgetPtr := w.GoPointer()
 			callbackId = state.AddCallback(func(newValue int) {
-				w.SetMarginTop(newValue)
+				gtk.WidgetNewFromInternalPtr(widgetPtr).SetMarginTop(newValue)
 			})
 		}).ConnectDestroy(func(w gtk.Widget) {
 			state.RemoveCallback(callbackId)
@@ -431,8 +439,9 @@ func (f Scale) BindSensitive(state *state.State[bool]) Scale {
 	return func() *gtk.Scale {
 		var callbackId string
 		return f.ConnectConstruct(func(w *gtk.Scale) {
+			widgetPtr := w.GoPointer()
 			callbackId = state.AddCallback(func(newValue bool) {
-				w.SetSensitive(newValue)
+				gtk.WidgetNewFromInternalPtr(widgetPtr).SetSensitive(newValue)
 			})
 		}).ConnectDestroy(func(w gtk.Widget) {
 			state.RemoveCallback(callbackId)

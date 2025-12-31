@@ -11,18 +11,19 @@ func (f CenterBox) BindCenterWidget(state *state.State[any]) CenterBox {
 	return func() *gtk.CenterBox {
 		var callbackId string
 		return f.ConnectConstruct(func(w *gtk.CenterBox) {
+			widgetPtr := w.GoPointer()
 			callbackId = state.AddCallback(func(newValue any) {
 				widget := ResolveWidget(newValue)
 				if widget == nil {
 					OnMainThreadOnce(func(u uintptr) {
 						gtk.CenterBoxNewFromInternalPtr(u).SetCenterWidget(nil)
-					}, w.GoPointer())
+					}, widgetPtr)
 				} else {
 					widget.Ref()
 					OnMainThreadOnce(func(u uintptr) {
 						gtk.CenterBoxNewFromInternalPtr(u).SetCenterWidget(widget)
 						widget.Unref()
-					}, w.GoPointer())
+					}, widgetPtr)
 				}
 			})
 		}).ConnectDestroy(func(w gtk.Widget) {
