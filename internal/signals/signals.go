@@ -35,8 +35,9 @@ func (b *Signal[T]) removeHandler(sub *Subscription) {
 
 func (b *Signal[T]) Notify(args ...any) {
 	b.mutex.Lock()
-	defer b.mutex.Unlock()
-	for sub, handler := range b.handlers {
+	handlers := b.handlers
+	b.mutex.Unlock()
+	for sub, handler := range handlers {
 		reflectArgs := make([]reflect.Value, len(args))
 		for i, arg := range args {
 			reflectArgs[i] = reflect.ValueOf(arg)
