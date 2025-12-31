@@ -4,6 +4,7 @@ import (
 	"codeberg.org/dergs/tidalwave/internal/router"
 	"codeberg.org/dergs/tidalwave/internal/signals"
 	"codeberg.org/dergs/tidalwave/internal/ui/components"
+	"codeberg.org/dergs/tidalwave/internal/ui/components/lyrics"
 	"codeberg.org/dergs/tidalwave/internal/ui/components/player"
 	"codeberg.org/dergs/tidalwave/internal/ui/components/queue"
 	. "codeberg.org/dergs/tidalwave/pkg/schwifty/syntax"
@@ -44,7 +45,7 @@ func (w *Window) buildSidebarHeader() *gtk.Widget {
 func (w *Window) buildSidebar() *adw.ViewStack {
 	viewStack := adw.NewViewStack()
 	viewStack.AddTitledWithIcon(player.NewPlayer().ToGTK(), "player", "Player", "music-note-outline-symbolic")
-	// viewStack.AddTitledWithIcon(components.NewLyricsPanel(), "lyrics", "Lyrics", "chat-bubble-text-symbolic")
+	viewStack.AddTitledWithIcon(lyrics.NewLyricsPanel().ToGTK(), "lyrics", "Lyrics", "chat-bubble-text-symbolic")
 	viewStack.AddTitledWithIcon(queue.NewQueue().ToGTK(), "queue", "Queue", "music-queue-symbolic")
 	return viewStack
 }

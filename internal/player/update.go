@@ -9,12 +9,14 @@ import (
 
 var playbackStateUpdater glib.SourceHandle
 
+const UpdateInterval = 250 * time.Millisecond
+
 func startUpdateRunner() {
 	if playbackStateUpdater != 0 {
 		return
 	}
 
-	playbackStateUpdater, _ = glib.TimeoutAdd(250, onUpdateTick, nil)
+	playbackStateUpdater, _ = glib.TimeoutAdd(uint(UpdateInterval.Milliseconds()), onUpdateTick, nil)
 	logger.Debug("started playbin update runner", "source_handle", playbackStateUpdater)
 }
 
@@ -31,11 +33,11 @@ func stopUpdateRunner() {
 func onUpdateTick() bool {
 	OnStateChanged.Notify(func(state *State) {
 		if ok, duration := playbin.QueryDuration(gst.FormatTime); ok {
-			state.Duration = int(time.Duration(duration).Seconds())
+			state.Duration = time.Duration(duration)
 		}
 
 		if ok, position := playbin.QueryPosition(gst.FormatTime); ok {
-			state.Position = int(time.Duration(position).Seconds())
+			state.Position = time.Duration(position)
 		}
 	})
 	return true

@@ -18,14 +18,14 @@ var (
 
 func init() {
 	player.OnTrackChanged.On(func(trackInfo player.TrackInformation) bool {
-		durationState.SetValue(tidalapi.FormatDuration(int(trackInfo.Duration.Seconds())))
+		durationState.SetValue(tidalapi.FormatDuration(trackInfo.Duration))
 		return signals.Continue
 	})
 
 	player.OnStateChanged.On(func(state player.State) bool {
 		positionState.SetValue(tidalapi.FormatDuration(state.Position))
 		if state.Duration > 0 {
-			durationState.SetValue(tidalapi.FormatDuration(int(state.Duration)))
+			durationState.SetValue(tidalapi.FormatDuration(state.Duration))
 			timelineSliderState.SetValue(100.0 / float64(state.Duration) * float64(state.Position))
 		} else {
 			timelineSliderState.SetValue(0)
