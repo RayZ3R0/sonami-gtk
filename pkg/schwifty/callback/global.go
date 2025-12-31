@@ -23,6 +23,7 @@ var mainLoopHandler = glib.SourceFunc(func(ptr uintptr) bool {
 	entry, ok := mainThreadCallbacks[ptr]
 	if !ok {
 		mainThreadCallbacksLock.RUnlock()
+		callbackIdPool.Return(int(ptr))
 		return glib.SOURCE_REMOVE
 	}
 	mainThreadCallbacksLock.RUnlock()
@@ -38,13 +39,6 @@ var mainLoopHandler = glib.SourceFunc(func(ptr uintptr) bool {
 })
 
 func OnMainThread(callback MainThreadCallback, params uintptr) uint {
-	mainThreadCallbacksLock.RLock()
-	if len(mainThreadCallbacks) >= 4096 {
-		mainThreadCallbacksLock.RUnlock()
-		return 0
-	}
-	mainThreadCallbacksLock.RUnlock()
-
 	id := uintptr(callbackIdPool.Get())
 	mainThreadCallbacksLock.Lock()
 	mainThreadCallbacks[id] = MainThreadCallbackEntry{
