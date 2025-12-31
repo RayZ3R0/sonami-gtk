@@ -3,7 +3,9 @@ package schwifty
 import (
 	"fmt"
 
+	"codeberg.org/dergs/tidalwave/pkg/schwifty/callback"
 	"codeberg.org/dergs/tidalwave/pkg/schwifty/state"
+	"github.com/jwijenbergh/puregotk/v4/glib"
 	"github.com/jwijenbergh/puregotk/v4/gtk"
 )
 
@@ -35,9 +37,19 @@ func (f TEMPLATE_TYPE) BindCSSClass(state *state.State[string]) TEMPLATE_TYPE {
 	return func() TEMPLATE_BASE_TYPE {
 		var callbackId string
 		return f.ConnectConstruct(func(w TEMPLATE_BASE_TYPE) {
+			ptr := w.GoPointer()
 			callbackId = state.AddCallback(func(newValue string) {
-				w.GetStyleContext().RemoveClass(state.Value())
-				w.GetStyleContext().AddClass(newValue)
+				oldValue := state.Value()
+				callback.OnMainThread(func(u uintptr) bool {
+					w := gtk.ButtonNewFromInternalPtr(u)
+					styleContext := w.GetStyleContext()
+					defer styleContext.Unref()
+
+					styleContext.RemoveClass(oldValue)
+					styleContext.AddClass(newValue)
+
+					return glib.SOURCE_REMOVE
+				}, ptr)
 			})
 		}).ConnectDestroy(func(w gtk.Widget) {
 			state.RemoveCallback(callbackId)
@@ -48,7 +60,10 @@ func (f TEMPLATE_TYPE) BindCSSClass(state *state.State[string]) TEMPLATE_TYPE {
 func (f TEMPLATE_TYPE) WithCSSClass(className string) TEMPLATE_TYPE {
 	return func() TEMPLATE_BASE_TYPE {
 		w := f()
-		w.GetStyleContext().AddClass(className)
+		styleContext := w.GetStyleContext()
+		defer styleContext.Unref()
+
+		styleContext.AddClass(className)
 		return w
 	}
 }

@@ -4,6 +4,7 @@ import (
 	"codeberg.org/dergs/tidalwave/pkg/schwifty/callback"
 	"codeberg.org/dergs/tidalwave/pkg/schwifty/state"
 	"fmt"
+	"github.com/jwijenbergh/puregotk/v4/glib"
 	"github.com/jwijenbergh/puregotk/v4/gtk"
 )
 
@@ -226,9 +227,19 @@ func (f CenterBox) BindCSSClass(state *state.State[string]) CenterBox {
 	return func() *gtk.CenterBox {
 		var callbackId string
 		return f.ConnectConstruct(func(w *gtk.CenterBox) {
+			ptr := w.GoPointer()
 			callbackId = state.AddCallback(func(newValue string) {
-				w.GetStyleContext().RemoveClass(state.Value())
-				w.GetStyleContext().AddClass(newValue)
+				oldValue := state.Value()
+				callback.OnMainThread(func(u uintptr) bool {
+					w := gtk.ButtonNewFromInternalPtr(u)
+					styleContext := w.GetStyleContext()
+					defer styleContext.Unref()
+
+					styleContext.RemoveClass(oldValue)
+					styleContext.AddClass(newValue)
+
+					return glib.SOURCE_REMOVE
+				}, ptr)
 			})
 		}).ConnectDestroy(func(w gtk.Widget) {
 			state.RemoveCallback(callbackId)
@@ -239,7 +250,10 @@ func (f CenterBox) BindCSSClass(state *state.State[string]) CenterBox {
 func (f CenterBox) WithCSSClass(className string) CenterBox {
 	return func() *gtk.CenterBox {
 		w := f()
-		w.GetStyleContext().AddClass(className)
+		styleContext := w.GetStyleContext()
+		defer styleContext.Unref()
+
+		styleContext.AddClass(className)
 		return w
 	}
 }
