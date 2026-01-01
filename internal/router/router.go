@@ -69,3 +69,14 @@ func Back() {
 		navigate(previous.Path, previous.Params, true)
 	}
 }
+
+func Refresh() {
+	if history.Current == nil {
+		return
+	}
+
+	history.Current.Toolbar = nil
+	history.Current.View = nil
+
+	navigate(history.Current.Path, history.Current.Params, true)
+}
