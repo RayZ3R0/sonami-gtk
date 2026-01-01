@@ -8,6 +8,7 @@ import (
 	"codeberg.org/dergs/tidalwave/pkg/schwifty/syntax"
 	. "codeberg.org/dergs/tidalwave/pkg/schwifty/syntax"
 	v2 "codeberg.org/dergs/tidalwave/pkg/tidalapi/models/v2"
+	"github.com/jwijenbergh/puregotk/v4/gtk"
 )
 
 func ForPageItem(pageItem v2.PageItem) schwifty.BaseWidgetable {
@@ -31,7 +32,11 @@ func ForPageItem(pageItem v2.PageItem) schwifty.BaseWidgetable {
 				track := item.Data.Track
 				list.Append(horizontal_list.NewLegacyTrack(track))
 			} else {
-				list.Append(syntax.Label("Unsupported: " + string(item.Type)).HMargin(10))
+				list.Append(HStack(
+					Label("Unsupported\n"+string(item.Type)).
+						Justify(gtk.JustifyCenterValue).
+						Padding(30).HExpand(true).CornerRadius(10),
+				).SizeRequest(192, -1).CSS("box:hover { background: alpha(var(--view-fg-color), 0.1) }").CornerRadius(10))
 			}
 		}
 		return list.SetPageMargin(40)
