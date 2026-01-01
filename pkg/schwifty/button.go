@@ -31,7 +31,9 @@ func (f Button) BindIconName(state *state.State[string]) Button {
 		return f.ConnectConstruct(func(w *gtk.Button) {
 			widgetPtr := w.GoPointer()
 			callbackId = state.AddCallback(func(newValue string) {
-				gtk.ButtonNewFromInternalPtr(widgetPtr).SetIconName(newValue)
+				callback.OnMainThreadOnce(func(u uintptr) {
+					gtk.ButtonNewFromInternalPtr(u).SetIconName(newValue)
+				}, widgetPtr)
 			})
 		}).ConnectDestroy(func(w gtk.Widget) {
 			state.RemoveCallback(callbackId)

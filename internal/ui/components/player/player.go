@@ -10,8 +10,8 @@ import (
 	"codeberg.org/dergs/tidalwave/pkg/schwifty"
 	"codeberg.org/dergs/tidalwave/pkg/schwifty/state"
 	. "codeberg.org/dergs/tidalwave/pkg/schwifty/syntax"
-
 	v1 "codeberg.org/dergs/tidalwave/pkg/tidalapi/models/v1"
+
 	"github.com/jwijenbergh/puregotk/v4/gdk"
 	"github.com/jwijenbergh/puregotk/v4/gtk"
 )

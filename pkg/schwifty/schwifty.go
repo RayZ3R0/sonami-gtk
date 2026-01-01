@@ -5,7 +5,6 @@ import (
 	"reflect"
 
 	"codeberg.org/dergs/tidalwave/pkg/schwifty/callback"
-	"github.com/jwijenbergh/puregotk/v4/glib"
 	"github.com/jwijenbergh/puregotk/v4/gtk"
 )
 
@@ -16,10 +15,7 @@ func OnMainThread(cb callback.MainThreadCallback, param uintptr) uint {
 }
 
 func OnMainThreadOnce(cb func(u uintptr), param uintptr) uint {
-	return callback.OnMainThread(func(u uintptr) bool {
-		cb(param)
-		return glib.SOURCE_REMOVE
-	}, param)
+	return callback.OnMainThreadOnce(cb, param)
 }
 
 func ResolveWidget(value any) *gtk.Widget {

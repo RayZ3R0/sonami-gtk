@@ -228,8 +228,10 @@ func (f Image) BindCSSClass(state *state.State[string]) Image {
 		return f.ConnectConstruct(func(w *gtk.Image) {
 			widgetPtr := w.GoPointer()
 			callbackId = state.AddCallback(func(newValue string) {
-				gtk.WidgetNewFromInternalPtr(widgetPtr).GetStyleContext().RemoveClass(state.Value())
-				gtk.WidgetNewFromInternalPtr(widgetPtr).GetStyleContext().AddClass(newValue)
+				callback.OnMainThreadOnce(func(u uintptr) {
+					gtk.WidgetNewFromInternalPtr(u).GetStyleContext().RemoveClass(state.Value())
+					gtk.WidgetNewFromInternalPtr(u).GetStyleContext().AddClass(newValue)
+				}, widgetPtr)
 			})
 		}).ConnectDestroy(func(w gtk.Widget) {
 			state.RemoveCallback(callbackId)
@@ -339,7 +341,9 @@ func (f Image) BindVisible(state *state.State[bool]) Image {
 		return f.ConnectConstruct(func(w *gtk.Image) {
 			widgetPtr := w.GoPointer()
 			callbackId = state.AddCallback(func(newValue bool) {
-				gtk.WidgetNewFromInternalPtr(widgetPtr).SetVisible(newValue)
+				callback.OnMainThreadOnce(func(u uintptr) {
+					gtk.WidgetNewFromInternalPtr(u).SetVisible(newValue)
+				}, widgetPtr)
 			})
 		}).ConnectDestroy(func(w gtk.Widget) {
 			state.RemoveCallback(callbackId)
@@ -353,8 +357,10 @@ func (f Image) BindHMargin(state *state.State[int]) Image {
 		return f.ConnectConstruct(func(w *gtk.Image) {
 			widgetPtr := w.GoPointer()
 			callbackId = state.AddCallback(func(newValue int) {
-				gtk.WidgetNewFromInternalPtr(widgetPtr).SetMarginEnd(newValue)
-				gtk.WidgetNewFromInternalPtr(widgetPtr).SetMarginStart(newValue)
+				callback.OnMainThreadOnce(func(u uintptr) {
+					gtk.WidgetNewFromInternalPtr(u).SetMarginEnd(newValue)
+					gtk.WidgetNewFromInternalPtr(u).SetMarginStart(newValue)
+				}, widgetPtr)
 			})
 		}).ConnectDestroy(func(w gtk.Widget) {
 			state.RemoveCallback(callbackId)
@@ -368,10 +374,12 @@ func (f Image) BindMargin(state *state.State[int]) Image {
 		return f.ConnectConstruct(func(widget *gtk.Image) {
 			widgetPtr := widget.GoPointer()
 			callbackId = state.AddCallback(func(newValue int) {
-				gtk.WidgetNewFromInternalPtr(widgetPtr).SetMarginBottom(newValue)
-				gtk.WidgetNewFromInternalPtr(widgetPtr).SetMarginEnd(newValue)
-				gtk.WidgetNewFromInternalPtr(widgetPtr).SetMarginStart(newValue)
-				gtk.WidgetNewFromInternalPtr(widgetPtr).SetMarginTop(newValue)
+				callback.OnMainThreadOnce(func(u uintptr) {
+					gtk.WidgetNewFromInternalPtr(u).SetMarginBottom(newValue)
+					gtk.WidgetNewFromInternalPtr(u).SetMarginEnd(newValue)
+					gtk.WidgetNewFromInternalPtr(u).SetMarginStart(newValue)
+					gtk.WidgetNewFromInternalPtr(u).SetMarginTop(newValue)
+				}, widgetPtr)
 			})
 		}).ConnectDestroy(func(gtk.Widget) {
 			state.RemoveCallback(callbackId)
@@ -385,7 +393,9 @@ func (f Image) BindMarginBottom(state *state.State[int]) Image {
 		return f.ConnectConstruct(func(w *gtk.Image) {
 			widgetPtr := w.GoPointer()
 			callbackId = state.AddCallback(func(newValue int) {
-				gtk.WidgetNewFromInternalPtr(widgetPtr).SetMarginBottom(newValue)
+				callback.OnMainThreadOnce(func(u uintptr) {
+					gtk.WidgetNewFromInternalPtr(u).SetMarginBottom(newValue)
+				}, widgetPtr)
 			})
 		}).ConnectDestroy(func(w gtk.Widget) {
 			state.RemoveCallback(callbackId)
@@ -399,7 +409,9 @@ func (f Image) BindMarginEnd(state *state.State[int]) Image {
 		return f.ConnectConstruct(func(w *gtk.Image) {
 			widgetPtr := w.GoPointer()
 			callbackId = state.AddCallback(func(newValue int) {
-				gtk.WidgetNewFromInternalPtr(widgetPtr).SetMarginEnd(newValue)
+				callback.OnMainThreadOnce(func(u uintptr) {
+					gtk.WidgetNewFromInternalPtr(u).SetMarginEnd(newValue)
+				}, widgetPtr)
 			})
 		}).ConnectDestroy(func(w gtk.Widget) {
 			state.RemoveCallback(callbackId)
@@ -413,7 +425,9 @@ func (f Image) BindMarginStart(state *state.State[int]) Image {
 		return f.ConnectConstruct(func(w *gtk.Image) {
 			widgetPtr := w.GoPointer()
 			callbackId = state.AddCallback(func(newValue int) {
-				gtk.WidgetNewFromInternalPtr(widgetPtr).SetMarginStart(newValue)
+				callback.OnMainThreadOnce(func(u uintptr) {
+					gtk.WidgetNewFromInternalPtr(u).SetMarginStart(newValue)
+				}, widgetPtr)
 			})
 		}).ConnectDestroy(func(w gtk.Widget) {
 			state.RemoveCallback(callbackId)
@@ -427,7 +441,9 @@ func (f Image) BindMarginTop(state *state.State[int]) Image {
 		return f.ConnectConstruct(func(w *gtk.Image) {
 			widgetPtr := w.GoPointer()
 			callbackId = state.AddCallback(func(newValue int) {
-				gtk.WidgetNewFromInternalPtr(widgetPtr).SetMarginTop(newValue)
+				callback.OnMainThreadOnce(func(u uintptr) {
+					gtk.WidgetNewFromInternalPtr(u).SetMarginTop(newValue)
+				}, widgetPtr)
 			})
 		}).ConnectDestroy(func(w gtk.Widget) {
 			state.RemoveCallback(callbackId)
@@ -441,7 +457,9 @@ func (f Image) BindSensitive(state *state.State[bool]) Image {
 		return f.ConnectConstruct(func(w *gtk.Image) {
 			widgetPtr := w.GoPointer()
 			callbackId = state.AddCallback(func(newValue bool) {
-				gtk.WidgetNewFromInternalPtr(widgetPtr).SetSensitive(newValue)
+				callback.OnMainThreadOnce(func(u uintptr) {
+					gtk.WidgetNewFromInternalPtr(u).SetSensitive(newValue)
+				}, widgetPtr)
 			})
 		}).ConnectDestroy(func(w gtk.Widget) {
 			state.RemoveCallback(callbackId)
