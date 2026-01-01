@@ -22,7 +22,7 @@ func (w *Window) installActions() {
 	playTrackAction.ConnectActivate(g.Ptr(func(action gio.SimpleAction, parameter uintptr) {
 		variant := (*glib.Variant)(unsafe.Pointer(parameter))
 		id := variant.GetString(nil)
-		player.PlayTrack(id)
+		go player.PlayTrack(id)
 	}))
 	w.AddAction(playTrackAction)
 
@@ -30,13 +30,13 @@ func (w *Window) installActions() {
 	playPlaylistAction.ConnectActivate(g.Ptr(func(action gio.SimpleAction, parameter uintptr) {
 		variant := (*glib.Variant)(unsafe.Pointer(parameter))
 		id := variant.GetString(nil)
-		player.PlayPlaylist(id)
+		go player.PlayPlaylist(id)
 	}))
 	w.AddAction(playPlaylistAction)
 
 	nextAction := gio.NewSimpleAction("player.next", nil)
 	nextAction.ConnectActivate(g.Ptr(func(action gio.SimpleAction, parameter uintptr) {
-		player.Next()
+		go player.Next()
 	}))
 	w.AddAction(nextAction)
 
