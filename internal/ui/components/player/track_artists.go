@@ -36,31 +36,32 @@ func trackArtists() schwifty.Widget {
 
 	widgetPtr := textView.GoPointer()
 	subscriptionID := player.OnTrackChanged.On(func(trackInfo player.TrackInformation) bool {
-		textView := gtk.TextViewNewFromInternalPtr(widgetPtr)
-		tag := gtk.NewTextTagTable()
-		buffer := gtk.NewTextBuffer(tag)
-		tag.Unref()
-		textView.SetBuffer(buffer)
-		buffer.Unref()
+		schwifty.OnMainThreadOnce(func(u uintptr) {
+			textView := gtk.TextViewNewFromInternalPtr(widgetPtr)
+			tag := gtk.NewTextTagTable()
+			buffer := gtk.NewTextBuffer(tag)
+			tag.Unref()
+			textView.SetBuffer(buffer)
+			buffer.Unref()
 
-		var iter gtk.TextIter
-		buffer.GetStartIter(&iter)
+			var iter gtk.TextIter
+			buffer.GetStartIter(&iter)
 
-		for i, artist := range trackInfo.Artists {
-			anchor := buffer.CreateChildAnchor(&iter)
-			btn := gtk.NewLinkButton("https://tidal.com/artist/" + artist.ID)
-			btn.SetActionName("win.route.artist")
-			btn.SetActionTargetValue(glib.NewVariantString(artist.ID))
-			btn.SetChild(artistLabel.Text(artist.Attributes.Name).ToGTK())
-			btn.ConnectActivateLink(&linkDisabler)
-			textView.AddChildAtAnchor(Widget(&btn.Widget).Padding(0).ToGTK(), anchor)
-			btn.Unref()
-			if i != len(trackInfo.Artists)-1 {
+			for i, artist := range trackInfo.Artists {
 				anchor := buffer.CreateChildAnchor(&iter)
-				textView.AddChildAtAnchor(artistSeparator.ToGTK(), anchor)
+				btn := gtk.NewLinkButton("https://tidal.com/artist/" + artist.ID)
+				btn.SetActionName("win.route.artist")
+				btn.SetActionTargetValue(glib.NewVariantString(artist.ID))
+				btn.SetChild(artistLabel.Text(artist.Attributes.Name).ToGTK())
+				btn.ConnectActivateLink(&linkDisabler)
+				textView.AddChildAtAnchor(Widget(&btn.Widget).Padding(0).ToGTK(), anchor)
+				btn.Unref()
+				if i != len(trackInfo.Artists)-1 {
+					anchor := buffer.CreateChildAnchor(&iter)
+					textView.AddChildAtAnchor(artistSeparator.ToGTK(), anchor)
+				}
 			}
-		}
-
+		}, 0)
 		return signals.Continue
 	})
 
