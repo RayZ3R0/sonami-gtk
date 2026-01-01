@@ -1,11 +1,19 @@
 package ui
 
 import (
+	"context"
 	"unsafe"
 
 	"codeberg.org/dergs/tidalwave/internal/g"
+	"codeberg.org/dergs/tidalwave/internal/notifications"
 	"codeberg.org/dergs/tidalwave/internal/player"
 	"codeberg.org/dergs/tidalwave/internal/router"
+	"codeberg.org/dergs/tidalwave/internal/secrets"
+	"codeberg.org/dergs/tidalwave/internal/ui/components/linking"
+	"codeberg.org/dergs/tidalwave/pkg/schwifty"
+	"codeberg.org/dergs/tidalwave/pkg/tidalapi"
+	"codeberg.org/dergs/tidalwave/pkg/tidalapi/auth"
+	"github.com/jwijenbergh/puregotk/v4/adw"
 	"github.com/jwijenbergh/puregotk/v4/gio"
 	"github.com/jwijenbergh/puregotk/v4/glib"
 )
@@ -74,4 +82,27 @@ func (w *Window) installActions() {
 		})
 	}))
 	w.AddAction(routeArtistAction)
+
+	linkingAction := gio.NewSimpleAction("sign-in", nil)
+	linkingAction.ConnectActivate(g.Ptr(func(action gio.SimpleAction, parameter uintptr) {
+		go func() {
+			var dialog *adw.AlertDialog
+			resp, err := tidalapi.StartDeviceLinking(func(dlc *auth.DeviceLinkingChallenge, cancel context.CancelFunc) {
+				schwifty.OnMainThreadOnce(func(u uintptr) {
+					dialog = linking.NewLinking(&w.Window, dlc.UserCode, dlc.VerificationUriComplete, cancel)
+					defer dialog.Unref()
+					dialog.Present(&w.Widget)
+				}, 0)
+			})
+			defer dialog.ForceClose()
+			if err != nil {
+				notifications.OnToast.Notify("Login failed or aborted")
+				return
+			}
+			secrets.SetRefreshToken(resp.RefreshToken)
+			notifications.OnToast.Notify("Logged in as " + resp.User.Email)
+			router.Refresh()
+		}()
+	}))
+	w.AddAction(linkingAction)
 }

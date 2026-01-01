@@ -6,6 +6,11 @@ menubutton.transparent button:not(:hover) {
     background-color: transparent;
 }
 
+.no-response .response-area {
+    padding: 0;
+    padding-bottom: 10px;
+}
+
 .player label.quality-label {
     text-transform: uppercase;
 }

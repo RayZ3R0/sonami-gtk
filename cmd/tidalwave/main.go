@@ -6,6 +6,7 @@ import (
 
 	"codeberg.org/dergs/tidalwave/internal/g"
 	_ "codeberg.org/dergs/tidalwave/internal/icons"
+	"codeberg.org/dergs/tidalwave/internal/secrets"
 	_ "codeberg.org/dergs/tidalwave/internal/styles"
 	"codeberg.org/dergs/tidalwave/internal/ui"
 	"codeberg.org/dergs/tidalwave/pkg/tidalapi"
@@ -36,7 +37,7 @@ func main() {
 			countryCode = "WW"
 		}
 		slog.Info("Discovered country code", "countryCode", countryCode)
-		return tidalapi.NewClient(countryCode)
+		return tidalapi.NewClient(countryCode, secrets.NewTokenAuthStrategy())
 	})
 
 	injector.Singleton(func(app *adw.Application) *imgutil.ImgUtil {
