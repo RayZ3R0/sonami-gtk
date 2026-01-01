@@ -59,7 +59,10 @@ func play(playbackInfo *v1.PlaybackInfo) error {
 	switch playbackInfo.ManifestMimeType {
 	case v1.ManifestMimeTypeAudioMPD:
 		enqueueMPDStream(playbackInfo)
+	case v1.ManifestMimeTypeAudioBTS:
+		enqueueBTSStream(playbackInfo)
 	default:
+		logger.Error("unsupported manifest mime type", "mime_type", playbackInfo.ManifestMimeType)
 		return fmt.Errorf("unsupported manifest mime type: %s", playbackInfo.ManifestMimeType)
 	}
 
