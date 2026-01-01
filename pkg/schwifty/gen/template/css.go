@@ -38,8 +38,9 @@ func (f TEMPLATE_TYPE) BindCSSClass(state *state.State[string]) TEMPLATE_TYPE {
 		return f.ConnectConstruct(func(w TEMPLATE_BASE_TYPE) {
 			widgetPtr := w.GoPointer()
 			callbackId = state.AddCallback(func(newValue string) {
+				oldState := state.Value()
 				callback.OnMainThreadOnce(func(u uintptr) {
-					gtk.WidgetNewFromInternalPtr(u).GetStyleContext().RemoveClass(state.Value())
+					gtk.WidgetNewFromInternalPtr(u).GetStyleContext().RemoveClass(oldState)
 					gtk.WidgetNewFromInternalPtr(u).GetStyleContext().AddClass(newValue)
 				}, widgetPtr)
 			})

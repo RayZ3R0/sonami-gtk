@@ -229,8 +229,9 @@ func (f WrapBox) BindCSSClass(state *state.State[string]) WrapBox {
 		return f.ConnectConstruct(func(w *adw.WrapBox) {
 			widgetPtr := w.GoPointer()
 			callbackId = state.AddCallback(func(newValue string) {
+				oldState := state.Value()
 				callback.OnMainThreadOnce(func(u uintptr) {
-					gtk.WidgetNewFromInternalPtr(u).GetStyleContext().RemoveClass(state.Value())
+					gtk.WidgetNewFromInternalPtr(u).GetStyleContext().RemoveClass(oldState)
 					gtk.WidgetNewFromInternalPtr(u).GetStyleContext().AddClass(newValue)
 				}, widgetPtr)
 			})

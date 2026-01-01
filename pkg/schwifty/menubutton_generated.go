@@ -228,8 +228,9 @@ func (f MenuButton) BindCSSClass(state *state.State[string]) MenuButton {
 		return f.ConnectConstruct(func(w *gtk.MenuButton) {
 			widgetPtr := w.GoPointer()
 			callbackId = state.AddCallback(func(newValue string) {
+				oldState := state.Value()
 				callback.OnMainThreadOnce(func(u uintptr) {
-					gtk.WidgetNewFromInternalPtr(u).GetStyleContext().RemoveClass(state.Value())
+					gtk.WidgetNewFromInternalPtr(u).GetStyleContext().RemoveClass(oldState)
 					gtk.WidgetNewFromInternalPtr(u).GetStyleContext().AddClass(newValue)
 				}, widgetPtr)
 			})
