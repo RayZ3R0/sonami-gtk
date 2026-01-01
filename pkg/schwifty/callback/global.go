@@ -50,6 +50,13 @@ func OnMainThread(callback MainThreadCallback, params uintptr) uint {
 	return glib.IdleAdd(&mainLoopHandler, id)
 }
 
+func OnMainThreadOnce(cb func(u uintptr), param uintptr) uint {
+	return OnMainThread(func(u uintptr) bool {
+		cb(param)
+		return glib.SOURCE_REMOVE
+	}, param)
+}
+
 // IntPool manages a pool of integers that can be checked out and returned
 type IntPool struct {
 	mu       sync.Mutex

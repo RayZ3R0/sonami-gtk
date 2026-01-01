@@ -11,8 +11,11 @@ func (f MenuButton) BindIconName(state *state.State[string]) MenuButton {
 	return func() *gtk.MenuButton {
 		var callbackId string
 		return f.ConnectConstruct(func(w *gtk.MenuButton) {
+			widgetPtr := w.GoPointer()
 			callbackId = state.AddCallback(func(newValue string) {
-				gtk.MenuButtonNewFromInternalPtr(w.GoPointer()).SetIconName(newValue)
+				OnMainThreadOnce(func(u uintptr) {
+					gtk.MenuButtonNewFromInternalPtr(u).SetIconName(newValue)
+				}, widgetPtr)
 			})
 		}).ConnectDestroy(func(w gtk.Widget) {
 			state.RemoveCallback(callbackId)

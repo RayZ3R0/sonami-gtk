@@ -10,8 +10,8 @@ import (
 	"codeberg.org/dergs/tidalwave/pkg/schwifty"
 	"codeberg.org/dergs/tidalwave/pkg/schwifty/state"
 	. "codeberg.org/dergs/tidalwave/pkg/schwifty/syntax"
-
 	v1 "codeberg.org/dergs/tidalwave/pkg/tidalapi/models/v1"
+
 	"github.com/jwijenbergh/puregotk/v4/gdk"
 	"github.com/jwijenbergh/puregotk/v4/gtk"
 )
@@ -56,19 +56,19 @@ func NewPlayer() schwifty.Box {
 			MenuButton().
 				Popover(controlsVolumeSlider()).
 				IconName("audio-speakers-symbolic").
-				CSS("button:not(:hover) { background-color: transparent; }"),
+				WithCSSClass("transparent"),
 			Button().
 				IconName("heart-outline-thick-symbolic").
-				CSS(`button:not(:hover) { background-color: transparent; }`),
+				WithCSSClass("transparent"),
 			Button().
 				IconName("compass2-symbolic").
-				CSS(`button:not(:hover) { background-color: transparent; }`),
+				WithCSSClass("transparent"),
 			Button().
 				IconName("library-symbolic").
-				CSS(`button:not(:hover) { background-color: transparent; }`),
+				WithCSSClass("transparent"),
 			Button().
 				IconName("folder-publicshare-symbolic").
-				CSS(`button:not(:hover) { background-color: transparent; }`).
+				WithCSSClass("transparent").
 				ConnectClicked(func(gtk.Button) {
 					id := trackID.Value()
 					if id == "" {
@@ -105,25 +105,27 @@ func NewPlayer() schwifty.Box {
 				IconName("media-playlist-shuffle-symbolic").
 				MinHeight(34).
 				MinWidth(34).
-				CSS(`button:not(:hover) { background-color: transparent; }`),
+				WithCSSClass("transparent").
+				ActionName("win.player.shuffle"),
 			Button().
 				IconName("media-seek-backward-symbolic").
 				MinHeight(34).
 				MinWidth(34).
-				CSS(`button:not(:hover) { background-color: transparent; }`),
+				WithCSSClass("transparent").
+				ActionName("win.player.back"),
 			controlsPlayPause(),
 			Button().
 				IconName("media-seek-forward-symbolic").
 				MinHeight(34).
 				MinWidth(34).
-				CSS(`button:not(:hover) { background-color: transparent; }`).ConnectClicked(func(b gtk.Button) {
-				player.Next()
-			}),
+				WithCSSClass("transparent").
+				ActionName("win.player.next"),
 			Button().
 				IconName("media-playlist-repeat-song-symbolic").
 				MinHeight(34).
 				MinWidth(34).
-				CSS(`button:not(:hover) { background-color: transparent; }`),
+				WithCSSClass("transparent").
+				ActionName("win.player.repeat"),
 		).
 			Spacing(7).
 			HAlign(gtk.AlignCenterValue).

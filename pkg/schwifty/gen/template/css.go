@@ -5,7 +5,6 @@ import (
 
 	"codeberg.org/dergs/tidalwave/pkg/schwifty/callback"
 	"codeberg.org/dergs/tidalwave/pkg/schwifty/state"
-	"github.com/jwijenbergh/puregotk/v4/glib"
 	"github.com/jwijenbergh/puregotk/v4/gtk"
 )
 
@@ -40,15 +39,13 @@ func (f TEMPLATE_TYPE) BindCSSClass(state *state.State[string]) TEMPLATE_TYPE {
 			ptr := w.GoPointer()
 			callbackId = state.AddCallback(func(newValue string) {
 				oldValue := state.Value()
-				callback.OnMainThread(func(u uintptr) bool {
+				callback.OnMainThreadOnce(func(u uintptr) {
 					w := gtk.ButtonNewFromInternalPtr(u)
 					styleContext := w.GetStyleContext()
 					defer styleContext.Unref()
 
 					styleContext.RemoveClass(oldValue)
 					styleContext.AddClass(newValue)
-
-					return glib.SOURCE_REMOVE
 				}, ptr)
 			})
 		}).ConnectDestroy(func(w gtk.Widget) {

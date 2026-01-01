@@ -5,7 +5,6 @@ import (
 	"codeberg.org/dergs/tidalwave/pkg/schwifty/state"
 	"fmt"
 	"github.com/jwijenbergh/puregotk/v4/adw"
-	"github.com/jwijenbergh/puregotk/v4/glib"
 	"github.com/jwijenbergh/puregotk/v4/gtk"
 )
 
@@ -231,15 +230,13 @@ func (f HeaderBar) BindCSSClass(state *state.State[string]) HeaderBar {
 			ptr := w.GoPointer()
 			callbackId = state.AddCallback(func(newValue string) {
 				oldValue := state.Value()
-				callback.OnMainThread(func(u uintptr) bool {
+				callback.OnMainThreadOnce(func(u uintptr) {
 					w := gtk.ButtonNewFromInternalPtr(u)
 					styleContext := w.GetStyleContext()
 					defer styleContext.Unref()
 
 					styleContext.RemoveClass(oldValue)
 					styleContext.AddClass(newValue)
-
-					return glib.SOURCE_REMOVE
 				}, ptr)
 			})
 		}).ConnectDestroy(func(w gtk.Widget) {
@@ -351,8 +348,11 @@ func (f HeaderBar) BindVisible(state *state.State[bool]) HeaderBar {
 	return func() *adw.HeaderBar {
 		var callbackId string
 		return f.ConnectConstruct(func(w *adw.HeaderBar) {
+			widgetPtr := w.GoPointer()
 			callbackId = state.AddCallback(func(newValue bool) {
-				w.SetVisible(newValue)
+				callback.OnMainThreadOnce(func(u uintptr) {
+					gtk.WidgetNewFromInternalPtr(u).SetVisible(newValue)
+				}, widgetPtr)
 			})
 		}).ConnectDestroy(func(w gtk.Widget) {
 			state.RemoveCallback(callbackId)
@@ -364,9 +364,12 @@ func (f HeaderBar) BindHMargin(state *state.State[int]) HeaderBar {
 	return func() *adw.HeaderBar {
 		var callbackId string
 		return f.ConnectConstruct(func(w *adw.HeaderBar) {
+			widgetPtr := w.GoPointer()
 			callbackId = state.AddCallback(func(newValue int) {
-				w.SetMarginEnd(newValue)
-				w.SetMarginStart(newValue)
+				callback.OnMainThreadOnce(func(u uintptr) {
+					gtk.WidgetNewFromInternalPtr(u).SetMarginEnd(newValue)
+					gtk.WidgetNewFromInternalPtr(u).SetMarginStart(newValue)
+				}, widgetPtr)
 			})
 		}).ConnectDestroy(func(w gtk.Widget) {
 			state.RemoveCallback(callbackId)
@@ -378,11 +381,14 @@ func (f HeaderBar) BindMargin(state *state.State[int]) HeaderBar {
 	return func() *adw.HeaderBar {
 		var callbackId string
 		return f.ConnectConstruct(func(widget *adw.HeaderBar) {
+			widgetPtr := widget.GoPointer()
 			callbackId = state.AddCallback(func(newValue int) {
-				widget.SetMarginBottom(newValue)
-				widget.SetMarginEnd(newValue)
-				widget.SetMarginStart(newValue)
-				widget.SetMarginTop(newValue)
+				callback.OnMainThreadOnce(func(u uintptr) {
+					gtk.WidgetNewFromInternalPtr(u).SetMarginBottom(newValue)
+					gtk.WidgetNewFromInternalPtr(u).SetMarginEnd(newValue)
+					gtk.WidgetNewFromInternalPtr(u).SetMarginStart(newValue)
+					gtk.WidgetNewFromInternalPtr(u).SetMarginTop(newValue)
+				}, widgetPtr)
 			})
 		}).ConnectDestroy(func(gtk.Widget) {
 			state.RemoveCallback(callbackId)
@@ -394,8 +400,11 @@ func (f HeaderBar) BindMarginBottom(state *state.State[int]) HeaderBar {
 	return func() *adw.HeaderBar {
 		var callbackId string
 		return f.ConnectConstruct(func(w *adw.HeaderBar) {
+			widgetPtr := w.GoPointer()
 			callbackId = state.AddCallback(func(newValue int) {
-				w.SetMarginBottom(newValue)
+				callback.OnMainThreadOnce(func(u uintptr) {
+					gtk.WidgetNewFromInternalPtr(u).SetMarginBottom(newValue)
+				}, widgetPtr)
 			})
 		}).ConnectDestroy(func(w gtk.Widget) {
 			state.RemoveCallback(callbackId)
@@ -407,8 +416,11 @@ func (f HeaderBar) BindMarginEnd(state *state.State[int]) HeaderBar {
 	return func() *adw.HeaderBar {
 		var callbackId string
 		return f.ConnectConstruct(func(w *adw.HeaderBar) {
+			widgetPtr := w.GoPointer()
 			callbackId = state.AddCallback(func(newValue int) {
-				w.SetMarginEnd(newValue)
+				callback.OnMainThreadOnce(func(u uintptr) {
+					gtk.WidgetNewFromInternalPtr(u).SetMarginEnd(newValue)
+				}, widgetPtr)
 			})
 		}).ConnectDestroy(func(w gtk.Widget) {
 			state.RemoveCallback(callbackId)
@@ -420,8 +432,11 @@ func (f HeaderBar) BindMarginStart(state *state.State[int]) HeaderBar {
 	return func() *adw.HeaderBar {
 		var callbackId string
 		return f.ConnectConstruct(func(w *adw.HeaderBar) {
+			widgetPtr := w.GoPointer()
 			callbackId = state.AddCallback(func(newValue int) {
-				w.SetMarginStart(newValue)
+				callback.OnMainThreadOnce(func(u uintptr) {
+					gtk.WidgetNewFromInternalPtr(u).SetMarginStart(newValue)
+				}, widgetPtr)
 			})
 		}).ConnectDestroy(func(w gtk.Widget) {
 			state.RemoveCallback(callbackId)
@@ -433,8 +448,11 @@ func (f HeaderBar) BindMarginTop(state *state.State[int]) HeaderBar {
 	return func() *adw.HeaderBar {
 		var callbackId string
 		return f.ConnectConstruct(func(w *adw.HeaderBar) {
+			widgetPtr := w.GoPointer()
 			callbackId = state.AddCallback(func(newValue int) {
-				w.SetMarginTop(newValue)
+				callback.OnMainThreadOnce(func(u uintptr) {
+					gtk.WidgetNewFromInternalPtr(u).SetMarginTop(newValue)
+				}, widgetPtr)
 			})
 		}).ConnectDestroy(func(w gtk.Widget) {
 			state.RemoveCallback(callbackId)
@@ -446,8 +464,11 @@ func (f HeaderBar) BindSensitive(state *state.State[bool]) HeaderBar {
 	return func() *adw.HeaderBar {
 		var callbackId string
 		return f.ConnectConstruct(func(w *adw.HeaderBar) {
+			widgetPtr := w.GoPointer()
 			callbackId = state.AddCallback(func(newValue bool) {
-				w.SetSensitive(newValue)
+				callback.OnMainThreadOnce(func(u uintptr) {
+					gtk.WidgetNewFromInternalPtr(u).SetSensitive(newValue)
+				}, widgetPtr)
 			})
 		}).ConnectDestroy(func(w gtk.Widget) {
 			state.RemoveCallback(callbackId)

@@ -5,7 +5,6 @@ import (
 	"codeberg.org/dergs/tidalwave/pkg/schwifty/state"
 	"fmt"
 	"github.com/jwijenbergh/puregotk/v4/adw"
-	"github.com/jwijenbergh/puregotk/v4/glib"
 	"github.com/jwijenbergh/puregotk/v4/gtk"
 )
 
@@ -231,15 +230,13 @@ func (f WindowTitle) BindCSSClass(state *state.State[string]) WindowTitle {
 			ptr := w.GoPointer()
 			callbackId = state.AddCallback(func(newValue string) {
 				oldValue := state.Value()
-				callback.OnMainThread(func(u uintptr) bool {
+				callback.OnMainThreadOnce(func(u uintptr) {
 					w := gtk.ButtonNewFromInternalPtr(u)
 					styleContext := w.GetStyleContext()
 					defer styleContext.Unref()
 
 					styleContext.RemoveClass(oldValue)
 					styleContext.AddClass(newValue)
-
-					return glib.SOURCE_REMOVE
 				}, ptr)
 			})
 		}).ConnectDestroy(func(w gtk.Widget) {
@@ -351,8 +348,11 @@ func (f WindowTitle) BindVisible(state *state.State[bool]) WindowTitle {
 	return func() *adw.WindowTitle {
 		var callbackId string
 		return f.ConnectConstruct(func(w *adw.WindowTitle) {
+			widgetPtr := w.GoPointer()
 			callbackId = state.AddCallback(func(newValue bool) {
-				w.SetVisible(newValue)
+				callback.OnMainThreadOnce(func(u uintptr) {
+					gtk.WidgetNewFromInternalPtr(u).SetVisible(newValue)
+				}, widgetPtr)
 			})
 		}).ConnectDestroy(func(w gtk.Widget) {
 			state.RemoveCallback(callbackId)
@@ -364,9 +364,12 @@ func (f WindowTitle) BindHMargin(state *state.State[int]) WindowTitle {
 	return func() *adw.WindowTitle {
 		var callbackId string
 		return f.ConnectConstruct(func(w *adw.WindowTitle) {
+			widgetPtr := w.GoPointer()
 			callbackId = state.AddCallback(func(newValue int) {
-				w.SetMarginEnd(newValue)
-				w.SetMarginStart(newValue)
+				callback.OnMainThreadOnce(func(u uintptr) {
+					gtk.WidgetNewFromInternalPtr(u).SetMarginEnd(newValue)
+					gtk.WidgetNewFromInternalPtr(u).SetMarginStart(newValue)
+				}, widgetPtr)
 			})
 		}).ConnectDestroy(func(w gtk.Widget) {
 			state.RemoveCallback(callbackId)
@@ -378,11 +381,14 @@ func (f WindowTitle) BindMargin(state *state.State[int]) WindowTitle {
 	return func() *adw.WindowTitle {
 		var callbackId string
 		return f.ConnectConstruct(func(widget *adw.WindowTitle) {
+			widgetPtr := widget.GoPointer()
 			callbackId = state.AddCallback(func(newValue int) {
-				widget.SetMarginBottom(newValue)
-				widget.SetMarginEnd(newValue)
-				widget.SetMarginStart(newValue)
-				widget.SetMarginTop(newValue)
+				callback.OnMainThreadOnce(func(u uintptr) {
+					gtk.WidgetNewFromInternalPtr(u).SetMarginBottom(newValue)
+					gtk.WidgetNewFromInternalPtr(u).SetMarginEnd(newValue)
+					gtk.WidgetNewFromInternalPtr(u).SetMarginStart(newValue)
+					gtk.WidgetNewFromInternalPtr(u).SetMarginTop(newValue)
+				}, widgetPtr)
 			})
 		}).ConnectDestroy(func(gtk.Widget) {
 			state.RemoveCallback(callbackId)
@@ -394,8 +400,11 @@ func (f WindowTitle) BindMarginBottom(state *state.State[int]) WindowTitle {
 	return func() *adw.WindowTitle {
 		var callbackId string
 		return f.ConnectConstruct(func(w *adw.WindowTitle) {
+			widgetPtr := w.GoPointer()
 			callbackId = state.AddCallback(func(newValue int) {
-				w.SetMarginBottom(newValue)
+				callback.OnMainThreadOnce(func(u uintptr) {
+					gtk.WidgetNewFromInternalPtr(u).SetMarginBottom(newValue)
+				}, widgetPtr)
 			})
 		}).ConnectDestroy(func(w gtk.Widget) {
 			state.RemoveCallback(callbackId)
@@ -407,8 +416,11 @@ func (f WindowTitle) BindMarginEnd(state *state.State[int]) WindowTitle {
 	return func() *adw.WindowTitle {
 		var callbackId string
 		return f.ConnectConstruct(func(w *adw.WindowTitle) {
+			widgetPtr := w.GoPointer()
 			callbackId = state.AddCallback(func(newValue int) {
-				w.SetMarginEnd(newValue)
+				callback.OnMainThreadOnce(func(u uintptr) {
+					gtk.WidgetNewFromInternalPtr(u).SetMarginEnd(newValue)
+				}, widgetPtr)
 			})
 		}).ConnectDestroy(func(w gtk.Widget) {
 			state.RemoveCallback(callbackId)
@@ -420,8 +432,11 @@ func (f WindowTitle) BindMarginStart(state *state.State[int]) WindowTitle {
 	return func() *adw.WindowTitle {
 		var callbackId string
 		return f.ConnectConstruct(func(w *adw.WindowTitle) {
+			widgetPtr := w.GoPointer()
 			callbackId = state.AddCallback(func(newValue int) {
-				w.SetMarginStart(newValue)
+				callback.OnMainThreadOnce(func(u uintptr) {
+					gtk.WidgetNewFromInternalPtr(u).SetMarginStart(newValue)
+				}, widgetPtr)
 			})
 		}).ConnectDestroy(func(w gtk.Widget) {
 			state.RemoveCallback(callbackId)
@@ -433,8 +448,11 @@ func (f WindowTitle) BindMarginTop(state *state.State[int]) WindowTitle {
 	return func() *adw.WindowTitle {
 		var callbackId string
 		return f.ConnectConstruct(func(w *adw.WindowTitle) {
+			widgetPtr := w.GoPointer()
 			callbackId = state.AddCallback(func(newValue int) {
-				w.SetMarginTop(newValue)
+				callback.OnMainThreadOnce(func(u uintptr) {
+					gtk.WidgetNewFromInternalPtr(u).SetMarginTop(newValue)
+				}, widgetPtr)
 			})
 		}).ConnectDestroy(func(w gtk.Widget) {
 			state.RemoveCallback(callbackId)
@@ -446,8 +464,11 @@ func (f WindowTitle) BindSensitive(state *state.State[bool]) WindowTitle {
 	return func() *adw.WindowTitle {
 		var callbackId string
 		return f.ConnectConstruct(func(w *adw.WindowTitle) {
+			widgetPtr := w.GoPointer()
 			callbackId = state.AddCallback(func(newValue bool) {
-				w.SetSensitive(newValue)
+				callback.OnMainThreadOnce(func(u uintptr) {
+					gtk.WidgetNewFromInternalPtr(u).SetSensitive(newValue)
+				}, widgetPtr)
 			})
 		}).ConnectDestroy(func(w gtk.Widget) {
 			state.RemoveCallback(callbackId)

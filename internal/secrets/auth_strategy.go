@@ -1,4 +1,4 @@
-package auth
+package secrets
 
 import (
 	"encoding/json"
@@ -9,16 +9,16 @@ import (
 	"time"
 )
 
-type OpenAPIClientAuthStrategy struct {
+type AuthStrategy struct {
 	cachedToken string
 	tokenExpiry time.Time
 }
 
-func NewOpenAPIClientAuthStrategy() *OpenAPIClientAuthStrategy {
-	return &OpenAPIClientAuthStrategy{}
+func NewTokenAuthStrategy() *AuthStrategy {
+	return &AuthStrategy{}
 }
 
-func (s *OpenAPIClientAuthStrategy) GetToken(clientID, clientSecret string) (string, error) {
+func (s *AuthStrategy) GetToken(clientID, clientSecret string) (string, error) {
 	if s.cachedToken != "" && time.Now().Before(s.tokenExpiry) {
 		return s.cachedToken, nil
 	}
@@ -26,7 +26,8 @@ func (s *OpenAPIClientAuthStrategy) GetToken(clientID, clientSecret string) (str
 	formValues := url.Values{
 		"client_id":     []string{clientID},
 		"client_secret": []string{clientSecret},
-		"grant_type":    []string{"client_credentials"},
+		"grant_type":    []string{"refresh_token"},
+		"refresh_token": []string{GetRefreshToken()},
 	}
 	req, err := http.NewRequest(http.MethodPost, "https://auth.tidal.com/v1/oauth2/token", strings.NewReader(formValues.Encode()))
 	if err != nil {
@@ -59,16 +60,15 @@ func (s *OpenAPIClientAuthStrategy) GetToken(clientID, clientSecret string) (str
 	return tokenResponse.AccessToken, nil
 }
 
-func (s *OpenAPIClientAuthStrategy) Authenticate(req *http.Request, clientID, clientSecret string) error {
-	// This auth is only valid for openapi.tidal.com
-	if req.URL.Host == "openapi.tidal.com" && req.Header.Get("Authorization") == "" {
-		token, err := s.GetToken(clientID, clientSecret)
-		if err != nil {
-			return err
-		}
-
-		req.Header.Set("Authorization", fmt.Sprintf("Bearer %s", token))
+func (s *AuthStrategy) Authenticate(req *http.Request, clientID, clientSecret string) error {
+	if !HasRefreshToken() {
+		return nil
 	}
 
+	token, err := s.GetToken(clientID, clientSecret)
+	if err != nil {
+		return err
+	}
+	req.Header.Set("Authorization", fmt.Sprintf("Bearer %s", token))
 	return nil
 }

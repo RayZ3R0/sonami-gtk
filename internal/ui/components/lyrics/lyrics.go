@@ -19,14 +19,13 @@ import (
 	"codeberg.org/dergs/tidalwave/pkg/tidalapi"
 	"codeberg.org/dergs/tidalwave/pkg/utils/imgutil"
 	"github.com/infinytum/injector"
-	"github.com/jwijenbergh/puregotk/v4/gdk"
 	"github.com/jwijenbergh/puregotk/v4/graphene"
 	"github.com/jwijenbergh/puregotk/v4/gtk"
 	"github.com/jwijenbergh/puregotk/v4/pango"
 )
 
 var (
-	coverState   = state.NewStateful[gdk.Paintable](resources.MissingAlbum())
+	coverState   = state.NewStateful[schwifty.Paintable](resources.MissingAlbum())
 	trackTitle   = state.NewStateful[string]("")
 	trackArtists = state.NewStateful[string]("")
 )

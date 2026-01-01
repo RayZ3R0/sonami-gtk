@@ -4,17 +4,29 @@ import (
 	"codeberg.org/dergs/tidalwave/pkg/schwifty/state"
 	"github.com/jwijenbergh/puregotk/v4/gdk"
 	"github.com/jwijenbergh/puregotk/v4/gdkpixbuf"
+	"github.com/jwijenbergh/puregotk/v4/gobject"
 	"github.com/jwijenbergh/puregotk/v4/gtk"
 )
 
 //go:generate go run codeberg.org/dergs/tidalwave/pkg/schwifty/gen Image *gtk.Image
 
-func (f Image) BindPaintable(state *state.State[gdk.Paintable]) Image {
+type Paintable interface {
+	gdk.Paintable
+	Ref() *gobject.Object
+	Unref()
+}
+
+func (f Image) BindPaintable(state *state.State[Paintable]) Image {
 	return func() *gtk.Image {
 		var callbackId string
 		return f.ConnectConstruct(func(w *gtk.Image) {
-			callbackId = state.AddCallback(func(newValue gdk.Paintable) {
-				gtk.ImageNewFromInternalPtr(w.GoPointer()).SetFromPaintable(newValue)
+			widgetPtr := w.GoPointer()
+			callbackId = state.AddCallback(func(newValue Paintable) {
+				newValue.Ref()
+				OnMainThreadOnce(func(u uintptr) {
+					gtk.ImageNewFromInternalPtr(u).SetFromPaintable(newValue)
+					newValue.Unref()
+				}, widgetPtr)
 			})
 		}).ConnectDestroy(func(w gtk.Widget) {
 			state.RemoveCallback(callbackId)
@@ -26,8 +38,13 @@ func (f Image) BindPixbuf(state *state.State[*gdkpixbuf.Pixbuf]) Image {
 	return func() *gtk.Image {
 		var callbackId string
 		return f.ConnectConstruct(func(w *gtk.Image) {
+			widgetPtr := w.GoPointer()
 			callbackId = state.AddCallback(func(newValue *gdkpixbuf.Pixbuf) {
-				gtk.ImageNewFromInternalPtr(w.GoPointer()).SetFromPixbuf(newValue)
+				newValue.Ref()
+				OnMainThreadOnce(func(u uintptr) {
+					gtk.ImageNewFromInternalPtr(u).SetFromPixbuf(newValue)
+					newValue.Unref()
+				}, widgetPtr)
 			})
 		}).ConnectDestroy(func(w gtk.Widget) {
 			state.RemoveCallback(callbackId)

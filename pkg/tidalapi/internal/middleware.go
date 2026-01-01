@@ -48,7 +48,7 @@ func (m MiddlewareRoundTripper) RoundTrip(req *http.Request) (*http.Response, er
 
 	// Execute all auth strategies
 	for _, strategy := range m.authStrategies {
-		if err := strategy.Authenticate(req); err != nil {
+		if err := strategy.Authenticate(req, ClientID, ClientSecret); err != nil {
 			return nil, err
 		}
 	}

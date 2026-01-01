@@ -29,8 +29,11 @@ func (f Button) BindIconName(state *state.State[string]) Button {
 	return func() *gtk.Button {
 		var callbackId string
 		return f.ConnectConstruct(func(w *gtk.Button) {
+			widgetPtr := w.GoPointer()
 			callbackId = state.AddCallback(func(newValue string) {
-				gtk.ButtonNewFromInternalPtr(w.GoPointer()).SetIconName(newValue)
+				callback.OnMainThreadOnce(func(u uintptr) {
+					gtk.ButtonNewFromInternalPtr(u).SetIconName(newValue)
+				}, widgetPtr)
 			})
 		}).ConnectDestroy(func(w gtk.Widget) {
 			state.RemoveCallback(callbackId)
@@ -58,6 +61,14 @@ func (f Button) IconName(iconName string) Button {
 	return func() *gtk.Button {
 		button := f()
 		button.SetIconName(iconName)
+		return button
+	}
+}
+
+func (f Button) Label(label string) Button {
+	return func() *gtk.Button {
+		button := f()
+		button.SetLabel(label)
 		return button
 	}
 }

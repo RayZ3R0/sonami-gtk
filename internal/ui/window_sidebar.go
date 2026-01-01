@@ -2,6 +2,7 @@ package ui
 
 import (
 	"codeberg.org/dergs/tidalwave/internal/router"
+	"codeberg.org/dergs/tidalwave/internal/secrets"
 	"codeberg.org/dergs/tidalwave/internal/signals"
 	"codeberg.org/dergs/tidalwave/internal/ui/components"
 	"codeberg.org/dergs/tidalwave/internal/ui/components/lyrics"
@@ -22,12 +23,18 @@ func (w *Window) buildSidebarHeader() *gtk.Widget {
 	})
 
 	mainMenu := gio.NewMenu()
+	if secrets.HasRefreshToken() {
+		mainMenu.Append("Sign Out", "win.sign-out")
+	} else {
+		mainMenu.Append("Sign In", "win.sign-in")
+	}
 	mainMenu.Append("Preferences", "app.preferences")
 	mainMenu.Append("About", "app.about")
 
 	menuButton := gtk.NewMenuButton()
 	menuButton.SetIconName("menu-symbolic")
 	menuButton.SetMenuModel(&mainMenu.MenuModel)
+	mainMenu.Unref()
 
 	searchButton := components.NewRouteButton("search")
 	searchButton.SetIcon("loupe-symbolic")
@@ -38,7 +45,10 @@ func (w *Window) buildSidebarHeader() *gtk.Widget {
 		ShowBackButton(false).
 		ShowEndTitleButtons(false).
 		CenteringPolicy(adw.CenteringPolicyStrictValue).
-		PackEnd(menuButton, searchButton).
+		PackEnd(
+			ManagedWidget(&menuButton.Widget),
+			searchButton,
+		).
 		ToGTK()
 }
 

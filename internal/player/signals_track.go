@@ -59,7 +59,7 @@ func (t TrackInformation) ArtistNames() string {
 }
 
 func (t TrackInformation) Equals(other TrackInformation) bool {
-	return t.ID == other.ID
+	return t.ID == other.ID && t.Quality == other.Quality
 }
 
 func (t TrackInformation) String() string {

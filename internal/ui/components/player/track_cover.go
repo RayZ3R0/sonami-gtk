@@ -11,11 +11,10 @@ import (
 	. "codeberg.org/dergs/tidalwave/pkg/schwifty/syntax"
 	"codeberg.org/dergs/tidalwave/pkg/utils/imgutil"
 	"github.com/infinytum/injector"
-	"github.com/jwijenbergh/puregotk/v4/gdk"
 	"github.com/jwijenbergh/puregotk/v4/gtk"
 )
 
-var coverState = state.New[gdk.Paintable](nil)
+var coverState = state.New[schwifty.Paintable](nil)
 
 func init() {
 	player.OnTrackChanged.On(func(trackInfo player.TrackInformation) bool {

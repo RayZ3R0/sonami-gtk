@@ -15,7 +15,7 @@ func buttonColumn(trackId string, grid *gtk.Grid, row int, column int) int {
 		Button().
 			ActionName("win.player.play-track").
 			ActionTargetValue(glib.NewVariantString(trackId)).
-			CSS(`button:not(:hover) { background-color: transparent; }`).
+			WithCSSClass("transparent").
 			ToGTK(),
 		0,
 		row,

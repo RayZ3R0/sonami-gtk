@@ -147,10 +147,10 @@ func Playlist(params router.Params) *router.Response {
 					HStack(
 						Button().
 							IconName("heart-outline-thick-symbolic").
-							CSS("button:not(:hover) { background-color: transparent; }"),
+							WithCSSClass("transparent"),
 						Button().
 							IconName("folder-publicshare-symbolic").
-							CSS("button:not(:hover) { background-color: transparent; }").
+							WithCSSClass("transparent").
 							ConnectClicked(func(gtk.Button) {
 								id := playlist.Data.ID
 								if id == "" {

@@ -20,8 +20,11 @@ func (f Scale) BindValue(state *state.State[float64]) Scale {
 	return func() *gtk.Scale {
 		var callbackId string
 		return f.ConnectConstruct(func(w *gtk.Scale) {
+			widgetPtr := w.GoPointer()
 			callbackId = state.AddCallback(func(newValue float64) {
-				gtk.ScaleNewFromInternalPtr(w.GoPointer()).SetValue(newValue)
+				OnMainThreadOnce(func(u uintptr) {
+					gtk.ScaleNewFromInternalPtr(u).SetValue(newValue)
+				}, widgetPtr)
 			})
 		}).ConnectDestroy(func(w gtk.Widget) {
 			state.RemoveCallback(callbackId)
