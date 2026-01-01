@@ -26,6 +26,28 @@ func (w *Window) installActions() {
 	}))
 	w.AddAction(playTrackAction)
 
+	playPlaylistAction := gio.NewSimpleAction("player.play-playlist", glib.NewVariantType("s"))
+	playPlaylistAction.ConnectActivate(g.Ptr(func(action gio.SimpleAction, parameter uintptr) {
+		variant := (*glib.Variant)(unsafe.Pointer(parameter))
+		id := variant.GetString(nil)
+		player.PlayPlaylist(id)
+	}))
+	w.AddAction(playPlaylistAction)
+
+	nextAction := gio.NewSimpleAction("player.next", nil)
+	nextAction.ConnectActivate(g.Ptr(func(action gio.SimpleAction, parameter uintptr) {
+		player.Next()
+	}))
+	w.AddAction(nextAction)
+
+	queueTrackAction := gio.NewSimpleAction("player.queue-track", glib.NewVariantType("s"))
+	queueTrackAction.ConnectActivate(g.Ptr(func(action gio.SimpleAction, parameter uintptr) {
+		variant := (*glib.Variant)(unsafe.Pointer(parameter))
+		id := variant.GetString(nil)
+		go player.UserQueue.AddTrackID(id, false)
+	}))
+	w.AddAction(queueTrackAction)
+
 	routeAlbumAction := gio.NewSimpleAction("route.album", glib.NewVariantType("s"))
 	routeAlbumAction.ConnectActivate(g.Ptr(func(action gio.SimpleAction, parameter uintptr) {
 		variant := (*glib.Variant)(unsafe.Pointer(parameter))
@@ -52,12 +74,4 @@ func (w *Window) installActions() {
 		})
 	}))
 	w.AddAction(routeArtistAction)
-
-	queueTrackAction := gio.NewSimpleAction("player.queue-track", glib.NewVariantType("s"))
-	queueTrackAction.ConnectActivate(g.Ptr(func(action gio.SimpleAction, parameter uintptr) {
-		variant := (*glib.Variant)(unsafe.Pointer(parameter))
-		id := variant.GetString(nil)
-		go player.UserQueue.AddTrackID(id, false)
-	}))
-	w.AddAction(queueTrackAction)
 }

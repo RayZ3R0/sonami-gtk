@@ -105,25 +105,27 @@ func NewPlayer() schwifty.Box {
 				IconName("media-playlist-shuffle-symbolic").
 				MinHeight(34).
 				MinWidth(34).
-				WithCSSClass("transparent"),
+				WithCSSClass("transparent").
+				ActionName("win.player.shuffle"),
 			Button().
 				IconName("media-seek-backward-symbolic").
 				MinHeight(34).
 				MinWidth(34).
-				WithCSSClass("transparent"),
+				WithCSSClass("transparent").
+				ActionName("win.player.back"),
 			controlsPlayPause(),
 			Button().
 				IconName("media-seek-forward-symbolic").
 				MinHeight(34).
 				MinWidth(34).
-				WithCSSClass("transparent").ConnectClicked(func(b gtk.Button) {
-				player.Next()
-			}),
+				WithCSSClass("transparent").
+				ActionName("win.player.next"),
 			Button().
 				IconName("media-playlist-repeat-song-symbolic").
 				MinHeight(34).
 				MinWidth(34).
-				WithCSSClass("transparent"),
+				WithCSSClass("transparent").
+				ActionName("win.player.repeat"),
 		).
 			Spacing(7).
 			HAlign(gtk.AlignCenterValue).
