@@ -64,3 +64,11 @@ func (f Button) IconName(iconName string) Button {
 		return button
 	}
 }
+
+func (f Button) Label(label string) Button {
+	return func() *gtk.Button {
+		button := f()
+		button.SetLabel(label)
+		return button
+	}
+}
