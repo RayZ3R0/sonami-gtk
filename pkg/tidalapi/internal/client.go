@@ -14,7 +14,7 @@ type Client struct {
 
 func NewClient(countryCode string, authStrategies ...auth.AuthStrategy) *Client {
 	client := &http.Client{
-		Transport: MiddlewareRoundTripper{authStrategies: append(authStrategies, auth.NewOpenAPIClientAuthStrategy(ClientID, ClientSecret)), countryCode: countryCode},
+		Transport: MiddlewareRoundTripper{authStrategies: append(authStrategies, auth.NewOpenAPIClientAuthStrategy()), countryCode: countryCode},
 	}
 
 	return &Client{
