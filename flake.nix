@@ -60,13 +60,14 @@
           pname = "tidalwave";
           version = "0.0.1";
           src = ./.;
-          vendorHash = "sha256-iyr88oK4LdrFYNX5bvjAzwz0CYlGnte9ZSwvDntgz/o=";
+          vendorHash = "sha256-fuvkl3QB+yOpHtJ1rBQaNdPOQvRxb+Ph7qBWVIDqDwA=";
 
-          buildInputs = cgoDependencies;
+          buildInputs = cgoDependencies ++ runtimeDependencies;
           doCheck = false;
           nativeBuildInputs = with pkgs; [
             pkg-config
             copyDesktopItems
+            makeBinaryWrapper
           ];
 
           subPackages = [
@@ -80,7 +81,9 @@
               icon = "tidalwave";
               comment = "Tidal Wave is a GTK client for TIDAL written in GoLang.";
               desktopName = "Tidal Wave";
-              mimeType = "x-scheme-handler/tidal";
+              mimeTypes = [
+                "x-scheme-handler/tidal"
+              ];
               categories = [
                 "Audio"
                 "AudioVideo"
