@@ -27,27 +27,9 @@ func Home(params router.Params) *router.Response {
 		body = body.Append(components.ForPageItem(item))
 	}
 
-	controller := gtk.NewEventControllerScroll(gtk.EventControllerScrollVerticalValue)
-	controller.SetPropagationPhase(gtk.PhaseCaptureValue)
-
-	// vadj := scroll.GetVadjustment()
-	// controller.ConnectScroll(func(dx, dy float64) (ok bool) {
-	// 	if controller.CurrentEventState()&gdk.KEY_Shift_L != 0 {
-	// 		return false
-	// 	}
-
-	// 	if controller.Unit() == gdk.ScrollUnitWheel {
-	// 		vadj.SetValue(vadj.Value() + dy*vadj.StepIncrement())
-	// 	} else {
-	// 		vadj.SetValue(vadj.Value() + dy)
-	// 	}
-	// 	return false
-	// })
-
 	return &router.Response{
 		PageTitle: "Home",
 		View: ScrolledWindow().
-			AddController(&controller.EventController).
 			Child(body).
 			Policy(gtk.PolicyNeverValue, gtk.PolicyAutomaticValue),
 	}
