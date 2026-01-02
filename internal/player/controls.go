@@ -11,8 +11,8 @@ func Scrub(percent float64) {
 		panic("percent must be between 0 and 100")
 	}
 
-	position := OnStateChanged.current.Duration * time.Duration(percent/100.0)
-	playbin.SeekTime(time.Duration(position)*time.Second, gst.SeekFlagFlush)
+	position := time.Duration(int64(float64(OnStateChanged.current.Duration.Nanoseconds()) * (percent / 100.0)))
+	playbin.SeekTime(position, gst.SeekFlagFlush)
 	OnStateChanged.Notify(func(state *State) {
 		state.Position = position
 		if state.Status == StatusStopped {
