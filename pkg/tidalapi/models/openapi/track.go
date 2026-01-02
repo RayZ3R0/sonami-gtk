@@ -16,6 +16,13 @@ const (
 	TrackExternalLinkTypeTidalSharing TrackExternalLinkType = "TIDAL_SHARING"
 )
 
+type TrackAvailability string
+
+const (
+	TrackAvailabilityDJ     TrackAvailability = "DJ"
+	TrackAvailabilityStream TrackAvailability = "STREAM"
+)
+
 type TrackData struct {
 	Attributes    TrackAttributes    `json:"attributes"`
 	ID            string             `json:"id"`
@@ -24,9 +31,9 @@ type TrackData struct {
 }
 
 type TrackAttributes struct {
-	AccessType   string   `json:"accessType"`
-	Availability []string `json:"availability"`
-	BPM          float64  `json:"bpm"`
+	AccessType   string              `json:"accessType"`
+	Availability []TrackAvailability `json:"availability"`
+	BPM          float64             `json:"bpm"`
 	Copyright    struct {
 		Text string `json:"text"`
 	}

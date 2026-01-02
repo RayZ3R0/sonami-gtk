@@ -2,8 +2,11 @@ package player
 
 import (
 	"context"
+	"errors"
 	"fmt"
+	"slices"
 
+	"codeberg.org/dergs/tidalwave/internal/notifications"
 	"codeberg.org/dergs/tidalwave/pkg/tidalapi"
 	"codeberg.org/dergs/tidalwave/pkg/tidalapi/models/openapi"
 	v1 "codeberg.org/dergs/tidalwave/pkg/tidalapi/models/v1"
@@ -33,8 +36,15 @@ func playTrack(track *openapi.Track) error {
 		}
 	})
 
+	if !slices.Contains(track.Data.Attributes.Availability, openapi.TrackAvailabilityStream) {
+		notifications.OnToast.Notify("Track not available for streaming, skipping to next track")
+		Next()
+		return errors.New("track not available for streaming")
+	}
+
 	playbackInfo, err := tidal.V1.Tracks.PlaybackInfo(context.Background(), track.Data.ID, tracksv1.PlaybackInfoOptions{})
 	if err != nil {
+		logger.Error("unable to fetch playback info for track", "error", err)
 		return err
 	}
 
