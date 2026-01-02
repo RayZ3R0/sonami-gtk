@@ -3,9 +3,12 @@ package main
 import (
 	"log/slog"
 	"os"
+	"strings"
 
 	"codeberg.org/dergs/tidalwave/internal/g"
 	_ "codeberg.org/dergs/tidalwave/internal/icons"
+	"codeberg.org/dergs/tidalwave/internal/player"
+	"codeberg.org/dergs/tidalwave/internal/router"
 	"codeberg.org/dergs/tidalwave/internal/secrets"
 	_ "codeberg.org/dergs/tidalwave/internal/styles"
 	"codeberg.org/dergs/tidalwave/internal/ui"
@@ -24,9 +27,10 @@ func init() {
 var app *adw.Application
 
 func main() {
-	app = adw.NewApplication("org.codeberg.dergs.tidalwave", gio.GApplicationFlagsNoneValue)
+	app = adw.NewApplication("org.codeberg.dergs.tidalwave", gio.GApplicationHandlesCommandLineValue)
 	defer app.Unref()
 	app.ConnectActivate(g.Ptr(onActivate))
+	app.ConnectCommandLine(g.Ptr(onCommandLine))
 	injector.Singleton(func() *adw.Application {
 		return app
 	})
@@ -55,4 +59,25 @@ func onActivate(_ gio.Application) {
 	window := ui.NewWindow(app)
 	window.Present()
 	go tracking.LogAliveWidgets()
+}
+
+var isActive bool
+
+func onCommandLine(app gio.Application, ptr uintptr) int {
+	cmd := gio.ApplicationCommandLineNewFromInternalPtr(ptr)
+	args := cmd.GetArguments(nil)
+	if !isActive {
+		app.Activate()
+		isActive = true
+	}
+
+	if len(args) == 2 {
+		url := args[1]
+		if strings.HasPrefix(url, "tidal://track/") {
+			player.PlayTrack(strings.TrimPrefix(url, "tidal://track/"))
+		} else {
+			router.Navigate(url)
+		}
+	}
+	return 0
 }

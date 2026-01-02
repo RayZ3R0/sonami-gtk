@@ -80,6 +80,7 @@
               icon = "tidalwave";
               comment = "Tidal Wave is a GTK client for TIDAL written in GoLang.";
               desktopName = "Tidal Wave";
+              mimeType = "x-scheme-handler/tidal";
               categories = [
                 "Audio"
                 "AudioVideo"
