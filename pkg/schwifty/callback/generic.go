@@ -10,6 +10,7 @@ import (
 
 var (
 	logger              = slog.With("library", "schwifty", "module", "callback")
+	shouldLogLifecycle  = false
 	widgetCallbacks     = make(map[uintptr]map[string][]any)
 	widgetCallbacksLock = sync.RWMutex{}
 )
@@ -37,7 +38,9 @@ func CallbackHandler[T any](widget gtk.Widget, signal string, args ...any) []T {
 				returnValues[i] = result[0].Interface().(T)
 			}
 		}
-		logger.Debug("executed callback", "ptr", widget.GoPointer(), "signal", signal, "handlers", len(signalCallbacks))
+		if shouldLogLifecycle {
+			logger.Debug("executed callback", "ptr", widget.GoPointer(), "signal", signal, "handlers", len(signalCallbacks))
+		}
 		return returnValues
 	}
 	return nil
@@ -67,7 +70,9 @@ func HandleCallback(widget gtk.Widget, signal string, callback any) {
 	signalCallbacks = append(signalCallbacks, callback)
 	allCallbacks[signal] = signalCallbacks
 	widgetCallbacks[id] = allCallbacks
-	logger.Debug("registered callback", "ptr", widget.GoPointer(), "signal", signal)
+	if shouldLogLifecycle {
+		logger.Debug("registered callback", "ptr", widget.GoPointer(), "signal", signal)
+	}
 }
 
 func DeleteCallbacks(widget gtk.Widget) {
@@ -76,5 +81,11 @@ func DeleteCallbacks(widget gtk.Widget) {
 	widgetCallbacksLock.Lock()
 	defer widgetCallbacksLock.Unlock()
 	delete(widgetCallbacks, widget.GoPointer())
-	logger.Debug("deleted all callbacks", "ptr", widget.GoPointer())
+	if shouldLogLifecycle {
+		logger.Debug("deleted all callbacks", "ptr", widget.GoPointer())
+	}
+}
+
+func SetLogLifecycle(enabled bool) {
+	shouldLogLifecycle = enabled
 }

@@ -5,6 +5,8 @@ import (
 	"time"
 )
 
+var logger = slog.With("library", "schwifty", "module", "tracking")
+
 func LogAliveWidgets() {
 	lastCount := 0
 	for {
