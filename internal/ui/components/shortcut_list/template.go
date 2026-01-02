@@ -14,8 +14,8 @@ func NewShortcut(title string, subtitle string, coverUrl string) schwifty.Button
 		Child(
 			HStack(
 				VStack(
-					Label(title).HAlign(gtk.AlignStartValue).FontWeight(600),
-					Label(subtitle).HAlign(gtk.AlignStartValue).Visible(subtitle != ""),
+					Label(title).HAlign(gtk.AlignStartValue).FontWeight(600).FontSize(16),
+					Label(subtitle).HAlign(gtk.AlignStartValue).Visible(subtitle != "").FontSize(14).FontWeight(500).Color("#939393"),
 				).HAlign(gtk.AlignStartValue).VAlign(gtk.AlignCenterValue).HExpand(true),
 				AspectFrame(
 					Image().
