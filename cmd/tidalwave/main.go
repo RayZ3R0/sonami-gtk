@@ -9,6 +9,7 @@ import (
 	"codeberg.org/dergs/tidalwave/internal/secrets"
 	_ "codeberg.org/dergs/tidalwave/internal/styles"
 	"codeberg.org/dergs/tidalwave/internal/ui"
+	"codeberg.org/dergs/tidalwave/pkg/schwifty/tracking"
 	"codeberg.org/dergs/tidalwave/pkg/tidalapi"
 	"codeberg.org/dergs/tidalwave/pkg/utils/imgutil"
 	"github.com/infinytum/injector"
@@ -53,4 +54,5 @@ func main() {
 func onActivate(_ gio.Application) {
 	window := ui.NewWindow(app)
 	window.Present()
+	go tracking.LogAliveWidgets()
 }
