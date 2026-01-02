@@ -4,7 +4,6 @@ import (
 	"context"
 	"errors"
 	"fmt"
-	"math/rand/v2"
 
 	"codeberg.org/dergs/tidalwave/internal/notifications"
 	"codeberg.org/dergs/tidalwave/internal/player"
@@ -120,8 +119,7 @@ func Playlist(params router.Params) *router.Response {
 							Padding(9).
 							VAlign(gtk.AlignCenterValue).
 							ConnectClicked(func(b gtk.Button) {
-								i := rand.IntN(len(items.Data))
-								player.PlayTrack(items.Included.Tracks(items.Data[i])[0].Data.ID)
+								go player.PlayPlaylist(playlistUUID, true)
 							}),
 						Button().
 							IconName("media-playback-start-symbolic").
@@ -139,7 +137,7 @@ func Playlist(params router.Params) *router.Response {
 							`).
 							VAlign(gtk.AlignCenterValue).
 							ConnectClicked(func(b gtk.Button) {
-								player.PlayTrack(items.Included.Tracks(items.Data[0])[0].Data.ID)
+								go player.PlayPlaylist(playlistUUID, false)
 							}),
 					).
 						Spacing(5).

@@ -3,6 +3,7 @@ package player
 import (
 	"context"
 	"log/slog"
+	"math/rand/v2"
 
 	"codeberg.org/dergs/tidalwave/pkg/tidalapi"
 	"github.com/go-gst/go-gst/gst"
@@ -44,7 +45,7 @@ func PlayTrack(trackId string) error {
 	return playTrack(track)
 }
 
-func PlayPlaylist(playlistId string) error {
+func PlayPlaylist(playlistId string, shuffle bool) error {
 	tidal, err := injector.Inject[*tidalapi.TidalAPI]()
 	if err != nil {
 		return err
@@ -58,6 +59,13 @@ func PlayPlaylist(playlistId string) error {
 	BaseQueue.Clear()
 
 	tracks := items.Included.Tracks(items.Data...)
+
+	if shuffle {
+		rand.Shuffle(len(tracks), func(i, j int) {
+			tracks[i], tracks[j] = tracks[j], tracks[i]
+		})
+	}
+
 	firstTrack := tracks[0]
 	if err := playTrack(&firstTrack); err != nil {
 		return err

@@ -38,7 +38,7 @@ func (w *Window) installActions() {
 	playPlaylistAction.ConnectActivate(g.Ptr(func(action gio.SimpleAction, parameter uintptr) {
 		variant := (*glib.Variant)(unsafe.Pointer(parameter))
 		id := variant.GetString(nil)
-		go player.PlayPlaylist(id)
+		go player.PlayPlaylist(id, false)
 	}))
 	w.AddAction(playPlaylistAction)
 
