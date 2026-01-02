@@ -1,8 +1,8 @@
-button.transparent:not(:hover) {
+button.transparent:not(:hover):not(.active) {
     background-color: transparent;
 }
 
-menubutton.transparent button:not(:hover) {
+menubutton.transparent button:not(:hover):not(.active) {
     background-color: transparent;
 }
 
