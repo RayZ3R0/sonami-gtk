@@ -29,7 +29,7 @@ func (w *Window) buildContentHeader() *gtk.Widget {
 	exploreButton.SetTitle("Explore")
 	exploreButton.SetIcon("compass2-symbolic")
 
-	collectionButton := components.NewRouteButton("collection")
+	collectionButton := components.NewRouteButton("my-collection")
 	collectionButton.SetTitle("Collection")
 	collectionButton.SetIcon("library-symbolic")
 
