@@ -1,53 +1,36 @@
 package main
 
 import (
-	"context"
 	"log/slog"
 	"os"
-	"os/signal"
 
+	"codeberg.org/dergs/tidalwave/internal/g"
 	_ "codeberg.org/dergs/tidalwave/internal/icons"
+	"codeberg.org/dergs/tidalwave/internal/secrets"
+	_ "codeberg.org/dergs/tidalwave/internal/styles"
 	"codeberg.org/dergs/tidalwave/internal/ui"
+	"codeberg.org/dergs/tidalwave/pkg/schwifty/tracking"
 	"codeberg.org/dergs/tidalwave/pkg/tidalapi"
-	"github.com/diamondburned/gotk4-adwaita/pkg/adw"
-	"github.com/diamondburned/gotk4/pkg/core/glib"
-	"github.com/diamondburned/gotkit/app"
-	"github.com/diamondburned/gotkit/components/prefui"
+	"codeberg.org/dergs/tidalwave/pkg/utils/imgutil"
 	"github.com/infinytum/injector"
+	"github.com/jwijenbergh/puregotk/v4/adw"
+	"github.com/jwijenbergh/puregotk/v4/gio"
 )
 
 func init() {
-	adw.Init()
 	slog.SetLogLoggerLevel(slog.LevelDebug)
 }
 
+var app *adw.Application
+
 func main() {
-	ctx, cancel := signal.NotifyContext(context.Background(), os.Interrupt)
-	defer cancel()
-
-	app := app.New(context.Background(), "org.codeberg.dergs.tidalwave", "TIDAL for GNOME")
-	injector.Singleton(func() context.Context {
-		return app.Context()
+	app = adw.NewApplication("org.codeberg.dergs.tidalwave", gio.GApplicationFlagsNoneValue)
+	defer app.Unref()
+	app.ConnectActivate(g.Ptr(onActivate))
+	injector.Singleton(func() *adw.Application {
+		return app
 	})
 
-	var window *ui.Window
-	app.AddJSONActions(map[string]interface{}{
-		"app.about":       func() { window.PresentAbout() },
-		"app.preferences": func() { prefui.ShowDialog(app.Context()) },
-		"app.quit":        func() { app.Quit() },
-	})
-	app.AddActionShortcuts(map[string]string{
-		"<Ctrl>Q": "app.quit",
-	})
-	app.ConnectActivate(func() {
-		window = ui.NewWindow(app.Context())
-		window.Present()
-	})
-
-	go func() {
-		<-ctx.Done()
-		glib.IdleAdd(app.Quit)
-	}()
 	injector.Singleton(func() *tidalapi.TidalAPI {
 		countryCode, err := tidalapi.FetchCountryCode()
 		if err != nil {
@@ -55,11 +38,21 @@ func main() {
 			countryCode = "WW"
 		}
 		slog.Info("Discovered country code", "countryCode", countryCode)
-		return tidalapi.NewClient(countryCode)
+		return tidalapi.NewClient(countryCode, secrets.NewTokenAuthStrategy())
 	})
 
-	if code := app.Run(os.Args); code > 0 {
-		cancel()
+	injector.Singleton(func(app *adw.Application) *imgutil.ImgUtil {
+		return imgutil.NewImgUtil(app.GetApplicationId())
+	})
+
+	if code := app.Run(len(os.Args), os.Args); code > 0 {
+		app.Quit()
 		os.Exit(code)
 	}
+}
+
+func onActivate(_ gio.Application) {
+	window := ui.NewWindow(app)
+	window.Present()
+	go tracking.LogAliveWidgets()
 }

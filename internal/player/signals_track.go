@@ -6,8 +6,9 @@ import (
 	"sync"
 	"time"
 
-	"codeberg.org/dergs/tidalwave/internal/ui/signals"
+	"codeberg.org/dergs/tidalwave/internal/signals"
 	"codeberg.org/dergs/tidalwave/pkg/tidalapi/models/openapi"
+	v1 "codeberg.org/dergs/tidalwave/pkg/tidalapi/models/v1"
 )
 
 var OnTrackChanged = trackChangedSignal{
@@ -41,23 +42,24 @@ func (r *trackChangedSignal) On(handler func(trackInfo TrackInformation) bool) *
 }
 
 type TrackInformation struct {
-	Artists  []openapi.ArtistAttributes
+	Artists  []openapi.ArtistData
 	CoverURL string
 	Duration time.Duration
-	ID       int
+	ID       string
 	Title    string
+	Quality  v1.AudioQuality
 }
 
 func (t TrackInformation) ArtistNames() string {
 	names := make([]string, len(t.Artists))
 	for i, artist := range t.Artists {
-		names[i] = artist.Name
+		names[i] = artist.Attributes.Name
 	}
 	return strings.Join(names, ", ")
 }
 
 func (t TrackInformation) Equals(other TrackInformation) bool {
-	return t.ID == other.ID
+	return t.ID == other.ID && t.Quality == other.Quality
 }
 
 func (t TrackInformation) String() string {

@@ -4,15 +4,21 @@ import (
 	"context"
 	"errors"
 	"fmt"
+	"math/rand/v2"
 
+	"codeberg.org/dergs/tidalwave/internal/notifications"
+	"codeberg.org/dergs/tidalwave/internal/player"
+	"codeberg.org/dergs/tidalwave/internal/resources"
 	"codeberg.org/dergs/tidalwave/internal/router"
 	"codeberg.org/dergs/tidalwave/internal/ui/components/tracklist"
-	. "codeberg.org/dergs/tidalwave/pkg/gui"
+	"codeberg.org/dergs/tidalwave/pkg/schwifty"
+	. "codeberg.org/dergs/tidalwave/pkg/schwifty/syntax"
 	"codeberg.org/dergs/tidalwave/pkg/tidalapi"
 	"codeberg.org/dergs/tidalwave/pkg/tidalapi/models/openapi"
-	"github.com/diamondburned/gotk4/pkg/gtk/v4"
-	"github.com/diamondburned/gotkit/gtkutil/imgutil"
+	"codeberg.org/dergs/tidalwave/pkg/utils/imgutil"
 	"github.com/infinytum/injector"
+	"github.com/jwijenbergh/puregotk/v4/gdk"
+	"github.com/jwijenbergh/puregotk/v4/gtk"
 )
 
 func init() {
@@ -20,7 +26,7 @@ func init() {
 }
 
 func Playlist(params router.Params) *router.Response {
-	playlistUUID, ok := params["uuid"].(string)
+	playlistUUID, ok := params["id"].(string)
 	if !ok {
 		return router.FromError("Playlist", errors.New("invalid playlist ID"))
 	}
@@ -44,19 +50,18 @@ func Playlist(params router.Params) *router.Response {
 		break
 	}
 
-	cover := gtk.NewImage()
-	cover.SetPixelSize(146)
+	coverUrl := ""
 	for _, artwork := range playlist.Included.PlainArtworks(playlist.Data.Relationships.CoverArt.Data...) {
-		imgutil.AsyncGET(injector.MustInject[context.Context](), artwork.Attributes.Files.AtLeast(320).Href, imgutil.ImageSetterFromImage(cover))
-		break
+		coverUrl = artwork.Attributes.Files.AtLeast(320).Href
 	}
 
 	list := tracklist.NewTrackList(
+		"",
 		tracklist.CoverColumn,
 		tracklist.TitleAlbumColumn,
 		tracklist.ArtistsColumn,
 		tracklist.DurationColumn,
-		tracklist.BoxColumn,
+		tracklist.ButtonColumn,
 		tracklist.ControlsColumn,
 	)
 
@@ -64,43 +69,115 @@ func Playlist(params router.Params) *router.Response {
 		list.AddTrack(&track)
 	}
 
-	scroll := gtk.NewScrolledWindow()
-	scroll.SetPolicy(gtk.PolicyNever, gtk.PolicyAutomatic)
-	scroll.SetChild(list.SetTitle(""))
-
-	var playlistMetadata *TextImpl
+	var playlistMetadata schwifty.Label
 	if playlist.Data.Attributes.PlaylistType != openapi.PlaylistTypeMix {
-		playlistMetadata = Text(fmt.Sprintf("%d Tracks (%s)", playlist.Data.Attributes.NumberOfItems, tidalapi.FormatDuration(int(playlist.Data.Attributes.Duration.Seconds()))))
+		playlistMetadata = Label(fmt.Sprintf("%d Tracks (%s)", playlist.Data.Attributes.NumberOfItems, tidalapi.FormatDuration(playlist.Data.Attributes.Duration.Duration)))
 	} else {
-		playlistMetadata = Text("Personal Mix")
+		playlistMetadata = Label("Personal Mix")
 	}
 
 	return &router.Response{
 		PageTitle: playlist.Data.Attributes.Name,
 		View: VStack(
 			HStack(
-				AspectFrame(cover).CornerRadius(10).Overflow(gtk.OverflowHidden),
+				AspectFrame(
+					Image().
+						PixelSize(146).
+						FromPaintable(resources.MissingAlbum()).
+						ConnectConstruct(func(i *gtk.Image) {
+							if coverUrl != "" {
+								injector.MustInject[*imgutil.ImgUtil]().LoadIntoImage(coverUrl, i)
+							}
+						}),
+				).CornerRadius(10).Overflow(gtk.OverflowHiddenValue),
 				VStack(
-					Text(playlist.Data.Attributes.Name).
+					Label(playlist.Data.Attributes.Name).
 						FontSize(18).
 						FontWeight(700).
-						HAlign(gtk.AlignStart),
-					Text(creator).
+						HAlign(gtk.AlignStartValue),
+					Label(creator).
 						FontSize(16).
 						FontWeight(500).
-						HAlign(gtk.AlignStart),
-					Text(playlist.Data.Attributes.CreatedAt.Format("2006")).
+						HAlign(gtk.AlignStartValue),
+					Label(playlist.Data.Attributes.CreatedAt.Format("2006")).
 						FontSize(16).
 						FontWeight(500).
-						HAlign(gtk.AlignStart),
+						HAlign(gtk.AlignStartValue),
 					playlistMetadata.
 						FontSize(14).
 						FontWeight(600).
-						HAlign(gtk.AlignStart).
+						HAlign(gtk.AlignStartValue).
 						MarginTop(10),
-				).MarginLeft(20).VAlign(gtk.AlignCenter),
+				).MarginStart(20).VAlign(gtk.AlignCenterValue),
+				Spacer().
+					VExpand(false),
+				VStack(
+					HStack(
+						Button().
+							IconName("media-playlist-shuffle-symbolic").
+							MinWidth(81).
+							CornerRadius(21).
+							Padding(9).
+							VAlign(gtk.AlignCenterValue).
+							ConnectClicked(func(b gtk.Button) {
+								i := rand.IntN(len(items.Data))
+								player.PlayTrack(items.Included.Tracks(items.Data[i])[0].Data.ID)
+							}),
+						Button().
+							IconName("media-playback-start-symbolic").
+							MinWidth(81).
+							CornerRadius(21).
+							Padding(9).
+							CSS(`
+								button {
+									background-color: var(--accent-bg-color);
+								}
+
+								button:hover {
+									background-color: var(--accent-color);
+								}
+							`).
+							VAlign(gtk.AlignCenterValue).
+							ConnectClicked(func(b gtk.Button) {
+								player.PlayTrack(items.Included.Tracks(items.Data[0])[0].Data.ID)
+							}),
+					).
+						Spacing(5).
+						HAlign(gtk.AlignEndValue),
+					HStack(
+						Button().
+							IconName("heart-outline-thick-symbolic").
+							WithCSSClass("transparent"),
+						Button().
+							IconName("folder-publicshare-symbolic").
+							WithCSSClass("transparent").
+							ConnectClicked(func(gtk.Button) {
+								id := playlist.Data.ID
+								if id == "" {
+									notifications.OnToast.Notify("No playlist could be shared.")
+									return
+								}
+
+								display := gdk.DisplayGetDefault()
+								defer display.Unref()
+								clipboard := display.GetClipboard()
+								defer clipboard.Unref()
+
+								clipboard.SetText(fmt.Sprintf("https://tidal.com/playlist/%s", id))
+								notifications.OnToast.Notify("Copied playlist URL to clipboard.")
+							}),
+					).
+						Spacing(10).
+						HAlign(gtk.AlignEndValue),
+				).
+					Spacing(20).
+					VAlign(gtk.AlignCenterValue),
 			),
-			Wrapper(scroll).VExpand(true).MarginTop(20),
+			ScrolledWindow().
+				Child(list).
+				Policy(gtk.PolicyNeverValue, gtk.PolicyAutomaticValue).
+				VExpand(true).
+				MarginTop(20),
 		).HMargin(40).VMargin(20),
 	}
 }

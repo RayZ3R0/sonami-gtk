@@ -3,15 +3,15 @@ package tracklist
 import (
 	"time"
 
-	"codeberg.org/dergs/tidalwave/pkg/gui"
+	. "codeberg.org/dergs/tidalwave/pkg/schwifty/syntax"
 	"codeberg.org/dergs/tidalwave/pkg/tidalapi"
 	"codeberg.org/dergs/tidalwave/pkg/tidalapi/models/openapi"
 	v2 "codeberg.org/dergs/tidalwave/pkg/tidalapi/models/v2"
-	"github.com/diamondburned/gotk4/pkg/gtk/v4"
+	"github.com/jwijenbergh/puregotk/v4/gtk"
 )
 
 func durationColumn(duration time.Duration, grid *gtk.Grid, row int, column int) int {
-	grid.Attach(gui.Text(tidalapi.FormatDuration(int(duration.Seconds()))).Margin(10), column, row, 1, 1)
+	grid.Attach(Label(tidalapi.FormatDuration(duration)).Margin(10).ToGTK(), column, row, 1, 1)
 	return 1
 }
 

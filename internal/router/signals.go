@@ -1,6 +1,6 @@
 package router
 
-import "codeberg.org/dergs/tidalwave/internal/ui/signals"
+import "codeberg.org/dergs/tidalwave/internal/signals"
 
 // OnNavigate is a signal that is emitted when the router starts navigating to a new path.
 // The path parameter is the new path that the router is navigating to.
@@ -19,18 +19,15 @@ func (r *routerOnNavigateSignal) Notify(path string) {
 // NavigationComplete is a signal that is emitted when the router completes a navigation.
 // The response produced by the page handler cannot be nil.
 var NavigationComplete = routerNavigationCompleteSignal{
-	signals.NewSignal[func(response *Response) bool](),
+	signals.NewSignal[func(entry HistoryEntry) bool](),
 }
 
 type routerNavigationCompleteSignal struct {
-	signals.Signal[func(response *Response) bool]
+	signals.Signal[func(entry HistoryEntry) bool]
 }
 
-func (r *routerNavigationCompleteSignal) Notify(response *Response) {
-	if response == nil {
-		panic("response for NavigationComplete cannot be nil")
-	}
-	r.Signal.Notify(response)
+func (r *routerNavigationCompleteSignal) Notify(entry HistoryEntry) {
+	r.Signal.Notify(entry)
 }
 
 // HistoryUpdated is a signal that is emitted when the router updates the history.

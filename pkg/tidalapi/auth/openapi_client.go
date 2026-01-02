@@ -10,28 +10,22 @@ import (
 )
 
 type OpenAPIClientAuthStrategy struct {
-	clientID     string
-	clientSecret string
-
 	cachedToken string
 	tokenExpiry time.Time
 }
 
-func NewOpenAPIClientAuthStrategy(clientID, clientSecret string) *OpenAPIClientAuthStrategy {
-	return &OpenAPIClientAuthStrategy{
-		clientID:     clientID,
-		clientSecret: clientSecret,
-	}
+func NewOpenAPIClientAuthStrategy() *OpenAPIClientAuthStrategy {
+	return &OpenAPIClientAuthStrategy{}
 }
 
-func (s *OpenAPIClientAuthStrategy) GetToken() (string, error) {
+func (s *OpenAPIClientAuthStrategy) GetToken(clientID, clientSecret string) (string, error) {
 	if s.cachedToken != "" && time.Now().Before(s.tokenExpiry) {
 		return s.cachedToken, nil
 	}
 
 	formValues := url.Values{
-		"client_id":     []string{s.clientID},
-		"client_secret": []string{s.clientSecret},
+		"client_id":     []string{clientID},
+		"client_secret": []string{clientSecret},
 		"grant_type":    []string{"client_credentials"},
 	}
 	req, err := http.NewRequest(http.MethodPost, "https://auth.tidal.com/v1/oauth2/token", strings.NewReader(formValues.Encode()))
@@ -65,10 +59,10 @@ func (s *OpenAPIClientAuthStrategy) GetToken() (string, error) {
 	return tokenResponse.AccessToken, nil
 }
 
-func (s *OpenAPIClientAuthStrategy) Authenticate(req *http.Request) error {
+func (s *OpenAPIClientAuthStrategy) Authenticate(req *http.Request, clientID, clientSecret string) error {
 	// This auth is only valid for openapi.tidal.com
 	if req.URL.Host == "openapi.tidal.com" && req.Header.Get("Authorization") == "" {
-		token, err := s.GetToken()
+		token, err := s.GetToken(clientID, clientSecret)
 		if err != nil {
 			return err
 		}

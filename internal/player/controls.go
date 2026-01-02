@@ -11,10 +11,10 @@ func Scrub(percent float64) {
 		panic("percent must be between 0 and 100")
 	}
 
-	position := float64(OnStateChanged.current.Duration) * percent / 100.0
-	playbin.SeekTime(time.Duration(position)*time.Second, gst.SeekFlagFlush)
+	position := time.Duration(int64(float64(OnStateChanged.current.Duration.Nanoseconds()) * (percent / 100.0)))
+	playbin.SeekTime(position, gst.SeekFlagFlush)
 	OnStateChanged.Notify(func(state *State) {
-		state.Position = int(position)
+		state.Position = position
 		if state.Status == StatusStopped {
 			state.Status = StatusPlaying
 		}
@@ -24,7 +24,7 @@ func Scrub(percent float64) {
 func SeekTo(timestamp time.Duration) {
 	playbin.SeekTime(timestamp, gst.SeekFlagFlush)
 	OnStateChanged.Notify(func(state *State) {
-		state.Position = int(timestamp.Seconds())
+		state.Position = timestamp
 		if state.Status == StatusStopped {
 			state.Status = StatusPlaying
 		}
@@ -55,4 +55,8 @@ func SetVolume(volume float64) {
 		logger.Warn("Volume is higher than 1. This will cause overdrive to the speakers.")
 	}
 	playbin.SetProperty("volume", volume)
+}
+
+func Next() {
+	nextTrack()
 }

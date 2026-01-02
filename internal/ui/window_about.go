@@ -1,8 +1,8 @@
 package ui
 
 import (
-	"github.com/diamondburned/gotk4-adwaita/pkg/adw"
-	"github.com/diamondburned/gotk4/pkg/gtk/v4"
+	"github.com/jwijenbergh/puregotk/v4/adw"
+	"github.com/jwijenbergh/puregotk/v4/gtk"
 )
 
 func (w *Window) PresentAbout() {
@@ -10,10 +10,10 @@ func (w *Window) PresentAbout() {
 	about.SetApplicationIcon("logo")
 	about.SetApplicationName("Tidal Wave")
 	about.SetVersion("git")
-	about.SetLicenseType(gtk.LicenseGPL30)
+	about.SetLicenseType(gtk.LicenseGpl30Value)
 	about.SetDevelopers([]string{
 		"Nila The Dragon",
 	})
 
-	about.Present(w)
+	about.Present(&w.Widget)
 }

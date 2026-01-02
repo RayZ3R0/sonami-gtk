@@ -1,33 +1,46 @@
 package tracklist
 
 import (
-	"codeberg.org/dergs/tidalwave/pkg/gui"
+	"strconv"
+
+	. "codeberg.org/dergs/tidalwave/pkg/schwifty/syntax"
 	"codeberg.org/dergs/tidalwave/pkg/tidalapi/models/openapi"
 	v2 "codeberg.org/dergs/tidalwave/pkg/tidalapi/models/v2"
-	"github.com/diamondburned/gotk4/pkg/gtk/v4"
+	"github.com/jwijenbergh/puregotk/v4/glib"
+	"github.com/jwijenbergh/puregotk/v4/gtk"
 )
 
-func controlsColumn(grid *gtk.Grid, row int, column int) int {
-	addToCollection := gtk.NewButtonFromIconName("heart-outline-thick-symbolic")
-	addToQueue := gtk.NewButtonFromIconName("plus-symbolic")
-	widget := gui.HStack(
-		gui.Wrapper(addToCollection).
-			HAlign(gtk.AlignCenter).
-			VAlign(gtk.AlignCenter).
-			CSS(`button:not(:hover) { background-color: transparent; }`),
-		gui.Wrapper(addToQueue).
-			HAlign(gtk.AlignCenter).
-			VAlign(gtk.AlignCenter).
-			CSS(`button:not(:hover) { background-color: transparent; }`),
+func controlsColumn(trackId string, grid *gtk.Grid, row int, column int) int {
+	grid.Attach(
+		HStack(
+			Button().
+				IconName("heart-outline-thick-symbolic").
+				HAlign(gtk.AlignCenterValue).
+				VAlign(gtk.AlignCenterValue).
+				WithCSSClass("transparent"),
+			Button().
+				IconName("plus-symbolic").
+				HAlign(gtk.AlignCenterValue).
+				VAlign(gtk.AlignCenterValue).
+				ActionName("win.player.queue-track").
+				ActionTargetValue(glib.NewVariantString(trackId)).
+				WithCSSClass("transparent"),
+		).
+			Margin(10).
+			HAlign(gtk.AlignEndValue).
+			ToGTK(),
+		column,
+		row,
+		1,
+		1,
 	)
-	grid.Attach(widget.Margin(10).HAlign(gtk.AlignEnd), column, row, 1, 1)
 	return 1
 }
 
 func ControlsColumn(track *openapi.Track, grid *gtk.Grid, row int, column int) int {
-	return controlsColumn(grid, row, column)
+	return controlsColumn(track.Data.ID, grid, row, column)
 }
 
 func LegacyControlsColumn(track *v2.TrackItemData, grid *gtk.Grid, row int, column int) int {
-	return controlsColumn(grid, row, column)
+	return controlsColumn(strconv.Itoa(track.ID), grid, row, column)
 }

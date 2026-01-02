@@ -3,46 +3,42 @@ package router
 import (
 	"maps"
 	"sync"
+	"time"
+
+	"github.com/jwijenbergh/puregotk/v4/gtk"
 )
 
+var history = &History{
+	Mutex:   sync.Mutex{},
+	Current: &HistoryEntry{},
+	Entries: []*HistoryEntry{},
+}
+
 type HistoryEntry struct {
-	Path     string
-	Params   Params
-	Response *Response
+	ExpiresAt *time.Time
+	PageTitle string
+	Path      string
+	Params    Params
+	View      *gtk.Widget
+	Toolbar   *gtk.Widget
 }
 
 type History struct {
 	sync.Mutex
-	array     []HistoryEntry
-	maxLength int
+	Current *HistoryEntry
+	Entries []*HistoryEntry
 }
 
 func (h *History) IsCurrentlyOn(path string, params Params) bool {
-	if len(h.array) < 1 {
+	if h.Current == nil {
 		return false
 	}
 
-	lastItem := h.array[len(h.array)-1]
-	if lastItem.Path != path {
+	if h.Current.Path != path {
 		return false
 	}
 
-	return maps.Equal(lastItem.Params, params)
-}
-
-func (h *History) Length() int {
-	return len(h.array)
-}
-
-func (h *History) Push(entry HistoryEntry) {
-	h.Lock()
-	defer h.Unlock()
-	defer HistoryUpdated.Notify(h)
-
-	h.array = append(h.array, entry)
-	if len(h.array) > h.maxLength {
-		h.array = h.array[len(h.array)-h.maxLength:]
-	}
+	return maps.Equal(h.Current.Params, params)
 }
 
 func (h *History) Pop() *HistoryEntry {
@@ -50,18 +46,30 @@ func (h *History) Pop() *HistoryEntry {
 	defer h.Unlock()
 	defer HistoryUpdated.Notify(h)
 
-	if len(h.array) < 1 {
+	if len(h.Entries) == 0 {
 		return nil
 	}
 
-	h.array = h.array[:len(h.array)-1]
-	previous := &h.array[len(h.array)-1]
+	h.Current = h.Entries[len(h.Entries)-1]
+	h.Entries = h.Entries[:len(h.Entries)-1]
 
-	return previous
+	if h.Current.ExpiresAt != nil && h.Current.ExpiresAt.Before(time.Now()) {
+		h.Current.Toolbar = nil
+		h.Current.View = nil
+	}
+
+	return h.Current
 }
 
-var history = &History{
-	sync.Mutex{},
-	make([]HistoryEntry, 0),
-	10,
+func (h *History) Push(entry *HistoryEntry) {
+	h.Lock()
+	defer h.Unlock()
+	defer HistoryUpdated.Notify(h)
+
+	if len(h.Entries) == 10 {
+		h.Entries = h.Entries[1:]
+	}
+
+	h.Entries = append(h.Entries, h.Current)
+	h.Current = entry
 }

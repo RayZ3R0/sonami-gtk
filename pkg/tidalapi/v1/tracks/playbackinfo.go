@@ -16,15 +16,15 @@ type PlaybackInfoOptions struct {
 	PlaybackMode      v1.PlaybackMode      `json:"playbackMode"`
 }
 
-func (p *Tracks) PlaybackInfo(ctx context.Context, trackId int, opts PlaybackInfoOptions) (*v1.PlaybackInfo, error) {
-	req, err := http.NewRequestWithContext(ctx, http.MethodGet, fmt.Sprintf("/v1/tracks/%d/playbackinfo", trackId), nil)
+func (p *Tracks) PlaybackInfo(ctx context.Context, trackId string, opts PlaybackInfoOptions) (*v1.PlaybackInfo, error) {
+	req, err := http.NewRequestWithContext(ctx, http.MethodGet, fmt.Sprintf("/v1/tracks/%s/playbackinfo", trackId), nil)
 	if err != nil {
 		return nil, err
 	}
 
 	params := req.URL.Query()
 	params.Set("assetpresentation", helper.OptionalString(string(opts.AssetPresentation), string(v1.AssetPresentationFull)))
-	params.Set("audioquality", helper.OptionalString(string(opts.AudioQuality), string(v1.AudioQualityHighResLossess)))
+	params.Set("audioquality", helper.OptionalString(string(opts.AudioQuality), string(v1.AudioQualityHighResLossless)))
 	params.Set("playbackmode", helper.OptionalString(string(opts.PlaybackMode), string(v1.PlaybackModeStream)))
 	req.URL.RawQuery = params.Encode()
 

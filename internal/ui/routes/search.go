@@ -7,56 +7,42 @@ import (
 
 	"codeberg.org/dergs/tidalwave/internal/router"
 	"codeberg.org/dergs/tidalwave/internal/ui/routes/search"
-	"codeberg.org/dergs/tidalwave/internal/ui/signals"
+	"codeberg.org/dergs/tidalwave/pkg/schwifty/state"
+	. "codeberg.org/dergs/tidalwave/pkg/schwifty/syntax"
 	"codeberg.org/dergs/tidalwave/pkg/tidalapi"
-	"github.com/diamondburned/gotk4/pkg/gdk/v4"
-	"github.com/diamondburned/gotk4/pkg/gtk/v4"
-	"github.com/go-gst/go-glib/glib"
 	"github.com/infinytum/injector"
+	"github.com/jwijenbergh/puregotk/v4/gtk"
 )
 
 func init() {
-
 	router.Register("search", func(params router.Params) *router.Response {
-		scrolledWindow := gtk.NewScrolledWindow()
-		scrolledWindow.SetPolicy(gtk.PolicyNever, gtk.PolicyAutomatic)
-
-		searchBar := gtk.NewSearchEntry()
-		searchBar.SetHExpand(true)
-		searchBar.SetMarginEnd(40)
-		searchBar.SetPlaceholderText("E.g. Fox Stevenson...")
-		onTypeHandler := searchBar.ConnectSearchChanged(OnSearch(searchBar, scrolledWindow))
-		searchBar.SetSearchDelay(1000)
-
-		keyController := gtk.NewEventControllerKey()
-		keyController.SetPropagationPhase(gtk.PhaseCapture)
-		keyController.ConnectKeyPressed(func(keyval, keycode uint, state gdk.ModifierType) (ok bool) {
-			if keyval == gdk.KEY_Return {
-				OnSearch(searchBar, scrolledWindow)()
-
-				// Block the typing handler for 1 second
-				searchBar.HandlerBlock(onTypeHandler)
-				time.AfterFunc(1*time.Second, func() {
-					searchBar.HandlerUnblock(onTypeHandler)
-				})
-
-				return true // Stop further propagation
-			}
-
-			return false // Allow further propagation
-		})
-		searchBar.AddController(keyController)
-
-		router.NavigationComplete.On(func(response *router.Response) bool {
-			searchBar.GrabFocus()
-			return signals.Continue
-		})
-		scrolledWindow.SetChild(search.PromptView())
+		scrollChildState := state.NewStateful[any](search.PromptView())
+		searchState := state.NewStateful(false)
+		searchHandler := OnSearch(scrollChildState)
 
 		return &router.Response{
 			PageTitle: "Search",
-			Toolbar:   searchBar,
-			View:      scrolledWindow,
+			Toolbar: SearchEntry().
+				HExpand(true).
+				MarginEnd(40).
+				PlaceholderText("E.g. Fox Stevenson").
+				SearchDelay(1000).
+				ConnectActivate(func(se gtk.SearchEntry) {
+					searchState.SetValue(true)
+					time.AfterFunc(time.Second, func() {
+						searchState.SetValue(false)
+					})
+					searchHandler(se)
+				}).
+				ConnectSearchChanged(func(se gtk.SearchEntry) {
+					if searchState.Value() && se.GetText() != "" {
+						return
+					}
+					searchHandler(se)
+				}),
+			View: ScrolledWindow().
+				BindChild(scrollChildState).
+				Policy(gtk.PolicyNeverValue, gtk.PolicyAutomaticValue),
 		}
 	})
 }
@@ -66,28 +52,23 @@ var searchIncludes = []string{
 	"topHits.albums.artists",
 }
 
-func OnSearch(searchBar *gtk.SearchEntry, scrolledWindow *gtk.ScrolledWindow) func() {
+func OnSearch(scrollChildState *state.State[any]) func(gtk.SearchEntry) {
 	tidal := injector.MustInject[*tidalapi.TidalAPI]()
-	return func() {
-		query := searchBar.Text()
+	return func(searchBar gtk.SearchEntry) {
+		query := searchBar.GetText()
 		if query == "" {
-			scrolledWindow.SetChild(search.PromptView())
+			scrollChildState.SetValue(search.PromptView())
 			return
 		}
-
-		slog.Info("searching", "query", query)
-		scrolledWindow.SetChild(search.LoadingView())
+		scrollChildState.SetValue(search.LoadingView())
 		go func() {
 			searchResults, err := tidal.OpenAPI.V2.SearchResults.Search(context.Background(), query, searchIncludes...)
-			glib.IdleAdd(func() {
-				if err != nil {
-					slog.Error("search failed", "error", err)
-					scrolledWindow.SetChild(search.PromptView())
-					return
-				}
-
-				scrolledWindow.SetChild(search.TopHits(searchResults))
-			})
+			if err != nil {
+				slog.Error("search failed", "error", err)
+				scrollChildState.SetValue(search.PromptView())
+				return
+			}
+			scrollChildState.SetValue(search.TopHits(searchResults))
 		}()
 	}
 }

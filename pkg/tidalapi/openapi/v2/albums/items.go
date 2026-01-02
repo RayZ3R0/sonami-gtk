@@ -10,8 +10,8 @@ import (
 	"codeberg.org/dergs/tidalwave/pkg/tidalapi/models/openapi"
 )
 
-func (p *Albums) Items(ctx context.Context, id int, cursor string, include ...string) (*openapi.Response[[]openapi.Relationship], error) {
-	req, err := http.NewRequestWithContext(ctx, http.MethodGet, fmt.Sprintf("https://openapi.tidal.com/v2/albums/%d/relationships/items", id), nil)
+func (p *Albums) Items(ctx context.Context, id string, cursor string, include ...string) (*openapi.Response[[]openapi.Relationship], error) {
+	req, err := http.NewRequestWithContext(ctx, http.MethodGet, fmt.Sprintf("https://openapi.tidal.com/v2/albums/%s/relationships/items", id), nil)
 	if err != nil {
 		return nil, err
 	}

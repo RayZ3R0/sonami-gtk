@@ -3,26 +3,31 @@ module codeberg.org/dergs/tidalwave
 go 1.25.4
 
 require (
-	github.com/diamondburned/gotk4-adwaita/pkg v0.0.0-20240712143708-824c3ce8a5f4
-	github.com/diamondburned/gotk4/pkg v0.3.2-0.20250224044601-c9afb0585e3f
-	github.com/diamondburned/gotkit v0.0.0-20250223060613-69614d9e70a9
 	github.com/go-gst/go-glib v1.4.0
 	github.com/go-gst/go-gst v1.4.0
 	github.com/google/uuid v1.6.0
 	github.com/infinytum/injector v0.0.3
 	github.com/jeandeaual/go-locale v0.0.0-20250612000132-0ef82f21eade
+	github.com/jwijenbergh/puregotk v0.0.0-20251201161753-28ec1479c381
 	github.com/sosodev/duration v1.3.1
 )
 
 require (
+	al.essio.dev/pkg/shellescape v1.5.1 // indirect
+	github.com/danieljoos/wincred v1.2.2 // indirect
+	github.com/fogleman/gg v1.3.0 // indirect
+	github.com/godbus/dbus/v5 v5.1.0 // indirect
+	github.com/golang/freetype v0.0.0-20170609003504-e2365dfdc4a0 // indirect
 	github.com/infinytum/structures v0.0.1 // indirect
-	github.com/leonelquinteros/gotext v1.5.3-0.20230829162019-37f474cfb069 // indirect
+	github.com/jwijenbergh/purego v0.0.0-20251017112123-b71757b9ba42 // indirect
 	github.com/mattn/go-pointer v0.0.1 // indirect
 	github.com/pkg/errors v0.9.1 // indirect
-	github.com/yalue/merged_fs v1.2.3 // indirect
-	go4.org/unsafe/assume-no-moving-gc v0.0.0-20231121144256-b99613f794b6 // indirect
+	github.com/yeqown/go-qrcode v1.5.10 // indirect
+	github.com/yeqown/go-qrcode/v2 v2.2.5 // indirect
+	github.com/yeqown/go-qrcode/writer/standard v1.3.0 // indirect
+	github.com/yeqown/reedsolomon v1.0.0 // indirect
+	github.com/zalando/go-keyring v0.2.6 // indirect
 	golang.org/x/exp v0.0.0-20240909161429-701f63a606c0 // indirect
-	golang.org/x/sync v0.19.0 // indirect
+	golang.org/x/image v0.10.0 // indirect
 	golang.org/x/sys v0.27.0 // indirect
-	golang.org/x/text v0.32.0 // indirect
 )

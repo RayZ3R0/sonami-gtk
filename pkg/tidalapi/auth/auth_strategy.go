@@ -5,5 +5,5 @@ import (
 )
 
 type AuthStrategy interface {
-	Authenticate(req *http.Request) error
+	Authenticate(req *http.Request, clientId string, clientSecret string) error
 }

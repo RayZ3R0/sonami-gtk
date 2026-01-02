@@ -3,16 +3,16 @@ package tracklist
 import (
 	"fmt"
 
-	"codeberg.org/dergs/tidalwave/pkg/gui"
+	. "codeberg.org/dergs/tidalwave/pkg/schwifty/syntax"
 	"codeberg.org/dergs/tidalwave/pkg/tidalapi/models/openapi"
 	v2 "codeberg.org/dergs/tidalwave/pkg/tidalapi/models/v2"
-	"github.com/diamondburned/gotk4/pkg/gtk/v4"
-	"github.com/diamondburned/gotk4/pkg/pango"
+	"github.com/jwijenbergh/puregotk/v4/gtk"
+	"github.com/jwijenbergh/puregotk/v4/pango"
 )
 
 func titleColumn(title string, grid *gtk.Grid, row int, column int) int {
-	widget := gui.Text(title).FontWeight(500).Ellipsis(pango.EllipsizeEnd).HAlign(gtk.AlignStart).HExpand(true).Margin(10)
-	grid.Attach(widget, column, row, 1, 1)
+	widget := Label(title).FontWeight(500).Ellipsis(pango.EllipsizeEndValue).HAlign(gtk.AlignStartValue).HExpand(true).Margin(10)
+	grid.Attach(widget.ToGTK(), column, row, 1, 1)
 	return 1
 }
 

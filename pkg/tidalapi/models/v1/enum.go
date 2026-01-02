@@ -16,7 +16,10 @@ const (
 type AudioQuality string
 
 const (
-	AudioQualityHighResLossess AudioQuality = "HI_RES_LOSSLESS"
+	AudioQualityHighResLossless AudioQuality = "HI_RES_LOSSLESS"
+	AudioQualityLossless        AudioQuality = "LOSSLESS"
+	AudioQualityHighRes         AudioQuality = "HIGH"
+	AudioQualityLossy           AudioQuality = "LOW"
 )
 
 type ManifestMimeType string

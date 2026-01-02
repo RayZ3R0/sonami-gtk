@@ -10,8 +10,8 @@ import (
 	"codeberg.org/dergs/tidalwave/pkg/tidalapi/models/openapi"
 )
 
-func (p *Albums) Album(ctx context.Context, id int, include ...string) (*openapi.Album, error) {
-	req, err := http.NewRequestWithContext(ctx, http.MethodGet, fmt.Sprintf("https://openapi.tidal.com/v2/albums/%d", id), nil)
+func (p *Albums) Album(ctx context.Context, id string, include ...string) (*openapi.Album, error) {
+	req, err := http.NewRequestWithContext(ctx, http.MethodGet, fmt.Sprintf("https://openapi.tidal.com/v2/albums/%s", id), nil)
 	if err != nil {
 		return nil, err
 	}

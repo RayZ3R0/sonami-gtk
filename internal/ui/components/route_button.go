@@ -2,41 +2,22 @@ package components
 
 import (
 	"codeberg.org/dergs/tidalwave/internal/router"
-	"codeberg.org/dergs/tidalwave/internal/ui/signals"
-	"github.com/diamondburned/gotk4-adwaita/pkg/adw"
-	"github.com/diamondburned/gotk4/pkg/gtk/v4"
-	"github.com/diamondburned/gotkit/gtkutil/cssutil"
+	"codeberg.org/dergs/tidalwave/internal/signals"
+	. "codeberg.org/dergs/tidalwave/pkg/schwifty/syntax"
+	"github.com/jwijenbergh/puregotk/v4/gtk"
 )
-
-var routeButtonCSS = cssutil.Applier("route-button", `
-	.route-button {
-		padding-left: 0px;
-		padding-right: 0px;
-		min-height: 24px;
-	}
-
-	.route-button.title {
-		padding-left: 7px;
-		padding-right: 7px;
-	}
-
-	.route-button:not(:hover):not(.active) {
-		background-color: transparent;
-	}
-`)
 
 type RouteButton struct {
 	*gtk.Button
-	box   *gtk.Box
 	label *gtk.Label
-	clamp *adw.Clamp
+	icon  *gtk.Image
 }
 
 func (r *RouteButton) SetActive(active bool) {
 	if active {
-		r.AddCSSClass("active")
+		r.AddCssClass("active")
 	} else {
-		r.RemoveCSSClass("active")
+		r.RemoveCssClass("active")
 	}
 }
 
@@ -44,43 +25,38 @@ func (r *RouteButton) SetTitle(title string) {
 	r.label.SetText(title)
 	r.label.SetVisible(title != "")
 	if title == "" {
-		r.RemoveCSSClass("title")
+		r.RemoveCssClass("title")
 	} else {
-		r.AddCSSClass("title")
+		r.AddCssClass("title")
 	}
 }
 
 func (r *RouteButton) SetIcon(iconName string) {
-	r.clamp.SetChild(gtk.NewImageFromIconName(iconName))
+	r.icon.SetFromIconName(iconName)
 }
 
 func NewRouteButton(path string) *RouteButton {
-	box := gtk.NewBox(gtk.OrientationHorizontal, 7)
-	box.SetMarginBottom(2)
-	box.SetMarginTop(2)
-	box.SetMarginStart(9)
-	box.SetMarginEnd(9)
-
-	image := gtk.NewImageFromIconName("sidebar-show-symbolic")
-
-	clamp := adw.NewClamp()
-	clamp.SetMaximumSize(16)
-	clamp.SetChild(image)
-
-	label := gtk.NewLabel("")
-	label.SetVisible(false)
-
-	box.Append(clamp)
-	box.Append(label)
-
-	button := gtk.NewButton()
-	button.SetChild(box)
-	button.ConnectClicked(func() {
-		router.Navigate(path, nil)
-	})
-	routeButtonCSS(button)
-
-	routeButton := &RouteButton{button, box, label, clamp}
+	routeButton := &RouteButton{
+		icon:  Image().FromIconName("image-missing-symbolic")(),
+		label: Label("").PaddingStart(7).PaddingEnd(7).Visible(false)(),
+	}
+	routeButton.Button = Button().
+		PaddingStart(0).
+		PaddingEnd(0).
+		MinHeight(24).
+		ConnectClicked(func(b gtk.Button) {
+			router.Navigate(path, nil)
+		}).
+		Child(
+			HStack(
+				Clamp().MaximumSize(16).Child(&routeButton.icon.Widget),
+				routeButton.label,
+			).
+				Spacing(7).
+				HMargin(9).
+				VMargin(2),
+		).
+		WithCSSClass("transparent")()
 
 	router.OnNavigate.On(func(newPath string) bool {
 		routeButton.SetActive(path == newPath)

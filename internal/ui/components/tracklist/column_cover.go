@@ -1,37 +1,37 @@
 package tracklist
 
 import (
-	"context"
-
-	"codeberg.org/dergs/tidalwave/pkg/gui"
+	"codeberg.org/dergs/tidalwave/internal/resources"
+	. "codeberg.org/dergs/tidalwave/pkg/schwifty/syntax"
 	"codeberg.org/dergs/tidalwave/pkg/tidalapi"
 	"codeberg.org/dergs/tidalwave/pkg/tidalapi/models/openapi"
 	v2 "codeberg.org/dergs/tidalwave/pkg/tidalapi/models/v2"
-	"github.com/diamondburned/gotk4/pkg/gtk/v4"
-	"github.com/diamondburned/gotkit/gtkutil/imgutil"
+	"codeberg.org/dergs/tidalwave/pkg/utils/imgutil"
 	"github.com/infinytum/injector"
+	"github.com/jwijenbergh/puregotk/v4/gtk"
 )
 
 func coverColumn(url string, grid *gtk.Grid, row int, column int) int {
-	cover := gtk.NewImageFromResource("/org/codeberg/dergs/tidalwave/icons/scalable/state/missing-album.svg")
-	cover.SetPixelSize(54)
-	cover.SetHExpand(false)
-	cover.SetVExpand(false)
-
-	if url != "" {
-		imgutil.AsyncGET(
-			injector.MustInject[context.Context](),
-			url,
-			imgutil.ImageSetterFromImage(cover),
-		)
-	}
-
-	frame := gui.AspectFrame(gui.Wrapper(cover)).
-		CornerRadius(10).
-		Margin(10).
-		HAlign(gtk.AlignStart).
-		Overflow(gtk.OverflowHidden)
-	grid.Attach(frame, column, row, 1, 1)
+	grid.Attach(
+		AspectFrame(
+			Image().
+				FromPaintable(resources.MissingAlbum()).
+				PixelSize(54).
+				HExpand(false).
+				VExpand(false).
+				ConnectConstruct(func(i *gtk.Image) {
+					injector.MustInject[*imgutil.ImgUtil]().LoadIntoImage(url, i)
+				}),
+		).
+			CornerRadius(10).
+			Margin(10).
+			HAlign(gtk.AlignStartValue).
+			Overflow(gtk.OverflowHiddenValue).ToGTK(),
+		column,
+		row,
+		1,
+		1,
+	)
 	return 1
 }
 

@@ -6,13 +6,14 @@ import (
 	"fmt"
 	"strings"
 
+	"codeberg.org/dergs/tidalwave/internal/resources"
 	"codeberg.org/dergs/tidalwave/internal/router"
 	"codeberg.org/dergs/tidalwave/internal/ui/components/tracklist"
-	. "codeberg.org/dergs/tidalwave/pkg/gui"
+	. "codeberg.org/dergs/tidalwave/pkg/schwifty/syntax"
 	"codeberg.org/dergs/tidalwave/pkg/tidalapi"
-	"github.com/diamondburned/gotk4/pkg/gtk/v4"
-	"github.com/diamondburned/gotkit/gtkutil/imgutil"
+	"codeberg.org/dergs/tidalwave/pkg/utils/imgutil"
 	"github.com/infinytum/injector"
+	"github.com/jwijenbergh/puregotk/v4/gtk"
 )
 
 func init() {
@@ -20,7 +21,7 @@ func init() {
 }
 
 func Album(params router.Params) *router.Response {
-	albumId, ok := params["id"].(int)
+	albumId, ok := params["id"].(string)
 	if !ok {
 		return router.FromError("Album", errors.New("invalid album ID"))
 	}
@@ -43,19 +44,18 @@ func Album(params router.Params) *router.Response {
 		artists = append(artists, artist.Attributes.Name)
 	}
 
-	cover := gtk.NewImage()
-	cover.SetPixelSize(146)
+	coverUrl := ""
 	for _, artwork := range album.Included.PlainArtworks(album.Data.Relationships.CoverArt.Data...) {
-		imgutil.AsyncGET(injector.MustInject[context.Context](), artwork.Attributes.Files.AtLeast(320).Href, imgutil.ImageSetterFromImage(cover))
-		break
+		coverUrl = artwork.Attributes.Files.AtLeast(320).Href
 	}
 
 	list := tracklist.NewTrackList(
+		"",
 		tracklist.PositionColumn,
 		tracklist.TitleColumn,
 		tracklist.ArtistsColumn,
 		tracklist.DurationColumn,
-		tracklist.BoxColumn,
+		tracklist.ButtonColumn,
 		tracklist.ControlsColumn,
 	)
 
@@ -63,36 +63,45 @@ func Album(params router.Params) *router.Response {
 		list.AddTrack(&track)
 	}
 
-	scroll := gtk.NewScrolledWindow()
-	scroll.SetPolicy(gtk.PolicyNever, gtk.PolicyAutomatic)
-	scroll.SetChild(list.SetTitle(""))
-
 	return &router.Response{
 		PageTitle: album.Data.Attributes.Title,
 		View: VStack(
 			HStack(
-				AspectFrame(cover).CornerRadius(10).Overflow(gtk.OverflowHidden),
+				AspectFrame(
+					Image().
+						PixelSize(146).
+						FromPaintable(resources.MissingAlbum()).
+						ConnectConstruct(func(i *gtk.Image) {
+							if coverUrl != "" {
+								injector.MustInject[*imgutil.ImgUtil]().LoadIntoImage(coverUrl, i)
+							}
+						}),
+				).CornerRadius(10).Overflow(gtk.OverflowHiddenValue),
 				VStack(
-					Text(album.Data.Attributes.Title).
+					Label(album.Data.Attributes.Title).
 						FontSize(18).
 						FontWeight(700).
-						HAlign(gtk.AlignStart),
-					Text(strings.Join(artists, ", ")).
+						HAlign(gtk.AlignStartValue),
+					Label(strings.Join(artists, ", ")).
 						FontSize(16).
 						FontWeight(500).
-						HAlign(gtk.AlignStart),
-					Text(album.Data.Attributes.ReleaseDate.Format("2006")).
+						HAlign(gtk.AlignStartValue),
+					Label(album.Data.Attributes.ReleaseDate.Format("2006")).
 						FontSize(16).
 						FontWeight(500).
-						HAlign(gtk.AlignStart),
-					Text(fmt.Sprintf("%d Tracks (%s)", album.Data.Attributes.NumberOfItems, tidalapi.FormatDuration(int(album.Data.Attributes.Duration.Seconds())))).
+						HAlign(gtk.AlignStartValue),
+					Label(fmt.Sprintf("%d Tracks (%s)", album.Data.Attributes.NumberOfItems, tidalapi.FormatDuration(album.Data.Attributes.Duration.Duration))).
 						FontSize(14).
 						FontWeight(600).
-						HAlign(gtk.AlignStart).
+						HAlign(gtk.AlignStartValue).
 						MarginTop(10),
-				).MarginLeft(20).VAlign(gtk.AlignCenter),
+				).MarginStart(20).VAlign(gtk.AlignCenterValue),
 			),
-			Wrapper(scroll).VExpand(true).MarginTop(20),
+			ScrolledWindow().
+				Child(list).
+				Policy(gtk.PolicyNeverValue, gtk.PolicyAutomaticValue).
+				VExpand(true).
+				MarginTop(20),
 		).HMargin(40).VMargin(20),
 	}
 }

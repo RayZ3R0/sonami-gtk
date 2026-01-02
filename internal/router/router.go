@@ -3,12 +3,18 @@ package router
 import (
 	"log/slog"
 	"time"
+
+	"codeberg.org/dergs/tidalwave/internal/g"
 )
 
 var logger = slog.With("module", "router")
 
 func Navigate(path string, params Params) {
-	if history.IsCurrentlyOn(path, params) {
+	navigate(path, params, false)
+}
+
+func navigate(path string, params Params, offRecord bool) {
+	if history.IsCurrentlyOn(path, params) && !offRecord {
 		logger.Debug("skipped navigation as we are already on the same page")
 		return
 	}
@@ -28,18 +34,26 @@ func Navigate(path string, params Params) {
 	go func(path string, params Params, handler Handler) {
 		response, shouldCache := executeHandler(handler, params)
 		logger.Info("navigation completed", "path", path, "params", params, "duration_ms", time.Since(startTime).Milliseconds(), "should_cache", shouldCache)
-		if shouldCache {
-			history.Push(HistoryEntry{Path: path, Params: params, Response: response})
-		} else {
-			history.Push(HistoryEntry{Path: path, Params: params})
+		entry := &HistoryEntry{Path: path, Params: params, PageTitle: response.PageTitle, ExpiresAt: response.ExpiresAt}
+		if response.Toolbar != nil {
+			entry.Toolbar = response.Toolbar.ToGTK()
 		}
-		handleResponse(path, params, response)
+		if response.View != nil {
+			entry.View = response.View.ToGTK()
+		}
+		if !shouldCache {
+			entry.ExpiresAt = g.Ptr(time.Now())
+		}
+		if !offRecord {
+			history.Push(entry)
+		}
+		handleNavigationComplete(entry)
 
 	}(path, params, handler)
 }
 
 func Back() {
-	if len(history.array) < 1 {
+	if len(history.Entries) == 0 {
 		return
 	}
 
@@ -49,9 +63,20 @@ func Back() {
 	}
 
 	OnNavigate.Notify(previous.Path)
-	if previous.Response != nil {
-		handleResponse(previous.Path, previous.Params, previous.Response)
+	if previous.View != nil {
+		handleNavigationComplete(previous)
 	} else {
-		Navigate(previous.Path, previous.Params)
+		navigate(previous.Path, previous.Params, true)
 	}
+}
+
+func Refresh() {
+	if history.Current == nil {
+		return
+	}
+
+	history.Current.Toolbar = nil
+	history.Current.View = nil
+
+	navigate(history.Current.Path, history.Current.Params, true)
 }

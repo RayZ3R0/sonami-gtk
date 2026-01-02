@@ -14,3 +14,7 @@ type Track struct {
 	ID       int    `json:"id"`
 	Title    string `json:"title"`
 }
+
+type TrackMix struct {
+	ID string `json:"id"`
+}
