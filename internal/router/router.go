@@ -2,6 +2,7 @@ package router
 
 import (
 	"log/slog"
+	"strings"
 	"time"
 
 	"codeberg.org/dergs/tidalwave/internal/g"
@@ -10,7 +11,7 @@ import (
 var logger = slog.With("module", "router")
 
 func Navigate(path string, params Params) {
-	navigate(path, params, false)
+	navigate(strings.TrimPrefix(path, "tidal://"), params, false)
 }
 
 func navigate(path string, params Params, offRecord bool) {
