@@ -2,6 +2,7 @@ package player
 
 import (
 	"sync"
+	"time"
 
 	"codeberg.org/dergs/tidalwave/internal/signals"
 )
@@ -39,9 +40,8 @@ func (r *stateChangedSignal) On(handler func(state State) bool) *signals.Subscri
 }
 
 type State struct {
-	Duration int
-	Position int
-	Status   Status
+	Duration, Position time.Duration
+	Status             Status
 }
 
 func (s State) Equals(other State) bool {

@@ -3,31 +3,23 @@ package tidalapi
 import (
 	"fmt"
 	"strings"
+	"time"
 )
 
 func ImageURL(id string) string {
 	return "https://resources.tidal.com/images/" + strings.ReplaceAll(id, "-", "/") + "/320x320.jpg"
 }
 
-func FormatDuration(sec int) string {
-	if sec < 0 {
-		sec = 0
-	}
+func FormatDuration(duration time.Duration) string {
 
-	const (
-		day  = 24 * 3600
-		hour = 3600
-		min  = 60
-	)
+	const day = 24 * time.Hour
 
-	d := sec / day
-	sec %= day
+	d := int64(duration) / int64(day)
+	duration %= day
 
-	h := sec / hour
-	sec %= hour
-
-	m := sec / min
-	s := sec % min
+	h := int64(duration.Hours()) % 24
+	m := int64(duration.Minutes()) % 60
+	s := int64(duration.Seconds()) % 60
 
 	switch {
 	case d > 0:

@@ -1,8 +1,8 @@
-button.transparent:not(:hover) {
+button.transparent:not(:hover):not(.active) {
     background-color: transparent;
 }
 
-menubutton.transparent button:not(:hover) {
+menubutton.transparent button:not(:hover):not(.active) {
     background-color: transparent;
 }
 
@@ -45,4 +45,24 @@ menubutton.transparent button:not(:hover) {
         background-color: #ffd4327a; /* Soft yellow */
         color: #905300; /* Dark yellow/brown */
     }
+}
+
+.lyrics-panel .lyric {
+    background-color: alpha(var(--view-fg-color), 0.05);
+    transition-property: background, color;
+    transition-duration: 300ms;
+    transition-timing-function: ease-in-out;
+}
+
+.lyrics-panel .lyric.timed {
+    color: alpha(var(--view-fg-color), 0.5);
+}
+
+.lyrics-panel .lyric.timed:hover {
+    background-color: alpha(var(--view-fg-color), 0.1);
+}
+
+.lyrics-panel .lyric.timed.active {
+    background-color: alpha(var(--view-fg-color), 0.2);
+    color: var(--view-fg-color);
 }

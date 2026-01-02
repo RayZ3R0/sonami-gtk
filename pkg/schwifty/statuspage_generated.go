@@ -227,13 +227,17 @@ func (f StatusPage) BindCSSClass(state *state.State[string]) StatusPage {
 	return func() *adw.StatusPage {
 		var callbackId string
 		return f.ConnectConstruct(func(w *adw.StatusPage) {
-			widgetPtr := w.GoPointer()
+			ptr := w.GoPointer()
 			callbackId = state.AddCallback(func(newValue string) {
-				oldState := state.Value()
+				oldValue := state.Value()
 				callback.OnMainThreadOnce(func(u uintptr) {
-					gtk.WidgetNewFromInternalPtr(u).GetStyleContext().RemoveClass(oldState)
-					gtk.WidgetNewFromInternalPtr(u).GetStyleContext().AddClass(newValue)
-				}, widgetPtr)
+					w := gtk.ButtonNewFromInternalPtr(u)
+					styleContext := w.GetStyleContext()
+					defer styleContext.Unref()
+
+					styleContext.RemoveClass(oldValue)
+					styleContext.AddClass(newValue)
+				}, ptr)
 			})
 		}).ConnectDestroy(func(w gtk.Widget) {
 			state.RemoveCallback(callbackId)
@@ -244,7 +248,10 @@ func (f StatusPage) BindCSSClass(state *state.State[string]) StatusPage {
 func (f StatusPage) WithCSSClass(className string) StatusPage {
 	return func() *adw.StatusPage {
 		w := f()
-		w.GetStyleContext().AddClass(className)
+		styleContext := w.GetStyleContext()
+		defer styleContext.Unref()
+
+		styleContext.AddClass(className)
 		return w
 	}
 }

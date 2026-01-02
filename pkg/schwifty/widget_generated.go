@@ -226,13 +226,17 @@ func (f Widget) BindCSSClass(state *state.State[string]) Widget {
 	return func() *WrappedWidget {
 		var callbackId string
 		return f.ConnectConstruct(func(w *WrappedWidget) {
-			widgetPtr := w.GoPointer()
+			ptr := w.GoPointer()
 			callbackId = state.AddCallback(func(newValue string) {
-				oldState := state.Value()
+				oldValue := state.Value()
 				callback.OnMainThreadOnce(func(u uintptr) {
-					gtk.WidgetNewFromInternalPtr(u).GetStyleContext().RemoveClass(oldState)
-					gtk.WidgetNewFromInternalPtr(u).GetStyleContext().AddClass(newValue)
-				}, widgetPtr)
+					w := gtk.ButtonNewFromInternalPtr(u)
+					styleContext := w.GetStyleContext()
+					defer styleContext.Unref()
+
+					styleContext.RemoveClass(oldValue)
+					styleContext.AddClass(newValue)
+				}, ptr)
 			})
 		}).ConnectDestroy(func(w gtk.Widget) {
 			state.RemoveCallback(callbackId)
@@ -243,7 +247,10 @@ func (f Widget) BindCSSClass(state *state.State[string]) Widget {
 func (f Widget) WithCSSClass(className string) Widget {
 	return func() *WrappedWidget {
 		w := f()
-		w.GetStyleContext().AddClass(className)
+		styleContext := w.GetStyleContext()
+		defer styleContext.Unref()
+
+		styleContext.AddClass(className)
 		return w
 	}
 }

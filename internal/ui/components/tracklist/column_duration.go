@@ -11,7 +11,7 @@ import (
 )
 
 func durationColumn(duration time.Duration, grid *gtk.Grid, row int, column int) int {
-	grid.Attach(Label(tidalapi.FormatDuration(int(duration.Seconds()))).Margin(10).ToGTK(), column, row, 1, 1)
+	grid.Attach(Label(tidalapi.FormatDuration(duration)).Margin(10).ToGTK(), column, row, 1, 1)
 	return 1
 }
 

@@ -90,7 +90,7 @@ func Album(params router.Params) *router.Response {
 						FontSize(16).
 						FontWeight(500).
 						HAlign(gtk.AlignStartValue),
-					Label(fmt.Sprintf("%d Tracks (%s)", album.Data.Attributes.NumberOfItems, tidalapi.FormatDuration(int(album.Data.Attributes.Duration.Seconds())))).
+					Label(fmt.Sprintf("%d Tracks (%s)", album.Data.Attributes.NumberOfItems, tidalapi.FormatDuration(album.Data.Attributes.Duration.Duration))).
 						FontSize(14).
 						FontWeight(600).
 						HAlign(gtk.AlignStartValue).
