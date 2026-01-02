@@ -52,20 +52,24 @@ func (t *TrackList) AddLegacyTrack(track *v2.TrackItemData) {
 
 func (t *TrackList) BindTracks(state *state.State[[]*openapi.Track]) {
 	state.AddCallback(func(newValue []*openapi.Track) {
-		trackIds := map[string]bool{}
-		for _, track := range newValue {
-			trackIds[track.Data.ID] = true
-		}
-
-		newRowMap := []string{}
-		for row, trackId := range t.rowMap {
-			if _, ok := trackIds[trackId]; !ok {
-				t.container.RemoveRow(row)
-			} else {
-				newRowMap = append(newRowMap, trackId)
+		if len(newValue) > 0 {
+			trackIds := map[string]bool{}
+			for _, track := range newValue {
+				trackIds[track.Data.ID] = true
 			}
+
+			newRowMap := []string{}
+			for row, trackId := range t.rowMap {
+				if _, ok := trackIds[trackId]; !ok {
+					t.container.RemoveRow(row)
+				} else {
+					newRowMap = append(newRowMap, trackId)
+				}
+			}
+			t.rowMap = newRowMap
+		} else {
+			t.Clear()
 		}
-		t.rowMap = newRowMap
 
 		for _, track := range newValue {
 			if slices.Contains(t.rowMap, track.Data.ID) {
