@@ -77,7 +77,7 @@
           desktopItems = [
             (pkgs.makeDesktopItem {
               name = "org.codeberg.dergs.tidalwave";
-              exec = "tidalwave";
+              exec = "tidalwave %u";
               icon = "tidalwave";
               comment = "Tidal Wave is a GTK client for TIDAL written in GoLang.";
               desktopName = "Tidal Wave";
@@ -97,6 +97,7 @@
           postInstall = ''
             wrapProgram $out/bin/tidalwave \
               --set-default PUREGOTK_LIB_FOLDER ${libraryPath}/lib
+            install -Dm444 internal/icons/hicolor/scalable/apps/logo.png $out/share/icons/hicolor/scalable/apps/tidalwave.png
           '';
 
           meta = {
