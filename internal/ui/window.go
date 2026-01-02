@@ -7,6 +7,7 @@ import (
 	"codeberg.org/dergs/tidalwave/internal/signals"
 	"codeberg.org/dergs/tidalwave/pkg/schwifty"
 	"codeberg.org/dergs/tidalwave/pkg/schwifty/syntax"
+	"github.com/infinytum/injector"
 	"github.com/jwijenbergh/puregotk/v4/adw"
 	"github.com/jwijenbergh/puregotk/v4/gio"
 	"github.com/jwijenbergh/puregotk/v4/glib"
@@ -25,6 +26,12 @@ func NewWindow(app *adw.Application) *Window {
 	window := &Window{
 		ApplicationWindow: adw.NewApplicationWindow(&app.Application),
 	}
+	injector.Singleton(func() *adw.ApplicationWindow {
+		return window.ApplicationWindow
+	})
+	injector.Singleton(func() *gtk.Window {
+		return &window.Window
+	})
 
 	window.installActions()
 	window.SetContent(window.build())
