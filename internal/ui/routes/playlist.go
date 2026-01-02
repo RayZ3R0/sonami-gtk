@@ -60,7 +60,9 @@ func Playlist(params router.Params) *router.Response {
 		tracklist.TitleAlbumColumn,
 		tracklist.ArtistsColumn,
 		tracklist.DurationColumn,
-		tracklist.ButtonColumn,
+		tracklist.CustomButtonColumn(func(trackId string) {
+			go player.PlayPlaylist(playlistUUID, false, trackId)
+		}),
 		tracklist.ControlsColumn,
 	)
 
@@ -119,7 +121,7 @@ func Playlist(params router.Params) *router.Response {
 							Padding(9).
 							VAlign(gtk.AlignCenterValue).
 							ConnectClicked(func(b gtk.Button) {
-								go player.PlayPlaylist(playlistUUID, true)
+								go player.PlayPlaylist(playlistUUID, true, "")
 							}),
 						Button().
 							IconName("media-playback-start-symbolic").
@@ -137,7 +139,7 @@ func Playlist(params router.Params) *router.Response {
 							`).
 							VAlign(gtk.AlignCenterValue).
 							ConnectClicked(func(b gtk.Button) {
-								go player.PlayPlaylist(playlistUUID, false)
+								go player.PlayPlaylist(playlistUUID, false, "")
 							}),
 					).
 						Spacing(5).

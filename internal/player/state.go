@@ -58,5 +58,5 @@ func nextTrack() {
 		return
 	}
 	logger.Info("starting track radio", "mix_id", mix.ID)
-	PlayPlaylist(mix.ID, false)
+	PlayPlaylist(mix.ID, false, "")
 }
