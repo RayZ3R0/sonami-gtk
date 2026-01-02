@@ -14,20 +14,17 @@ type lyricTiming struct {
 }
 
 func lyricLine(text string, timing lyricTiming) schwifty.Button {
-	return func() *gtk.Button {
-
-		return Button().
-			Child(
-				lyricLineText(text),
-			).
-			HExpand(true).
-			PaddingTop(24).
-			PaddingBottom(24).
-			PaddingStart(16).
-			PaddingEnd(16).
-			CornerRadius(12).
-			WithCSSClass("lyric")()
-	}
+	return Button().
+		Child(
+			lyricLineText(text),
+		).
+		HExpand(true).
+		PaddingTop(24).
+		PaddingBottom(24).
+		PaddingStart(16).
+		PaddingEnd(16).
+		CornerRadius(12).
+		WithCSSClass("lyric")
 }
 
 func lyricLineText(lyricText string) schwifty.Label {
