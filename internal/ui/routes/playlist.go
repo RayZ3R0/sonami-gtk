@@ -2,7 +2,6 @@ package routes
 
 import (
 	"context"
-	"errors"
 	"fmt"
 
 	"codeberg.org/dergs/tidalwave/internal/notifications"
@@ -21,15 +20,10 @@ import (
 )
 
 func init() {
-	router.Register("playlist", Playlist)
+	router.Register("playlist/:id", Playlist)
 }
 
-func Playlist(params router.Params) *router.Response {
-	playlistUUID, ok := params["id"].(string)
-	if !ok {
-		return router.FromError("Playlist", errors.New("invalid playlist ID"))
-	}
-
+func Playlist(playlistUUID string) *router.Response {
 	tidal := injector.MustInject[*tidalapi.TidalAPI]()
 
 	playlist, err := tidal.OpenAPI.V2.Playlists.Playlist(context.Background(), playlistUUID, "coverArt", "ownerProfiles")

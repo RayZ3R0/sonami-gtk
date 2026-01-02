@@ -99,7 +99,7 @@ func (t *TrackList) SetTitle(title string) *TrackList {
 	return t
 }
 
-func (t *TrackList) SetViewAllRoute(path string, params router.Params) *TrackList {
+func (t *TrackList) SetViewAllRoute(path string) *TrackList {
 	t.routeButtonState.SetValue(Button().Child(
 		Label("View All").FontSize(12),
 	).
@@ -108,7 +108,7 @@ func (t *TrackList) SetViewAllRoute(path string, params router.Params) *TrackLis
 		HPadding(10).
 		VAlign(gtk.AlignCenterValue).
 		ConnectClicked(func(b gtk.Button) {
-			router.Navigate(path, params)
+			router.Navigate(path)
 		}))
 	return t
 }

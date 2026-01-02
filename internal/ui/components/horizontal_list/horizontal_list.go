@@ -28,7 +28,7 @@ func (h *HorizontalList) SetPageMargin(margin int) *HorizontalList {
 	return h
 }
 
-func (h *HorizontalList) SetViewAllRoute(path string, params router.Params) *HorizontalList {
+func (h *HorizontalList) SetViewAllRoute(path string) *HorizontalList {
 	h.routeButtonState.SetValue(Button().Child(
 		Label("View All").FontSize(12),
 	).
@@ -36,7 +36,7 @@ func (h *HorizontalList) SetViewAllRoute(path string, params router.Params) *Hor
 		MinWidth(10).
 		HPadding(10).
 		ConnectClicked(func(b gtk.Button) {
-			router.Navigate(path, params)
+			router.Navigate(path)
 		}))
 	return h
 }

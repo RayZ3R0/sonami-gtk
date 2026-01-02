@@ -39,7 +39,7 @@ func NewWindow(app *adw.Application) *Window {
 	window.SetIconName("logo")
 	window.SetDefaultSize(1460, 920)
 
-	router.Navigate("home", nil)
+	router.Navigate("home")
 
 	return window
 }

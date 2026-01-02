@@ -4,7 +4,7 @@ import (
 	. "codeberg.org/dergs/tidalwave/pkg/schwifty/syntax"
 )
 
-func notFoundHandler(params Params) *Response {
+func notFoundHandler() *Response {
 	return &Response{
 		PageTitle: "Not Found",
 		View: StatusPage().

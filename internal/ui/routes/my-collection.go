@@ -23,7 +23,7 @@ func init() {
 	router.Register("my-collection/tracks", my_collection.Tracks)
 }
 
-func MyCollection(params router.Params) *router.Response {
+func MyCollection() *router.Response {
 	tidal := injector.MustInject[*tidalapi.TidalAPI]()
 	userId := secrets.UserID()
 	if userId == "" {
@@ -41,17 +41,17 @@ func MyCollection(params router.Params) *router.Response {
 		}
 	}
 
-	artistList := horizontal_list.NewHorizontalList("Artists").SetPageMargin(40).SetViewAllRoute("my-collection/artists", nil)
+	artistList := horizontal_list.NewHorizontalList("Artists").SetPageMargin(40).SetViewAllRoute("my-collection/artists")
 	for _, artist := range userCollection.Included.Artists(userCollection.Data.Relationships.Artists.Data...) {
 		artistList.Append(media_card.NewArtist(&artist))
 	}
 
-	albumList := horizontal_list.NewHorizontalList("Albums").SetPageMargin(40).SetViewAllRoute("my-collection/albums", nil)
+	albumList := horizontal_list.NewHorizontalList("Albums").SetPageMargin(40).SetViewAllRoute("my-collection/albums")
 	for _, album := range userCollection.Included.Albums(userCollection.Data.Relationships.Albums.Data...) {
 		albumList.Append(media_card.NewAlbum(&album))
 	}
 
-	playlistList := horizontal_list.NewHorizontalList("Playlists").SetPageMargin(40).SetViewAllRoute("my-collection/playlists", nil)
+	playlistList := horizontal_list.NewHorizontalList("Playlists").SetPageMargin(40).SetViewAllRoute("my-collection/playlists")
 	for _, playlist := range userCollection.Included.Playlists(userCollection.Data.Relationships.Playlists.Data...) {
 		playlistList.Append(media_card.NewPlaylist(&playlist))
 	}
@@ -64,7 +64,7 @@ func MyCollection(params router.Params) *router.Response {
 		tracklist.DurationColumn,
 		tracklist.ButtonColumn,
 		tracklist.ControlsColumn,
-	).SetViewAllRoute("my-collection/tracks", nil)
+	).SetViewAllRoute("my-collection/tracks")
 	for _, track := range userCollection.Included.Tracks(userCollection.Data.Relationships.Tracks.Data...) {
 		trackList.AddTrack(&track)
 	}

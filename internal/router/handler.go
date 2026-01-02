@@ -8,11 +8,9 @@ import (
 	"codeberg.org/dergs/tidalwave/pkg/schwifty"
 )
 
-type Handler func(params Params) *Response
+type Handler func() *Response
 
-type Params map[string]any
-
-func executeHandler(handler Handler, params Params) (response *Response, shouldCache bool) {
+func executeHandler(handler Handler) (response *Response, shouldCache bool) {
 	// In case the handler fatally fails, we want to show a generic error page
 	defer func() {
 		if err := recover(); err != nil {
@@ -23,7 +21,7 @@ func executeHandler(handler Handler, params Params) (response *Response, shouldC
 		}
 	}()
 
-	response = handler(params)
+	response = handler()
 
 	// If the handler didn't crash but provided no response, we assume this is an error
 	if response == nil {

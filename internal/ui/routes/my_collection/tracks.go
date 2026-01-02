@@ -12,7 +12,7 @@ import (
 	"github.com/jwijenbergh/puregotk/v4/gtk"
 )
 
-func Tracks(params router.Params) *router.Response {
+func Tracks() *router.Response {
 	tidal := injector.MustInject[*tidalapi.TidalAPI]()
 	userId := secrets.UserID()
 	if userId == "" {

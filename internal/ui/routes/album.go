@@ -2,7 +2,6 @@ package routes
 
 import (
 	"context"
-	"errors"
 	"fmt"
 	"strings"
 
@@ -17,15 +16,10 @@ import (
 )
 
 func init() {
-	router.Register("album", Album)
+	router.Register("album/:id", Album)
 }
 
-func Album(params router.Params) *router.Response {
-	albumId, ok := params["id"].(string)
-	if !ok {
-		return router.FromError("Album", errors.New("invalid album ID"))
-	}
-
+func Album(albumId string) *router.Response {
 	tidal := injector.MustInject[*tidalapi.TidalAPI]()
 
 	album, err := tidal.OpenAPI.V2.Albums.Album(context.Background(), albumId, "coverArt", "artists", "coverArt")

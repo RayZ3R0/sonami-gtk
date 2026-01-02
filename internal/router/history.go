@@ -1,7 +1,6 @@
 package router
 
 import (
-	"maps"
 	"sync"
 	"time"
 
@@ -18,7 +17,6 @@ type HistoryEntry struct {
 	ExpiresAt *time.Time
 	PageTitle string
 	Path      string
-	Params    Params
 	View      *gtk.Widget
 	Toolbar   *gtk.Widget
 }
@@ -29,7 +27,7 @@ type History struct {
 	Entries []*HistoryEntry
 }
 
-func (h *History) IsCurrentlyOn(path string, params Params) bool {
+func (h *History) IsCurrentlyOn(path string) bool {
 	if h.Current == nil {
 		return false
 	}
@@ -38,7 +36,7 @@ func (h *History) IsCurrentlyOn(path string, params Params) bool {
 		return false
 	}
 
-	return maps.Equal(h.Current.Params, params)
+	return true
 }
 
 func (h *History) Pop() *HistoryEntry {

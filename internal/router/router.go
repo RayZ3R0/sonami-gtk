@@ -10,12 +10,12 @@ import (
 
 var logger = slog.With("module", "router")
 
-func Navigate(path string, params Params) {
-	navigate(strings.TrimPrefix(path, "tidal://"), params, false)
+func Navigate(path string) {
+	navigate(strings.TrimPrefix(path, "tidal://"), false)
 }
 
-func navigate(path string, params Params, offRecord bool) {
-	if history.IsCurrentlyOn(path, params) && !offRecord {
+func navigate(path string, offRecord bool) {
+	if history.IsCurrentlyOn(path) && !offRecord {
 		logger.Debug("skipped navigation as we are already on the same page")
 		return
 	}
@@ -25,17 +25,17 @@ func navigate(path string, params Params, offRecord bool) {
 	OnNavigate.Notify(path)
 
 	// If the route is not registered, use the not found handler
-	handler, ok := routeMap[path]
-	if !ok {
+	handler := findHandler(path)
+	if handler == nil {
 		logger.Info("no handler found", "path", path)
 		handler = notFoundHandler
 	}
 
 	startTime := time.Now()
-	go func(path string, params Params, handler Handler) {
-		response, shouldCache := executeHandler(handler, params)
-		logger.Info("navigation completed", "path", path, "params", params, "duration_ms", time.Since(startTime).Milliseconds(), "should_cache", shouldCache)
-		entry := &HistoryEntry{Path: path, Params: params, PageTitle: response.PageTitle, ExpiresAt: response.ExpiresAt}
+	go func(path string, handler Handler) {
+		response, shouldCache := executeHandler(handler)
+		logger.Info("navigation completed", "path", path, "duration_ms", time.Since(startTime).Milliseconds(), "should_cache", shouldCache)
+		entry := &HistoryEntry{Path: path, PageTitle: response.PageTitle, ExpiresAt: response.ExpiresAt}
 		if response.Toolbar != nil {
 			entry.Toolbar = response.Toolbar.ToGTK()
 		}
@@ -50,7 +50,7 @@ func navigate(path string, params Params, offRecord bool) {
 		}
 		handleNavigationComplete(entry)
 
-	}(path, params, handler)
+	}(path, handler)
 }
 
 func Back() {
@@ -67,7 +67,7 @@ func Back() {
 	if previous.View != nil {
 		handleNavigationComplete(previous)
 	} else {
-		navigate(previous.Path, previous.Params, true)
+		navigate(previous.Path, true)
 	}
 }
 
@@ -79,5 +79,5 @@ func Refresh() {
 	history.Current.Toolbar = nil
 	history.Current.View = nil
 
-	navigate(history.Current.Path, history.Current.Params, true)
+	navigate(history.Current.Path, true)
 }

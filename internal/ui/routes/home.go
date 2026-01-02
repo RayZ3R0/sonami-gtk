@@ -15,7 +15,7 @@ func init() {
 	router.Register("home", Home)
 }
 
-func Home(params router.Params) *router.Response {
+func Home() *router.Response {
 	tidal := injector.MustInject[*tidalapi.TidalAPI]()
 	homeFeed, err := tidal.V2.Home.Feed.Static(context.Background())
 	if err != nil {

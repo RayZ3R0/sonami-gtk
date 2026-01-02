@@ -13,7 +13,7 @@ import (
 	"github.com/jwijenbergh/puregotk/v4/gtk"
 )
 
-func Artists(params router.Params) *router.Response {
+func Artists() *router.Response {
 	tidal := injector.MustInject[*tidalapi.TidalAPI]()
 	userId := secrets.UserID()
 	if userId == "" {

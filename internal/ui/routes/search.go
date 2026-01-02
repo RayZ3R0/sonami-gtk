@@ -15,7 +15,7 @@ import (
 )
 
 func init() {
-	router.Register("search", func(params router.Params) *router.Response {
+	router.Register("search", func() *router.Response {
 		scrollChildState := state.NewStateful[any](search.PromptView())
 		searchState := state.NewStateful(false)
 		searchHandler := OnSearch(scrollChildState)

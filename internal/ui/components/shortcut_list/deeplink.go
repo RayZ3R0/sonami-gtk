@@ -23,7 +23,7 @@ func newDeepLink(id string, name string, external bool, url string, coverUrl str
 		if external {
 			gtk.ShowUri(injector.MustInject[*gtk.Window](), url, uint32(time.Now().Unix()))
 		} else {
-			router.Navigate(url, nil)
+			router.Navigate(url)
 		}
 	})
 }

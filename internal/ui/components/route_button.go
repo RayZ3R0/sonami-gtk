@@ -45,7 +45,7 @@ func NewRouteButton(path string) *RouteButton {
 		PaddingEnd(0).
 		MinHeight(24).
 		ConnectClicked(func(b gtk.Button) {
-			router.Navigate(path, nil)
+			router.Navigate(path)
 		}).
 		Child(
 			HStack(

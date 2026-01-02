@@ -14,7 +14,7 @@ func newDeeplink(url string, name string, coverUrl string) schwifty.Button {
 		HStack(),
 		coverUrl,
 	).ConnectClicked(func(b gtk.Button) {
-		router.Navigate(url, nil)
+		router.Navigate(url)
 	})
 }
 
