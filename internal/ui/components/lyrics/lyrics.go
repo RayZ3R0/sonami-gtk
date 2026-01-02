@@ -339,10 +339,7 @@ func init() {
 			VStack(lines...).
 				Spacing(12).
 				HExpand(true).
-				VExpand(true).
-				ConnectDestroy(func(w gtk.Widget) {
-					fmt.Println("SKIBIDI TOILET")
-				}),
+				VExpand(true),
 		)
 
 		return signals.Continue
