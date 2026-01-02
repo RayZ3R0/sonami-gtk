@@ -2,7 +2,6 @@ package lyrics
 
 import (
 	"context"
-	"fmt"
 	"log/slog"
 	"regexp"
 	"runtime"
@@ -29,6 +28,8 @@ var (
 	coverState   = state.NewStateful[schwifty.Paintable](resources.MissingAlbum())
 	trackTitle   = state.NewStateful[string]("")
 	trackArtists = state.NewStateful[string]("")
+
+	logger = slog.With("module", "lyrics")
 )
 
 var lyricsList = state.NewStateful[any](
@@ -298,7 +299,7 @@ func init() {
 					}
 
 					if timing.Start <= state.Position+player.UpdateInterval {
-						fmt.Println("triggering in ", timing.Start-state.Position)
+						logger.Debug("next lyric line scheduled", "timing", timing.Start-state.Position)
 						time.AfterFunc(timing.Start-state.Position, func() {
 							if activeLyricIndex.Value() != timing.Address {
 								setNewIndex(timing)
