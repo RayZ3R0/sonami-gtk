@@ -12,6 +12,7 @@ func enqueueMPDStream(info *v1.PlaybackInfo) error {
 	if info.ManifestMimeType != v1.ManifestMimeTypeAudioMPD {
 		return fmt.Errorf("unsupported manifest mime type: %s", info.ManifestMimeType)
 	}
+	logger.Debug("selected track is in MPD format")
 
 	file, err := os.CreateTemp("", "manifest-*.mpd")
 	if err != nil {

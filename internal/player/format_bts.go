@@ -19,6 +19,7 @@ func enqueueBTSStream(info *v1.PlaybackInfo) error {
 	if info.ManifestMimeType != v1.ManifestMimeTypeAudioBTS {
 		return fmt.Errorf("unsupported manifest mime type: %s", info.ManifestMimeType)
 	}
+	logger.Debug("selected track is in BTS format")
 
 	decodedManifest, err := base64.StdEncoding.DecodeString(info.Manifest)
 	if err != nil {
