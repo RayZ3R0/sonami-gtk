@@ -18,20 +18,17 @@ func ForPageItem(pageItem v2.PageItem) schwifty.BaseWidgetable {
 		list := horizontal_list.NewHorizontalList(pageItem.Title)
 		for _, item := range pageItem.Items {
 			if item.Type == v2.ItemTypeAlbum {
-				album := item.Data.Album
-				list.Append(media_card.NewLegacyAlbum(album))
+				list.Append(media_card.NewLegacyAlbum(item.Data.Album))
 			} else if item.Type == v2.ItemTypePlaylist {
-				playlist := item.Data.Playlist
-				list.Append(media_card.NewLegacyPlaylist(playlist))
+				list.Append(media_card.NewLegacyPlaylist(item.Data.Playlist))
 			} else if item.Type == v2.ItemTypeArtist {
-				artist := item.Data.Artist
-				list.Append(media_card.NewLegacyArtist(artist))
+				list.Append(media_card.NewLegacyArtist(item.Data.Artist))
 			} else if item.Type == v2.ItemTypeMix {
-				mix := item.Data.Mix
-				list.Append(media_card.NewLegacyMix(mix))
+				list.Append(media_card.NewLegacyMix(item.Data.Mix))
 			} else if item.Type == v2.ItemTypeTrack {
-				track := item.Data.Track
-				list.Append(media_card.NewLegacyTrack(track))
+				list.Append(media_card.NewLegacyTrack(item.Data.Track))
+			} else if item.Type == v2.ItemTypeDeepLink {
+				list.Append(media_card.NewLegacyDeeplink(item.Data.DeepLink))
 			} else {
 				list.Append(HStack(
 					Label("Unsupported\n"+string(item.Type)).
