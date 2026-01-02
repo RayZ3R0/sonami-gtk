@@ -1,4 +1,4 @@
-package horizontal_list
+package media_card
 
 import (
 	"strconv"

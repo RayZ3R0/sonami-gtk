@@ -2,6 +2,7 @@ package components
 
 import (
 	"codeberg.org/dergs/tidalwave/internal/ui/components/horizontal_list"
+	"codeberg.org/dergs/tidalwave/internal/ui/components/media_card"
 	"codeberg.org/dergs/tidalwave/internal/ui/components/shortcut_list"
 	"codeberg.org/dergs/tidalwave/internal/ui/components/tracklist"
 	"codeberg.org/dergs/tidalwave/pkg/schwifty"
@@ -18,19 +19,19 @@ func ForPageItem(pageItem v2.PageItem) schwifty.BaseWidgetable {
 		for _, item := range pageItem.Items {
 			if item.Type == v2.ItemTypeAlbum {
 				album := item.Data.Album
-				list.Append(horizontal_list.NewLegacyAlbum(album))
+				list.Append(media_card.NewLegacyAlbum(album))
 			} else if item.Type == v2.ItemTypePlaylist {
 				playlist := item.Data.Playlist
-				list.Append(horizontal_list.NewLegacyPlaylist(playlist))
+				list.Append(media_card.NewLegacyPlaylist(playlist))
 			} else if item.Type == v2.ItemTypeArtist {
 				artist := item.Data.Artist
-				list.Append(horizontal_list.NewLegacyArtist(artist))
+				list.Append(media_card.NewLegacyArtist(artist))
 			} else if item.Type == v2.ItemTypeMix {
 				mix := item.Data.Mix
-				list.Append(horizontal_list.NewLegacyMix(mix))
+				list.Append(media_card.NewLegacyMix(mix))
 			} else if item.Type == v2.ItemTypeTrack {
 				track := item.Data.Track
-				list.Append(horizontal_list.NewLegacyTrack(track))
+				list.Append(media_card.NewLegacyTrack(track))
 			} else {
 				list.Append(HStack(
 					Label("Unsupported\n"+string(item.Type)).

@@ -6,7 +6,9 @@ import (
 	"codeberg.org/dergs/tidalwave/internal/router"
 	"codeberg.org/dergs/tidalwave/internal/secrets"
 	"codeberg.org/dergs/tidalwave/internal/ui/components/horizontal_list"
+	"codeberg.org/dergs/tidalwave/internal/ui/components/media_card"
 	"codeberg.org/dergs/tidalwave/internal/ui/components/tracklist"
+	"codeberg.org/dergs/tidalwave/internal/ui/routes/my_collection"
 	. "codeberg.org/dergs/tidalwave/pkg/schwifty/syntax"
 	"codeberg.org/dergs/tidalwave/pkg/tidalapi"
 	"github.com/infinytum/injector"
@@ -15,6 +17,10 @@ import (
 
 func init() {
 	router.Register("my-collection", MyCollection)
+	router.Register("my-collection/albums", my_collection.Albums)
+	router.Register("my-collection/artists", my_collection.Artists)
+	router.Register("my-collection/playlists", my_collection.Playlists)
+	router.Register("my-collection/tracks", my_collection.Tracks)
 }
 
 func MyCollection(params router.Params) *router.Response {
@@ -35,19 +41,19 @@ func MyCollection(params router.Params) *router.Response {
 		}
 	}
 
-	artistList := horizontal_list.NewHorizontalList("Artists").SetPageMargin(40)
+	artistList := horizontal_list.NewHorizontalList("Artists").SetPageMargin(40).SetViewAllRoute("my-collection/artists", nil)
 	for _, artist := range userCollection.Included.Artists(userCollection.Data.Relationships.Artists.Data...) {
-		artistList.Append(horizontal_list.NewArtist(&artist))
+		artistList.Append(media_card.NewArtist(&artist))
 	}
 
-	albumList := horizontal_list.NewHorizontalList("Albums").SetPageMargin(40)
+	albumList := horizontal_list.NewHorizontalList("Albums").SetPageMargin(40).SetViewAllRoute("my-collection/albums", nil)
 	for _, album := range userCollection.Included.Albums(userCollection.Data.Relationships.Albums.Data...) {
-		albumList.Append(horizontal_list.NewAlbum(&album))
+		albumList.Append(media_card.NewAlbum(&album))
 	}
 
-	playlistList := horizontal_list.NewHorizontalList("Playlists").SetPageMargin(40)
+	playlistList := horizontal_list.NewHorizontalList("Playlists").SetPageMargin(40).SetViewAllRoute("my-collection/playlists", nil)
 	for _, playlist := range userCollection.Included.Playlists(userCollection.Data.Relationships.Playlists.Data...) {
-		playlistList.Append(horizontal_list.NewPlaylist(&playlist))
+		playlistList.Append(media_card.NewPlaylist(&playlist))
 	}
 
 	trackList := tracklist.NewTrackList(
@@ -58,7 +64,7 @@ func MyCollection(params router.Params) *router.Response {
 		tracklist.DurationColumn,
 		tracklist.ButtonColumn,
 		tracklist.ControlsColumn,
-	)
+	).SetViewAllRoute("my-collection/tracks", nil)
 	for _, track := range userCollection.Included.Tracks(userCollection.Data.Relationships.Tracks.Data...) {
 		trackList.AddTrack(&track)
 	}

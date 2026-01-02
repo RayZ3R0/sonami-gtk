@@ -3,6 +3,7 @@ package horizontal_list
 import (
 	"math"
 
+	"codeberg.org/dergs/tidalwave/internal/router"
 	"codeberg.org/dergs/tidalwave/pkg/schwifty"
 	"codeberg.org/dergs/tidalwave/pkg/schwifty/state"
 	. "codeberg.org/dergs/tidalwave/pkg/schwifty/syntax"
@@ -12,8 +13,9 @@ import (
 type HorizontalList struct {
 	schwifty.Box
 
-	container   *gtk.Box
-	marginState *state.State[int]
+	container        *gtk.Box
+	marginState      *state.State[int]
+	routeButtonState *state.State[any]
 }
 
 func (h *HorizontalList) Append(child any) *HorizontalList {
@@ -26,8 +28,22 @@ func (h *HorizontalList) SetPageMargin(margin int) *HorizontalList {
 	return h
 }
 
+func (h *HorizontalList) SetViewAllRoute(path string, params router.Params) *HorizontalList {
+	h.routeButtonState.SetValue(Button().Child(
+		Label("View All").FontSize(12),
+	).
+		MinHeight(10).
+		MinWidth(10).
+		HPadding(10).
+		ConnectClicked(func(b gtk.Button) {
+			router.Navigate(path, params)
+		}))
+	return h
+}
+
 func NewHorizontalList(title string) *HorizontalList {
 	marginState := state.NewStateful[int](0)
+	routeButtonState := state.NewStateful[any](nil)
 	container := HStack().BindHMargin(marginState)()
 
 	var hAdjust *gtk.Adjustment
@@ -63,6 +79,7 @@ func NewHorizontalList(title string) *HorizontalList {
 						VAlign(gtk.AlignCenterValue),
 					Spacer().VExpand(false),
 					HStack(
+						CenterBox().BindCenterWidget(routeButtonState).HExpand(false).VExpand(false),
 						previousButton,
 						nextButton,
 					).Spacing(10),
@@ -78,7 +95,8 @@ func NewHorizontalList(title string) *HorizontalList {
 					hAdjust = sw.GetHadjustment()
 				}),
 		),
-		marginState: marginState,
-		container:   container,
+		routeButtonState: routeButtonState,
+		marginState:      marginState,
+		container:        container,
 	}
 }

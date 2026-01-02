@@ -4,6 +4,7 @@ import (
 	"slices"
 	"strconv"
 
+	"codeberg.org/dergs/tidalwave/internal/router"
 	"codeberg.org/dergs/tidalwave/pkg/schwifty"
 	"codeberg.org/dergs/tidalwave/pkg/schwifty/state"
 	. "codeberg.org/dergs/tidalwave/pkg/schwifty/syntax"
@@ -18,9 +19,10 @@ type LegacyColumnFunc func(track *v2.TrackItemData, grid *gtk.Grid, row int, col
 type TrackList struct {
 	schwifty.Box
 
-	container       *gtk.Grid
-	titleVisibility *state.State[bool]
-	titleText       *state.State[string]
+	container        *gtk.Grid
+	titleVisibility  *state.State[bool]
+	titleText        *state.State[string]
+	routeButtonState *state.State[any]
 
 	// Will be called per-track to generate their columns
 	columnFuncs       []ColumnFunc
@@ -97,16 +99,32 @@ func (t *TrackList) SetTitle(title string) *TrackList {
 	return t
 }
 
+func (t *TrackList) SetViewAllRoute(path string, params router.Params) *TrackList {
+	t.routeButtonState.SetValue(Button().Child(
+		Label("View All").FontSize(12),
+	).
+		MinHeight(10).
+		MinWidth(10).
+		HPadding(10).
+		VAlign(gtk.AlignCenterValue).
+		ConnectClicked(func(b gtk.Button) {
+			router.Navigate(path, params)
+		}))
+	return t
+}
+
 func newTrackList(title string) *TrackList {
 	titleText := state.New[string](title)
 	titleVisibility := state.New[bool](title != "")
+	routeButtonState := state.NewStateful[any](nil)
 	container := gtk.NewGrid()
 
 	return &TrackList{
-		titleVisibility: titleVisibility,
-		titleText:       titleText,
-		container:       container,
-		rowMap:          []string{},
+		titleVisibility:  titleVisibility,
+		titleText:        titleText,
+		routeButtonState: routeButtonState,
+		container:        container,
+		rowMap:           []string{},
 		Box: VStack(
 			HStack(
 				Label(title).
@@ -119,6 +137,7 @@ func newTrackList(title string) *TrackList {
 					FontSize(20).
 					Visible(title != ""),
 				Spacer().VExpand(false),
+				CenterBox().BindCenterWidget(routeButtonState).HExpand(false).VExpand(false),
 			),
 			ManagedWidget(&container.Widget),
 		).VAlign(gtk.AlignStartValue),

@@ -2,6 +2,7 @@ package search
 
 import (
 	"codeberg.org/dergs/tidalwave/internal/ui/components/horizontal_list"
+	"codeberg.org/dergs/tidalwave/internal/ui/components/media_card"
 	"codeberg.org/dergs/tidalwave/internal/ui/components/tracklist"
 	"codeberg.org/dergs/tidalwave/pkg/schwifty"
 	. "codeberg.org/dergs/tidalwave/pkg/schwifty/syntax"
@@ -12,7 +13,7 @@ import (
 func TopHits(searchResults *openapi.SearchResult) schwifty.Box {
 	artistList := horizontal_list.NewHorizontalList("Artists").SetPageMargin(40)
 	for _, artist := range searchResults.Included.Artists(searchResults.Data.Relationships.TopHits.Data...) {
-		artistList.Append(horizontal_list.NewArtist(&artist))
+		artistList.Append(media_card.NewArtist(&artist))
 	}
 
 	trackList := tracklist.NewTrackList(
@@ -30,12 +31,12 @@ func TopHits(searchResults *openapi.SearchResult) schwifty.Box {
 
 	albumList := horizontal_list.NewHorizontalList("Albums").SetPageMargin(40)
 	for _, album := range searchResults.Included.Albums(searchResults.Data.Relationships.TopHits.Data...) {
-		albumList.Append(horizontal_list.NewAlbum(&album))
+		albumList.Append(media_card.NewAlbum(&album))
 	}
 
 	playlistList := horizontal_list.NewHorizontalList("Playlists").SetPageMargin(40)
 	for _, playlist := range searchResults.Included.Playlists(searchResults.Data.Relationships.TopHits.Data...) {
-		playlistList.Append(horizontal_list.NewPlaylist(&playlist))
+		playlistList.Append(media_card.NewPlaylist(&playlist))
 	}
 
 	return VStack(

@@ -26,6 +26,10 @@ func OnMainThreadOnce(cb func(u uintptr), param uintptr) uint {
 func ResolveWidget(value any) *gtk.Widget {
 	t := reflect.TypeOf(value)
 
+	if value == nil {
+		return nil
+	}
+
 	if t.AssignableTo(reflect.TypeFor[*gtk.Widget]()) {
 		if shouldLogLifecycle {
 			logger.Debug("resolved widget from *gtk.Widget")
