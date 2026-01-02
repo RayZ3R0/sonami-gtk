@@ -83,8 +83,8 @@ func (w *Window) installActions() {
 	}))
 	w.AddAction(routeArtistAction)
 
-	linkingAction := gio.NewSimpleAction("sign-in", nil)
-	linkingAction.ConnectActivate(g.Ptr(func(action gio.SimpleAction, parameter uintptr) {
+	signInAction := gio.NewSimpleAction("sign-in", nil)
+	signInAction.ConnectActivate(g.Ptr(func(action gio.SimpleAction, parameter uintptr) {
 		go func() {
 			var dialog *adw.AlertDialog
 			resp, err := tidalapi.StartDeviceLinking(func(dlc *auth.DeviceLinkingChallenge, cancel context.CancelFunc) {
@@ -96,13 +96,23 @@ func (w *Window) installActions() {
 			})
 			defer dialog.ForceClose()
 			if err != nil {
-				notifications.OnToast.Notify("Login failed or aborted")
+				notifications.OnToast.Notify("Sign in failed or aborted")
 				return
 			}
 			secrets.SetRefreshToken(resp.RefreshToken)
-			notifications.OnToast.Notify("Logged in as " + resp.User.Email)
+			notifications.OnToast.Notify("Signed in as " + resp.User.Email)
 			router.Refresh()
 		}()
 	}))
-	w.AddAction(linkingAction)
+	w.AddAction(signInAction)
+
+	signOutAction := gio.NewSimpleAction("sign-out", nil)
+	signOutAction.ConnectActivate(g.Ptr(func(action gio.SimpleAction, parameter uintptr) {
+		go func() {
+			secrets.DeleteRefreshToken()
+			notifications.OnToast.Notify("Signed out")
+			router.Refresh()
+		}()
+	}))
+	w.AddAction(signOutAction)
 }
