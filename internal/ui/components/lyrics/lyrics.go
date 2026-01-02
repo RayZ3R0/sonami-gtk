@@ -93,6 +93,10 @@ type highlightTiming struct {
 func scrollToLyric(w *gtk.Button) {
 	scrollIsProgrammatic = true
 	parentWidget := w.GetParent()
+	if parentWidget == nil {
+		return
+	}
+
 	defer parentWidget.Unref()
 
 	var bounds graphene.Rect
