@@ -3,6 +3,7 @@ package lyrics
 import (
 	"context"
 	"fmt"
+	"log/slog"
 	"regexp"
 	"runtime"
 	"strconv"
@@ -160,7 +161,6 @@ func init() {
 		}
 
 		if texture, err := injector.MustInject[*imgutil.ImgUtil]().Load(trackInfo.CoverURL); err == nil {
-			fmt.Println("setting texture:", texture)
 			coverState.SetValue(texture)
 			texture.Unref()
 		}
@@ -171,7 +171,7 @@ func init() {
 		tidal := injector.MustInject[*tidalapi.TidalAPI]()
 		track, err := tidal.OpenAPI.V2.Tracks.Track(context.Background(), trackInfo.ID, "lyrics")
 		if err != nil {
-			fmt.Errorf("", err)
+			slog.Error("failed to load lyrics for track", "error", err)
 			return signals.Continue
 		}
 
