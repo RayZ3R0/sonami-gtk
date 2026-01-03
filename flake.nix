@@ -28,6 +28,7 @@
               gtk4
               libadwaita
               gobject-introspection
+              librsvg
             ]
           );
         };
@@ -35,10 +36,17 @@
       {
         devShell = pkgs.mkShell {
           PUREGOTK_LIB_FOLDER = "${libraryPath}/lib";
+          GSETTINGS_SCHEMA_DIR = "./internal/settings";
           buildInputs = with pkgs; [
             go
             gopls
+            gtk4
+            librsvg
             graphviz
+            gst_all_1.gstreamer
+            gst_all_1.gst-plugins-base
+            gst_all_1.gst-plugins-good
+            gst_all_1.gst-plugins-bad
           ];
         };
 
