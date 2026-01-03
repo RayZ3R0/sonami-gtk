@@ -15,45 +15,31 @@
       system:
       let
         pkgs = import nixpkgs { inherit system; };
-        cgoDependencies = with pkgs; [
-          gtk4
-          gobject-introspection
-          libadwaita
-        ];
-        runtimeDependencies = with pkgs; [
-          gst_all_1.gstreamer
-          gst_all_1.gst-plugins-base
-          gst_all_1.gst-plugins-good
-          gst_all_1.gst-plugins-bad
-          librsvg
-        ];
         libraryPath = pkgs.symlinkJoin {
           name = "tidalwave-puregotk-lib-folder";
-          paths =
-            (with pkgs; [
+          paths = (
+            with pkgs;
+            [
               cairo
               gdk-pixbuf
               glib.out
               graphene
               pango.out
-              vulkan-loader
-            ])
-            ++ cgoDependencies
-            ++ runtimeDependencies;
+              gtk4
+              libadwaita
+              gobject-introspection
+            ]
+          );
         };
       in
       {
         devShell = pkgs.mkShell {
           PUREGOTK_LIB_FOLDER = "${libraryPath}/lib";
-          buildInputs =
-            with pkgs;
-            [
-              go
-              gopls
-              pkg-config
-              graphviz
-            ]
-            ++ runtimeDependencies;
+          buildInputs = with pkgs; [
+            go
+            gopls
+            graphviz
+          ];
         };
 
         packages.tidalwave = pkgs.buildGoModule {
@@ -62,12 +48,17 @@
           src = ./.;
           vendorHash = "sha256-fuvkl3QB+yOpHtJ1rBQaNdPOQvRxb+Ph7qBWVIDqDwA=";
 
-          buildInputs = cgoDependencies ++ runtimeDependencies;
+          buildInputs = with pkgs; [
+            gst_all_1.gstreamer
+            gst_all_1.gst-plugins-base
+            gst_all_1.gst-plugins-good
+            gst_all_1.gst-plugins-bad
+          ];
           doCheck = false;
           nativeBuildInputs = with pkgs; [
             pkg-config
             copyDesktopItems
-            makeBinaryWrapper
+            makeWrapper
           ];
 
           subPackages = [
@@ -96,6 +87,7 @@
 
           postInstall = ''
             wrapProgram $out/bin/tidalwave \
+              --prefix GST_PLUGIN_PATH : "$GST_PLUGIN_SYSTEM_PATH_1_0" \
               --set-default PUREGOTK_LIB_FOLDER ${libraryPath}/lib
             install -Dm444 internal/icons/hicolor/scalable/apps/logo.png $out/share/icons/hicolor/scalable/apps/tidalwave.png
           '';
