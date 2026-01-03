@@ -4,7 +4,18 @@ import (
 	"sync"
 
 	"codeberg.org/dergs/tidalwave/internal/signals"
+	"codeberg.org/dergs/tidalwave/pkg/mpris"
+	"github.com/infinytum/injector"
 )
+
+func init() {
+	OnVolumeChanged.Signal.On(func(volume float64) bool {
+		server := injector.MustInject[*mpris.Server]()
+		server.SetVolume(volume)
+
+		return signals.Continue
+	})
+}
 
 var OnVolumeChanged = volumeChangedSignal{
 	signals.NewSignal[func(volume float64) bool](),

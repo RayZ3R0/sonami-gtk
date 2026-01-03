@@ -5,11 +5,27 @@ import (
 	"strconv"
 
 	"codeberg.org/dergs/tidalwave/internal/signals"
+	"codeberg.org/dergs/tidalwave/pkg/mpris"
 	"codeberg.org/dergs/tidalwave/pkg/tidalapi"
 	"github.com/infinytum/injector"
 )
 
 func init() {
+	OnStateChanged.Signal.On(func(state State) bool {
+		mprisClient := injector.MustInject[*mpris.Server]()
+		mprisClient.SetPosition(state.Position)
+		switch state.Status {
+		case StatusBuffering, StatusPaused:
+			mprisClient.SetPlaybackStatus(mpris.PlaybackStatusPaused)
+		case StatusPlaying:
+			mprisClient.SetPlaybackStatus(mpris.PlaybackStatusPlaying)
+		case StatusStopped:
+			mprisClient.SetPlaybackStatus(mpris.PlaybackStatusStopped)
+		}
+
+		return signals.Continue
+	})
+
 	OnStateChanged.On(func(state State) bool {
 		if OnTrackChanged.current.ID == "" {
 			return signals.Continue

@@ -12,6 +12,7 @@ import (
 	"codeberg.org/dergs/tidalwave/internal/secrets"
 	_ "codeberg.org/dergs/tidalwave/internal/styles"
 	"codeberg.org/dergs/tidalwave/internal/ui"
+	"codeberg.org/dergs/tidalwave/pkg/mpris"
 	"codeberg.org/dergs/tidalwave/pkg/schwifty/tracking"
 	"codeberg.org/dergs/tidalwave/pkg/tidalapi"
 	"codeberg.org/dergs/tidalwave/pkg/utils/imgutil"
@@ -49,10 +50,32 @@ func main() {
 		return imgutil.NewImgUtil(app.GetApplicationId())
 	})
 
+	mprisServer := mpris.NewMprisServer("org.mpris.MediaPlayer2.TidalWave")
+	mprisServer.OnPlayPause(player.PlayPause)
+	mprisServer.OnPlay(player.Play)
+	mprisServer.OnTrackNext(player.Next)
+	mprisServer.OnQuit(func() { quit(0) })
+	mprisServer.OnRaise(func() {
+		injector.MustInject[*adw.ApplicationWindow]().Present()
+	})
+	mprisServer.OnSeek(player.SeekForward)
+	mprisServer.OnSetPosition(player.SeekTo)
+	mprisServer.OnVolumeChanged(func(newVal float64) {
+		player.SetVolume(newVal)
+
+	})
+	injector.Singleton(func() *mpris.Server {
+		return mprisServer
+	})
+
 	if code := app.Run(len(os.Args), os.Args); code > 0 {
-		app.Quit()
-		os.Exit(code)
+		quit(code)
 	}
+}
+
+func quit(code int) {
+	app.Quit()
+	os.Exit(code)
 }
 
 func onActivate(_ gio.Application) {

@@ -19,6 +19,7 @@ func playTrack(track *openapi.Track) error {
 	tidal, err := injector.Inject[*tidalapi.TidalAPI]()
 
 	OnTrackChanged.Notify(func(trackInfo *TrackInformation) {
+		trackInfo.Albums = []openapi.Album{}
 		trackInfo.Artists = []openapi.ArtistData{}
 		trackInfo.CoverURL = ""
 		trackInfo.Duration = track.Data.Attributes.Duration.Duration
@@ -30,6 +31,7 @@ func playTrack(track *openapi.Track) error {
 		}
 
 		for _, album := range track.Included.Albums(track.Data.Relationships.Albums.Data...) {
+			trackInfo.Albums = append(trackInfo.Albums, album)
 			for _, artwork := range album.Included.PlainArtworks(album.Data.Relationships.CoverArt.Data...) {
 				trackInfo.CoverURL = artwork.Attributes.Files.AtLeast(320).Href
 			}

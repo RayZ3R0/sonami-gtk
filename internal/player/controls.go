@@ -21,6 +21,20 @@ func Scrub(percent float64) {
 	})
 }
 
+// Removes duration to the current position
+func SeekBackward(duration time.Duration) {
+	SeekForward(-duration)
+}
+
+// Adds duration to the current position
+func SeekForward(duration time.Duration) {
+	ok, position := playbin.QueryPosition(gst.FormatTime)
+	if !ok {
+		return
+	}
+	SeekTo(time.Duration(position) + duration)
+}
+
 func SeekTo(timestamp time.Duration) {
 	playbin.SeekTime(timestamp, gst.SeekFlagFlush)
 	OnStateChanged.Notify(func(state *State) {
@@ -31,18 +45,27 @@ func SeekTo(timestamp time.Duration) {
 	})
 }
 
+func Pause() {
+	playbin.SetState(gst.StatePaused)
+	OnStateChanged.Notify(func(state *State) {
+		state.Status = StatusPaused
+	})
+}
+
+func Play() {
+	playbin.SetState(gst.StatePlaying)
+	OnStateChanged.Notify(func(state *State) {
+		state.Status = StatusPlaying
+	})
+}
+
 func PlayPause() {
-	if OnStateChanged.current.Status == StatusPlaying {
-		playbin.SetState(gst.StatePaused)
-		OnStateChanged.Notify(func(state *State) {
-			state.Status = StatusPaused
-		})
-	} else if OnStateChanged.current.Status == StatusPaused {
-		playbin.SetState(gst.StatePlaying)
-		OnStateChanged.Notify(func(state *State) {
-			state.Status = StatusPlaying
-		})
-	} else if OnStateChanged.current.Status == StatusStopped {
+	switch OnStateChanged.current.Status {
+	case StatusPlaying:
+		Pause()
+	case StatusPaused:
+		Play()
+	case StatusStopped:
 		Scrub(0)
 	}
 }
@@ -59,4 +82,9 @@ func SetVolume(volume float64) {
 
 func Next() {
 	nextTrack()
+}
+
+func Previous() {
+	// TODO: When implementing this, also implement Previous in MPRIS
+	panic("unimplemented")
 }
