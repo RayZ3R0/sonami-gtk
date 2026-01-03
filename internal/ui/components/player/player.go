@@ -58,12 +58,15 @@ func NewPlayer() schwifty.Box {
 				IconName("audio-speakers-symbolic").
 				WithCSSClass("transparent"),
 			Button().
+				ActionName("unimplemented").
 				IconName("heart-outline-thick-symbolic").
 				WithCSSClass("transparent"),
 			Button().
+				ActionName("unimplemented").
 				IconName("compass2-symbolic").
 				WithCSSClass("transparent"),
 			Button().
+				ActionName("unimplemented").
 				IconName("library-symbolic").
 				WithCSSClass("transparent"),
 			Button().

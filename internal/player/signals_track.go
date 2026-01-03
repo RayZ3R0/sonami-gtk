@@ -7,9 +7,41 @@ import (
 	"time"
 
 	"codeberg.org/dergs/tidalwave/internal/signals"
+	"codeberg.org/dergs/tidalwave/pkg/mpris"
 	"codeberg.org/dergs/tidalwave/pkg/tidalapi/models/openapi"
 	v1 "codeberg.org/dergs/tidalwave/pkg/tidalapi/models/v1"
+	"github.com/infinytum/injector"
 )
+
+func init() {
+	OnTrackChanged.Signal.On(func(trackInfo TrackInformation) bool {
+		mpris := injector.MustInject[*mpris.Server]()
+		mpris.EnableControl()
+
+		artists := []string{}
+		for _, artist := range trackInfo.Artists {
+			artists = append(artists, artist.Attributes.Name)
+		}
+
+		album := trackInfo.Albums[0]
+		albumArtists := []string{}
+		for _, artist := range album.Included.Artists(album.Data.Relationships.Artists.Data...) {
+			albumArtists = append(albumArtists, artist.Data.Attributes.Name)
+		}
+
+		mpris.SetTrackMetadata(map[string]any{
+			"mpris:artUrl":      trackInfo.CoverURL,
+			"mpris:length":      trackInfo.Duration.Microseconds(),
+			"xesam:album":       album.Data.Attributes.Title,
+			"xesam:albumArtist": albumArtists,
+			"xesam:artist":      artists,
+			"xesam:title":       trackInfo.Title,
+			"xesam:url":         fmt.Sprintf("https://tidal.com/track/%s", trackInfo.ID),
+		})
+
+		return signals.Continue
+	})
+}
 
 var OnTrackChanged = trackChangedSignal{
 	signals.NewSignal[func(trackInfo TrackInformation) bool](),
@@ -43,6 +75,7 @@ func (r *trackChangedSignal) On(handler func(trackInfo TrackInformation) bool) *
 
 type TrackInformation struct {
 	Artists  []openapi.ArtistData
+	Albums   []openapi.Album
 	CoverURL string
 	Duration time.Duration
 	ID       string
