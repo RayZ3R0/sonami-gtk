@@ -2,6 +2,7 @@ package player
 
 import (
 	"log/slog"
+	"strconv"
 
 	"github.com/go-gst/go-gst/gst"
 )
@@ -14,6 +15,8 @@ func onBusMessage(msg *gst.Message) bool {
 		onBusStateChanged(msg.ParseStateChanged())
 	case gst.MessageEOS:
 		onBusStreamEnd()
+	case gst.MessageStreamStart:
+		onBusStreamStart()
 	}
 	return true
 }
@@ -33,4 +36,11 @@ func onBusStreamEnd() {
 	OnStateChanged.Notify(func(state *State) {
 		state.Status = StatusStopped
 	})
+}
+
+func onBusStreamStart() {
+	// A hack to trigger the correct track updates with gapless playback
+	if OnTrackChanged.current.ID != strconv.Itoa(currentlyConfiguredTrackID) {
+		nextTrack()
+	}
 }

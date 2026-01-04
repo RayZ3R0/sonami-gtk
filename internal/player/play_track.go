@@ -5,6 +5,7 @@ import (
 	"errors"
 	"fmt"
 	"slices"
+	"strconv"
 
 	"codeberg.org/dergs/tidalwave/internal/notifications"
 	"codeberg.org/dergs/tidalwave/pkg/tidalapi"
@@ -30,7 +31,7 @@ func playTrackId(trackId string) error {
 }
 
 func playTrack(track *openapi.Track) error {
-	tidal, err := injector.Inject[*tidalapi.TidalAPI]()
+	tidal := injector.MustInject[*tidalapi.TidalAPI]()
 
 	OnTrackChanged.Notify(func(trackInfo *TrackInformation) {
 		trackInfo.Albums = []openapi.Album{}
@@ -58,13 +59,15 @@ func playTrack(track *openapi.Track) error {
 		return errors.New("track not available for streaming")
 	}
 
-	playbackInfo, err := tidal.V1.Tracks.PlaybackInfo(context.Background(), track.Data.ID, tracksv1.PlaybackInfoOptions{})
-	if err != nil {
-		logger.Error("unable to fetch playback info for track", "error", err)
-		return err
+	if strconv.Itoa(currentlyConfiguredTrackID) != track.Data.ID {
+		playbackInfo, err := tidal.V1.Tracks.PlaybackInfo(context.Background(), track.Data.ID, tracksv1.PlaybackInfoOptions{})
+		if err != nil {
+			logger.Error("unable to fetch playback info for track", "error", err)
+			return err
+		}
+		return play(playbackInfo)
 	}
-
-	return play(playbackInfo)
+	return nil
 }
 
 func play(playbackInfo *v1.PlaybackInfo) error {
@@ -73,11 +76,9 @@ func play(playbackInfo *v1.PlaybackInfo) error {
 		return playbackInfo.AudioQuality
 	})
 
-	if currentlyConfiguredTrackID != playbackInfo.TrackID {
-		// Free up resources taken up by previous stream
-		playbin.SetState(gst.StateNull)
-		playbin.SetArg("uri", "")
-	}
+	// Free up resources taken up by previous stream
+	playbin.SetState(gst.StateNull)
+	playbin.SetArg("uri", "")
 
 	OnStateChanged.Notify(func(state *State) {
 		state.Status = StatusBuffering

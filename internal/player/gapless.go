@@ -3,7 +3,9 @@ package player
 import (
 	"context"
 
+	"codeberg.org/dergs/tidalwave/internal/signals"
 	"codeberg.org/dergs/tidalwave/pkg/tidalapi"
+	v1 "codeberg.org/dergs/tidalwave/pkg/tidalapi/models/v1"
 	tracksv1 "codeberg.org/dergs/tidalwave/pkg/tidalapi/v1/tracks"
 	"github.com/go-gst/go-gst/gst"
 	"github.com/infinytum/injector"
@@ -21,5 +23,13 @@ func onAboutToFinish(_ *gst.Element) {
 			logger.Error("enqueueing for gapless playback", "error", err)
 			return
 		}
+
+		// One-Shot Handler to update the track quality
+		OnTrackChanged.On(func(trackInfo TrackInformation) bool {
+			OnPlaybackQualityChanged.Notify(func() v1.AudioQuality {
+				return playbackInfo.AudioQuality
+			})
+			return signals.Unsubscribe
+		})
 	}
 }
