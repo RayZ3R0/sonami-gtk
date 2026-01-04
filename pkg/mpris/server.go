@@ -1,6 +1,7 @@
 package mpris
 
 import (
+	"fmt"
 	"log/slog"
 	"reflect"
 	"time"
@@ -10,11 +11,8 @@ import (
 )
 
 var capabilities = []string{
-	"CanControl",
 	"CanGoNext",
 	"CanGoPrevious",
-	"CanPause",
-	"CanPlay",
 	"CanSeek",
 }
 
@@ -25,19 +23,17 @@ type Server struct {
 }
 
 func (c *Server) EnableControl() {
-	oldVar, _ := c.properties.Get(playerInterface, "CanControl")
-	oldVal, ok := oldVar.Value().(bool)
+	for _, capability := range capabilities {
+		oldVar, _ := c.properties.Get(playerInterface, capability)
+		oldVal, ok := oldVar.Value().(bool)
 
-	if !ok {
-		log.Error("Unexpected non-boolean value in D-Bus PlaybackStatus value")
-		for _, capability := range capabilities {
+		if !ok {
+			log.Error(fmt.Sprintf("Unexpected non-boolean value in D-Bus %s value", capability))
 			c.properties.SetMust(playerInterface, capability, dbus.MakeVariant(true))
+			return
 		}
-		return
-	}
 
-	if oldVal != true {
-		for _, capability := range capabilities {
+		if oldVal != true {
 			c.properties.SetMust(playerInterface, capability, dbus.MakeVariant(true))
 		}
 	}

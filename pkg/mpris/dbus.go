@@ -80,9 +80,9 @@ func NewMprisDBusObject() *MprisDBusObject {
 			},
 			"org.mpris.MediaPlayer2.Player": {
 				"CanControl": {
-					Value:    false,
+					Value:    true,
 					Writable: false,
-					Emit:     prop.EmitTrue,
+					Emit:     prop.EmitConst, // According to the MPRIS spec, should not be emitted
 				},
 				"CanGoNext": {
 					Value:    false,
@@ -95,14 +95,14 @@ func NewMprisDBusObject() *MprisDBusObject {
 					Emit:     prop.EmitTrue,
 				},
 				"CanPause": {
-					Value:    false,
+					Value:    true,
 					Writable: false,
-					Emit:     prop.EmitTrue,
+					Emit:     prop.EmitConst,
 				},
 				"CanPlay": {
-					Value:    false,
+					Value:    true,
 					Writable: false,
-					Emit:     prop.EmitTrue,
+					Emit:     prop.EmitConst,
 				},
 				"CanSeek": {
 					Value:    false,
@@ -137,7 +137,7 @@ func NewMprisDBusObject() *MprisDBusObject {
 				"Position": {
 					Value:    int64(0),
 					Writable: false,
-					Emit:     prop.EmitTrue,
+					Emit:     prop.EmitFalse, // According to the MPRIS spec, should not be emitted
 				},
 				"Rate": {
 					Value:    1.0,
