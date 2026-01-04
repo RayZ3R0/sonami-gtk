@@ -50,7 +50,9 @@ func Album(albumId string) *router.Response {
 		tracklist.TitleColumn,
 		tracklist.ArtistsColumn,
 		tracklist.DurationColumn,
-		tracklist.ButtonColumn,
+		tracklist.CustomButtonColumn(func(trackId string) {
+			go player.PlayAlbum(albumId, false, trackId)
+		}),
 		tracklist.ControlsColumn,
 	)
 
