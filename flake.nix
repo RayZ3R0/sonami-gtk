@@ -37,6 +37,7 @@
         devShell = pkgs.mkShell {
           PUREGOTK_LIB_FOLDER = "${libraryPath}/lib";
           GSETTINGS_SCHEMA_DIR = "./internal/settings";
+          TIDAL_WAVE_DEBUG = "1";
           buildInputs = with pkgs; [
             go
             gopls
