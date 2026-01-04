@@ -105,9 +105,9 @@ func (c *Server) SetPlaybackStatus(status PlaybackStatus) {
 
 func (c *Server) SetPosition(position time.Duration) {
 	oldVar, _ := c.properties.Get(playerInterface, "Position")
-	oldVal, ok := oldVar.Value().(int)
+	oldVal, ok := oldVar.Value().(int64)
 
-	newVal := int(position.Microseconds())
+	newVal := position.Microseconds()
 
 	if !ok {
 		log.Error("Unexpected non-integer value in D-Bus Position value")

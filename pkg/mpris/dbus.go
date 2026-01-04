@@ -134,7 +134,7 @@ func NewMprisDBusObject() *MprisDBusObject {
 					Emit:     prop.EmitTrue,
 				},
 				"Position": {
-					Value:    0,
+					Value:    int64(0),
 					Writable: false,
 					Emit:     prop.EmitTrue,
 				},
