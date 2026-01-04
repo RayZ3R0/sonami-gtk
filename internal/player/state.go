@@ -7,6 +7,7 @@ import (
 	"codeberg.org/dergs/tidalwave/internal/signals"
 	"codeberg.org/dergs/tidalwave/pkg/mpris"
 	"codeberg.org/dergs/tidalwave/pkg/tidalapi"
+	"codeberg.org/dergs/tidalwave/pkg/tidalapi/models/openapi"
 	"github.com/infinytum/injector"
 )
 
@@ -41,6 +42,24 @@ func init() {
 func onTrackFinished() {
 	defer logger.Debug("done handling track end")
 	go nextTrack()
+}
+
+func peekNextTrack() *openapi.Track {
+	logger.Debug("attempting to peek next track from user queue")
+	nextTrack := UserQueue.Peek()
+	if nextTrack != nil {
+		logger.Info("peeked next track from user queue", "track_id", nextTrack.Data.ID)
+		return nextTrack
+	}
+
+	logger.Debug("attempting to peek next track from base queue")
+	nextTrack = BaseQueue.Peek()
+	if nextTrack != nil {
+		logger.Info("peeked next track from base queue", "track_id", nextTrack.Data.ID)
+		return nextTrack
+	}
+
+	return nil
 }
 
 func nextTrack() {

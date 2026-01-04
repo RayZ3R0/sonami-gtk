@@ -73,15 +73,30 @@ func play(playbackInfo *v1.PlaybackInfo) error {
 		return playbackInfo.AudioQuality
 	})
 
-	// Free up resources taken up by previous stream
-	playbin.SetState(gst.StateNull)
-	playbin.SetArg("uri", "")
+	if currentlyConfiguredTrackID != playbackInfo.TrackID {
+		// Free up resources taken up by previous stream
+		playbin.SetState(gst.StateNull)
+		playbin.SetArg("uri", "")
+	}
 
 	OnStateChanged.Notify(func(state *State) {
 		state.Status = StatusBuffering
 		state.Position = 0
 	})
 
+	if err := enqueue(playbackInfo); err != nil {
+		return err
+	}
+
+	OnStateChanged.Notify(func(state *State) {
+		state.Status = StatusPlaying
+	})
+
+	playbin.SetState(gst.StatePlaying)
+	return nil
+}
+
+func enqueue(playbackInfo *v1.PlaybackInfo) error {
 	switch playbackInfo.ManifestMimeType {
 	case v1.ManifestMimeTypeAudioMPD:
 		enqueueMPDStream(playbackInfo)
@@ -91,11 +106,6 @@ func play(playbackInfo *v1.PlaybackInfo) error {
 		logger.Error("unsupported manifest mime type", "mime_type", playbackInfo.ManifestMimeType)
 		return fmt.Errorf("unsupported manifest mime type: %s", playbackInfo.ManifestMimeType)
 	}
-
-	OnStateChanged.Notify(func(state *State) {
-		state.Status = StatusPlaying
-	})
-
-	playbin.SetState(gst.StatePlaying)
+	currentlyConfiguredTrackID = playbackInfo.TrackID
 	return nil
 }

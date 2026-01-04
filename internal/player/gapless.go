@@ -1,0 +1,25 @@
+package player
+
+import (
+	"context"
+
+	"codeberg.org/dergs/tidalwave/pkg/tidalapi"
+	tracksv1 "codeberg.org/dergs/tidalwave/pkg/tidalapi/v1/tracks"
+	"github.com/go-gst/go-gst/gst"
+	"github.com/infinytum/injector"
+)
+
+func onAboutToFinish(_ *gst.Element) {
+	nextTrack := peekNextTrack()
+	if nextTrack != nil {
+		playbackInfo, err := injector.MustInject[*tidalapi.TidalAPI]().V1.Tracks.PlaybackInfo(context.Background(), nextTrack.Data.ID, tracksv1.PlaybackInfoOptions{})
+		if err != nil {
+			logger.Error("failed to get playback info", "error", err)
+			return
+		}
+		if err := enqueue(playbackInfo); err != nil {
+			logger.Error("enqueueing for gapless playback", "error", err)
+			return
+		}
+	}
+}

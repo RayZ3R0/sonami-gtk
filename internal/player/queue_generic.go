@@ -84,6 +84,19 @@ func (q *Queue) ModifyQueue(f func(t []*openapi.Track) []*openapi.Track) {
 	})
 }
 
+func (q *Queue) Peek() *openapi.Track {
+	q.RLock()
+	if len(q.entries) == 0 {
+		q.RUnlock()
+		logger.Debug("peek from queue failed, queue is empty")
+		return nil
+	}
+	nextTrack := q.entries[0]
+	q.RUnlock()
+
+	return nextTrack
+}
+
 func (q *Queue) Pop() *openapi.Track {
 	q.popTrackMutex.Lock()
 	defer q.popTrackMutex.Unlock()

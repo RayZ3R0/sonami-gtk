@@ -13,8 +13,9 @@ import (
 )
 
 var (
-	playbin *gst.Element
-	logger  *slog.Logger
+	playbin                    *gst.Element
+	currentlyConfiguredTrackID int
+	logger                     *slog.Logger
 )
 
 func init() {
@@ -29,6 +30,7 @@ func init() {
 	settings.PlayerSettings().BindVolume(gobject.ObjectNewFromInternalPtr(uintptr(playbin.BaseObject().Unsafe())), "volume")
 	playbin.GetBus().AddWatch(onBusMessage)
 	playbin.Connect("notify::volume", onVolumeChange)
+	playbin.Connect("about-to-finish", onAboutToFinish)
 	onVolumeChange()
 }
 
