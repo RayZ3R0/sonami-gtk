@@ -48,6 +48,47 @@ func PlayTrack(trackId string) error {
 	return playTrack(track)
 }
 
+func PlayAlbum(albumId string, shuffle bool, skipUntil string) error {
+	tidal, err := injector.Inject[*tidalapi.TidalAPI]()
+	if err != nil {
+		return err
+	}
+
+	items, err := tidal.OpenAPI.V2.Albums.Items(context.Background(), albumId, "", "items", "items.artists", "items.albums.coverArt")
+	if err != nil {
+		return err
+	}
+
+	BaseQueue.Clear()
+
+	tracks := items.Included.Tracks(items.Data...)
+
+	if shuffle {
+		rand.Shuffle(len(tracks), func(i, j int) {
+			tracks[i], tracks[j] = tracks[j], tracks[i]
+		})
+	} else if skipUntil != "" {
+		for i, track := range tracks {
+			if track.Data.ID == skipUntil {
+				tracks = tracks[i:]
+				break
+			}
+		}
+	}
+
+	firstTrack := tracks[0]
+
+	if err := playTrack(&firstTrack); err != nil {
+		return err
+	}
+
+	for _, track := range tracks[1:] {
+		BaseQueue.AddTrack(&track, false)
+	}
+
+	return nil
+}
+
 func PlayPlaylist(playlistId string, shuffle bool, skipUntil string) error {
 	tidal, err := injector.Inject[*tidalapi.TidalAPI]()
 	if err != nil {
