@@ -61,6 +61,7 @@ func main() {
 		mprisServer.OnPlayPause(player.PlayPause)
 		mprisServer.OnPlay(player.Play)
 		mprisServer.OnTrackNext(player.Next)
+		mprisServer.OnTrackPrevious(player.Previous)
 		mprisServer.OnQuit(func() { quit(0) })
 		mprisServer.OnRaise(func() {
 			window := injector.MustInject[*adw.ApplicationWindow]()

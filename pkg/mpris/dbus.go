@@ -10,12 +10,13 @@ import (
 type MprisDBusObject struct {
 	Properties prop.Map
 
-	OnPause       func()
-	OnPlay        func()
-	OnPlayPause   func()
-	OnSeek        func(time.Duration)
-	OnSetPosition func(time.Duration)
-	OnTrackNext   func()
+	OnPause         func()
+	OnPlay          func()
+	OnPlayPause     func()
+	OnSeek          func(time.Duration)
+	OnSetPosition   func(time.Duration)
+	OnTrackNext     func()
+	OnTrackPrevious func()
 
 	OnQuit  func()
 	OnRaise func()
@@ -188,6 +189,15 @@ func (o *MprisDBusObject) Play() *dbus.Error {
 func (o *MprisDBusObject) PlayPause() *dbus.Error {
 	if onPlayPause := o.OnPlayPause; onPlayPause != nil {
 		onPlayPause()
+		return nil
+	}
+
+	return &dbus.ErrMsgUnknownMethod
+}
+
+func (o *MprisDBusObject) Previous() *dbus.Error {
+	if onTrackPrevious := o.OnTrackPrevious; onTrackPrevious != nil {
+		onTrackPrevious()
 		return nil
 	}
 

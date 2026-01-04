@@ -33,19 +33,8 @@ func init() {
 }
 
 func PlayTrack(trackId string) error {
-	tidal, err := injector.Inject[*tidalapi.TidalAPI]()
-	if err != nil {
-		return err
-	}
-
-	track, err := tidal.OpenAPI.V2.Tracks.Track(context.Background(), trackId, "albums.coverArt", "artists")
-	if err != nil {
-		return err
-	}
-
 	BaseQueue.Clear()
-
-	return playTrack(track)
+	return playTrackId(trackId)
 }
 
 func PlayAlbum(albumId string, shuffle bool, skipUntil string) error {

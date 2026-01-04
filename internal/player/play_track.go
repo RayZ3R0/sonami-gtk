@@ -15,6 +15,20 @@ import (
 	"github.com/infinytum/injector"
 )
 
+func playTrackId(trackId string) error {
+	tidal, err := injector.Inject[*tidalapi.TidalAPI]()
+	if err != nil {
+		return err
+	}
+
+	track, err := tidal.OpenAPI.V2.Tracks.Track(context.Background(), trackId, "albums.coverArt", "artists")
+	if err != nil {
+		return err
+	}
+
+	return playTrack(track)
+}
+
 func playTrack(track *openapi.Track) error {
 	tidal, err := injector.Inject[*tidalapi.TidalAPI]()
 
@@ -55,8 +69,8 @@ func playTrack(track *openapi.Track) error {
 
 func play(playbackInfo *v1.PlaybackInfo) error {
 	// Inform the UI about the track quality we got from TIDAL.
-	OnTrackChanged.Notify(func(trackInfo *TrackInformation) {
-		trackInfo.Quality = playbackInfo.AudioQuality
+	OnPlaybackQualityChanged.Notify(func() v1.AudioQuality {
+		return playbackInfo.AudioQuality
 	})
 
 	// Free up resources taken up by previous stream

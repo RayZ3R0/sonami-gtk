@@ -85,6 +85,21 @@ func Next() {
 }
 
 func Previous() {
-	// TODO: When implementing this, also implement Previous in MPRIS
-	panic("unimplemented")
+	ok, position := playbin.QueryPosition(gst.FormatTime)
+	if ok && time.Duration(position) > 5*time.Second {
+		SeekTo(0)
+		return
+	}
+
+	if len(history.Entries) < 1 {
+		SeekTo(0)
+		return
+	}
+	entry := history.Pop()
+	if entry != nil {
+		// Re-Queue current song to front of user-queue
+		UserQueue.AddTrackID(OnTrackChanged.current.ID, true)
+		// Switch to previous track without clearing base queue
+		playTrackId(entry.TrackID)
+	}
 }

@@ -68,6 +68,12 @@ func (w *Window) installActions() {
 	}))
 	w.AddAction(nextAction)
 
+	previousAction := gio.NewSimpleAction("player.previous", nil)
+	previousAction.ConnectActivate(g.Ptr(func(action gio.SimpleAction, parameter uintptr) {
+		go player.Previous()
+	}))
+	w.AddAction(previousAction)
+
 	queueTrackAction := gio.NewSimpleAction("player.queue-track", glib.NewVariantType("s"))
 	queueTrackAction.ConnectActivate(g.Ptr(func(action gio.SimpleAction, parameter uintptr) {
 		variant := (*glib.Variant)(unsafe.Pointer(parameter))

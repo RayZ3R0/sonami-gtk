@@ -2,7 +2,6 @@ package player
 
 import (
 	"fmt"
-	"log/slog"
 
 	"codeberg.org/dergs/tidalwave/internal/notifications"
 	"codeberg.org/dergs/tidalwave/internal/player"
@@ -25,9 +24,11 @@ var (
 
 func init() {
 	player.OnTrackChanged.On(func(trackInfo player.TrackInformation) bool {
-		slog.Debug(fmt.Sprintf("Quality: %s", trackInfo.Quality))
 		trackID.SetValue(trackInfo.ID)
-		switch trackInfo.Quality {
+		return signals.Continue
+	})
+	player.OnPlaybackQualityChanged.On(func(quality v1.AudioQuality) bool {
+		switch quality {
 		case v1.AudioQualityLossy:
 			playbackQualityText.SetValue("Low (96 kbps)")
 			playbackQualityClass.SetValue("low")
@@ -41,7 +42,6 @@ func init() {
 			playbackQualityText.SetValue("Max")
 			playbackQualityClass.SetValue("max")
 		}
-
 		return signals.Continue
 	})
 }
@@ -115,7 +115,7 @@ func NewPlayer() schwifty.Box {
 				MinHeight(34).
 				MinWidth(34).
 				WithCSSClass("transparent").
-				ActionName("win.player.back"),
+				ActionName("win.player.previous"),
 			controlsPlayPause(),
 			Button().
 				IconName("media-seek-forward-symbolic").

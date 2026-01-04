@@ -12,6 +12,7 @@ import (
 var capabilities = []string{
 	"CanControl",
 	"CanGoNext",
+	"CanGoPrevious",
 	"CanPause",
 	"CanPlay",
 	"CanSeek",
@@ -72,6 +73,10 @@ func (c *Server) OnSetPosition(cb func(offset time.Duration)) {
 
 func (c *Server) OnTrackNext(cb func()) {
 	c.object.OnTrackNext = cb
+}
+
+func (c *Server) OnTrackPrevious(cb func()) {
+	c.object.OnTrackPrevious = cb
 }
 
 func (c *Server) OnVolumeChanged(cb func(newVal float64)) {

@@ -9,7 +9,6 @@ import (
 	"codeberg.org/dergs/tidalwave/internal/signals"
 	"codeberg.org/dergs/tidalwave/pkg/mpris"
 	"codeberg.org/dergs/tidalwave/pkg/tidalapi/models/openapi"
-	v1 "codeberg.org/dergs/tidalwave/pkg/tidalapi/models/v1"
 	"github.com/infinytum/injector"
 )
 
@@ -80,7 +79,6 @@ type TrackInformation struct {
 	Duration time.Duration
 	ID       string
 	Title    string
-	Quality  v1.AudioQuality
 }
 
 func (t TrackInformation) ArtistNames() string {
@@ -92,7 +90,7 @@ func (t TrackInformation) ArtistNames() string {
 }
 
 func (t TrackInformation) Equals(other TrackInformation) bool {
-	return t.ID == other.ID && t.Quality == other.Quality
+	return t.ID == other.ID
 }
 
 func (t TrackInformation) String() string {
