@@ -5,13 +5,14 @@ import (
 	"encoding/json"
 	"fmt"
 	"net/http"
+	"net/url"
 	"strings"
 
 	"codeberg.org/dergs/tidalwave/pkg/tidalapi/models/openapi"
 )
 
 func (s *SearchResults) Search(ctx context.Context, query string, include ...string) (*openapi.SearchResult, error) {
-	req, err := http.NewRequestWithContext(ctx, http.MethodGet, fmt.Sprintf("https://openapi.tidal.com/v2/searchResults/%s", query), nil)
+	req, err := http.NewRequestWithContext(ctx, http.MethodGet, fmt.Sprintf("https://openapi.tidal.com/v2/searchResults/%s", url.QueryEscape(query)), nil)
 	if err != nil {
 		return nil, err
 	}
