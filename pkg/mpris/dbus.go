@@ -72,7 +72,7 @@ func NewMprisDBusObject() *MprisDBusObject {
 					Emit:     prop.EmitConst,
 				},
 				"Identity": {
-					Value:    false,
+					Value:    "Tidal Wave",
 					Writable: false,
 					Emit:     prop.EmitConst,
 				},
