@@ -91,7 +91,7 @@ func PlayPlaylist(playlistId string, shuffle bool, skipUntil string) error {
 
 	paginator := pagination.NewPaginator(tidal.OpenAPI.V2.Playlists, playlistId, func(items *openapi.Response[[]openapi.Relationship]) []openapi.Track {
 		return items.Included.Tracks(items.Data...)
-	})
+	}, "items", "items.artists", "items.albums.coverArt")
 	tracks, err := paginator.GetAll()
 
 	if err != nil {
