@@ -40,6 +40,14 @@ func (s Scale) ConnectChangeValue(cb func(gtk.Range, gtk.ScrollType, float64) bo
 	}
 }
 
+func (s Scale) Increments(stepSize float64, pageSize float64) Scale {
+	return func() *gtk.Scale {
+		scale := s()
+		scale.SetIncrements(stepSize, pageSize)
+		return scale
+	}
+}
+
 func (s Scale) Inverted(invert bool) Scale {
 	return func() *gtk.Scale {
 		scale := s()

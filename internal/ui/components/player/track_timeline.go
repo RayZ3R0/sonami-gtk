@@ -39,6 +39,7 @@ func trackTimeline() schwifty.Box {
 	return VStack(
 		Scale(gtk.OrientationHorizontalValue).
 			BindValue(timelineSliderState).
+			Increments(1, 1).
 			HExpand(true).
 			Range(0, 100).
 			Value(0).

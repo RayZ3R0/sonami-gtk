@@ -1,6 +1,7 @@
 package player
 
 import (
+	"math"
 	"time"
 
 	"github.com/go-gst/go-gst/gst"
@@ -8,7 +9,8 @@ import (
 
 func Scrub(percent float64) {
 	if percent < 0 || percent > 100 {
-		panic("percent must be between 0 and 100")
+		percent = math.Max(0, math.Min(100, percent))
+		logger.Warn("percent must be between 0 and 100, clamping to nearest value", "percent", percent)
 	}
 
 	position := time.Duration(int64(float64(OnStateChanged.current.Duration.Nanoseconds()) * (percent / 100.0)))
