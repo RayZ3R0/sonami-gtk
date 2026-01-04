@@ -34,7 +34,12 @@ type TrackList struct {
 
 func (t *TrackList) AddTrack(track *openapi.Track) {
 	row := len(t.rowMap)
-	t.rowMap = append(t.rowMap, track.Data.ID)
+	t.AddTrackAt(track, row)
+}
+
+func (t *TrackList) AddTrackAt(track *openapi.Track, row int) {
+	t.container.InsertRow(row)
+	t.rowMap = append(t.rowMap[:row], append([]string{track.Data.ID}, t.rowMap[row:]...)...)
 
 	width := 0
 	for _, columnFunc := range t.columnFuncs {
@@ -73,11 +78,11 @@ func (t *TrackList) BindTracks(state *state.State[[]*openapi.Track]) {
 			t.Clear()
 		}
 
-		for _, track := range newValue {
+		for expectedRow, track := range newValue {
 			if slices.Contains(t.rowMap, track.Data.ID) {
 				continue
 			}
-			t.AddTrack(track)
+			t.AddTrackAt(track, expectedRow)
 		}
 	})
 }
