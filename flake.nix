@@ -51,11 +51,16 @@
           ];
         };
 
-        packages.tidalwave = pkgs.buildGoModule {
+        packages.tidalwave = pkgs.buildGoModule (finalAttrs: {
           pname = "tidalwave";
           version = "0.0.1";
           src = ./.;
           vendorHash = "sha256-dSIfCgSyOVLztUpBDypHHA9bn+d6hV1mukERPJ+kxI8=";
+
+          ldflags = [
+            "-X \"codeberg.org/dergs/tidalwave/internal/ui.Commit=${(if (self ? rev) then self.rev else "")}\""
+            "-X \"codeberg.org/dergs/tidalwave/internal/ui.Version=${finalAttrs.version}\""
+          ];
 
           buildInputs = with pkgs; [
             gst_all_1.gstreamer
@@ -113,7 +118,7 @@
             maintainers = with pkgs.lib.maintainers; [ nilathedragon ];
             mainProgram = "tidalwave";
           };
-        };
+        });
 
         packages.default = self.packages.${system}.tidalwave;
       }
