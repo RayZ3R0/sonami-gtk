@@ -34,7 +34,7 @@ func ForPageItem(pageItem v2.PageItem) schwifty.BaseWidgetable {
 					Label("Unsupported\n"+string(item.Type)).
 						Justify(gtk.JustifyCenterValue).
 						Padding(30).HExpand(true).CornerRadius(10),
-				).SizeRequest(192, -1).CSS("box:hover { background: alpha(var(--view-fg-color), 0.1) }").CornerRadius(10))
+				).SizeRequest(192, -1).CSS("box:hover { background: alpha(var(--view-fg-color), 0.1); }").CornerRadius(10))
 			}
 		}
 		return list.SetPageMargin(40)
