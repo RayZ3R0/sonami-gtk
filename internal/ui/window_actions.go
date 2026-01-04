@@ -19,6 +19,12 @@ import (
 )
 
 func (w *Window) installActions() {
+	aboutAction := gio.NewSimpleAction("about", nil)
+	aboutAction.ConnectActivate(g.Ptr(func(action gio.SimpleAction, parameter uintptr) {
+		w.PresentAbout()
+	}))
+	w.GetApplication().Application.AddAction(aboutAction)
+
 	navigateBackAction := gio.NewSimpleAction("navigate-back", nil)
 	navigateBackAction.ConnectActivate(g.Ptr(func(action gio.SimpleAction, parameter uintptr) {
 		router.Back()

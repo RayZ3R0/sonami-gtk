@@ -13,7 +13,9 @@ func (w *Window) PresentAbout() {
 	about.SetLicenseType(gtk.LicenseGpl30Value)
 	about.SetDevelopers([]string{
 		"Nila The Dragon",
+		"Dråfølin",
 	})
 
 	about.Present(&w.Widget)
+	about.Unref()
 }
