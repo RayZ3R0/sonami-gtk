@@ -23,9 +23,11 @@ func onAboutToFinish(_ *gst.Element) {
 			logger.Error("enqueueing for gapless playback", "error", err)
 			return
 		}
+		logger.Info("enqueued next song for gapless playback", "track_id", nextTrack.Data.ID)
 
 		// One-Shot Handler to update the track quality
 		OnTrackChanged.On(func(trackInfo TrackInformation) bool {
+			logger.Debug("triggered one-shot handler to propagate gapless playback quality")
 			OnPlaybackQualityChanged.Notify(func() v1.AudioQuality {
 				return playbackInfo.AudioQuality
 			})
