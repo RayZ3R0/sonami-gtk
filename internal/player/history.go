@@ -1,7 +1,6 @@
 package player
 
 import (
-	"fmt"
 	"sync"
 
 	"codeberg.org/dergs/tidalwave/internal/signals"
@@ -57,7 +56,6 @@ func (h *History) Push(entry *HistoryEntry) {
 	}
 
 	if h.Current != nil {
-		fmt.Println(h.Current)
 		h.Entries = append(h.Entries, h.Current)
 	}
 	h.Current = entry
