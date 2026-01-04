@@ -42,8 +42,12 @@ func NewWindow(app *adw.Application) *Window {
 	window.SetDefaultSize(settings.General().GetWindowWidth(), settings.General().GetWindowHeight())
 	// For some reason the bindings do not allow to specify which property
 	window.ConnectNotify(g.Ptr(func(gobject.Object, uintptr) {
-		settings.General().SetWindowHeight(window.GetHeight())
-		settings.General().SetWindowWidth(window.GetWidth())
+		if window.GetHeight() > 0 {
+			settings.General().SetWindowHeight(window.GetHeight())
+		}
+		if window.GetWidth() > 0 {
+			settings.General().SetWindowWidth(window.GetWidth())
+		}
 	}))
 
 	router.Navigate("home")
