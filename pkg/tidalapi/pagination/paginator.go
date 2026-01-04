@@ -24,7 +24,7 @@ type Paginator[T any] struct {
 // It uses pagination to fetch all items.
 // GetAll doesn't consume the paginator, and is simply a convenience method for fetching all items.
 func (p *Paginator[T]) GetAll() ([]T, error) {
-	items, err := p.resource.Items(context.Background(), p.resourceID, "", "items", "items.artists", "items.albums.coverArt")
+	items, err := p.resource.Items(context.Background(), p.resourceID, "", p.included...)
 	if err != nil {
 		return nil, err
 	}
