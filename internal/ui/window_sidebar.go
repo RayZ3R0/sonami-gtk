@@ -30,6 +30,7 @@ func (w *Window) buildSidebarHeader() *gtk.Widget {
 	}
 	mainMenu.Append("Preferences", "app.preferences")
 	mainMenu.Append("About", "app.about")
+	mainMenu.Append("Quit", "app.quit")
 
 	menuButton := gtk.NewMenuButton()
 	menuButton.SetIconName("menu-symbolic")

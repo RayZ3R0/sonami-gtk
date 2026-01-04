@@ -10,6 +10,7 @@ import (
 	"codeberg.org/dergs/tidalwave/internal/player"
 	"codeberg.org/dergs/tidalwave/internal/router"
 	"codeberg.org/dergs/tidalwave/internal/secrets"
+	"codeberg.org/dergs/tidalwave/internal/settings"
 	_ "codeberg.org/dergs/tidalwave/internal/styles"
 	"codeberg.org/dergs/tidalwave/internal/ui"
 	"codeberg.org/dergs/tidalwave/pkg/mpris"
@@ -19,6 +20,7 @@ import (
 	"github.com/infinytum/injector"
 	"github.com/jwijenbergh/puregotk/v4/adw"
 	"github.com/jwijenbergh/puregotk/v4/gio"
+	"github.com/jwijenbergh/puregotk/v4/gtk"
 )
 
 func init() {
@@ -50,21 +52,23 @@ func main() {
 		return imgutil.NewImgUtil(app.GetApplicationId())
 	})
 
-	mprisServer := mpris.NewMprisServer("org.mpris.MediaPlayer2.TidalWave")
-	mprisServer.OnPlayPause(player.PlayPause)
-	mprisServer.OnPlay(player.Play)
-	mprisServer.OnTrackNext(player.Next)
-	mprisServer.OnQuit(func() { quit(0) })
-	mprisServer.OnRaise(func() {
-		injector.MustInject[*adw.ApplicationWindow]().Present()
-	})
-	mprisServer.OnSeek(player.SeekForward)
-	mprisServer.OnSetPosition(player.SeekTo)
-	mprisServer.OnVolumeChanged(func(newVal float64) {
-		player.SetVolume(newVal)
+	injector.DeferredSingleton(func() *mpris.Server {
+		mprisServer := mpris.NewMprisServer("org.mpris.MediaPlayer2.TidalWave")
+		mprisServer.OnPlayPause(player.PlayPause)
+		mprisServer.OnPlay(player.Play)
+		mprisServer.OnTrackNext(player.Next)
+		mprisServer.OnQuit(func() { quit(0) })
+		mprisServer.OnRaise(func() {
+			window := injector.MustInject[*adw.ApplicationWindow]()
+			window.Show()
+			window.Present()
+		})
+		mprisServer.OnSeek(player.SeekForward)
+		mprisServer.OnSetPosition(player.SeekTo)
+		mprisServer.OnVolumeChanged(func(newVal float64) {
+			player.SetVolume(newVal)
 
-	})
-	injector.Singleton(func() *mpris.Server {
+		})
 		return mprisServer
 	})
 
@@ -81,6 +85,13 @@ func quit(code int) {
 func onActivate(_ gio.Application) {
 	window := ui.NewWindow(app)
 	window.Present()
+	window.ConnectCloseRequest(g.Ptr(func(w gtk.Window) bool {
+		if settings.General().ShouldRunInBackground() {
+			window.Hide()
+			return true
+		}
+		return false
+	}))
 	go tracking.LogAliveWidgets()
 }
 
@@ -92,6 +103,9 @@ func onCommandLine(app gio.Application, ptr uintptr) int {
 	if !isActive {
 		app.Activate()
 		isActive = true
+	} else {
+		window := injector.MustInject[*adw.ApplicationWindow]()
+		window.Show()
 	}
 
 	if len(args) == 2 {

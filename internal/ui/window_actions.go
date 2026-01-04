@@ -25,6 +25,20 @@ func (w *Window) installActions() {
 	}))
 	w.GetApplication().Application.AddAction(aboutAction)
 
+	preferencesAction := gio.NewSimpleAction("preferences", nil)
+	preferencesAction.ConnectActivate(g.Ptr(func(action gio.SimpleAction, parameter uintptr) {
+		w.PresentPreferences()
+	}))
+	w.GetApplication().Application.AddAction(preferencesAction)
+	w.GetApplication().SetAccelsForAction("app.preferences", []string{"<Control>comma"})
+
+	quitAction := gio.NewSimpleAction("quit", nil)
+	quitAction.ConnectActivate(g.Ptr(func(action gio.SimpleAction, parameter uintptr) {
+		w.GetApplication().Quit()
+	}))
+	w.GetApplication().Application.AddAction(quitAction)
+	w.GetApplication().SetAccelsForAction("app.quit", []string{"<Ctrl>q"})
+
 	navigateBackAction := gio.NewSimpleAction("navigate-back", nil)
 	navigateBackAction.ConnectActivate(g.Ptr(func(action gio.SimpleAction, parameter uintptr) {
 		router.Back()

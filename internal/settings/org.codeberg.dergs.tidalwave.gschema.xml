@@ -2,6 +2,11 @@
 <schemalist gettext-domain="tidalwave">
     <!-- General Settings -->
 	<schema id="org.codeberg.dergs.tidalwave" path="/org/codeberg/dergs/tidalwave/">
+	    <key name="allow-running-in-background" type="b">
+    		<default>true</default>
+    		<summary>Run in Background</summary>
+    		<description>Whether the application should run in the background when the window is closed</description>
+    	</key>
     	<key name="window-height" type="i">
     		<default>920</default>
     		<summary>Window Height</summary>
