@@ -3,14 +3,19 @@ package routes
 import (
 	"context"
 	"fmt"
+	"log/slog"
 	"strings"
+	"unsafe"
 
 	"codeberg.org/dergs/tidalwave/internal/player"
 	"codeberg.org/dergs/tidalwave/internal/resources"
 	"codeberg.org/dergs/tidalwave/internal/router"
 	"codeberg.org/dergs/tidalwave/internal/ui/components/tracklist"
+	"codeberg.org/dergs/tidalwave/pkg/schwifty"
 	. "codeberg.org/dergs/tidalwave/pkg/schwifty/syntax"
 	"codeberg.org/dergs/tidalwave/pkg/tidalapi"
+	"codeberg.org/dergs/tidalwave/pkg/tidalapi/models/openapi"
+	"codeberg.org/dergs/tidalwave/pkg/tidalapi/pagination"
 	"codeberg.org/dergs/tidalwave/pkg/utils/imgutil"
 	"github.com/infinytum/injector"
 	"github.com/jwijenbergh/puregotk/v4/gtk"
@@ -23,13 +28,16 @@ func init() {
 func Album(albumId string) *router.Response {
 	tidal := injector.MustInject[*tidalapi.TidalAPI]()
 
+	paginator := pagination.NewPaginator(tidal.OpenAPI.V2.Albums, albumId, func(items *openapi.Response[[]openapi.Relationship]) []openapi.Track {
+		return items.Included.Tracks(items.Data...)
+	}, "items", "items.artists", "items.albums.coverArt")
+
 	album, err := tidal.OpenAPI.V2.Albums.Album(context.Background(), albumId, "coverArt", "artists", "coverArt")
 	if err != nil {
 		return router.FromError("Album", err)
 	}
 
-	// TODO: Handle pagination with scroll events
-	items, err := tidal.OpenAPI.V2.Albums.Items(context.Background(), albumId, "", "items", "items.artists")
+	items, err := paginator.GetFirstPage()
 	if err != nil {
 		return router.FromError("Album", err)
 	}
@@ -56,7 +64,7 @@ func Album(albumId string) *router.Response {
 		tracklist.ControlsColumn,
 	)
 
-	for _, track := range items.Included.Tracks(items.Data...) {
+	for _, track := range items {
 		list.AddTrack(&track)
 	}
 
@@ -128,7 +136,29 @@ func Album(albumId string) *router.Response {
 				Child(list).
 				Policy(gtk.PolicyNeverValue, gtk.PolicyAutomaticValue).
 				VExpand(true).
-				MarginTop(20),
+				MarginTop(20).
+				ConnectEdgeReached(func(sw gtk.ScrolledWindow, pt gtk.PositionType) {
+					if pt == gtk.PosBottomValue {
+						go func() {
+							if !paginator.IsConsumed() {
+								items, err := paginator.Next()
+								if err != nil {
+									return
+								}
+
+								schwifty.OnMainThreadOnce(func(u uintptr) {
+									var list *tracklist.TrackList
+									list = (*tracklist.TrackList)(unsafe.Pointer(u))
+									for _, track := range items {
+										list.AddTrack(&track)
+									}
+								}, uintptr(unsafe.Pointer(list)))
+							} else {
+								slog.Debug("No more tracks to fetch")
+							}
+						}()
+					}
+				}),
 		).HMargin(40).VMargin(20),
 	}
 }

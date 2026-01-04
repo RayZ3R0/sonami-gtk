@@ -1,12 +1,13 @@
 package player
 
 import (
-	"context"
 	"log/slog"
 	"math/rand/v2"
 
 	"codeberg.org/dergs/tidalwave/internal/settings"
 	"codeberg.org/dergs/tidalwave/pkg/tidalapi"
+	"codeberg.org/dergs/tidalwave/pkg/tidalapi/models/openapi"
+	"codeberg.org/dergs/tidalwave/pkg/tidalapi/pagination"
 	"github.com/go-gst/go-gst/gst"
 	"github.com/infinytum/injector"
 	"github.com/jwijenbergh/puregotk/v4/gobject"
@@ -45,14 +46,16 @@ func PlayAlbum(albumId string, shuffle bool, skipUntil string) error {
 		return err
 	}
 
-	items, err := tidal.OpenAPI.V2.Albums.Items(context.Background(), albumId, "", "items", "items.artists", "items.albums.coverArt")
+	paginator := pagination.NewPaginator(tidal.OpenAPI.V2.Albums, albumId, func(items *openapi.Response[[]openapi.Relationship]) []openapi.Track {
+		return items.Included.Tracks(items.Data...)
+	}, "items", "items.artists", "items.albums.coverArt")
+	tracks, err := paginator.GetAll()
+
 	if err != nil {
 		return err
 	}
 
 	BaseQueue.Clear()
-
-	tracks := items.Included.Tracks(items.Data...)
 
 	if shuffle {
 		rand.Shuffle(len(tracks), func(i, j int) {
@@ -86,14 +89,16 @@ func PlayPlaylist(playlistId string, shuffle bool, skipUntil string) error {
 		return err
 	}
 
-	items, err := tidal.OpenAPI.V2.Playlists.Items(context.Background(), playlistId, "", "items", "items.artists", "items.albums.coverArt")
+	paginator := pagination.NewPaginator(tidal.OpenAPI.V2.Playlists, playlistId, func(items *openapi.Response[[]openapi.Relationship]) []openapi.Track {
+		return items.Included.Tracks(items.Data...)
+	})
+	tracks, err := paginator.GetAll()
+
 	if err != nil {
 		return err
 	}
 
 	BaseQueue.Clear()
-
-	tracks := items.Included.Tracks(items.Data...)
 
 	if shuffle {
 		rand.Shuffle(len(tracks), func(i, j int) {

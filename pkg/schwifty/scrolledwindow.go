@@ -1,6 +1,7 @@
 package schwifty
 
 import (
+	"codeberg.org/dergs/tidalwave/pkg/schwifty/callback"
 	"codeberg.org/dergs/tidalwave/pkg/schwifty/state"
 	"github.com/jwijenbergh/puregotk/v4/gtk"
 )
@@ -29,6 +30,14 @@ func (f ScrolledWindow) BindChild(state *state.State[any]) ScrolledWindow {
 		}).ConnectDestroy(func(w gtk.Widget) {
 			state.RemoveCallback(callbackId)
 		})()
+	}
+}
+
+func (f ScrolledWindow) ConnectEdgeReached(cb func(gtk.ScrolledWindow, gtk.PositionType)) ScrolledWindow {
+	return func() *gtk.ScrolledWindow {
+		scrolledWindow := f()
+		callback.HandleCallback(scrolledWindow.Widget, "edge-reached", cb)
+		return scrolledWindow
 	}
 }
 
