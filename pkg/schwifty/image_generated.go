@@ -150,6 +150,14 @@ func (f Image) Overflow(overflow gtk.Overflow) Image {
 	}
 }
 
+func (f Image) Sensitive(sensitive bool) Image {
+	return func() *gtk.Image {
+		widget := f()
+		widget.SetSensitive(sensitive)
+		return widget
+	}
+}
+
 func (f Image) SizeRequest(width, height int) Image {
 	return func() *gtk.Image {
 		widget := f()

@@ -151,6 +151,14 @@ func (f WrapBox) Overflow(overflow gtk.Overflow) WrapBox {
 	}
 }
 
+func (f WrapBox) Sensitive(sensitive bool) WrapBox {
+	return func() *adw.WrapBox {
+		widget := f()
+		widget.SetSensitive(sensitive)
+		return widget
+	}
+}
+
 func (f WrapBox) SizeRequest(width, height int) WrapBox {
 	return func() *adw.WrapBox {
 		widget := f()

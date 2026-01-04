@@ -149,6 +149,14 @@ func (f TEMPLATE_TYPE) Overflow(overflow gtk.Overflow) TEMPLATE_TYPE {
 	}
 }
 
+func (f TEMPLATE_TYPE) Sensitive(sensitive bool) TEMPLATE_TYPE {
+	return func() TEMPLATE_BASE_TYPE {
+		widget := f()
+		widget.SetSensitive(sensitive)
+		return widget
+	}
+}
+
 func (f TEMPLATE_TYPE) SizeRequest(width, height int) TEMPLATE_TYPE {
 	return func() TEMPLATE_BASE_TYPE {
 		widget := f()

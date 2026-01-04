@@ -151,6 +151,14 @@ func (f HeaderBar) Overflow(overflow gtk.Overflow) HeaderBar {
 	}
 }
 
+func (f HeaderBar) Sensitive(sensitive bool) HeaderBar {
+	return func() *adw.HeaderBar {
+		widget := f()
+		widget.SetSensitive(sensitive)
+		return widget
+	}
+}
+
 func (f HeaderBar) SizeRequest(width, height int) HeaderBar {
 	return func() *adw.HeaderBar {
 		widget := f()

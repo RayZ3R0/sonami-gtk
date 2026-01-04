@@ -150,6 +150,14 @@ func (f CenterBox) Overflow(overflow gtk.Overflow) CenterBox {
 	}
 }
 
+func (f CenterBox) Sensitive(sensitive bool) CenterBox {
+	return func() *gtk.CenterBox {
+		widget := f()
+		widget.SetSensitive(sensitive)
+		return widget
+	}
+}
+
 func (f CenterBox) SizeRequest(width, height int) CenterBox {
 	return func() *gtk.CenterBox {
 		widget := f()

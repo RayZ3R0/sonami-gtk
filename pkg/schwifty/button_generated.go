@@ -150,6 +150,14 @@ func (f Button) Overflow(overflow gtk.Overflow) Button {
 	}
 }
 
+func (f Button) Sensitive(sensitive bool) Button {
+	return func() *gtk.Button {
+		widget := f()
+		widget.SetSensitive(sensitive)
+		return widget
+	}
+}
+
 func (f Button) SizeRequest(width, height int) Button {
 	return func() *gtk.Button {
 		widget := f()

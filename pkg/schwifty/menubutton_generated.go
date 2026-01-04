@@ -150,6 +150,14 @@ func (f MenuButton) Overflow(overflow gtk.Overflow) MenuButton {
 	}
 }
 
+func (f MenuButton) Sensitive(sensitive bool) MenuButton {
+	return func() *gtk.MenuButton {
+		widget := f()
+		widget.SetSensitive(sensitive)
+		return widget
+	}
+}
+
 func (f MenuButton) SizeRequest(width, height int) MenuButton {
 	return func() *gtk.MenuButton {
 		widget := f()

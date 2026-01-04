@@ -150,6 +150,14 @@ func (f AspectFrame) Overflow(overflow gtk.Overflow) AspectFrame {
 	}
 }
 
+func (f AspectFrame) Sensitive(sensitive bool) AspectFrame {
+	return func() *gtk.AspectFrame {
+		widget := f()
+		widget.SetSensitive(sensitive)
+		return widget
+	}
+}
+
 func (f AspectFrame) SizeRequest(width, height int) AspectFrame {
 	return func() *gtk.AspectFrame {
 		widget := f()

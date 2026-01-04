@@ -151,6 +151,14 @@ func (f Clamp) Overflow(overflow gtk.Overflow) Clamp {
 	}
 }
 
+func (f Clamp) Sensitive(sensitive bool) Clamp {
+	return func() *adw.Clamp {
+		widget := f()
+		widget.SetSensitive(sensitive)
+		return widget
+	}
+}
+
 func (f Clamp) SizeRequest(width, height int) Clamp {
 	return func() *adw.Clamp {
 		widget := f()

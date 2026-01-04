@@ -150,6 +150,14 @@ func (f Label) Overflow(overflow gtk.Overflow) Label {
 	}
 }
 
+func (f Label) Sensitive(sensitive bool) Label {
+	return func() *gtk.Label {
+		widget := f()
+		widget.SetSensitive(sensitive)
+		return widget
+	}
+}
+
 func (f Label) SizeRequest(width, height int) Label {
 	return func() *gtk.Label {
 		widget := f()

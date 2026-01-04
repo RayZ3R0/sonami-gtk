@@ -150,6 +150,14 @@ func (f Popover) Overflow(overflow gtk.Overflow) Popover {
 	}
 }
 
+func (f Popover) Sensitive(sensitive bool) Popover {
+	return func() *gtk.Popover {
+		widget := f()
+		widget.SetSensitive(sensitive)
+		return widget
+	}
+}
+
 func (f Popover) SizeRequest(width, height int) Popover {
 	return func() *gtk.Popover {
 		widget := f()

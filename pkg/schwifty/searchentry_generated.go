@@ -150,6 +150,14 @@ func (f SearchEntry) Overflow(overflow gtk.Overflow) SearchEntry {
 	}
 }
 
+func (f SearchEntry) Sensitive(sensitive bool) SearchEntry {
+	return func() *gtk.SearchEntry {
+		widget := f()
+		widget.SetSensitive(sensitive)
+		return widget
+	}
+}
+
 func (f SearchEntry) SizeRequest(width, height int) SearchEntry {
 	return func() *gtk.SearchEntry {
 		widget := f()

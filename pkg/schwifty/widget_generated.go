@@ -150,6 +150,14 @@ func (f Widget) Overflow(overflow gtk.Overflow) Widget {
 	}
 }
 
+func (f Widget) Sensitive(sensitive bool) Widget {
+	return func() *WrappedWidget {
+		widget := f()
+		widget.SetSensitive(sensitive)
+		return widget
+	}
+}
+
 func (f Widget) SizeRequest(width, height int) Widget {
 	return func() *WrappedWidget {
 		widget := f()

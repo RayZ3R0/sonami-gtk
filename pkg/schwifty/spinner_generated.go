@@ -150,6 +150,14 @@ func (f Spinner) Overflow(overflow gtk.Overflow) Spinner {
 	}
 }
 
+func (f Spinner) Sensitive(sensitive bool) Spinner {
+	return func() *gtk.Spinner {
+		widget := f()
+		widget.SetSensitive(sensitive)
+		return widget
+	}
+}
+
 func (f Spinner) SizeRequest(width, height int) Spinner {
 	return func() *gtk.Spinner {
 		widget := f()

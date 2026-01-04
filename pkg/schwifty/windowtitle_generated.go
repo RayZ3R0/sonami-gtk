@@ -151,6 +151,14 @@ func (f WindowTitle) Overflow(overflow gtk.Overflow) WindowTitle {
 	}
 }
 
+func (f WindowTitle) Sensitive(sensitive bool) WindowTitle {
+	return func() *adw.WindowTitle {
+		widget := f()
+		widget.SetSensitive(sensitive)
+		return widget
+	}
+}
+
 func (f WindowTitle) SizeRequest(width, height int) WindowTitle {
 	return func() *adw.WindowTitle {
 		widget := f()

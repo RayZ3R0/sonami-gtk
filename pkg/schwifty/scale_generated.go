@@ -150,6 +150,14 @@ func (f Scale) Overflow(overflow gtk.Overflow) Scale {
 	}
 }
 
+func (f Scale) Sensitive(sensitive bool) Scale {
+	return func() *gtk.Scale {
+		widget := f()
+		widget.SetSensitive(sensitive)
+		return widget
+	}
+}
+
 func (f Scale) SizeRequest(width, height int) Scale {
 	return func() *gtk.Scale {
 		widget := f()

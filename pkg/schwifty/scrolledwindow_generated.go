@@ -150,6 +150,14 @@ func (f ScrolledWindow) Overflow(overflow gtk.Overflow) ScrolledWindow {
 	}
 }
 
+func (f ScrolledWindow) Sensitive(sensitive bool) ScrolledWindow {
+	return func() *gtk.ScrolledWindow {
+		widget := f()
+		widget.SetSensitive(sensitive)
+		return widget
+	}
+}
+
 func (f ScrolledWindow) SizeRequest(width, height int) ScrolledWindow {
 	return func() *gtk.ScrolledWindow {
 		widget := f()
