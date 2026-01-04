@@ -3,11 +3,11 @@ package player
 import (
 	"time"
 
-	"github.com/go-gst/go-glib/glib"
 	"github.com/go-gst/go-gst/gst"
+	"github.com/jwijenbergh/puregotk/v4/glib"
 )
 
-var playbackStateUpdater glib.SourceHandle
+var playbackStateUpdater uint
 
 const UpdateInterval = 250 * time.Millisecond
 
@@ -16,7 +16,7 @@ func startUpdateRunner() {
 		return
 	}
 
-	playbackStateUpdater, _ = glib.TimeoutAdd(uint(UpdateInterval.Milliseconds()), onUpdateTick, nil)
+	playbackStateUpdater = glib.TimeoutAdd(uint(UpdateInterval.Milliseconds()), &onUpdateTick, 0)
 	logger.Debug("started playbin update runner", "source_handle", playbackStateUpdater)
 }
 
@@ -30,7 +30,7 @@ func stopUpdateRunner() {
 	playbackStateUpdater = 0
 }
 
-func onUpdateTick() bool {
+var onUpdateTick = glib.SourceFunc(func(uintptr) bool {
 	OnStateChanged.Notify(func(state *State) {
 		if ok, duration := playbin.QueryDuration(gst.FormatTime); ok {
 			state.Duration = time.Duration(duration)
@@ -40,8 +40,8 @@ func onUpdateTick() bool {
 			state.Position = time.Duration(position)
 		}
 	})
-	return true
-}
+	return glib.SOURCE_CONTINUE
+})
 
 func onVolumeChange() {
 	OnVolumeChanged.Notify(func(previous float64) float64 {
