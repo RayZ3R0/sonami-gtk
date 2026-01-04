@@ -4,6 +4,7 @@ import (
 	"codeberg.org/dergs/tidalwave/internal/router"
 	"codeberg.org/dergs/tidalwave/internal/signals"
 	"codeberg.org/dergs/tidalwave/internal/ui/components"
+	"codeberg.org/dergs/tidalwave/pkg/schwifty"
 	. "codeberg.org/dergs/tidalwave/pkg/schwifty/syntax"
 	"github.com/jwijenbergh/puregotk/v4/gtk"
 )
@@ -48,7 +49,9 @@ func (w *Window) buildContentHeader() *gtk.Widget {
 		TitleWidget(defaultToolbar)()
 
 	router.OnNavigate.On(func(path string) bool {
-		headerbar.SetTitleWidget(&defaultToolbar.Widget)
+		schwifty.OnMainThreadOnce(func(u uintptr) {
+			headerbar.SetTitleWidget(&defaultToolbar.Widget)
+		}, 0)
 		return signals.Continue
 	})
 

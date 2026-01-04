@@ -32,6 +32,7 @@ func navigate(path string, offRecord bool) {
 	}
 
 	startTime := time.Now()
+	logger.Debug("executing route handler", "path", path, "started_at", startTime)
 	go func(path string, handler Handler) {
 		response, shouldCache := executeHandler(handler)
 		logger.Info("navigation completed", "path", path, "duration_ms", time.Since(startTime).Milliseconds(), "should_cache", shouldCache)
@@ -63,8 +64,8 @@ func Back() {
 		return
 	}
 
-	OnNavigate.Notify(previous.Path)
 	if previous.View != nil {
+		OnNavigate.Notify(previous.Path)
 		handleNavigationComplete(previous)
 	} else {
 		navigate(previous.Path, true)

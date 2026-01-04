@@ -3,6 +3,7 @@ package components
 import (
 	"codeberg.org/dergs/tidalwave/internal/router"
 	"codeberg.org/dergs/tidalwave/internal/signals"
+	"codeberg.org/dergs/tidalwave/pkg/schwifty"
 	. "codeberg.org/dergs/tidalwave/pkg/schwifty/syntax"
 	"github.com/jwijenbergh/puregotk/v4/gtk"
 )
@@ -59,7 +60,9 @@ func NewRouteButton(path string) *RouteButton {
 		WithCSSClass("transparent")()
 
 	router.OnNavigate.On(func(newPath string) bool {
-		routeButton.SetActive(path == newPath)
+		schwifty.OnMainThreadOnce(func(u uintptr) {
+			routeButton.SetActive(path == newPath)
+		}, 0)
 		return signals.Continue
 	})
 
