@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<schemalist gettext-domain="tidalwave">
+    <!-- General Settings -->
+	<schema id="org.codeberg.dergs.tidalwave" path="/org/codeberg/dergs/tidalwave/">
+    	<key name="window-height" type="i">
+    		<default>920</default>
+    		<summary>Window Height</summary>
+    		<description>Stores the last used window height to restore on next startup</description>
+    	</key>
+		<key name="window-width" type="i">
+			<default>1460</default>
+			<summary>Window Width</summary>
+			<description>Stores the last used window width to restore on next startup</description>
+		</key>
+	</schema>
+	<!-- Player State -->
+    <schema id="org.codeberg.dergs.tidalwave.player" path="/org/codeberg/dergs/tidalwave/player/">
+		<key name="audio-quality" type="s">
+			<default>'HI_RES_LOSSLESS'</default>
+			<summary>Audio Quality</summary>
+			<description>The highest accepted audio quality requested from TIDAL during playback</description>
+		</key>
+		<key name="volume" type="d">
+			<default>1.0</default>
+			<summary>Volume</summary>
+			<description>The last configured volume level</description>
+		</key>
+    </schema>
+</schemalist>

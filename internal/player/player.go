@@ -5,6 +5,7 @@ import (
 	"log/slog"
 	"math/rand/v2"
 
+	"codeberg.org/dergs/tidalwave/internal/settings"
 	"codeberg.org/dergs/tidalwave/pkg/tidalapi"
 	"github.com/go-gst/go-gst/gst"
 	"github.com/infinytum/injector"
@@ -24,6 +25,7 @@ func init() {
 	}
 	playbin = pb
 
+	playbin.SetProperty("volume", settings.PlayerSettings().GetVolume())
 	playbin.GetBus().AddWatch(onBusMessage)
 	playbin.Connect("notify::volume", onVolumeChange)
 	onVolumeChange()

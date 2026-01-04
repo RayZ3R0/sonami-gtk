@@ -54,7 +54,7 @@
           pname = "tidalwave";
           version = "0.0.1";
           src = ./.;
-          vendorHash = "sha256-fuvkl3QB+yOpHtJ1rBQaNdPOQvRxb+Ph7qBWVIDqDwA=";
+          vendorHash = "sha256-dSIfCgSyOVLztUpBDypHHA9bn+d6hV1mukERPJ+kxI8=";
 
           buildInputs = with pkgs; [
             gst_all_1.gstreamer
@@ -65,8 +65,10 @@
           doCheck = false;
           nativeBuildInputs = with pkgs; [
             pkg-config
+            gtk4
             copyDesktopItems
             makeWrapper
+            wrapGAppsHook4
           ];
 
           subPackages = [
@@ -96,8 +98,11 @@
           postInstall = ''
             wrapProgram $out/bin/tidalwave \
               --prefix GST_PLUGIN_PATH : "$GST_PLUGIN_SYSTEM_PATH_1_0" \
-              --set-default PUREGOTK_LIB_FOLDER ${libraryPath}/lib
-            install -Dm444 internal/icons/hicolor/scalable/apps/logo.png $out/share/icons/hicolor/scalable/apps/tidalwave.png
+              --set-default PUREGOTK_LIB_FOLDER ${libraryPath}/lib \
+              ''${gappsWrapperArgs[@]}
+            install -Dm644 internal/icons/hicolor/scalable/apps/logo.png $out/share/icons/hicolor/scalable/apps/tidalwave.png
+            install -Dm644 internal/settings/org.codeberg.dergs.tidalwave.gschema.xml -t $out/share/glib-2.0/schemas
+            glib-compile-schemas $out/share/glib-2.0/schemas
           '';
 
           meta = {

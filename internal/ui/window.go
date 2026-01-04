@@ -4,6 +4,7 @@ import (
 	"codeberg.org/dergs/tidalwave/internal/g"
 	"codeberg.org/dergs/tidalwave/internal/notifications"
 	"codeberg.org/dergs/tidalwave/internal/router"
+	"codeberg.org/dergs/tidalwave/internal/settings"
 	"codeberg.org/dergs/tidalwave/internal/signals"
 	"codeberg.org/dergs/tidalwave/pkg/schwifty"
 	"codeberg.org/dergs/tidalwave/pkg/schwifty/syntax"
@@ -11,6 +12,7 @@ import (
 	"github.com/jwijenbergh/puregotk/v4/adw"
 	"github.com/jwijenbergh/puregotk/v4/gio"
 	"github.com/jwijenbergh/puregotk/v4/glib"
+	"github.com/jwijenbergh/puregotk/v4/gobject"
 	"github.com/jwijenbergh/puregotk/v4/gtk"
 
 	_ "codeberg.org/dergs/tidalwave/internal/ui/routes"
@@ -37,7 +39,12 @@ func NewWindow(app *adw.Application) *Window {
 	window.SetContent(window.build())
 	window.SetTitle("Tidal Wave")
 	window.SetIconName("logo")
-	window.SetDefaultSize(1460, 920)
+	window.SetDefaultSize(settings.General().GetWindowWidth(), settings.General().GetWindowHeight())
+	// For some reason the bindings do not allow to specify which property
+	window.ConnectNotify(g.Ptr(func(gobject.Object, uintptr) {
+		settings.General().SetWindowHeight(window.GetHeight())
+		settings.General().SetWindowWidth(window.GetWidth())
+	}))
 
 	router.Navigate("home")
 
