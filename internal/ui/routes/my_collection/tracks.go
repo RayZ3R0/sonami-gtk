@@ -2,15 +2,29 @@ package my_collection
 
 import (
 	"context"
+	"log/slog"
+	"unsafe"
 
 	"codeberg.org/dergs/tidalwave/internal/router"
 	"codeberg.org/dergs/tidalwave/internal/secrets"
 	"codeberg.org/dergs/tidalwave/internal/ui/components/tracklist"
+	"codeberg.org/dergs/tidalwave/pkg/schwifty"
 	. "codeberg.org/dergs/tidalwave/pkg/schwifty/syntax"
 	"codeberg.org/dergs/tidalwave/pkg/tidalapi"
+	"codeberg.org/dergs/tidalwave/pkg/tidalapi/models/openapi"
+	"codeberg.org/dergs/tidalwave/pkg/tidalapi/openapi/v2/user_collections"
+	"codeberg.org/dergs/tidalwave/pkg/tidalapi/pagination"
 	"github.com/infinytum/injector"
 	"github.com/jwijenbergh/puregotk/v4/gtk"
 )
+
+type ItemizedUserTracksCollection struct {
+	*user_collections.UserCollections
+}
+
+func (i *ItemizedUserTracksCollection) Items(ctx context.Context, id, cursor string, include ...string) (*openapi.Response[[]openapi.Relationship], error) {
+	return i.Tracks(ctx, id, cursor, include...)
+}
 
 func Tracks() *router.Response {
 	tidal := injector.MustInject[*tidalapi.TidalAPI]()
@@ -22,7 +36,14 @@ func Tracks() *router.Response {
 		}
 	}
 
-	userCollection, err := tidal.OpenAPI.V2.UserCollections.Tracks(context.Background(), userId, "", "tracks.artists", "tracks.albums.coverArt")
+	// userCollection, err := tidal.OpenAPI.V2.UserCollections.Tracks(context.Background(), userId, "", "tracks.artists", "tracks.albums.coverArt")
+	paginatedCollection := &ItemizedUserTracksCollection{tidal.OpenAPI.V2.UserCollections}
+
+	paginator := pagination.NewPaginator(paginatedCollection, userId, func(r *openapi.Response[[]openapi.Relationship]) []openapi.Track {
+		return r.Included.Tracks(r.Data...)
+	}, "tracks.artists", "tracks.albums.coverArt")
+
+	userCollection, err := paginator.GetFirstPage()
 	if err != nil {
 		return &router.Response{
 			PageTitle: "My Collection",
@@ -39,7 +60,8 @@ func Tracks() *router.Response {
 		tracklist.ButtonColumn,
 		tracklist.ControlsColumn,
 	)
-	for _, track := range userCollection.Included.Tracks(userCollection.Data...) {
+
+	for _, track := range userCollection {
 		trackList.AddTrack(&track)
 	}
 
@@ -52,6 +74,28 @@ func Tracks() *router.Response {
 					Spacer(),
 				).Spacing(25).VMargin(20).VAlign(gtk.AlignStartValue),
 			).
+			ConnectEdgeReached(func(sw gtk.ScrolledWindow, pt gtk.PositionType) {
+				if pt == gtk.PosBottomValue {
+					go func() {
+						if !paginator.IsConsumed() {
+							items, err := paginator.Next()
+							if err != nil {
+								return
+							}
+
+							schwifty.OnMainThreadOnce(func(u uintptr) {
+								var list *tracklist.TrackList
+								list = (*tracklist.TrackList)(unsafe.Pointer(u))
+								for _, track := range items {
+									list.AddTrack(&track)
+								}
+							}, uintptr(unsafe.Pointer(trackList)))
+						} else {
+							slog.Debug("No more tracks to fetch")
+						}
+					}()
+				}
+			}).
 			Policy(gtk.PolicyNeverValue, gtk.PolicyAutomaticValue),
 	}
 }
