@@ -5,6 +5,7 @@ import (
 
 	v1 "codeberg.org/dergs/tidalwave/pkg/tidalapi/models/v1"
 	"github.com/jwijenbergh/puregotk/v4/gio"
+	"github.com/jwijenbergh/puregotk/v4/gobject"
 )
 
 type Player struct {
@@ -28,14 +29,10 @@ func (p *Player) GetAudioQuality() v1.AudioQuality {
 	}
 }
 
-func (p *Player) GetVolume() float64 {
-	return p.settings.GetDouble("volume")
+func (p *Player) BindVolume(target *gobject.Object, property string) {
+	p.settings.Bind("volume", target, property, gio.GSettingsBindNoSensitivityValue)
 }
 
 func (p *Player) SetAudioQuality(quality v1.AudioQuality) {
 	p.settings.SetString("audio-quality", string(quality))
-}
-
-func (p *Player) SetVolume(volume float64) {
-	p.settings.SetDouble("volume", volume)
 }

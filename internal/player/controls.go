@@ -3,7 +3,6 @@ package player
 import (
 	"time"
 
-	"codeberg.org/dergs/tidalwave/internal/settings"
 	"github.com/go-gst/go-gst/gst"
 )
 
@@ -78,7 +77,6 @@ func SetVolume(volume float64) {
 	} else if volume > 1 {
 		logger.Warn("Volume is higher than 1. This will cause overdrive to the speakers.")
 	}
-	settings.PlayerSettings().SetVolume(volume)
 	playbin.SetProperty("volume", volume)
 }
 

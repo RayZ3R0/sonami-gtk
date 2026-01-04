@@ -9,6 +9,7 @@ import (
 	"codeberg.org/dergs/tidalwave/pkg/tidalapi"
 	"github.com/go-gst/go-gst/gst"
 	"github.com/infinytum/injector"
+	"github.com/jwijenbergh/puregotk/v4/gobject"
 )
 
 var (
@@ -25,7 +26,7 @@ func init() {
 	}
 	playbin = pb
 
-	playbin.SetProperty("volume", settings.PlayerSettings().GetVolume())
+	settings.PlayerSettings().BindVolume(gobject.ObjectNewFromInternalPtr(uintptr(playbin.BaseObject().Unsafe())), "volume")
 	playbin.GetBus().AddWatch(onBusMessage)
 	playbin.Connect("notify::volume", onVolumeChange)
 	onVolumeChange()
