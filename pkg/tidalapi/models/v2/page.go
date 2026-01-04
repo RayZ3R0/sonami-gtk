@@ -7,3 +7,14 @@ type Page struct {
 	} `json:"page"`
 	Items []PageItem `json:"items"`
 }
+
+type ArtistPage struct {
+	Page
+	Header struct {
+		Biography struct {
+			Text string `json:"text"`
+		} `json:"biography"`
+		FollowersAmount int `json:"followersAmount"`
+	} `json:"header"`
+	Item Item
+}
