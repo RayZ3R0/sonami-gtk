@@ -13,10 +13,10 @@ const (
 )
 
 type ArtistData struct {
-	Attributes   ArtistAttributes    `json:"attributes"`
-	ID           string              `json:"id"`
-	Relationship ArtistRelationships `json:"relationships"`
-	Type         string              `json:"type"`
+	Attributes    ArtistAttributes    `json:"attributes"`
+	ID            string              `json:"id"`
+	Relationships ArtistRelationships `json:"relationships"`
+	Type          string              `json:"type"`
 }
 
 type ArtistAttributes struct {
