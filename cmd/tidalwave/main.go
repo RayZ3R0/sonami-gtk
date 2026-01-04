@@ -27,6 +27,7 @@ func init() {
 	slog.SetLogLoggerLevel(slog.LevelInfo)
 	if os.Getenv("TIDAL_WAVE_DEBUG") == "1" {
 		slog.SetLogLoggerLevel(slog.LevelDebug)
+		go tracking.LogAliveWidgets()
 	}
 }
 
@@ -95,7 +96,6 @@ func onActivate(_ gio.Application) {
 		}
 		return false
 	}))
-	go tracking.LogAliveWidgets()
 }
 
 var isActive bool
