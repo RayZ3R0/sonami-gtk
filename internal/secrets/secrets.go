@@ -3,8 +3,10 @@ package secrets
 import (
 	"encoding/base64"
 	"encoding/json"
+	"log/slog"
 	"strconv"
 	"strings"
+	"time"
 
 	"github.com/zalando/go-keyring"
 )
@@ -15,24 +17,52 @@ const (
 )
 
 func HasRefreshToken() bool {
-	_, err := keyring.Get(service, refreshTokenKey)
-	return err == nil
+	hasToken, timedOut := withTimeout(time.Second*2, func() bool {
+		_, err := keyring.Get(service, refreshTokenKey)
+		return err == nil
+	})
+	if timedOut {
+		slog.Error("timed out checking refresh token in keyring")
+		return false
+	}
+	return hasToken
 }
 
 func GetRefreshToken() string {
-	token, err := keyring.Get(service, refreshTokenKey)
-	if err != nil {
+	token, timedOut := withTimeout(time.Second*2, func() string {
+		token, err := keyring.Get(service, refreshTokenKey)
+		if err != nil {
+			return ""
+		}
+		return token
+	})
+	if timedOut {
+		slog.Error("timed out reading refresh token from keyring")
 		return ""
 	}
 	return token
 }
 
 func SetRefreshToken(token string) error {
-	return keyring.Set(service, refreshTokenKey, token)
+	err, timedOut := withTimeout(time.Second*2, func() error {
+		return keyring.Set(service, refreshTokenKey, token)
+	})
+	if timedOut {
+		slog.Error("timed out setting refresh token in keyring")
+		return nil
+	}
+	return err
 }
 
 func DeleteRefreshToken() error {
-	return keyring.Delete(service, refreshTokenKey)
+	err, timedOut := withTimeout(time.Second*2, func() error {
+		return keyring.Delete(service, refreshTokenKey)
+	})
+	if timedOut {
+		slog.Error("timed out deleting refresh token from keyring")
+		return nil
+	}
+	return err
 }
 
 func UserID() string {
@@ -63,4 +93,21 @@ func UserID() string {
 	}
 
 	return strconv.Itoa(claims.UID)
+}
+
+// withTimeout runs a callback function with a timeout.
+// It returns what the callback returned along with a boolean indicating if it timed out.
+func withTimeout[T any](timeout time.Duration, callback func() T) (T, bool) {
+	resultChan := make(chan T, 1)
+
+	go func() {
+		resultChan <- callback()
+	}()
+
+	select {
+	case result := <-resultChan:
+		return result, false
+	case <-time.After(timeout):
+		return *new(T), true
+	}
 }
