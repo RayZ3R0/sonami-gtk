@@ -37,10 +37,16 @@ func init() {
 
 func PlayTrack(trackId string) error {
 	BaseQueue.Clear()
+	currentHistoryType = HistoryTypeUnmanaged
+	managedHistory.Clear()
+	unmanagedHistory.Push(&HistoryEntry{TrackID: trackId})
 	return playTrackId(trackId)
 }
 
 func PlayAlbum(albumId string, shuffle bool, skipUntil string) error {
+	UserQueue.Clear()
+	currentHistoryType = HistoryTypeManaged
+	managedHistory.Clear()
 	tidal, err := injector.Inject[*tidalapi.TidalAPI]()
 	if err != nil {
 		return err
@@ -63,6 +69,7 @@ func PlayAlbum(albumId string, shuffle bool, skipUntil string) error {
 		})
 	} else if skipUntil != "" {
 		for i, track := range tracks {
+			managedHistory.Push(&HistoryEntry{track.Data.ID})
 			if track.Data.ID == skipUntil {
 				tracks = tracks[i:]
 				break
@@ -84,6 +91,9 @@ func PlayAlbum(albumId string, shuffle bool, skipUntil string) error {
 }
 
 func PlayPlaylist(playlistId string, shuffle bool, skipUntil string) error {
+	UserQueue.Clear()
+	currentHistoryType = HistoryTypeManaged
+	managedHistory.Clear()
 	tidal, err := injector.Inject[*tidalapi.TidalAPI]()
 	if err != nil {
 		return err
@@ -106,12 +116,45 @@ func PlayPlaylist(playlistId string, shuffle bool, skipUntil string) error {
 		})
 	} else if skipUntil != "" {
 		for i, track := range tracks {
+			managedHistory.Push(&HistoryEntry{track.Data.ID})
 			if track.Data.ID == skipUntil {
 				tracks = tracks[i:]
 				break
 			}
 		}
 	}
+
+	firstTrack := tracks[0]
+	if err := playTrack(&firstTrack); err != nil {
+		return err
+	}
+
+	for _, track := range tracks[1:] {
+		BaseQueue.AddTrack(&track, false)
+	}
+
+	return nil
+}
+
+func PlayMix(mixID string) error {
+	UserQueue.Clear()
+	currentHistoryType = HistoryTypeUnmanaged
+	managedHistory.Clear()
+	tidal, err := injector.Inject[*tidalapi.TidalAPI]()
+	if err != nil {
+		return err
+	}
+
+	paginator := pagination.NewPaginator(tidal.OpenAPI.V2.Playlists, mixID, func(items *openapi.Response[[]openapi.Relationship]) []openapi.Track {
+		return items.Included.Tracks(items.Data...)
+	}, "items", "items.artists", "items.albums.coverArt")
+	tracks, err := paginator.GetAll()
+
+	if err != nil {
+		return err
+	}
+
+	BaseQueue.Clear()
 
 	firstTrack := tracks[0]
 	if err := playTrack(&firstTrack); err != nil {

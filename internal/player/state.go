@@ -72,6 +72,7 @@ func nextTrack() {
 	logger.Debug("attempting to pop next track from user queue")
 	nextTrack := UserQueue.Pop()
 	if nextTrack != nil {
+		currentHistoryType = HistoryTypeUnmanaged // If the user wants to play their tracks on loop, they should make a playlist.
 		logger.Info("playing next track from user queue", "track_id", nextTrack.Data.ID)
 		playTrack(nextTrack)
 		return
@@ -80,8 +81,31 @@ func nextTrack() {
 	logger.Debug("attempting to pop next track from base queue")
 	nextTrack = BaseQueue.Pop()
 	if nextTrack != nil {
+		currentHistoryType = HistoryTypeManaged
 		logger.Info("playing next track from base queue", "track_id", nextTrack.Data.ID)
 		playTrack(nextTrack)
+		return
+	}
+
+	if OnRepeatModeChanged.current == RepeatModeList {
+		logger.Debug("list repeat mode is enabled, replaying history")
+		if len(managedHistory.Entries) == 0 {
+			logger.Debug("no history to replay, replaying single track")
+			Scrub(0)
+			return
+		}
+
+		firstEntry := *managedHistory.Entries[0]
+		playTrackId(firstEntry.TrackID)
+
+		entries := append(managedHistory.Entries[1:], managedHistory.Current)
+		managedHistory.Clear()
+		managedHistory.Push(&firstEntry)
+
+		for _, entry := range entries {
+			BaseQueue.AddTrackID(entry.TrackID, false)
+		}
+
 		return
 	}
 
@@ -99,5 +123,5 @@ func nextTrack() {
 		return
 	}
 	logger.Info("starting track radio", "mix_id", mix.ID)
-	PlayPlaylist(mix.ID, false, "")
+	PlayMix(mix.ID)
 }

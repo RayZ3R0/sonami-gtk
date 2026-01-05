@@ -93,14 +93,26 @@ func Previous() {
 		return
 	}
 
-	if len(history.Entries) < 1 {
-		SeekTo(0)
+	if len(managedHistory.Entries) < 1 {
+		if len(unmanagedHistory.Entries) < 1 {
+			SeekTo(0)
+			return
+		}
+		entry := unmanagedHistory.Pop()
+		if entry != nil {
+			// Re-Queue current song to front of user queue
+			UserQueue.AddTrackID(OnTrackChanged.current.ID, true)
+			// Switch to previous track without clearing base queue
+			currentHistoryType = HistoryTypeUnmanaged
+			playTrackId(entry.TrackID)
+		}
 		return
 	}
-	entry := history.Pop()
+
+	entry := managedHistory.Pop()
 	if entry != nil {
-		// Re-Queue current song to front of user-queue
-		UserQueue.AddTrackID(OnTrackChanged.current.ID, true)
+		// Re-Queue current song to front of base queue
+		BaseQueue.AddTrackID(OnTrackChanged.current.ID, true)
 		// Switch to previous track without clearing base queue
 		playTrackId(entry.TrackID)
 	}

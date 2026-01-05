@@ -1,6 +1,7 @@
 package queue
 
 import (
+	"context"
 	"log/slog"
 
 	"codeberg.org/dergs/tidalwave/internal/player"
@@ -10,6 +11,7 @@ import (
 	"codeberg.org/dergs/tidalwave/pkg/schwifty"
 	"codeberg.org/dergs/tidalwave/pkg/schwifty/state"
 	. "codeberg.org/dergs/tidalwave/pkg/schwifty/syntax"
+	"codeberg.org/dergs/tidalwave/pkg/tidalapi"
 	"codeberg.org/dergs/tidalwave/pkg/tidalapi/models/openapi"
 	"codeberg.org/dergs/tidalwave/pkg/utils/imgutil"
 	"github.com/infinytum/injector"
@@ -17,8 +19,11 @@ import (
 	"github.com/jwijenbergh/puregotk/v4/pango"
 )
 
-var baseQueueState = state.NewStateful([]*openapi.Track{})
-var userQueueState = state.NewStateful([]*openapi.Track{})
+var (
+	managedHistoryState = state.NewStateful([]*openapi.Track{})
+	baseQueueState      = state.NewStateful([]*openapi.Track{})
+	userQueueState      = state.NewStateful([]*openapi.Track{})
+)
 
 var (
 	coverState    = state.NewStateful[schwifty.Paintable](resources.MissingAlbum())
@@ -30,6 +35,25 @@ var (
 var log = slog.With("module", "queue")
 
 func init() {
+	player.OnManagedHistoryChanged.On(func(he1 []*player.HistoryEntry, _ *player.HistoryEntry) bool {
+		schwifty.OnMainThreadOnce(func(u uintptr) {
+			tidal := injector.MustInject[*tidalapi.TidalAPI]()
+			tracks := []*openapi.Track{}
+
+			for _, he := range he1 {
+				track, err := tidal.OpenAPI.V2.Tracks.Track(context.Background(), he.TrackID, "albums.coverArt", "artists")
+				if err != nil {
+					log.Error("Failed to fetch track: %v", err)
+					continue
+				}
+				tracks = append(tracks, track)
+			}
+
+			managedHistoryState.SetValue(tracks)
+		}, 0)
+		return signals.Continue
+	})
+
 	player.OnBaseQueueChanged.On(func(tracks []*openapi.Track) bool {
 		schwifty.OnMainThreadOnce(func(u uintptr) {
 			baseQueueState.SetValue(tracks)
@@ -45,6 +69,9 @@ func init() {
 }
 
 func NewQueue() schwifty.Box {
+	historyList := tracklist.NewTrackList("History", tracklist.CoverColumn, tracklist.TitleAlbumColumn, tracklist.DurationColumn)
+	historyList.BindTracks(managedHistoryState)
+
 	trackList := tracklist.NewTrackList("Queued tracks", tracklist.CoverColumn, tracklist.TitleAlbumColumn, tracklist.DurationColumn)
 	trackList.BindTracks(userQueueState)
 
@@ -125,6 +152,7 @@ func NewQueue() schwifty.Box {
 			VExpand(true).
 			Child(
 				VStack(
+					historyList,
 					trackList.Background("alpha(var(--view-bg-color), 0.9)").CornerRadius(10),
 					trackListBase,
 				).Spacing(10).VAlign(gtk.AlignStartValue),
