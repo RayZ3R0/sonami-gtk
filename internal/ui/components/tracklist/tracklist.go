@@ -5,6 +5,7 @@ import (
 	"strconv"
 
 	"codeberg.org/dergs/tidalwave/internal/router"
+	"codeberg.org/dergs/tidalwave/internal/signals"
 	"codeberg.org/dergs/tidalwave/pkg/schwifty"
 	"codeberg.org/dergs/tidalwave/pkg/schwifty/state"
 	. "codeberg.org/dergs/tidalwave/pkg/schwifty/syntax"
@@ -29,12 +30,14 @@ type TrackList struct {
 	legacyColumnFuncs []LegacyColumnFunc
 
 	// rowMap maps track IDs to their row indices in the grid.
-	rowMap []string
+	rowMap       []string
+	tracksSignal *signals.Signal[func([]string) bool]
 }
 
 func (t *TrackList) AddTrack(track *openapi.Track) {
 	row := len(t.rowMap)
 	t.AddTrackAt(track, row)
+	t.tracksSignal.Notify(t.rowMap)
 }
 
 func (t *TrackList) AddTrackAt(track *openapi.Track, row int) {
@@ -45,6 +48,7 @@ func (t *TrackList) AddTrackAt(track *openapi.Track, row int) {
 	for _, columnFunc := range t.columnFuncs {
 		width += columnFunc(track, t.container, row, width)
 	}
+	t.tracksSignal.Notify(t.rowMap)
 }
 
 func (t *TrackList) AddLegacyTrack(track *v2.TrackItemData) {
@@ -55,6 +59,8 @@ func (t *TrackList) AddLegacyTrack(track *v2.TrackItemData) {
 	for _, columnFunc := range t.legacyColumnFuncs {
 		width += columnFunc(track, t.container, row, width)
 	}
+
+	t.tracksSignal.Notify(t.rowMap)
 }
 
 func (t *TrackList) BindTracks(state *state.State[[]*openapi.Track]) {
@@ -84,6 +90,8 @@ func (t *TrackList) BindTracks(state *state.State[[]*openapi.Track]) {
 			}
 			t.AddTrackAt(track, expectedRow)
 		}
+
+		t.tracksSignal.Notify(t.rowMap)
 	})
 }
 
@@ -92,6 +100,7 @@ func (t *TrackList) Clear() {
 		t.container.RemoveRow(i)
 	}
 	t.rowMap = []string{}
+	t.tracksSignal.Notify(t.rowMap)
 }
 
 func (t *TrackList) SetTitle(title string) *TrackList {
@@ -123,6 +132,7 @@ func newTrackList(title string) *TrackList {
 	titleVisibility := state.New[bool](title != "")
 	routeButtonState := state.NewStateful[any](nil)
 	container := gtk.NewGrid()
+	tracksSignal := signals.NewSignal[func([]string) bool]()
 
 	return &TrackList{
 		titleVisibility:  titleVisibility,
@@ -130,6 +140,7 @@ func newTrackList(title string) *TrackList {
 		routeButtonState: routeButtonState,
 		container:        container,
 		rowMap:           []string{},
+		tracksSignal:     &tracksSignal,
 		Box: VStack(
 			HStack(
 				Label(title).
@@ -145,7 +156,22 @@ func newTrackList(title string) *TrackList {
 				CenterBox().BindCenterWidget(routeButtonState).HExpand(false).VExpand(false),
 			),
 			ManagedWidget(&container.Widget),
-		).VAlign(gtk.AlignStartValue),
+		).
+			VAlign(gtk.AlignStartValue).
+			ConnectConstruct(func(b *gtk.Box) {
+				ptr := b.GoPointer()
+				tracksSignal.On(func(newVal []string) bool {
+					b := gtk.BoxNewFromInternalPtr(ptr)
+
+					if len(newVal) == 0 {
+						b.Hide()
+					} else {
+						b.Show()
+					}
+
+					return signals.Continue
+				})
+			}),
 	}
 }
 
