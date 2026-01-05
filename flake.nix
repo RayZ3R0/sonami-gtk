@@ -54,7 +54,7 @@
         packages.tidalwave = pkgs.buildGoModule (finalAttrs: {
           pname = "tidalwave";
           version = "0.0.1";
-          src = ./.;
+          src = pkgs.lib.cleanSource ./.;
           vendorHash = "sha256-dSIfCgSyOVLztUpBDypHHA9bn+d6hV1mukERPJ+kxI8=";
 
           ldflags = [
