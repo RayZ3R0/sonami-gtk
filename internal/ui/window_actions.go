@@ -74,6 +74,12 @@ func (w *Window) installActions() {
 	}))
 	w.AddAction(previousAction)
 
+	repeatAction := gio.NewSimpleAction("player.repeat", nil)
+	repeatAction.ConnectActivate(g.Ptr(func(action gio.SimpleAction, parameter uintptr) {
+		player.CycleRepeatMode()
+	}))
+	w.AddAction(repeatAction)
+
 	queueTrackAction := gio.NewSimpleAction("player.queue-track", glib.NewVariantType("s"))
 	queueTrackAction.ConnectActivate(g.Ptr(func(action gio.SimpleAction, parameter uintptr) {
 		variant := (*glib.Variant)(unsafe.Pointer(parameter))

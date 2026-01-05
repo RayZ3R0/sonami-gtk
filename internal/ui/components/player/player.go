@@ -124,11 +124,28 @@ func NewPlayer() schwifty.Box {
 				WithCSSClass("transparent").
 				ActionName("win.player.next"),
 			Button().
-				IconName("media-playlist-repeat-song-symbolic").
 				MinHeight(34).
 				MinWidth(34).
 				WithCSSClass("transparent").
-				ActionName("win.player.repeat"),
+				ActionName("win.player.repeat").
+				ConnectConstruct(func(b *gtk.Button) {
+					ptr := b.GoPointer()
+					player.OnRepeatModeChanged.On(func(state player.RepeatMode) bool {
+						b := gtk.ButtonNewFromInternalPtr(ptr)
+						switch state {
+						case player.RepeatModeNone:
+							b.RemoveCssClass("color-accent")
+							b.SetIconName("media-playlist-repeat-symbolic")
+						case player.RepeatModeList:
+							b.AddCssClass("color-accent")
+							b.SetIconName("media-playlist-repeat-symbolic")
+						case player.RepeatModeSingle:
+							b.AddCssClass("color-accent")
+							b.SetIconName("media-playlist-repeat-song-symbolic")
+						}
+						return signals.Continue
+					})
+				}),
 		).
 			Spacing(7).
 			HAlign(gtk.AlignCenterValue).

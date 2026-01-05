@@ -66,3 +66,7 @@ menubutton.transparent button:not(:hover):not(.active) {
     background-color: alpha(var(--view-fg-color), 0.2);
     color: var(--view-fg-color);
 }
+
+.color-accent {
+    color: var(--accent-color);
+}

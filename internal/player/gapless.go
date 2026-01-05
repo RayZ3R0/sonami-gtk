@@ -12,6 +12,10 @@ import (
 )
 
 func onAboutToFinish(_ *gst.Element) {
+	if OnRepeatModeChanged.current == RepeatModeSingle {
+		return
+	}
+
 	nextTrack := peekNextTrack()
 	if nextTrack != nil {
 		playbackInfo, err := injector.MustInject[*tidalapi.TidalAPI]().V1.Tracks.PlaybackInfo(context.Background(), nextTrack.Data.ID, tracksv1.PlaybackInfoOptions{})

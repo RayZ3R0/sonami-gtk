@@ -105,3 +105,20 @@ func Previous() {
 		playTrackId(entry.TrackID)
 	}
 }
+
+func SetRepeatMode(m RepeatMode) {
+	OnRepeatModeChanged.Notify(func(oldMode *RepeatMode) {
+		*oldMode = m
+	})
+}
+
+func CycleRepeatMode() {
+	switch OnRepeatModeChanged.current {
+	case RepeatModeNone:
+		SetRepeatMode(RepeatModeList)
+	case RepeatModeList:
+		SetRepeatMode(RepeatModeSingle)
+	case RepeatModeSingle:
+		SetRepeatMode(RepeatModeNone)
+	}
+}

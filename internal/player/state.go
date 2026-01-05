@@ -63,6 +63,12 @@ func peekNextTrack() *openapi.Track {
 }
 
 func nextTrack() {
+	if OnRepeatModeChanged.current == RepeatModeSingle {
+		logger.Debug("single repeat mode is enabled, replaying track")
+		Scrub(0)
+		return
+	}
+
 	logger.Debug("attempting to pop next track from user queue")
 	nextTrack := UserQueue.Pop()
 	if nextTrack != nil {
