@@ -38,7 +38,12 @@
           PUREGOTK_LIB_FOLDER = "${libraryPath}/lib";
           GSETTINGS_SCHEMA_DIR = "./internal/settings";
           TIDAL_WAVE_DEBUG = "1";
+
+          hardeningDisable = [ "fortify" ]; # Required for Delve
+          # For delve to work, you need to add the following line to your `programs.zed-editor`:
+          # package = pkgs.zed-editor.fhs;
           buildInputs = with pkgs; [
+            delve
             go
             gopls
             gtk4
@@ -48,6 +53,7 @@
             gst_all_1.gst-plugins-base
             gst_all_1.gst-plugins-good
             gst_all_1.gst-plugins-bad
+            pkg-config # Needed for the first compile with CGO
           ];
         };
 

@@ -1,2 +1,3 @@
 .direnv/
 local/
+__debug_bin*
