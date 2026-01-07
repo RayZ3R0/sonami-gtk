@@ -10,30 +10,30 @@ import (
 
 func init() {
 	PlaybackStateChanged.Signal.On(func(state *PlaybackState) bool {
-		mprisClient, err := injector.Inject[*mpris.Server]()
+		mprisServer, err := injector.Inject[*mpris.Server]()
 		if err != nil {
 			return signals.Continue
 		}
 
-		mprisClient.SetPosition(state.Position)
+		mprisServer.SetPosition(state.Position)
 		switch state.Status {
 		case PlaybackStatusBuffering, PlaybackStatusPaused:
-			mprisClient.SetPlaybackStatus(mpris.PlaybackStatusPaused)
+			mprisServer.SetPlaybackStatus(mpris.PlaybackStatusPaused)
 		case PlaybackStatusPlaying:
-			mprisClient.SetPlaybackStatus(mpris.PlaybackStatusPlaying)
+			mprisServer.SetPlaybackStatus(mpris.PlaybackStatusPlaying)
 		case PlaybackStatusStopped:
-			mprisClient.SetPlaybackStatus(mpris.PlaybackStatusStopped)
+			mprisServer.SetPlaybackStatus(mpris.PlaybackStatusStopped)
 		}
 
 		return signals.Continue
 	})
 	TrackChanged.Signal.On(func(trackInfo *Track) bool {
-		mpris, err := injector.Inject[*mpris.Server]()
+		mprisServer, err := injector.Inject[*mpris.Server]()
 		if err != nil {
 			return signals.Continue
 		}
 
-		mpris.EnableControl()
+		mprisServer.EnableControl()
 		if trackInfo == nil {
 			return signals.Continue
 		}
@@ -49,7 +49,7 @@ func init() {
 			albumArtists = append(albumArtists, artist.Data.Attributes.Name)
 		}
 
-		mpris.SetTrackMetadata(map[string]any{
+		mprisServer.SetTrackMetadata(map[string]any{
 			"mpris:artUrl":      trackInfo.CoverURL,
 			"mpris:length":      trackInfo.Duration.Microseconds(),
 			"xesam:album":       album.Data.Attributes.Title,
@@ -62,12 +62,12 @@ func init() {
 		return signals.Continue
 	})
 	VolumeChanged.Signal.On(func(volume float64) bool {
-		server, err := injector.Inject[*mpris.Server]()
+		mprisServer, err := injector.Inject[*mpris.Server]()
 		if err != nil {
 			return signals.Continue
 		}
 
-		server.SetVolume(volume)
+		mprisServer.SetVolume(volume)
 		return signals.Continue
 	})
 }
