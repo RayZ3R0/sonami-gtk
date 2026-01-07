@@ -139,13 +139,13 @@ func NewPlayer() schwifty.Box {
 						switch state {
 						case player.RepeatModeNone:
 							b.RemoveCssClass("color-accent")
-							b.SetIconName("media-playlist-no-repeat-symbolic")
+							b.SetIconName("media-playlist-repeat-symbolic")
 						case player.RepeatModeQueue:
 							b.AddCssClass("color-accent")
 							b.SetIconName("media-playlist-repeat-symbolic")
 						case player.RepeatModeTrack:
 							b.AddCssClass("color-accent")
-							b.SetIconName("media-playlist-repeat-once-symbolic")
+							b.SetIconName("media-playlist-repeat-song-symbolic")
 						}
 						return signals.Continue
 					})
