@@ -4,7 +4,6 @@ import (
 	"log/slog"
 	"os"
 	"strings"
-	"time"
 
 	"codeberg.org/dergs/tidalwave/internal/g"
 	_ "codeberg.org/dergs/tidalwave/internal/icons"
@@ -69,9 +68,7 @@ func main() {
 			window.Show()
 			window.Present()
 		})
-		mprisServer.OnSeek(func(offset time.Duration) {
-			player.SeekToPositionRelative(offset)
-		})
+		mprisServer.OnSeek(player.SeekToPositionRelative)
 		mprisServer.OnSetPosition(player.SeekToPosition)
 		mprisServer.OnVolumeChanged(func(newVal float64) {
 			player.SetVolume(newVal)
