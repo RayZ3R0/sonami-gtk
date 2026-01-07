@@ -54,7 +54,7 @@ func NewHorizontalList(title string) *HorizontalList {
 			current := hAdjust.GetValue()
 			current -= math.Mod(current, 192)
 			hAdjust.SetStepIncrement(192)
-			hAdjust.SetValue(current + hAdjust.GetStepIncrement())
+			go hAdjust.SetValue(current + hAdjust.GetStepIncrement())
 		})
 
 	previousButton := Button().
