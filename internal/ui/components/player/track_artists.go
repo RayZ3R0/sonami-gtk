@@ -35,7 +35,7 @@ func trackArtists() schwifty.Widget {
 	textView.SetSizeRequest(380, -1)
 
 	widgetPtr := textView.GoPointer()
-	subscriptionID := player.OnTrackChanged.On(func(trackInfo player.TrackInformation) bool {
+	subscriptionID := player.TrackChanged.On(func(trackInfo *player.Track) bool {
 		schwifty.OnMainThreadOnce(func(u uintptr) {
 			textView := gtk.TextViewNewFromInternalPtr(widgetPtr)
 			tag := gtk.NewTextTagTable()
@@ -47,18 +47,20 @@ func trackArtists() schwifty.Widget {
 			var iter gtk.TextIter
 			buffer.GetStartIter(&iter)
 
-			for i, artist := range trackInfo.Artists {
-				anchor := buffer.CreateChildAnchor(&iter)
-				btn := gtk.NewLinkButton("https://tidal.com/artist/" + artist.ID)
-				btn.SetActionName("win.route.artist")
-				btn.SetActionTargetValue(glib.NewVariantString(artist.ID))
-				btn.SetChild(artistLabel.Text(artist.Attributes.Name).ToGTK())
-				btn.ConnectActivateLink(&linkDisabler)
-				textView.AddChildAtAnchor(Widget(&btn.Widget).Padding(0).ToGTK(), anchor)
-				btn.Unref()
-				if i != len(trackInfo.Artists)-1 {
+			if trackInfo != nil {
+				for i, artist := range trackInfo.Artists {
 					anchor := buffer.CreateChildAnchor(&iter)
-					textView.AddChildAtAnchor(artistSeparator.ToGTK(), anchor)
+					btn := gtk.NewLinkButton("https://tidal.com/artist/" + artist.ID)
+					btn.SetActionName("win.route.artist")
+					btn.SetActionTargetValue(glib.NewVariantString(artist.ID))
+					btn.SetChild(artistLabel.Text(artist.Attributes.Name).ToGTK())
+					btn.ConnectActivateLink(&linkDisabler)
+					textView.AddChildAtAnchor(Widget(&btn.Widget).Padding(0).ToGTK(), anchor)
+					btn.Unref()
+					if i != len(trackInfo.Artists)-1 {
+						anchor := buffer.CreateChildAnchor(&iter)
+						textView.AddChildAtAnchor(artistSeparator.ToGTK(), anchor)
+					}
 				}
 			}
 		}, 0)
@@ -66,6 +68,6 @@ func trackArtists() schwifty.Widget {
 	})
 
 	return ManagedWidget(&textView.Widget).Background("transparent").ConnectDestroy(func(w gtk.Widget) {
-		player.OnTrackChanged.Unsubscribe(subscriptionID)
+		player.TrackChanged.Unsubscribe(subscriptionID)
 	})
 }

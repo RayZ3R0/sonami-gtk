@@ -68,8 +68,8 @@ func main() {
 			window.Show()
 			window.Present()
 		})
-		mprisServer.OnSeek(player.SeekForward)
-		mprisServer.OnSetPosition(player.SeekTo)
+		mprisServer.OnSeek(player.SeekToPositionRelative)
+		mprisServer.OnSetPosition(player.SeekToPosition)
 		mprisServer.OnVolumeChanged(func(newVal float64) {
 			player.SetVolume(newVal)
 

@@ -13,8 +13,12 @@ import (
 var titleState = state.NewStateful("No Track")
 
 func init() {
-	player.OnTrackChanged.On(func(trackInfo player.TrackInformation) bool {
-		titleState.SetValue(trackInfo.Title)
+	player.TrackChanged.On(func(trackInfo *player.Track) bool {
+		if trackInfo == nil {
+			titleState.SetValue("No Track")
+		} else {
+			titleState.SetValue(trackInfo.Title)
+		}
 		return signals.Continue
 	})
 }

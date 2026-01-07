@@ -14,7 +14,7 @@ import (
 var volumeState = state.NewStateful(1.0)
 
 func init() {
-	player.OnVolumeChanged.On(func(volume float64) bool {
+	player.VolumeChanged.On(func(volume float64) bool {
 		// Cube root the volume to account for the logarithmic nature of human volume perception
 		volumeState.SetValue(math.Pow(volume, 1.0/3.0))
 		return signals.Continue

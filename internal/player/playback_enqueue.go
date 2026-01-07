@@ -1,0 +1,81 @@
+package player
+
+import (
+	"encoding/base64"
+	"encoding/json"
+	"fmt"
+	"os"
+
+	v1 "codeberg.org/dergs/tidalwave/pkg/tidalapi/models/v1"
+)
+
+var (
+	currentlyEnqueuedTrackID int
+)
+
+type btsStream struct {
+	MimeType       string   `json:"mimeType"`
+	Codecs         string   `json:"codecs"`
+	EncryptionType string   `json:"encryptionType"`
+	URLs           []string `json:"urls"`
+}
+
+func enqueueBTSStream(info *v1.PlaybackInfo) error {
+	if info.ManifestMimeType != v1.ManifestMimeTypeAudioBTS {
+		return fmt.Errorf("unsupported manifest mime type: %s", info.ManifestMimeType)
+	}
+	logger.Debug("selected track is in BTS format")
+
+	decodedManifest, err := base64.StdEncoding.DecodeString(info.Manifest)
+	if err != nil {
+		return fmt.Errorf("failed to decode BTS manifest: %w", err)
+	}
+
+	var stream btsStream
+	if err := json.Unmarshal(decodedManifest, &stream); err != nil {
+		return fmt.Errorf("failed to unmarshal BTS stream: %w", err)
+	}
+
+	playbin.SetArg("uri", stream.URLs[0])
+	return nil
+}
+
+func enqueueMPDStream(info *v1.PlaybackInfo) error {
+	if info.ManifestMimeType != v1.ManifestMimeTypeAudioMPD {
+		return fmt.Errorf("unsupported manifest mime type: %s", info.ManifestMimeType)
+	}
+	logger.Debug("selected track is in MPD format")
+
+	file, err := os.CreateTemp("", "manifest-*.mpd")
+	if err != nil {
+		return err
+	}
+	defer file.Close()
+
+	decoded, err := base64.StdEncoding.DecodeString(info.Manifest)
+	if err != nil {
+		return err
+	}
+
+	_, err = file.Write(decoded)
+	if err != nil {
+		return err
+	}
+
+	playbin.SetArg("uri", "file://"+file.Name())
+	return nil
+}
+
+func enqueue(playbackInfo *v1.PlaybackInfo) error {
+	switch playbackInfo.ManifestMimeType {
+	case v1.ManifestMimeTypeAudioMPD:
+		enqueueMPDStream(playbackInfo)
+	case v1.ManifestMimeTypeAudioBTS:
+		enqueueBTSStream(playbackInfo)
+	default:
+		logger.Error("unsupported manifest mime type", "mime_type", playbackInfo.ManifestMimeType)
+		return fmt.Errorf("unsupported manifest mime type: %s", playbackInfo.ManifestMimeType)
+	}
+	currentlyEnqueuedTrackID = playbackInfo.TrackID
+	return nil
+}

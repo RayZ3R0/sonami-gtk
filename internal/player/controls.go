@@ -7,69 +7,82 @@ import (
 	"github.com/go-gst/go-gst/gst"
 )
 
-func Scrub(percent float64) {
+func CycleRepeatMode() {
+	switch RepeatModeChanged.CurrentValue() {
+	case RepeatModeNone:
+		SetRepeatMode(RepeatModeQueue)
+	case RepeatModeQueue:
+		SetRepeatMode(RepeatModeTrack)
+	case RepeatModeTrack:
+		SetRepeatMode(RepeatModeNone)
+	}
+}
+
+func Next() {
+	logger.Debug("player controls requested to play next track")
+	playNextTrack()
+}
+
+func Pause() {
+	logger.Debug("player controls requested to pause")
+	playbin.SetState(gst.StatePaused)
+	PlaybackStateChanged.Notify(func(oldValue *PlaybackState) *PlaybackState {
+		newState := *oldValue
+		newState.Status = PlaybackStatusPaused
+		return &newState
+	})
+}
+
+func Play() {
+	logger.Debug("player controls requested to start playing")
+	playbin.SetState(gst.StatePlaying)
+}
+
+func PlayPause() {
+	logger.Debug("player controls requested to start playing or pause")
+	switch PlaybackStateChanged.CurrentValue().Status {
+	case PlaybackStatusPlaying:
+		Pause()
+	case PlaybackStatusPaused:
+		Play()
+	case PlaybackStatusStopped:
+		SeekToPosition(0)
+	}
+}
+
+func Previous() {
+	logger.Debug("player controls requested to play previous track")
+	playPreviousTrack()
+}
+
+func SeekToPercent(percent float64) {
 	if percent < 0 || percent > 100 {
 		percent = math.Max(0, math.Min(100, percent))
 		logger.Warn("percent must be between 0 and 100, clamping to nearest value", "percent", percent)
 	}
 
-	position := time.Duration(int64(float64(OnStateChanged.current.Duration.Nanoseconds()) * (percent / 100.0)))
+	position := float64(PlaybackStateChanged.CurrentValue().Duration) * (percent / 100.0)
+	SeekToPosition(time.Duration(int64(position)))
+}
+
+func SeekToPosition(position time.Duration) {
+	logger.Debug("player controls requested to seek to position", "position", position)
 	playbin.SeekTime(position, gst.SeekFlagFlush)
-	OnStateChanged.Notify(func(state *State) {
-		state.Position = position
-		if state.Status == StatusStopped {
-			state.Status = StatusPlaying
-		}
+	PlaybackStateChanged.Notify(func(oldValue *PlaybackState) *PlaybackState {
+		newState := *oldValue
+		newState.Position = position
+		return &newState
 	})
 }
 
-// Removes duration to the current position
-func SeekBackward(duration time.Duration) {
-	SeekForward(-duration)
+func SeekToPositionRelative(delta time.Duration) {
+	SeekToPosition(PlaybackStateChanged.CurrentValue().Position + delta)
 }
 
-// Adds duration to the current position
-func SeekForward(duration time.Duration) {
-	ok, position := playbin.QueryPosition(gst.FormatTime)
-	if !ok {
-		return
-	}
-	SeekTo(time.Duration(position) + duration)
-}
-
-func SeekTo(timestamp time.Duration) {
-	playbin.SeekTime(timestamp, gst.SeekFlagFlush)
-	OnStateChanged.Notify(func(state *State) {
-		state.Position = timestamp
-		if state.Status == StatusStopped {
-			state.Status = StatusPlaying
-		}
+func SetRepeatMode(m RepeatMode) {
+	RepeatModeChanged.Notify(func(oldValue RepeatMode) RepeatMode {
+		return m
 	})
-}
-
-func Pause() {
-	playbin.SetState(gst.StatePaused)
-	OnStateChanged.Notify(func(state *State) {
-		state.Status = StatusPaused
-	})
-}
-
-func Play() {
-	playbin.SetState(gst.StatePlaying)
-	OnStateChanged.Notify(func(state *State) {
-		state.Status = StatusPlaying
-	})
-}
-
-func PlayPause() {
-	switch OnStateChanged.current.Status {
-	case StatusPlaying:
-		Pause()
-	case StatusPaused:
-		Play()
-	case StatusStopped:
-		Scrub(0)
-	}
 }
 
 func SetVolume(volume float64) {
@@ -82,43 +95,7 @@ func SetVolume(volume float64) {
 	playbin.SetProperty("volume", volume)
 }
 
-func Next() {
-	nextTrack()
-}
-
-func Previous() {
-	ok, position := playbin.QueryPosition(gst.FormatTime)
-	if ok && time.Duration(position) > 5*time.Second {
-		SeekTo(0)
-		return
-	}
-
-	if len(history.Entries) < 1 {
-		SeekTo(0)
-		return
-	}
-	entry := history.Pop()
-	if entry != nil {
-		// Re-Queue current song to front of user-queue
-		UserQueue.AddTrackID(OnTrackChanged.current.ID, true)
-		// Switch to previous track without clearing base queue
-		playTrackId(entry.TrackID)
-	}
-}
-
-func SetRepeatMode(m RepeatMode) {
-	OnRepeatModeChanged.Notify(func(oldMode *RepeatMode) {
-		*oldMode = m
-	})
-}
-
-func CycleRepeatMode() {
-	switch OnRepeatModeChanged.current {
-	case RepeatModeNone:
-		SetRepeatMode(RepeatModeList)
-	case RepeatModeList:
-		SetRepeatMode(RepeatModeSingle)
-	case RepeatModeSingle:
-		SetRepeatMode(RepeatModeNone)
-	}
+func Stop() {
+	logger.Debug("player controls requested to stop")
+	playbin.SetState(gst.StateNull)
 }

@@ -137,13 +137,13 @@ func setNewIndex(timing highlightTiming) {
 func init() {
 	var activeIndexChangeOnPlayerUpdate *signals.Subscription
 
-	player.OnTrackChanged.On(func(trackInfo player.TrackInformation) bool {
+	player.TrackChanged.On(func(trackInfo *player.Track) bool {
 		defer runtime.GC()
 		activeLyricIndex.SetValue(0)
-		player.OnStateChanged.Unsubscribe(activeIndexChangeOnPlayerUpdate)
+		player.PlaybackStateChanged.Unsubscribe(activeIndexChangeOnPlayerUpdate)
 		activeIndexChangeOnPlayerUpdate = nil
 
-		if trackInfo.ID == "" {
+		if trackInfo == nil {
 			coverState.SetValue(resources.MissingAlbum())
 			trackTitle.SetValue("")
 			trackArtists.SetValue("")
@@ -264,7 +264,7 @@ func init() {
 					}).
 					ConnectClicked(func(gtk.Button) {
 						userManuallyScrolled.SetValue(false)
-						player.SeekTo(timeStart)
+						player.SeekToPosition(timeStart)
 					})()
 
 				timings = append(timings, highlightTiming{
@@ -276,9 +276,9 @@ func init() {
 				lines = append(lines, boxWidget)
 			}
 
-			activeIndexChangeOnPlayerUpdate = player.OnStateChanged.On(func(state player.State) (next bool) {
+			activeIndexChangeOnPlayerUpdate = player.PlaybackStateChanged.On(func(state *player.PlaybackState) (next bool) {
 				next = signals.Continue
-				if state.Status != player.StatusPlaying {
+				if state.Status != player.PlaybackStatusPlaying {
 					return
 				}
 

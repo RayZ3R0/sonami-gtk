@@ -2,7 +2,6 @@ package player
 
 import (
 	"log/slog"
-	"math/rand/v2"
 
 	"codeberg.org/dergs/tidalwave/internal/settings"
 	"codeberg.org/dergs/tidalwave/pkg/tidalapi"
@@ -14,30 +13,41 @@ import (
 )
 
 var (
-	playbin                    *gst.Element
-	currentlyConfiguredTrackID int
-	logger                     *slog.Logger
+	logger  = slog.With("module", "player")
+	playbin *gst.Element
 )
 
 func init() {
 	gst.Init(nil)
-	logger = slog.With("module", "player")
 	pb, err := gst.NewElement("playbin")
 	if err != nil {
 		panic(err)
 	}
 	playbin = pb
-
-	settings.PlayerSettings().BindVolume(gobject.ObjectNewFromInternalPtr(uintptr(playbin.BaseObject().Unsafe())), "volume")
 	playbin.GetBus().AddWatch(onBusMessage)
 	playbin.Connect("notify::volume", onVolumeChange)
 	playbin.Connect("about-to-finish", onAboutToFinish)
-	onVolumeChange()
+	settings.PlayerSettings().BindVolume(gobject.ObjectNewFromInternalPtr(uintptr(playbin.BaseObject().Unsafe())), "volume")
+}
+
+func AddTrackToUserQueue(trackId string) {
+	UserQueue.AddTrackID(trackId, false)
+
+	// If we added a song to the queue and nothing is playing, the user likely wants to start playing the queue
+	if PlaybackStateChanged.CurrentValue().Status == PlaybackStatusStopped {
+		logger.Info("no track is currently playing, immediately playing track", "track_id", trackId)
+		Next()
+		return
+	}
 }
 
 func PlayTrack(trackId string) error {
-	BaseQueue.Clear()
-	return playTrackId(trackId)
+	track, err := resolveTrack(trackId)
+	if err != nil {
+		return err
+	}
+
+	return playTrack(track)
 }
 
 func PlayAlbum(albumId string, shuffle bool, skipUntil string) error {
@@ -49,36 +59,17 @@ func PlayAlbum(albumId string, shuffle bool, skipUntil string) error {
 	paginator := pagination.NewPaginator(tidal.OpenAPI.V2.Albums, albumId, func(items *openapi.Response[[]openapi.Relationship]) []openapi.Track {
 		return items.Included.Tracks(items.Data...)
 	}, "items", "items.artists", "items.albums.coverArt")
-	tracks, err := paginator.GetAll()
 
+	tracks, err := paginator.GetAll()
 	if err != nil {
 		return err
 	}
 
-	BaseQueue.Clear()
-
-	if shuffle {
-		rand.Shuffle(len(tracks), func(i, j int) {
-			tracks[i], tracks[j] = tracks[j], tracks[i]
-		})
-	} else if skipUntil != "" {
-		for i, track := range tracks {
-			if track.Data.ID == skipUntil {
-				tracks = tracks[i:]
-				break
-			}
-		}
-	}
-
-	firstTrack := tracks[0]
-
-	if err := playTrack(&firstTrack); err != nil {
-		return err
-	}
-
-	for _, track := range tracks[1:] {
+	clearQueues()
+	for _, track := range prepareTrackList(tracks, shuffle, skipUntil) {
 		BaseQueue.AddTrack(&track, false)
 	}
+	playNextTrack()
 
 	return nil
 }
@@ -92,35 +83,17 @@ func PlayPlaylist(playlistId string, shuffle bool, skipUntil string) error {
 	paginator := pagination.NewPaginator(tidal.OpenAPI.V2.Playlists, playlistId, func(items *openapi.Response[[]openapi.Relationship]) []openapi.Track {
 		return items.Included.Tracks(items.Data...)
 	}, "items", "items.artists", "items.albums.coverArt")
-	tracks, err := paginator.GetAll()
 
+	tracks, err := paginator.GetAll()
 	if err != nil {
 		return err
 	}
 
-	BaseQueue.Clear()
-
-	if shuffle {
-		rand.Shuffle(len(tracks), func(i, j int) {
-			tracks[i], tracks[j] = tracks[j], tracks[i]
-		})
-	} else if skipUntil != "" {
-		for i, track := range tracks {
-			if track.Data.ID == skipUntil {
-				tracks = tracks[i:]
-				break
-			}
-		}
-	}
-
-	firstTrack := tracks[0]
-	if err := playTrack(&firstTrack); err != nil {
-		return err
-	}
-
-	for _, track := range tracks[1:] {
+	clearQueues()
+	for _, track := range prepareTrackList(tracks, shuffle, skipUntil) {
 		BaseQueue.AddTrack(&track, false)
 	}
+	playNextTrack()
 
 	return nil
 }

@@ -3,7 +3,6 @@ package player
 import (
 	"context"
 	"errors"
-	"fmt"
 	"slices"
 	"strconv"
 
@@ -16,33 +15,20 @@ import (
 	"github.com/infinytum/injector"
 )
 
-func playTrackId(trackId string) error {
+func playTrack(track *openapi.Track) error {
 	tidal, err := injector.Inject[*tidalapi.TidalAPI]()
 	if err != nil {
 		return err
 	}
 
-	track, err := tidal.OpenAPI.V2.Tracks.Track(context.Background(), trackId, "albums.coverArt", "artists")
-	if err != nil {
-		return err
-	}
-
-	return playTrack(track)
-}
-
-func playTrack(track *openapi.Track) error {
-	tidal := injector.MustInject[*tidalapi.TidalAPI]()
-
-	OnTrackChanged.Notify(func(trackInfo *TrackInformation) {
-		trackInfo.Albums = []openapi.Album{}
-		trackInfo.Artists = []openapi.ArtistData{}
-		trackInfo.CoverURL = ""
-		trackInfo.Duration = track.Data.Attributes.Duration.Duration
-		trackInfo.ID = track.Data.ID
-		trackInfo.Title = track.Data.Attributes.Title
-
-		for _, artist := range track.Included.PlainArtists(track.Data.Relationships.Artists.Data...) {
-			trackInfo.Artists = append(trackInfo.Artists, artist)
+	TrackChanged.Notify(func(oldState *Track) *Track {
+		trackInfo := &Track{
+			Albums:   []openapi.Album{},
+			Artists:  []openapi.ArtistData{},
+			CoverURL: "",
+			Duration: track.Data.Attributes.Duration.Duration,
+			ID:       track.Data.ID,
+			Title:    track.Data.Attributes.Title,
 		}
 
 		for _, album := range track.Included.Albums(track.Data.Relationships.Albums.Data...) {
@@ -51,6 +37,22 @@ func playTrack(track *openapi.Track) error {
 				trackInfo.CoverURL = artwork.Attributes.Files.AtLeast(320).Href
 			}
 		}
+
+		for _, artist := range track.Included.PlainArtists(track.Data.Relationships.Artists.Data...) {
+			trackInfo.Artists = append(trackInfo.Artists, artist)
+		}
+
+		return trackInfo
+	})
+
+	PlaybackStateChanged.Notify(func(oldValue *PlaybackState) *PlaybackState {
+		newState := *oldValue
+		newState.Duration = track.Data.Attributes.Duration.Duration
+		return &newState
+	})
+
+	history.Push(&HistoryEntry{
+		TrackID: track.Data.ID,
 	})
 
 	if !slices.Contains(track.Data.Attributes.Availability, openapi.TrackAvailabilityStream) {
@@ -59,7 +61,7 @@ func playTrack(track *openapi.Track) error {
 		return errors.New("track not available for streaming")
 	}
 
-	if strconv.Itoa(currentlyConfiguredTrackID) != track.Data.ID {
+	if strconv.Itoa(currentlyEnqueuedTrackID) != track.Data.ID {
 		playbackInfo, err := tidal.V1.Tracks.PlaybackInfo(context.Background(), track.Data.ID, tracksv1.PlaybackInfoOptions{})
 		if err != nil {
 			logger.Error("unable to fetch playback info for track", "error", err)
@@ -73,7 +75,7 @@ func playTrack(track *openapi.Track) error {
 
 func play(playbackInfo *v1.PlaybackInfo) error {
 	// Inform the UI about the track quality we got from TIDAL.
-	OnPlaybackQualityChanged.Notify(func() v1.AudioQuality {
+	PlaybackQualityChanged.Notify(func(oldValue v1.AudioQuality) v1.AudioQuality {
 		return playbackInfo.AudioQuality
 	})
 
@@ -81,33 +83,16 @@ func play(playbackInfo *v1.PlaybackInfo) error {
 	playbin.SetState(gst.StateNull)
 	playbin.SetArg("uri", "")
 
-	OnStateChanged.Notify(func(state *State) {
-		state.Status = StatusBuffering
-		state.Position = 0
+	PlaybackStateChanged.Notify(func(oldValue *PlaybackState) *PlaybackState {
+		newState := *oldValue
+		newState.Status = PlaybackStatusBuffering
+		return &newState
 	})
 
 	if err := enqueue(playbackInfo); err != nil {
 		return err
 	}
 
-	OnStateChanged.Notify(func(state *State) {
-		state.Status = StatusPlaying
-	})
-
 	playbin.SetState(gst.StatePlaying)
-	return nil
-}
-
-func enqueue(playbackInfo *v1.PlaybackInfo) error {
-	switch playbackInfo.ManifestMimeType {
-	case v1.ManifestMimeTypeAudioMPD:
-		enqueueMPDStream(playbackInfo)
-	case v1.ManifestMimeTypeAudioBTS:
-		enqueueBTSStream(playbackInfo)
-	default:
-		logger.Error("unsupported manifest mime type", "mime_type", playbackInfo.ManifestMimeType)
-		return fmt.Errorf("unsupported manifest mime type: %s", playbackInfo.ManifestMimeType)
-	}
-	currentlyConfiguredTrackID = playbackInfo.TrackID
 	return nil
 }
