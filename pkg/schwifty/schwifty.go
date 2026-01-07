@@ -83,6 +83,29 @@ func ResolvePopover(value any) *gtk.Popover {
 	return nil
 }
 
+func ResolveTo[GtkType any, SchwiftyType BaseWidgetable](value any) (result GtkType) {
+	t := reflect.TypeOf(value)
+
+	if t.AssignableTo(reflect.TypeFor[GtkType]()) {
+		if shouldLogLifecycle {
+			logger.Debug("resolved generic from gtk")
+		}
+		result = value.(GtkType)
+		return
+	}
+
+	if t.AssignableTo(reflect.TypeFor[SchwiftyType]()) {
+		if shouldLogLifecycle {
+			logger.Debug("resolved generic from schwifty")
+		}
+		result = reflect.ValueOf(value).Call([]reflect.Value{})[0].Interface().(GtkType)
+		return
+	}
+
+	logger.Warn("failed to resolve generic")
+	return
+}
+
 func SetLogLifecycle(enabled bool) {
 	shouldLogLifecycle = enabled
 	callback.SetLogLifecycle(enabled)
