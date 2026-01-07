@@ -31,7 +31,7 @@ type TrackList struct {
 
 	// rowMap maps track IDs to their row indices in the grid.
 	rowMap       []string
-	tracksSignal *signals.Signal[func([]string) bool]
+	tracksSignal *signals.StatelessSignal[[]string]
 }
 
 func (t *TrackList) AddTrack(track *openapi.Track) {
@@ -132,7 +132,7 @@ func newTrackList(title string) *TrackList {
 	titleVisibility := state.New[bool](title != "")
 	routeButtonState := state.NewStateful[any](nil)
 	container := gtk.NewGrid()
-	tracksSignal := signals.NewSignal[func([]string) bool]()
+	tracksSignal := signals.NewStatelessSignal[[]string]()
 
 	return &TrackList{
 		titleVisibility:  titleVisibility,
@@ -140,7 +140,7 @@ func newTrackList(title string) *TrackList {
 		routeButtonState: routeButtonState,
 		container:        container,
 		rowMap:           []string{},
-		tracksSignal:     &tracksSignal,
+		tracksSignal:     tracksSignal,
 		Box: VStack(
 			HStack(
 				Label(title).

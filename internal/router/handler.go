@@ -46,6 +46,6 @@ func executeHandler(handler Handler) (response *Response, shouldCache bool) {
 
 func handleNavigationComplete(entry *HistoryEntry) {
 	schwifty.OnMainThreadOnce(func(u uintptr) {
-		NavigationComplete.Notify(*entry)
+		NavigationCompleted.Notify(*entry)
 	}, 0)
 }

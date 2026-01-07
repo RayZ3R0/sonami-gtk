@@ -59,7 +59,7 @@ func NewRouteButton(path string) *RouteButton {
 		).
 		WithCSSClass("transparent")()
 
-	router.OnNavigate.On(func(newPath string) bool {
+	router.NavigationStarted.On(func(newPath string) bool {
 		schwifty.OnMainThreadOnce(func(u uintptr) {
 			routeButton.SetActive(path == newPath)
 		}, 0)

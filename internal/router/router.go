@@ -22,7 +22,7 @@ func navigate(path string, offRecord bool) {
 
 	logger.Debug("navigation started")
 	// We are starting to navigate, notify the rest of the application
-	OnNavigate.Notify(path)
+	NavigationStarted.Notify(path)
 
 	// If the route is not registered, use the not found handler
 	handler := findHandler(path)
@@ -65,7 +65,7 @@ func Back() {
 	}
 
 	if previous.View != nil {
-		OnNavigate.Notify(previous.Path)
+		NavigationStarted.Notify(previous.Path)
 		handleNavigationComplete(previous)
 	} else {
 		navigate(previous.Path, true)
