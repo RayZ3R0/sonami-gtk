@@ -15,12 +15,12 @@ var (
 )
 
 func init() {
-	player.OnStateChanged.On(func(state player.State) bool {
+	player.PlaybackStateChanged.On(func(state *player.PlaybackState) bool {
 		switch state.Status {
-		case player.StatusPlaying:
+		case player.PlaybackStatusPlaying:
 			playPauseIconState.SetValue("media-playback-pause-symbolic")
 			playPauseSensitiveState.SetValue(true)
-		case player.StatusPaused, player.StatusStopped:
+		case player.PlaybackStatusPaused, player.PlaybackStatusStopped:
 			playPauseIconState.SetValue("media-playback-start-symbolic")
 			playPauseSensitiveState.SetValue(true)
 		default:

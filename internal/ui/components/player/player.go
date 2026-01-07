@@ -23,11 +23,15 @@ var (
 )
 
 func init() {
-	player.OnTrackChanged.On(func(trackInfo player.TrackInformation) bool {
-		trackID.SetValue(trackInfo.ID)
+	player.TrackChanged.On(func(trackInfo *player.Track) bool {
+		if trackInfo == nil {
+			trackID.SetValue("")
+		} else {
+			trackID.SetValue(trackInfo.ID)
+		}
 		return signals.Continue
 	})
-	player.OnPlaybackQualityChanged.On(func(quality v1.AudioQuality) bool {
+	player.PlaybackQualityChanged.On(func(quality v1.AudioQuality) bool {
 		switch quality {
 		case v1.AudioQualityLossy:
 			playbackQualityText.SetValue("Low (96 kbps)")
@@ -130,18 +134,18 @@ func NewPlayer() schwifty.Box {
 				ActionName("win.player.repeat").
 				ConnectConstruct(func(b *gtk.Button) {
 					ptr := b.GoPointer()
-					player.OnRepeatModeChanged.On(func(state player.RepeatMode) bool {
+					player.RepeatModeChanged.On(func(state player.RepeatMode) bool {
 						b := gtk.ButtonNewFromInternalPtr(ptr)
 						switch state {
 						case player.RepeatModeNone:
 							b.RemoveCssClass("color-accent")
-							b.SetIconName("media-playlist-repeat-symbolic")
-						case player.RepeatModeList:
+							b.SetIconName("media-playlist-no-repeat-symbolic")
+						case player.RepeatModeQueue:
 							b.AddCssClass("color-accent")
 							b.SetIconName("media-playlist-repeat-symbolic")
-						case player.RepeatModeSingle:
+						case player.RepeatModeTrack:
 							b.AddCssClass("color-accent")
-							b.SetIconName("media-playlist-repeat-song-symbolic")
+							b.SetIconName("media-playlist-repeat-once-symbolic")
 						}
 						return signals.Continue
 					})

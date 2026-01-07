@@ -17,8 +17,8 @@ import (
 var coverState = state.New[schwifty.Paintable](nil)
 
 func init() {
-	player.OnTrackChanged.On(func(trackInfo player.TrackInformation) bool {
-		if trackInfo.CoverURL != "" {
+	player.TrackChanged.On(func(trackInfo *player.Track) bool {
+		if trackInfo != nil && trackInfo.CoverURL != "" {
 			texture, err := injector.MustInject[*imgutil.ImgUtil]().Load(trackInfo.CoverURL)
 			if err != nil {
 				slog.Error("failed to load track cover", "error", err)

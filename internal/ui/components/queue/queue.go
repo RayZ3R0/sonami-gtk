@@ -30,13 +30,13 @@ var (
 var log = slog.With("module", "queue")
 
 func init() {
-	player.OnBaseQueueChanged.On(func(tracks []*openapi.Track) bool {
+	player.BaseQueue.UpcomingEntries.On(func(tracks []*openapi.Track) bool {
 		schwifty.OnMainThreadOnce(func(u uintptr) {
 			baseQueueState.SetValue(tracks)
 		}, 0)
 		return signals.Continue
 	})
-	player.OnUserQueueChanged.On(func(tracks []*openapi.Track) bool {
+	player.UserQueue.UpcomingEntries.On(func(tracks []*openapi.Track) bool {
 		schwifty.OnMainThreadOnce(func(u uintptr) {
 			userQueueState.SetValue(tracks)
 		}, 0)
@@ -51,23 +51,26 @@ func NewQueue() schwifty.Box {
 	trackListBase := tracklist.NewTrackList("Coming up", tracklist.CoverColumn, tracklist.TitleAlbumColumn, tracklist.DurationColumn)
 	trackListBase.BindTracks(baseQueueState)
 
-	player.OnTrackChanged.On(func(trackInfo player.TrackInformation) bool {
-		if texture, err := injector.MustInject[*imgutil.ImgUtil]().Load(trackInfo.CoverURL); err == nil {
-			coverState.SetValue(texture)
-			texture.Unref()
+	player.TrackChanged.On(func(trackInfo *player.Track) bool {
+		if trackInfo != nil {
+			if trackInfo.CoverURL != "" {
+				if texture, err := injector.MustInject[*imgutil.ImgUtil]().Load(trackInfo.CoverURL); err == nil {
+					coverState.SetValue(texture)
+					texture.Unref()
+				}
+			}
+			trackTitle.SetValue(trackInfo.Title)
+			trackArtists.SetValue(trackInfo.ArtistNames())
 		}
-
-		trackTitle.SetValue(trackInfo.Title)
-		trackArtists.SetValue(trackInfo.ArtistNames())
 
 		return signals.Continue
 	})
 
-	player.OnStateChanged.On(func(state player.State) bool {
+	player.PlaybackStateChanged.On(func(state *player.PlaybackState) bool {
 		switch state.Status {
-		case player.StatusBuffering, player.StatusPaused:
+		case player.PlaybackStatusBuffering, player.PlaybackStatusPaused:
 			playPauseIcon.SetValue("media-playback-start-symbolic")
-		case player.StatusPlaying:
+		case player.PlaybackStatusPlaying:
 			playPauseIcon.SetValue("media-playback-pause-symbolic")
 		}
 		return signals.Continue

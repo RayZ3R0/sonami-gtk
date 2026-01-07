@@ -8,19 +8,8 @@ import (
 
 var history = &History{
 	Mutex:   sync.Mutex{},
-	Current: nil,
-	Entries: []*HistoryEntry{},
-}
-
-func init() {
-	OnTrackChanged.On(func(trackInfo TrackInformation) bool {
-		if trackInfo.ID != "" && (history.Current == nil || history.Current.TrackID != trackInfo.ID) {
-			history.Push(&HistoryEntry{
-				TrackID: trackInfo.ID,
-			})
-		}
-		return signals.Continue
-	})
+	Current: signals.NewStatefulSignal[*HistoryEntry](nil),
+	Entries: signals.NewStatefulSignal[[]*HistoryEntry](nil),
 }
 
 type HistoryEntry struct {
@@ -29,34 +18,45 @@ type HistoryEntry struct {
 
 type History struct {
 	sync.Mutex
-	Current *HistoryEntry
-	Entries []*HistoryEntry
+	Current *signals.StatefulSignal[*HistoryEntry]
+	Entries *signals.StatefulSignal[[]*HistoryEntry]
 }
 
 func (h *History) Pop() *HistoryEntry {
 	h.Lock()
 	defer h.Unlock()
 
-	if len(h.Entries) == 0 {
+	if len(h.Entries.CurrentValue()) == 0 {
 		return nil
 	}
 
-	h.Current = h.Entries[len(h.Entries)-1]
-	h.Entries = h.Entries[:len(h.Entries)-1]
+	h.Entries.Notify(func(entries []*HistoryEntry) []*HistoryEntry {
+		h.Current.Notify(func(oldValue *HistoryEntry) *HistoryEntry {
+			return entries[len(entries)-1]
+		})
+		return entries[:len(entries)-1]
+	})
 
-	return h.Current
+	return h.Current.CurrentValue()
 }
 
 func (h *History) Push(entry *HistoryEntry) {
 	h.Lock()
 	defer h.Unlock()
 
-	if len(h.Entries) == 10 {
-		h.Entries = h.Entries[1:]
+	if len(h.Entries.CurrentValue()) == 10 {
+		h.Entries.Notify(func(entries []*HistoryEntry) []*HistoryEntry {
+			return entries[1:]
+		})
 	}
 
-	if h.Current != nil {
-		h.Entries = append(h.Entries, h.Current)
+	if current := h.Current.CurrentValue(); current != nil {
+		h.Entries.Notify(func(entries []*HistoryEntry) []*HistoryEntry {
+			return append(entries, current)
+		})
 	}
-	h.Current = entry
+
+	h.Current.Notify(func(oldValue *HistoryEntry) *HistoryEntry {
+		return entry
+	})
 }

@@ -17,12 +17,16 @@ var (
 )
 
 func init() {
-	player.OnTrackChanged.On(func(trackInfo player.TrackInformation) bool {
-		durationState.SetValue(tidalapi.FormatDuration(trackInfo.Duration))
+	player.TrackChanged.On(func(trackInfo *player.Track) bool {
+		if trackInfo == nil {
+			durationState.SetValue("00:00")
+		} else {
+			durationState.SetValue(tidalapi.FormatDuration(trackInfo.Duration))
+		}
 		return signals.Continue
 	})
 
-	player.OnStateChanged.On(func(state player.State) bool {
+	player.PlaybackStateChanged.On(func(state *player.PlaybackState) bool {
 		positionState.SetValue(tidalapi.FormatDuration(state.Position))
 		if state.Duration > 0 {
 			durationState.SetValue(tidalapi.FormatDuration(state.Duration))
@@ -48,7 +52,7 @@ func trackTimeline() schwifty.Box {
 			HMargin(24).
 			HPadding(0).
 			ConnectChangeValue(func(r gtk.Range, st gtk.ScrollType, f float64) bool {
-				player.Scrub(f)
+				go player.SeekToPercent(f)
 				return false
 			}),
 		HStack(
