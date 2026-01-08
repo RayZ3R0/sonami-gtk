@@ -47,9 +47,7 @@ func (b *Signal[T]) Notify(args ...any) {
 			}
 			result := reflect.ValueOf(handler).Call(reflectArgs)
 			if len(result) > 0 && result[0].CanConvert(reflect.TypeFor[bool]()) && result[0].Bool() {
-				b.mutex.Lock()
 				b.removeHandler(sub)
-				b.mutex.Unlock()
 			}
 		})
 	}
