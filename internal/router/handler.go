@@ -4,8 +4,6 @@ import (
 	"errors"
 	"fmt"
 	"runtime/debug"
-
-	"codeberg.org/dergs/tidalwave/pkg/schwifty"
 )
 
 type Handler func() *Response
