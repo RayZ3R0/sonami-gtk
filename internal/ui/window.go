@@ -101,7 +101,9 @@ func (w *Window) buildContentLayout() *gtk.Widget {
 	})
 
 	router.NavigationCompleted.On(func(entry router.HistoryEntry) bool {
-		toolbarView.SetContent(entry.View)
+		schwifty.OnMainThreadOncePure(func() {
+			toolbarView.SetContent(entry.View)
+		})
 		return signals.Continue
 	})
 
