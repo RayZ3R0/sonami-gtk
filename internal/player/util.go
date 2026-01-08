@@ -2,6 +2,7 @@ package player
 
 import (
 	"context"
+	"fmt"
 	"math/rand/v2"
 
 	"codeberg.org/dergs/tidalwave/pkg/tidalapi"
@@ -15,7 +16,11 @@ func clearQueues() {
 }
 
 func getNextTrackFromQueue(peek bool) *openapi.Track {
-	logger.Debug("attempting to peek next track from user queue")
+	verb := "pop"
+	if peek {
+		verb = "peek"
+	}
+	logger.Debug(fmt.Sprintf("attempting to %s next track from user queue", verb))
 	var nextTrack *openapi.Track
 	if peek {
 		nextTrack = UserQueue.Peek()
@@ -23,18 +28,18 @@ func getNextTrackFromQueue(peek bool) *openapi.Track {
 		nextTrack = UserQueue.Pop()
 	}
 	if nextTrack != nil {
-		logger.Info("peeked next track from user queue", "track_id", nextTrack.Data.ID)
+		logger.Info(fmt.Sprintf("%sed next track from user queue", verb), "track_id", nextTrack.Data.ID)
 		return nextTrack
 	}
 
-	logger.Debug("attempting to peek next track from base queue")
+	logger.Debug(fmt.Sprintf("attempting to %s next track from base queue", verb))
 	if peek {
 		nextTrack = BaseQueue.Peek()
 	} else {
 		nextTrack = BaseQueue.Pop()
 	}
 	if nextTrack != nil {
-		logger.Info("peeked next track from base queue", "track_id", nextTrack.Data.ID)
+		logger.Info(fmt.Sprintf("%sed next track from base queue", verb), "track_id", nextTrack.Data.ID)
 		return nextTrack
 	}
 
