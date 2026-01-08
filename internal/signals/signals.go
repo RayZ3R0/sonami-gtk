@@ -37,16 +37,23 @@ func (b *Signal[T]) Notify(args ...any) {
 	b.mutex.Lock()
 	handlers := b.handlers
 	b.mutex.Unlock()
+
+	wg := sync.WaitGroup{}
 	for sub, handler := range handlers {
-		reflectArgs := make([]reflect.Value, len(args))
-		for i, arg := range args {
-			reflectArgs[i] = reflect.ValueOf(arg)
-		}
-		result := reflect.ValueOf(handler).Call(reflectArgs)
-		if len(result) > 0 && result[0].CanConvert(reflect.TypeFor[bool]()) && result[0].Bool() {
-			b.removeHandler(sub)
-		}
+		wg.Go(func() {
+			reflectArgs := make([]reflect.Value, len(args))
+			for i, arg := range args {
+				reflectArgs[i] = reflect.ValueOf(arg)
+			}
+			result := reflect.ValueOf(handler).Call(reflectArgs)
+			if len(result) > 0 && result[0].CanConvert(reflect.TypeFor[bool]()) && result[0].Bool() {
+				b.mutex.Lock()
+				b.removeHandler(sub)
+				b.mutex.Unlock()
+			}
+		})
 	}
+	wg.Wait()
 }
 
 func (b *Signal[T]) On(handler T) *Subscription {

@@ -8,6 +8,7 @@ import (
 	"codeberg.org/dergs/tidalwave/internal/ui/components/lyrics"
 	"codeberg.org/dergs/tidalwave/internal/ui/components/player"
 	"codeberg.org/dergs/tidalwave/internal/ui/components/queue"
+	"codeberg.org/dergs/tidalwave/pkg/schwifty"
 	. "codeberg.org/dergs/tidalwave/pkg/schwifty/syntax"
 	"github.com/jwijenbergh/puregotk/v4/adw"
 	"github.com/jwijenbergh/puregotk/v4/gio"
@@ -17,8 +18,10 @@ import (
 func (w *Window) buildSidebarHeader() *gtk.Widget {
 	windowTitle := WindowTitle("Tidal Wave", "")()
 	router.NavigationCompleted.On(func(entry router.HistoryEntry) bool {
-		windowTitle.SetSubtitle(entry.PageTitle)
-		w.SetTitle("Tidal Wave - " + entry.PageTitle)
+		schwifty.OnMainThreadOncePure(func() {
+			windowTitle.SetSubtitle(entry.PageTitle)
+			w.SetTitle("Tidal Wave - " + entry.PageTitle)
+		})
 		return signals.Continue
 	})
 

@@ -77,11 +77,12 @@ func (w *Window) build() *gtk.Widget {
 	layout.Unref()
 
 	notifications.OnToast.On(func(title string) bool {
-		toast := adw.NewToast(title)
-		toast.SetTimeout(3)
+		schwifty.OnMainThreadOncePure(func() {
+			toast := adw.NewToast(title)
+			toast.SetTimeout(3)
 
-		toastLayout.AddToast(toast)
-
+			toastLayout.AddToast(toast)
+		})
 		return signals.Continue
 	})
 

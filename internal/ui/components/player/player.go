@@ -15,7 +15,7 @@ import (
 	"github.com/jwijenbergh/puregotk/v4/gtk"
 )
 
-var trackID = state.NewStateful("")
+var trackID = ""
 
 var (
 	playbackQualityText  = state.NewStateful("High")
@@ -25,27 +25,29 @@ var (
 func init() {
 	player.TrackChanged.On(func(trackInfo *player.Track) bool {
 		if trackInfo == nil {
-			trackID.SetValue("")
+			trackID = ""
 		} else {
-			trackID.SetValue(trackInfo.ID)
+			trackID = trackInfo.ID
 		}
 		return signals.Continue
 	})
 	player.PlaybackQualityChanged.On(func(quality v1.AudioQuality) bool {
-		switch quality {
-		case v1.AudioQualityLossy:
-			playbackQualityText.SetValue("Low (96 kbps)")
-			playbackQualityClass.SetValue("low")
-		case v1.AudioQualityHighRes:
-			playbackQualityText.SetValue("Low (320 kbps)")
-			playbackQualityClass.SetValue("low")
-		case v1.AudioQualityLossless:
-			playbackQualityText.SetValue("High")
-			playbackQualityClass.SetValue("high")
-		case v1.AudioQualityHighResLossless:
-			playbackQualityText.SetValue("Max")
-			playbackQualityClass.SetValue("max")
-		}
+		schwifty.OnMainThreadOncePure(func() {
+			switch quality {
+			case v1.AudioQualityLossy:
+				playbackQualityText.SetValue("Low (96 kbps)")
+				playbackQualityClass.SetValue("low")
+			case v1.AudioQualityHighRes:
+				playbackQualityText.SetValue("Low (320 kbps)")
+				playbackQualityClass.SetValue("low")
+			case v1.AudioQualityLossless:
+				playbackQualityText.SetValue("High")
+				playbackQualityClass.SetValue("high")
+			case v1.AudioQualityHighResLossless:
+				playbackQualityText.SetValue("Max")
+				playbackQualityClass.SetValue("max")
+			}
+		})
 		return signals.Continue
 	})
 }
@@ -77,8 +79,7 @@ func NewPlayer() schwifty.Box {
 				IconName("folder-publicshare-symbolic").
 				WithCSSClass("transparent").
 				ConnectClicked(func(gtk.Button) {
-					id := trackID.Value()
-					if id == "" {
+					if trackID == "" {
 						notifications.OnToast.Notify("No track is currently playing.")
 						return
 					}
@@ -88,7 +89,7 @@ func NewPlayer() schwifty.Box {
 					clipboard := display.GetClipboard()
 					defer clipboard.Unref()
 
-					clipboard.SetText(fmt.Sprintf("https://tidal.com/track/%s?u", id))
+					clipboard.SetText(fmt.Sprintf("https://tidal.com/track/%s?u", trackID))
 					notifications.OnToast.Notify("Copied track URL to clipboard.")
 				}),
 		).
@@ -135,18 +136,20 @@ func NewPlayer() schwifty.Box {
 				ConnectConstruct(func(b *gtk.Button) {
 					ptr := b.GoPointer()
 					player.RepeatModeChanged.On(func(state player.RepeatMode) bool {
-						b := gtk.ButtonNewFromInternalPtr(ptr)
-						switch state {
-						case player.RepeatModeNone:
-							b.RemoveCssClass("color-accent")
-							b.SetIconName("media-playlist-repeat-symbolic")
-						case player.RepeatModeQueue:
-							b.AddCssClass("color-accent")
-							b.SetIconName("media-playlist-repeat-symbolic")
-						case player.RepeatModeTrack:
-							b.AddCssClass("color-accent")
-							b.SetIconName("media-playlist-repeat-song-symbolic")
-						}
+						schwifty.OnMainThreadOnce(func(ptr uintptr) {
+							b := gtk.ButtonNewFromInternalPtr(ptr)
+							switch state {
+							case player.RepeatModeNone:
+								b.RemoveCssClass("color-accent")
+								b.SetIconName("media-playlist-repeat-symbolic")
+							case player.RepeatModeQueue:
+								b.AddCssClass("color-accent")
+								b.SetIconName("media-playlist-repeat-symbolic")
+							case player.RepeatModeTrack:
+								b.AddCssClass("color-accent")
+								b.SetIconName("media-playlist-repeat-song-symbolic")
+							}
+						}, ptr)
 						return signals.Continue
 					})
 				}),

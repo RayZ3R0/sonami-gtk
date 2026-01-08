@@ -18,23 +18,26 @@ var (
 
 func init() {
 	player.TrackChanged.On(func(trackInfo *player.Track) bool {
-		if trackInfo == nil {
-			durationState.SetValue("00:00")
-		} else {
-			durationState.SetValue(tidalapi.FormatDuration(trackInfo.Duration))
-		}
+		schwifty.OnMainThreadOncePure(func() {
+			if trackInfo == nil {
+				durationState.SetValue("00:00")
+			} else {
+				durationState.SetValue(tidalapi.FormatDuration(trackInfo.Duration))
+			}
+		})
 		return signals.Continue
 	})
 
 	player.PlaybackStateChanged.On(func(state *player.PlaybackState) bool {
-		positionState.SetValue(tidalapi.FormatDuration(state.Position))
-		if state.Duration > 0 {
-			durationState.SetValue(tidalapi.FormatDuration(state.Duration))
-			timelineSliderState.SetValue(100.0 / float64(state.Duration) * float64(state.Position))
-		} else {
-			timelineSliderState.SetValue(0)
-		}
-
+		schwifty.OnMainThreadOncePure(func() {
+			positionState.SetValue(tidalapi.FormatDuration(state.Position))
+			if state.Duration > 0 {
+				durationState.SetValue(tidalapi.FormatDuration(state.Duration))
+				timelineSliderState.SetValue(100.0 / float64(state.Duration) * float64(state.Position))
+			} else {
+				timelineSliderState.SetValue(0)
+			}
+		})
 		return signals.Continue
 	})
 }

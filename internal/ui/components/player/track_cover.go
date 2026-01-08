@@ -24,10 +24,14 @@ func init() {
 				slog.Error("failed to load track cover", "error", err)
 				return signals.Continue
 			}
-			coverState.SetValue(texture)
-			texture.Unref()
+			schwifty.OnMainThreadOncePure(func() {
+				coverState.SetValue(texture)
+				texture.Unref()
+			})
 		} else {
-			coverState.SetValue(resources.MissingAlbum())
+			schwifty.OnMainThreadOncePure(func() {
+				coverState.SetValue(resources.MissingAlbum())
+			})
 		}
 		return signals.Continue
 	})

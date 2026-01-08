@@ -14,11 +14,13 @@ var titleState = state.NewStateful("No Track")
 
 func init() {
 	player.TrackChanged.On(func(trackInfo *player.Track) bool {
-		if trackInfo == nil {
-			titleState.SetValue("No Track")
-		} else {
-			titleState.SetValue(trackInfo.Title)
-		}
+		schwifty.OnMainThreadOncePure(func() {
+			if trackInfo == nil {
+				titleState.SetValue("No Track")
+			} else {
+				titleState.SetValue(trackInfo.Title)
+			}
+		})
 		return signals.Continue
 	})
 }

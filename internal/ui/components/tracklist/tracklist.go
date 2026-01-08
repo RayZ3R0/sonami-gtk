@@ -161,13 +161,15 @@ func newTrackList(title string) *TrackList {
 			ConnectConstruct(func(b *gtk.Box) {
 				ptr := b.GoPointer()
 				tracksSignal.On(func(newVal []string) bool {
-					b := gtk.BoxNewFromInternalPtr(ptr)
+					schwifty.OnMainThreadOnce(func(ptr uintptr) {
+						b := gtk.BoxNewFromInternalPtr(ptr)
 
-					if len(newVal) == 0 {
-						b.Hide()
-					} else {
-						b.Show()
-					}
+						if len(newVal) == 0 {
+							b.Hide()
+						} else {
+							b.Show()
+						}
+					}, ptr)
 
 					return signals.Continue
 				})

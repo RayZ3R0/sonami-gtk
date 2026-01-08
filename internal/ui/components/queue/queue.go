@@ -55,24 +55,31 @@ func NewQueue() schwifty.Box {
 		if trackInfo != nil {
 			if trackInfo.CoverURL != "" {
 				if texture, err := injector.MustInject[*imgutil.ImgUtil]().Load(trackInfo.CoverURL); err == nil {
-					coverState.SetValue(texture)
-					texture.Unref()
+					schwifty.OnMainThreadOncePure(func() {
+						coverState.SetValue(texture)
+						texture.Unref()
+					})
 				}
 			}
-			trackTitle.SetValue(trackInfo.Title)
-			trackArtists.SetValue(trackInfo.ArtistNames())
+
+			schwifty.OnMainThreadOncePure(func() {
+				trackTitle.SetValue(trackInfo.Title)
+				trackArtists.SetValue(trackInfo.ArtistNames())
+			})
 		}
 
 		return signals.Continue
 	})
 
 	player.PlaybackStateChanged.On(func(state *player.PlaybackState) bool {
-		switch state.Status {
-		case player.PlaybackStatusBuffering, player.PlaybackStatusPaused:
-			playPauseIcon.SetValue("media-playback-start-symbolic")
-		case player.PlaybackStatusPlaying:
-			playPauseIcon.SetValue("media-playback-pause-symbolic")
-		}
+		schwifty.OnMainThreadOncePure(func() {
+			switch state.Status {
+			case player.PlaybackStatusBuffering, player.PlaybackStatusPaused:
+				playPauseIcon.SetValue("media-playback-start-symbolic")
+			case player.PlaybackStatusPlaying:
+				playPauseIcon.SetValue("media-playback-pause-symbolic")
+			}
+		})
 		return signals.Continue
 	})
 

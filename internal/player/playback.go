@@ -62,6 +62,7 @@ func playTrack(track *openapi.Track) error {
 	}
 
 	if strconv.Itoa(currentlyEnqueuedTrackID) != track.Data.ID {
+		logger.Debug("fetching playback info for track", "track_id", track.Data.ID)
 		playbackInfo, err := tidal.V1.Tracks.PlaybackInfo(context.Background(), track.Data.ID, tracksv1.PlaybackInfoOptions{})
 		if err != nil {
 			logger.Error("unable to fetch playback info for track", "error", err)

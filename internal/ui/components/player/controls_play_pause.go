@@ -16,17 +16,19 @@ var (
 
 func init() {
 	player.PlaybackStateChanged.On(func(state *player.PlaybackState) bool {
-		switch state.Status {
-		case player.PlaybackStatusPlaying:
-			playPauseIconState.SetValue("media-playback-pause-symbolic")
-			playPauseSensitiveState.SetValue(true)
-		case player.PlaybackStatusPaused, player.PlaybackStatusStopped:
-			playPauseIconState.SetValue("media-playback-start-symbolic")
-			playPauseSensitiveState.SetValue(true)
-		default:
-			playPauseIconState.SetValue("media-playback-start-symbolic")
-			playPauseSensitiveState.SetValue(false)
-		}
+		schwifty.OnMainThreadOncePure(func() {
+			switch state.Status {
+			case player.PlaybackStatusPlaying:
+				playPauseIconState.SetValue("media-playback-pause-symbolic")
+				playPauseSensitiveState.SetValue(true)
+			case player.PlaybackStatusPaused, player.PlaybackStatusStopped:
+				playPauseIconState.SetValue("media-playback-start-symbolic")
+				playPauseSensitiveState.SetValue(true)
+			default:
+				playPauseIconState.SetValue("media-playback-start-symbolic")
+				playPauseSensitiveState.SetValue(false)
+			}
+		})
 
 		return signals.Continue
 	})

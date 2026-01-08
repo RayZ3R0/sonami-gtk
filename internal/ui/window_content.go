@@ -18,7 +18,9 @@ func (w *Window) buildContentHeader() *gtk.Widget {
 	backButton.SetActionName("win.navigate-back")
 	backButton.SetVisible(false)
 	router.HistoryUpdated.On(func(history *router.History) bool {
-		backButton.SetVisible(len(history.Entries) > 1)
+		schwifty.OnMainThreadOncePure(func() {
+			backButton.SetVisible(len(history.Entries) > 1)
+		})
 		return signals.Continue
 	})
 
@@ -56,11 +58,13 @@ func (w *Window) buildContentHeader() *gtk.Widget {
 	})
 
 	router.NavigationCompleted.On(func(entry router.HistoryEntry) bool {
-		if entry.Toolbar != nil {
-			headerbar.SetTitleWidget(entry.Toolbar)
-		} else {
-			headerbar.SetTitleWidget(&defaultToolbar.Widget)
-		}
+		schwifty.OnMainThreadOncePure(func() {
+			if entry.Toolbar != nil {
+				headerbar.SetTitleWidget(entry.Toolbar)
+			} else {
+				headerbar.SetTitleWidget(&defaultToolbar.Widget)
+			}
+		})
 		return signals.Continue
 	})
 

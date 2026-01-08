@@ -23,6 +23,10 @@ func OnMainThreadOnce(cb func(u uintptr), param uintptr) uint {
 	return callback.OnMainThreadOnce(cb, param)
 }
 
+func OnMainThreadOncePure(cb func()) uint {
+	return OnMainThreadOnce(func(uintptr) { cb() }, 0)
+}
+
 func ResolveWidget(value any) *gtk.Widget {
 	t := reflect.TypeOf(value)
 

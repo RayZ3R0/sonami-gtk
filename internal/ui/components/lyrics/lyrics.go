@@ -139,35 +139,43 @@ func init() {
 
 	player.TrackChanged.On(func(trackInfo *player.Track) bool {
 		defer runtime.GC()
-		activeLyricIndex.SetValue(0)
+		schwifty.OnMainThreadOncePure(func() {
+			activeLyricIndex.SetValue(0)
+		})
 		player.PlaybackStateChanged.Unsubscribe(activeIndexChangeOnPlayerUpdate)
 		activeIndexChangeOnPlayerUpdate = nil
 
 		if trackInfo == nil {
-			coverState.SetValue(resources.MissingAlbum())
-			trackTitle.SetValue("")
-			trackArtists.SetValue("")
+			schwifty.OnMainThreadOncePure(func() {
+				coverState.SetValue(resources.MissingAlbum())
+				trackTitle.SetValue("")
+				trackArtists.SetValue("")
 
-			lyricsList.SetValue(
-				HStack(
-					Label("No lyrics available").
-						HAlign(gtk.AlignCenterValue).
-						VAlign(gtk.AlignCenterValue).
-						HExpand(true).
-						VExpand(true),
-				),
-			)
+				lyricsList.SetValue(
+					HStack(
+						Label("No lyrics available").
+							HAlign(gtk.AlignCenterValue).
+							VAlign(gtk.AlignCenterValue).
+							HExpand(true).
+							VExpand(true),
+					),
+				)
+			})
 
 			return signals.Continue
 		}
 
 		if texture, err := injector.MustInject[*imgutil.ImgUtil]().Load(trackInfo.CoverURL); err == nil {
-			coverState.SetValue(texture)
-			texture.Unref()
+			schwifty.OnMainThreadOncePure(func() {
+				coverState.SetValue(texture)
+				texture.Unref()
+			})
 		}
 
-		trackTitle.SetValue(trackInfo.Title)
-		trackArtists.SetValue(trackInfo.ArtistNames())
+		schwifty.OnMainThreadOncePure(func() {
+			trackTitle.SetValue(trackInfo.Title)
+			trackArtists.SetValue(trackInfo.ArtistNames())
+		})
 
 		tidal := injector.MustInject[*tidalapi.TidalAPI]()
 		track, err := tidal.OpenAPI.V2.Tracks.Track(context.Background(), trackInfo.ID, "lyrics")
@@ -191,15 +199,17 @@ func init() {
 		}
 
 		if lyrics == "" {
-			lyricsList.SetValue(
-				HStack(
-					Label("No lyrics available").
-						HAlign(gtk.AlignCenterValue).
-						VAlign(gtk.AlignCenterValue).
-						HExpand(true).
-						VExpand(true),
-				),
-			)
+			schwifty.OnMainThreadOncePure(func() {
+				lyricsList.SetValue(
+					HStack(
+						Label("No lyrics available").
+							HAlign(gtk.AlignCenterValue).
+							VAlign(gtk.AlignCenterValue).
+							HExpand(true).
+							VExpand(true),
+					),
+				)
+			})
 
 			return signals.Continue
 		}
@@ -311,14 +321,18 @@ func init() {
 				}
 
 				if !hasActive {
-					activeLyricIndex.SetValue(0)
+					schwifty.OnMainThreadOncePure(func() {
+						activeLyricIndex.SetValue(0)
+					})
 				}
 
 				return
 			})
 
 			// Disallow user scrolling
-			lyricsView().SetPolicy(gtk.PolicyNeverValue, gtk.PolicyExternalValue)
+			schwifty.OnMainThreadOncePure(func() {
+				lyricsView().SetPolicy(gtk.PolicyNeverValue, gtk.PolicyExternalValue)
+			})
 		} else {
 			// Handle lyrics without timings
 			splitLyrics := strings.Split(lyrics, "\n")
@@ -333,15 +347,19 @@ func init() {
 			}
 
 			// Allow user to scroll
-			lyricsView().SetPolicy(gtk.PolicyNeverValue, gtk.PolicyAutomaticValue)
+			schwifty.OnMainThreadOncePure(func() {
+				lyricsView().SetPolicy(gtk.PolicyNeverValue, gtk.PolicyAutomaticValue)
+			})
 		}
 
-		lyricsList.SetValue(
-			VStack(lines...).
-				Spacing(12).
-				HExpand(true).
-				VExpand(true),
-		)
+		schwifty.OnMainThreadOncePure(func() {
+			lyricsList.SetValue(
+				VStack(lines...).
+					Spacing(12).
+					HExpand(true).
+					VExpand(true),
+			)
+		})
 
 		return signals.Continue
 	})
