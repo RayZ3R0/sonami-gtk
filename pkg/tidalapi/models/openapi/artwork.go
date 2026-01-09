@@ -1,6 +1,9 @@
 package openapi
 
-import "encoding/json"
+import (
+	"encoding/json"
+	"sort"
+)
 
 type Artwork Response[ArtworkData]
 
@@ -33,6 +36,9 @@ type ArtworkFile struct {
 type ArtworkFiles []ArtworkFile
 
 func (files ArtworkFiles) AtLeast(size int) ArtworkFile {
+	sort.Slice(files, func(i, j int) bool {
+		return files[i].Meta.Height < files[j].Meta.Height || files[i].Meta.Width < files[j].Meta.Width
+	})
 	for _, file := range files {
 		if file.Meta.Height >= size || file.Meta.Width >= size {
 			return file
