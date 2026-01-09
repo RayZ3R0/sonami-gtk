@@ -30,7 +30,7 @@ func (f SwitchRow) ConnectConstruct(cb func(*adw.SwitchRow)) SwitchRow {
 func (f SwitchRow) ConnectDestroy(cb func(gtk.Widget)) SwitchRow {
 	return func() *adw.SwitchRow {
 		widget := f()
-		callback.HandleCallback(widget.Widget, "destroy", cb)
+		callback.HandleCallback(widget.Object, "destroy", cb)
 		return widget
 	}
 }
@@ -38,7 +38,7 @@ func (f SwitchRow) ConnectDestroy(cb func(gtk.Widget)) SwitchRow {
 func (f SwitchRow) ConnectRealize(cb func(gtk.Widget)) SwitchRow {
 	return func() *adw.SwitchRow {
 		widget := f()
-		callback.HandleCallback(widget.Widget, "realize", cb)
+		callback.HandleCallback(widget.Object, "realize", cb)
 		return widget
 	}
 }
@@ -46,7 +46,7 @@ func (f SwitchRow) ConnectRealize(cb func(gtk.Widget)) SwitchRow {
 func (f SwitchRow) ConnectUnrealize(cb func(gtk.Widget)) SwitchRow {
 	return func() *adw.SwitchRow {
 		widget := f()
-		callback.HandleCallback(widget.Widget, "unrealize", cb)
+		callback.HandleCallback(widget.Object, "unrealize", cb)
 		return widget
 	}
 }

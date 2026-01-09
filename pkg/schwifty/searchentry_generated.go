@@ -29,7 +29,7 @@ func (f SearchEntry) ConnectConstruct(cb func(*gtk.SearchEntry)) SearchEntry {
 func (f SearchEntry) ConnectDestroy(cb func(gtk.Widget)) SearchEntry {
 	return func() *gtk.SearchEntry {
 		widget := f()
-		callback.HandleCallback(widget.Widget, "destroy", cb)
+		callback.HandleCallback(widget.Object, "destroy", cb)
 		return widget
 	}
 }
@@ -37,7 +37,7 @@ func (f SearchEntry) ConnectDestroy(cb func(gtk.Widget)) SearchEntry {
 func (f SearchEntry) ConnectRealize(cb func(gtk.Widget)) SearchEntry {
 	return func() *gtk.SearchEntry {
 		widget := f()
-		callback.HandleCallback(widget.Widget, "realize", cb)
+		callback.HandleCallback(widget.Object, "realize", cb)
 		return widget
 	}
 }
@@ -45,7 +45,7 @@ func (f SearchEntry) ConnectRealize(cb func(gtk.Widget)) SearchEntry {
 func (f SearchEntry) ConnectUnrealize(cb func(gtk.Widget)) SearchEntry {
 	return func() *gtk.SearchEntry {
 		widget := f()
-		callback.HandleCallback(widget.Widget, "unrealize", cb)
+		callback.HandleCallback(widget.Object, "unrealize", cb)
 		return widget
 	}
 }

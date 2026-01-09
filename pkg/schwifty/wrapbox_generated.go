@@ -30,7 +30,7 @@ func (f WrapBox) ConnectConstruct(cb func(*adw.WrapBox)) WrapBox {
 func (f WrapBox) ConnectDestroy(cb func(gtk.Widget)) WrapBox {
 	return func() *adw.WrapBox {
 		widget := f()
-		callback.HandleCallback(widget.Widget, "destroy", cb)
+		callback.HandleCallback(widget.Object, "destroy", cb)
 		return widget
 	}
 }
@@ -38,7 +38,7 @@ func (f WrapBox) ConnectDestroy(cb func(gtk.Widget)) WrapBox {
 func (f WrapBox) ConnectRealize(cb func(gtk.Widget)) WrapBox {
 	return func() *adw.WrapBox {
 		widget := f()
-		callback.HandleCallback(widget.Widget, "realize", cb)
+		callback.HandleCallback(widget.Object, "realize", cb)
 		return widget
 	}
 }
@@ -46,7 +46,7 @@ func (f WrapBox) ConnectRealize(cb func(gtk.Widget)) WrapBox {
 func (f WrapBox) ConnectUnrealize(cb func(gtk.Widget)) WrapBox {
 	return func() *adw.WrapBox {
 		widget := f()
-		callback.HandleCallback(widget.Widget, "unrealize", cb)
+		callback.HandleCallback(widget.Object, "unrealize", cb)
 		return widget
 	}
 }

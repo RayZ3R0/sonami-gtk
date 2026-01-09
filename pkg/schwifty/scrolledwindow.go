@@ -36,7 +36,7 @@ func (f ScrolledWindow) BindChild(state *state.State[any]) ScrolledWindow {
 func (f ScrolledWindow) ConnectEdgeReached(cb func(gtk.ScrolledWindow, gtk.PositionType)) ScrolledWindow {
 	return func() *gtk.ScrolledWindow {
 		scrolledWindow := f()
-		callback.HandleCallback(scrolledWindow.Widget, "edge-reached", cb)
+		callback.HandleCallback(scrolledWindow.Object, "edge-reached", cb)
 		return scrolledWindow
 	}
 }

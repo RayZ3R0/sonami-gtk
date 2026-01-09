@@ -28,7 +28,7 @@ func (f TEMPLATE_TYPE) ConnectConstruct(cb func(TEMPLATE_BASE_TYPE)) TEMPLATE_TY
 func (f TEMPLATE_TYPE) ConnectDestroy(cb func(gtk.Widget)) TEMPLATE_TYPE {
 	return func() TEMPLATE_BASE_TYPE {
 		widget := f()
-		callback.HandleCallback(widget.Widget, "destroy", cb)
+		callback.HandleCallback(widget.Object, "destroy", cb)
 		return widget
 	}
 }
@@ -36,7 +36,7 @@ func (f TEMPLATE_TYPE) ConnectDestroy(cb func(gtk.Widget)) TEMPLATE_TYPE {
 func (f TEMPLATE_TYPE) ConnectRealize(cb func(gtk.Widget)) TEMPLATE_TYPE {
 	return func() TEMPLATE_BASE_TYPE {
 		widget := f()
-		callback.HandleCallback(widget.Widget, "realize", cb)
+		callback.HandleCallback(widget.Object, "realize", cb)
 		return widget
 	}
 }
@@ -44,7 +44,7 @@ func (f TEMPLATE_TYPE) ConnectRealize(cb func(gtk.Widget)) TEMPLATE_TYPE {
 func (f TEMPLATE_TYPE) ConnectUnrealize(cb func(gtk.Widget)) TEMPLATE_TYPE {
 	return func() TEMPLATE_BASE_TYPE {
 		widget := f()
-		callback.HandleCallback(widget.Widget, "unrealize", cb)
+		callback.HandleCallback(widget.Object, "unrealize", cb)
 		return widget
 	}
 }

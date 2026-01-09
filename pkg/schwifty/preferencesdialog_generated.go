@@ -30,7 +30,7 @@ func (f PreferencesDialog) ConnectConstruct(cb func(*adw.PreferencesDialog)) Pre
 func (f PreferencesDialog) ConnectDestroy(cb func(gtk.Widget)) PreferencesDialog {
 	return func() *adw.PreferencesDialog {
 		widget := f()
-		callback.HandleCallback(widget.Widget, "destroy", cb)
+		callback.HandleCallback(widget.Object, "destroy", cb)
 		return widget
 	}
 }
@@ -38,7 +38,7 @@ func (f PreferencesDialog) ConnectDestroy(cb func(gtk.Widget)) PreferencesDialog
 func (f PreferencesDialog) ConnectRealize(cb func(gtk.Widget)) PreferencesDialog {
 	return func() *adw.PreferencesDialog {
 		widget := f()
-		callback.HandleCallback(widget.Widget, "realize", cb)
+		callback.HandleCallback(widget.Object, "realize", cb)
 		return widget
 	}
 }
@@ -46,7 +46,7 @@ func (f PreferencesDialog) ConnectRealize(cb func(gtk.Widget)) PreferencesDialog
 func (f PreferencesDialog) ConnectUnrealize(cb func(gtk.Widget)) PreferencesDialog {
 	return func() *adw.PreferencesDialog {
 		widget := f()
-		callback.HandleCallback(widget.Widget, "unrealize", cb)
+		callback.HandleCallback(widget.Object, "unrealize", cb)
 		return widget
 	}
 }

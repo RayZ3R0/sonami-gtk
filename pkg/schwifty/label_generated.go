@@ -29,7 +29,7 @@ func (f Label) ConnectConstruct(cb func(*gtk.Label)) Label {
 func (f Label) ConnectDestroy(cb func(gtk.Widget)) Label {
 	return func() *gtk.Label {
 		widget := f()
-		callback.HandleCallback(widget.Widget, "destroy", cb)
+		callback.HandleCallback(widget.Object, "destroy", cb)
 		return widget
 	}
 }
@@ -37,7 +37,7 @@ func (f Label) ConnectDestroy(cb func(gtk.Widget)) Label {
 func (f Label) ConnectRealize(cb func(gtk.Widget)) Label {
 	return func() *gtk.Label {
 		widget := f()
-		callback.HandleCallback(widget.Widget, "realize", cb)
+		callback.HandleCallback(widget.Object, "realize", cb)
 		return widget
 	}
 }
@@ -45,7 +45,7 @@ func (f Label) ConnectRealize(cb func(gtk.Widget)) Label {
 func (f Label) ConnectUnrealize(cb func(gtk.Widget)) Label {
 	return func() *gtk.Label {
 		widget := f()
-		callback.HandleCallback(widget.Widget, "unrealize", cb)
+		callback.HandleCallback(widget.Object, "unrealize", cb)
 		return widget
 	}
 }

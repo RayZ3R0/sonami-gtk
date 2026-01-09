@@ -52,7 +52,7 @@ func (f Button) Child(widget any) Button {
 func (f Button) ConnectClicked(cb func(gtk.Button)) Button {
 	return func() *gtk.Button {
 		button := f()
-		callback.HandleCallback(button.Widget, "clicked", cb)
+		callback.HandleCallback(button.Object, "clicked", cb)
 		return button
 	}
 }

@@ -5,6 +5,7 @@ import (
 	"reflect"
 	"sync"
 
+	"github.com/jwijenbergh/puregotk/v4/gobject"
 	"github.com/jwijenbergh/puregotk/v4/gtk"
 )
 
@@ -15,14 +16,14 @@ var (
 	widgetCallbacksLock = sync.RWMutex{}
 )
 
-func CallbackHandler[T any](widget gtk.Widget, signal string, args ...any) []T {
-	widget.Ref()
-	defer widget.Unref()
+func CallbackHandler[T any](object gobject.Object, signal string, args ...any) []T {
+	object.Ref()
+	defer object.Unref()
 	widgetCallbacksLock.Lock()
 	defer widgetCallbacksLock.Unlock()
 
 	// Check if the widget has any callbacks registered
-	if allCallbacks, ok := widgetCallbacks[widget.GoPointer()]; !ok {
+	if allCallbacks, ok := widgetCallbacks[object.GoPointer()]; !ok {
 		return nil
 	} else if signalCallbacks, ok := allCallbacks[signal]; !ok {
 		return nil
@@ -39,20 +40,20 @@ func CallbackHandler[T any](widget gtk.Widget, signal string, args ...any) []T {
 			}
 		}
 		if shouldLogLifecycle {
-			logger.Debug("executed callback", "ptr", widget.GoPointer(), "signal", signal, "handlers", len(signalCallbacks))
+			logger.Debug("executed callback", "ptr", object.GoPointer(), "signal", signal, "handlers", len(signalCallbacks))
 		}
 		return returnValues
 	}
 	return nil
 }
 
-func HandleCallback(widget gtk.Widget, signal string, callback any) {
-	widget.Ref()
-	defer widget.Unref()
+func HandleCallback(object gobject.Object, signal string, callback any) {
+	object.Ref()
+	defer object.Unref()
 	widgetCallbacksLock.Lock()
 	defer widgetCallbacksLock.Unlock()
 
-	id := widget.GoPointer()
+	id := object.GoPointer()
 
 	// Check if the widget has any callbacks registered
 	allCallbacks, ok := widgetCallbacks[id]
@@ -71,7 +72,7 @@ func HandleCallback(widget gtk.Widget, signal string, callback any) {
 	allCallbacks[signal] = signalCallbacks
 	widgetCallbacks[id] = allCallbacks
 	if shouldLogLifecycle {
-		logger.Debug("registered callback", "ptr", widget.GoPointer(), "signal", signal)
+		logger.Debug("registered callback", "ptr", object.GoPointer(), "signal", signal)
 	}
 }
 

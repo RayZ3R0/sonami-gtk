@@ -35,7 +35,7 @@ func (f Scale) BindValue(state *state.State[float64]) Scale {
 func (s Scale) ConnectChangeValue(cb func(gtk.Range, gtk.ScrollType, float64) bool) Scale {
 	return func() *gtk.Scale {
 		scale := s()
-		callback.HandleCallback(scale.Widget, "change-value", cb)
+		callback.HandleCallback(scale.Object, "change-value", cb)
 		return scale
 	}
 }

@@ -29,7 +29,7 @@ func (f CenterBox) ConnectConstruct(cb func(*gtk.CenterBox)) CenterBox {
 func (f CenterBox) ConnectDestroy(cb func(gtk.Widget)) CenterBox {
 	return func() *gtk.CenterBox {
 		widget := f()
-		callback.HandleCallback(widget.Widget, "destroy", cb)
+		callback.HandleCallback(widget.Object, "destroy", cb)
 		return widget
 	}
 }
@@ -37,7 +37,7 @@ func (f CenterBox) ConnectDestroy(cb func(gtk.Widget)) CenterBox {
 func (f CenterBox) ConnectRealize(cb func(gtk.Widget)) CenterBox {
 	return func() *gtk.CenterBox {
 		widget := f()
-		callback.HandleCallback(widget.Widget, "realize", cb)
+		callback.HandleCallback(widget.Object, "realize", cb)
 		return widget
 	}
 }
@@ -45,7 +45,7 @@ func (f CenterBox) ConnectRealize(cb func(gtk.Widget)) CenterBox {
 func (f CenterBox) ConnectUnrealize(cb func(gtk.Widget)) CenterBox {
 	return func() *gtk.CenterBox {
 		widget := f()
-		callback.HandleCallback(widget.Widget, "unrealize", cb)
+		callback.HandleCallback(widget.Object, "unrealize", cb)
 		return widget
 	}
 }

@@ -29,7 +29,7 @@ func (f MenuButton) ConnectConstruct(cb func(*gtk.MenuButton)) MenuButton {
 func (f MenuButton) ConnectDestroy(cb func(gtk.Widget)) MenuButton {
 	return func() *gtk.MenuButton {
 		widget := f()
-		callback.HandleCallback(widget.Widget, "destroy", cb)
+		callback.HandleCallback(widget.Object, "destroy", cb)
 		return widget
 	}
 }
@@ -37,7 +37,7 @@ func (f MenuButton) ConnectDestroy(cb func(gtk.Widget)) MenuButton {
 func (f MenuButton) ConnectRealize(cb func(gtk.Widget)) MenuButton {
 	return func() *gtk.MenuButton {
 		widget := f()
-		callback.HandleCallback(widget.Widget, "realize", cb)
+		callback.HandleCallback(widget.Object, "realize", cb)
 		return widget
 	}
 }
@@ -45,7 +45,7 @@ func (f MenuButton) ConnectRealize(cb func(gtk.Widget)) MenuButton {
 func (f MenuButton) ConnectUnrealize(cb func(gtk.Widget)) MenuButton {
 	return func() *gtk.MenuButton {
 		widget := f()
-		callback.HandleCallback(widget.Widget, "unrealize", cb)
+		callback.HandleCallback(widget.Object, "unrealize", cb)
 		return widget
 	}
 }

@@ -30,7 +30,7 @@ func (f HeaderBar) ConnectConstruct(cb func(*adw.HeaderBar)) HeaderBar {
 func (f HeaderBar) ConnectDestroy(cb func(gtk.Widget)) HeaderBar {
 	return func() *adw.HeaderBar {
 		widget := f()
-		callback.HandleCallback(widget.Widget, "destroy", cb)
+		callback.HandleCallback(widget.Object, "destroy", cb)
 		return widget
 	}
 }
@@ -38,7 +38,7 @@ func (f HeaderBar) ConnectDestroy(cb func(gtk.Widget)) HeaderBar {
 func (f HeaderBar) ConnectRealize(cb func(gtk.Widget)) HeaderBar {
 	return func() *adw.HeaderBar {
 		widget := f()
-		callback.HandleCallback(widget.Widget, "realize", cb)
+		callback.HandleCallback(widget.Object, "realize", cb)
 		return widget
 	}
 }
@@ -46,7 +46,7 @@ func (f HeaderBar) ConnectRealize(cb func(gtk.Widget)) HeaderBar {
 func (f HeaderBar) ConnectUnrealize(cb func(gtk.Widget)) HeaderBar {
 	return func() *adw.HeaderBar {
 		widget := f()
-		callback.HandleCallback(widget.Widget, "unrealize", cb)
+		callback.HandleCallback(widget.Object, "unrealize", cb)
 		return widget
 	}
 }

@@ -15,7 +15,7 @@ var onDestroy = func(a gtk.Widget) {
 	if shouldLogLifecycle {
 		logger.Debug("object was destroyed by GTK", "ptr", a.GoPointer())
 	}
-	callback.CallbackHandler[any](a, "destroy", a)
+	callback.CallbackHandler[any](a.Object, "destroy", a)
 	callback.DeleteCallbacks(a)
 	Untrack(a.GoPointer())
 }

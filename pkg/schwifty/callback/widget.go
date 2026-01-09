@@ -4,9 +4,9 @@ import "github.com/jwijenbergh/puregotk/v4/gtk"
 
 var (
 	RealizedCallback = func(widget gtk.Widget) {
-		CallbackHandler[any](widget, "realize", widget)
+		CallbackHandler[any](widget.Object, "realize", widget)
 	}
 	UnrealizedCallback = func(widget gtk.Widget) {
-		CallbackHandler[any](widget, "unrealize", widget)
+		CallbackHandler[any](widget.Object, "unrealize", widget)
 	}
 )

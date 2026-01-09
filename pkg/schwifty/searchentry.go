@@ -10,7 +10,7 @@ import (
 func (f SearchEntry) ConnectActivate(cb func(gtk.SearchEntry)) SearchEntry {
 	return func() *gtk.SearchEntry {
 		searchEntry := f()
-		callback.HandleCallback(searchEntry.Widget, "activate", cb)
+		callback.HandleCallback(searchEntry.Object, "activate", cb)
 		return searchEntry
 	}
 }
@@ -18,7 +18,7 @@ func (f SearchEntry) ConnectActivate(cb func(gtk.SearchEntry)) SearchEntry {
 func (f SearchEntry) ConnectSearchChanged(cb func(gtk.SearchEntry)) SearchEntry {
 	return func() *gtk.SearchEntry {
 		searchEntry := f()
-		callback.HandleCallback(searchEntry.Widget, "search-changed", cb)
+		callback.HandleCallback(searchEntry.Object, "search-changed", cb)
 		return searchEntry
 	}
 }

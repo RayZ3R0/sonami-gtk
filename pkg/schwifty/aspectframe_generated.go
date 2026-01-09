@@ -29,7 +29,7 @@ func (f AspectFrame) ConnectConstruct(cb func(*gtk.AspectFrame)) AspectFrame {
 func (f AspectFrame) ConnectDestroy(cb func(gtk.Widget)) AspectFrame {
 	return func() *gtk.AspectFrame {
 		widget := f()
-		callback.HandleCallback(widget.Widget, "destroy", cb)
+		callback.HandleCallback(widget.Object, "destroy", cb)
 		return widget
 	}
 }
@@ -37,7 +37,7 @@ func (f AspectFrame) ConnectDestroy(cb func(gtk.Widget)) AspectFrame {
 func (f AspectFrame) ConnectRealize(cb func(gtk.Widget)) AspectFrame {
 	return func() *gtk.AspectFrame {
 		widget := f()
-		callback.HandleCallback(widget.Widget, "realize", cb)
+		callback.HandleCallback(widget.Object, "realize", cb)
 		return widget
 	}
 }
@@ -45,7 +45,7 @@ func (f AspectFrame) ConnectRealize(cb func(gtk.Widget)) AspectFrame {
 func (f AspectFrame) ConnectUnrealize(cb func(gtk.Widget)) AspectFrame {
 	return func() *gtk.AspectFrame {
 		widget := f()
-		callback.HandleCallback(widget.Widget, "unrealize", cb)
+		callback.HandleCallback(widget.Object, "unrealize", cb)
 		return widget
 	}
 }

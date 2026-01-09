@@ -4,6 +4,6 @@ import "github.com/jwijenbergh/puregotk/v4/gtk"
 
 var (
 	ButtonClickedCallback = func(widget gtk.Button) {
-		CallbackHandler[any](widget.Widget, "clicked", widget)
+		CallbackHandler[any](widget.Object, "clicked", widget)
 	}
 )

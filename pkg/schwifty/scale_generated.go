@@ -29,7 +29,7 @@ func (f Scale) ConnectConstruct(cb func(*gtk.Scale)) Scale {
 func (f Scale) ConnectDestroy(cb func(gtk.Widget)) Scale {
 	return func() *gtk.Scale {
 		widget := f()
-		callback.HandleCallback(widget.Widget, "destroy", cb)
+		callback.HandleCallback(widget.Object, "destroy", cb)
 		return widget
 	}
 }
@@ -37,7 +37,7 @@ func (f Scale) ConnectDestroy(cb func(gtk.Widget)) Scale {
 func (f Scale) ConnectRealize(cb func(gtk.Widget)) Scale {
 	return func() *gtk.Scale {
 		widget := f()
-		callback.HandleCallback(widget.Widget, "realize", cb)
+		callback.HandleCallback(widget.Object, "realize", cb)
 		return widget
 	}
 }
@@ -45,7 +45,7 @@ func (f Scale) ConnectRealize(cb func(gtk.Widget)) Scale {
 func (f Scale) ConnectUnrealize(cb func(gtk.Widget)) Scale {
 	return func() *gtk.Scale {
 		widget := f()
-		callback.HandleCallback(widget.Widget, "unrealize", cb)
+		callback.HandleCallback(widget.Object, "unrealize", cb)
 		return widget
 	}
 }

@@ -4,9 +4,9 @@ import "github.com/jwijenbergh/puregotk/v4/gtk"
 
 var (
 	SearchEntryActivateCallback = func(widget gtk.SearchEntry) {
-		CallbackHandler[any](widget.Widget, "activate", widget)
+		CallbackHandler[any](widget.Object, "activate", widget)
 	}
 	SearchChangedCallback = func(widget gtk.SearchEntry) {
-		CallbackHandler[any](widget.Widget, "search-changed", widget)
+		CallbackHandler[any](widget.Object, "search-changed", widget)
 	}
 )

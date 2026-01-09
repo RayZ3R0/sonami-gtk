@@ -29,7 +29,7 @@ func (f ScrolledWindow) ConnectConstruct(cb func(*gtk.ScrolledWindow)) ScrolledW
 func (f ScrolledWindow) ConnectDestroy(cb func(gtk.Widget)) ScrolledWindow {
 	return func() *gtk.ScrolledWindow {
 		widget := f()
-		callback.HandleCallback(widget.Widget, "destroy", cb)
+		callback.HandleCallback(widget.Object, "destroy", cb)
 		return widget
 	}
 }
@@ -37,7 +37,7 @@ func (f ScrolledWindow) ConnectDestroy(cb func(gtk.Widget)) ScrolledWindow {
 func (f ScrolledWindow) ConnectRealize(cb func(gtk.Widget)) ScrolledWindow {
 	return func() *gtk.ScrolledWindow {
 		widget := f()
-		callback.HandleCallback(widget.Widget, "realize", cb)
+		callback.HandleCallback(widget.Object, "realize", cb)
 		return widget
 	}
 }
@@ -45,7 +45,7 @@ func (f ScrolledWindow) ConnectRealize(cb func(gtk.Widget)) ScrolledWindow {
 func (f ScrolledWindow) ConnectUnrealize(cb func(gtk.Widget)) ScrolledWindow {
 	return func() *gtk.ScrolledWindow {
 		widget := f()
-		callback.HandleCallback(widget.Widget, "unrealize", cb)
+		callback.HandleCallback(widget.Object, "unrealize", cb)
 		return widget
 	}
 }

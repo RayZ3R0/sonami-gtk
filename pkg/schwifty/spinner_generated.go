@@ -29,7 +29,7 @@ func (f Spinner) ConnectConstruct(cb func(*gtk.Spinner)) Spinner {
 func (f Spinner) ConnectDestroy(cb func(gtk.Widget)) Spinner {
 	return func() *gtk.Spinner {
 		widget := f()
-		callback.HandleCallback(widget.Widget, "destroy", cb)
+		callback.HandleCallback(widget.Object, "destroy", cb)
 		return widget
 	}
 }
@@ -37,7 +37,7 @@ func (f Spinner) ConnectDestroy(cb func(gtk.Widget)) Spinner {
 func (f Spinner) ConnectRealize(cb func(gtk.Widget)) Spinner {
 	return func() *gtk.Spinner {
 		widget := f()
-		callback.HandleCallback(widget.Widget, "realize", cb)
+		callback.HandleCallback(widget.Object, "realize", cb)
 		return widget
 	}
 }
@@ -45,7 +45,7 @@ func (f Spinner) ConnectRealize(cb func(gtk.Widget)) Spinner {
 func (f Spinner) ConnectUnrealize(cb func(gtk.Widget)) Spinner {
 	return func() *gtk.Spinner {
 		widget := f()
-		callback.HandleCallback(widget.Widget, "unrealize", cb)
+		callback.HandleCallback(widget.Object, "unrealize", cb)
 		return widget
 	}
 }
