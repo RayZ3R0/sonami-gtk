@@ -64,6 +64,7 @@ func PlayTrack(trackId string) error {
 		return err
 	}
 
+	clearQueues()
 	return playTrack(track)
 }
 
