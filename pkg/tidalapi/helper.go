@@ -7,7 +7,7 @@ import (
 )
 
 func ImageURL(id string) string {
-	return "https://resources.tidal.com/images/" + strings.ReplaceAll(id, "-", "/") + "/320x320.jpg"
+	return "https://resources.tidal.com/images/" + strings.ReplaceAll(id, "-", "/") + "/160x160.jpg"
 }
 
 func FormatDuration(duration time.Duration) string {
