@@ -20,14 +20,21 @@ func CallbackHandler[T any](object gobject.Object, signal string, args ...any) [
 	object.Ref()
 	defer object.Unref()
 	widgetCallbacksLock.Lock()
-	defer widgetCallbacksLock.Unlock()
+	allCallbacks, ok := widgetCallbacks[object.GoPointer()]
+	widgetCallbacksLock.Unlock()
+	if !ok {
+		return nil
+	}
+
+	widgetCallbacksLock.Lock()
+	signalCallbacks, ok := allCallbacks[signal]
+	widgetCallbacksLock.Unlock()
+	if !ok {
+		return nil
+	}
 
 	// Check if the widget has any callbacks registered
-	if allCallbacks, ok := widgetCallbacks[object.GoPointer()]; !ok {
-		return nil
-	} else if signalCallbacks, ok := allCallbacks[signal]; !ok {
-		return nil
-	} else if len(signalCallbacks) >= 0 {
+	if len(signalCallbacks) >= 0 {
 		returnValues := make([]T, len(signalCallbacks))
 		for i, callback := range signalCallbacks {
 			reflectArgs := make([]reflect.Value, len(args))
