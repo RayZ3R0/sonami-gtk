@@ -91,7 +91,9 @@ func onActivate(_ gio.Application) {
 	window := ui.NewWindow(app)
 	window.Present()
 	window.ConnectCloseRequest(g.Ptr(func(w gtk.Window) bool {
-		if settings.General().ShouldRunInBackground() {
+		// Only allow running in background if there is a track playing,
+		// so that the user can bring the app back up with MPRIS
+		if settings.General().ShouldRunInBackground() && player.TrackChanged.CurrentValue() != nil {
 			window.Hide()
 			return true
 		}
