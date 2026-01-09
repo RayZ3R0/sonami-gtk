@@ -39,7 +39,7 @@ func CoverColumn(track *openapi.Track, grid *gtk.Grid, row int, column int) int 
 	url := ""
 	for _, album := range track.Included.Albums(track.Data.Relationships.Albums.Data...) {
 		for _, artwork := range album.Included.PlainArtworks(album.Data.Relationships.CoverArt.Data...) {
-			url = artwork.Attributes.Files.AtLeast(320).Href
+			url = artwork.Attributes.Files.AtLeast(80).Href
 			break
 		}
 	}
