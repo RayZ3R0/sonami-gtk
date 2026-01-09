@@ -14,6 +14,7 @@ func artistsColumn(artists []string, grid *gtk.Grid, row int, column int) int {
 	grid.Attach(
 		Label(strings.Join(artists, ", ")).
 			HAlign(gtk.AlignStartValue).
+			VAlign(gtk.AlignCenterValue).
 			Margin(10).
 			Ellipsis(pango.EllipsizeEndValue).
 			HExpand(true).
