@@ -85,10 +85,7 @@ func PlayAlbum(albumId string, shuffle bool, skipUntil string) error {
 	}
 
 	clearQueues()
-	for _, track := range prepareTrackList(tracks, shuffle, skipUntil) {
-		BaseQueue.AddTrack(&track, false)
-	}
-
+	BaseQueue.SetTracks(prepareTrackList(tracks, shuffle, skipUntil))
 	nextTrack := getNextTrackFromQueue(false)
 	if nextTrack != nil {
 		logger.Info("playing next track", "track_id", nextTrack.Data.ID)
@@ -115,9 +112,7 @@ func PlayPlaylist(playlistId string, shuffle bool, skipUntil string) error {
 	}
 
 	clearQueues()
-	for _, track := range prepareTrackList(tracks, shuffle, skipUntil) {
-		BaseQueue.AddTrack(&track, false)
-	}
+	BaseQueue.SetTracks(prepareTrackList(tracks, shuffle, skipUntil))
 	nextTrack := getNextTrackFromQueue(false)
 	if nextTrack != nil {
 		logger.Info("playing next track", "track_id", nextTrack.Data.ID)

@@ -95,6 +95,15 @@ func (q *Queue) Pop() *openapi.Track {
 	return nextTrack
 }
 
+func (q *Queue) SetTracks(tracks []*openapi.Track) {
+	q.Lock()
+	defer q.Unlock()
+
+	q.UpcomingEntries.Notify(func(oldValue []*openapi.Track) []*openapi.Track {
+		return tracks
+	})
+}
+
 func newQueue(logger *slog.Logger, shouldTrackPastEntries bool) *Queue {
 	return &Queue{
 		RWMutex:                sync.RWMutex{},

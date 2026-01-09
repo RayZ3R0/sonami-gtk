@@ -66,7 +66,7 @@ func resolveTrack(trackId string) (*openapi.Track, error) {
 	return tidal.OpenAPI.V2.Tracks.Track(context.Background(), trackId, "albums.coverArt", "artists")
 }
 
-func prepareTrackList(tracks []openapi.Track, shuffle bool, skipUntilID string) []openapi.Track {
+func prepareTrackList(tracks []openapi.Track, shuffle bool, skipUntilID string) []*openapi.Track {
 	if shuffle {
 		rand.Shuffle(len(tracks), func(i, j int) {
 			tracks[i], tracks[j] = tracks[j], tracks[i]
@@ -79,5 +79,10 @@ func prepareTrackList(tracks []openapi.Track, shuffle bool, skipUntilID string) 
 			}
 		}
 	}
-	return tracks
+
+	trackPointers := make([]*openapi.Track, len(tracks))
+	for i, track := range tracks {
+		trackPointers[i] = &track
+	}
+	return trackPointers
 }
