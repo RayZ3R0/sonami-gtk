@@ -3,39 +3,44 @@ package mpris
 import (
 	"fmt"
 	"log/slog"
+	"os"
 	"reflect"
+	"slices"
 	"time"
 
 	"github.com/godbus/dbus/v5"
 	"github.com/godbus/dbus/v5/prop"
 )
 
-var capabilities = []string{
-	"CanGoNext",
-	"CanGoPrevious",
-	"CanSeek",
-}
-
 type Server struct {
 	properties     *prop.Properties
 	dbusConnection *dbus.Conn
+	dbusName       string
 	object         *MprisDBusObject
 }
 
-func (c *Server) EnableControl() {
-	for _, capability := range capabilities {
-		oldVar, _ := c.properties.Get(playerInterface, capability)
-		oldVal, ok := oldVar.Value().(bool)
+func (s *Server) Connect() {
+	if slices.Contains(s.dbusConnection.Names(), s.dbusName) {
+		log.Debug("name already owned, not re-requesting", "name", s.dbusName)
+		return
+	}
 
-		if !ok {
-			log.Error(fmt.Sprintf("Unexpected non-boolean value in D-Bus %s value", capability))
-			c.properties.SetMust(playerInterface, capability, dbus.MakeVariant(true))
-			return
-		}
+	reply, _ := s.dbusConnection.RequestName(s.dbusName, dbus.NameFlagDoNotQueue)
+	if reply != dbus.RequestNameReplyPrimaryOwner {
+		fmt.Fprintln(os.Stderr, "name already taken")
+		os.Exit(1)
+	}
+}
 
-		if oldVal != true {
-			c.properties.SetMust(playerInterface, capability, dbus.MakeVariant(true))
-		}
+func (s *Server) Disconnect() {
+	if !slices.Contains(s.dbusConnection.Names(), s.dbusName) {
+		log.Debug("name not owned, not releasing", "name", s.dbusName)
+		return
+	}
+
+	reply, _ := s.dbusConnection.ReleaseName(s.dbusName)
+	if reply != dbus.ReleaseNameReplyReleased {
+		log.Error("failed to release name", "name", s.dbusName)
 	}
 }
 

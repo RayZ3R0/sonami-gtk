@@ -85,12 +85,12 @@ func NewMprisDBusObject() *MprisDBusObject {
 					Emit:     prop.EmitConst, // According to the MPRIS spec, should not be emitted
 				},
 				"CanGoNext": {
-					Value:    false,
+					Value:    true,
 					Writable: false,
 					Emit:     prop.EmitTrue,
 				},
 				"CanGoPrevious": {
-					Value:    false,
+					Value:    true,
 					Writable: false,
 					Emit:     prop.EmitTrue,
 				},
@@ -105,7 +105,7 @@ func NewMprisDBusObject() *MprisDBusObject {
 					Emit:     prop.EmitConst,
 				},
 				"CanSeek": {
-					Value:    false,
+					Value:    true,
 					Writable: false,
 					Emit:     prop.EmitTrue,
 				},

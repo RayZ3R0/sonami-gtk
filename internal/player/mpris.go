@@ -33,10 +33,14 @@ func init() {
 			return signals.Continue
 		}
 
-		mprisServer.EnableControl()
 		if trackInfo == nil {
+			mprisServer.SetTrackMetadata(map[string]any{})
+			mprisServer.Disconnect()
+
 			return signals.Continue
 		}
+
+		mprisServer.Connect()
 
 		artists := []string{}
 		for _, artist := range trackInfo.Artists {
