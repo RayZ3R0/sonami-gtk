@@ -23,6 +23,7 @@ func playNextTrack() {
 		return
 	}
 
+	setLoadingState()
 	nextTrack := getNextTrackFromQueue(false)
 	if nextTrack != nil {
 		logger.Info("playing next track", "track_id", nextTrack.Data.ID)
@@ -58,6 +59,8 @@ func playPreviousTrack() {
 		SeekToPosition(0)
 		return
 	}
+
+	setLoadingState()
 
 	entry := history.Pop()
 	if entry != nil {

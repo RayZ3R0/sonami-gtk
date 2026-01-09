@@ -38,6 +38,14 @@ func setLoadingState() {
 	})
 }
 
+func unsetLoadingState() {
+	playbin.SetState(gst.StatePlaying)
+	PlaybackStateChanged.Notify(func(oldValue *PlaybackState) *PlaybackState {
+		oldValue.Status = PlaybackStatusPlaying
+		return oldValue
+	})
+}
+
 func AddTrackToUserQueue(trackId string) {
 	UserQueue.AddTrackID(trackId, false)
 
