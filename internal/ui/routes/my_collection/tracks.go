@@ -52,13 +52,10 @@ func Tracks() *router.Response {
 	}
 
 	trackList := tracklist.NewTrackList(
-		"Tracks",
-		tracklist.CoverColumn,
-		tracklist.TitleAlbumColumn,
+		tracklist.GroupedColumn(3, gtk.AlignStartValue, tracklist.CoverColumn, tracklist.TitleAlbumColumn),
 		tracklist.ArtistsColumn,
-		tracklist.DurationColumn,
-		tracklist.ButtonColumn,
-		tracklist.ControlsColumn,
+		tracklist.ExpandButtonColumn(2),
+		tracklist.GroupedColumn(1, gtk.AlignStartValue, tracklist.DurationColumn, tracklist.ControlsColumn),
 	)
 
 	for _, track := range userCollection {
@@ -66,13 +63,10 @@ func Tracks() *router.Response {
 	}
 
 	return &router.Response{
-		PageTitle: "My Collection",
+		PageTitle: "My Tracks",
 		View: ScrolledWindow().
 			Child(
-				VStack(
-					trackList.HMargin(40),
-					Spacer(),
-				).Spacing(25).VMargin(20).VAlign(gtk.AlignStartValue),
+				trackList.HMargin(40).VAlign(gtk.AlignStartValue),
 			).
 			ConnectEdgeReached(func(sw gtk.ScrolledWindow, pt gtk.PositionType) {
 				if pt == gtk.PosBottomValue {
@@ -84,8 +78,8 @@ func Tracks() *router.Response {
 							}
 
 							schwifty.OnMainThreadOnce(func(u uintptr) {
-								var list *tracklist.TrackList
-								list = (*tracklist.TrackList)(unsafe.Pointer(u))
+								var list *tracklist.TrackList[*openapi.Track]
+								list = (*tracklist.TrackList[*openapi.Track])(unsafe.Pointer(u))
 								for _, track := range items {
 									list.AddTrack(&track)
 								}

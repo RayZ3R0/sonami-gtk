@@ -59,19 +59,16 @@ func Album(albumId string) *router.Response {
 
 	coverUrl := ""
 	for _, artwork := range album.Included.PlainArtworks(album.Data.Relationships.CoverArt.Data...) {
-		coverUrl = artwork.Attributes.Files.AtLeast(320).Href
+		coverUrl = artwork.Attributes.Files.AtLeast(160).Href
 	}
 
 	list := tracklist.NewTrackList(
-		"",
-		tracklist.PositionColumn,
-		tracklist.TitleColumn,
+		tracklist.GroupedColumn(3, gtk.AlignStartValue, tracklist.PositionColumn, tracklist.TitleColumn),
 		tracklist.ArtistsColumn,
-		tracklist.DurationColumn,
-		tracklist.CustomButtonColumn(func(trackId string) {
+		tracklist.ExpandCustomButtonColumn(2, func(trackId string) {
 			go player.PlayAlbum(albumId, false, trackId)
 		}),
-		tracklist.ControlsColumn,
+		tracklist.GroupedColumn(1, gtk.AlignEndValue, tracklist.DurationColumn, tracklist.ControlsColumn),
 	)
 
 	for _, track := range items {
@@ -159,8 +156,8 @@ func Album(albumId string) *router.Response {
 								}
 
 								schwifty.OnMainThreadOnce(func(u uintptr) {
-									var list *tracklist.TrackList
-									list = (*tracklist.TrackList)(unsafe.Pointer(u))
+									var list *tracklist.TrackList[*openapi.Track]
+									list = (*tracklist.TrackList[*openapi.Track])(unsafe.Pointer(u))
 									for _, track := range items {
 										list.AddTrack(&track)
 									}

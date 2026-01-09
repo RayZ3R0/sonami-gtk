@@ -51,10 +51,16 @@ func init() {
 }
 
 func NewQueue() schwifty.Box {
-	trackList := tracklist.NewTrackList("Queued tracks", tracklist.CoverColumn, tracklist.TitleAlbumColumn, tracklist.DurationColumn)
+	trackList := tracklist.NewTrackList(
+		tracklist.GroupedColumn(3, gtk.AlignStartValue, tracklist.CoverColumn, tracklist.TitleAlbumColumn),
+		tracklist.GroupedColumn(1, gtk.AlignEndValue, tracklist.DurationColumn),
+	)
 	trackList.BindTracks(userQueueState)
 
-	trackListBase := tracklist.NewTrackList("Coming up", tracklist.CoverColumn, tracklist.TitleAlbumColumn, tracklist.DurationColumn)
+	trackListBase := tracklist.NewTrackList(
+		tracklist.GroupedColumn(3, gtk.AlignStartValue, tracklist.CoverColumn, tracklist.TitleAlbumColumn),
+		tracklist.GroupedColumn(1, gtk.AlignEndValue, tracklist.DurationColumn),
+	)
 	trackListBase.BindTracks(baseQueueState)
 
 	player.TrackChanged.On(func(trackInfo *player.Track) bool {

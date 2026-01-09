@@ -1,0 +1,65 @@
+package components
+
+import (
+	"codeberg.org/dergs/tidalwave/internal/router"
+	"codeberg.org/dergs/tidalwave/pkg/schwifty"
+	"codeberg.org/dergs/tidalwave/pkg/schwifty/state"
+	. "codeberg.org/dergs/tidalwave/pkg/schwifty/syntax"
+	"github.com/jwijenbergh/puregotk/v4/gtk"
+)
+
+type RowTitle struct {
+	schwifty.Box
+
+	titleVisibility  *state.State[bool]
+	titleText        *state.State[string]
+	routeButtonState *state.State[any]
+}
+
+func (t *RowTitle) SetTitle(title string) *RowTitle {
+	if title == "" {
+		t.titleVisibility.SetValue(false)
+		return t
+	}
+	t.titleText.SetValue(title)
+	t.titleVisibility.SetValue(true)
+	return t
+}
+
+func (t *RowTitle) SetViewAllRoute(path string) *RowTitle {
+	t.routeButtonState.SetValue(Button().Child(
+		Label("View All").FontSize(12),
+	).
+		MinHeight(10).
+		MinWidth(10).
+		HPadding(10).
+		VAlign(gtk.AlignCenterValue).
+		ConnectClicked(func(b gtk.Button) {
+			router.Navigate(path)
+		}))
+	return t
+}
+
+func NewRowTitle() *RowTitle {
+	t := &RowTitle{
+		titleVisibility:  state.NewStateful(false),
+		titleText:        state.NewStateful(""),
+		routeButtonState: state.NewStateful[any](nil),
+	}
+
+	t.Box = HStack(
+		Label("").
+			Visible(false).
+			BindText(t.titleText).
+			BindVisible(t.titleVisibility).
+			VAlign(gtk.AlignCenterValue).
+			MarginStart(10).
+			MarginBottom(10).
+			FontWeight(600).
+			FontSize(20),
+		Spacer().VExpand(false),
+		CenterBox().BindCenterWidget(t.routeButtonState).HExpand(false).VExpand(false),
+	)
+
+	return t
+}

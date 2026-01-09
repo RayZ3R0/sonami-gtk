@@ -11,7 +11,7 @@ import (
 	"github.com/jwijenbergh/puregotk/v4/gtk"
 )
 
-func coverColumn(url string, grid *gtk.Grid, row int, column int) int {
+func coverColumn(url string, grid *gtk.Grid, position int, column int) int {
 	grid.Attach(
 		AspectFrame(
 			Image().
@@ -28,14 +28,14 @@ func coverColumn(url string, grid *gtk.Grid, row int, column int) int {
 			HAlign(gtk.AlignStartValue).
 			Overflow(gtk.OverflowHiddenValue).ToGTK(),
 		column,
-		row,
+		0,
 		1,
 		1,
 	)
 	return 1
 }
 
-func CoverColumn(track *openapi.Track, grid *gtk.Grid, row int, column int) int {
+func CoverColumn(track *openapi.Track, grid *gtk.Grid, position int, column int) int {
 	url := ""
 	for _, album := range track.Included.Albums(track.Data.Relationships.Albums.Data...) {
 		for _, artwork := range album.Included.PlainArtworks(album.Data.Relationships.CoverArt.Data...) {
@@ -43,9 +43,9 @@ func CoverColumn(track *openapi.Track, grid *gtk.Grid, row int, column int) int 
 			break
 		}
 	}
-	return coverColumn(url, grid, row, column)
+	return coverColumn(url, grid, position, column)
 }
 
-func LegacyCoverColumn(track *v2.TrackItemData, grid *gtk.Grid, row int, column int) int {
-	return coverColumn(tidalapi.ImageURL(track.Album.Cover), grid, row, column)
+func LegacyCoverColumn(track *v2.TrackItemData, grid *gtk.Grid, position int, column int) int {
+	return coverColumn(tidalapi.ImageURL(track.Album.Cover), grid, position, column)
 }

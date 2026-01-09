@@ -39,19 +39,19 @@ func ForPageItem(pageItem v2.PageItem) schwifty.BaseWidgetable {
 		}
 		return list.SetPageMargin(40)
 	case v2.ItemTypeTrackList:
-		list := tracklist.NewLegacyTrackList(
-			pageItem.Title,
-			tracklist.LegacyCoverColumn,
-			tracklist.LegacyTitleAlbumColumn,
+		list := tracklist.NewTrackList[*v2.TrackItemData](
+			tracklist.GroupedColumn(3, gtk.AlignStartValue, tracklist.LegacyCoverColumn, tracklist.LegacyTitleAlbumColumn),
 			tracklist.LegacyArtistsColumn,
-			tracklist.LegacyDurationColumn,
-			tracklist.LegacyButtonColumn,
-			tracklist.LegacyControlsColumn,
+			tracklist.LegacyExpandButtonColumn(2),
+			tracklist.GroupedColumn(1, gtk.AlignEndValue, tracklist.LegacyDurationColumn, tracklist.LegacyControlsColumn),
 		)
 		for _, track := range pageItem.Items {
-			list.AddLegacyTrack(track.Data.Track)
+			list.AddTrack(track.Data.Track)
 		}
-		return list.HMargin(40)
+		return VStack(
+			NewRowTitle().SetTitle(pageItem.Title),
+			list,
+		).HMargin(40)
 	case v2.ItemTypeShortcutList:
 		list := shortcut_list.NewShortcutList()
 		for _, item := range pageItem.Items {

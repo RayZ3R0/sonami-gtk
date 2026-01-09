@@ -10,7 +10,7 @@ import (
 	"github.com/jwijenbergh/puregotk/v4/gtk"
 )
 
-func controlsColumn(trackId string, grid *gtk.Grid, row int, column int) int {
+func controlsColumn(trackId string, grid *gtk.Grid, position int, column int) int {
 	grid.Attach(
 		HStack(
 			Button().
@@ -30,17 +30,17 @@ func controlsColumn(trackId string, grid *gtk.Grid, row int, column int) int {
 			HAlign(gtk.AlignEndValue).
 			ToGTK(),
 		column,
-		row,
+		0,
 		1,
 		1,
 	)
 	return 1
 }
 
-func ControlsColumn(track *openapi.Track, grid *gtk.Grid, row int, column int) int {
-	return controlsColumn(track.Data.ID, grid, row, column)
+func ControlsColumn(track *openapi.Track, grid *gtk.Grid, position int, column int) int {
+	return controlsColumn(track.Data.ID, grid, position, column)
 }
 
-func LegacyControlsColumn(track *v2.TrackItemData, grid *gtk.Grid, row int, column int) int {
-	return controlsColumn(strconv.Itoa(track.ID), grid, row, column)
+func LegacyControlsColumn(track *v2.TrackItemData, grid *gtk.Grid, position int, column int) int {
+	return controlsColumn(strconv.Itoa(track.ID), grid, position, column)
 }

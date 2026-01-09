@@ -1,190 +1,93 @@
 package tracklist
 
 import (
-	"slices"
-	"strconv"
+	"sync"
 
-	"codeberg.org/dergs/tidalwave/internal/router"
-	"codeberg.org/dergs/tidalwave/internal/signals"
 	"codeberg.org/dergs/tidalwave/pkg/schwifty"
+	"codeberg.org/dergs/tidalwave/pkg/schwifty/factory"
 	"codeberg.org/dergs/tidalwave/pkg/schwifty/state"
 	. "codeberg.org/dergs/tidalwave/pkg/schwifty/syntax"
-	"codeberg.org/dergs/tidalwave/pkg/tidalapi/models/openapi"
-	v2 "codeberg.org/dergs/tidalwave/pkg/tidalapi/models/v2"
+	"github.com/jwijenbergh/puregotk/v4/gio"
+	"github.com/jwijenbergh/puregotk/v4/gobject"
 	"github.com/jwijenbergh/puregotk/v4/gtk"
 )
 
-type ColumnFunc func(track *openapi.Track, grid *gtk.Grid, row int, column int) int
-type LegacyColumnFunc func(track *v2.TrackItemData, grid *gtk.Grid, row int, column int) int
+type ColumnFunc[TrackType comparable] func(track TrackType, grid *gtk.Grid, position int, column int) int
 
-type TrackList struct {
-	schwifty.Box
+type TrackList[TrackType comparable] struct {
+	schwifty.Widget
 
-	container        *gtk.Grid
-	titleVisibility  *state.State[bool]
-	titleText        *state.State[string]
-	routeButtonState *state.State[any]
-
-	// Will be called per-track to generate their columns
-	columnFuncs       []ColumnFunc
-	legacyColumnFuncs []LegacyColumnFunc
-
-	// rowMap maps track IDs to their row indices in the grid.
-	rowMap       []string
-	tracksSignal *signals.StatelessSignal[[]string]
+	columnFuncs []ColumnFunc[TrackType]
+	lock        sync.Mutex
+	store       *gio.ListStore
+	trackList   []TrackType
 }
 
-func (t *TrackList) AddTrack(track *openapi.Track) {
-	row := len(t.rowMap)
-	t.AddTrackAt(track, row)
-	t.tracksSignal.Notify(t.rowMap)
+func (t *TrackList[TrackType]) AddTrack(track TrackType) {
+	t.trackList = append(t.trackList, track)
+	t.store.Append(&gtk.NewStringObject("").Object)
 }
 
-func (t *TrackList) AddTrackAt(track *openapi.Track, row int) {
-	t.container.InsertRow(row)
-	t.rowMap = append(t.rowMap[:row], append([]string{track.Data.ID}, t.rowMap[row:]...)...)
+func (t *TrackList[TrackType]) BindTracks(state *state.State[[]TrackType]) {
+	state.AddCallback(func(newValue []TrackType) {
+		t.lock.Lock()
+		defer t.lock.Unlock()
 
-	width := 0
-	for _, columnFunc := range t.columnFuncs {
-		width += columnFunc(track, t.container, row, width)
-	}
-	t.tracksSignal.Notify(t.rowMap)
-}
-
-func (t *TrackList) AddLegacyTrack(track *v2.TrackItemData) {
-	row := len(t.rowMap)
-	t.rowMap = append(t.rowMap, strconv.Itoa(track.ID))
-
-	width := 0
-	for _, columnFunc := range t.legacyColumnFuncs {
-		width += columnFunc(track, t.container, row, width)
-	}
-
-	t.tracksSignal.Notify(t.rowMap)
-}
-
-func (t *TrackList) BindTracks(state *state.State[[]*openapi.Track]) {
-	state.AddCallback(func(newValue []*openapi.Track) {
-		if len(newValue) > 0 {
-			trackIds := map[string]bool{}
-			for _, track := range newValue {
-				trackIds[track.Data.ID] = true
+		for i, newTrack := range newValue {
+			if i >= len(t.trackList) {
+				t.trackList = append(t.trackList, newTrack)
+				t.store.Append(&gtk.NewStringObject("").Object)
+			} else if t.trackList[i] != newTrack {
+				t.trackList[i] = newTrack
+				t.store.Splice(uint(i), 1, []gobject.Object{gtk.NewStringObject("").Object}, 1)
 			}
-
-			newRowMap := []string{}
-			for row, trackId := range t.rowMap {
-				if _, ok := trackIds[trackId]; !ok {
-					t.container.RemoveRow(row)
-				} else {
-					newRowMap = append(newRowMap, trackId)
-				}
-			}
-			t.rowMap = newRowMap
-		} else {
-			t.Clear()
 		}
-
-		for expectedRow, track := range newValue {
-			if slices.Contains(t.rowMap, track.Data.ID) {
-				continue
-			}
-			t.AddTrackAt(track, expectedRow)
+		for i := len(t.trackList) - 1; i+1 > len(newValue); i-- {
+			t.trackList = t.trackList[:i]
+			t.store.Remove(uint(i))
 		}
-
-		t.tracksSignal.Notify(t.rowMap)
 	})
 }
 
-func (t *TrackList) Clear() {
-	for i := len(t.rowMap) - 1; i >= 0; i-- {
-		t.container.RemoveRow(i)
-	}
-	t.rowMap = []string{}
-	t.tracksSignal.Notify(t.rowMap)
+func (t *TrackList[TrackType]) Clear() {
+	t.store.RemoveAll()
+	t.trackList = make([]TrackType, 0)
 }
 
-func (t *TrackList) SetTitle(title string) *TrackList {
-	if title == "" {
-		t.titleVisibility.SetValue(false)
-		return t
+func (t *TrackList[TrackType]) onBind(_ gtk.SignalListItemFactory, listItem *gtk.ListItem) {
+	track := t.trackList[listItem.GetPosition()]
+	grid := gtk.GridNewFromInternalPtr(listItem.GetChild().GoPointer())
+	defer grid.Unref()
+
+	width := 0
+	for _, columnFunc := range t.columnFuncs {
+		width += columnFunc(track, grid, int(listItem.GetPosition()), width)
 	}
-	t.titleText.SetValue(title)
-	t.titleVisibility.SetValue(true)
+}
+
+func (t *TrackList[TrackType]) onSetup(_ gtk.SignalListItemFactory, listItem *gtk.ListItem) {
+	grid := gtk.NewGrid()
+	defer grid.Unref()
+	grid.SetColumnHomogeneous(true)
+
+	listItem.SetChild(&grid.Widget)
+	listItem.SetActivatable(false)
+}
+
+func NewTrackList[TrackType comparable](columnFuncs ...ColumnFunc[TrackType]) *TrackList[TrackType] {
+	t := &TrackList[TrackType]{
+		columnFuncs: columnFuncs,
+		trackList:   make([]TrackType, 0),
+		store:       gio.NewListStore(gtk.StringObjectGLibType()),
+	}
+
+	factory := factory.NewSignalListItemFactory().
+		ConnectSetup(t.onSetup).
+		ConnectBind(t.onBind)()
+
+	listView := gtk.NewListView(gtk.NewNoSelection(t.store), &factory.ListItemFactory)
+	listView.SetSingleClickActivate(false)
+	listView.SetOrientation(gtk.OrientationVerticalValue)
+	t.Widget = ManagedWidget(&listView.Widget).Background("transparent")
 	return t
-}
-
-func (t *TrackList) SetViewAllRoute(path string) *TrackList {
-	t.routeButtonState.SetValue(Button().Child(
-		Label("View All").FontSize(12),
-	).
-		MinHeight(10).
-		MinWidth(10).
-		HPadding(10).
-		VAlign(gtk.AlignCenterValue).
-		ConnectClicked(func(b gtk.Button) {
-			router.Navigate(path)
-		}))
-	return t
-}
-
-func newTrackList(title string) *TrackList {
-	titleText := state.New[string](title)
-	titleVisibility := state.New[bool](title != "")
-	routeButtonState := state.NewStateful[any](nil)
-	container := gtk.NewGrid()
-	tracksSignal := signals.NewStatelessSignal[[]string]()
-
-	return &TrackList{
-		titleVisibility:  titleVisibility,
-		titleText:        titleText,
-		routeButtonState: routeButtonState,
-		container:        container,
-		rowMap:           []string{},
-		tracksSignal:     tracksSignal,
-		Box: VStack(
-			HStack(
-				Label(title).
-					BindText(titleText).
-					BindVisible(titleVisibility).
-					VAlign(gtk.AlignCenterValue).
-					MarginStart(10).
-					MarginBottom(10).
-					FontWeight(600).
-					FontSize(20).
-					Visible(title != ""),
-				Spacer().VExpand(false),
-				CenterBox().BindCenterWidget(routeButtonState).HExpand(false).VExpand(false),
-			),
-			ManagedWidget(&container.Widget),
-		).
-			VAlign(gtk.AlignStartValue).
-			ConnectConstruct(func(b *gtk.Box) {
-				ptr := b.GoPointer()
-				tracksSignal.On(func(newVal []string) bool {
-					schwifty.OnMainThreadOnce(func(ptr uintptr) {
-						b := gtk.BoxNewFromInternalPtr(ptr)
-
-						if len(newVal) == 0 {
-							b.Hide()
-						} else {
-							b.Show()
-						}
-					}, ptr)
-
-					return signals.Continue
-				})
-			}),
-	}
-}
-
-func NewTrackList(title string, columns ...ColumnFunc) *TrackList {
-	trackList := newTrackList(title)
-	trackList.columnFuncs = columns
-	return trackList
-}
-
-func NewLegacyTrackList(title string, columns ...LegacyColumnFunc) *TrackList {
-	trackList := newTrackList(title)
-	trackList.legacyColumnFuncs = columns
-	return trackList
 }

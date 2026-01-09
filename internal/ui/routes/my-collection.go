@@ -5,6 +5,7 @@ import (
 
 	"codeberg.org/dergs/tidalwave/internal/router"
 	"codeberg.org/dergs/tidalwave/internal/secrets"
+	"codeberg.org/dergs/tidalwave/internal/ui/components"
 	"codeberg.org/dergs/tidalwave/internal/ui/components/horizontal_list"
 	"codeberg.org/dergs/tidalwave/internal/ui/components/media_card"
 	"codeberg.org/dergs/tidalwave/internal/ui/components/tracklist"
@@ -57,14 +58,11 @@ func MyCollection() *router.Response {
 	}
 
 	trackList := tracklist.NewTrackList(
-		"Tracks",
-		tracklist.CoverColumn,
-		tracklist.TitleAlbumColumn,
+		tracklist.GroupedColumn(3, gtk.AlignStartValue, tracklist.CoverColumn, tracklist.TitleAlbumColumn),
 		tracklist.ArtistsColumn,
-		tracklist.DurationColumn,
-		tracklist.ButtonColumn,
-		tracklist.ControlsColumn,
-	).SetViewAllRoute("my-collection/tracks")
+		tracklist.ExpandButtonColumn(2),
+		tracklist.GroupedColumn(1, gtk.AlignStartValue, tracklist.DurationColumn, tracklist.ControlsColumn),
+	)
 	for _, track := range userCollection.Included.Tracks(userCollection.Data.Relationships.Tracks.Data...) {
 		trackList.AddTrack(&track)
 	}
@@ -77,6 +75,7 @@ func MyCollection() *router.Response {
 					artistList,
 					albumList,
 					playlistList,
+					components.NewRowTitle().SetTitle("Tracks").SetViewAllRoute("my-collection/tracks"),
 					trackList.HMargin(40),
 					Spacer(),
 				).Spacing(25).VMargin(20).VAlign(gtk.AlignStartValue),

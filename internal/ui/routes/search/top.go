@@ -1,6 +1,7 @@
 package search
 
 import (
+	"codeberg.org/dergs/tidalwave/internal/ui/components"
 	"codeberg.org/dergs/tidalwave/internal/ui/components/horizontal_list"
 	"codeberg.org/dergs/tidalwave/internal/ui/components/media_card"
 	"codeberg.org/dergs/tidalwave/internal/ui/components/tracklist"
@@ -17,13 +18,10 @@ func TopHits(searchResults *openapi.SearchResult) schwifty.Box {
 	}
 
 	trackList := tracklist.NewTrackList(
-		"Tracks",
-		tracklist.CoverColumn,
-		tracklist.TitleAlbumColumn,
+		tracklist.GroupedColumn(3, gtk.AlignStartValue, tracklist.CoverColumn, tracklist.TitleAlbumColumn),
 		tracklist.ArtistsColumn,
-		tracklist.DurationColumn,
-		tracklist.ButtonColumn,
-		tracklist.ControlsColumn,
+		tracklist.ExpandButtonColumn(2),
+		tracklist.GroupedColumn(1, gtk.AlignStartValue, tracklist.DurationColumn, tracklist.ControlsColumn),
 	)
 	for _, track := range searchResults.Included.Tracks(searchResults.Data.Relationships.TopHits.Data...) {
 		trackList.AddTrack(&track)
@@ -41,6 +39,7 @@ func TopHits(searchResults *openapi.SearchResult) schwifty.Box {
 
 	return VStack(
 		artistList,
+		components.NewRowTitle().SetTitle("Tracks"),
 		trackList.HMargin(40),
 		albumList,
 		playlistList,

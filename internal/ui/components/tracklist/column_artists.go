@@ -10,7 +10,7 @@ import (
 	"github.com/jwijenbergh/puregotk/v4/pango"
 )
 
-func artistsColumn(artists []string, grid *gtk.Grid, row int, column int) int {
+func artistsColumn(artists []string, grid *gtk.Grid, position int, column int) int {
 	grid.Attach(
 		Label(strings.Join(artists, ", ")).
 			HAlign(gtk.AlignStartValue).
@@ -20,25 +20,25 @@ func artistsColumn(artists []string, grid *gtk.Grid, row int, column int) int {
 			HExpand(true).
 			ToGTK(),
 		column,
-		row,
+		0,
 		1,
 		1,
 	)
 	return 1
 }
 
-func ArtistsColumn(track *openapi.Track, grid *gtk.Grid, row int, column int) int {
+func ArtistsColumn(track *openapi.Track, grid *gtk.Grid, position int, column int) int {
 	artists := make([]string, 0)
 	for _, artist := range track.Included.PlainArtists(track.Data.Relationships.Artists.Data...) {
 		artists = append(artists, artist.Attributes.Name)
 	}
-	return artistsColumn(artists, grid, row, column)
+	return artistsColumn(artists, grid, position, column)
 }
 
-func LegacyArtistsColumn(track *v2.TrackItemData, grid *gtk.Grid, row int, column int) int {
+func LegacyArtistsColumn(track *v2.TrackItemData, grid *gtk.Grid, position int, column int) int {
 	artists := make([]string, 0)
 	for _, artist := range track.Artists {
 		artists = append(artists, artist.Name)
 	}
-	return artistsColumn(artists, grid, row, column)
+	return artistsColumn(artists, grid, position, column)
 }
