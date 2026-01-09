@@ -7,15 +7,15 @@ import (
 )
 
 func (w *Window) PresentPreferences() {
-	allowBg := adw.NewSwitchRow()
-	allowBg.SetTitle("Allow Background Activity")
-	allowBg.SetSubtitle("Allow Tidal Wave to run in the background")
-	settings.General().BindRunInBackground(&allowBg.Object, "active")
-
 	PreferencesDialog(
 		PreferencesPage(
 			PreferencesGroup(
-				ManagedWidget(&allowBg.Widget),
+				SwitchRow().
+					Title("Allow Background Activity").
+					Subtitle("Allow Tidal Wave to run in the background by hiding the player window instead of quitting the application").
+					ConnectConstruct(func(sr *adw.SwitchRow) {
+						settings.General().BindRunInBackground(&sr.Object, "active")
+					}),
 			).
 				Title("Background Activity").
 				Description("Configure the behaviour of Tidal Wave when running in the background."),
