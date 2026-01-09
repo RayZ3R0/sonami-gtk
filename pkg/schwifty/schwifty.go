@@ -41,6 +41,13 @@ func ResolveWidget(value any) *gtk.Widget {
 		return value.(*gtk.Widget)
 	}
 
+	if t.AssignableTo(reflect.TypeFor[BaseWidgetable]()) {
+		if shouldLogLifecycle {
+			logger.Debug("resolved widget from Widgetable")
+		}
+		return value.(BaseWidgetable).ToGTK()
+	}
+
 	if t.Kind() == reflect.Pointer && t.Elem().Kind() == reflect.Struct {
 		if field := reflect.ValueOf(value).Elem().FieldByName("Widget"); field.IsValid() {
 			if shouldLogLifecycle {
@@ -49,13 +56,6 @@ func ResolveWidget(value any) *gtk.Widget {
 			widget := field.Interface().(gtk.Widget)
 			return &widget
 		}
-	}
-
-	if t.AssignableTo(reflect.TypeFor[BaseWidgetable]()) {
-		if shouldLogLifecycle {
-			logger.Debug("resolved widget from Widgetable")
-		}
-		return value.(BaseWidgetable).ToGTK()
 	}
 
 	logger.Warn("failed to resolve widget")
