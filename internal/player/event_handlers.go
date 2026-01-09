@@ -37,7 +37,7 @@ func onAboutToFinish(_ *gst.Element) {
 		logger.Info("enqueued next song for gapless playback", "track_id", nextTrack.Data.ID)
 
 		// One-Shot Handler to update the track quality
-		TrackChanged.On(func(t *Track) bool {
+		TrackChanged.OnLazy(func(t *Track) bool {
 			logger.Debug("triggered one-shot handler to propagate gapless playback quality")
 			PlaybackQualityChanged.Notify(func(oldValue v1.AudioQuality) v1.AudioQuality {
 				return playbackInfo.AudioQuality

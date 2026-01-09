@@ -34,6 +34,13 @@ func (s *StatefulSignal[T]) On(handler func(T) bool) *Subscription {
 	return s.Signal.On(handler)
 }
 
+func (s *StatefulSignal[T]) OnLazy(handler func(T) bool) *Subscription {
+	s.lock.RLock()
+	defer s.lock.RUnlock()
+
+	return s.Signal.On(handler)
+}
+
 func NewStatefulSignal[T any](initialValue T) *StatefulSignal[T] {
 	return &StatefulSignal[T]{
 		currentValue: initialValue,
