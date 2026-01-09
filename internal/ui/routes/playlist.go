@@ -10,8 +10,10 @@ import (
 	"codeberg.org/dergs/tidalwave/internal/player"
 	"codeberg.org/dergs/tidalwave/internal/resources"
 	"codeberg.org/dergs/tidalwave/internal/router"
+	"codeberg.org/dergs/tidalwave/internal/signals"
 	"codeberg.org/dergs/tidalwave/internal/ui/components/tracklist"
 	"codeberg.org/dergs/tidalwave/pkg/schwifty"
+	"codeberg.org/dergs/tidalwave/pkg/schwifty/state"
 	. "codeberg.org/dergs/tidalwave/pkg/schwifty/syntax"
 	"codeberg.org/dergs/tidalwave/pkg/tidalapi"
 	"codeberg.org/dergs/tidalwave/pkg/tidalapi/models/openapi"
@@ -22,7 +24,16 @@ import (
 	"github.com/jwijenbergh/puregotk/v4/gtk"
 )
 
+var canPlayPlaylistState = state.NewStateful(false)
+
 func init() {
+	player.ControllableStateChanged.On(func(cs player.ControllableState) bool {
+		if v := cs.PlayerReady; v != canPlayPlaylistState.Value() {
+			canPlayPlaylistState.SetValue(v)
+		}
+		return signals.Continue
+	})
+
 	router.Register("playlist/:id", Playlist)
 }
 
@@ -121,7 +132,8 @@ func Playlist(playlistUUID string) *router.Response {
 							VAlign(gtk.AlignCenterValue).
 							ConnectClicked(func(b gtk.Button) {
 								go player.PlayPlaylist(playlistUUID, true, "")
-							}),
+							}).
+							BindSensitive(canPlayPlaylistState),
 						Button().
 							IconName("media-playback-start-symbolic").
 							MinWidth(81).
@@ -139,7 +151,8 @@ func Playlist(playlistUUID string) *router.Response {
 							VAlign(gtk.AlignCenterValue).
 							ConnectClicked(func(b gtk.Button) {
 								go player.PlayPlaylist(playlistUUID, false, "")
-							}),
+							}).
+							BindSensitive(canPlayPlaylistState),
 					).
 						Spacing(5).
 						HAlign(gtk.AlignEndValue),

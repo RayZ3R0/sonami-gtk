@@ -17,7 +17,7 @@ func init() {
 
 		mprisServer.SetPosition(state.Position)
 		switch state.Status {
-		case PlaybackStatusBuffering, PlaybackStatusPaused:
+		case PlaybackStatusLoadingTrack, PlaybackStatusBuffering, PlaybackStatusPaused:
 			mprisServer.SetPlaybackStatus(mpris.PlaybackStatusPaused)
 		case PlaybackStatusPlaying:
 			mprisServer.SetPlaybackStatus(mpris.PlaybackStatusPlaying)

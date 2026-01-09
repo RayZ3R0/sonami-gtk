@@ -5,6 +5,11 @@ import (
 	v1 "codeberg.org/dergs/tidalwave/pkg/tidalapi/models/v1"
 )
 
+var ControllableStateChanged = signals.NewStatefulSignal(ControllableState{
+	HasTrack:    false,
+	PlayerReady: true,
+})
+
 // Holds the current playback state including the expected duration and playing position of the
 // currently playing track, if any.
 //

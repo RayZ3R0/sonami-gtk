@@ -30,6 +30,14 @@ func init() {
 	settings.PlayerSettings().BindVolume(gobject.ObjectNewFromInternalPtr(uintptr(playbin.BaseObject().Unsafe())), "volume")
 }
 
+func setLoadingState() {
+	playbin.SetState(gst.StateNull)
+	PlaybackStateChanged.Notify(func(oldValue *PlaybackState) *PlaybackState {
+		oldValue.Status = PlaybackStatusLoadingTrack
+		return oldValue
+	})
+}
+
 func AddTrackToUserQueue(trackId string) {
 	UserQueue.AddTrackID(trackId, false)
 
@@ -42,6 +50,7 @@ func AddTrackToUserQueue(trackId string) {
 }
 
 func PlayTrack(trackId string) error {
+	setLoadingState()
 	track, err := resolveTrack(trackId)
 	if err != nil {
 		return err
@@ -51,6 +60,7 @@ func PlayTrack(trackId string) error {
 }
 
 func PlayAlbum(albumId string, shuffle bool, skipUntil string) error {
+	setLoadingState()
 	tidal, err := injector.Inject[*tidalapi.TidalAPI]()
 	if err != nil {
 		return err
@@ -80,6 +90,7 @@ func PlayAlbum(albumId string, shuffle bool, skipUntil string) error {
 }
 
 func PlayPlaylist(playlistId string, shuffle bool, skipUntil string) error {
+	setLoadingState()
 	tidal, err := injector.Inject[*tidalapi.TidalAPI]()
 	if err != nil {
 		return err

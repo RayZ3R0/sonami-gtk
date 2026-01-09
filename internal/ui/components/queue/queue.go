@@ -27,6 +27,8 @@ var (
 	playPauseIcon = state.NewStateful("media-playback-start-symbolic")
 )
 
+var miniPlayerCanControl = state.NewStateful(false)
+
 var log = slog.With("module", "queue")
 
 func init() {
@@ -40,6 +42,10 @@ func init() {
 		schwifty.OnMainThreadOnce(func(u uintptr) {
 			userQueueState.SetValue(tracks)
 		}, 0)
+		return signals.Continue
+	})
+	player.ControllableStateChanged.On(func(cs player.ControllableState) bool {
+		miniPlayerCanControl.SetValue(cs.CanControl())
 		return signals.Continue
 	})
 }
@@ -74,7 +80,7 @@ func NewQueue() schwifty.Box {
 	player.PlaybackStateChanged.On(func(state *player.PlaybackState) bool {
 		schwifty.OnMainThreadOncePure(func() {
 			switch state.Status {
-			case player.PlaybackStatusBuffering, player.PlaybackStatusPaused:
+			case player.PlaybackStatusPaused, player.PlaybackStatusStopped:
 				playPauseIcon.SetValue("media-playback-start-symbolic")
 			case player.PlaybackStatusPlaying:
 				playPauseIcon.SetValue("media-playback-pause-symbolic")
@@ -82,6 +88,8 @@ func NewQueue() schwifty.Box {
 		})
 		return signals.Continue
 	})
+
+	var miniPlayerLoadingIconSub *signals.Subscription
 
 	return VStack(
 		HStack(
@@ -112,11 +120,29 @@ func NewQueue() schwifty.Box {
 					BindIconName(playPauseIcon).
 					ConnectClicked(func(b gtk.Button) {
 						player.PlayPause()
+					}).
+					BindSensitive(miniPlayerCanControl).
+					ConnectConstruct(func(b *gtk.Button) {
+						ptr := b.GoPointer()
+						miniPlayerLoadingIconSub = player.ControllableStateChanged.On(func(cs player.ControllableState) bool {
+							if !cs.PlayerReady {
+								schwifty.OnMainThreadOncePure(func() {
+									b := gtk.ButtonNewFromInternalPtr(ptr)
+									child := Spinner().ToGTK()
+									b.SetChild(child)
+								})
+							}
+							return signals.Continue
+						})
+					}).
+					ConnectDestroy(func(w gtk.Widget) {
+						player.ControllableStateChanged.Unsubscribe(miniPlayerLoadingIconSub)
 					}),
 				Button().
 					WithCSSClass("transparent").
 					IconName("media-skip-forward-symbolic").
-					ActionName("win.player.next"),
+					ActionName("win.player.next").
+					BindSensitive(miniPlayerCanControl),
 			).
 				Spacing(7).
 				HAlign(gtk.AlignEndValue).

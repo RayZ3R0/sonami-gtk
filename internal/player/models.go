@@ -19,10 +19,11 @@ const (
 type PlaybackStatus string
 
 const (
-	PlaybackStatusBuffering PlaybackStatus = "buffering"
-	PlaybackStatusPlaying   PlaybackStatus = "playing"
-	PlaybackStatusPaused    PlaybackStatus = "paused"
-	PlaybackStatusStopped   PlaybackStatus = "stopped"
+	PlaybackStatusLoadingTrack PlaybackStatus = "loading"
+	PlaybackStatusBuffering    PlaybackStatus = "buffering"
+	PlaybackStatusPlaying      PlaybackStatus = "playing"
+	PlaybackStatusPaused       PlaybackStatus = "paused"
+	PlaybackStatusStopped      PlaybackStatus = "stopped"
 )
 
 type PlaybackState struct {

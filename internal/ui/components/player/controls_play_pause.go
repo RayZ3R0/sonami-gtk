@@ -10,8 +10,7 @@ import (
 )
 
 var (
-	playPauseIconState      = state.NewStateful("media-playback-start-symbolic")
-	playPauseSensitiveState = state.NewStateful(true)
+	playPauseIconState = state.NewStateful("media-playback-start-symbolic")
 )
 
 func init() {
@@ -20,13 +19,8 @@ func init() {
 			switch state.Status {
 			case player.PlaybackStatusPlaying:
 				playPauseIconState.SetValue("media-playback-pause-symbolic")
-				playPauseSensitiveState.SetValue(true)
 			case player.PlaybackStatusPaused, player.PlaybackStatusStopped:
 				playPauseIconState.SetValue("media-playback-start-symbolic")
-				playPauseSensitiveState.SetValue(true)
-			default:
-				playPauseIconState.SetValue("media-playback-start-symbolic")
-				playPauseSensitiveState.SetValue(false)
 			}
 		})
 
@@ -35,15 +29,32 @@ func init() {
 }
 
 func controlsPlayPause() schwifty.Button {
+	var controllableStateSub *signals.Subscription
 	return Button().
 		IconName(playPauseIconState.Value()).
 		BindIconName(playPauseIconState).
-		BindSensitive(playPauseSensitiveState).
+		BindSensitive(isControllable).
 		CornerRadius(21).
 		HPadding(32).
 		VPadding(9).
 		CSS(`button:not(:hover) { background-color: var(--accent-bg-color); }`).
 		ConnectClicked(func(b gtk.Button) {
 			player.PlayPause()
+		}).
+		ConnectConstruct(func(b *gtk.Button) {
+			ptr := b.GoPointer()
+			controllableStateSub = player.ControllableStateChanged.On(func(cs player.ControllableState) bool {
+				b := gtk.ButtonNewFromInternalPtr(ptr)
+				schwifty.OnMainThreadOncePure(func() {
+					if !cs.PlayerReady {
+						child := Spinner().ToGTK()
+						b.SetChild(child)
+					}
+				})
+				return signals.Continue
+			})
+		}).
+		ConnectDestroy(func(w gtk.Widget) {
+			player.ControllableStateChanged.Unsubscribe(controllableStateSub)
 		})
 }

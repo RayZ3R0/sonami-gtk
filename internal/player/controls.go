@@ -4,8 +4,46 @@ import (
 	"math"
 	"time"
 
+	"codeberg.org/dergs/tidalwave/internal/signals"
 	"github.com/go-gst/go-gst/gst"
 )
+
+type ControllableState struct {
+	HasTrack    bool
+	PlayerReady bool
+}
+
+func (cs *ControllableState) CanControl() bool {
+	return cs.HasTrack && cs.PlayerReady
+}
+
+func init() {
+	PlaybackStateChanged.On(func(ps *PlaybackState) bool {
+		playerReady := ps.Status != PlaybackStatusBuffering &&
+			ps.Status != PlaybackStatusLoadingTrack
+
+		if playerReady != ControllableStateChanged.CurrentValue().PlayerReady {
+			ControllableStateChanged.Notify(func(oldValue ControllableState) ControllableState {
+				oldValue.PlayerReady = playerReady
+				return oldValue
+			})
+		}
+
+		return signals.Continue
+	})
+
+	TrackChanged.On(func(newTrack *Track) bool {
+		hasTrack := newTrack != nil
+		if hasTrack != ControllableStateChanged.CurrentValue().HasTrack {
+			ControllableStateChanged.Notify(func(oldValue ControllableState) ControllableState {
+				oldValue.HasTrack = hasTrack
+				return oldValue
+			})
+		}
+
+		return signals.Continue
+	})
+}
 
 func CycleRepeatMode() {
 	switch RepeatModeChanged.CurrentValue() {

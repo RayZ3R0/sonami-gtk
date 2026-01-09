@@ -20,9 +20,16 @@ var trackID = ""
 var (
 	playbackQualityText  = state.NewStateful("High")
 	playbackQualityClass = state.NewStateful("high")
+
+	isControllable = state.NewStateful(false)
 )
 
 func init() {
+	player.ControllableStateChanged.On(func(cs player.ControllableState) bool {
+		isControllable.SetValue(cs.CanControl())
+		return signals.Continue
+	})
+
 	player.TrackChanged.On(func(trackInfo *player.Track) bool {
 		if trackInfo == nil {
 			trackID = ""
@@ -116,6 +123,7 @@ func NewPlayer() schwifty.Box {
 				WithCSSClass("transparent").
 				ActionName("win.player.shuffle"),
 			Button().
+				BindSensitive(isControllable).
 				IconName("media-seek-backward-symbolic").
 				MinHeight(34).
 				MinWidth(34).
@@ -123,6 +131,7 @@ func NewPlayer() schwifty.Box {
 				ActionName("win.player.previous"),
 			controlsPlayPause(),
 			Button().
+				BindSensitive(isControllable).
 				IconName("media-seek-forward-symbolic").
 				MinHeight(34).
 				MinWidth(34).

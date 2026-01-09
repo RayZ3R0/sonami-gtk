@@ -10,8 +10,10 @@ import (
 	"codeberg.org/dergs/tidalwave/internal/player"
 	"codeberg.org/dergs/tidalwave/internal/resources"
 	"codeberg.org/dergs/tidalwave/internal/router"
+	"codeberg.org/dergs/tidalwave/internal/signals"
 	"codeberg.org/dergs/tidalwave/internal/ui/components/tracklist"
 	"codeberg.org/dergs/tidalwave/pkg/schwifty"
+	"codeberg.org/dergs/tidalwave/pkg/schwifty/state"
 	. "codeberg.org/dergs/tidalwave/pkg/schwifty/syntax"
 	"codeberg.org/dergs/tidalwave/pkg/tidalapi"
 	"codeberg.org/dergs/tidalwave/pkg/tidalapi/models/openapi"
@@ -21,8 +23,16 @@ import (
 	"github.com/jwijenbergh/puregotk/v4/gtk"
 )
 
+var canPlayAlbumState = state.NewStateful(false)
+
 func init() {
 	router.Register("album/:id", Album)
+	player.ControllableStateChanged.On(func(cs player.ControllableState) bool {
+		if v := cs.PlayerReady; v != canPlayAlbumState.Value() {
+			canPlayAlbumState.SetValue(v)
+		}
+		return signals.Continue
+	})
 }
 
 func Album(albumId string) *router.Response {
@@ -110,7 +120,8 @@ func Album(albumId string) *router.Response {
 						Padding(9).
 						ConnectClicked(func(b gtk.Button) {
 							go player.PlayAlbum(albumId, true, "")
-						}),
+						}).
+						BindSensitive(canPlayAlbumState),
 					Button().
 						IconName("media-playback-start-symbolic").
 						MinWidth(81).
@@ -127,7 +138,8 @@ func Album(albumId string) *router.Response {
 						`).
 						ConnectClicked(func(b gtk.Button) {
 							go player.PlayAlbum(albumId, false, "")
-						}),
+						}).
+						BindSensitive(canPlayAlbumState),
 				).
 					VAlign(gtk.AlignCenterValue).
 					Spacing(5),
