@@ -33,7 +33,7 @@ func NewLegacyPlaylist(playlist *v2.PlaylistItemData) schwifty.Button {
 func NewPlaylist(playlist *openapi.Playlist) schwifty.Button {
 	coverUrl := ""
 	for _, artwork := range playlist.Included.PlainArtworks(playlist.Data.Relationships.CoverArt.Data...) {
-		coverUrl = artwork.Attributes.Files.AtLeast(320).Href
+		coverUrl = artwork.Attributes.Files.AtLeast(160).Href
 		break
 	}
 	creator := "TIDAL"
