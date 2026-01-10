@@ -11,7 +11,7 @@ import (
 	"github.com/jwijenbergh/puregotk/v4/glib"
 )
 
-func newArtist(id string, name string, coverUrl string) schwifty.Button {
+func NewArtistGeneric(id string, name string, coverUrl string) schwifty.Button {
 	return Card(
 		name,
 		HStack(),
@@ -20,7 +20,7 @@ func newArtist(id string, name string, coverUrl string) schwifty.Button {
 }
 
 func NewLegacyArtist(artist *v2.ArtistItemData) schwifty.Button {
-	return newArtist(strconv.Itoa(artist.Id), artist.Name, tidalapi.ImageURL(artist.Picture))
+	return NewArtistGeneric(strconv.Itoa(artist.Id), artist.Name, tidalapi.ImageURL(artist.Picture))
 }
 
 func NewArtist(artist *openapi.Artist) schwifty.Button {
@@ -29,5 +29,5 @@ func NewArtist(artist *openapi.Artist) schwifty.Button {
 		coverUrl = artwork.Attributes.Files.AtLeast(160).Href
 		break
 	}
-	return newArtist(artist.Data.ID, artist.Data.Attributes.Name, coverUrl)
+	return NewArtistGeneric(artist.Data.ID, artist.Data.Attributes.Name, coverUrl)
 }

@@ -7,7 +7,11 @@ import (
 )
 
 func ImageURL(id string) string {
-	return "https://resources.tidal.com/images/" + strings.ReplaceAll(id, "-", "/") + "/160x160.jpg"
+	return ImageURLWithSize(id, 160, 160)
+}
+
+func ImageURLWithSize(id string, width int, height int) string {
+	return fmt.Sprintf("https://resources.tidal.com/images/%s/%dx%d.jpg", strings.ReplaceAll(id, "-", "/"), width, height)
 }
 
 func FormatDuration(duration time.Duration) string {

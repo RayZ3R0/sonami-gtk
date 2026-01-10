@@ -31,3 +31,17 @@ func NewShortcut(title string, subtitle string, coverUrl string) schwifty.Button
 		MinWidth(300).
 		PaddingStart(15).PaddingEnd(5).VPadding(5)
 }
+
+func NewTextShortcut(title string, subtitle string) schwifty.Button {
+	return Button().
+		Child(
+			HStack(
+				VStack(
+					Label(title).HAlign(gtk.AlignCenterValue).FontWeight(600).FontSize(16),
+					Label(subtitle).HAlign(gtk.AlignCenterValue).Visible(subtitle != "").FontSize(14).FontWeight(500).Color("#939393"),
+				).HAlign(gtk.AlignCenterValue).VAlign(gtk.AlignCenterValue).HExpand(true),
+			),
+		).
+		HExpand(true).
+		PaddingStart(15).PaddingEnd(15).VPadding(5)
+}

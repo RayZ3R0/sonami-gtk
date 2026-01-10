@@ -13,7 +13,7 @@ import (
 	"github.com/jwijenbergh/puregotk/v4/glib"
 )
 
-func newAlbum(id string, title string, artists string, year string, coverUrl string) schwifty.Button {
+func NewAlbumGeneric(id string, title string, artists string, year string, coverUrl string) schwifty.Button {
 	return Card(
 		title,
 		VStack(
@@ -31,7 +31,7 @@ func NewLegacyAlbum(album *v2.AlbumItemData) schwifty.Button {
 	}
 	releaseDate, _ := time.Parse(time.DateOnly, album.ReleaseDate)
 
-	return newAlbum(strconv.Itoa(album.Id), album.Title, strings.Join(artists, ", "), releaseDate.Format("2006"), tidalapi.ImageURL(album.Cover))
+	return NewAlbumGeneric(strconv.Itoa(album.Id), album.Title, strings.Join(artists, ", "), releaseDate.Format("2006"), tidalapi.ImageURL(album.Cover))
 }
 
 func NewAlbum(album *openapi.Album) schwifty.Button {
@@ -44,5 +44,5 @@ func NewAlbum(album *openapi.Album) schwifty.Button {
 	for _, artist := range album.Included.PlainArtists(album.Data.Relationships.Artists.Data...) {
 		artists = append(artists, artist.Attributes.Name)
 	}
-	return newAlbum(album.Data.ID, album.Data.Attributes.Title, strings.Join(artists, ", "), album.Data.Attributes.ReleaseDate.Format("2006"), coverUrl)
+	return NewAlbumGeneric(album.Data.ID, album.Data.Attributes.Title, strings.Join(artists, ", "), album.Data.Attributes.ReleaseDate.Format("2006"), coverUrl)
 }

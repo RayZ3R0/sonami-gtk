@@ -11,7 +11,7 @@ import (
 	"github.com/jwijenbergh/puregotk/v4/glib"
 )
 
-func newPlaylist(id string, title string, creator string, itemCount int, coverUrl string) schwifty.Button {
+func NewPlaylistGeneric(id string, title string, creator string, itemCount int, coverUrl string) schwifty.Button {
 	return Card(
 		title,
 		VStack(
@@ -27,7 +27,7 @@ func NewLegacyPlaylist(playlist *v2.PlaylistItemData) schwifty.Button {
 	if playlist.Creator.Name != "" {
 		creator = playlist.Creator.Name
 	}
-	return newPlaylist(playlist.UUID, playlist.Title, creator, playlist.NumberOfTracks, tidalapi.ImageURL(playlist.SquareImage))
+	return NewPlaylistGeneric(playlist.UUID, playlist.Title, creator, playlist.NumberOfTracks, tidalapi.ImageURL(playlist.SquareImage))
 }
 
 func NewPlaylist(playlist *openapi.Playlist) schwifty.Button {
@@ -41,5 +41,5 @@ func NewPlaylist(playlist *openapi.Playlist) schwifty.Button {
 		creator = profile.Attributes.Name
 		break
 	}
-	return newPlaylist(playlist.Data.ID, playlist.Data.Attributes.Name, creator, playlist.Data.Attributes.NumberOfItems, coverUrl)
+	return NewPlaylistGeneric(playlist.Data.ID, playlist.Data.Attributes.Name, creator, playlist.Data.Attributes.NumberOfItems, coverUrl)
 }

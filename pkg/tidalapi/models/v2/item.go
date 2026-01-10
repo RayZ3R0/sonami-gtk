@@ -170,18 +170,22 @@ type PlaylistItemData struct {
 }
 
 type TrackItemData struct {
-	Album struct {
-		Cover string `json:"cover"`
-		ID    int    `json:"id"`
-		Title string `json:"title"`
-	}
-	Artists []struct {
-		ID   int    `json:"id"`
-		Name string `json:"name,omitempty"`
-	} `json:"artists"`
-	Duration int `json:"duration"`
+	Album    TrackItemDataAlbum
+	Artists  []TrackItemDataArtist `json:"artists"`
+	Duration int                   `json:"duration"`
 	// In UI terms: Indicates whether the track has been "heart"-ed
 	Following bool   `json:"following"`
 	ID        int    `json:"id"`
 	Title     string `json:"title"`
+}
+
+type TrackItemDataAlbum struct {
+	Cover string `json:"cover"`
+	ID    int    `json:"id"`
+	Title string `json:"title"`
+}
+
+type TrackItemDataArtist struct {
+	ID   int    `json:"id"`
+	Name string `json:"name,omitempty"`
 }
