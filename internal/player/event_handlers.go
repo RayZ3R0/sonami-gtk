@@ -49,6 +49,9 @@ func onAboutToFinish(_ *gst.Element) {
 
 func onBusMessage(msg *gst.Message) bool {
 	switch msg.Type() {
+	case gst.MessageError:
+		err := msg.ParseError()
+		logger.Error("playback failed", "code", err.Code(), "message", err.Message(), "error", err.Error(), "debug", err.DebugString())
 	case gst.MessageStreamStart:
 		startUpdateRunner()
 		// A hack to trigger the correct track updates with gapless playback
