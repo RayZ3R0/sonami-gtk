@@ -52,7 +52,7 @@ func (w *Window) buildContentHeader() *gtk.Widget {
 
 	router.NavigationStarted.On(func(path string) bool {
 		schwifty.OnMainThreadOnce(func(u uintptr) {
-			headerbar.SetTitleWidget(nil)
+			headerbar.SetTitleWidget(&defaultToolbar.Widget)
 		}, 0)
 		return signals.Continue
 	})
