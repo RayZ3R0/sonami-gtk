@@ -198,34 +198,10 @@ func parseLRCLyrics(lyrics string, trackInfo *player.Track) (lines []any) {
 			lyricText = strings.TrimSpace(matches[2])
 		}
 
-		var classListener string
-
-		boxWidget := lyricLine(lyricText, lyricTiming{
-			timed:     true,
+		boxWidget := lyricLine(lyricText, &lyricTiming{
 			timeStart: timeStart,
 			timeEnd:   timeEnd,
-		}).
-			WithCSSClass("timed").
-			ConnectConstruct(func(b *gtk.Button) {
-				ptr := b.GoPointer()
-				classListener = activeLyricIndex.AddCallback(func(newValue uintptr) {
-					widget := gtk.ButtonNewFromInternalPtr(ptr)
-					schwifty.OnMainThreadOncePure(func() {
-						if newValue == ptr {
-							widget.AddCssClass("active")
-						} else {
-							widget.RemoveCssClass("active")
-						}
-					})
-				})
-			}).
-			ConnectDestroy(func(w gtk.Widget) {
-				activeLyricIndex.RemoveCallback(classListener)
-			}).
-			ConnectClicked(func(gtk.Button) {
-				userManuallyScrolled.SetValue(false)
-				player.SeekToPosition(timeStart)
-			})()
+		})()
 
 		lines = append(lines, boxWidget)
 
@@ -297,7 +273,7 @@ func parseUntimedLyrics(lyrics string) (lines []any) {
 			continue
 		}
 
-		boxWidget := lyricLine(lyricText, lyricTiming{timed: false})()
+		boxWidget := lyricLine(lyricText, nil)()
 		lines = append(lines, boxWidget)
 	}
 
