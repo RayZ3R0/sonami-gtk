@@ -53,19 +53,39 @@ func init() {
 func NewQueue() schwifty.Box {
 	trackList := tracklist.NewTrackList(
 		tracklist.GroupedColumn(3, gtk.AlignStartValue, tracklist.CoverColumn, tracklist.TitleAlbumColumn),
-		tracklist.GroupedColumn(1, gtk.AlignEndValue, tracklist.DurationColumn),
-		tracklist.ExpandCustomButtonColumn(0, func(_ string, position, _ int) {
+		tracklist.ExpandCustomButtonColumn(2, func(_ string, position, _ int) {
 			go player.SkipThoughQueue(player.UserQueue, position)
 		}),
+		tracklist.GroupedColumn(1, gtk.AlignCenterValue,
+			tracklist.CustomWidgetButtonColumn(func(_ string, position, _ int) *gtk.Widget {
+				return Button().
+					IconName("user-trash-symbolic").
+					WithCSSClass("transparent").
+					ConnectClicked(func(b gtk.Button) {
+						go player.UserQueue.Remove(position)
+					}).
+					ToGTK()
+			}),
+		),
 	)
 	trackList.BindTracks(userQueueState)
 
 	trackListBase := tracklist.NewTrackList(
 		tracklist.GroupedColumn(3, gtk.AlignStartValue, tracklist.CoverColumn, tracklist.TitleAlbumColumn),
-		tracklist.GroupedColumn(1, gtk.AlignEndValue, tracklist.DurationColumn),
-		tracklist.ExpandCustomButtonColumn(0, func(_ string, position, _ int) {
+		tracklist.ExpandCustomButtonColumn(2, func(_ string, position, _ int) {
 			go player.SkipThoughQueue(player.BaseQueue, position)
 		}),
+		tracklist.GroupedColumn(1, gtk.AlignCenterValue,
+			tracklist.CustomWidgetButtonColumn(func(_ string, position, _ int) *gtk.Widget {
+				return Button().
+					IconName("user-trash-symbolic").
+					WithCSSClass("transparent").
+					ConnectClicked(func(b gtk.Button) {
+						go player.BaseQueue.Remove(position)
+					}).
+					ToGTK()
+			}),
+		),
 	)
 	trackListBase.BindTracks(baseQueueState)
 

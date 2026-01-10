@@ -78,6 +78,20 @@ func (q *Queue) Pop() *openapi.Track {
 	return nextTrack
 }
 
+func (q *Queue) Remove(index int) {
+	q.Lock()
+	defer q.Unlock()
+
+	upcomingTracks := q.UpcomingEntries.CurrentValue()
+	if index < 0 || index >= len(upcomingTracks) {
+		return
+	}
+
+	q.UpcomingEntries.Notify(func(oldValue []*openapi.Track) []*openapi.Track {
+		return append(oldValue[:index], oldValue[index+1:]...)
+	})
+}
+
 func (q *Queue) SetTracks(tracks []*openapi.Track) {
 	q.Lock()
 	defer q.Unlock()

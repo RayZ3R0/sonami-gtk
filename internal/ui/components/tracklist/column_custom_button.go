@@ -27,9 +27,31 @@ func customButtonColumn(trackId string, grid *gtk.Grid, position int, column int
 	return 1
 }
 
+func customWidgetButtonColumn(trackId string, grid *gtk.Grid, position int, column int, button func(trackID string, position, column int) *gtk.Widget) int {
+	grid.Attach(
+		HStack(
+			button(trackId, position, column),
+		).
+			HAlign(gtk.AlignCenterValue).
+			VAlign(gtk.AlignCenterValue).
+			ToGTK(),
+		column,
+		0,
+		1,
+		1,
+	)
+	return 1
+}
+
 func CustomButtonColumn(onClick buttonColumnCallback) ColumnFunc[*openapi.Track] {
 	return func(track *openapi.Track, grid *gtk.Grid, position int, column int) int {
 		return customButtonColumn(track.Data.ID, grid, position, column, onClick)
+	}
+}
+
+func CustomWidgetButtonColumn(button func(string, int, int) *gtk.Widget) ColumnFunc[*openapi.Track] {
+	return func(track *openapi.Track, grid *gtk.Grid, position int, column int) int {
+		return customWidgetButtonColumn(track.Data.ID, grid, position, column, button)
 	}
 }
 
