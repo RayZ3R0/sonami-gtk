@@ -117,7 +117,7 @@ func (w *Window) buildContentLayout() *gtk.Widget {
 func (w *Window) buildSidebarLayout() *gtk.Widget {
 	toolbarView := adw.NewToolbarView()
 	toolbarView.AddTopBar(w.buildSidebarHeader())
-	viewStack := w.buildSidebar()
+	viewStack := w.buildSidebar()()
 	toolbarView.SetContent(&viewStack.Widget)
 
 	toolbarView.AddBottomBar(CenterBox().

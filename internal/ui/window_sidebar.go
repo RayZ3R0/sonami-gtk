@@ -51,12 +51,11 @@ func (w *Window) buildSidebarHeader() *gtk.Widget {
 		ToGTK()
 }
 
-func (w *Window) buildSidebar() *adw.ViewStack {
-	viewStack := adw.NewViewStack()
-	viewStack.AddTitledWithIcon(player.NewPlayer().ToGTK(), "player", "Player", "music-note-outline-symbolic")
-	viewStack.AddTitledWithIcon(lyrics.NewLyricsPanel().ToGTK(), "lyrics", "Lyrics", "chat-bubble-text-symbolic")
-	viewStack.AddTitledWithIcon(queue.NewQueue().ToGTK(), "queue", "Queue", "music-queue-symbolic")
-	return viewStack
+func (w *Window) buildSidebar() schwifty.ViewStack {
+	return ViewStack().
+		AddTitledWithIcon(player.NewPlayer(), "player", "Player", "music-note-outline-symbolic").
+		AddTitledWithIcon(lyrics.NewLyricsPanel(), "lyrics", "Lyrics", "chat-bubble-text-symbolic").
+		AddTitledWithIcon(queue.NewQueue(), "queue", "Queue", "music-queue-symbolic")
 }
 
 func (w *Window) buildSidebarFooter(viewStack *adw.ViewStack) *gtk.Widget {
