@@ -2,6 +2,7 @@ package lyrics
 
 import (
 	"context"
+	"fmt"
 	"log/slog"
 	"regexp"
 	"runtime"
@@ -86,6 +87,7 @@ func parseTimestamp(timestamp string) (resTime time.Duration, ok bool) {
 }
 
 var activeLyricIndex = state.NewStateful[uintptr](0)
+var activeIndexChangeOnPlayerUpdate *signals.Subscription
 
 type highlightTiming struct {
 	Start, End time.Duration
@@ -124,24 +126,192 @@ func scrollToLyric(w *gtk.Button) {
 }
 
 func setNewIndex(timing highlightTiming) {
-	activeLyricIndex.SetValue(timing.Address)
+	ptr := timing.Address
 
-	if !userManuallyScrolled.Value() {
+	if activeLyricIndex.Value() != ptr {
+		activeLyricIndex.SetValue(ptr)
+	}
+
+	if !userManuallyScrolled.Value() && ptr != 0 {
 		schwifty.OnMainThreadOnce(func(uintptr) {
-			w := gtk.ButtonNewFromInternalPtr(timing.Address)
+			w := gtk.ButtonNewFromInternalPtr(ptr)
 			scrollToLyric(w)
 		}, 0)
 	}
 }
 
+func parseLRCLyrics(lyrics string, trackInfo *player.Track) (lines []any) {
+	// Handle lyrics with timings
+	// Remove timing tags and split into lines
+	timingRegex := regexp.MustCompile(`\[(\d{2}:\d{2}\.\d{2})\](.*)`)
+	splitLyrics := strings.Split(lyrics, "\n")
+	timings := []highlightTiming{}
+
+	for i, line := range splitLyrics {
+		// Skip empty lines
+		if strings.TrimSpace(line) == "" {
+			continue
+		}
+
+		matches := timingRegex.FindStringSubmatch(line)
+		if len(matches) < 3 {
+			continue
+		}
+
+		timestampStart := matches[1]
+		timeStart, _ := parseTimestamp(timestampStart)
+
+		var timeEnd time.Duration = trackInfo.Duration
+
+		if i+1 < len(splitLyrics) {
+			offset := 1
+			nextLineMatches := timingRegex.FindStringSubmatch(splitLyrics[i+offset])
+
+			for len(nextLineMatches) < 2 && i+offset+1 < len(splitLyrics) {
+				offset++
+				nextLineMatches = timingRegex.FindStringSubmatch(splitLyrics[i+offset])
+			}
+
+			if len(nextLineMatches) >= 2 {
+				timestampEnd := nextLineMatches[1]
+				timeEnd, _ = parseTimestamp(timestampEnd)
+			}
+		}
+
+		if matches[2] == "" {
+			timings = append(timings, highlightTiming{
+				Start:   timeStart,
+				End:     timeEnd,
+				Address: 0,
+			})
+
+			continue
+		}
+
+		lyricText := line
+		if len(matches) >= 3 {
+			// Extract just the lyric text, removing the timing
+			lyricText = strings.TrimSpace(matches[2])
+		}
+
+		var classListener string
+
+		boxWidget := lyricLine(lyricText, lyricTiming{
+			timed:     true,
+			timeStart: timeStart,
+			timeEnd:   timeEnd,
+		}).
+			WithCSSClass("timed").
+			ConnectConstruct(func(b *gtk.Button) {
+				ptr := b.GoPointer()
+				classListener = activeLyricIndex.AddCallback(func(newValue uintptr) {
+					widget := gtk.ButtonNewFromInternalPtr(ptr)
+					schwifty.OnMainThreadOncePure(func() {
+						if newValue == ptr {
+							widget.AddCssClass("active")
+						} else {
+							widget.RemoveCssClass("active")
+						}
+					})
+				})
+			}).
+			ConnectDestroy(func(w gtk.Widget) {
+				activeLyricIndex.RemoveCallback(classListener)
+			}).
+			ConnectClicked(func(gtk.Button) {
+				userManuallyScrolled.SetValue(false)
+				player.SeekToPosition(timeStart)
+			})()
+
+		lines = append(lines, boxWidget)
+
+		timings = append(timings, highlightTiming{
+			Start:   timeStart,
+			End:     timeEnd,
+			Address: boxWidget.GoPointer(),
+		})
+	}
+
+	activeIndexChangeOnPlayerUpdate = player.PlaybackStateChanged.On(func(state *player.PlaybackState) (next bool) {
+		next = signals.Continue
+		if state.Status != player.PlaybackStatusPlaying {
+			return
+		}
+
+		hasActive := false
+
+		for _, timing := range timings {
+			if state.Position > timing.End {
+				continue
+			}
+
+			if timing.Start <= state.Position {
+				if activeLyricIndex.Value() != timing.Address {
+					setNewIndex(timing)
+				}
+
+				hasActive = true
+				continue
+			}
+
+			if timing.Start <= state.Position+player.UpdateInterval {
+				logger.Debug("next lyric line scheduled", "timing", timing.Start-state.Position)
+				time.AfterFunc(timing.Start-state.Position, func() {
+					if activeLyricIndex.Value() != timing.Address {
+						setNewIndex(timing)
+					}
+				})
+
+				continue
+			}
+		}
+
+		if !hasActive && activeLyricIndex.Value() != 0 {
+			schwifty.OnMainThreadOncePure(func() {
+				activeLyricIndex.SetValue(0)
+			})
+		}
+
+		return
+	})
+
+	// Disallow user scrolling
+	schwifty.OnMainThreadOncePure(func() {
+		lyricsView().SetPolicy(gtk.PolicyNeverValue, gtk.PolicyExternalValue)
+	})
+
+	return
+}
+
+func parseUntimedLyrics(lyrics string) (lines []any) {
+	// Handle lyrics without timings
+	splitLyrics := strings.Split(lyrics, "\n")
+
+	for _, lyricText := range splitLyrics {
+		if lyricText == "" {
+			continue
+		}
+
+		boxWidget := lyricLine(lyricText, lyricTiming{timed: false})()
+		lines = append(lines, boxWidget)
+	}
+
+	// Allow user to scroll
+	schwifty.OnMainThreadOncePure(func() {
+		lyricsView().SetPolicy(gtk.PolicyNeverValue, gtk.PolicyAutomaticValue)
+	})
+
+	return
+}
+
 func init() {
-	var activeIndexChangeOnPlayerUpdate *signals.Subscription
+	activeLyricIndex.AddCallback(func(newValue uintptr) {
+		fmt.Println("new lyric ptr: ", newValue)
+	})
 
 	player.TrackChanged.On(func(trackInfo *player.Track) bool {
 		defer runtime.GC()
-		schwifty.OnMainThreadOncePure(func() {
-			activeLyricIndex.SetValue(0)
-		})
+		activeLyricIndex.SetValue(0)
 		player.PlaybackStateChanged.Unsubscribe(activeIndexChangeOnPlayerUpdate)
 		activeIndexChangeOnPlayerUpdate = nil
 
@@ -153,7 +323,7 @@ func init() {
 
 				lyricsList.SetValue(
 					HStack(
-						Label("No lyrics available").
+						Label("No song currently playing").
 							HAlign(gtk.AlignCenterValue).
 							VAlign(gtk.AlignCenterValue).
 							HExpand(true).
@@ -216,140 +386,9 @@ func init() {
 
 		lines := []any{}
 		if isTimestamped {
-			// Handle lyrics with timings
-			// Remove timing tags and split into lines
-			timingRegex := regexp.MustCompile(`\[(\d{2}:\d{2}\.\d{2})\](.*)`)
-			splitLyrics := strings.Split(lyrics, "\n")
-			timings := []highlightTiming{}
-
-			for i, line := range splitLyrics {
-				// Skip empty lines
-				if strings.TrimSpace(line) == "" {
-					continue
-				}
-
-				if ok, _ := regexp.MatchString(`^\[\d{2}:\d{2}\.\d{2}\]$`, line); ok {
-					continue
-				}
-
-				matches := timingRegex.FindStringSubmatch(line)
-				lyricText := line
-				timestampStart := matches[1]
-				if len(matches) >= 3 {
-					// Extract just the lyric text, removing the timing
-					lyricText = strings.TrimSpace(matches[2])
-				}
-				timeStart, _ := parseTimestamp(timestampStart)
-
-				var timeEnd time.Duration = trackInfo.Duration
-				if i+1 < len(splitLyrics) {
-					nextLineMatches := timingRegex.FindStringSubmatch(splitLyrics[i+1])
-					if len(nextLineMatches) >= 2 {
-						timestampEnd := nextLineMatches[1]
-						timeEnd, _ = parseTimestamp(timestampEnd)
-					}
-				}
-
-				var classListener string
-
-				boxWidget := lyricLine(lyricText, lyricTiming{
-					timed:     true,
-					timeStart: timeStart,
-					timeEnd:   timeEnd,
-				}).
-					WithCSSClass("timed").
-					ConnectConstruct(func(b *gtk.Button) {
-						ptr := b.GoPointer()
-						classListener = activeLyricIndex.AddCallback(func(newValue uintptr) {
-							widget := gtk.ButtonNewFromInternalPtr(ptr)
-							if newValue == ptr {
-								widget.AddCssClass("active")
-							} else {
-								widget.RemoveCssClass("active")
-							}
-						})
-					}).
-					ConnectDestroy(func(w gtk.Widget) {
-						activeLyricIndex.RemoveCallback(classListener)
-					}).
-					ConnectClicked(func(gtk.Button) {
-						userManuallyScrolled.SetValue(false)
-						player.SeekToPosition(timeStart)
-					})()
-
-				timings = append(timings, highlightTiming{
-					Start:   timeStart,
-					End:     timeEnd,
-					Address: boxWidget.GoPointer(),
-				})
-
-				lines = append(lines, boxWidget)
-			}
-
-			activeIndexChangeOnPlayerUpdate = player.PlaybackStateChanged.On(func(state *player.PlaybackState) (next bool) {
-				next = signals.Continue
-				if state.Status != player.PlaybackStatusPlaying {
-					return
-				}
-
-				hasActive := false
-
-				for _, timing := range timings {
-					if state.Position > timing.End {
-						continue
-					}
-
-					if timing.Start <= state.Position {
-						if activeLyricIndex.Value() != timing.Address {
-							setNewIndex(timing)
-						}
-
-						hasActive = true
-						continue
-					}
-
-					if timing.Start <= state.Position+player.UpdateInterval {
-						logger.Debug("next lyric line scheduled", "timing", timing.Start-state.Position)
-						time.AfterFunc(timing.Start-state.Position, func() {
-							if activeLyricIndex.Value() != timing.Address {
-								setNewIndex(timing)
-							}
-						})
-
-						continue
-					}
-				}
-
-				if !hasActive {
-					schwifty.OnMainThreadOncePure(func() {
-						activeLyricIndex.SetValue(0)
-					})
-				}
-
-				return
-			})
-
-			// Disallow user scrolling
-			schwifty.OnMainThreadOncePure(func() {
-				lyricsView().SetPolicy(gtk.PolicyNeverValue, gtk.PolicyExternalValue)
-			})
+			lines = parseLRCLyrics(lyrics, trackInfo)
 		} else {
-			// Handle lyrics without timings
-			splitLyrics := strings.Split(lyrics, "\n")
-
-			for _, lyricText := range splitLyrics {
-				if lyricText == "" {
-					continue
-				}
-
-				boxWidget := lyricLine(lyricText, lyricTiming{timed: false})()
-				lines = append(lines, boxWidget)
-			}
-
-			// Allow user to scroll
-			schwifty.OnMainThreadOncePure(func() {
-				lyricsView().SetPolicy(gtk.PolicyNeverValue, gtk.PolicyAutomaticValue)
-			})
+			lines = parseUntimedLyrics(lyrics)
 		}
 
 		schwifty.OnMainThreadOncePure(func() {
