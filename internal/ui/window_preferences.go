@@ -20,5 +20,35 @@ func (w *Window) PresentPreferences() {
 				Title("Background Activity").
 				Description("Configure the behaviour of Tidal Wave when running in the background."),
 		).Title("General"),
+		PreferencesPage(
+			PreferencesGroup(
+				SwitchRow().
+					Title("Allow Media Card Images").
+					Subtitle("Allow Tidal Wave to load images for media card buttons.").
+					ConnectConstruct(func(sr *adw.SwitchRow) {
+						settings.Performance().BindAllowMediaCardImages(&sr.Object, "active")
+					}),
+				SwitchRow().
+					Title("Allow Shortcut Images").
+					Subtitle("Allow Tidal Wave to load images for shortcut buttons.").
+					ConnectConstruct(func(sr *adw.SwitchRow) {
+						settings.Performance().BindAllowShortcutImages(&sr.Object, "active")
+					}),
+				SwitchRow().
+					Title("Allow Tracklist Images").
+					Subtitle("Allow Tidal Wave to load images for tracklists with the cover column.").
+					ConnectConstruct(func(sr *adw.SwitchRow) {
+						settings.Performance().BindAllowTracklistImages(&sr.Object, "active")
+					}),
+				SwitchRow().
+					Title("Cache Images").
+					Subtitle("Allow Tidal Wave to temporarily store images on the file system to improve performance and reduce network traffic.").
+					ConnectConstruct(func(sr *adw.SwitchRow) {
+						settings.Performance().BindCacheImages(&sr.Object, "active")
+					}),
+			).
+				Title("Images").
+				Description("Configure the behaviour of Tidal Wave regarding images."),
+		).Title("Performance"),
 	).Present(w)
 }

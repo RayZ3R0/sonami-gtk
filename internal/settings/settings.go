@@ -15,6 +15,12 @@ var General = g.Lazy(func() *GeneralSettings {
 	}
 })
 
+var Performance = g.Lazy(func() *PerformanceSettings {
+	return &PerformanceSettings{
+		finalize(gio.NewSettings("org.codeberg.dergs.tidalwave.performance")),
+	}
+})
+
 func PlayerSettings() *Player {
 	return &Player{
 		finalize(gio.NewSettings("org.codeberg.dergs.tidalwave.player")),

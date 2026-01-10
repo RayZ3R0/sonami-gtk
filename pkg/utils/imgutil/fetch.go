@@ -6,12 +6,14 @@ import (
 	"fmt"
 	"io"
 	"net/http"
+
+	"codeberg.org/dergs/tidalwave/internal/settings"
 )
 
 func (i *ImgUtil) fetch(url string) ([]byte, error) {
 	hash := sha256.Sum256([]byte(url))
 	key := base64.StdEncoding.EncodeToString(hash[:])
-	if i.cache.Has(key) {
+	if i.cache.Has(key) && settings.Performance().ShouldCacheImages() {
 		return i.cache.Retrieve(key)
 	}
 
@@ -30,6 +32,9 @@ func (i *ImgUtil) fetch(url string) ([]byte, error) {
 		return nil, err
 	}
 
-	i.cache.Store(key, data)
+	if settings.Performance().ShouldCacheImages() {
+		i.cache.Store(key, data)
+	}
+
 	return data, nil
 }

@@ -2,6 +2,7 @@ package shortcut_list
 
 import (
 	"codeberg.org/dergs/tidalwave/internal/resources"
+	"codeberg.org/dergs/tidalwave/internal/settings"
 	"codeberg.org/dergs/tidalwave/pkg/schwifty"
 	. "codeberg.org/dergs/tidalwave/pkg/schwifty/syntax"
 	"codeberg.org/dergs/tidalwave/pkg/utils/imgutil"
@@ -22,7 +23,9 @@ func NewShortcut(title string, subtitle string, coverUrl string) schwifty.Button
 						PixelSize(54).
 						FromPaintable(resources.MissingAlbum()).
 						ConnectConstruct(func(i *gtk.Image) {
-							injector.MustInject[*imgutil.ImgUtil]().LoadIntoImage(coverUrl, i)
+							if settings.Performance().AllowShortcutImages() {
+								injector.MustInject[*imgutil.ImgUtil]().LoadIntoImage(coverUrl, i)
+							}
 						}),
 				).CornerRadius(10).Overflow(gtk.OverflowHiddenValue).HAlign(gtk.AlignEndValue).MarginStart(10),
 			),

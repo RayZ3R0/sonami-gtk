@@ -2,6 +2,7 @@ package tracklist
 
 import (
 	"codeberg.org/dergs/tidalwave/internal/resources"
+	"codeberg.org/dergs/tidalwave/internal/settings"
 	. "codeberg.org/dergs/tidalwave/pkg/schwifty/syntax"
 	"codeberg.org/dergs/tidalwave/pkg/tidalapi"
 	"codeberg.org/dergs/tidalwave/pkg/tidalapi/models/openapi"
@@ -23,7 +24,9 @@ func coverColumn(url string, grid *gtk.Grid, position int, column int) int {
 			HAlign(gtk.AlignStartValue).
 			Overflow(gtk.OverflowHiddenValue).
 			ConnectConstruct(func(i *gtk.Image) {
-				injector.MustInject[*imgutil.ImgUtil]().LoadIntoImage(url, i)
+				if settings.Performance().AllowTracklistImages() {
+					injector.MustInject[*imgutil.ImgUtil]().LoadIntoImage(url, i)
+				}
 			}).ToGTK(),
 		column,
 		0,

@@ -2,6 +2,7 @@ package media_card
 
 import (
 	"codeberg.org/dergs/tidalwave/internal/resources"
+	"codeberg.org/dergs/tidalwave/internal/settings"
 	"codeberg.org/dergs/tidalwave/pkg/schwifty"
 	. "codeberg.org/dergs/tidalwave/pkg/schwifty/syntax"
 	"codeberg.org/dergs/tidalwave/pkg/utils/imgutil"
@@ -28,7 +29,9 @@ func Card[T any](title string, subTitle schwifty.Widgetable[T], coverUrl string)
 					PixelSize(172).
 					FromPaintable(resources.MissingAlbum()).
 					ConnectConstruct(func(i *gtk.Image) {
-						injector.MustInject[*imgutil.ImgUtil]().LoadIntoImage(coverUrl, i)
+						if settings.Performance().AllowMediaCardImages() {
+							injector.MustInject[*imgutil.ImgUtil]().LoadIntoImage(coverUrl, i)
+						}
 					}).CornerRadius(10).Overflow(gtk.OverflowHiddenValue),
 				Label(title).
 					FontSize(16).
