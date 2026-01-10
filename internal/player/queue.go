@@ -73,24 +73,7 @@ func (q *Queue) Peek() *openapi.Track {
 }
 
 func (q *Queue) Pop() *openapi.Track {
-	q.Lock()
-	defer q.Unlock()
-
-	upcomingTracks := q.UpcomingEntries.CurrentValue()
-	if len(upcomingTracks) == 0 {
-		return nil
-	}
-
-	nextTrack := upcomingTracks[0]
-	q.UpcomingEntries.Notify(func(oldValue []*openapi.Track) []*openapi.Track {
-		return oldValue[1:]
-	})
-
-	if q.shouldTrackPastEntries {
-		q.PastEntries.Notify(func(oldValue []*openapi.Track) []*openapi.Track {
-			return append(oldValue, nextTrack)
-		})
-	}
+	_, nextTrack, _ := q.Skip(1)
 
 	return nextTrack
 }
@@ -102,6 +85,50 @@ func (q *Queue) SetTracks(tracks []*openapi.Track) {
 	q.UpcomingEntries.Notify(func(oldValue []*openapi.Track) []*openapi.Track {
 		return tracks
 	})
+}
+
+func (q *Queue) Skip(count int) (ok bool, current *openapi.Track, skipped []*openapi.Track) {
+	q.Lock()
+	defer q.Unlock()
+
+	upcomingTracks := q.UpcomingEntries.CurrentValue()
+
+	if count <= 0 || count > len(upcomingTracks) {
+		return false, nil, nil
+	}
+
+	current = upcomingTracks[count-1]
+
+	q.UpcomingEntries.Notify(func(oldValue []*openapi.Track) []*openapi.Track {
+		return oldValue[count:]
+	})
+
+	newHistoryElements := upcomingTracks[:count]
+
+	if q.shouldTrackPastEntries {
+		q.PastEntries.Notify(func(oldValue []*openapi.Track) []*openapi.Track {
+			return append(oldValue, newHistoryElements...)
+		})
+	}
+
+	skipped = newHistoryElements[:len(newHistoryElements)-1]
+	ok = true
+	return
+}
+
+func SkipThoughQueue(queue *Queue, to int) {
+	go func() {
+		setLoadingState()
+		if ok, toPlay, historyElements := BaseQueue.Skip(to + 1); ok {
+			playTrack(toPlay)
+
+			for _, track := range historyElements {
+				history.Push(&HistoryEntry{track.Data.ID})
+			}
+
+			history.Push(&HistoryEntry{toPlay.Data.ID})
+		}
+	}()
 }
 
 func newQueue(logger *slog.Logger, shouldTrackPastEntries bool) *Queue {

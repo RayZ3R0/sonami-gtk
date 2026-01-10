@@ -67,7 +67,7 @@ func Playlist(playlistUUID string) *router.Response {
 	list := tracklist.NewTrackList(
 		tracklist.GroupedColumn(3, gtk.AlignStartValue, tracklist.CoverColumn, tracklist.TitleAlbumColumn),
 		tracklist.ArtistsColumn,
-		tracklist.ExpandCustomButtonColumn(2, func(trackId string) {
+		tracklist.ExpandCustomButtonColumn(2, func(trackId string, _, _ int) {
 			go player.PlayPlaylist(playlistUUID, false, trackId)
 		}),
 		tracklist.GroupedColumn(1, gtk.AlignEndValue, tracklist.DurationColumn, tracklist.ControlsColumn),

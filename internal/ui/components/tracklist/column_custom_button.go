@@ -9,11 +9,13 @@ import (
 	"github.com/jwijenbergh/puregotk/v4/gtk"
 )
 
-func customButtonColumn(trackId string, grid *gtk.Grid, position int, column int, onClick func(trackId string)) int {
+type buttonColumnCallback func(trackID string, position, column int)
+
+func customButtonColumn(trackId string, grid *gtk.Grid, position int, column int, onClick buttonColumnCallback) int {
 	grid.Attach(
 		Button().
 			ConnectClicked(func(b gtk.Button) {
-				onClick(trackId)
+				onClick(trackId, position, column)
 			}).
 			WithCSSClass("transparent").
 			ToGTK(),
@@ -25,25 +27,25 @@ func customButtonColumn(trackId string, grid *gtk.Grid, position int, column int
 	return 1
 }
 
-func CustomButtonColumn(onClick func(trackId string)) ColumnFunc[*openapi.Track] {
+func CustomButtonColumn(onClick buttonColumnCallback) ColumnFunc[*openapi.Track] {
 	return func(track *openapi.Track, grid *gtk.Grid, position int, column int) int {
 		return customButtonColumn(track.Data.ID, grid, position, column, onClick)
 	}
 }
 
-func LegacyCustomButtonColumn(onClick func(trackId string)) ColumnFunc[*v2.TrackItemData] {
+func LegacyCustomButtonColumn(onClick buttonColumnCallback) ColumnFunc[*v2.TrackItemData] {
 	return func(track *v2.TrackItemData, grid *gtk.Grid, position int, column int) int {
 		return customButtonColumn(strconv.Itoa(track.ID), grid, position, column, onClick)
 	}
 }
 
-func ExpandCustomButtonColumn(additionalWidth int, onClick func(trackId string)) ColumnFunc[*openapi.Track] {
+func ExpandCustomButtonColumn(additionalWidth int, onClick buttonColumnCallback) ColumnFunc[*openapi.Track] {
 	return func(track *openapi.Track, grid *gtk.Grid, position, column int) int {
 		return CustomButtonColumn(onClick)(track, grid, position, column+additionalWidth)
 	}
 }
 
-func LegacyExpandCustomButtonColumn(additionalWidth int, onClick func(trackId string)) ColumnFunc[*v2.TrackItemData] {
+func LegacyExpandCustomButtonColumn(additionalWidth int, onClick buttonColumnCallback) ColumnFunc[*v2.TrackItemData] {
 	return func(track *v2.TrackItemData, grid *gtk.Grid, position int, column int) int {
 		return LegacyCustomButtonColumn(onClick)(track, grid, position, column+additionalWidth)
 	}
