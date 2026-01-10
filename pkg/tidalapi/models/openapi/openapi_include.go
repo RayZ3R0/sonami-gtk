@@ -2,7 +2,6 @@ package openapi
 
 import (
 	"encoding/json"
-	"slices"
 )
 
 type ObjectType string
@@ -22,17 +21,12 @@ func (i *IncludedObject) UnmarshalJSON(b []byte) error {
 }
 
 func (i IncludedObjects) FromRelationships(relationships []Relationship, t string) IncludedObjects {
-	var ids []string
-	for _, rel := range relationships {
-		ids = append(ids, rel.ID)
-	}
-
-	var seenIds = []string{}
-	var included IncludedObjects
-	for _, obj := range i {
-		if slices.Contains(ids, obj.ID) && (obj.Type == t || t == "") && !slices.Contains(seenIds, obj.ID) {
-			included = append(included, obj)
-			seenIds = append(seenIds, obj.ID)
+	included := make(IncludedObjects, len(relationships))
+	for index, rel := range relationships {
+		for _, obj := range i {
+			if obj.ID == rel.ID && (obj.Type == t || t == "") {
+				included[index] = obj
+			}
 		}
 	}
 	return included
