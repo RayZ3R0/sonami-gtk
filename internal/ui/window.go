@@ -7,7 +7,7 @@ import (
 	"codeberg.org/dergs/tidalwave/internal/settings"
 	"codeberg.org/dergs/tidalwave/internal/signals"
 	"codeberg.org/dergs/tidalwave/pkg/schwifty"
-	"codeberg.org/dergs/tidalwave/pkg/schwifty/syntax"
+	. "codeberg.org/dergs/tidalwave/pkg/schwifty/syntax"
 	"github.com/infinytum/injector"
 	"github.com/jwijenbergh/puregotk/v4/adw"
 	"github.com/jwijenbergh/puregotk/v4/gio"
@@ -23,7 +23,7 @@ type Window struct {
 }
 
 var loadingView = g.Lazy(func() *gtk.Widget {
-	widget := syntax.Clamp().MaximumSize(50).Child(syntax.Spinner()).ToGTK()
+	widget := Clamp().MaximumSize(50).Child(Spinner()).ToGTK()
 	widget.Ref()
 	return widget
 })
@@ -120,14 +120,9 @@ func (w *Window) buildSidebarLayout() *gtk.Widget {
 	viewStack := w.buildSidebar()
 	toolbarView.SetContent(&viewStack.Widget)
 
-	box := gtk.NewCenterBox()
-	box.SetCenterWidget(w.buildSidebarFooter(viewStack))
-	box.SetMarginBottom(6)
-	box.SetMarginStart(7)
-	box.SetMarginEnd(7)
-	box.SetMarginTop(6)
-
-	toolbarView.AddBottomBar(&box.Widget)
+	toolbarView.AddBottomBar(CenterBox().
+		CenterWidget(w.buildSidebarFooter(viewStack)).
+		HMargin(7).VMargin(6).ToGTK())
 	toolbarView.SetBottomBarStyle(adw.ToolbarFlatValue)
 	return &toolbarView.Widget
 }
