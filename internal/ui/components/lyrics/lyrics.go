@@ -2,7 +2,6 @@ package lyrics
 
 import (
 	"context"
-	"fmt"
 	"log/slog"
 	"regexp"
 	"runtime"
@@ -383,10 +382,6 @@ func setLyricsEmptyState(msg string) {
 }
 
 func init() {
-	activeLyricIndex.AddCallback(func(newValue uintptr) {
-		fmt.Println("new lyric ptr: ", newValue)
-	})
-
 	player.TrackChanged.On(func(trackInfo *player.Track) bool {
 		lyricsList.SetLoading(true)
 		defer lyricsList.SetLoading(false)
