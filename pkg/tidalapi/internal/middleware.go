@@ -17,7 +17,7 @@ type MiddlewareRoundTripper struct {
 func (m MiddlewareRoundTripper) RoundTrip(req *http.Request) (*http.Response, error) {
 	// Configure the TIDAL Client version we currently replicate
 	req.Header.Set("x-tidal-client-version", ClientVersion)
-	req.Header.Set("x-tidal-token", ClientID)
+	req.Header.Set("x-tidal-token", UnauthenticatedClientID)
 
 	// Identify ourselves to TIDAL, we want to be a friendly citizen on their API.
 	req.Header.Set("User-Agent", "TidalWave/"+ClientVersion+" Mozilla/5.0 (Linux x86_64; rv:146.0) Gecko/20100101 Firefox/146.0")
@@ -51,6 +51,10 @@ func (m MiddlewareRoundTripper) RoundTrip(req *http.Request) (*http.Response, er
 		if err := strategy.Authenticate(req, ClientID, ClientSecret); err != nil {
 			return nil, err
 		}
+	}
+
+	if req.Header.Get("authorization") != "" {
+		req.Header.Set("x-tidal-token", ClientID)
 	}
 
 	// Hand off to the default transport

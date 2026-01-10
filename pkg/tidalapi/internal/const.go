@@ -8,7 +8,8 @@ const (
 	clientSecretPart1 = "TVU1dU9VRm1SRUZxZUhKblNrWktZa3RPVjB4bFFY"
 	clientSecretPart2 = "bExSMVpIYlVsT2RWaFFVRXhJVmxoQmRuaEJaejA9"
 
-	ClientVersion = "2025.12.13"
+	ClientVersion           = "2025.12.13"
+	UnauthenticatedClientID = "txNoH4kkV41MfH25"
 )
 
 var (
