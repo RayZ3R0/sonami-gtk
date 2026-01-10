@@ -10,20 +10,6 @@ import (
 )
 
 func (w *Window) buildContentHeader() *gtk.Widget {
-
-	sidebarButton := gtk.NewButtonFromIconName("sidebar-show-symbolic")
-	sidebarButton.SetActionName("win.toggle-sidebar")
-
-	backButton := gtk.NewButtonFromIconName("left-symbolic")
-	backButton.SetActionName("win.navigate-back")
-	backButton.SetVisible(false)
-	router.HistoryUpdated.On(func(history *router.History) bool {
-		schwifty.OnMainThreadOncePure(func() {
-			backButton.SetVisible(len(history.Entries) > 1)
-		})
-		return signals.Continue
-	})
-
 	homeButton := components.NewRouteButton("home")
 	homeButton.Title("Home")
 	homeButton.Icon("go-home-symbolic")
@@ -47,7 +33,23 @@ func (w *Window) buildContentHeader() *gtk.Widget {
 
 	headerbar := HeaderBar().
 		ShowStartTitleButtons(false).
-		PackStart(sidebarButton, backButton).
+		PackStart(
+			Button().
+				IconName("sidebar-show-symbolic").
+				ActionName("win.toggle-sidebar"),
+			Button().
+				IconName("left-symbolic").
+				ActionName("win.navigate-back").
+				Visible(false).
+				ConnectConstruct(func(b *gtk.Button) {
+					router.HistoryUpdated.On(func(history *router.History) bool {
+						schwifty.OnMainThreadOncePure(func() {
+							b.SetVisible(len(history.Entries) > 1)
+						})
+						return signals.Continue
+					})
+				}),
+		).
 		TitleWidget(defaultToolbar)()
 
 	router.NavigationStarted.On(func(path string) bool {
