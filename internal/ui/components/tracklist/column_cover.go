@@ -13,20 +13,18 @@ import (
 
 func coverColumn(url string, grid *gtk.Grid, position int, column int) int {
 	grid.Attach(
-		AspectFrame(
-			Image().
-				FromPaintable(resources.MissingAlbum()).
-				PixelSize(54).
-				HExpand(false).
-				VExpand(false).
-				ConnectConstruct(func(i *gtk.Image) {
-					injector.MustInject[*imgutil.ImgUtil]().LoadIntoImage(url, i)
-				}),
-		).
+		Image().
+			FromPaintable(resources.MissingAlbum()).
+			PixelSize(54).
+			HExpand(false).
+			VExpand(false).
 			CornerRadius(10).
 			Margin(10).
 			HAlign(gtk.AlignStartValue).
-			Overflow(gtk.OverflowHiddenValue).ToGTK(),
+			Overflow(gtk.OverflowHiddenValue).
+			ConnectConstruct(func(i *gtk.Image) {
+				injector.MustInject[*imgutil.ImgUtil]().LoadIntoImage(url, i)
+			}).ToGTK(),
 		column,
 		0,
 		1,

@@ -24,14 +24,12 @@ func Card[T any](title string, subTitle schwifty.Widgetable[T], coverUrl string)
 	return Button().
 		Child(
 			VStack(
-				AspectFrame(
-					Image().
-						PixelSize(172).
-						FromPaintable(resources.MissingAlbum()).
-						ConnectConstruct(func(i *gtk.Image) {
-							injector.MustInject[*imgutil.ImgUtil]().LoadIntoImage(coverUrl, i)
-						}),
-				).CornerRadius(10).Overflow(gtk.OverflowHiddenValue),
+				Image().
+					PixelSize(172).
+					FromPaintable(resources.MissingAlbum()).
+					ConnectConstruct(func(i *gtk.Image) {
+						injector.MustInject[*imgutil.ImgUtil]().LoadIntoImage(coverUrl, i)
+					}).CornerRadius(10).Overflow(gtk.OverflowHiddenValue),
 				Label(title).
 					FontSize(16).
 					MarginTop(10).
