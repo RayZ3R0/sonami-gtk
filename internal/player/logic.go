@@ -42,6 +42,10 @@ func playNextTrack() {
 	mix, err := tidal.V1.Tracks.Mix(context.Background(), trackId)
 	if err != nil {
 		logger.Error("failed to retrieve mix", "error", err)
+		PlaybackStateChanged.Notify(func(oldValue *PlaybackState) *PlaybackState {
+			oldValue.Status = PlaybackStatusPaused
+			return oldValue
+		})
 		return
 	}
 	logger.Info("starting track radio", "mix_id", mix.ID)
