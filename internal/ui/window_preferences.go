@@ -19,7 +19,7 @@ func (w *Window) PresentPreferences() {
 			).
 				Title("Background Activity").
 				Description("Configure the behaviour of Tidal Wave when running in the background."),
-		).Title("General"),
+		).Title("General").IconName("settings-symbolic"),
 		PreferencesPage(
 			PreferencesGroup(
 				SwitchRow().
@@ -49,6 +49,6 @@ func (w *Window) PresentPreferences() {
 			).
 				Title("Images").
 				Description("Configure the behaviour of Tidal Wave regarding images."),
-		).Title("Performance"),
+		).Title("Performance").IconName("power-profile-performance-symbolic"),
 	).Present(w)
 }

@@ -14,6 +14,14 @@ func (f PreferencesPage) Add(child any) PreferencesPage {
 	}
 }
 
+func (f PreferencesPage) IconName(iconName string) PreferencesPage {
+	return func() *adw.PreferencesPage {
+		page := f()
+		page.SetIconName(iconName)
+		return page
+	}
+}
+
 func (f PreferencesPage) Title(title string) PreferencesPage {
 	return func() *adw.PreferencesPage {
 		page := f()
