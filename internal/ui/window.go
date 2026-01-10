@@ -22,7 +22,11 @@ type Window struct {
 	*adw.ApplicationWindow
 }
 
-var loadingView = syntax.Clamp().MaximumSize(50).Child(syntax.Spinner())
+var loadingView = g.Lazy(func() *gtk.Widget {
+	widget := syntax.Clamp().MaximumSize(50).Child(syntax.Spinner()).ToGTK()
+	widget.Ref()
+	return widget
+})
 
 func NewWindow(app *adw.Application) *Window {
 	window := &Window{
@@ -95,7 +99,7 @@ func (w *Window) buildContentLayout() *gtk.Widget {
 
 	router.NavigationStarted.On(func(path string) bool {
 		schwifty.OnMainThreadOnce(func(u uintptr) {
-			toolbarView.SetContent(loadingView.ToGTK())
+			toolbarView.SetContent(loadingView())
 		}, 0)
 		return signals.Continue
 	})
