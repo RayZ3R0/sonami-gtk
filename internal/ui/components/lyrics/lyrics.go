@@ -18,6 +18,7 @@ import (
 	"codeberg.org/dergs/tidalwave/pkg/schwifty/state"
 	. "codeberg.org/dergs/tidalwave/pkg/schwifty/syntax"
 	"codeberg.org/dergs/tidalwave/pkg/tidalapi"
+	"codeberg.org/dergs/tidalwave/pkg/tidalapi/models/openapi"
 	"codeberg.org/dergs/tidalwave/pkg/utils/imgutil"
 	"github.com/infinytum/injector"
 	"github.com/jwijenbergh/puregotk/v4/graphene"
@@ -285,6 +286,58 @@ func parseUntimedLyrics(lyrics string) (lines []any) {
 	return
 }
 
+func loadMiniplayerState(trackInfo *player.Track) {
+	go func() {
+		if texture, err := injector.MustInject[*imgutil.ImgUtil]().Load(trackInfo.CoverURL); err == nil {
+			schwifty.OnMainThreadOncePure(func() {
+				coverState.SetValue(texture)
+				texture.Unref()
+			})
+		}
+	}()
+
+	schwifty.OnMainThreadOncePure(func() {
+		trackTitle.SetValue(trackInfo.Title)
+		trackArtists.SetValue(trackInfo.ArtistNames())
+	})
+}
+
+func getLyrics(ID string) (lyrics string, isTimestamped bool, err error) {
+	tidal := injector.MustInject[*tidalapi.TidalAPI]()
+	var track *openapi.Track
+	track, err = tidal.OpenAPI.V2.Tracks.Track(context.Background(), ID, "lyrics")
+	if err != nil {
+		return
+	}
+
+	for _, lyric := range track.Included.PlainLyrics(track.Data.Relationships.Lyrics.Data...) {
+		if lyric.Attributes.LRCText != "" {
+			isTimestamped = true
+			lyrics = lyric.Attributes.LRCText
+		} else if lyric.Attributes.Text != "" {
+			isTimestamped = false
+			lyrics = lyric.Attributes.Text
+		}
+		break
+	}
+
+	return
+}
+
+func setLyricsEmptyState(msg string) {
+	schwifty.OnMainThreadOncePure(func() {
+		lyricsList.SetValue(
+			HStack(
+				Label(msg).
+					HAlign(gtk.AlignCenterValue).
+					VAlign(gtk.AlignCenterValue).
+					HExpand(true).
+					VExpand(true),
+			),
+		)
+	})
+}
+
 func init() {
 	activeLyricIndex.AddCallback(func(newValue uintptr) {
 		fmt.Println("new lyric ptr: ", newValue)
@@ -302,65 +355,25 @@ func init() {
 				trackTitle.SetValue("")
 				trackArtists.SetValue("")
 
-				lyricsList.SetValue(
-					HStack(
-						Label("No song currently playing").
-							HAlign(gtk.AlignCenterValue).
-							VAlign(gtk.AlignCenterValue).
-							HExpand(true).
-							VExpand(true),
-					),
-				)
+				setLyricsEmptyState("No song currently playing")
 			})
 
 			return signals.Continue
 		}
 
-		if texture, err := injector.MustInject[*imgutil.ImgUtil]().Load(trackInfo.CoverURL); err == nil {
-			schwifty.OnMainThreadOncePure(func() {
-				coverState.SetValue(texture)
-				texture.Unref()
-			})
-		}
-
-		schwifty.OnMainThreadOncePure(func() {
-			trackTitle.SetValue(trackInfo.Title)
-			trackArtists.SetValue(trackInfo.ArtistNames())
-		})
-
-		tidal := injector.MustInject[*tidalapi.TidalAPI]()
-		track, err := tidal.OpenAPI.V2.Tracks.Track(context.Background(), trackInfo.ID, "lyrics")
+		loadMiniplayerState(trackInfo)
+		lyrics, isTimestamped, err := getLyrics(trackInfo.ID)
 		if err != nil {
-			slog.Error("failed to load lyrics for track", "error", err)
+			logger.Error("Error while fetching lyrics", "error", err)
+			schwifty.OnMainThreadOncePure(func() {
+				setLyricsEmptyState("Error fetching lyrics")
+			})
+
 			return signals.Continue
-		}
-
-		lyrics := ""
-		isTimestamped := false
-
-		for _, lyric := range track.Included.PlainLyrics(track.Data.Relationships.Lyrics.Data...) {
-			if lyric.Attributes.LRCText != "" {
-				isTimestamped = true
-				lyrics = lyric.Attributes.LRCText
-			} else if lyric.Attributes.Text != "" {
-				isTimestamped = false
-				lyrics = lyric.Attributes.Text
-			}
-			break
 		}
 
 		if lyrics == "" {
-			schwifty.OnMainThreadOncePure(func() {
-				lyricsList.SetValue(
-					HStack(
-						Label("No lyrics available").
-							HAlign(gtk.AlignCenterValue).
-							VAlign(gtk.AlignCenterValue).
-							HExpand(true).
-							VExpand(true),
-					),
-				)
-			})
+			setLyricsEmptyState("No lyrics available")
 
 			return signals.Continue
 		}
