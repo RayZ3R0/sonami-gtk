@@ -55,11 +55,13 @@ func playNextTrack() {
 func playPreviousTrack() {
 	ok, position := playbin.QueryPosition(gst.FormatTime)
 	if ok && time.Duration(position) > 5*time.Second {
+		logger.Debug("above the 5 second mark, replaying song", "action", "previous")
 		SeekToPosition(0)
 		return
 	}
 
 	if len(history.Entries.CurrentValue()) < 1 {
+		logger.Debug("no history entries, replaying song", "action", "previous")
 		SeekToPosition(0)
 		return
 	}
@@ -77,6 +79,7 @@ func playPreviousTrack() {
 			logger.Error("failed to resolve track", "trackID", entry.TrackID, "error", err)
 			return
 		}
+		logger.Debug("playing previous track", "track_id", track.Data.ID, "action", "previous")
 		playTrack(track)
 	}
 }
