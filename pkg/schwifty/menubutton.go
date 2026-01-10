@@ -2,6 +2,7 @@ package schwifty
 
 import (
 	"codeberg.org/dergs/tidalwave/pkg/schwifty/state"
+	"github.com/jwijenbergh/puregotk/v4/gio"
 	"github.com/jwijenbergh/puregotk/v4/gtk"
 )
 
@@ -35,6 +36,14 @@ func (f MenuButton) IconName(iconName string) MenuButton {
 	return func() *gtk.MenuButton {
 		button := f()
 		button.SetIconName(iconName)
+		return button
+	}
+}
+
+func (f MenuButton) MenuModel(model *gio.MenuModel) MenuButton {
+	return func() *gtk.MenuButton {
+		button := f()
+		button.SetMenuModel(model)
 		return button
 	}
 }

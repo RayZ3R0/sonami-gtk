@@ -25,16 +25,16 @@ func (w *Window) buildContentHeader() *gtk.Widget {
 	})
 
 	homeButton := components.NewRouteButton("home")
-	homeButton.SetTitle("Home")
-	homeButton.SetIcon("go-home-symbolic")
+	homeButton.Title("Home")
+	homeButton.Icon("go-home-symbolic")
 
 	exploreButton := components.NewRouteButton("pages/explore")
-	exploreButton.SetTitle("Explore")
-	exploreButton.SetIcon("compass2-symbolic")
+	exploreButton.Title("Explore")
+	exploreButton.Icon("compass2-symbolic")
 
 	collectionButton := components.NewRouteButton("my-collection")
-	collectionButton.SetTitle("Collection")
-	collectionButton.SetIcon("library-symbolic")
+	collectionButton.Title("Collection")
+	collectionButton.Icon("library-symbolic")
 
 	defaultToolbar := HStack(
 		Widget(&homeButton.Widget),

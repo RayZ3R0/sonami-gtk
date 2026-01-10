@@ -34,14 +34,7 @@ func (w *Window) buildSidebarHeader() *gtk.Widget {
 	mainMenu.Append("Preferences", "app.preferences")
 	mainMenu.Append("About", "app.about")
 	mainMenu.Append("Quit", "app.quit")
-
-	menuButton := gtk.NewMenuButton()
-	menuButton.SetIconName("menu-symbolic")
-	menuButton.SetMenuModel(&mainMenu.MenuModel)
-	mainMenu.Unref()
-
-	searchButton := components.NewRouteButton("search")
-	searchButton.SetIcon("loupe-symbolic")
+	defer mainMenu.Unref()
 
 	return HeaderBar().
 		DecorationLayout("icon").
@@ -50,8 +43,10 @@ func (w *Window) buildSidebarHeader() *gtk.Widget {
 		ShowEndTitleButtons(false).
 		CenteringPolicy(adw.CenteringPolicyStrictValue).
 		PackEnd(
-			ManagedWidget(&menuButton.Widget),
-			searchButton,
+			MenuButton().
+				IconName("menu-symbolic").
+				MenuModel(&mainMenu.MenuModel),
+			components.NewRouteButton("search").Icon("loupe-symbolic"),
 		).
 		ToGTK()
 }

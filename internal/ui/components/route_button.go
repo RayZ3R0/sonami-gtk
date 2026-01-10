@@ -14,7 +14,7 @@ type RouteButton struct {
 	icon  *gtk.Image
 }
 
-func (r *RouteButton) SetActive(active bool) {
+func (r *RouteButton) setActive(active bool) {
 	if active {
 		r.AddCssClass("active")
 	} else {
@@ -22,7 +22,7 @@ func (r *RouteButton) SetActive(active bool) {
 	}
 }
 
-func (r *RouteButton) SetTitle(title string) {
+func (r *RouteButton) Title(title string) *RouteButton {
 	r.label.SetText(title)
 	r.label.SetVisible(title != "")
 	if title == "" {
@@ -30,10 +30,12 @@ func (r *RouteButton) SetTitle(title string) {
 	} else {
 		r.AddCssClass("title")
 	}
+	return r
 }
 
-func (r *RouteButton) SetIcon(iconName string) {
+func (r *RouteButton) Icon(iconName string) *RouteButton {
 	r.icon.SetFromIconName(iconName)
+	return r
 }
 
 func NewRouteButton(path string) *RouteButton {
@@ -61,7 +63,7 @@ func NewRouteButton(path string) *RouteButton {
 
 	router.NavigationStarted.On(func(newPath string) bool {
 		schwifty.OnMainThreadOnce(func(u uintptr) {
-			routeButton.SetActive(path == newPath)
+			routeButton.setActive(path == newPath)
 		}, 0)
 		return signals.Continue
 	})
