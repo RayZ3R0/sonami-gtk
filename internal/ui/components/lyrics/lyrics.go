@@ -30,11 +30,54 @@ var (
 	coverState   = state.NewStateful[schwifty.Paintable](resources.MissingAlbum())
 	trackTitle   = state.NewStateful[string]("")
 	trackArtists = state.NewStateful[string]("")
+	loadingState = state.NewStateful(false)
 
 	logger = slog.With("module", "lyrics")
 )
 
-var lyricsList = state.NewStateful[any](
+type loadingWidget struct {
+	*state.State[any]
+	loading       *state.State[bool]
+	internalState *state.State[any]
+}
+
+func NewLoadingWidget(defaultState any) *loadingWidget {
+	lw := &loadingWidget{
+		State:         state.NewStateful[any](defaultState),
+		loading:       state.NewStateful(false),
+		internalState: state.NewStateful[any](defaultState),
+	}
+
+	lw.loading.AddCallback(func(loading bool) {
+		if loading {
+			lw.State.SetValue(
+				HStack(
+					Clamp().
+						MaximumSize(50).
+						Child(Spinner()).
+						HExpand(true).
+						VExpand(true),
+				).
+					HExpand(true).
+					VExpand(true),
+			)
+		} else {
+			lw.State.SetValue(lw.internalState.Value())
+		}
+	})
+
+	return lw
+}
+
+func (lw *loadingWidget) SetValue(v any) {
+	lw.internalState.SetValue(v)
+}
+
+func (lw *loadingWidget) SetLoading(loading bool) {
+	lw.loading.SetValue(loading)
+}
+
+var lyricsList = NewLoadingWidget(
 	HStack(
 		Label("No lyrics available").
 			HAlign(gtk.AlignCenterValue).
@@ -51,7 +94,7 @@ var (
 
 var lyricsView = g.Lazy(func() (w *gtk.ScrolledWindow) {
 	w = ScrolledWindow().
-		BindChild(lyricsList).
+		BindChild(lyricsList.State).
 		Policy(gtk.PolicyNeverValue, gtk.PolicyExternalValue)()
 
 	cb := func(adj gtk.Adjustment) {
@@ -333,7 +376,8 @@ func setLyricsEmptyState(msg string) {
 					VAlign(gtk.AlignCenterValue).
 					HExpand(true).
 					VExpand(true),
-			),
+			).
+				VExpand(true),
 		)
 	})
 }
@@ -344,6 +388,8 @@ func init() {
 	})
 
 	player.TrackChanged.On(func(trackInfo *player.Track) bool {
+		lyricsList.SetLoading(true)
+		defer lyricsList.SetLoading(false)
 		defer runtime.GC()
 		activeLyricIndex.SetValue(0)
 		player.PlaybackStateChanged.Unsubscribe(activeIndexChangeOnPlayerUpdate)
