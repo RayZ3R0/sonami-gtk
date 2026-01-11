@@ -34,6 +34,9 @@ func init() {
 					})
 					searchHandler(se)
 				}).
+				ConnectMap(func(w gtk.Widget) {
+					w.GrabFocus()
+				}).
 				ConnectSearchChanged(func(se gtk.SearchEntry) {
 					if searchState.Value() && se.GetText() != "" {
 						return
