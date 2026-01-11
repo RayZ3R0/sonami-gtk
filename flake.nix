@@ -61,7 +61,7 @@
           pname = "tidalwave";
           version = "0.0.1";
           src = pkgs.lib.cleanSource ./.;
-          vendorHash = "sha256-dSIfCgSyOVLztUpBDypHHA9bn+d6hV1mukERPJ+kxI8=";
+          vendorHash = "sha256-GXc+L59nQgHem6KdK7u0XouBxu0Ta0y57TjXPT3fMmk=";
 
           ldflags = [
             "-X \"codeberg.org/dergs/tidalwave/internal/ui.Commit=${(if (self ? rev) then self.rev else "")}\""
