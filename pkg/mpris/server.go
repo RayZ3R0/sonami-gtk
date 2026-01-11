@@ -141,11 +141,15 @@ func (c *Server) SetPlaybackStatus(status PlaybackStatus) {
 	}
 }
 
-func (c *Server) SetPosition(position time.Duration) {
+func (c *Server) SetPosition(position time.Duration, seek bool) {
 	oldVar, _ := c.properties.Get(playerInterface, "Position")
 	oldVal, ok := oldVar.Value().(int64)
 
 	newVal := position.Microseconds()
+
+	if seek {
+		c.dbusConnection.Emit(dbus.ObjectPath("/org/mpris/MediaPlayer2"), playerInterface+".Seeked", newVal)
+	}
 
 	if !ok {
 		log.Error("Unexpected non-integer value in D-Bus Position value")

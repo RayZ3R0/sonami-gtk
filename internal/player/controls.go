@@ -109,6 +109,7 @@ func SeekToPosition(position time.Duration) {
 	PlaybackStateChanged.Notify(func(oldValue *PlaybackState) *PlaybackState {
 		newState := *oldValue
 		newState.Position = position
+		newState.IsSeeking = true
 		return &newState
 	})
 }

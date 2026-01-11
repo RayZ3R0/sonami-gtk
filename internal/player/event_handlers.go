@@ -101,6 +101,7 @@ var onUpdateTick = glib.SourceFunc(func(uintptr) bool {
 
 		if ok, position := playbin.QueryPosition(gst.FormatTime); ok {
 			newState.Position = time.Duration(position)
+			newState.IsSeeking = false
 		}
 		return &newState
 	})
