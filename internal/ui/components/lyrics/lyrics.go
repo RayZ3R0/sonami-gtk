@@ -36,44 +36,32 @@ var (
 
 type loadingWidget struct {
 	*state.State[any]
-	loading       *state.State[bool]
-	internalState *state.State[any]
 }
 
 func NewLoadingWidget(defaultState any) *loadingWidget {
 	lw := &loadingWidget{
-		State:         state.NewStateful[any](defaultState),
-		loading:       state.NewStateful(false),
-		internalState: state.NewStateful[any](defaultState),
+		State: state.NewStateful[any](defaultState),
 	}
-
-	lw.loading.AddCallback(func(loading bool) {
-		if loading {
-			lw.State.SetValue(
-				HStack(
-					Clamp().
-						MaximumSize(50).
-						Child(Spinner()).
-						HExpand(true).
-						VExpand(true),
-				).
-					HExpand(true).
-					VExpand(true),
-			)
-		} else {
-			lw.State.SetValue(lw.internalState.Value())
-		}
-	})
 
 	return lw
 }
 
 func (lw *loadingWidget) SetValue(v any) {
-	lw.internalState.SetValue(v)
-}
-
-func (lw *loadingWidget) SetLoading(loading bool) {
-	lw.loading.SetValue(loading)
+	if v == nil {
+		lw.State.SetValue(
+			HStack(
+				Clamp().
+					MaximumSize(50).
+					Child(Spinner()).
+					HExpand(true).
+					VExpand(true),
+			).
+				HExpand(true).
+				VExpand(true),
+		)
+	} else {
+		lw.State.SetValue(v)
+	}
 }
 
 var lyricsList = NewLoadingWidget(
@@ -383,8 +371,7 @@ func setLyricsEmptyState(msg string) {
 
 func init() {
 	player.TrackChanged.On(func(trackInfo *player.Track) bool {
-		lyricsList.SetLoading(true)
-		defer lyricsList.SetLoading(false)
+		lyricsList.SetValue(nil)
 		defer runtime.GC()
 		activeLyricIndex.SetValue(0)
 		player.PlaybackStateChanged.Unsubscribe(activeIndexChangeOnPlayerUpdate)
