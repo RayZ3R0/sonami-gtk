@@ -1,6 +1,8 @@
 package components
 
 import (
+	"strings"
+
 	"codeberg.org/dergs/tidalwave/internal/router"
 	"codeberg.org/dergs/tidalwave/internal/signals"
 	"codeberg.org/dergs/tidalwave/pkg/schwifty"
@@ -63,7 +65,7 @@ func NewRouteButton(path string) *RouteButton {
 
 	router.NavigationStarted.On(func(newPath string) bool {
 		schwifty.OnMainThreadOnce(func(u uintptr) {
-			routeButton.setActive(path == newPath)
+			routeButton.setActive(strings.HasPrefix(newPath, path))
 		}, 0)
 		return signals.Continue
 	})

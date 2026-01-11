@@ -114,7 +114,7 @@ func ForModule(module v1.Module) schwifty.BaseWidgetable {
 		list := shortcut_list.NewShortcutList()
 		for _, item := range module.PagedList.Items {
 			list.Append(shortcut_list.NewTextShortcut(item.Title, "").ConnectClicked(func(b gtk.Button) {
-				router.Navigate(item.APIPath)
+				router.Navigate(strings.ReplaceAll(item.APIPath, "pages/", "explore/"))
 			}))
 		}
 		return VStack(

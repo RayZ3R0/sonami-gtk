@@ -14,7 +14,7 @@ func (w *Window) buildContentHeader() *gtk.Widget {
 	homeButton.Title("Home")
 	homeButton.Icon("go-home-symbolic")
 
-	exploreButton := components.NewRouteButton("pages/explore")
+	exploreButton := components.NewRouteButton("explore")
 	exploreButton.Title("Explore")
 	exploreButton.Icon("compass2-symbolic")
 

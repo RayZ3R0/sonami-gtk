@@ -12,7 +12,12 @@ import (
 )
 
 func init() {
-	router.Register("pages/:page", Explore)
+	router.Register("explore", ExploreMain)
+	router.Register("explore/:page", Explore)
+}
+
+func ExploreMain() *router.Response {
+	return Explore("explore")
 }
 
 func Explore(pageName string) *router.Response {
