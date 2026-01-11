@@ -56,7 +56,7 @@ func trackTimeline() schwifty.Box {
 			HMargin(24).
 			HPadding(0).
 			ConnectChangeValue(func(r gtk.Range, st gtk.ScrollType, f float64) bool {
-				go player.SeekToPercent(f)
+				player.SeekToPercent(f)
 				return false
 			}),
 		HStack(
