@@ -28,6 +28,5 @@ func NewMprisServer(name string, desktopEntry string, identity string) *Server {
 
 	server.dbusConnection.Export(object, "/org/mpris/MediaPlayer2", mediaPlayerInterface)
 	server.dbusConnection.Export(object, "/org/mpris/MediaPlayer2", playerInterface)
-	server.dbusConnection.Export(object, "/org/mpris/MediaPlayer2", trackListInterface)
 	return server
 }
