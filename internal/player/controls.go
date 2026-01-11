@@ -118,6 +118,10 @@ func SeekToPositionRelative(delta time.Duration) {
 }
 
 func SetRepeatMode(m RepeatMode) {
+	if m == RepeatModeChanged.CurrentValue() {
+		return
+	}
+
 	RepeatModeChanged.Notify(func(oldValue RepeatMode) RepeatMode {
 		return m
 	})

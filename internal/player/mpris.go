@@ -27,6 +27,24 @@ func init() {
 
 		return signals.Continue
 	})
+
+	RepeatModeChanged.On(func(rm RepeatMode) bool {
+		mprisServer, err := injector.Inject[*mpris.Server]()
+		if err != nil {
+			return signals.Continue
+		}
+
+		switch rm {
+		case RepeatModeNone:
+			mprisServer.SetLoopStatus(mpris.LoopNone)
+		case RepeatModeTrack:
+			mprisServer.SetLoopStatus(mpris.LoopTrack)
+		case RepeatModeQueue:
+			mprisServer.SetLoopStatus(mpris.LoopPlaylist)
+		}
+		return signals.Continue
+	})
+
 	TrackChanged.Signal.On(func(trackInfo *Track) bool {
 		mprisServer, err := injector.Inject[*mpris.Server]()
 		if err != nil {

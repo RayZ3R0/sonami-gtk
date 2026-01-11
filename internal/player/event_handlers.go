@@ -81,12 +81,15 @@ func onBusMessage(msg *gst.Message) bool {
 }
 
 func onVolumeChange() {
-	VolumeChanged.Notify(func(oldValue float64) float64 {
-		if volume, err := playbin.GetProperty("volume"); err == nil {
+	if volume, err := playbin.GetProperty("volume"); err == nil {
+		return
+	} else if volume.(float64) == VolumeChanged.CurrentValue() {
+		return
+	} else {
+		VolumeChanged.Notify(func(oldValue float64) float64 {
 			return volume.(float64)
-		}
-		return oldValue
-	})
+		})
+	}
 }
 
 var onUpdateTick = glib.SourceFunc(func(uintptr) bool {

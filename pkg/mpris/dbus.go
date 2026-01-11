@@ -41,7 +41,7 @@ const (
 func NewMprisDBusObject(desktopEntry string, identity string) *MprisDBusObject {
 	return &MprisDBusObject{
 		Properties: prop.Map{
-			"org.mpris.MediaPlayer2": {
+			mediaPlayerInterface: {
 				"CanQuit": {
 					Value:    true,
 					Writable: false,
@@ -78,7 +78,7 @@ func NewMprisDBusObject(desktopEntry string, identity string) *MprisDBusObject {
 					Emit:     prop.EmitConst,
 				},
 			},
-			"org.mpris.MediaPlayer2.Player": {
+			playerInterface: {
 				"CanControl": {
 					Value:    true,
 					Writable: false,

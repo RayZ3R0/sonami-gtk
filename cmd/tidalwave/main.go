@@ -69,12 +69,23 @@ func main() {
 			window.Show()
 			window.Present()
 		})
+		mprisServer.OnLoopStatusChanged(func(loopStatus mpris.LoopStatus) {
+			switch loopStatus {
+			case mpris.LoopNone:
+				go player.SetRepeatMode(player.RepeatModeNone)
+			case mpris.LoopTrack:
+				go player.SetRepeatMode(player.RepeatModeTrack)
+			case mpris.LoopPlaylist:
+				go player.SetRepeatMode(player.RepeatModeQueue)
+			}
+		})
 		mprisServer.OnSeek(player.SeekToPositionRelative)
 		mprisServer.OnSetPosition(player.SeekToPosition)
 		mprisServer.OnVolumeChanged(func(newVal float64) {
 			player.SetVolume(newVal)
 
 		})
+		mprisServer.Export()
 		return mprisServer
 	})
 
