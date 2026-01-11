@@ -89,7 +89,7 @@ func NewQueue() schwifty.Box {
 		),
 	)
 	trackListBase.BindTracks(baseQueueState)
-	trackListBase.SetReorderable(true, func(sourceIndex, targetIndex int, track *openapi.Track) {
+	trackListBase.SetReorderCallback(func(sourceIndex, targetIndex int, track *openapi.Track) {
 		player.BaseQueue.UpcomingEntries.Notify(func(oldValue []*openapi.Track) []*openapi.Track {
 			q := slices.Clone(oldValue)
 			q = append(q[:sourceIndex], q[sourceIndex+1:]...)

@@ -68,13 +68,9 @@ func (t *TrackList[TrackType]) Clear() {
 	t.trackList = make([]TrackType, 0)
 }
 
-func (t *TrackList[TrackType]) SetReorderable(reorderable bool, cb func(sourceIndex, targetIndex int, track TrackType)) {
-	if reorderable && cb == nil {
-		panic("reorderable callback cannot be nil")
-	}
-
+func (t *TrackList[TrackType]) SetReorderCallback(cb func(sourceIndex, targetIndex int, track TrackType)) {
 	t.reorderCallback = cb
-	t.reorderable.SetValue(reorderable)
+	t.reorderable.SetValue(cb != nil)
 }
 
 func (t *TrackList[TrackType]) onBind(_ gtk.SignalListItemFactory, listItem *gtk.ListItem) {
