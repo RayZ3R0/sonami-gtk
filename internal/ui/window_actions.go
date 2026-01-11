@@ -47,6 +47,13 @@ func (w *Window) installActions() {
 	w.AddAction(navigateBackAction)
 	w.GetApplication().SetAccelsForAction("win.navigate-back", []string{"<Alt>Left"})
 
+	searchAction := gio.NewSimpleAction("search", nil)
+	searchAction.ConnectActivate(g.Ptr(func(action gio.SimpleAction, parameter uintptr) {
+		router.Navigate("search")
+	}))
+	w.AddAction(searchAction)
+	w.GetApplication().SetAccelsForAction("win.search", []string{"<Ctrl>f"})
+
 	playTrackAction := gio.NewSimpleAction("player.play-track", glib.NewVariantType("s"))
 	playTrackAction.ConnectActivate(g.Ptr(func(action gio.SimpleAction, parameter uintptr) {
 		variant := (*glib.Variant)(unsafe.Pointer(parameter))
