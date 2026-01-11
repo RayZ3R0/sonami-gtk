@@ -14,13 +14,13 @@ const (
 	playerInterface      = "org.mpris.MediaPlayer2.Player"
 )
 
-func NewMprisServer(name string) *Server {
+func NewMprisServer(name string, desktopEntry string, identity string) *Server {
 	conn, err := dbus.ConnectSessionBus()
 	if err != nil {
 		panic(err)
 	}
 
-	object := NewMprisDBusObject()
+	object := NewMprisDBusObject(desktopEntry, identity)
 	server := &Server{
 		dbusConnection: conn,
 		dbusName:       name,

@@ -38,7 +38,7 @@ const (
 	PlaybackStatusStopped = "Stopped"
 )
 
-func NewMprisDBusObject() *MprisDBusObject {
+func NewMprisDBusObject(desktopEntry string, identity string) *MprisDBusObject {
 	return &MprisDBusObject{
 		Properties: prop.Map{
 			"org.mpris.MediaPlayer2": {
@@ -58,7 +58,7 @@ func NewMprisDBusObject() *MprisDBusObject {
 					Emit:     prop.EmitConst,
 				},
 				"DesktopEntry": {
-					Value:    "org.codeberg.dergs.tidalwave",
+					Value:    desktopEntry,
 					Writable: false,
 					Emit:     prop.EmitConst,
 				},
@@ -73,7 +73,7 @@ func NewMprisDBusObject() *MprisDBusObject {
 					Emit:     prop.EmitConst,
 				},
 				"Identity": {
-					Value:    "Tidal Wave",
+					Value:    identity,
 					Writable: false,
 					Emit:     prop.EmitConst,
 				},
