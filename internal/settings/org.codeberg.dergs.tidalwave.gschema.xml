@@ -18,6 +18,7 @@
 			<description>Stores the last used window width to restore on next startup</description>
 		</key>
 	</schema>
+
 	<!-- Performance Settings -->
     <schema id="org.codeberg.dergs.tidalwave.performance" path="/org/codeberg/dergs/tidalwave/performance/">
         <key name="allow-mediacard-images" type="b">
@@ -41,6 +42,7 @@
       		<description>Whether the application will temporarily cache images on the filesystem</description>
        	</key>
     </schema>
+
 	<!-- Player State -->
     <schema id="org.codeberg.dergs.tidalwave.player" path="/org/codeberg/dergs/tidalwave/player/">
 		<key name="audio-quality" type="s">
@@ -52,6 +54,20 @@
 			<default>1.0</default>
 			<summary>Volume</summary>
 			<description>The last configured volume level</description>
+		</key>
+    </schema>
+
+	<!-- Scrobbling -->
+    <schema id="org.codeberg.dergs.tidalwave.scrobbling" path="/org/codeberg/dergs/tidalwave/scrobbling/">
+        <key name="enable-listenbrainz" type="b">
+      		<default>false</default>
+      		<summary>Enable ListenBrainz</summary>
+      		<description>Whether the application will attempt to scrobble tracks to ListenBrainz</description>
+       	</key>
+        <key name="listenbrainz-token" type="s">
+            <default>''</default>
+			<summary>ListenBrainz Token</summary>
+			<description>The token used to authenticate with ListenBrainz</description>
 		</key>
     </schema>
 </schemalist>

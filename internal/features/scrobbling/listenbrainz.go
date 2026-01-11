@@ -1,0 +1,140 @@
+package scrobbling
+
+import (
+	"bytes"
+	"encoding/json"
+	"io"
+	"net/http"
+
+	"codeberg.org/dergs/tidalwave/internal/player"
+	"codeberg.org/dergs/tidalwave/internal/settings"
+	"codeberg.org/dergs/tidalwave/internal/signals"
+)
+
+type listenBrainzListenType string
+
+const (
+	listenBrainzListenTypePlayingNow listenBrainzListenType = "playing_now"
+	listenBrainzListenTypeSingle     listenBrainzListenType = "single"
+)
+
+func init() {
+	TrackStarted.On(func(t *player.Track) bool {
+		if !isListenBrainzConfigured() {
+			return signals.Continue
+		}
+
+		listenbrainzNowPlaying(t)
+		return signals.Continue
+	})
+	Scrobble.On(func(t *ScrobbleEvent) bool {
+		if !isListenBrainzConfigured() {
+			return signals.Continue
+		}
+
+		listenbrainzScrobble(t)
+		return signals.Continue
+	})
+}
+
+func listenbrainzNowPlaying(track *player.Track) {
+	makeListenBrainzRequest(generateListenBrainzRequest(track, listenBrainzListenTypePlayingNow))
+}
+
+func listenbrainzScrobble(event *ScrobbleEvent) {
+	req := generateListenBrainzRequest(event.Track, listenBrainzListenTypeSingle)
+	req.Payload[0].ListenedAt = event.ListenedAt.Unix()
+	makeListenBrainzRequest(req)
+}
+
+func makeListenBrainzRequest(reqBody listenBrainzRequest) {
+	encoded, err := json.Marshal(reqBody)
+	if err != nil {
+		logger.Error("failed to marshal request body", err)
+		return
+	}
+
+	req, err := http.NewRequest("POST", "https://api.listenbrainz.org/1/submit-listens", bytes.NewBuffer(encoded))
+	if err != nil {
+		logger.Error("failed to create request to listenbrainz", err)
+		return
+	}
+	req.Header.Set("Authorization", "Token "+settings.Scrobbling().ListenBrainzToken())
+
+	resp, err := http.DefaultClient.Do(req)
+	if err != nil {
+		logger.Error("failed to send request to listenbrainz", err)
+		return
+	}
+	defer resp.Body.Close()
+
+	if resp.StatusCode != http.StatusOK {
+		body, err := io.ReadAll(resp.Body)
+		if err != nil {
+			logger.Error("failed to read response body", err)
+			return
+		}
+		logger.Error("listenbrainz returned non-200 status code", "status", resp.StatusCode, "body", string(body))
+		return
+	}
+}
+
+func isListenBrainzConfigured() bool {
+	if !settings.Scrobbling().ShouldEnableListenBrainz() {
+		logger.Debug("skipping scrobbling to listenbrainz because it is disabled")
+		return false
+	}
+
+	if settings.Scrobbling().ListenBrainzToken() == "" {
+		logger.Debug("skipping scrobbling to listenbrainz because API key is not set")
+		return false
+	}
+	return true
+}
+
+func generateListenBrainzRequest(track *player.Track, listenType listenBrainzListenType) listenBrainzRequest {
+	return listenBrainzRequest{
+		ListenType: listenType,
+		Payload: []listenBrainzPayload{
+			{
+				TrackMetadata: listenBrainzTrackMetadata{
+					TrackName:  track.Title,
+					ArtistName: track.ArtistNames(),
+					AdditionalInfo: listenBrainzAdditionalInfo{
+						MediaPlayer:      "Tidal Wave",
+						MusicService:     "tidal.com",
+						OriginURL:        "https://tidal.com/track/" + track.ID,
+						SubmissionClient: "Tidal Wave",
+						DurationMs:       int(track.Duration.Milliseconds()),
+						ISRC:             track.ISRC,
+					},
+				},
+			},
+		},
+	}
+}
+
+type listenBrainzRequest struct {
+	ListenType listenBrainzListenType `json:"listen_type"`
+	Payload    []listenBrainzPayload  `json:"payload"`
+}
+
+type listenBrainzPayload struct {
+	ListenedAt    int64                     `json:"listened_at,omitempty"`
+	TrackMetadata listenBrainzTrackMetadata `json:"track_metadata"`
+}
+
+type listenBrainzTrackMetadata struct {
+	AdditionalInfo listenBrainzAdditionalInfo `json:"additional_info"`
+	ArtistName     string                     `json:"artist_name"`
+	TrackName      string                     `json:"track_name"`
+}
+
+type listenBrainzAdditionalInfo struct {
+	MediaPlayer      string `json:"media_player"`
+	MusicService     string `json:"music_service"`
+	OriginURL        string `json:"origin_url"`
+	SubmissionClient string `json:"submission_client"`
+	DurationMs       int    `json:"duration_ms"`
+	ISRC             string `json:"isrc"`
+}

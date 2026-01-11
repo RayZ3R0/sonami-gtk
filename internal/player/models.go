@@ -42,6 +42,7 @@ type Track struct {
 	CoverURL string
 	Duration time.Duration
 	ID       string
+	ISRC     string
 	Title    string
 }
 

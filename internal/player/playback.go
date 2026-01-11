@@ -29,6 +29,7 @@ func playTrack(track *openapi.Track) error {
 			Duration: track.Data.Attributes.Duration.Duration,
 			ID:       track.Data.ID,
 			Title:    track.Data.Attributes.Title,
+			ISRC:     track.Data.Attributes.ISRC,
 		}
 
 		for _, album := range track.Included.Albums(track.Data.Relationships.Albums.Data...) {

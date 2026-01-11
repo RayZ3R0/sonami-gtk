@@ -21,6 +21,12 @@ var Performance = g.Lazy(func() *PerformanceSettings {
 	}
 })
 
+var Scrobbling = g.Lazy(func() *ScrobblingSettings {
+	return &ScrobblingSettings{
+		finalize(gio.NewSettings("org.codeberg.dergs.tidalwave.scrobbling")),
+	}
+})
+
 func PlayerSettings() *Player {
 	return &Player{
 		finalize(gio.NewSettings("org.codeberg.dergs.tidalwave.player")),

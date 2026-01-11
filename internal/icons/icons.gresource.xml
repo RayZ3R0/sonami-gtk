@@ -19,6 +19,7 @@
     <file preprocess="xml-stripblanks" alias="playlist-repeat-song-symbolic.svg">scalable/actions/playlist-repeat-song-symbolic.svg</file>
     <file preprocess="xml-stripblanks" alias="playlist-repeat-symbolic.svg">scalable/actions/playlist-repeat-symbolic.svg</file>
     <file preprocess="xml-stripblanks" alias="settings-symbolic.svg">scalable/actions/settings-symbolic.svg</file>
+    <file preprocess="xml-stripblanks" alias="podcast-symbolic.svg">scalable/actions/podcast-symbolic.svg</file>
   </gresource>
   <gresource prefix="/org/codeberg/dergs/tidalwave/icons/scalable/state/">
     <file preprocess="xml-stripblanks" alias="missing-album.svg">scalable/state/missing-album.svg</file>

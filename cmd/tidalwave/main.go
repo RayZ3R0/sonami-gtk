@@ -5,6 +5,7 @@ import (
 	"os"
 	"strings"
 
+	_ "codeberg.org/dergs/tidalwave/internal/features/scrobbling"
 	"codeberg.org/dergs/tidalwave/internal/g"
 	_ "codeberg.org/dergs/tidalwave/internal/icons"
 	"codeberg.org/dergs/tidalwave/internal/player"
