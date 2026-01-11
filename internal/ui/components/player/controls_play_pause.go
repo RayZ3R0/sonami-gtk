@@ -37,7 +37,7 @@ func controlsPlayPause() schwifty.Button {
 		CornerRadius(21).
 		HPadding(32).
 		VPadding(9).
-		CSS(`button:not(:hover) { background-color: var(--accent-bg-color); }`).
+		CSS(`button:not(:hover) { background-color: var(--accent-bg-color); color: var(--accent-fg-color); }`).
 		ConnectClicked(func(b gtk.Button) {
 			player.PlayPause()
 		}).
