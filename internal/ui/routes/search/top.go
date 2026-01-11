@@ -39,8 +39,10 @@ func TopHits(searchResults *openapi.SearchResult) schwifty.Box {
 
 	return VStack(
 		artistList,
-		components.NewRowTitle().SetTitle("Tracks"),
-		trackList.HMargin(40),
+		VStack(
+			components.NewRowTitle().SetTitle("Tracks"),
+			trackList,
+		).HMargin(40),
 		albumList,
 		playlistList,
 		Spacer(),
