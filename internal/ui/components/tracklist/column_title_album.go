@@ -18,6 +18,14 @@ func titleAlbumColumn(title string, album string, grid *gtk.Grid, position int, 
 }
 
 func TitleAlbumColumn(track *openapi.Track, grid *gtk.Grid, position int, column int) int {
+	if track == nil {
+		frame := VStack(
+			Label(""),
+			Label(""),
+		).Spacing(3).VAlign(gtk.AlignCenterValue).HAlign(gtk.AlignStartValue).HExpand(true).Margin(10)
+		grid.Attach(HStack(frame, Spacer()).ToGTK(), column, 0, 1, 1)
+		return 1
+	}
 	albumName := ""
 	for _, album := range track.Included.PlainAlbums(track.Data.Relationships.Albums.Data...) {
 		albumName = album.Attributes.Title
@@ -27,5 +35,13 @@ func TitleAlbumColumn(track *openapi.Track, grid *gtk.Grid, position int, column
 }
 
 func LegacyTitleAlbumColumn(track *v2.TrackItemData, grid *gtk.Grid, position int, column int) int {
+	if track == nil {
+		frame := VStack(
+			Label(""),
+			Label(""),
+		).Spacing(3).VAlign(gtk.AlignCenterValue).HAlign(gtk.AlignStartValue).HExpand(true).Margin(10)
+		grid.Attach(HStack(frame, Spacer()).ToGTK(), column, 0, 1, 1)
+		return 1
+	}
 	return titleAlbumColumn(track.Title, track.Album.Title, grid, position, column)
 }

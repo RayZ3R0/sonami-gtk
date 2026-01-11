@@ -28,6 +28,17 @@ func artistsColumn(artists []string, grid *gtk.Grid, position int, column int) i
 }
 
 func ArtistsColumn(track *openapi.Track, grid *gtk.Grid, position int, column int) int {
+	if track == nil {
+		grid.Attach(
+			Box(gtk.OrientationHorizontalValue).ToGTK(),
+			column,
+			0,
+			1,
+			1,
+		)
+
+		return 1
+	}
 	artists := make([]string, 0)
 	for _, artist := range track.Included.PlainArtists(track.Data.Relationships.Artists.Data...) {
 		artists = append(artists, artist.Attributes.Name)
@@ -36,6 +47,18 @@ func ArtistsColumn(track *openapi.Track, grid *gtk.Grid, position int, column in
 }
 
 func LegacyArtistsColumn(track *v2.TrackItemData, grid *gtk.Grid, position int, column int) int {
+	if track == nil {
+		grid.Attach(
+			Box(gtk.OrientationHorizontalValue).ToGTK(),
+			column,
+			0,
+			1,
+			1,
+		)
+
+		return 1
+	}
+
 	artists := make([]string, 0)
 	for _, artist := range track.Artists {
 		artists = append(artists, artist.Name)

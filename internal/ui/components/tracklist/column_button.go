@@ -26,10 +26,30 @@ func buttonColumn(trackId string, grid *gtk.Grid, position int, column int) int 
 }
 
 func ButtonColumn(track *openapi.Track, grid *gtk.Grid, position int, column int) int {
+	if track == nil {
+		grid.Attach(
+			Box(gtk.OrientationHorizontalValue).ToGTK(),
+			0,
+			0,
+			column,
+			1,
+		)
+		return 1
+	}
 	return buttonColumn(track.Data.ID, grid, position, column)
 }
 
 func LegacyButtonColumn(track *v2.TrackItemData, grid *gtk.Grid, position int, column int) int {
+	if track == nil {
+		grid.Attach(
+			Box(gtk.OrientationHorizontalValue).ToGTK(),
+			0,
+			0,
+			column,
+			1,
+		)
+		return 1
+	}
 	return buttonColumn(strconv.Itoa(track.ID), grid, position, column)
 }
 

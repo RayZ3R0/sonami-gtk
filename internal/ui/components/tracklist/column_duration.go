@@ -16,9 +16,17 @@ func durationColumn(duration time.Duration, grid *gtk.Grid, position int, column
 }
 
 func DurationColumn(track *openapi.Track, grid *gtk.Grid, position int, column int) int {
+	if track == nil {
+		grid.Attach(Box(gtk.OrientationHorizontalValue).Margin(10).ToGTK(), column, 0, 1, 1)
+		return 1
+	}
 	return durationColumn(track.Data.Attributes.Duration.Duration, grid, position, column)
 }
 
 func LegacyDurationColumn(track *v2.TrackItemData, grid *gtk.Grid, position int, column int) int {
+	if track == nil {
+		grid.Attach(Box(gtk.OrientationHorizontalValue).Margin(10).ToGTK(), column, 0, 1, 1)
+		return 1
+	}
 	return durationColumn(time.Duration(track.Duration)*time.Second, grid, position, column)
 }

@@ -38,9 +38,29 @@ func controlsColumn(trackId string, grid *gtk.Grid, position int, column int) in
 }
 
 func ControlsColumn(track *openapi.Track, grid *gtk.Grid, position int, column int) int {
+	if track == nil {
+		grid.Attach(
+			Box(gtk.OrientationHorizontalValue).ToGTK(),
+			column,
+			0,
+			1,
+			1,
+		)
+		return 1
+	}
 	return controlsColumn(track.Data.ID, grid, position, column)
 }
 
 func LegacyControlsColumn(track *v2.TrackItemData, grid *gtk.Grid, position int, column int) int {
+	if track == nil {
+		grid.Attach(
+			Box(gtk.OrientationHorizontalValue).ToGTK(),
+			column,
+			0,
+			1,
+			1,
+		)
+		return 1
+	}
 	return controlsColumn(strconv.Itoa(track.ID), grid, position, column)
 }

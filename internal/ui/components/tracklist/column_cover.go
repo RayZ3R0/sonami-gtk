@@ -38,6 +38,16 @@ func coverColumn(url string, grid *gtk.Grid, position int, column int) int {
 
 func CoverColumn(track *openapi.Track, grid *gtk.Grid, position int, column int) int {
 	url := ""
+	if track == nil {
+		grid.Attach(
+			Box(gtk.OrientationHorizontalValue).MinHeight(54).Margin(10).ToGTK(),
+			column,
+			0,
+			1,
+			1,
+		)
+		return 1
+	}
 	for _, album := range track.Included.Albums(track.Data.Relationships.Albums.Data...) {
 		for _, artwork := range album.Included.PlainArtworks(album.Data.Relationships.CoverArt.Data...) {
 			url = artwork.Attributes.Files.AtLeast(80).Href
@@ -48,5 +58,15 @@ func CoverColumn(track *openapi.Track, grid *gtk.Grid, position int, column int)
 }
 
 func LegacyCoverColumn(track *v2.TrackItemData, grid *gtk.Grid, position int, column int) int {
+	if track == nil {
+		grid.Attach(
+			Box(gtk.OrientationHorizontalValue).MinHeight(54).Margin(10).ToGTK(),
+			column,
+			0,
+			1,
+			1,
+		)
+		return 1
+	}
 	return coverColumn(tidalapi.ImageURL(track.Album.Cover), grid, position, column)
 }

@@ -2,6 +2,7 @@ package queue
 
 import (
 	"log/slog"
+	"slices"
 
 	"codeberg.org/dergs/tidalwave/internal/player"
 	"codeberg.org/dergs/tidalwave/internal/resources"
@@ -88,6 +89,14 @@ func NewQueue() schwifty.Box {
 		),
 	)
 	trackListBase.BindTracks(baseQueueState)
+	trackListBase.SetReorderable(true, func(sourceIndex, targetIndex int, track *openapi.Track) {
+		player.BaseQueue.UpcomingEntries.Notify(func(oldValue []*openapi.Track) []*openapi.Track {
+			q := slices.Clone(oldValue)
+			q = append(q[:sourceIndex], q[sourceIndex+1:]...)
+			q = append(q[:targetIndex], append([]*openapi.Track{track}, q[targetIndex:]...)...)
+			return q
+		})
+	})
 
 	player.TrackChanged.On(func(trackInfo *player.Track) bool {
 		if trackInfo != nil {
