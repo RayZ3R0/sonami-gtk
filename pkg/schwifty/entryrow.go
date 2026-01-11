@@ -1,0 +1,13 @@
+package schwifty
+
+import "github.com/jwijenbergh/puregotk/v4/adw"
+
+//go:generate go run codeberg.org/dergs/tidalwave/pkg/schwifty/gen EntryRow *adw.EntryRow
+
+func (f EntryRow) Title(title string) EntryRow {
+	return func() *adw.EntryRow {
+		row := f()
+		row.SetTitle(title)
+		return row
+	}
+}
