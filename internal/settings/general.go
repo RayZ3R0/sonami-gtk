@@ -13,8 +13,16 @@ func (g *GeneralSettings) BindRunInBackground(target *gobject.Object, property s
 	g.settings.Bind("allow-running-in-background", target, property, gio.GSettingsBindNoSensitivityValue)
 }
 
+func (g *GeneralSettings) BindDefaultPage(target *gobject.Object, property string) {
+	g.settings.Bind("default-page", target, property, gio.GSettingsBindNoSensitivityValue)
+}
+
 func (g *GeneralSettings) ShouldRunInBackground() bool {
 	return g.settings.GetBoolean("allow-running-in-background")
+}
+
+func (g *GeneralSettings) DefaultPage() string {
+	return g.settings.GetString("default-page")
 }
 
 func (g *GeneralSettings) GetWindowHeight() int {
@@ -23,6 +31,10 @@ func (g *GeneralSettings) GetWindowHeight() int {
 
 func (g *GeneralSettings) GetWindowWidth() int {
 	return g.settings.GetInt("window-width")
+}
+
+func (g *GeneralSettings) SetDefaultPage(path string) {
+	g.settings.SetString("default-page", path)
 }
 
 func (g *GeneralSettings) SetWindowHeight(height int) {

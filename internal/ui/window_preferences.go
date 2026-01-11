@@ -4,6 +4,7 @@ import (
 	"codeberg.org/dergs/tidalwave/internal/settings"
 	. "codeberg.org/dergs/tidalwave/pkg/schwifty/syntax"
 	"github.com/jwijenbergh/puregotk/v4/adw"
+	"github.com/jwijenbergh/puregotk/v4/gtk"
 )
 
 var preferencesGeneral = PreferencesPage(
@@ -17,6 +18,22 @@ var preferencesGeneral = PreferencesPage(
 	).
 		Title("Background Activity").
 		Description("Configure the behaviour of Tidal Wave when running in the background."),
+	PreferencesGroup(
+		EntryRow().
+			Title("Default Page").
+			ConnectConstruct(func(sr *adw.EntryRow) {
+				settings.General().BindDefaultPage(&sr.Object, "text")
+			}),
+		SpinRow(
+			gtk.NewAdjustment(0, 1, 100, 1, 1, 1),
+			1,
+			0,
+		).Title("History Length").Subtitle("Maximum history length before dropping old entries.").ConnectConstruct(func(sr *adw.SpinRow) {
+			settings.Performance().BindMaxRouterHistorySize(&sr.Object, "value")
+		}),
+	).
+		Title("Navigation Behaviour").
+		Description("Configure the behaviour of Tidal Wave when navigating between pages."),
 ).Title("General").IconName("settings-symbolic")
 
 var preferencesPerformance = PreferencesPage(

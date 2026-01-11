@@ -4,6 +4,7 @@ import (
 	"sync"
 	"time"
 
+	"codeberg.org/dergs/tidalwave/internal/settings"
 	"github.com/jwijenbergh/puregotk/v4/gtk"
 )
 
@@ -64,7 +65,7 @@ func (h *History) Push(entry *HistoryEntry) {
 	defer h.Unlock()
 	defer HistoryUpdated.Notify(h)
 
-	if len(h.Entries) == 10 {
+	if len(h.Entries) >= settings.Performance().MaxRouterHistorySize() {
 		h.Entries = h.Entries[1:]
 	}
 

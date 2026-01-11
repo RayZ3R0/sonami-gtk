@@ -31,6 +31,7 @@ func (w *Window) buildSidebarHeader() *gtk.Widget {
 	} else {
 		mainMenu.Append("Sign In", "win.sign-in")
 	}
+	mainMenu.Append("Set as default page", "win.set-as-default")
 	mainMenu.Append("Preferences", "app.preferences")
 	mainMenu.Append("About", "app.about")
 	mainMenu.Append("Quit", "app.quit")

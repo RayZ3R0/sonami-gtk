@@ -82,3 +82,7 @@ func Refresh() {
 
 	navigate(history.Current.Path, true)
 }
+
+func Current() *HistoryEntry {
+	return history.Current
+}

@@ -25,6 +25,10 @@ func (p *PerformanceSettings) BindCacheImages(target *gobject.Object, property s
 	p.settings.Bind("cache-images", target, property, gio.GSettingsBindNoSensitivityValue)
 }
 
+func (p *PerformanceSettings) BindMaxRouterHistorySize(target *gobject.Object, property string) {
+	p.settings.Bind("max-router-history-size", target, property, gio.GSettingsBindNoSensitivityValue)
+}
+
 func (p *PerformanceSettings) AllowMediaCardImages() bool {
 	return p.settings.GetBoolean("allow-mediacard-images")
 }
@@ -35,6 +39,10 @@ func (p *PerformanceSettings) AllowShortcutImages() bool {
 
 func (p *PerformanceSettings) AllowTracklistImages() bool {
 	return p.settings.GetBoolean("allow-tracklist-images")
+}
+
+func (p *PerformanceSettings) MaxRouterHistorySize() int {
+	return p.settings.GetInt("max-router-history-size")
 }
 
 func (p *PerformanceSettings) ShouldCacheImages() bool {

@@ -7,6 +7,11 @@
     		<summary>Run in Background</summary>
     		<description>Whether the application should run in the background when the window is closed</description>
     	</key>
+        <key name="default-page" type="s">
+			<default>'home'</default>
+			<summary>Default Page</summary>
+			<description>The default page to open when the application starts</description>
+		</key>
     	<key name="window-height" type="i">
     		<default>920</default>
     		<summary>Window Height</summary>
@@ -41,6 +46,11 @@
       		<summary>Cache Images</summary>
       		<description>Whether the application will temporarily cache images on the filesystem</description>
        	</key>
+        <key name="max-router-history-size" type="i">
+			<default>10</default>
+			<summary>Maximum Router History Size</summary>
+			<description>The maximum number of router history entries to keep</description>
+		</key>
     </schema>
 
 	<!-- Player State -->

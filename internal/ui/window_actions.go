@@ -9,6 +9,7 @@ import (
 	"codeberg.org/dergs/tidalwave/internal/player"
 	"codeberg.org/dergs/tidalwave/internal/router"
 	"codeberg.org/dergs/tidalwave/internal/secrets"
+	"codeberg.org/dergs/tidalwave/internal/settings"
 	"codeberg.org/dergs/tidalwave/internal/ui/components/linking"
 	"codeberg.org/dergs/tidalwave/pkg/schwifty"
 	"codeberg.org/dergs/tidalwave/pkg/tidalapi"
@@ -141,4 +142,11 @@ func (w *Window) installActions() {
 		}()
 	}))
 	w.AddAction(signOutAction)
+
+	setAsDefaultAction := gio.NewSimpleAction("set-as-default", nil)
+	setAsDefaultAction.ConnectActivate(g.Ptr(func(action gio.SimpleAction, parameter uintptr) {
+		settings.General().SetDefaultPage(router.Current().Path)
+		notifications.OnToast.Notify("Set current page as default")
+	}))
+	w.AddAction(setAsDefaultAction)
 }

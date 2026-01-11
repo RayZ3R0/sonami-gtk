@@ -54,7 +54,7 @@ func NewWindow(app *adw.Application) *Window {
 		}
 	}))
 
-	router.Navigate("home")
+	router.Navigate(settings.General().DefaultPage())
 
 	return window
 }
