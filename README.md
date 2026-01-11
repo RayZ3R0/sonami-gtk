@@ -13,10 +13,10 @@
   <p align="center">
     Tidal Wave is an <strong>unofficial</strong> native GTK4 / Adwaita music streaming client for <a href="https://tidal.com">TIDAL</a>
     <br />
-    <a href="https://codeberg.org/dergs/TidalWave"><strong>How to Install »</strong></a>
+    <a href="#installation"><strong>How to Install »</strong></a>
     <br />
     <br />
-    <a href="https://codeberg.org/dergs/TidalWave">Features</a>
+    <a href="#features">Features</a>
     &middot;
     <a href="https://codeberg.org/dergs/TidalWave/issues/new">Report Bug or Request Feature</a>
   </p>
