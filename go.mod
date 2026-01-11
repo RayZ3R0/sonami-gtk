@@ -25,6 +25,7 @@ require (
 	github.com/jwijenbergh/purego v0.0.0-20251017112123-b71757b9ba42 // indirect
 	github.com/mattn/go-pointer v0.0.1 // indirect
 	github.com/pkg/errors v0.9.1 // indirect
+	github.com/qjebbs/go-jsons v1.0.0-alpha.4 // indirect
 	github.com/yeqown/reedsolomon v1.0.0 // indirect
 	golang.org/x/exp v0.0.0-20240909161429-701f63a606c0 // indirect
 	golang.org/x/image v0.10.0 // indirect
