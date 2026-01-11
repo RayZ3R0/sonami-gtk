@@ -35,10 +35,26 @@ func (f PasswordEntryRow) ConnectDestroy(cb func(gtk.Widget)) PasswordEntryRow {
 	}
 }
 
+func (f PasswordEntryRow) ConnectMap(cb func(gtk.Widget)) PasswordEntryRow {
+	return func() *adw.PasswordEntryRow {
+		widget := f()
+		callback.HandleCallback(widget.Object, "map", cb)
+		return widget
+	}
+}
+
 func (f PasswordEntryRow) ConnectRealize(cb func(gtk.Widget)) PasswordEntryRow {
 	return func() *adw.PasswordEntryRow {
 		widget := f()
 		callback.HandleCallback(widget.Object, "realize", cb)
+		return widget
+	}
+}
+
+func (f PasswordEntryRow) ConnectUnmap(cb func(gtk.Widget)) PasswordEntryRow {
+	return func() *adw.PasswordEntryRow {
+		widget := f()
+		callback.HandleCallback(widget.Object, "unmap", cb)
 		return widget
 	}
 }

@@ -35,10 +35,26 @@ func (f StatusPage) ConnectDestroy(cb func(gtk.Widget)) StatusPage {
 	}
 }
 
+func (f StatusPage) ConnectMap(cb func(gtk.Widget)) StatusPage {
+	return func() *adw.StatusPage {
+		widget := f()
+		callback.HandleCallback(widget.Object, "map", cb)
+		return widget
+	}
+}
+
 func (f StatusPage) ConnectRealize(cb func(gtk.Widget)) StatusPage {
 	return func() *adw.StatusPage {
 		widget := f()
 		callback.HandleCallback(widget.Object, "realize", cb)
+		return widget
+	}
+}
+
+func (f StatusPage) ConnectUnmap(cb func(gtk.Widget)) StatusPage {
+	return func() *adw.StatusPage {
+		widget := f()
+		callback.HandleCallback(widget.Object, "unmap", cb)
 		return widget
 	}
 }

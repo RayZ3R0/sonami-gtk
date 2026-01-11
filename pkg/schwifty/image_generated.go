@@ -34,10 +34,26 @@ func (f Image) ConnectDestroy(cb func(gtk.Widget)) Image {
 	}
 }
 
+func (f Image) ConnectMap(cb func(gtk.Widget)) Image {
+	return func() *gtk.Image {
+		widget := f()
+		callback.HandleCallback(widget.Object, "map", cb)
+		return widget
+	}
+}
+
 func (f Image) ConnectRealize(cb func(gtk.Widget)) Image {
 	return func() *gtk.Image {
 		widget := f()
 		callback.HandleCallback(widget.Object, "realize", cb)
+		return widget
+	}
+}
+
+func (f Image) ConnectUnmap(cb func(gtk.Widget)) Image {
+	return func() *gtk.Image {
+		widget := f()
+		callback.HandleCallback(widget.Object, "unmap", cb)
 		return widget
 	}
 }

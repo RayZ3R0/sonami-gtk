@@ -34,10 +34,26 @@ func (f Box) ConnectDestroy(cb func(gtk.Widget)) Box {
 	}
 }
 
+func (f Box) ConnectMap(cb func(gtk.Widget)) Box {
+	return func() *gtk.Box {
+		widget := f()
+		callback.HandleCallback(widget.Object, "map", cb)
+		return widget
+	}
+}
+
 func (f Box) ConnectRealize(cb func(gtk.Widget)) Box {
 	return func() *gtk.Box {
 		widget := f()
 		callback.HandleCallback(widget.Object, "realize", cb)
+		return widget
+	}
+}
+
+func (f Box) ConnectUnmap(cb func(gtk.Widget)) Box {
+	return func() *gtk.Box {
+		widget := f()
+		callback.HandleCallback(widget.Object, "unmap", cb)
 		return widget
 	}
 }

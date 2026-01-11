@@ -35,10 +35,26 @@ func (f WindowTitle) ConnectDestroy(cb func(gtk.Widget)) WindowTitle {
 	}
 }
 
+func (f WindowTitle) ConnectMap(cb func(gtk.Widget)) WindowTitle {
+	return func() *adw.WindowTitle {
+		widget := f()
+		callback.HandleCallback(widget.Object, "map", cb)
+		return widget
+	}
+}
+
 func (f WindowTitle) ConnectRealize(cb func(gtk.Widget)) WindowTitle {
 	return func() *adw.WindowTitle {
 		widget := f()
 		callback.HandleCallback(widget.Object, "realize", cb)
+		return widget
+	}
+}
+
+func (f WindowTitle) ConnectUnmap(cb func(gtk.Widget)) WindowTitle {
+	return func() *adw.WindowTitle {
+		widget := f()
+		callback.HandleCallback(widget.Object, "unmap", cb)
 		return widget
 	}
 }

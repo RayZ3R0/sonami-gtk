@@ -35,10 +35,26 @@ func (f PreferencesGroup) ConnectDestroy(cb func(gtk.Widget)) PreferencesGroup {
 	}
 }
 
+func (f PreferencesGroup) ConnectMap(cb func(gtk.Widget)) PreferencesGroup {
+	return func() *adw.PreferencesGroup {
+		widget := f()
+		callback.HandleCallback(widget.Object, "map", cb)
+		return widget
+	}
+}
+
 func (f PreferencesGroup) ConnectRealize(cb func(gtk.Widget)) PreferencesGroup {
 	return func() *adw.PreferencesGroup {
 		widget := f()
 		callback.HandleCallback(widget.Object, "realize", cb)
+		return widget
+	}
+}
+
+func (f PreferencesGroup) ConnectUnmap(cb func(gtk.Widget)) PreferencesGroup {
+	return func() *adw.PreferencesGroup {
+		widget := f()
+		callback.HandleCallback(widget.Object, "unmap", cb)
 		return widget
 	}
 }

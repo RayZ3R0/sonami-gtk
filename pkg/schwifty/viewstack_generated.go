@@ -35,10 +35,26 @@ func (f ViewStack) ConnectDestroy(cb func(gtk.Widget)) ViewStack {
 	}
 }
 
+func (f ViewStack) ConnectMap(cb func(gtk.Widget)) ViewStack {
+	return func() *adw.ViewStack {
+		widget := f()
+		callback.HandleCallback(widget.Object, "map", cb)
+		return widget
+	}
+}
+
 func (f ViewStack) ConnectRealize(cb func(gtk.Widget)) ViewStack {
 	return func() *adw.ViewStack {
 		widget := f()
 		callback.HandleCallback(widget.Object, "realize", cb)
+		return widget
+	}
+}
+
+func (f ViewStack) ConnectUnmap(cb func(gtk.Widget)) ViewStack {
+	return func() *adw.ViewStack {
+		widget := f()
+		callback.HandleCallback(widget.Object, "unmap", cb)
 		return widget
 	}
 }

@@ -35,10 +35,26 @@ func (f SpinRow) ConnectDestroy(cb func(gtk.Widget)) SpinRow {
 	}
 }
 
+func (f SpinRow) ConnectMap(cb func(gtk.Widget)) SpinRow {
+	return func() *adw.SpinRow {
+		widget := f()
+		callback.HandleCallback(widget.Object, "map", cb)
+		return widget
+	}
+}
+
 func (f SpinRow) ConnectRealize(cb func(gtk.Widget)) SpinRow {
 	return func() *adw.SpinRow {
 		widget := f()
 		callback.HandleCallback(widget.Object, "realize", cb)
+		return widget
+	}
+}
+
+func (f SpinRow) ConnectUnmap(cb func(gtk.Widget)) SpinRow {
+	return func() *adw.SpinRow {
+		widget := f()
+		callback.HandleCallback(widget.Object, "unmap", cb)
 		return widget
 	}
 }

@@ -35,10 +35,26 @@ func (f SwitchRow) ConnectDestroy(cb func(gtk.Widget)) SwitchRow {
 	}
 }
 
+func (f SwitchRow) ConnectMap(cb func(gtk.Widget)) SwitchRow {
+	return func() *adw.SwitchRow {
+		widget := f()
+		callback.HandleCallback(widget.Object, "map", cb)
+		return widget
+	}
+}
+
 func (f SwitchRow) ConnectRealize(cb func(gtk.Widget)) SwitchRow {
 	return func() *adw.SwitchRow {
 		widget := f()
 		callback.HandleCallback(widget.Object, "realize", cb)
+		return widget
+	}
+}
+
+func (f SwitchRow) ConnectUnmap(cb func(gtk.Widget)) SwitchRow {
+	return func() *adw.SwitchRow {
+		widget := f()
+		callback.HandleCallback(widget.Object, "unmap", cb)
 		return widget
 	}
 }
