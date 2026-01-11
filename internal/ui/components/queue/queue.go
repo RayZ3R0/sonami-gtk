@@ -70,6 +70,14 @@ func NewQueue() schwifty.Box {
 		),
 	)
 	trackList.BindTracks(userQueueState)
+	trackList.SetReorderCallback(func(sourceIndex, targetIndex int, track *openapi.Track) {
+		player.UserQueue.UpcomingEntries.Notify(func(oldValue []*openapi.Track) []*openapi.Track {
+			q := slices.Clone(oldValue)
+			q = append(q[:sourceIndex], q[sourceIndex+1:]...)
+			q = append(q[:targetIndex], append([]*openapi.Track{track}, q[targetIndex:]...)...)
+			return q
+		})
+	})
 
 	trackListBase := tracklist.NewTrackList(
 		tracklist.GroupedColumn(3, gtk.AlignStartValue, tracklist.CoverColumn, tracklist.TitleAlbumColumn),
