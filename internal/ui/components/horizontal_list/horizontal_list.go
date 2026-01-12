@@ -49,7 +49,7 @@ func NewHorizontalList(title string) *HorizontalList {
 	var hAdjust *gtk.Adjustment
 	nextButton := Button().
 		MinHeight(10).MinWidth(10).HPadding(10).
-		Child(Image().FromIconName("go-next-symbolic").PixelSize(10)).
+		Child(Image().FromIconName("right-symbolic").PixelSize(10)).
 		ConnectClicked(func(b gtk.Button) {
 			current := hAdjust.GetValue()
 			current -= math.Mod(current, 192)
@@ -59,7 +59,7 @@ func NewHorizontalList(title string) *HorizontalList {
 
 	previousButton := Button().
 		MinHeight(10).MinWidth(10).HPadding(10).
-		Child(Image().FromIconName("go-previous-symbolic").PixelSize(10)).
+		Child(Image().FromIconName("left-symbolic").PixelSize(10)).
 		ConnectClicked(func(b gtk.Button) {
 			current := hAdjust.GetValue()
 			if math.Mod(current, 192) > 0 {

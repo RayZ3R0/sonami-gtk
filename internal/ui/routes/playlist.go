@@ -122,7 +122,7 @@ func Playlist(playlistUUID string) *router.Response {
 				VStack(
 					HStack(
 						Button().
-							IconName("media-playlist-shuffle-symbolic").
+							IconName("playlist-shuffle-symbolic").
 							MinWidth(81).
 							CornerRadius(21).
 							Padding(9).
@@ -132,7 +132,7 @@ func Playlist(playlistUUID string) *router.Response {
 							}).
 							BindSensitive(canPlayPlaylistState),
 						Button().
-							IconName("media-playback-start-symbolic").
+							IconName("play-symbolic").
 							MinWidth(81).
 							CornerRadius(21).
 							Padding(9).
@@ -158,7 +158,7 @@ func Playlist(playlistUUID string) *router.Response {
 							IconName("heart-outline-thick-symbolic").
 							WithCSSClass("transparent"),
 						Button().
-							IconName("folder-publicshare-symbolic").
+							IconName("share-alt-symbolic").
 							WithCSSClass("transparent").
 							ConnectClicked(func(gtk.Button) {
 								id := playlist.Data.ID

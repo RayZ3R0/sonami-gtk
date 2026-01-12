@@ -63,7 +63,7 @@ var preferencesPerformance = PreferencesPage(
 				settings.Performance().BindCacheImages(&sr.Object, "active")
 			}),
 	).Title("Images").Description("Configure the behaviour of Tidal Wave regarding images."),
-).Title("Performance").IconName("power-profile-performance-symbolic")
+).Title("Performance").IconName("speedometer5-symbolic")
 
 var preferencesScrobbling = PreferencesPage(
 	PreferencesGroup(

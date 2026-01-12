@@ -111,7 +111,7 @@ func Album(albumId string) *router.Response {
 				Spacer().VExpand(false),
 				HStack(
 					Button().
-						IconName("media-playlist-shuffle-symbolic").
+						IconName("playlist-shuffle-symbolic").
 						MinWidth(81).
 						CornerRadius(21).
 						Padding(9).
@@ -120,7 +120,7 @@ func Album(albumId string) *router.Response {
 						}).
 						BindSensitive(canPlayAlbumState),
 					Button().
-						IconName("media-playback-start-symbolic").
+						IconName("play-symbolic").
 						MinWidth(81).
 						CornerRadius(21).
 						Padding(9).

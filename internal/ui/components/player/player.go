@@ -68,7 +68,7 @@ func NewPlayer() schwifty.Box {
 		HStack(
 			MenuButton().
 				Popover(controlsVolumeSlider()).
-				IconName("audio-speakers-symbolic").
+				IconName("speakers-symbolic").
 				WithCSSClass("transparent"),
 			Button().
 				ActionName("unimplemented").
@@ -83,7 +83,7 @@ func NewPlayer() schwifty.Box {
 				IconName("library-symbolic").
 				WithCSSClass("transparent"),
 			Button().
-				IconName("folder-publicshare-symbolic").
+				IconName("share-alt-symbolic").
 				WithCSSClass("transparent").
 				ConnectClicked(func(gtk.Button) {
 					if trackID == "" {
@@ -117,14 +117,14 @@ func NewPlayer() schwifty.Box {
 			HAlign(gtk.AlignCenterValue),
 		HStack(
 			Button().
-				IconName("media-playlist-shuffle-symbolic").
+				IconName("playlist-shuffle-symbolic").
 				MinHeight(34).
 				MinWidth(34).
 				WithCSSClass("transparent").
 				ActionName("win.player.shuffle"),
 			Button().
 				BindSensitive(isControllable).
-				IconName("media-seek-backward-symbolic").
+				IconName("seek-backward-symbolic").
 				MinHeight(34).
 				MinWidth(34).
 				WithCSSClass("transparent").
@@ -132,7 +132,7 @@ func NewPlayer() schwifty.Box {
 			controlsPlayPause(),
 			Button().
 				BindSensitive(isControllable).
-				IconName("media-seek-forward-symbolic").
+				IconName("seek-forward-symbolic").
 				MinHeight(34).
 				MinWidth(34).
 				WithCSSClass("transparent").

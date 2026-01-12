@@ -10,6 +10,6 @@ func notFoundHandler() *Response {
 		View: StatusPage().
 			Title("Not found").
 			Description("The requested deeplink did not have any available handlers.").
-			IconName("face-sad-symbolic"),
+			IconName("sentiment-dissatisfied-symbolic"),
 	}
 }

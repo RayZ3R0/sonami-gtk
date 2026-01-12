@@ -71,7 +71,7 @@ func Artist(artistId string) *router.Response {
 				VStack(
 					HStack(
 						Button().
-							IconName("media-playlist-shuffle-symbolic").
+							IconName("playlist-shuffle-symbolic").
 							MinWidth(81).
 							CornerRadius(21).
 							Padding(9).
@@ -81,7 +81,7 @@ func Artist(artistId string) *router.Response {
 								// go player.PlayPlaylist(playlistUUID, true, "")
 							}),
 						Button().
-							IconName("media-playback-start-symbolic").
+							IconName("play-symbolic").
 							MinWidth(81).
 							CornerRadius(21).
 							Padding(9).
@@ -108,7 +108,7 @@ func Artist(artistId string) *router.Response {
 							WithCSSClass("transparent").
 							Sensitive(false),
 						Button().
-							IconName("folder-publicshare-symbolic").
+							IconName("share-alt-symbolic").
 							WithCSSClass("transparent").
 							ConnectClicked(func(gtk.Button) {
 								display := gdk.DisplayGetDefault()

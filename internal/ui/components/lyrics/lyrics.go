@@ -441,7 +441,7 @@ func NewLyricsPanel() schwifty.Box {
 		}).
 		Child(
 			Image().
-				FromIconName("view-refresh-symbolic"),
+				FromIconName("arrow-circular-top-right-symbolic"),
 		)().
 		Widget)
 	return VStack(

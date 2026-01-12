@@ -10,7 +10,7 @@ import (
 )
 
 var (
-	playPauseIconState = state.NewStateful("media-playback-start-symbolic")
+	playPauseIconState = state.NewStateful("play-symbolic")
 )
 
 func init() {
@@ -18,9 +18,9 @@ func init() {
 		schwifty.OnMainThreadOncePure(func() {
 			switch state.Status {
 			case player.PlaybackStatusPlaying:
-				playPauseIconState.SetValue("media-playback-pause-symbolic")
+				playPauseIconState.SetValue("pause-symbolic")
 			case player.PlaybackStatusPaused, player.PlaybackStatusStopped:
-				playPauseIconState.SetValue("media-playback-start-symbolic")
+				playPauseIconState.SetValue("play-symbolic")
 			}
 		})
 
