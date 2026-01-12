@@ -121,7 +121,10 @@
             description = "Tidal Wave is a GTK client for TIDAL written in GoLang.";
             homepage = "https://codeberg.org/Dergs/TidalWave";
             license = pkgs.lib.licenses.gpl3Plus;
-            maintainers = with pkgs.lib.maintainers; [ nilathedragon ];
+            maintainers = with pkgs.lib.maintainers; [
+              drafolin
+              nilathedragon
+            ];
             mainProgram = "tidalwave";
           };
         });
