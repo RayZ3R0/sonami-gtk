@@ -1,7 +1,7 @@
 <div align="center">
 
   <a href="https://codeberg.org/dergs/TidalWave">
-    <img src="internal/icons/hicolor/scalable/apps/logo.png" alt="Logo" width="80" height="80">
+    <img src="internal/icons/hicolor/256x256/apps/org.codeberg.dergs.tidalwave.png" alt="Logo" width="80" height="80">
   </a>
   <h2 align="center">Tidal Wave</h2>
 
