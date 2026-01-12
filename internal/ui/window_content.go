@@ -35,7 +35,7 @@ func (w *Window) buildContentHeader() *gtk.Widget {
 		ShowStartTitleButtons(false).
 		PackStart(
 			Button().
-				IconName("sidebar-show-symbolic").
+				IconName("dock-left-symbolic").
 				ActionName("win.toggle-sidebar"),
 			Button().
 				IconName("left-symbolic").
