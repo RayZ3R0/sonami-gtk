@@ -106,7 +106,7 @@ The following projects and resources served as inspiration or were helpful durin
 - [TIDAL](https://tidal.com/) for the overall page designs, which we adapted for GTK
 
 
-[license-shield]: https://img.shields.io/badge/license-gpl3-brightgreen?style=for-the-badge
+[license-shield]: https://img.shields.io/badge/license-gpl3%20or%20later-brightgreen?style=for-the-badge
 [license-url]: https://codeberg.org/dergs/TidalWave/src/branch/main/LICENSE
 [stars-shield]: https://img.shields.io/gitea/stars/dergs/TidalWave?gitea_url=https%3A%2F%2Fcodeberg.org&style=for-the-badge
 [stars-url]: https://codeberg.org/dergs/TidalWave/stars
