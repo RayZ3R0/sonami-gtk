@@ -1,7 +1,9 @@
 package player
 
 import (
+	"context"
 	"log/slog"
+	"strconv"
 
 	"codeberg.org/dergs/tidalwave/internal/settings"
 	"codeberg.org/dergs/tidalwave/pkg/tidalapi"
@@ -119,5 +121,46 @@ func PlayPlaylist(playlistId string, shuffle bool, skipUntil string) error {
 		playTrack(nextTrack)
 	}
 
+	return nil
+}
+
+func PlayTrackRadio(trackId string, skipSelf bool) error {
+	setLoadingState()
+	tidal, err := injector.Inject[*tidalapi.TidalAPI]()
+	if err != nil {
+		return err
+	}
+
+	trackIdInt, err := strconv.Atoi(trackId)
+	if err != nil {
+		logger.Error("failed to parse track id", "error", err)
+		return err
+	}
+
+	mix, err := tidal.V1.Tracks.Mix(context.Background(), trackIdInt)
+	if err != nil {
+		logger.Error("failed to retrieve mix", "error", err)
+		return err
+	}
+
+	paginator := pagination.NewPaginator(tidal.OpenAPI.V2.Playlists, mix.ID, func(items *openapi.Response[[]openapi.Relationship]) []openapi.Track {
+		return items.Included.Tracks(items.Data...)
+	}, "items", "items.artists", "items.albums.coverArt")
+
+	tracks, err := paginator.GetAll()
+	if err != nil {
+		return err
+	}
+
+	clearQueues()
+	BaseQueue.SetTracks(prepareTrackList(tracks, false, ""))
+	if skipSelf {
+		getNextTrackFromQueue(false)
+	}
+	nextTrack := getNextTrackFromQueue(false)
+	if nextTrack != nil {
+		logger.Info("playing next track", "track_id", nextTrack.Data.ID)
+		playTrack(nextTrack)
+	}
 	return nil
 }

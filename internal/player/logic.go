@@ -1,13 +1,9 @@
 package player
 
 import (
-	"context"
-	"strconv"
 	"time"
 
-	"codeberg.org/dergs/tidalwave/pkg/tidalapi"
 	"github.com/go-gst/go-gst/gst"
-	"github.com/infinytum/injector"
 )
 
 var (
@@ -32,24 +28,8 @@ func playNextTrack() {
 	}
 
 	// Since no other songs are left in the queue, retrieve mix to play from API
-	tidal := injector.MustInject[*tidalapi.TidalAPI]()
-	trackId, err := strconv.Atoi(TrackChanged.CurrentValue().ID)
-	if err != nil {
-		logger.Error("failed to parse album id", "error", err)
-		return
-	}
-
-	mix, err := tidal.V1.Tracks.Mix(context.Background(), trackId)
-	if err != nil {
-		logger.Error("failed to retrieve mix", "error", err)
-		PlaybackStateChanged.Notify(func(oldValue *PlaybackState) *PlaybackState {
-			oldValue.Status = PlaybackStatusPaused
-			return oldValue
-		})
-		return
-	}
-	logger.Info("starting track radio", "mix_id", mix.ID)
-	PlayPlaylist(mix.ID, false, "")
+	logger.Info("starting track radio", "track_id", TrackChanged.CurrentValue().ID)
+	PlayTrackRadio(TrackChanged.CurrentValue().ID, true)
 }
 
 func playPreviousTrack() {
