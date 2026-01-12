@@ -58,7 +58,7 @@ func main() {
 	})
 
 	injector.DeferredSingleton(func() *mpris.Server {
-		mprisServer := mpris.NewMprisServer("org.mpris.MediaPlayer2.TidalWave", app.GetApplicationId(), "Tidal Wave")
+		mprisServer := mpris.NewMprisServer("org.mpris.MediaPlayer2."+app.GetApplicationId(), app.GetApplicationId(), "Tidal Wave")
 		mprisServer.OnPlayPause(player.PlayPause)
 		mprisServer.OnPlay(player.Play)
 		mprisServer.OnTrackNext(player.Next)
