@@ -1,0 +1,37 @@
+app-id: org.codeberg.dergs.tidalwave
+runtime: org.gnome.Platform
+runtime-version: "49"
+sdk: org.gnome.Sdk
+
+sdk-extensions:
+  - org.freedesktop.Sdk.Extension.golang
+command: tidalwave
+
+finish-args:
+  - --share=network
+  - --share=ipc # Share IPC namespace with the host (necessary for X11).
+  - --socket=wayland
+  - --socket=fallback-x11
+  - --socket=pulseaudio
+  - --filesystem=xdg-run/pipewire-0:ro
+  - --device=dri # OpenGL rendering support.
+
+build-options:
+  env:
+    - GOBIN=/app/bin
+    - GOROOT=/usr/lib/sdk/golang
+
+modules:
+  - name: tidalwave
+    buildsystem: simple
+    build-commands:
+      - $GOROOT/bin/go build -trimpath -o tidalwave cmd/tidalwave/main.go
+      - install -Dm00755 tidalwave $FLATPAK_DEST/bin/tidalwave
+      - install -Dm00644 internal/icons/hicolor/256x256/apps/$FLATPAK_ID.png $FLATPAK_DEST/share/icons/hicolor/256x256/apps/$FLATPAK_ID.png
+      - install -Dm00644 build/$FLATPAK_ID.desktop $FLATPAK_DEST/share/applications/$FLATPAK_ID.desktop
+      - install -Dm00644 internal/settings/$FLATPAK_ID.gschema.xml /app/share/glib-2.0/schemas/$FLATPAK_ID.gschema.xml
+      - glib-compile-schemas /app/share/glib-2.0/schemas
+    sources:
+      - go.mod.yml
+      - type: dir
+        path: ../../.
