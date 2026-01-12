@@ -1,23 +1,41 @@
-<?xml version='1.0' encoding='utf-8'?>
+<?xml version='1.0' encoding='utf-8' ?>
 <gresources>
-  <gresource prefix="/org/codeberg/dergs/tidalwave/icons/scalable/actions/">
-    <file alias="logo.png">hicolor/scalable/apps/logo.png</file>
+  <gresource prefix="/org/codeberg/dergs/tidalwave/icons/256x256/apps/">
+    <file alias="logo.png">hicolor/256x256/apps/org.codeberg.dergs.tidalwave.png</file>
   </gresource>
   <gresource prefix="/org/codeberg/dergs/tidalwave/icons/scalable/actions/">
     <file preprocess="xml-stripblanks" alias="go-home-symbolic.svg">scalable/actions/go-home-symbolic.svg</file>
-    <file preprocess="xml-stripblanks" alias="plus-square-filled-symbolic.svg">scalable/actions/plus-square-filled-symbolic.svg</file>
+    <file
+            preprocess="xml-stripblanks"
+            alias="plus-square-filled-symbolic.svg"
+        >scalable/actions/plus-square-filled-symbolic.svg</file>
     <file preprocess="xml-stripblanks" alias="loupe-symbolic.svg">scalable/actions/loupe-symbolic.svg</file>
     <file preprocess="xml-stripblanks" alias="menu-symbolic.svg">scalable/actions/menu-symbolic.svg</file>
-    <file preprocess="xml-stripblanks" alias="chat-bubble-text-symbolic.svg">scalable/actions/chat-bubble-text-symbolic.svg</file>
-    <file preprocess="xml-stripblanks" alias="music-note-outline-symbolic.svg">scalable/actions/music-note-outline-symbolic.svg</file>
+    <file
+            preprocess="xml-stripblanks"
+            alias="chat-bubble-text-symbolic.svg"
+        >scalable/actions/chat-bubble-text-symbolic.svg</file>
+    <file
+            preprocess="xml-stripblanks"
+            alias="music-note-outline-symbolic.svg"
+        >scalable/actions/music-note-outline-symbolic.svg</file>
     <file preprocess="xml-stripblanks" alias="music-queue-symbolic.svg">scalable/actions/music-queue-symbolic.svg</file>
     <file preprocess="xml-stripblanks" alias="library-symbolic.svg">scalable/actions/library-symbolic.svg</file>
     <file preprocess="xml-stripblanks" alias="compass2-symbolic.svg">scalable/actions/compass2-symbolic.svg</file>
     <file preprocess="xml-stripblanks" alias="left-symbolic.svg">scalable/actions/left-symbolic.svg</file>
     <file preprocess="xml-stripblanks" alias="plus-symbolic.svg">scalable/actions/plus-symbolic.svg</file>
-    <file preprocess="xml-stripblanks" alias="heart-outline-thick-symbolic.svg">scalable/actions/heart-outline-thick-symbolic.svg</file>
-    <file preprocess="xml-stripblanks" alias="playlist-repeat-song-symbolic.svg">scalable/actions/playlist-repeat-song-symbolic.svg</file>
-    <file preprocess="xml-stripblanks" alias="playlist-repeat-symbolic.svg">scalable/actions/playlist-repeat-symbolic.svg</file>
+    <file
+            preprocess="xml-stripblanks"
+            alias="heart-outline-thick-symbolic.svg"
+        >scalable/actions/heart-outline-thick-symbolic.svg</file>
+    <file
+            preprocess="xml-stripblanks"
+            alias="playlist-repeat-song-symbolic.svg"
+        >scalable/actions/playlist-repeat-song-symbolic.svg</file>
+    <file
+            preprocess="xml-stripblanks"
+            alias="playlist-repeat-symbolic.svg"
+        >scalable/actions/playlist-repeat-symbolic.svg</file>
     <file preprocess="xml-stripblanks" alias="settings-symbolic.svg">scalable/actions/settings-symbolic.svg</file>
     <file preprocess="xml-stripblanks" alias="podcast-symbolic.svg">scalable/actions/podcast-symbolic.svg</file>
   </gresource>
