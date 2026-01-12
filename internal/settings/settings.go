@@ -11,25 +11,25 @@ import (
 
 var General = g.Lazy(func() *GeneralSettings {
 	return &GeneralSettings{
-		finalize(gio.NewSettings("org.codeberg.dergs.tidalwave")),
+		finalize(gio.NewSettings("dev.dergs.tidalwave")),
 	}
 })
 
 var Performance = g.Lazy(func() *PerformanceSettings {
 	return &PerformanceSettings{
-		finalize(gio.NewSettings("org.codeberg.dergs.tidalwave.performance")),
+		finalize(gio.NewSettings("dev.dergs.tidalwave.performance")),
 	}
 })
 
 var Scrobbling = g.Lazy(func() *ScrobblingSettings {
 	return &ScrobblingSettings{
-		finalize(gio.NewSettings("org.codeberg.dergs.tidalwave.scrobbling")),
+		finalize(gio.NewSettings("dev.dergs.tidalwave.scrobbling")),
 	}
 })
 
 func PlayerSettings() *Player {
 	return &Player{
-		finalize(gio.NewSettings("org.codeberg.dergs.tidalwave.player")),
+		finalize(gio.NewSettings("dev.dergs.tidalwave.player")),
 	}
 }
 

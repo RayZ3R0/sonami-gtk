@@ -7,7 +7,7 @@ import (
 )
 
 var missingAlbum = g.Lazy(func() schwifty.Paintable {
-	return gdk.NewTextureFromResource("/org/codeberg/dergs/tidalwave/icons/scalable/state/missing-album.svg")
+	return gdk.NewTextureFromResource("/dev/dergs/tidalwave/icons/scalable/state/missing-album.svg")
 })
 
 var MissingAlbum = g.Lazy(func() schwifty.Paintable {

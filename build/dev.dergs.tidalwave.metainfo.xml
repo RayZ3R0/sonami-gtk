@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<component type="desktop-application">
+  <id>dev.dergs.tidalwave</id>
+
+  <name>Tidal Wave</name>
+  <summary>Unofficial native TIDAL music streaming client</summary>
+
+  <metadata_license>MIT</metadata_license>
+  <project_license>AGPL-3.0-or-later</project_license>
+
+  <description>
+    <p>
+      Tidal Wave is a native GTK-based application to stream your music from TIDAL.
+    </p>
+    <p>
+      With Tidal Wave you are able to play tracks at their highest quality, explore new tracks using discovery mixes or the explore tab or just enjoy the songs you already know you love from your collection. Just like you would expect from the real app.
+    </p>
+    <p>
+      Tidal Wave also has some additional features such as: Background Playback, Gapless playback, MPRIS integration and Scrobbling to ListenBrainz
+    </p>
+  </description>
+
+  <launchable type="desktop-id">dev.dergs.tidalwave.desktop</launchable>
+  <screenshots>
+    <screenshot type="default">
+      <image
+            >https://codeberg.org/dergs/TidalWave/raw/commit/86acdf4853b7a2a91e3bb10be43eb22409e4680c/.codeberg/images/home.png</image>
+    </screenshot>
+    <screenshot>
+      <image
+            >https://codeberg.org/dergs/TidalWave/raw/commit/aba9037b814422c15435f67d243648751f31d0b7/.codeberg/images/explore_genre.png</image>
+    </screenshot>
+    <screenshot>
+      <image
+            >https://codeberg.org/dergs/TidalWave/raw/commit/aba9037b814422c15435f67d243648751f31d0b7/.codeberg/images/search_lyrics.png</image>
+    </screenshot>
+  </screenshots>
+</component>

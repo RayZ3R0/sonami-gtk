@@ -1,4 +1,4 @@
-app-id: org.codeberg.dergs.tidalwave
+app-id: dev.dergs.tidalwave
 runtime: org.gnome.Platform
 runtime-version: "49"
 sdk: org.gnome.Sdk
@@ -29,8 +29,9 @@ modules:
       - install -Dm00755 tidalwave $FLATPAK_DEST/bin/tidalwave
       - install -Dm00644 internal/icons/hicolor/256x256/apps/$FLATPAK_ID.png $FLATPAK_DEST/share/icons/hicolor/256x256/apps/$FLATPAK_ID.png
       - install -Dm00644 build/$FLATPAK_ID.desktop $FLATPAK_DEST/share/applications/$FLATPAK_ID.desktop
-      - install -Dm00644 internal/settings/$FLATPAK_ID.gschema.xml /app/share/glib-2.0/schemas/$FLATPAK_ID.gschema.xml
-      - glib-compile-schemas /app/share/glib-2.0/schemas
+      - install -Dm00644 build/$FLATPAK_ID.metainfo.xml $FLATPAK_DEST/share/metainfo/$FLATPAK_ID.metainfo.xml
+      - install -Dm00644 internal/settings/$FLATPAK_ID.gschema.xml $FLATPAK_DEST/share/glib-2.0/schemas/$FLATPAK_ID.gschema.xml
+      - glib-compile-schemas $FLATPAK_DEST/share/glib-2.0/schemas
     sources:
       - go.mod.yml
       - type: dir

@@ -2,7 +2,7 @@
 Categories=Audio;AudioVideo;Music;GNOME;GTK
 Comment=Tidal Wave is a GTK client for TIDAL written in GoLang.
 Exec=tidalwave %u
-Icon=org.codeberg.dergs.tidalwave
+Icon=dev.dergs.tidalwave
 MimeType=x-scheme-handler/tidal
 Name=Tidal Wave
 Type=Application

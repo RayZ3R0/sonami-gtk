@@ -89,9 +89,9 @@
 
           desktopItems = [
             (pkgs.makeDesktopItem {
-              name = "org.codeberg.dergs.tidalwave";
+              name = "dev.dergs.tidalwave";
               exec = "tidalwave %u";
-              icon = "org.codeberg.dergs.tidalwave";
+              icon = "dev.dergs.tidalwave";
               comment = "Tidal Wave is a GTK client for TIDAL written in GoLang.";
               desktopName = "Tidal Wave";
               mimeTypes = [
@@ -112,8 +112,8 @@
               --prefix GST_PLUGIN_PATH : "$GST_PLUGIN_SYSTEM_PATH_1_0" \
               --set-default PUREGOTK_LIB_FOLDER ${libraryPath}/lib \
               ''${gappsWrapperArgs[@]}
-            install -Dm644 internal/icons/hicolor/256x256/apps/org.codeberg.dergs.tidalwave.png $out/share/icons/hicolor/256x256/apps/org.codeberg.dergs.tidalwave.png
-            install -Dm644 internal/settings/org.codeberg.dergs.tidalwave.gschema.xml -t $out/share/glib-2.0/schemas
+            install -Dm644 internal/icons/hicolor/256x256/apps/dev.dergs.tidalwave.png $out/share/icons/hicolor/256x256/apps/dev.dergs.tidalwave.png
+            install -Dm644 internal/settings/dev.dergs.tidalwave.gschema.xml -t $out/share/glib-2.0/schemas
             glib-compile-schemas $out/share/glib-2.0/schemas
           '';
 
