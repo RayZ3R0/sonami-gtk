@@ -35,7 +35,10 @@ func lyricLine(text string, timing *lyricTiming) schwifty.Button {
 				ptr := b.GoPointer()
 				classListener = activeLyricIndex.AddCallback(func(newValue uintptr) {
 					widget := gtk.ButtonNewFromInternalPtr(ptr)
+					widget.Ref()
 					schwifty.OnMainThreadOncePure(func() {
+						defer widget.Unref()
+
 						if newValue == ptr {
 							widget.AddCssClass("active")
 						} else {
