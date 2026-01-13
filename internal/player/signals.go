@@ -1,8 +1,8 @@
 package player
 
 import (
-	"codeberg.org/dergs/tidalwave/internal/signals"
-	v1 "codeberg.org/dergs/tidalwave/pkg/tidalapi/models/v1"
+	"codeberg.org/dergs/tonearm/internal/signals"
+	v1 "codeberg.org/dergs/tonearm/pkg/tidalapi/models/v1"
 )
 
 var ControllableStateChanged = signals.NewStatefulSignal(ControllableState{

@@ -1,6 +1,6 @@
 package pages
 
-import "codeberg.org/dergs/tidalwave/pkg/tidalapi/internal"
+import "codeberg.org/dergs/tonearm/pkg/tidalapi/internal"
 
 type Pages struct {
 	client *internal.Client

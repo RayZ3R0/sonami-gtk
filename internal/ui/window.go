@@ -1,13 +1,13 @@
 package ui
 
 import (
-	"codeberg.org/dergs/tidalwave/internal/g"
-	"codeberg.org/dergs/tidalwave/internal/notifications"
-	"codeberg.org/dergs/tidalwave/internal/router"
-	"codeberg.org/dergs/tidalwave/internal/settings"
-	"codeberg.org/dergs/tidalwave/internal/signals"
-	"codeberg.org/dergs/tidalwave/pkg/schwifty"
-	. "codeberg.org/dergs/tidalwave/pkg/schwifty/syntax"
+	"codeberg.org/dergs/tonearm/internal/g"
+	"codeberg.org/dergs/tonearm/internal/notifications"
+	"codeberg.org/dergs/tonearm/internal/router"
+	"codeberg.org/dergs/tonearm/internal/settings"
+	"codeberg.org/dergs/tonearm/internal/signals"
+	"codeberg.org/dergs/tonearm/pkg/schwifty"
+	. "codeberg.org/dergs/tonearm/pkg/schwifty/syntax"
 	"github.com/infinytum/injector"
 	"github.com/jwijenbergh/puregotk/v4/adw"
 	"github.com/jwijenbergh/puregotk/v4/gio"
@@ -15,7 +15,7 @@ import (
 	"github.com/jwijenbergh/puregotk/v4/gobject"
 	"github.com/jwijenbergh/puregotk/v4/gtk"
 
-	_ "codeberg.org/dergs/tidalwave/internal/ui/routes"
+	_ "codeberg.org/dergs/tonearm/internal/ui/routes"
 )
 
 type Window struct {
@@ -41,7 +41,7 @@ func NewWindow(app *adw.Application) *Window {
 
 	window.installActions()
 	window.SetContent(window.build())
-	window.SetTitle("Tidal Wave")
+	window.SetTitle("Tonearm")
 	window.SetIconName("logo")
 	window.SetDefaultSize(settings.General().GetWindowWidth(), settings.General().GetWindowHeight())
 	// For some reason the bindings do not allow to specify which property

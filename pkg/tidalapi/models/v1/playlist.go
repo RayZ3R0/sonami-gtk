@@ -1,7 +1,7 @@
 package v1
 
 import (
-	"codeberg.org/dergs/tidalwave/pkg/tidalapi/helper"
+	"codeberg.org/dergs/tonearm/pkg/tidalapi/helper"
 )
 
 type Playlist struct {

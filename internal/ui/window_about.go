@@ -35,7 +35,7 @@ func getVersionNumber() string {
 
 		if Commit == "" {
 			// If no commit is available.
-			// This happens if the app is run with `go run ./cmd/tidalwave`.
+			// This happens if the app is run with `go run ./cmd/tonearm`.
 
 			return "local"
 		} else if ok, _ := regexp.MatchString(`^.*-\d+-g[0-9a-f]{7}$`, Commit); ok {
@@ -90,7 +90,7 @@ func (w *Window) PresentAbout() {
 
 	about := adw.NewAboutDialog()
 	about.SetApplicationIcon("logo")
-	about.SetApplicationName("Tidal Wave")
+	about.SetApplicationName("Tonearm")
 	about.SetVersion(getVersionNumber())
 	about.SetLicenseType(gtk.LicenseGpl30Value)
 	about.SetDevelopers([]string{
@@ -98,8 +98,8 @@ func (w *Window) PresentAbout() {
 		"Dråfølin https://github.com/Drafolin",
 	})
 	about.SetCopyright("© 2026 Nila The Dragon")
-	about.SetWebsite("https://codeberg.org/dergs/TidalWave")
-	about.SetIssueUrl("https://codeberg.org/dergs/TidalWave/issues")
+	about.SetWebsite("https://codeberg.org/dergs/Tonearm")
+	about.SetIssueUrl("https://codeberg.org/dergs/Tonearm/issues")
 
 	about.AddLegalSection("GStreamer Bindings (go-gst/go-gst)", "© 2020 https://github.com/go-gst/go-gst", gtk.LicenseLgpl30Value, "")
 	about.AddLegalSection("DBus Client (godbus/dbus)", "© 2020 Georg Reinke https://github.com/godbus/dbus", gtk.LicenseBsdValue, "")

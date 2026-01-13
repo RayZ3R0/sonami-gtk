@@ -1,14 +1,14 @@
 package schwifty
 
 import (
-	"codeberg.org/dergs/tidalwave/pkg/schwifty/state"
+	"codeberg.org/dergs/tonearm/pkg/schwifty/state"
 	"github.com/jwijenbergh/puregotk/v4/gdk"
 	"github.com/jwijenbergh/puregotk/v4/gdkpixbuf"
 	"github.com/jwijenbergh/puregotk/v4/gobject"
 	"github.com/jwijenbergh/puregotk/v4/gtk"
 )
 
-//go:generate go run codeberg.org/dergs/tidalwave/pkg/schwifty/gen Image *gtk.Image
+//go:generate go run codeberg.org/dergs/tonearm/pkg/schwifty/gen Image *gtk.Image
 
 type Paintable interface {
 	gdk.Paintable

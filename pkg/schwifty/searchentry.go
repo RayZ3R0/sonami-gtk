@@ -1,11 +1,11 @@
 package schwifty
 
 import (
-	"codeberg.org/dergs/tidalwave/pkg/schwifty/callback"
+	"codeberg.org/dergs/tonearm/pkg/schwifty/callback"
 	"github.com/jwijenbergh/puregotk/v4/gtk"
 )
 
-//go:generate go run codeberg.org/dergs/tidalwave/pkg/schwifty/gen SearchEntry *gtk.SearchEntry
+//go:generate go run codeberg.org/dergs/tonearm/pkg/schwifty/gen SearchEntry *gtk.SearchEntry
 
 func (f SearchEntry) ConnectActivate(cb func(gtk.SearchEntry)) SearchEntry {
 	return func() *gtk.SearchEntry {

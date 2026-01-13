@@ -1,10 +1,10 @@
 package components
 
 import (
-	"codeberg.org/dergs/tidalwave/internal/router"
-	"codeberg.org/dergs/tidalwave/pkg/schwifty"
-	"codeberg.org/dergs/tidalwave/pkg/schwifty/state"
-	. "codeberg.org/dergs/tidalwave/pkg/schwifty/syntax"
+	"codeberg.org/dergs/tonearm/internal/router"
+	"codeberg.org/dergs/tonearm/pkg/schwifty"
+	"codeberg.org/dergs/tonearm/pkg/schwifty/state"
+	. "codeberg.org/dergs/tonearm/pkg/schwifty/syntax"
 	"github.com/jwijenbergh/puregotk/v4/gtk"
 )
 

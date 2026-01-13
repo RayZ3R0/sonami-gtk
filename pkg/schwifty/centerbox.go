@@ -1,11 +1,11 @@
 package schwifty
 
 import (
-	"codeberg.org/dergs/tidalwave/pkg/schwifty/state"
+	"codeberg.org/dergs/tonearm/pkg/schwifty/state"
 	"github.com/jwijenbergh/puregotk/v4/gtk"
 )
 
-//go:generate go run codeberg.org/dergs/tidalwave/pkg/schwifty/gen CenterBox *gtk.CenterBox
+//go:generate go run codeberg.org/dergs/tonearm/pkg/schwifty/gen CenterBox *gtk.CenterBox
 
 func (f CenterBox) BindCenterWidget(state *state.State[any]) CenterBox {
 	return func() *gtk.CenterBox {

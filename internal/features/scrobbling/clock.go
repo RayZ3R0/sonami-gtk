@@ -4,7 +4,7 @@ import (
 	"context"
 	"time"
 
-	"codeberg.org/dergs/tidalwave/internal/player"
+	"codeberg.org/dergs/tonearm/internal/player"
 )
 
 type Clock struct {

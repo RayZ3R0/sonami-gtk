@@ -3,9 +3,9 @@ package shortcut_list
 import (
 	"time"
 
-	"codeberg.org/dergs/tidalwave/internal/router"
-	"codeberg.org/dergs/tidalwave/pkg/schwifty"
-	v2 "codeberg.org/dergs/tidalwave/pkg/tidalapi/models/v2"
+	"codeberg.org/dergs/tonearm/internal/router"
+	"codeberg.org/dergs/tonearm/pkg/schwifty"
+	v2 "codeberg.org/dergs/tonearm/pkg/tidalapi/models/v2"
 	"github.com/infinytum/injector"
 	"github.com/jwijenbergh/puregotk/v4/gtk"
 )

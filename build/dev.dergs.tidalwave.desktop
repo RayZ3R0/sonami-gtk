@@ -1,9 +1,9 @@
 [Desktop Entry]
 Categories=Audio;AudioVideo;Music;GNOME;GTK
-Comment=Tidal Wave is a GTK client for TIDAL written in GoLang.
-Exec=tidalwave %u
-Icon=dev.dergs.tidalwave
+Comment=Tonearm is a GTK client for TIDAL written in GoLang.
+Exec=tonearm %u
+Icon=dev.dergs.tonearm
 MimeType=x-scheme-handler/tidal
-Name=Tidal Wave
+Name=Tonearm
 Type=Application
 Version=1.5

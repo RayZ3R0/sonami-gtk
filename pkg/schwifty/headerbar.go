@@ -2,7 +2,7 @@ package schwifty
 
 import "github.com/jwijenbergh/puregotk/v4/adw"
 
-//go:generate go run codeberg.org/dergs/tidalwave/pkg/schwifty/gen HeaderBar *adw.HeaderBar
+//go:generate go run codeberg.org/dergs/tonearm/pkg/schwifty/gen HeaderBar *adw.HeaderBar
 
 func (f HeaderBar) CenteringPolicy(policy adw.CenteringPolicy) HeaderBar {
 	return func() *adw.HeaderBar {

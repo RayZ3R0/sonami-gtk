@@ -4,7 +4,7 @@ import (
 	"math"
 	"time"
 
-	"codeberg.org/dergs/tidalwave/internal/signals"
+	"codeberg.org/dergs/tonearm/internal/signals"
 	"github.com/go-gst/go-gst/gst"
 )
 

@@ -5,7 +5,7 @@ import (
 	"strings"
 	"time"
 
-	"codeberg.org/dergs/tidalwave/internal/g"
+	"codeberg.org/dergs/tonearm/internal/g"
 )
 
 var logger = slog.With("module", "router")

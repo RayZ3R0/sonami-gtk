@@ -7,7 +7,7 @@ import (
 	"net/http"
 	"strings"
 
-	"codeberg.org/dergs/tidalwave/pkg/tidalapi/models/openapi"
+	"codeberg.org/dergs/tonearm/pkg/tidalapi/models/openapi"
 )
 
 func (p *Artists) Artist(ctx context.Context, id string, include ...string) (*openapi.Artist, error) {

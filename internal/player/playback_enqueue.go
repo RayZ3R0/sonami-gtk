@@ -6,7 +6,7 @@ import (
 	"fmt"
 	"os"
 
-	v1 "codeberg.org/dergs/tidalwave/pkg/tidalapi/models/v1"
+	v1 "codeberg.org/dergs/tonearm/pkg/tidalapi/models/v1"
 )
 
 var (

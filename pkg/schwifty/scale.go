@@ -1,12 +1,12 @@
 package schwifty
 
 import (
-	"codeberg.org/dergs/tidalwave/pkg/schwifty/callback"
-	"codeberg.org/dergs/tidalwave/pkg/schwifty/state"
+	"codeberg.org/dergs/tonearm/pkg/schwifty/callback"
+	"codeberg.org/dergs/tonearm/pkg/schwifty/state"
 	"github.com/jwijenbergh/puregotk/v4/gtk"
 )
 
-//go:generate go run codeberg.org/dergs/tidalwave/pkg/schwifty/gen Scale *gtk.Scale
+//go:generate go run codeberg.org/dergs/tonearm/pkg/schwifty/gen Scale *gtk.Scale
 
 func (s Scale) Value(value float64) Scale {
 	return func() *gtk.Scale {

@@ -12,7 +12,7 @@ import (
 )
 
 const (
-	service         = "dev.dergs.tidalwave"
+	service         = "dev.dergs.tonearm"
 	refreshTokenKey = "refresh_token"
 )
 

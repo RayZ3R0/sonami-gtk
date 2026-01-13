@@ -7,7 +7,7 @@ import (
 	"io"
 	"net/http"
 
-	"codeberg.org/dergs/tidalwave/internal/settings"
+	"codeberg.org/dergs/tonearm/internal/settings"
 )
 
 func (i *ImgUtil) fetch(url string) ([]byte, error) {

@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <component type="desktop-application">
-  <id>dev.dergs.tidalwave</id>
+  <id>dev.dergs.tonearm</id>
   <metadata_license>MIT</metadata_license>
-  <name>Tidal Wave</name>
+  <name>Tonearm</name>
   <summary>Stream your favorite music</summary>
   <description>
     <p>
-    With Tidal Wave you are able to play tracks at their highest quality, explore new tracks using discovery mixes or the explore tab or just enjoy the songs you already know you love from your collection. Just like you would expect from the real app. Tidal Wave also has some additional features such as
+    With Tonearm you are able to play tracks at their highest quality, explore new tracks using discovery mixes or the explore tab or just enjoy the songs you already know you love from your collection. Just like you would expect from the real app. Tonearm also has some additional features such as
     </p>
     <ul>
       <li>Background Playback</li>
@@ -35,11 +35,11 @@
     <keyword>streaming</keyword>
   </keywords>
 
-  <url type="homepage">https://codeberg.org/dergs/TidalWave</url>
-  <url type="bugtracker">https://codeberg.org/dergs/TidalWave/issues</url>
-  <url type="vcs-browser">https://codeberg.org/dergs/TidalWave</url>
+  <url type="homepage">https://codeberg.org/dergs/Tonearm</url>
+  <url type="bugtracker">https://codeberg.org/dergs/Tonearm/issues</url>
+  <url type="vcs-browser">https://codeberg.org/dergs/Tonearm</url>
 
-  <launchable type="desktop-id">dev.dergs.tidalwave.desktop</launchable>
+  <launchable type="desktop-id">dev.dergs.tonearm.desktop</launchable>
 
   <releases />
 
@@ -57,21 +57,21 @@
 
   <screenshots>
     <screenshot type="default">
-      <caption>Tidal Wave displaying the public, unauthenticated home page</caption>
+      <caption>Tonearm displaying the public, unauthenticated home page</caption>
       <image>
-      https://codeberg.org/dergs/TidalWave/raw/commit/86acdf4853b7a2a91e3bb10be43eb22409e4680c/.codeberg/images/home.png
+      https://codeberg.org/dergs/Tonearm/raw/commit/86acdf4853b7a2a91e3bb10be43eb22409e4680c/.codeberg/images/home.png
       </image>
     </screenshot>
     <screenshot>
-      <caption>Tidal Wave showing the explore page for the dance and electronic genres</caption>
+      <caption>Tonearm showing the explore page for the dance and electronic genres</caption>
       <image>
-      https://codeberg.org/dergs/TidalWave/raw/commit/aba9037b814422c15435f67d243648751f31d0b7/.codeberg/images/explore_genre.png
+      https://codeberg.org/dergs/Tonearm/raw/commit/aba9037b814422c15435f67d243648751f31d0b7/.codeberg/images/explore_genre.png
       </image>
     </screenshot>
     <screenshot>
-      <caption>Tidal Wave showing the search page, while displaying the lyrics of the current song</caption>
+      <caption>Tonearm showing the search page, while displaying the lyrics of the current song</caption>
       <image>
-      https://codeberg.org/dergs/TidalWave/raw/commit/aba9037b814422c15435f67d243648751f31d0b7/.codeberg/images/search_lyrics.png
+      https://codeberg.org/dergs/Tonearm/raw/commit/aba9037b814422c15435f67d243648751f31d0b7/.codeberg/images/search_lyrics.png
       </image>
     </screenshot>
   </screenshots>

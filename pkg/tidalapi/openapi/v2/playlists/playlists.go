@@ -1,6 +1,6 @@
 package playlists
 
-import "codeberg.org/dergs/tidalwave/pkg/tidalapi/internal"
+import "codeberg.org/dergs/tonearm/pkg/tidalapi/internal"
 
 type Playlists struct {
 	client *internal.Client

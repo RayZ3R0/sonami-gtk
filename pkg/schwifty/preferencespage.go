@@ -4,7 +4,7 @@ import (
 	"github.com/jwijenbergh/puregotk/v4/adw"
 )
 
-//go:generate go run codeberg.org/dergs/tidalwave/pkg/schwifty/gen PreferencesPage *adw.PreferencesPage
+//go:generate go run codeberg.org/dergs/tonearm/pkg/schwifty/gen PreferencesPage *adw.PreferencesPage
 
 func (f PreferencesPage) Add(child any) PreferencesPage {
 	return func() *adw.PreferencesPage {

@@ -4,8 +4,8 @@ import (
 	"log/slog"
 	"time"
 
-	"codeberg.org/dergs/tidalwave/internal/player"
-	"codeberg.org/dergs/tidalwave/internal/signals"
+	"codeberg.org/dergs/tonearm/internal/player"
+	"codeberg.org/dergs/tonearm/internal/signals"
 )
 
 var logger = slog.With("module", "scrobbler")

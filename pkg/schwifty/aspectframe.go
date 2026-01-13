@@ -1,3 +1,3 @@
 package schwifty
 
-//go:generate go run codeberg.org/dergs/tidalwave/pkg/schwifty/gen AspectFrame *gtk.AspectFrame
+//go:generate go run codeberg.org/dergs/tonearm/pkg/schwifty/gen AspectFrame *gtk.AspectFrame

@@ -3,12 +3,12 @@
 // Example:
 [
   {
-    "label": "Run Tidal Wave (Dev)",
+    "label": "Run Tonearm (Dev)",
     "command": "go",
     "args": [
       "run",
-      "-ldflags=\"-X codeberg.org/dergs/tidalwave/internal/ui.Commit=$(git describe --tags --long --abbrev=7 2>/dev/null || git rev-parse HEAD 2>/dev/null)\"",
-      "cmd/tidalwave/main.go"
+      "-ldflags=\"-X codeberg.org/dergs/tonearm/internal/ui.Commit=$(git describe --tags --long --abbrev=7 2>/dev/null || git rev-parse HEAD 2>/dev/null)\"",
+      "cmd/tonearm/main.go",
     ],
     // Current working directory to spawn the command into, defaults to current project root.
     //"cwd": "/path/to/working/directory",
@@ -49,8 +49,8 @@
     // Whether to show the task line in the output of the spawned task, defaults to `true`.
     "show_summary": true,
     // Whether to show the command line in the output of the spawned task, defaults to `true`.
-    "show_command": false
+    "show_command": false,
     // Represents the tags for inline runnable indicators, or spawning multiple tasks at once.
     // "tags": []
-  }
+  },
 ]

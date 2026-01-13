@@ -4,8 +4,8 @@ import (
 	"log/slog"
 	"reflect"
 
-	"codeberg.org/dergs/tidalwave/pkg/schwifty/callback"
-	"codeberg.org/dergs/tidalwave/pkg/schwifty/tracking"
+	"codeberg.org/dergs/tonearm/pkg/schwifty/callback"
+	"codeberg.org/dergs/tonearm/pkg/schwifty/tracking"
 	"github.com/jwijenbergh/puregotk/v4/gtk"
 )
 

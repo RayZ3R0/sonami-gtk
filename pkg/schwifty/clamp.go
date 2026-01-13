@@ -2,7 +2,7 @@ package schwifty
 
 import "github.com/jwijenbergh/puregotk/v4/adw"
 
-//go:generate go run codeberg.org/dergs/tidalwave/pkg/schwifty/gen Clamp *adw.Clamp
+//go:generate go run codeberg.org/dergs/tonearm/pkg/schwifty/gen Clamp *adw.Clamp
 
 func (f Clamp) Child(widget any) Clamp {
 	return func() *adw.Clamp {

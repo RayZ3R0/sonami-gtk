@@ -1,13 +1,13 @@
 package search
 
 import (
-	"codeberg.org/dergs/tidalwave/internal/ui/components"
-	"codeberg.org/dergs/tidalwave/internal/ui/components/horizontal_list"
-	"codeberg.org/dergs/tidalwave/internal/ui/components/media_card"
-	"codeberg.org/dergs/tidalwave/internal/ui/components/tracklist"
-	"codeberg.org/dergs/tidalwave/pkg/schwifty"
-	. "codeberg.org/dergs/tidalwave/pkg/schwifty/syntax"
-	"codeberg.org/dergs/tidalwave/pkg/tidalapi/models/openapi"
+	"codeberg.org/dergs/tonearm/internal/ui/components"
+	"codeberg.org/dergs/tonearm/internal/ui/components/horizontal_list"
+	"codeberg.org/dergs/tonearm/internal/ui/components/media_card"
+	"codeberg.org/dergs/tonearm/internal/ui/components/tracklist"
+	"codeberg.org/dergs/tonearm/pkg/schwifty"
+	. "codeberg.org/dergs/tonearm/pkg/schwifty/syntax"
+	"codeberg.org/dergs/tonearm/pkg/tidalapi/models/openapi"
 	"github.com/jwijenbergh/puregotk/v4/gtk"
 )
 

@@ -1,7 +1,7 @@
 package artist
 
 import (
-	"codeberg.org/dergs/tidalwave/pkg/tidalapi/internal"
+	"codeberg.org/dergs/tonearm/pkg/tidalapi/internal"
 )
 
 type Artist struct {

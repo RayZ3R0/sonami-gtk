@@ -7,9 +7,9 @@ import (
 	"strings"
 	"time"
 
-	"codeberg.org/dergs/tidalwave/internal/g"
-	"codeberg.org/dergs/tidalwave/internal/resources"
-	. "codeberg.org/dergs/tidalwave/pkg/schwifty/syntax"
+	"codeberg.org/dergs/tonearm/internal/g"
+	"codeberg.org/dergs/tonearm/internal/resources"
+	. "codeberg.org/dergs/tonearm/pkg/schwifty/syntax"
 	"github.com/jwijenbergh/puregotk/v4/adw"
 	"github.com/jwijenbergh/puregotk/v4/gdk"
 	"github.com/jwijenbergh/puregotk/v4/glib"

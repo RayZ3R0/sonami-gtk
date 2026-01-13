@@ -1,8 +1,8 @@
 package search
 
 import (
-	"codeberg.org/dergs/tidalwave/pkg/schwifty"
-	. "codeberg.org/dergs/tidalwave/pkg/schwifty/syntax"
+	"codeberg.org/dergs/tonearm/pkg/schwifty"
+	. "codeberg.org/dergs/tonearm/pkg/schwifty/syntax"
 )
 
 func PromptView() schwifty.StatusPage {

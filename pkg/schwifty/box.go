@@ -2,7 +2,7 @@ package schwifty
 
 import "github.com/jwijenbergh/puregotk/v4/gtk"
 
-//go:generate go run codeberg.org/dergs/tidalwave/pkg/schwifty/gen Box *gtk.Box
+//go:generate go run codeberg.org/dergs/tonearm/pkg/schwifty/gen Box *gtk.Box
 
 func (f Box) Append(child any) Box {
 	return func() *gtk.Box {

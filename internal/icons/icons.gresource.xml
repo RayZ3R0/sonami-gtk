@@ -1,9 +1,9 @@
 <?xml version='1.0' encoding='utf-8' ?>
 <gresources>
-  <gresource prefix="/dev/dergs/tidalwave/icons/256x256/apps/">
-    <file alias="logo.png">hicolor/256x256/apps/dev.dergs.tidalwave.png</file>
+  <gresource prefix="/dev/dergs/tonearm/icons/256x256/apps/">
+    <file alias="logo.png">hicolor/256x256/apps/dev.dergs.tonearm.png</file>
   </gresource>
-  <gresource prefix="/dev/dergs/tidalwave/icons/scalable/actions/">
+  <gresource prefix="/dev/dergs/tonearm/icons/scalable/actions/">
     <file alias="go-home-symbolic.svg">scalable/actions/go-home-symbolic.svg</file>
     <file alias="plus-square-filled-symbolic.svg">scalable/actions/plus-square-filled-symbolic.svg</file>
     <file alias="loupe-symbolic.svg">scalable/actions/loupe-symbolic.svg</file>
@@ -36,7 +36,7 @@
     <file alias="speedometer5-symbolic.svg">scalable/actions/speedometer5-symbolic.svg</file>
     <file alias="dock-left-symbolic.svg">scalable/actions/dock-left-symbolic.svg</file>
   </gresource>
-  <gresource prefix="/dev/dergs/tidalwave/icons/scalable/state/">
+  <gresource prefix="/dev/dergs/tonearm/icons/scalable/state/">
     <file alias="missing-album.svg">scalable/state/missing-album.svg</file>
   </gresource>
 </gresources>

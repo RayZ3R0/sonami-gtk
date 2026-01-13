@@ -4,8 +4,8 @@ import (
 	"log/slog"
 	"sync"
 
-	"codeberg.org/dergs/tidalwave/internal/signals"
-	"codeberg.org/dergs/tidalwave/pkg/tidalapi/models/openapi"
+	"codeberg.org/dergs/tonearm/internal/signals"
+	"codeberg.org/dergs/tonearm/pkg/tidalapi/models/openapi"
 )
 
 type Queue struct {

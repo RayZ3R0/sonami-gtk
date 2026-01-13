@@ -4,7 +4,7 @@ import (
 	"github.com/jwijenbergh/puregotk/v4/adw"
 )
 
-//go:generate go run codeberg.org/dergs/tidalwave/pkg/schwifty/gen PreferencesDialog *adw.PreferencesDialog
+//go:generate go run codeberg.org/dergs/tonearm/pkg/schwifty/gen PreferencesDialog *adw.PreferencesDialog
 
 func (f PreferencesDialog) Add(child any) PreferencesDialog {
 	return func() *adw.PreferencesDialog {

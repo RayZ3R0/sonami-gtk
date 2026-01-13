@@ -5,11 +5,11 @@ import (
 	"log/slog"
 	"time"
 
-	"codeberg.org/dergs/tidalwave/internal/router"
-	"codeberg.org/dergs/tidalwave/internal/ui/routes/search"
-	"codeberg.org/dergs/tidalwave/pkg/schwifty/state"
-	. "codeberg.org/dergs/tidalwave/pkg/schwifty/syntax"
-	"codeberg.org/dergs/tidalwave/pkg/tidalapi"
+	"codeberg.org/dergs/tonearm/internal/router"
+	"codeberg.org/dergs/tonearm/internal/ui/routes/search"
+	"codeberg.org/dergs/tonearm/pkg/schwifty/state"
+	. "codeberg.org/dergs/tonearm/pkg/schwifty/syntax"
+	"codeberg.org/dergs/tonearm/pkg/tidalapi"
 	"github.com/infinytum/injector"
 	"github.com/jwijenbergh/puregotk/v4/gtk"
 )
