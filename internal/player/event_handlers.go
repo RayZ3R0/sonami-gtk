@@ -54,6 +54,7 @@ func onBusMessage(msg *gst.Message) bool {
 		logger.Error("playback failed", "code", err.Code(), "message", err.Message(), "error", err.Error(), "debug", err.DebugString())
 	case gst.MessageStreamStart:
 		startUpdateRunner()
+		playbin.SetProperty("volume", volumeBeforeEnqueue)
 		// A hack to trigger the correct track updates with gapless playback
 		if TrackChanged.CurrentValue().ID != strconv.Itoa(currentlyEnqueuedTrackID) {
 			playNextTrack()
