@@ -3,7 +3,7 @@ package internal
 import (
 	"net/http"
 
-	"codeberg.org/dergs/tidalwave/pkg/tidalapi/auth"
+	"codeberg.org/dergs/tonearm/pkg/tidalapi/auth"
 )
 
 type Client struct {

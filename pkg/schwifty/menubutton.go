@@ -1,12 +1,12 @@
 package schwifty
 
 import (
-	"codeberg.org/dergs/tidalwave/pkg/schwifty/state"
+	"codeberg.org/dergs/tonearm/pkg/schwifty/state"
 	"github.com/jwijenbergh/puregotk/v4/gio"
 	"github.com/jwijenbergh/puregotk/v4/gtk"
 )
 
-//go:generate go run codeberg.org/dergs/tidalwave/pkg/schwifty/gen MenuButton *gtk.MenuButton
+//go:generate go run codeberg.org/dergs/tonearm/pkg/schwifty/gen MenuButton *gtk.MenuButton
 
 func (f MenuButton) BindIconName(state *state.State[string]) MenuButton {
 	return func() *gtk.MenuButton {

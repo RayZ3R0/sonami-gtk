@@ -1,8 +1,8 @@
 package media_card
 
 import (
-	"codeberg.org/dergs/tidalwave/pkg/schwifty"
-	v2 "codeberg.org/dergs/tidalwave/pkg/tidalapi/models/v2"
+	"codeberg.org/dergs/tonearm/pkg/schwifty"
+	v2 "codeberg.org/dergs/tonearm/pkg/tidalapi/models/v2"
 	"github.com/jwijenbergh/puregotk/v4/glib"
 )
 

@@ -1,11 +1,11 @@
-app-id: dev.dergs.tidalwave
+app-id: dev.dergs.tonearm
 runtime: org.gnome.Platform
 runtime-version: "49"
 sdk: org.gnome.Sdk
 
 sdk-extensions:
   - org.freedesktop.Sdk.Extension.golang
-command: tidalwave
+command: tonearm
 
 finish-args:
   - --share=network
@@ -21,11 +21,11 @@ build-options:
     - GOROOT=/usr/lib/sdk/golang
 
 modules:
-  - name: tidalwave
+  - name: tonearm
     buildsystem: simple
     build-commands:
-      - $GOROOT/bin/go build -ldflags="-w -s" -gcflags=all=-l -trimpath -o tidalwave cmd/tidalwave/main.go
-      - install -Dm00755 tidalwave $FLATPAK_DEST/bin/tidalwave
+      - $GOROOT/bin/go build -ldflags="-w -s" -gcflags=all=-l -trimpath -o tonearm cmd/tonearm/main.go
+      - install -Dm00755 tonearm $FLATPAK_DEST/bin/tonearm
       - install -Dm00644 internal/icons/hicolor/256x256/apps/$FLATPAK_ID.png $FLATPAK_DEST/share/icons/hicolor/256x256/apps/$FLATPAK_ID.png
       - install -Dm00644 build/$FLATPAK_ID.desktop $FLATPAK_DEST/share/applications/$FLATPAK_ID.desktop
       - install -Dm00644 build/$FLATPAK_ID.metainfo.xml $FLATPAK_DEST/share/metainfo/$FLATPAK_ID.metainfo.xml

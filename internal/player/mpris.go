@@ -3,8 +3,8 @@ package player
 import (
 	"fmt"
 
-	"codeberg.org/dergs/tidalwave/internal/signals"
-	"codeberg.org/dergs/tidalwave/pkg/mpris"
+	"codeberg.org/dergs/tonearm/internal/signals"
+	"codeberg.org/dergs/tonearm/pkg/mpris"
 	"github.com/infinytum/injector"
 )
 

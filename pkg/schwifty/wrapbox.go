@@ -2,7 +2,7 @@ package schwifty
 
 import "github.com/jwijenbergh/puregotk/v4/adw"
 
-//go:generate go run codeberg.org/dergs/tidalwave/pkg/schwifty/gen WrapBox *adw.WrapBox
+//go:generate go run codeberg.org/dergs/tonearm/pkg/schwifty/gen WrapBox *adw.WrapBox
 
 func (f WrapBox) Append(child any) WrapBox {
 	return func() *adw.WrapBox {

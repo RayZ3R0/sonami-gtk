@@ -1,6 +1,6 @@
 package tracks
 
-import "codeberg.org/dergs/tidalwave/pkg/tidalapi/internal"
+import "codeberg.org/dergs/tonearm/pkg/tidalapi/internal"
 
 type Tracks struct {
 	client *internal.Client

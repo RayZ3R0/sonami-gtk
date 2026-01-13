@@ -1,4 +1,4 @@
-module codeberg.org/dergs/tidalwave
+module codeberg.org/dergs/tonearm
 
 go 1.25.4
 

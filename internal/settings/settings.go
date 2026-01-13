@@ -3,7 +3,7 @@ package settings
 import (
 	"runtime"
 
-	"codeberg.org/dergs/tidalwave/internal/g"
+	"codeberg.org/dergs/tonearm/internal/g"
 	"github.com/jwijenbergh/puregotk/v4/gio"
 )
 
@@ -11,25 +11,25 @@ import (
 
 var General = g.Lazy(func() *GeneralSettings {
 	return &GeneralSettings{
-		finalize(gio.NewSettings("dev.dergs.tidalwave")),
+		finalize(gio.NewSettings("dev.dergs.tonearm")),
 	}
 })
 
 var Performance = g.Lazy(func() *PerformanceSettings {
 	return &PerformanceSettings{
-		finalize(gio.NewSettings("dev.dergs.tidalwave.performance")),
+		finalize(gio.NewSettings("dev.dergs.tonearm.performance")),
 	}
 })
 
 var Scrobbling = g.Lazy(func() *ScrobblingSettings {
 	return &ScrobblingSettings{
-		finalize(gio.NewSettings("dev.dergs.tidalwave.scrobbling")),
+		finalize(gio.NewSettings("dev.dergs.tonearm.scrobbling")),
 	}
 })
 
 func PlayerSettings() *Player {
 	return &Player{
-		finalize(gio.NewSettings("dev.dergs.tidalwave.player")),
+		finalize(gio.NewSettings("dev.dergs.tonearm.player")),
 	}
 }
 

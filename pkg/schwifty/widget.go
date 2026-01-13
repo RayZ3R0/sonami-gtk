@@ -2,7 +2,7 @@ package schwifty
 
 import "github.com/jwijenbergh/puregotk/v4/gtk"
 
-//go:generate go run codeberg.org/dergs/tidalwave/pkg/schwifty/gen Widget *WrappedWidget
+//go:generate go run codeberg.org/dergs/tonearm/pkg/schwifty/gen Widget *WrappedWidget
 type WrappedWidget struct {
 	gtk.Widget
 }

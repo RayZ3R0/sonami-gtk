@@ -4,7 +4,7 @@ import (
 	"github.com/jwijenbergh/puregotk/v4/adw"
 )
 
-//go:generate go run codeberg.org/dergs/tidalwave/pkg/schwifty/gen PreferencesGroup *adw.PreferencesGroup
+//go:generate go run codeberg.org/dergs/tonearm/pkg/schwifty/gen PreferencesGroup *adw.PreferencesGroup
 
 func (f PreferencesGroup) Add(child any) PreferencesGroup {
 	return func() *adw.PreferencesGroup {

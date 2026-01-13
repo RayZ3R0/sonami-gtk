@@ -7,7 +7,7 @@ import (
 	"net/http"
 	"net/url"
 
-	v1 "codeberg.org/dergs/tidalwave/pkg/tidalapi/models/v1"
+	v1 "codeberg.org/dergs/tonearm/pkg/tidalapi/models/v1"
 )
 
 type ItemsOptions struct {

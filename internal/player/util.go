@@ -5,8 +5,8 @@ import (
 	"fmt"
 	"math/rand/v2"
 
-	"codeberg.org/dergs/tidalwave/pkg/tidalapi"
-	"codeberg.org/dergs/tidalwave/pkg/tidalapi/models/openapi"
+	"codeberg.org/dergs/tonearm/pkg/tidalapi"
+	"codeberg.org/dergs/tonearm/pkg/tidalapi/models/openapi"
 	"github.com/infinytum/injector"
 )
 

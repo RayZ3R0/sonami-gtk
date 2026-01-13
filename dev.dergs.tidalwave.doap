@@ -7,12 +7,12 @@
     xmlns="http://usefulinc.com/ns/doap#"
 >
 
-    <name>TidalWave</name>
+    <name>Tonearm</name>
     <shortdesc xml:lang="en">An unofficial native GTK4 / Adwaita music streaming client for TIDAL</shortdesc>
 
-    <homepage rdf:resource="https://codeberg.org/dergs/TidalWave" />
-    <download-page rdf:resource="https://codeberg.org/dergs/TidalWave" />
-    <bug-database rdf:resource="https://codeberg.org/dergs/TidalWave/issues" />
+    <homepage rdf:resource="https://codeberg.org/dergs/Tonearm" />
+    <download-page rdf:resource="https://codeberg.org/dergs/Tonearm" />
+    <bug-database rdf:resource="https://codeberg.org/dergs/Tonearm/issues" />
 
     <programming-language>Golang</programming-language>
 

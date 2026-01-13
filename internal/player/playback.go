@@ -6,11 +6,11 @@ import (
 	"slices"
 	"strconv"
 
-	"codeberg.org/dergs/tidalwave/internal/notifications"
-	"codeberg.org/dergs/tidalwave/pkg/tidalapi"
-	"codeberg.org/dergs/tidalwave/pkg/tidalapi/models/openapi"
-	v1 "codeberg.org/dergs/tidalwave/pkg/tidalapi/models/v1"
-	tracksv1 "codeberg.org/dergs/tidalwave/pkg/tidalapi/v1/tracks"
+	"codeberg.org/dergs/tonearm/internal/notifications"
+	"codeberg.org/dergs/tonearm/pkg/tidalapi"
+	"codeberg.org/dergs/tonearm/pkg/tidalapi/models/openapi"
+	v1 "codeberg.org/dergs/tonearm/pkg/tidalapi/models/v1"
+	tracksv1 "codeberg.org/dergs/tonearm/pkg/tidalapi/v1/tracks"
 	"github.com/go-gst/go-gst/gst"
 	"github.com/infinytum/injector"
 )

@@ -6,9 +6,9 @@ import (
 	"io"
 	"net/http"
 
-	"codeberg.org/dergs/tidalwave/internal/player"
-	"codeberg.org/dergs/tidalwave/internal/settings"
-	"codeberg.org/dergs/tidalwave/internal/signals"
+	"codeberg.org/dergs/tonearm/internal/player"
+	"codeberg.org/dergs/tonearm/internal/settings"
+	"codeberg.org/dergs/tonearm/internal/signals"
 )
 
 type listenBrainzListenType string
@@ -101,10 +101,10 @@ func generateListenBrainzRequest(track *player.Track, listenType listenBrainzLis
 					TrackName:  track.Title,
 					ArtistName: track.ArtistNames(),
 					AdditionalInfo: listenBrainzAdditionalInfo{
-						MediaPlayer:      "Tidal Wave",
+						MediaPlayer:      "Tonearm",
 						MusicService:     "tidal.com",
 						OriginURL:        "https://tidal.com/track/" + track.ID,
-						SubmissionClient: "Tidal Wave",
+						SubmissionClient: "Tonearm",
 						DurationMs:       int(track.Duration.Milliseconds()),
 						ISRC:             track.ISRC,
 					},

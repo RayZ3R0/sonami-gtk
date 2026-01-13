@@ -1,12 +1,12 @@
 package schwifty
 
 import (
-	"codeberg.org/dergs/tidalwave/pkg/schwifty/callback"
-	"codeberg.org/dergs/tidalwave/pkg/schwifty/state"
+	"codeberg.org/dergs/tonearm/pkg/schwifty/callback"
+	"codeberg.org/dergs/tonearm/pkg/schwifty/state"
 	"github.com/jwijenbergh/puregotk/v4/gtk"
 )
 
-//go:generate go run codeberg.org/dergs/tidalwave/pkg/schwifty/gen ScrolledWindow *gtk.ScrolledWindow
+//go:generate go run codeberg.org/dergs/tonearm/pkg/schwifty/gen ScrolledWindow *gtk.ScrolledWindow
 
 func (f ScrolledWindow) BindChild(state *state.State[any]) ScrolledWindow {
 	return func() *gtk.ScrolledWindow {

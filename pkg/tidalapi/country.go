@@ -6,7 +6,7 @@ import (
 	"fmt"
 	"net/http"
 
-	"codeberg.org/dergs/tidalwave/pkg/tidalapi/internal"
+	"codeberg.org/dergs/tonearm/pkg/tidalapi/internal"
 )
 
 type countryCodeResponse struct {

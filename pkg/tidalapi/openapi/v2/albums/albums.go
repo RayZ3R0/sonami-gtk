@@ -1,6 +1,6 @@
 package albums
 
-import "codeberg.org/dergs/tidalwave/pkg/tidalapi/internal"
+import "codeberg.org/dergs/tonearm/pkg/tidalapi/internal"
 
 type Albums struct {
 	client *internal.Client

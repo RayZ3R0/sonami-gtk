@@ -1,7 +1,7 @@
 package factory
 
 import (
-	"codeberg.org/dergs/tidalwave/pkg/schwifty/callback"
+	"codeberg.org/dergs/tonearm/pkg/schwifty/callback"
 	"github.com/jwijenbergh/puregotk/v4/gtk"
 )
 

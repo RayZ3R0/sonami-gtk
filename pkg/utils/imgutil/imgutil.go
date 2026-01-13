@@ -1,8 +1,8 @@
 package imgutil
 
 import (
-	"codeberg.org/dergs/tidalwave/pkg/schwifty"
-	"codeberg.org/dergs/tidalwave/pkg/utils/cacheutil"
+	"codeberg.org/dergs/tonearm/pkg/schwifty"
+	"codeberg.org/dergs/tonearm/pkg/utils/cacheutil"
 	"github.com/jwijenbergh/puregotk/v4/gtk"
 )
 

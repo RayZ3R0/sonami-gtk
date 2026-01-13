@@ -16,7 +16,7 @@
       let
         pkgs = import nixpkgs { inherit system; };
         libraryPath = pkgs.symlinkJoin {
-          name = "tidalwave-puregotk-lib-folder";
+          name = "tonearm-puregotk-lib-folder";
           paths = (
             with pkgs;
             [
@@ -37,7 +37,7 @@
         devShell = pkgs.mkShell {
           PUREGOTK_LIB_FOLDER = "${libraryPath}/lib";
           GSETTINGS_SCHEMA_DIR = "./internal/settings";
-          TIDAL_WAVE_DEBUG = "1";
+          TONEARM_DEBUG = "1";
 
           hardeningDisable = [ "fortify" ]; # Required for Delve
           # For delve to work, you need to add the following line to your `programs.zed-editor`:
@@ -59,15 +59,15 @@
           ];
         };
 
-        packages.tidalwave = pkgs.buildGoModule (finalAttrs: {
-          pname = "tidalwave";
+        packages.tonearm = pkgs.buildGoModule (finalAttrs: {
+          pname = "tonearm";
           version = "0.0.1";
           src = pkgs.lib.cleanSource ./.;
           vendorHash = "sha256-GXc+L59nQgHem6KdK7u0XouBxu0Ta0y57TjXPT3fMmk=";
 
           ldflags = [
-            "-X \"codeberg.org/dergs/tidalwave/internal/ui.Commit=${(if (self ? rev) then self.rev else "")}\""
-            "-X \"codeberg.org/dergs/tidalwave/internal/ui.Version=${finalAttrs.version}\""
+            "-X \"codeberg.org/dergs/tonearm/internal/ui.Commit=${(if (self ? rev) then self.rev else "")}\""
+            "-X \"codeberg.org/dergs/tonearm/internal/ui.Version=${finalAttrs.version}\""
           ];
 
           buildInputs = with pkgs; [
@@ -86,16 +86,16 @@
           ];
 
           subPackages = [
-            "cmd/tidalwave"
+            "cmd/tonearm"
           ];
 
           desktopItems = [
             (pkgs.makeDesktopItem {
-              name = "dev.dergs.tidalwave";
-              exec = "tidalwave %u";
-              icon = "dev.dergs.tidalwave";
-              comment = "Tidal Wave is a GTK client for TIDAL written in GoLang.";
-              desktopName = "Tidal Wave";
+              name = "dev.dergs.tonearm";
+              exec = "tonearm %u";
+              icon = "dev.dergs.tonearm";
+              comment = "Tonearm is a GTK client for TIDAL written in GoLang.";
+              desktopName = "Tonearm";
               mimeTypes = [
                 "x-scheme-handler/tidal"
               ];
@@ -110,28 +110,28 @@
           ];
 
           postInstall = ''
-            wrapProgram $out/bin/tidalwave \
+            wrapProgram $out/bin/tonearm \
               --prefix GST_PLUGIN_PATH : "$GST_PLUGIN_SYSTEM_PATH_1_0" \
               --set-default PUREGOTK_LIB_FOLDER ${libraryPath}/lib \
               ''${gappsWrapperArgs[@]}
-            install -Dm644 internal/icons/hicolor/256x256/apps/dev.dergs.tidalwave.png $out/share/icons/hicolor/256x256/apps/dev.dergs.tidalwave.png
-            install -Dm644 internal/settings/dev.dergs.tidalwave.gschema.xml -t $out/share/glib-2.0/schemas
+            install -Dm644 internal/icons/hicolor/256x256/apps/dev.dergs.tonearm.png $out/share/icons/hicolor/256x256/apps/dev.dergs.tonearm.png
+            install -Dm644 internal/settings/dev.dergs.tonearm.gschema.xml -t $out/share/glib-2.0/schemas
             glib-compile-schemas $out/share/glib-2.0/schemas
           '';
 
           meta = {
-            description = "Tidal Wave is a GTK client for TIDAL written in GoLang.";
-            homepage = "https://codeberg.org/Dergs/TidalWave";
+            description = "Tonearm is a GTK client for TIDAL written in GoLang.";
+            homepage = "https://codeberg.org/Dergs/Tonearm";
             license = pkgs.lib.licenses.gpl3Plus;
             maintainers = with pkgs.lib.maintainers; [
               drafolin
               nilathedragon
             ];
-            mainProgram = "tidalwave";
+            mainProgram = "tonearm";
           };
         });
 
-        packages.default = self.packages.${system}.tidalwave;
+        packages.default = self.packages.${system}.tonearm;
       }
     );
 }

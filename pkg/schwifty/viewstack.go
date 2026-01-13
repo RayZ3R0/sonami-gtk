@@ -2,7 +2,7 @@ package schwifty
 
 import "github.com/jwijenbergh/puregotk/v4/adw"
 
-//go:generate go run codeberg.org/dergs/tidalwave/pkg/schwifty/gen ViewStack *adw.ViewStack
+//go:generate go run codeberg.org/dergs/tonearm/pkg/schwifty/gen ViewStack *adw.ViewStack
 
 func (f ViewStack) AddTitledWithIcon(child any, name string, title string, icon string) ViewStack {
 	return func() *adw.ViewStack {

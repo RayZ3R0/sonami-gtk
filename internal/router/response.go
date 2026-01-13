@@ -3,7 +3,7 @@ package router
 import (
 	"time"
 
-	"codeberg.org/dergs/tidalwave/pkg/schwifty"
+	"codeberg.org/dergs/tonearm/pkg/schwifty"
 )
 
 type Response struct {

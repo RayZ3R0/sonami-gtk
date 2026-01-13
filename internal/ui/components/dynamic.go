@@ -1,14 +1,14 @@
 package components
 
 import (
-	"codeberg.org/dergs/tidalwave/internal/ui/components/horizontal_list"
-	"codeberg.org/dergs/tidalwave/internal/ui/components/media_card"
-	"codeberg.org/dergs/tidalwave/internal/ui/components/shortcut_list"
-	"codeberg.org/dergs/tidalwave/internal/ui/components/tracklist"
-	"codeberg.org/dergs/tidalwave/pkg/schwifty"
-	"codeberg.org/dergs/tidalwave/pkg/schwifty/syntax"
-	. "codeberg.org/dergs/tidalwave/pkg/schwifty/syntax"
-	v2 "codeberg.org/dergs/tidalwave/pkg/tidalapi/models/v2"
+	"codeberg.org/dergs/tonearm/internal/ui/components/horizontal_list"
+	"codeberg.org/dergs/tonearm/internal/ui/components/media_card"
+	"codeberg.org/dergs/tonearm/internal/ui/components/shortcut_list"
+	"codeberg.org/dergs/tonearm/internal/ui/components/tracklist"
+	"codeberg.org/dergs/tonearm/pkg/schwifty"
+	"codeberg.org/dergs/tonearm/pkg/schwifty/syntax"
+	. "codeberg.org/dergs/tonearm/pkg/schwifty/syntax"
+	v2 "codeberg.org/dergs/tonearm/pkg/tidalapi/models/v2"
 	"github.com/jwijenbergh/puregotk/v4/gtk"
 )
 
