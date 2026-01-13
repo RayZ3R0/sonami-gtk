@@ -43,7 +43,9 @@
           # For delve to work, you need to add the following line to your `programs.zed-editor`:
           # package = pkgs.zed-editor.fhs;
           buildInputs = with pkgs; [
+            appstream
             delve
+            flatpak-builder
             go
             gopls
             gtk4
