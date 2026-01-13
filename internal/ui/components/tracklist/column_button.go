@@ -22,7 +22,7 @@ func buttonColumn(trackId string, grid *gtk.Grid, position int, column int) int 
 		column,
 		1,
 	)
-	return 1
+	return 0
 }
 
 func ButtonColumn(track *openapi.Track, grid *gtk.Grid, position int, column int) int {

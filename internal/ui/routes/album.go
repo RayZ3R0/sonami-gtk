@@ -63,9 +63,9 @@ func Album(albumId string) *router.Response {
 	}
 
 	list := tracklist.NewTrackList(
-		tracklist.GroupedColumn(3, gtk.AlignStartValue, tracklist.PositionColumn, tracklist.TitleColumn),
+		tracklist.GroupedColumn(2, gtk.AlignStartValue, tracklist.PositionColumn, tracklist.TitleColumn),
 		tracklist.ArtistsColumn,
-		tracklist.ExpandCustomButtonColumn(2, func(trackId string, _, _ int) {
+		tracklist.ExpandCustomButtonColumn(1, func(trackId string, _, _ int) {
 			go player.PlayAlbum(albumId, false, trackId)
 		}),
 		tracklist.GroupedColumn(1, gtk.AlignEndValue, tracklist.DurationColumn, tracklist.ControlsColumn),
