@@ -90,8 +90,7 @@ func NewPlayer() schwifty.CenterBox {
 				).
 					Spacing(7).
 					HAlign(gtk.AlignCenterValue).
-					MarginTop(42).
-					MarginBottom(42),
+					MarginTop(42),
 			).VAlign(gtk.AlignCenterValue),
 		).
 		Margin(20)
