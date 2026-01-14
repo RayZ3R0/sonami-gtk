@@ -79,9 +79,9 @@ func ForModule(module v1.Module) schwifty.BaseWidgetable {
 		return list.SetPageMargin(40)
 	case v1.ModuleTypeTrackList:
 		list := tracklist.NewTrackList[*v2.TrackItemData](
-			tracklist.GroupedColumn(3, gtk.AlignStartValue, tracklist.LegacyCoverColumn, tracklist.LegacyTitleAlbumColumn),
+			tracklist.GroupedColumn(2, gtk.AlignStartValue, tracklist.LegacyCoverColumn, tracklist.LegacyTitleAlbumColumn),
 			tracklist.LegacyArtistsColumn,
-			tracklist.LegacyExpandButtonColumn(2),
+			tracklist.LegacyExpandButtonColumn(1),
 			tracklist.GroupedColumn(1, gtk.AlignEndValue, tracklist.LegacyDurationColumn, tracklist.LegacyControlsColumn),
 		)
 		for _, item := range module.PagedList.Items {
