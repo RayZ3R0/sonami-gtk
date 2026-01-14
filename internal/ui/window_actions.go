@@ -70,6 +70,12 @@ func (w *Window) installActions() {
 	}))
 	w.AddAction(playPlaylistAction)
 
+	shuffleAction := gio.NewSimpleAction("player.shuffle", nil)
+	shuffleAction.ConnectActivate(g.Ptr(func(action gio.SimpleAction, parameter uintptr) {
+		go player.ToggleShuffle()
+	}))
+	w.AddAction(shuffleAction)
+
 	nextAction := gio.NewSimpleAction("player.next", nil)
 	nextAction.ConnectActivate(g.Ptr(func(action gio.SimpleAction, parameter uintptr) {
 		go player.Next()

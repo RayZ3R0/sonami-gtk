@@ -61,7 +61,7 @@ func (q *Queue) Clear() {
 	q.logger.Info("queue cleared")
 }
 
-func (q *Queue) Peek() *openapi.Track {
+func (q *Queue) Peek(seed int64) *openapi.Track {
 	q.RLock()
 	defer q.RUnlock()
 
@@ -69,13 +69,34 @@ func (q *Queue) Peek() *openapi.Track {
 	if len(upcomingTracks) == 0 {
 		return nil
 	}
-	return upcomingTracks[0]
+
+	idx := 0
+	if seed != 0 {
+		idx = seededRandomInt(seed, len(upcomingTracks))
+	}
+	return upcomingTracks[idx]
 }
 
-func (q *Queue) Pop() *openapi.Track {
-	_, nextTrack, _ := q.Skip(1)
+func (q *Queue) Pop(seed int64) *openapi.Track {
+	if seed == 0 {
+		_, nextTrack, _ := q.Skip(1)
+		return nextTrack
+	}
 
-	return nextTrack
+	q.RLock()
+	defer q.RUnlock()
+
+	upcomingTracks := q.UpcomingEntries.CurrentValue()
+	if len(upcomingTracks) == 0 {
+		return nil
+	}
+
+	idx := seededRandomInt(seed, len(upcomingTracks))
+	track := upcomingTracks[idx]
+	q.UpcomingEntries.Notify(func(oldValue []*openapi.Track) []*openapi.Track {
+		return append(oldValue[:idx], oldValue[idx+1:]...)
+	})
+	return track
 }
 
 func (q *Queue) Remove(index int) {

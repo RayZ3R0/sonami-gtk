@@ -3,7 +3,7 @@ package player
 import (
 	"context"
 	"fmt"
-	"math/rand/v2"
+	"math/rand"
 
 	"codeberg.org/dergs/tonearm/pkg/tidalapi"
 	"codeberg.org/dergs/tonearm/pkg/tidalapi/models/openapi"
@@ -23,9 +23,9 @@ func getNextTrackFromQueue(peek bool) *openapi.Track {
 	logger.Debug(fmt.Sprintf("attempting to %s next track from user queue", verb))
 	var nextTrack *openapi.Track
 	if peek {
-		nextTrack = UserQueue.Peek()
+		nextTrack = UserQueue.Peek(ShuffleSeedChanged.CurrentValue())
 	} else {
-		nextTrack = UserQueue.Pop()
+		nextTrack = UserQueue.Pop(ShuffleSeedChanged.CurrentValue())
 	}
 	if nextTrack != nil {
 		logger.Info(fmt.Sprintf("%sed next track from user queue", verb), "track_id", nextTrack.Data.ID)
@@ -34,9 +34,9 @@ func getNextTrackFromQueue(peek bool) *openapi.Track {
 
 	logger.Debug(fmt.Sprintf("attempting to %s next track from base queue", verb))
 	if peek {
-		nextTrack = BaseQueue.Peek()
+		nextTrack = BaseQueue.Peek(ShuffleSeedChanged.CurrentValue())
 	} else {
-		nextTrack = BaseQueue.Pop()
+		nextTrack = BaseQueue.Pop(ShuffleSeedChanged.CurrentValue())
 	}
 	if nextTrack != nil {
 		logger.Info(fmt.Sprintf("%sed next track from base queue", verb), "track_id", nextTrack.Data.ID)
@@ -51,7 +51,7 @@ func getNextTrackFromQueue(peek bool) *openapi.Track {
 		for _, track := range played {
 			BaseQueue.AddTrack(track, false)
 		}
-		return BaseQueue.Peek()
+		return BaseQueue.Peek(ShuffleSeedChanged.CurrentValue())
 	}
 
 	return nil
@@ -85,4 +85,9 @@ func prepareTrackList(tracks []openapi.Track, shuffle bool, skipUntilID string) 
 		trackPointers[i] = &track
 	}
 	return trackPointers
+}
+
+func seededRandomInt(seed int64, max int) int {
+	r := rand.New(rand.NewSource(seed))
+	return r.Intn(max)
 }

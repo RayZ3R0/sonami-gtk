@@ -46,7 +46,21 @@ func NewPlayer() schwifty.CenterBox {
 						MinHeight(34).
 						MinWidth(34).
 						WithCSSClass("transparent").
-						ActionName("win.player.shuffle"),
+						ActionName("win.player.shuffle").
+						ConnectConstruct(func(b *gtk.Button) {
+							ptr := b.GoPointer()
+							player.ShuffleSeedChanged.On(func(seed int64) bool {
+								schwifty.OnMainThreadOnce(func(ptr uintptr) {
+									b := gtk.ButtonNewFromInternalPtr(ptr)
+									if seed == 0 {
+										b.RemoveCssClass("color-accent")
+									} else {
+										b.AddCssClass("color-accent")
+									}
+								}, ptr)
+								return signals.Continue
+							})
+						}),
 					Button().
 						BindSensitive(isControllable).
 						IconName("seek-backward-symbolic").

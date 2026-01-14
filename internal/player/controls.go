@@ -142,3 +142,15 @@ func Stop() {
 	logger.Debug("player controls requested to stop")
 	playbin.SetState(gst.StateNull)
 }
+
+func ToggleShuffle() {
+	if ShuffleSeedChanged.CurrentValue() == 0 {
+		ShuffleSeedChanged.Notify(func(oldValue int64) int64 {
+			return time.Now().Unix()
+		})
+	} else {
+		ShuffleSeedChanged.Notify(func(oldValue int64) int64 {
+			return 0
+		})
+	}
+}
