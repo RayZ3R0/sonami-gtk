@@ -7,13 +7,16 @@ import (
 	"codeberg.org/dergs/tonearm/pkg/schwifty/state"
 	. "codeberg.org/dergs/tonearm/pkg/schwifty/syntax"
 	"codeberg.org/dergs/tonearm/pkg/tidalapi"
+	v1 "codeberg.org/dergs/tonearm/pkg/tidalapi/models/v1"
 	"github.com/jwijenbergh/puregotk/v4/gtk"
 )
 
 var (
-	durationState       = state.NewStateful("00:00")
-	positionState       = state.NewStateful("00:00")
-	timelineSliderState = state.NewStateful(0.0)
+	durationState        = state.NewStateful("00:00")
+	positionState        = state.NewStateful("00:00")
+	playbackQualityText  = state.NewStateful("High")
+	playbackQualityClass = state.NewStateful("high")
+	timelineSliderState  = state.NewStateful(0.0)
 )
 
 func init() {
@@ -40,10 +43,31 @@ func init() {
 		})
 		return signals.Continue
 	})
+
+	player.PlaybackQualityChanged.On(func(quality v1.AudioQuality) bool {
+		schwifty.OnMainThreadOncePure(func() {
+			switch quality {
+			case v1.AudioQualityLossy:
+				playbackQualityText.SetValue("Low (96 kbps)")
+				playbackQualityClass.SetValue("low")
+			case v1.AudioQualityHighRes:
+				playbackQualityText.SetValue("Low (320 kbps)")
+				playbackQualityClass.SetValue("low")
+			case v1.AudioQualityLossless:
+				playbackQualityText.SetValue("High")
+				playbackQualityClass.SetValue("high")
+			case v1.AudioQualityHighResLossless:
+				playbackQualityText.SetValue("Max")
+				playbackQualityClass.SetValue("max")
+			}
+		})
+		return signals.Continue
+	})
 }
 
-func trackTimeline() schwifty.Box {
-	return VStack(
+func trackTimeline() schwifty.Widget {
+	overlay := gtk.NewOverlay()
+	overlay.SetChild(VStack(
 		Scale(gtk.OrientationHorizontalValue).
 			BindSensitive(isControllable).
 			BindValue(timelineSliderState).
@@ -52,8 +76,6 @@ func trackTimeline() schwifty.Box {
 			Range(0, 100).
 			Value(0).
 			Background("transparent").
-			MarginTop(24).
-			HMargin(24).
 			HPadding(0).
 			ConnectChangeValue(func(r gtk.Range, st gtk.ScrollType, f float64) bool {
 				player.SeekToPercent(f)
@@ -63,6 +85,22 @@ func trackTimeline() schwifty.Box {
 			Label("00:00").BindText(positionState),
 			Spacer().VExpand(false),
 			Label("00:00").BindText(durationState),
-		).HMargin(24),
+		),
+	).MarginBottom(2).ToGTK())
+	overlay.AddOverlay(
+		Label("Max").
+			VAlign(gtk.AlignEndValue).
+			WithCSSClass("quality-label").
+			BindText(playbackQualityText).
+			FontSize(10).
+			FontWeight(700).
+			BindCSSClass(playbackQualityClass).
+			CornerRadius(10).
+			HPadding(8).
+			VPadding(4).
+			HExpand(false).
+			HAlign(gtk.AlignCenterValue).ToGTK(),
 	)
+
+	return ManagedWidget(&overlay.Widget)
 }
