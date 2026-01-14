@@ -30,7 +30,7 @@ func Card[T any](title string, subTitle schwifty.Widgetable[T], coverUrl string)
 					FromPaintable(resources.MissingAlbum()).
 					ConnectConstruct(func(i *gtk.Image) {
 						if settings.Performance().AllowMediaCardImages() {
-							injector.MustInject[*imgutil.ImgUtil]().LoadIntoImage(coverUrl, i)
+							injector.MustInject[*imgutil.ImgUtil]().LoadIntoImageCropped(coverUrl, i)
 						}
 					}).CornerRadius(10).Overflow(gtk.OverflowHiddenValue),
 				Label(title).
