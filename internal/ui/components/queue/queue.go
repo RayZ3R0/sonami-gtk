@@ -72,7 +72,7 @@ func NewQueue() schwifty.Box {
 
 	trackListBase := tracklist.NewTrackList(
 		tracklist.GroupedColumn(3, gtk.AlignStartValue, tracklist.CoverColumn, tracklist.TitleAlbumColumn),
-		tracklist.ExpandCustomButtonColumn(2, func(_ string, position, _ int) {
+		tracklist.ExpandCustomButtonColumn(1, func(_ string, position, _ int) {
 			go player.SkipThoughQueue(player.BaseQueue, position)
 		}),
 		tracklist.GroupedColumn(1, gtk.AlignCenterValue,
