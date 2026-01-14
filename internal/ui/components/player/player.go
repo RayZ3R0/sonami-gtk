@@ -1,26 +1,17 @@
 package player
 
 import (
-	"fmt"
-
-	"codeberg.org/dergs/tonearm/internal/notifications"
 	"codeberg.org/dergs/tonearm/internal/player"
 	"codeberg.org/dergs/tonearm/internal/signals"
 	"codeberg.org/dergs/tonearm/pkg/schwifty"
 	"codeberg.org/dergs/tonearm/pkg/schwifty/state"
 	. "codeberg.org/dergs/tonearm/pkg/schwifty/syntax"
-	v1 "codeberg.org/dergs/tonearm/pkg/tidalapi/models/v1"
-
-	"github.com/jwijenbergh/puregotk/v4/gdk"
 	"github.com/jwijenbergh/puregotk/v4/gtk"
 )
 
 var trackID = ""
 
 var (
-	playbackQualityText  = state.NewStateful("High")
-	playbackQualityClass = state.NewStateful("high")
-
 	isControllable = state.NewStateful(false)
 )
 
@@ -38,136 +29,70 @@ func init() {
 		}
 		return signals.Continue
 	})
-	player.PlaybackQualityChanged.On(func(quality v1.AudioQuality) bool {
-		schwifty.OnMainThreadOncePure(func() {
-			switch quality {
-			case v1.AudioQualityLossy:
-				playbackQualityText.SetValue("Low (96 kbps)")
-				playbackQualityClass.SetValue("low")
-			case v1.AudioQualityHighRes:
-				playbackQualityText.SetValue("Low (320 kbps)")
-				playbackQualityClass.SetValue("low")
-			case v1.AudioQualityLossless:
-				playbackQualityText.SetValue("High")
-				playbackQualityClass.SetValue("high")
-			case v1.AudioQualityHighResLossless:
-				playbackQualityText.SetValue("Max")
-				playbackQualityClass.SetValue("max")
-			}
-		})
-		return signals.Continue
-	})
 }
 
-func NewPlayer() schwifty.Box {
-	return VStack(
-		Spacer().MinHeight(24),
-		trackCover(),
-		trackTitle(),
-		trackArtists(),
-		HStack(
-			MenuButton().
-				Popover(controlsVolumeSlider()).
-				IconName("speakers-symbolic").
-				WithCSSClass("transparent"),
-			Button().
-				ActionName("unimplemented").
-				IconName("heart-outline-thick-symbolic").
-				WithCSSClass("transparent"),
-			Button().
-				ActionName("unimplemented").
-				IconName("compass2-symbolic").
-				WithCSSClass("transparent"),
-			Button().
-				ActionName("unimplemented").
-				IconName("library-symbolic").
-				WithCSSClass("transparent"),
-			Button().
-				IconName("share-alt-symbolic").
-				WithCSSClass("transparent").
-				ConnectClicked(func(gtk.Button) {
-					if trackID == "" {
-						notifications.OnToast.Notify("No track is currently playing.")
-						return
-					}
-
-					display := gdk.DisplayGetDefault()
-					defer display.Unref()
-					clipboard := display.GetClipboard()
-					defer clipboard.Unref()
-
-					clipboard.SetText(fmt.Sprintf("https://tidal.com/track/%s?u", trackID))
-					notifications.OnToast.Notify("Copied track URL to clipboard.")
-				}),
+func NewPlayer() schwifty.CenterBox {
+	return CenterBox().WithCSSClass("player").
+		CenterWidget(
+			VStack(
+				trackCover(),
+				trackTitle().MarginTop(30),
+				trackArtists(),
+				controlsButtonRow().MarginTop(20),
+				trackTimeline().MarginTop(20),
+				HStack(
+					Button().
+						IconName("playlist-shuffle-symbolic").
+						MinHeight(34).
+						MinWidth(34).
+						WithCSSClass("transparent").
+						ActionName("win.player.shuffle"),
+					Button().
+						BindSensitive(isControllable).
+						IconName("seek-backward-symbolic").
+						MinHeight(34).
+						MinWidth(34).
+						WithCSSClass("transparent").
+						ActionName("win.player.previous"),
+					controlsPlayPause(),
+					Button().
+						BindSensitive(isControllable).
+						IconName("seek-forward-symbolic").
+						MinHeight(34).
+						MinWidth(34).
+						WithCSSClass("transparent").
+						ActionName("win.player.next"),
+					Button().
+						MinHeight(34).
+						MinWidth(34).
+						WithCSSClass("transparent").
+						ActionName("win.player.repeat").
+						ConnectConstruct(func(b *gtk.Button) {
+							ptr := b.GoPointer()
+							player.RepeatModeChanged.On(func(state player.RepeatMode) bool {
+								schwifty.OnMainThreadOnce(func(ptr uintptr) {
+									b := gtk.ButtonNewFromInternalPtr(ptr)
+									switch state {
+									case player.RepeatModeNone:
+										b.RemoveCssClass("color-accent")
+										b.SetIconName("playlist-repeat-symbolic")
+									case player.RepeatModeQueue:
+										b.AddCssClass("color-accent")
+										b.SetIconName("playlist-repeat-symbolic")
+									case player.RepeatModeTrack:
+										b.AddCssClass("color-accent")
+										b.SetIconName("playlist-repeat-song-symbolic")
+									}
+								}, ptr)
+								return signals.Continue
+							})
+						}),
+				).
+					Spacing(7).
+					HAlign(gtk.AlignCenterValue).
+					MarginTop(42).
+					MarginBottom(42),
+			).VAlign(gtk.AlignCenterValue),
 		).
-			HAlign(gtk.AlignCenterValue).
-			Spacing(7).
-			MarginTop(27),
-		trackTimeline(),
-		Label("Max").
-			WithCSSClass("quality-label").
-			BindText(playbackQualityText).
-			FontSize(10).
-			FontWeight(700).
-			BindCSSClass(playbackQualityClass).
-			CornerRadius(10).
-			HPadding(8).
-			VPadding(4).
-			HExpand(false).
-			HAlign(gtk.AlignCenterValue),
-		HStack(
-			Button().
-				IconName("playlist-shuffle-symbolic").
-				MinHeight(34).
-				MinWidth(34).
-				WithCSSClass("transparent").
-				ActionName("win.player.shuffle"),
-			Button().
-				BindSensitive(isControllable).
-				IconName("seek-backward-symbolic").
-				MinHeight(34).
-				MinWidth(34).
-				WithCSSClass("transparent").
-				ActionName("win.player.previous"),
-			controlsPlayPause(),
-			Button().
-				BindSensitive(isControllable).
-				IconName("seek-forward-symbolic").
-				MinHeight(34).
-				MinWidth(34).
-				WithCSSClass("transparent").
-				ActionName("win.player.next"),
-			Button().
-				MinHeight(34).
-				MinWidth(34).
-				WithCSSClass("transparent").
-				ActionName("win.player.repeat").
-				ConnectConstruct(func(b *gtk.Button) {
-					ptr := b.GoPointer()
-					player.RepeatModeChanged.On(func(state player.RepeatMode) bool {
-						schwifty.OnMainThreadOnce(func(ptr uintptr) {
-							b := gtk.ButtonNewFromInternalPtr(ptr)
-							switch state {
-							case player.RepeatModeNone:
-								b.RemoveCssClass("color-accent")
-								b.SetIconName("playlist-repeat-symbolic")
-							case player.RepeatModeQueue:
-								b.AddCssClass("color-accent")
-								b.SetIconName("playlist-repeat-symbolic")
-							case player.RepeatModeTrack:
-								b.AddCssClass("color-accent")
-								b.SetIconName("playlist-repeat-song-symbolic")
-							}
-						}, ptr)
-						return signals.Continue
-					})
-				}),
-		).
-			Spacing(7).
-			HAlign(gtk.AlignCenterValue).
-			MarginTop(42).
-			MarginBottom(42),
-		Spacer(),
-	).
-		WithCSSClass("player")
+		Margin(20)
 }

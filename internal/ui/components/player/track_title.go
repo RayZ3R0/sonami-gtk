@@ -33,6 +33,5 @@ func trackTitle() schwifty.Label {
 		LineHeight(1.2).
 		HMargin(32).
 		HAlign(gtk.AlignCenterValue).
-		Ellipsis(pango.EllipsizeEndValue).
-		MarginTop(35)
+		Ellipsis(pango.EllipsizeEndValue)
 }

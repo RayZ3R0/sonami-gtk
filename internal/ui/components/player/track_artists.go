@@ -24,7 +24,7 @@ var linkDisabler = func(gtk.LinkButton) bool {
 
 func trackArtists() schwifty.Widget {
 	textView := gtk.NewTextView()
-	textView.SetHexpand(true)
+	textView.SetHexpand(false)
 	textView.SetVexpand(false)
 	textView.SetValign(gtk.AlignStartValue)
 	textView.SetHalign(gtk.AlignFillValue)
@@ -32,7 +32,6 @@ func trackArtists() schwifty.Widget {
 	textView.SetWrapMode(gtk.WrapWordValue)
 	textView.SetEditable(false)
 	textView.SetCursorVisible(false)
-	textView.SetSizeRequest(380, -1)
 
 	widgetPtr := textView.GoPointer()
 	subscriptionID := player.TrackChanged.On(func(trackInfo *player.Track) bool {
@@ -62,6 +61,9 @@ func trackArtists() schwifty.Widget {
 						textView.AddChildAtAnchor(artistSeparator.ToGTK(), anchor)
 					}
 				}
+			} else {
+				anchor := buffer.CreateChildAnchor(&iter)
+				textView.AddChildAtAnchor(artistSeparator.Text(" ").ToGTK(), anchor)
 			}
 		}, 0)
 		return signals.Continue
