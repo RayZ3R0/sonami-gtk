@@ -100,8 +100,8 @@ yay -S tonearm-git
 
 ## Screenshots
 <details>
-  <summary>Explore - Genre</summary>
-  <img src=".codeberg/images/explore_genre.png" alt="Screenshot of a genre explore page">
+  <summary>Explore Page</summary>
+  <img src=".codeberg/images/explore.png" alt="Screenshot of the explore page">
 </details>
 
 <details>
