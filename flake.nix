@@ -114,7 +114,7 @@
               --prefix GST_PLUGIN_PATH : "$GST_PLUGIN_SYSTEM_PATH_1_0" \
               --set-default PUREGOTK_LIB_FOLDER ${libraryPath}/lib \
               ''${gappsWrapperArgs[@]}
-            install -Dm644 internal/icons/hicolor/256x256/apps/dev.dergs.tonearm.png $out/share/icons/hicolor/256x256/apps/dev.dergs.tonearm.png
+            install -Dm644 internal/icons/hicolor/scalable/apps/dev.dergs.tonearm.svg $out/share/icons/hicolor/scalable/apps/dev.dergs.tonearm.svg
             install -Dm644 internal/settings/dev.dergs.tonearm.gschema.xml -t $out/share/glib-2.0/schemas
             glib-compile-schemas $out/share/glib-2.0/schemas
           '';

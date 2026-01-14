@@ -18,13 +18,12 @@
     Don't have a TIDAL account? You can still try the app and enjoy song previews of up to 30 seconds to see if it's for you.
     </p>
   </description>
+  <icon type="stock">dev.dergs.tonearm</icon>
 
   <categories>
       <category>Audio</category>
       <category>AudioVideo</category>
       <category>Music</category>
-      <category>GNOME</category>
-      <category>GTK</category>
   </categories>
 
   <keywords>
@@ -35,9 +34,33 @@
     <keyword>streaming</keyword>
   </keywords>
 
+  <branding>
+    <color type="primary" scheme_preference="light">#3a2aef</color>
+    <color type="primary" scheme_preference="dark">#690daf</color>
+  </branding>
+
   <url type="homepage">https://codeberg.org/dergs/Tonearm</url>
   <url type="bugtracker">https://codeberg.org/dergs/Tonearm/issues</url>
   <url type="vcs-browser">https://codeberg.org/dergs/Tonearm</url>
+
+  <releases>
+    <release version="0.0.1" date="2026-01-14">
+      <url type="details">https://codeberg.org/dergs/Tonearm</url>
+      <description>
+        <p
+                >Welcome to the first beta release of Tonearm. In this version, we added, well, everything. Give it a look and let us know what we can improve!</p>
+          <ul>
+            <li>Home, Explore and Collection pages</li>
+            <li>View playlist, mixes, albums and artists</li>
+            <li>Search functionality</li>
+            <li>Play tracks, playlists, mixes and albums</li>
+            <li>Sing along with the lyrics tab</li>
+            <li>Control Tonearm using MPRIS</li>
+            <li>Scrobble your listening activity with ListenBrainz</li>
+          </ul>
+      </description>
+    </release>
+  </releases>
 
   <launchable type="desktop-id">dev.dergs.tonearm.desktop</launchable>
 

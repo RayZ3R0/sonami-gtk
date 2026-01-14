@@ -1,7 +1,7 @@
 <div align="center">
 
   <a href="https://codeberg.org/dergs/Tonearm">
-    <img src="internal/icons/hicolor/256x256/apps/dev.dergs.tonearm.png" alt="Logo" width="80" height="80">
+    <img src="internal/icons/hicolor/scalable/apps/dev.dergs.tonearm.svg" alt="Logo" width="80" height="80">
   </a>
   <h2 align="center">Tonearm</h2>
 

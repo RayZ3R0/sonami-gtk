@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='utf-8' ?>
 <gresources>
-  <gresource prefix="/dev/dergs/tonearm/icons/256x256/apps/">
-    <file alias="logo.png">hicolor/256x256/apps/dev.dergs.tonearm.png</file>
+  <gresource prefix="/dev/dergs/tonearm/icons/scalable/apps/">
+    <file alias="logo.svg">hicolor/scalable/apps/dev.dergs.tonearm.svg</file>
   </gresource>
   <gresource prefix="/dev/dergs/tonearm/icons/scalable/actions/">
     <file alias="go-home-symbolic.svg">scalable/actions/go-home-symbolic.svg</file>
