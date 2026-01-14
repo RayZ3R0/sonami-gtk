@@ -82,13 +82,13 @@
     <screenshot type="default">
       <caption>Tonearm displaying the public, unauthenticated home page</caption>
       <image>
-      https://codeberg.org/dergs/Tonearm/raw/commit/86acdf4853b7a2a91e3bb10be43eb22409e4680c/.codeberg/images/home.png
+      https://codeberg.org/dergs/Tonearm/raw/commit/445f3b86ff6cc6b058cfd7c4a79e8b47fe2a5b34/.codeberg/images/home.png
       </image>
     </screenshot>
     <screenshot>
-      <caption>Tonearm showing the explore page for the dance and electronic genres</caption>
+      <caption>Tonearm showing the explore page</caption>
       <image>
-      https://codeberg.org/dergs/Tonearm/raw/commit/aba9037b814422c15435f67d243648751f31d0b7/.codeberg/images/explore_genre.png
+      https://codeberg.org/dergs/Tonearm/raw/commit/445f3b86ff6cc6b058cfd7c4a79e8b47fe2a5b34/.codeberg/images/explore.png
       </image>
     </screenshot>
     <screenshot>
