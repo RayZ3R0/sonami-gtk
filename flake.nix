@@ -115,6 +115,7 @@
               --set-default PUREGOTK_LIB_FOLDER ${libraryPath}/lib \
               ''${gappsWrapperArgs[@]}
             install -Dm644 internal/icons/hicolor/scalable/apps/dev.dergs.tonearm.svg $out/share/icons/hicolor/scalable/apps/dev.dergs.tonearm.svg
+            install -Dm644 internal/icons/hicolor/symbolic/apps/dev.dergs.tonearm-symbolic.svg $out/share/icons/hicolor/symbolic/apps/dev.dergs.tonearm-symbolic.svg
             install -Dm644 internal/settings/dev.dergs.tonearm.gschema.xml -t $out/share/glib-2.0/schemas
             glib-compile-schemas $out/share/glib-2.0/schemas
           '';

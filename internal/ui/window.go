@@ -42,7 +42,7 @@ func NewWindow(app *adw.Application) *Window {
 	window.installActions()
 	window.SetContent(window.build())
 	window.SetTitle("Tonearm")
-	window.SetIconName("logo")
+	window.SetIconName("logo-symbolic")
 	window.SetDefaultSize(settings.General().GetWindowWidth(), settings.General().GetWindowHeight())
 	// For some reason the bindings do not allow to specify which property
 	window.ConnectNotify(g.Ptr(func(gobject.Object, uintptr) {

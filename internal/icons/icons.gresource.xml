@@ -39,4 +39,7 @@
   <gresource prefix="/dev/dergs/tonearm/icons/scalable/state/">
     <file alias="missing-album.svg">scalable/state/missing-album.svg</file>
   </gresource>
+  <gresource prefix="/dev/dergs/tonearm/icons/symbolic/apps/">
+    <file alias="logo-symbolic.svg">hicolor/symbolic/apps/dev.dergs.tonearm-symbolic.svg</file>
+  </gresource>
 </gresources>
