@@ -35,7 +35,7 @@ func init() {
 var app *adw.Application
 
 func main() {
-	app = adw.NewApplication("dev.dergs.tonearm", gio.GApplicationHandlesCommandLineValue)
+	app = adw.NewApplication("dev.dergs.Tonearm", gio.GApplicationHandlesCommandLineValue)
 	defer app.Unref()
 	app.ConnectActivate(g.Ptr(onActivate))
 	app.ConnectCommandLine(g.Ptr(onCommandLine))

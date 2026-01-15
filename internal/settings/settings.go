@@ -11,25 +11,25 @@ import (
 
 var General = g.Lazy(func() *GeneralSettings {
 	return &GeneralSettings{
-		finalize(gio.NewSettings("dev.dergs.tonearm")),
+		finalize(gio.NewSettings("dev.dergs.Tonearm")),
 	}
 })
 
 var Performance = g.Lazy(func() *PerformanceSettings {
 	return &PerformanceSettings{
-		finalize(gio.NewSettings("dev.dergs.tonearm.performance")),
+		finalize(gio.NewSettings("dev.dergs.Tonearm.performance")),
 	}
 })
 
 var Scrobbling = g.Lazy(func() *ScrobblingSettings {
 	return &ScrobblingSettings{
-		finalize(gio.NewSettings("dev.dergs.tonearm.scrobbling")),
+		finalize(gio.NewSettings("dev.dergs.Tonearm.scrobbling")),
 	}
 })
 
 func PlayerSettings() *Player {
 	return &Player{
-		finalize(gio.NewSettings("dev.dergs.tonearm.player")),
+		finalize(gio.NewSettings("dev.dergs.Tonearm.player")),
 	}
 }
 

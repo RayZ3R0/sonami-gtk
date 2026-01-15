@@ -91,9 +91,9 @@
 
           desktopItems = [
             (pkgs.makeDesktopItem {
-              name = "dev.dergs.tonearm";
+              name = "dev.dergs.Tonearm";
               exec = "tonearm %u";
-              icon = "dev.dergs.tonearm";
+              icon = "dev.dergs.Tonearm";
               comment = "Tonearm is a GTK client for TIDAL written in GoLang.";
               desktopName = "Tonearm";
               mimeTypes = [
@@ -114,9 +114,9 @@
               --prefix GST_PLUGIN_PATH : "$GST_PLUGIN_SYSTEM_PATH_1_0" \
               --set-default PUREGOTK_LIB_FOLDER ${libraryPath}/lib \
               ''${gappsWrapperArgs[@]}
-            install -Dm644 internal/icons/hicolor/scalable/apps/dev.dergs.tonearm.svg $out/share/icons/hicolor/scalable/apps/dev.dergs.tonearm.svg
-            install -Dm644 internal/icons/hicolor/symbolic/apps/dev.dergs.tonearm-symbolic.svg $out/share/icons/hicolor/symbolic/apps/dev.dergs.tonearm-symbolic.svg
-            install -Dm644 internal/settings/dev.dergs.tonearm.gschema.xml -t $out/share/glib-2.0/schemas
+            install -Dm644 internal/icons/hicolor/scalable/apps/dev.dergs.Tonearm.svg $out/share/icons/hicolor/scalable/apps/dev.dergs.Tonearm.svg
+            install -Dm644 internal/icons/hicolor/symbolic/apps/dev.dergs.Tonearm-symbolic.svg $out/share/icons/hicolor/symbolic/apps/dev.dergs.Tonearm-symbolic.svg
+            install -Dm644 internal/settings/dev.dergs.Tonearm.gschema.xml -t $out/share/glib-2.0/schemas
             glib-compile-schemas $out/share/glib-2.0/schemas
           '';
 

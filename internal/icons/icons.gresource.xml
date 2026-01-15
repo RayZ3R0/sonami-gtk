@@ -1,9 +1,9 @@
 <?xml version='1.0' encoding='utf-8' ?>
 <gresources>
-  <gresource prefix="/dev/dergs/tonearm/icons/scalable/apps/">
-    <file alias="logo.svg">hicolor/scalable/apps/dev.dergs.tonearm.svg</file>
+  <gresource prefix="/dev/dergs/Tonearm/icons/scalable/apps/">
+    <file alias="logo.svg">hicolor/scalable/apps/dev.dergs.Tonearm.svg</file>
   </gresource>
-  <gresource prefix="/dev/dergs/tonearm/icons/scalable/actions/">
+  <gresource prefix="/dev/dergs/Tonearm/icons/scalable/actions/">
     <file alias="go-home-symbolic.svg">scalable/actions/go-home-symbolic.svg</file>
     <file alias="plus-square-filled-symbolic.svg">scalable/actions/plus-square-filled-symbolic.svg</file>
     <file alias="loupe-symbolic.svg">scalable/actions/loupe-symbolic.svg</file>
@@ -36,10 +36,10 @@
     <file alias="speedometer5-symbolic.svg">scalable/actions/speedometer5-symbolic.svg</file>
     <file alias="dock-left-symbolic.svg">scalable/actions/dock-left-symbolic.svg</file>
   </gresource>
-  <gresource prefix="/dev/dergs/tonearm/icons/scalable/state/">
+  <gresource prefix="/dev/dergs/Tonearm/icons/scalable/state/">
     <file alias="missing-album.svg">scalable/state/missing-album.svg</file>
   </gresource>
-  <gresource prefix="/dev/dergs/tonearm/icons/symbolic/apps/">
-    <file alias="logo-symbolic.svg">hicolor/symbolic/apps/dev.dergs.tonearm-symbolic.svg</file>
+  <gresource prefix="/dev/dergs/Tonearm/icons/symbolic/apps/">
+    <file alias="logo-symbolic.svg">hicolor/symbolic/apps/dev.dergs.Tonearm-symbolic.svg</file>
   </gresource>
 </gresources>

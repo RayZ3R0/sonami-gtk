@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <schemalist gettext-domain="tonearm">
     <!-- General Settings -->
-	<schema id="dev.dergs.tonearm" path="/dev/dergs/tonearm/">
+	<schema id="dev.dergs.Tonearm" path="/dev/dergs/Tonearm/">
 	    <key name="allow-running-in-background" type="b">
     		<default>true</default>
     		<summary>Run in Background</summary>
@@ -25,7 +25,7 @@
 	</schema>
 
 	<!-- Performance Settings -->
-    <schema id="dev.dergs.tonearm.performance" path="/dev/dergs/tonearm/performance/">
+    <schema id="dev.dergs.Tonearm.performance" path="/dev/dergs/Tonearm/performance/">
         <key name="allow-mediacard-images" type="b">
       		<default>true</default>
       		<summary>Allow Media Card Images</summary>
@@ -54,7 +54,7 @@
     </schema>
 
 	<!-- Player State -->
-    <schema id="dev.dergs.tonearm.player" path="/dev/dergs/tonearm/player/">
+    <schema id="dev.dergs.Tonearm.player" path="/dev/dergs/Tonearm/player/">
 		<key name="audio-quality" type="s">
 			<default>'HI_RES_LOSSLESS'</default>
 			<summary>Audio Quality</summary>
@@ -68,7 +68,7 @@
     </schema>
 
 	<!-- Scrobbling -->
-    <schema id="dev.dergs.tonearm.scrobbling" path="/dev/dergs/tonearm/scrobbling/">
+    <schema id="dev.dergs.Tonearm.scrobbling" path="/dev/dergs/Tonearm/scrobbling/">
         <key name="enable-listenbrainz" type="b">
       		<default>false</default>
       		<summary>Enable ListenBrainz</summary>

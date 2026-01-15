@@ -1,4 +1,4 @@
-app-id: dev.dergs.tonearm
+app-id: dev.dergs.Tonearm
 runtime: org.gnome.Platform
 runtime-version: "49"
 sdk: org.gnome.Sdk
