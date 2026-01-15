@@ -1,7 +1,7 @@
 package router
 
 import (
-	. "codeberg.org/dergs/tidalwave/pkg/schwifty/syntax"
+	. "codeberg.org/dergs/tonearm/pkg/schwifty/syntax"
 )
 
 func errorHandler(err error) *Response {
@@ -10,6 +10,6 @@ func errorHandler(err error) *Response {
 		View: StatusPage().
 			Title("Internal Error").
 			Description("Unfortunately an error occurred while loading this view. Please try again later. If the error persists, please open an issue!\n\nError Message: " + err.Error()).
-			IconName("face-sad-symbolic"),
+			IconName("sentiment-dissatisfied-symbolic"),
 	}
 }

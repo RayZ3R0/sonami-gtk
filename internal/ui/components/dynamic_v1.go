@@ -5,16 +5,16 @@ import (
 	"strings"
 	"time"
 
-	"codeberg.org/dergs/tidalwave/internal/router"
-	"codeberg.org/dergs/tidalwave/internal/ui/components/horizontal_list"
-	"codeberg.org/dergs/tidalwave/internal/ui/components/media_card"
-	"codeberg.org/dergs/tidalwave/internal/ui/components/shortcut_list"
-	"codeberg.org/dergs/tidalwave/internal/ui/components/tracklist"
-	"codeberg.org/dergs/tidalwave/pkg/schwifty"
-	. "codeberg.org/dergs/tidalwave/pkg/schwifty/syntax"
-	"codeberg.org/dergs/tidalwave/pkg/tidalapi"
-	v1 "codeberg.org/dergs/tidalwave/pkg/tidalapi/models/v1"
-	v2 "codeberg.org/dergs/tidalwave/pkg/tidalapi/models/v2"
+	"codeberg.org/dergs/tonearm/internal/router"
+	"codeberg.org/dergs/tonearm/internal/ui/components/horizontal_list"
+	"codeberg.org/dergs/tonearm/internal/ui/components/media_card"
+	"codeberg.org/dergs/tonearm/internal/ui/components/shortcut_list"
+	"codeberg.org/dergs/tonearm/internal/ui/components/tracklist"
+	"codeberg.org/dergs/tonearm/pkg/schwifty"
+	. "codeberg.org/dergs/tonearm/pkg/schwifty/syntax"
+	"codeberg.org/dergs/tonearm/pkg/tidalapi"
+	v1 "codeberg.org/dergs/tonearm/pkg/tidalapi/models/v1"
+	v2 "codeberg.org/dergs/tonearm/pkg/tidalapi/models/v2"
 	"github.com/jwijenbergh/puregotk/v4/gtk"
 )
 
@@ -79,9 +79,9 @@ func ForModule(module v1.Module) schwifty.BaseWidgetable {
 		return list.SetPageMargin(40)
 	case v1.ModuleTypeTrackList:
 		list := tracklist.NewTrackList[*v2.TrackItemData](
-			tracklist.GroupedColumn(3, gtk.AlignStartValue, tracklist.LegacyCoverColumn, tracklist.LegacyTitleAlbumColumn),
+			tracklist.GroupedColumn(2, gtk.AlignStartValue, tracklist.LegacyCoverColumn, tracklist.LegacyTitleAlbumColumn),
 			tracklist.LegacyArtistsColumn,
-			tracklist.LegacyExpandButtonColumn(2),
+			tracklist.LegacyExpandButtonColumn(1),
 			tracklist.GroupedColumn(1, gtk.AlignEndValue, tracklist.LegacyDurationColumn, tracklist.LegacyControlsColumn),
 		)
 		for _, item := range module.PagedList.Items {
@@ -114,7 +114,7 @@ func ForModule(module v1.Module) schwifty.BaseWidgetable {
 		list := shortcut_list.NewShortcutList()
 		for _, item := range module.PagedList.Items {
 			list.Append(shortcut_list.NewTextShortcut(item.Title, "").ConnectClicked(func(b gtk.Button) {
-				router.Navigate(item.APIPath)
+				router.Navigate(strings.ReplaceAll(item.APIPath, "pages/", "explore/"))
 			}))
 		}
 		return VStack(

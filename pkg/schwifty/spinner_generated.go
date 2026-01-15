@@ -1,8 +1,8 @@
 package schwifty
 
 import (
-	"codeberg.org/dergs/tidalwave/pkg/schwifty/callback"
-	"codeberg.org/dergs/tidalwave/pkg/schwifty/state"
+	"codeberg.org/dergs/tonearm/pkg/schwifty/callback"
+	"codeberg.org/dergs/tonearm/pkg/schwifty/state"
 	"fmt"
 	"github.com/jwijenbergh/puregotk/v4/gtk"
 )
@@ -34,10 +34,26 @@ func (f Spinner) ConnectDestroy(cb func(gtk.Widget)) Spinner {
 	}
 }
 
+func (f Spinner) ConnectMap(cb func(gtk.Widget)) Spinner {
+	return func() *gtk.Spinner {
+		widget := f()
+		callback.HandleCallback(widget.Object, "map", cb)
+		return widget
+	}
+}
+
 func (f Spinner) ConnectRealize(cb func(gtk.Widget)) Spinner {
 	return func() *gtk.Spinner {
 		widget := f()
 		callback.HandleCallback(widget.Object, "realize", cb)
+		return widget
+	}
+}
+
+func (f Spinner) ConnectUnmap(cb func(gtk.Widget)) Spinner {
+	return func() *gtk.Spinner {
+		widget := f()
+		callback.HandleCallback(widget.Object, "unmap", cb)
 		return widget
 	}
 }

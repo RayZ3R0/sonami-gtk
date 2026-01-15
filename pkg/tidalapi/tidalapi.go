@@ -1,11 +1,11 @@
 package tidalapi
 
 import (
-	"codeberg.org/dergs/tidalwave/pkg/tidalapi/auth"
-	"codeberg.org/dergs/tidalwave/pkg/tidalapi/internal"
-	"codeberg.org/dergs/tidalwave/pkg/tidalapi/openapi"
-	v1 "codeberg.org/dergs/tidalwave/pkg/tidalapi/v1"
-	v2 "codeberg.org/dergs/tidalwave/pkg/tidalapi/v2"
+	"codeberg.org/dergs/tonearm/pkg/tidalapi/auth"
+	"codeberg.org/dergs/tonearm/pkg/tidalapi/internal"
+	"codeberg.org/dergs/tonearm/pkg/tidalapi/openapi"
+	v1 "codeberg.org/dergs/tonearm/pkg/tidalapi/v1"
+	v2 "codeberg.org/dergs/tonearm/pkg/tidalapi/v2"
 )
 
 type TidalAPI struct {

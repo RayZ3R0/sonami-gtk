@@ -1,9 +1,9 @@
 package v2
 
 import (
-	"codeberg.org/dergs/tidalwave/pkg/tidalapi/internal"
-	"codeberg.org/dergs/tidalwave/pkg/tidalapi/v2/artist"
-	"codeberg.org/dergs/tidalwave/pkg/tidalapi/v2/home"
+	"codeberg.org/dergs/tonearm/pkg/tidalapi/internal"
+	"codeberg.org/dergs/tonearm/pkg/tidalapi/v2/artist"
+	"codeberg.org/dergs/tonearm/pkg/tidalapi/v2/home"
 )
 
 type V2 struct {

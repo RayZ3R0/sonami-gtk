@@ -6,19 +6,19 @@ import (
 	"log/slog"
 	"unsafe"
 
-	"codeberg.org/dergs/tidalwave/internal/notifications"
-	"codeberg.org/dergs/tidalwave/internal/player"
-	"codeberg.org/dergs/tidalwave/internal/resources"
-	"codeberg.org/dergs/tidalwave/internal/router"
-	"codeberg.org/dergs/tidalwave/internal/signals"
-	"codeberg.org/dergs/tidalwave/internal/ui/components/tracklist"
-	"codeberg.org/dergs/tidalwave/pkg/schwifty"
-	"codeberg.org/dergs/tidalwave/pkg/schwifty/state"
-	. "codeberg.org/dergs/tidalwave/pkg/schwifty/syntax"
-	"codeberg.org/dergs/tidalwave/pkg/tidalapi"
-	"codeberg.org/dergs/tidalwave/pkg/tidalapi/models/openapi"
-	"codeberg.org/dergs/tidalwave/pkg/tidalapi/pagination"
-	"codeberg.org/dergs/tidalwave/pkg/utils/imgutil"
+	"codeberg.org/dergs/tonearm/internal/notifications"
+	"codeberg.org/dergs/tonearm/internal/player"
+	"codeberg.org/dergs/tonearm/internal/resources"
+	"codeberg.org/dergs/tonearm/internal/router"
+	"codeberg.org/dergs/tonearm/internal/signals"
+	"codeberg.org/dergs/tonearm/internal/ui/components/tracklist"
+	"codeberg.org/dergs/tonearm/pkg/schwifty"
+	"codeberg.org/dergs/tonearm/pkg/schwifty/state"
+	. "codeberg.org/dergs/tonearm/pkg/schwifty/syntax"
+	"codeberg.org/dergs/tonearm/pkg/tidalapi"
+	"codeberg.org/dergs/tonearm/pkg/tidalapi/models/openapi"
+	"codeberg.org/dergs/tonearm/pkg/tidalapi/pagination"
+	"codeberg.org/dergs/tonearm/pkg/utils/imgutil"
 	"github.com/infinytum/injector"
 	"github.com/jwijenbergh/puregotk/v4/gdk"
 	"github.com/jwijenbergh/puregotk/v4/gtk"
@@ -65,9 +65,9 @@ func Playlist(playlistUUID string) *router.Response {
 	}
 
 	list := tracklist.NewTrackList(
-		tracklist.GroupedColumn(3, gtk.AlignStartValue, tracklist.CoverColumn, tracklist.TitleAlbumColumn),
+		tracklist.GroupedColumn(2, gtk.AlignStartValue, tracklist.CoverColumn, tracklist.TitleAlbumColumn),
 		tracklist.ArtistsColumn,
-		tracklist.ExpandCustomButtonColumn(2, func(trackId string, _, _ int) {
+		tracklist.ExpandCustomButtonColumn(1, func(trackId string, _, _ int) {
 			go player.PlayPlaylist(playlistUUID, false, trackId)
 		}),
 		tracklist.GroupedColumn(1, gtk.AlignEndValue, tracklist.DurationColumn, tracklist.ControlsColumn),
@@ -122,7 +122,7 @@ func Playlist(playlistUUID string) *router.Response {
 				VStack(
 					HStack(
 						Button().
-							IconName("media-playlist-shuffle-symbolic").
+							IconName("playlist-shuffle-symbolic").
 							MinWidth(81).
 							CornerRadius(21).
 							Padding(9).
@@ -132,7 +132,7 @@ func Playlist(playlistUUID string) *router.Response {
 							}).
 							BindSensitive(canPlayPlaylistState),
 						Button().
-							IconName("media-playback-start-symbolic").
+							IconName("play-symbolic").
 							MinWidth(81).
 							CornerRadius(21).
 							Padding(9).
@@ -158,7 +158,7 @@ func Playlist(playlistUUID string) *router.Response {
 							IconName("heart-outline-thick-symbolic").
 							WithCSSClass("transparent"),
 						Button().
-							IconName("folder-publicshare-symbolic").
+							IconName("share-alt-symbolic").
 							WithCSSClass("transparent").
 							ConnectClicked(func(gtk.Button) {
 								id := playlist.Data.ID

@@ -7,7 +7,7 @@ import (
 	"net/http"
 	"strings"
 
-	"codeberg.org/dergs/tidalwave/pkg/tidalapi/models/openapi"
+	"codeberg.org/dergs/tonearm/pkg/tidalapi/models/openapi"
 )
 
 func (p *Playlists) Playlist(ctx context.Context, uuid string, include ...string) (*openapi.Playlist, error) {

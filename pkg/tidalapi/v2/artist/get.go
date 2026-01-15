@@ -6,7 +6,7 @@ import (
 	"fmt"
 	"net/http"
 
-	v2 "codeberg.org/dergs/tidalwave/pkg/tidalapi/models/v2"
+	v2 "codeberg.org/dergs/tonearm/pkg/tidalapi/models/v2"
 )
 
 func (a *Artist) Artist(ctx context.Context, artistId string) (*v2.ArtistPage, error) {

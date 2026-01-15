@@ -4,16 +4,16 @@ import (
 	"context"
 	"unsafe"
 
-	"codeberg.org/dergs/tidalwave/internal/g"
-	"codeberg.org/dergs/tidalwave/internal/notifications"
-	"codeberg.org/dergs/tidalwave/internal/player"
-	"codeberg.org/dergs/tidalwave/internal/router"
-	"codeberg.org/dergs/tidalwave/internal/secrets"
-	"codeberg.org/dergs/tidalwave/internal/settings"
-	"codeberg.org/dergs/tidalwave/internal/ui/components/linking"
-	"codeberg.org/dergs/tidalwave/pkg/schwifty"
-	"codeberg.org/dergs/tidalwave/pkg/tidalapi"
-	"codeberg.org/dergs/tidalwave/pkg/tidalapi/auth"
+	"codeberg.org/dergs/tonearm/internal/g"
+	"codeberg.org/dergs/tonearm/internal/notifications"
+	"codeberg.org/dergs/tonearm/internal/player"
+	"codeberg.org/dergs/tonearm/internal/router"
+	"codeberg.org/dergs/tonearm/internal/secrets"
+	"codeberg.org/dergs/tonearm/internal/settings"
+	"codeberg.org/dergs/tonearm/internal/ui/components/linking"
+	"codeberg.org/dergs/tonearm/pkg/schwifty"
+	"codeberg.org/dergs/tonearm/pkg/tidalapi"
+	"codeberg.org/dergs/tonearm/pkg/tidalapi/auth"
 	"github.com/jwijenbergh/puregotk/v4/adw"
 	"github.com/jwijenbergh/puregotk/v4/gio"
 	"github.com/jwijenbergh/puregotk/v4/glib"
@@ -47,6 +47,13 @@ func (w *Window) installActions() {
 	w.AddAction(navigateBackAction)
 	w.GetApplication().SetAccelsForAction("win.navigate-back", []string{"<Alt>Left"})
 
+	searchAction := gio.NewSimpleAction("search", nil)
+	searchAction.ConnectActivate(g.Ptr(func(action gio.SimpleAction, parameter uintptr) {
+		router.Navigate("search")
+	}))
+	w.AddAction(searchAction)
+	w.GetApplication().SetAccelsForAction("win.search", []string{"<Ctrl>f"})
+
 	playTrackAction := gio.NewSimpleAction("player.play-track", glib.NewVariantType("s"))
 	playTrackAction.ConnectActivate(g.Ptr(func(action gio.SimpleAction, parameter uintptr) {
 		variant := (*glib.Variant)(unsafe.Pointer(parameter))
@@ -62,6 +69,12 @@ func (w *Window) installActions() {
 		go player.PlayPlaylist(id, false, "")
 	}))
 	w.AddAction(playPlaylistAction)
+
+	shuffleAction := gio.NewSimpleAction("player.shuffle", nil)
+	shuffleAction.ConnectActivate(g.Ptr(func(action gio.SimpleAction, parameter uintptr) {
+		go player.ToggleShuffle()
+	}))
+	w.AddAction(shuffleAction)
 
 	nextAction := gio.NewSimpleAction("player.next", nil)
 	nextAction.ConnectActivate(g.Ptr(func(action gio.SimpleAction, parameter uintptr) {

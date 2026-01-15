@@ -1,8 +1,8 @@
 package imgutil
 
 import (
-	"codeberg.org/dergs/tidalwave/pkg/schwifty"
-	"codeberg.org/dergs/tidalwave/pkg/utils/cacheutil"
+	"codeberg.org/dergs/tonearm/pkg/schwifty"
+	"codeberg.org/dergs/tonearm/pkg/utils/cacheutil"
 	"github.com/jwijenbergh/puregotk/v4/gtk"
 )
 
@@ -24,6 +24,28 @@ func (i *ImgUtil) LoadIntoImage(url string, image *gtk.Image) {
 			image.SetFromPaintable(texture)
 			texture.Unref()
 			texture = nil
+			image.Unref()
+			image = nil
+		}, 0)
+	}()
+}
+
+func (i *ImgUtil) LoadIntoImageCropped(url string, image *gtk.Image) {
+	image.Ref()
+	go func() {
+		texture, err := i.Load(url)
+		if err != nil {
+			image.Unref()
+			image = nil
+			return
+		}
+		cropped := Crop(texture)
+		texture.Unref()
+
+		schwifty.OnMainThreadOnce(func(u uintptr) {
+			image.SetFromPaintable(cropped)
+			cropped.Unref()
+			cropped = nil
 			image.Unref()
 			image = nil
 		}, 0)

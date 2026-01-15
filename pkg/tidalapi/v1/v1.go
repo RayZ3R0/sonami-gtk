@@ -1,10 +1,10 @@
 package v1
 
 import (
-	"codeberg.org/dergs/tidalwave/pkg/tidalapi/internal"
-	"codeberg.org/dergs/tidalwave/pkg/tidalapi/v1/pages"
-	"codeberg.org/dergs/tidalwave/pkg/tidalapi/v1/playlists"
-	"codeberg.org/dergs/tidalwave/pkg/tidalapi/v1/tracks"
+	"codeberg.org/dergs/tonearm/pkg/tidalapi/internal"
+	"codeberg.org/dergs/tonearm/pkg/tidalapi/v1/pages"
+	"codeberg.org/dergs/tonearm/pkg/tidalapi/v1/playlists"
+	"codeberg.org/dergs/tonearm/pkg/tidalapi/v1/tracks"
 )
 
 type V1 struct {

@@ -5,7 +5,7 @@ import (
 	"strings"
 	"time"
 
-	"codeberg.org/dergs/tidalwave/pkg/tidalapi/models/openapi"
+	"codeberg.org/dergs/tonearm/pkg/tidalapi/models/openapi"
 )
 
 type RepeatMode int
@@ -29,6 +29,9 @@ const (
 type PlaybackState struct {
 	// Expected duration of the currently playing stream as reported by playbin
 	Duration time.Duration
+
+	// Whether the position was changed by the user
+	IsSeeking bool
 
 	// Current position of the playback as reported by playbin
 	Position time.Duration

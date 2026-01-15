@@ -9,16 +9,16 @@ import (
 	"strings"
 	"time"
 
-	"codeberg.org/dergs/tidalwave/internal/g"
-	"codeberg.org/dergs/tidalwave/internal/player"
-	"codeberg.org/dergs/tidalwave/internal/resources"
-	"codeberg.org/dergs/tidalwave/internal/signals"
-	"codeberg.org/dergs/tidalwave/pkg/schwifty"
-	"codeberg.org/dergs/tidalwave/pkg/schwifty/state"
-	. "codeberg.org/dergs/tidalwave/pkg/schwifty/syntax"
-	"codeberg.org/dergs/tidalwave/pkg/tidalapi"
-	"codeberg.org/dergs/tidalwave/pkg/tidalapi/models/openapi"
-	"codeberg.org/dergs/tidalwave/pkg/utils/imgutil"
+	"codeberg.org/dergs/tonearm/internal/g"
+	"codeberg.org/dergs/tonearm/internal/player"
+	"codeberg.org/dergs/tonearm/internal/resources"
+	"codeberg.org/dergs/tonearm/internal/signals"
+	"codeberg.org/dergs/tonearm/pkg/schwifty"
+	"codeberg.org/dergs/tonearm/pkg/schwifty/state"
+	. "codeberg.org/dergs/tonearm/pkg/schwifty/syntax"
+	"codeberg.org/dergs/tonearm/pkg/tidalapi"
+	"codeberg.org/dergs/tonearm/pkg/tidalapi/models/openapi"
+	"codeberg.org/dergs/tonearm/pkg/utils/imgutil"
 	"github.com/infinytum/injector"
 	"github.com/jwijenbergh/puregotk/v4/graphene"
 	"github.com/jwijenbergh/puregotk/v4/gtk"
@@ -441,7 +441,7 @@ func NewLyricsPanel() schwifty.Box {
 		}).
 		Child(
 			Image().
-				FromIconName("view-refresh-symbolic"),
+				FromIconName("arrow-circular-top-right-symbolic"),
 		)().
 		Widget)
 	return VStack(

@@ -3,10 +3,10 @@ package horizontal_list
 import (
 	"math"
 
-	"codeberg.org/dergs/tidalwave/internal/router"
-	"codeberg.org/dergs/tidalwave/pkg/schwifty"
-	"codeberg.org/dergs/tidalwave/pkg/schwifty/state"
-	. "codeberg.org/dergs/tidalwave/pkg/schwifty/syntax"
+	"codeberg.org/dergs/tonearm/internal/router"
+	"codeberg.org/dergs/tonearm/pkg/schwifty"
+	"codeberg.org/dergs/tonearm/pkg/schwifty/state"
+	. "codeberg.org/dergs/tonearm/pkg/schwifty/syntax"
 	"github.com/jwijenbergh/puregotk/v4/gtk"
 )
 
@@ -49,7 +49,7 @@ func NewHorizontalList(title string) *HorizontalList {
 	var hAdjust *gtk.Adjustment
 	nextButton := Button().
 		MinHeight(10).MinWidth(10).HPadding(10).
-		Child(Image().FromIconName("go-next-symbolic").PixelSize(10)).
+		Child(Image().FromIconName("right-symbolic").PixelSize(10)).
 		ConnectClicked(func(b gtk.Button) {
 			current := hAdjust.GetValue()
 			current -= math.Mod(current, 192)
@@ -59,7 +59,7 @@ func NewHorizontalList(title string) *HorizontalList {
 
 	previousButton := Button().
 		MinHeight(10).MinWidth(10).HPadding(10).
-		Child(Image().FromIconName("go-previous-symbolic").PixelSize(10)).
+		Child(Image().FromIconName("left-symbolic").PixelSize(10)).
 		ConnectClicked(func(b gtk.Button) {
 			current := hAdjust.GetValue()
 			if math.Mod(current, 192) > 0 {

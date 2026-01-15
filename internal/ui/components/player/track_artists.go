@@ -1,10 +1,10 @@
 package player
 
 import (
-	"codeberg.org/dergs/tidalwave/internal/player"
-	"codeberg.org/dergs/tidalwave/internal/signals"
-	"codeberg.org/dergs/tidalwave/pkg/schwifty"
-	. "codeberg.org/dergs/tidalwave/pkg/schwifty/syntax"
+	"codeberg.org/dergs/tonearm/internal/player"
+	"codeberg.org/dergs/tonearm/internal/signals"
+	"codeberg.org/dergs/tonearm/pkg/schwifty"
+	. "codeberg.org/dergs/tonearm/pkg/schwifty/syntax"
 	"github.com/jwijenbergh/puregotk/v4/glib"
 	"github.com/jwijenbergh/puregotk/v4/gtk"
 )
@@ -24,7 +24,7 @@ var linkDisabler = func(gtk.LinkButton) bool {
 
 func trackArtists() schwifty.Widget {
 	textView := gtk.NewTextView()
-	textView.SetHexpand(true)
+	textView.SetHexpand(false)
 	textView.SetVexpand(false)
 	textView.SetValign(gtk.AlignStartValue)
 	textView.SetHalign(gtk.AlignFillValue)
@@ -32,7 +32,6 @@ func trackArtists() schwifty.Widget {
 	textView.SetWrapMode(gtk.WrapWordValue)
 	textView.SetEditable(false)
 	textView.SetCursorVisible(false)
-	textView.SetSizeRequest(380, -1)
 
 	widgetPtr := textView.GoPointer()
 	subscriptionID := player.TrackChanged.On(func(trackInfo *player.Track) bool {
@@ -62,6 +61,9 @@ func trackArtists() schwifty.Widget {
 						textView.AddChildAtAnchor(artistSeparator.ToGTK(), anchor)
 					}
 				}
+			} else {
+				anchor := buffer.CreateChildAnchor(&iter)
+				textView.AddChildAtAnchor(artistSeparator.Text(" ").ToGTK(), anchor)
 			}
 		}, 0)
 		return signals.Continue

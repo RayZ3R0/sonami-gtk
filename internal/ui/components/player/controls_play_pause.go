@@ -1,16 +1,16 @@
 package player
 
 import (
-	"codeberg.org/dergs/tidalwave/internal/player"
-	"codeberg.org/dergs/tidalwave/internal/signals"
-	"codeberg.org/dergs/tidalwave/pkg/schwifty"
-	"codeberg.org/dergs/tidalwave/pkg/schwifty/state"
-	. "codeberg.org/dergs/tidalwave/pkg/schwifty/syntax"
+	"codeberg.org/dergs/tonearm/internal/player"
+	"codeberg.org/dergs/tonearm/internal/signals"
+	"codeberg.org/dergs/tonearm/pkg/schwifty"
+	"codeberg.org/dergs/tonearm/pkg/schwifty/state"
+	. "codeberg.org/dergs/tonearm/pkg/schwifty/syntax"
 	"github.com/jwijenbergh/puregotk/v4/gtk"
 )
 
 var (
-	playPauseIconState = state.NewStateful("media-playback-start-symbolic")
+	playPauseIconState = state.NewStateful("play-symbolic")
 )
 
 func init() {
@@ -18,9 +18,9 @@ func init() {
 		schwifty.OnMainThreadOncePure(func() {
 			switch state.Status {
 			case player.PlaybackStatusPlaying:
-				playPauseIconState.SetValue("media-playback-pause-symbolic")
+				playPauseIconState.SetValue("pause-symbolic")
 			case player.PlaybackStatusPaused, player.PlaybackStatusStopped:
-				playPauseIconState.SetValue("media-playback-start-symbolic")
+				playPauseIconState.SetValue("play-symbolic")
 			}
 		})
 
@@ -37,7 +37,7 @@ func controlsPlayPause() schwifty.Button {
 		CornerRadius(21).
 		HPadding(32).
 		VPadding(9).
-		CSS(`button:not(:hover) { background-color: var(--accent-bg-color); }`).
+		CSS(`button:not(:hover) { background-color: var(--accent-bg-color); color: var(--accent-fg-color); }`).
 		ConnectClicked(func(b gtk.Button) {
 			player.PlayPause()
 		}).

@@ -1,8 +1,8 @@
 package home
 
 import (
-	"codeberg.org/dergs/tidalwave/pkg/tidalapi/internal"
-	"codeberg.org/dergs/tidalwave/pkg/tidalapi/v2/home/feed"
+	"codeberg.org/dergs/tonearm/pkg/tidalapi/internal"
+	"codeberg.org/dergs/tonearm/pkg/tidalapi/v2/home/feed"
 )
 
 type Home struct {

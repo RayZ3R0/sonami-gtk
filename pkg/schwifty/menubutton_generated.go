@@ -1,8 +1,8 @@
 package schwifty
 
 import (
-	"codeberg.org/dergs/tidalwave/pkg/schwifty/callback"
-	"codeberg.org/dergs/tidalwave/pkg/schwifty/state"
+	"codeberg.org/dergs/tonearm/pkg/schwifty/callback"
+	"codeberg.org/dergs/tonearm/pkg/schwifty/state"
 	"fmt"
 	"github.com/jwijenbergh/puregotk/v4/gtk"
 )
@@ -34,10 +34,26 @@ func (f MenuButton) ConnectDestroy(cb func(gtk.Widget)) MenuButton {
 	}
 }
 
+func (f MenuButton) ConnectMap(cb func(gtk.Widget)) MenuButton {
+	return func() *gtk.MenuButton {
+		widget := f()
+		callback.HandleCallback(widget.Object, "map", cb)
+		return widget
+	}
+}
+
 func (f MenuButton) ConnectRealize(cb func(gtk.Widget)) MenuButton {
 	return func() *gtk.MenuButton {
 		widget := f()
 		callback.HandleCallback(widget.Object, "realize", cb)
+		return widget
+	}
+}
+
+func (f MenuButton) ConnectUnmap(cb func(gtk.Widget)) MenuButton {
+	return func() *gtk.MenuButton {
+		widget := f()
+		callback.HandleCallback(widget.Object, "unmap", cb)
 		return widget
 	}
 }

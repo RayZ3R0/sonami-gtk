@@ -1,7 +1,7 @@
 package router
 
 import (
-	. "codeberg.org/dergs/tidalwave/pkg/schwifty/syntax"
+	. "codeberg.org/dergs/tonearm/pkg/schwifty/syntax"
 )
 
 func notFoundHandler() *Response {
@@ -10,6 +10,6 @@ func notFoundHandler() *Response {
 		View: StatusPage().
 			Title("Not found").
 			Description("The requested deeplink did not have any available handlers.").
-			IconName("face-sad-symbolic"),
+			IconName("sentiment-dissatisfied-symbolic"),
 	}
 }

@@ -3,12 +3,12 @@ package schwifty
 import (
 	"fmt"
 
-	"codeberg.org/dergs/tidalwave/pkg/schwifty/state"
+	"codeberg.org/dergs/tonearm/pkg/schwifty/state"
 	"github.com/jwijenbergh/puregotk/v4/gtk"
 	"github.com/jwijenbergh/puregotk/v4/pango"
 )
 
-//go:generate go run codeberg.org/dergs/tidalwave/pkg/schwifty/gen Label *gtk.Label
+//go:generate go run codeberg.org/dergs/tonearm/pkg/schwifty/gen Label *gtk.Label
 
 func (f Label) Color(color string) Label {
 	return func() *gtk.Label {

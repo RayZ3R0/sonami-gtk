@@ -2,7 +2,7 @@ package schwifty
 
 import "github.com/jwijenbergh/puregotk/v4/adw"
 
-//go:generate go run codeberg.org/dergs/tidalwave/pkg/schwifty/gen StatusPage *adw.StatusPage
+//go:generate go run codeberg.org/dergs/tonearm/pkg/schwifty/gen StatusPage *adw.StatusPage
 
 func (f StatusPage) Description(description string) StatusPage {
 	return func() *adw.StatusPage {

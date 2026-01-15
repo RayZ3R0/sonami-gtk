@@ -3,16 +3,21 @@ package routes
 import (
 	"context"
 
-	"codeberg.org/dergs/tidalwave/internal/router"
-	"codeberg.org/dergs/tidalwave/internal/ui/components"
-	. "codeberg.org/dergs/tidalwave/pkg/schwifty/syntax"
-	"codeberg.org/dergs/tidalwave/pkg/tidalapi"
+	"codeberg.org/dergs/tonearm/internal/router"
+	"codeberg.org/dergs/tonearm/internal/ui/components"
+	. "codeberg.org/dergs/tonearm/pkg/schwifty/syntax"
+	"codeberg.org/dergs/tonearm/pkg/tidalapi"
 	"github.com/infinytum/injector"
 	"github.com/jwijenbergh/puregotk/v4/gtk"
 )
 
 func init() {
-	router.Register("pages/:page", Explore)
+	router.Register("explore", ExploreMain)
+	router.Register("explore/:page", Explore)
+}
+
+func ExploreMain() *router.Response {
+	return Explore("explore")
 }
 
 func Explore(pageName string) *router.Response {

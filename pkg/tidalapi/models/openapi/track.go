@@ -3,7 +3,7 @@ package openapi
 import (
 	"encoding/json"
 
-	"codeberg.org/dergs/tidalwave/pkg/tidalapi/helper"
+	"codeberg.org/dergs/tonearm/pkg/tidalapi/helper"
 )
 
 type Track Response[TrackData]

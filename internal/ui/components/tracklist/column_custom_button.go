@@ -3,9 +3,9 @@ package tracklist
 import (
 	"strconv"
 
-	. "codeberg.org/dergs/tidalwave/pkg/schwifty/syntax"
-	"codeberg.org/dergs/tidalwave/pkg/tidalapi/models/openapi"
-	v2 "codeberg.org/dergs/tidalwave/pkg/tidalapi/models/v2"
+	. "codeberg.org/dergs/tonearm/pkg/schwifty/syntax"
+	"codeberg.org/dergs/tonearm/pkg/tidalapi/models/openapi"
+	v2 "codeberg.org/dergs/tonearm/pkg/tidalapi/models/v2"
 	"github.com/jwijenbergh/puregotk/v4/gtk"
 )
 
@@ -24,7 +24,7 @@ func customButtonColumn(trackId string, grid *gtk.Grid, position int, column int
 		column,
 		1,
 	)
-	return 1
+	return 0
 }
 
 func customWidgetButtonColumn(trackId string, grid *gtk.Grid, position int, column int, button func(trackID string, position, column int) *gtk.Widget) int {
@@ -40,7 +40,7 @@ func customWidgetButtonColumn(trackId string, grid *gtk.Grid, position int, colu
 		1,
 		1,
 	)
-	return 1
+	return 0
 }
 
 func CustomButtonColumn(onClick buttonColumnCallback) ColumnFunc[*openapi.Track] {

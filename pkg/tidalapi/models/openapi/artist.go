@@ -1,6 +1,8 @@
 package openapi
 
-import "encoding/json"
+import (
+	"encoding/json"
+)
 
 type Artist Response[ArtistData]
 

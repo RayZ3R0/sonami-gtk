@@ -1,6 +1,6 @@
 package router
 
-import "codeberg.org/dergs/tidalwave/internal/signals"
+import "codeberg.org/dergs/tonearm/internal/signals"
 
 // NavigationStarted is a signal that is emitted when the router starts navigating to a new path.
 // The path parameter is the new path that the router is navigating to.

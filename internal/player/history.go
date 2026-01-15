@@ -3,7 +3,7 @@ package player
 import (
 	"sync"
 
-	"codeberg.org/dergs/tidalwave/internal/signals"
+	"codeberg.org/dergs/tonearm/internal/signals"
 )
 
 var history = &History{

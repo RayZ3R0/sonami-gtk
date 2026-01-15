@@ -1,13 +1,13 @@
 package schwifty
 
 import (
-	"codeberg.org/dergs/tidalwave/pkg/schwifty/callback"
-	"codeberg.org/dergs/tidalwave/pkg/schwifty/state"
+	"codeberg.org/dergs/tonearm/pkg/schwifty/callback"
+	"codeberg.org/dergs/tonearm/pkg/schwifty/state"
 	"github.com/jwijenbergh/puregotk/v4/glib"
 	"github.com/jwijenbergh/puregotk/v4/gtk"
 )
 
-//go:generate go run codeberg.org/dergs/tidalwave/pkg/schwifty/gen Button *gtk.Button
+//go:generate go run codeberg.org/dergs/tonearm/pkg/schwifty/gen Button *gtk.Button
 
 func (f Button) ActionName(actionName string) Button {
 	return func() *gtk.Button {

@@ -1,11 +1,17 @@
 package resources
 
 import (
-	"codeberg.org/dergs/tidalwave/internal/g"
-	"codeberg.org/dergs/tidalwave/pkg/schwifty"
+	"codeberg.org/dergs/tonearm/internal/g"
+	"codeberg.org/dergs/tonearm/pkg/schwifty"
 	"github.com/jwijenbergh/puregotk/v4/gdk"
 )
 
+var missingAlbum = g.Lazy(func() schwifty.Paintable {
+	return gdk.NewTextureFromResource("/dev/dergs/Tonearm/icons/scalable/state/missing-album.svg")
+})
+
 var MissingAlbum = g.Lazy(func() schwifty.Paintable {
-	return gdk.NewTextureFromResource("/org/codeberg/dergs/tidalwave/icons/scalable/state/missing-album.svg")
+	image := missingAlbum()
+	image.Ref()
+	return image
 })

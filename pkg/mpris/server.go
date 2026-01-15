@@ -44,6 +44,10 @@ func (s *Server) Disconnect() {
 	}
 }
 
+func (s *Server) Export() {
+	s.properties, _ = prop.Export(s.dbusConnection, "/org/mpris/MediaPlayer2", s.object.Properties)
+}
+
 func (c *Server) OnPause(cb func()) {
 	c.object.OnPause = cb
 }
@@ -80,6 +84,19 @@ func (c *Server) OnTrackPrevious(cb func()) {
 	c.object.OnTrackPrevious = cb
 }
 
+func (c *Server) OnLoopStatusChanged(cb func(loopStatus LoopStatus)) {
+	c.object.Properties[playerInterface]["LoopStatus"].Callback = func(newVal *prop.Change) *dbus.Error {
+		val, ok := newVal.Value.(string)
+		if !ok {
+			slog.Error("Unexpected format from client for LoopStatus value")
+			return &dbus.ErrMsgInvalidArg
+		}
+
+		cb(LoopStatus(val))
+		return nil
+	}
+}
+
 func (c *Server) OnVolumeChanged(cb func(newVal float64)) {
 	c.object.Properties[playerInterface]["Volume"].Callback = func(newVal *prop.Change) *dbus.Error {
 		val, ok := newVal.Value.(float64)
@@ -91,6 +108,21 @@ func (c *Server) OnVolumeChanged(cb func(newVal float64)) {
 
 		cb(val)
 		return nil
+	}
+}
+
+func (c *Server) SetLoopStatus(status LoopStatus) {
+	oldVar, _ := c.properties.Get(playerInterface, "LoopStatus")
+	oldVal, ok := oldVar.Value().(LoopStatus)
+
+	if !ok {
+		log.Error("Unexpected non-string value in D-Bus LoopStatus value")
+		c.properties.SetMust(playerInterface, "LoopStatus", dbus.MakeVariant(status))
+		return
+	}
+
+	if oldVal != status {
+		c.properties.SetMust(playerInterface, "LoopStatus", dbus.MakeVariant(status))
 	}
 }
 
@@ -109,11 +141,15 @@ func (c *Server) SetPlaybackStatus(status PlaybackStatus) {
 	}
 }
 
-func (c *Server) SetPosition(position time.Duration) {
+func (c *Server) SetPosition(position time.Duration, seek bool) {
 	oldVar, _ := c.properties.Get(playerInterface, "Position")
 	oldVal, ok := oldVar.Value().(int64)
 
 	newVal := position.Microseconds()
+
+	if seek {
+		c.dbusConnection.Emit(dbus.ObjectPath("/org/mpris/MediaPlayer2"), playerInterface+".Seeked", newVal)
+	}
 
 	if !ok {
 		log.Error("Unexpected non-integer value in D-Bus Position value")

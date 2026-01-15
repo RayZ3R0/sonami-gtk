@@ -4,7 +4,7 @@ import (
 	"sync"
 	"time"
 
-	"codeberg.org/dergs/tidalwave/internal/settings"
+	"codeberg.org/dergs/tonearm/internal/settings"
 	"github.com/jwijenbergh/puregotk/v4/gtk"
 )
 

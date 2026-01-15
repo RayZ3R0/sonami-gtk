@@ -5,10 +5,10 @@ import (
 	"strconv"
 	"time"
 
-	"codeberg.org/dergs/tidalwave/internal/signals"
-	"codeberg.org/dergs/tidalwave/pkg/tidalapi"
-	v1 "codeberg.org/dergs/tidalwave/pkg/tidalapi/models/v1"
-	tracksv1 "codeberg.org/dergs/tidalwave/pkg/tidalapi/v1/tracks"
+	"codeberg.org/dergs/tonearm/internal/signals"
+	"codeberg.org/dergs/tonearm/pkg/tidalapi"
+	v1 "codeberg.org/dergs/tonearm/pkg/tidalapi/models/v1"
+	tracksv1 "codeberg.org/dergs/tonearm/pkg/tidalapi/v1/tracks"
 	"github.com/go-gst/go-gst/gst"
 	"github.com/infinytum/injector"
 	"github.com/jwijenbergh/puregotk/v4/glib"
@@ -54,6 +54,7 @@ func onBusMessage(msg *gst.Message) bool {
 		logger.Error("playback failed", "code", err.Code(), "message", err.Message(), "error", err.Error(), "debug", err.DebugString())
 	case gst.MessageStreamStart:
 		startUpdateRunner()
+		playbin.SetProperty("volume", volumeBeforeEnqueue)
 		// A hack to trigger the correct track updates with gapless playback
 		if TrackChanged.CurrentValue().ID != strconv.Itoa(currentlyEnqueuedTrackID) {
 			playNextTrack()
@@ -81,12 +82,15 @@ func onBusMessage(msg *gst.Message) bool {
 }
 
 func onVolumeChange() {
-	VolumeChanged.Notify(func(oldValue float64) float64 {
-		if volume, err := playbin.GetProperty("volume"); err == nil {
+	if volume, err := playbin.GetProperty("volume"); err == nil {
+		return
+	} else if volume.(float64) == VolumeChanged.CurrentValue() {
+		return
+	} else {
+		VolumeChanged.Notify(func(oldValue float64) float64 {
 			return volume.(float64)
-		}
-		return oldValue
-	})
+		})
+	}
 }
 
 var onUpdateTick = glib.SourceFunc(func(uintptr) bool {
@@ -98,6 +102,7 @@ var onUpdateTick = glib.SourceFunc(func(uintptr) bool {
 
 		if ok, position := playbin.QueryPosition(gst.FormatTime); ok {
 			newState.Position = time.Duration(position)
+			newState.IsSeeking = false
 		}
 		return &newState
 	})

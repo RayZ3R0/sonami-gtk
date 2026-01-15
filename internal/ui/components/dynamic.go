@@ -1,14 +1,14 @@
 package components
 
 import (
-	"codeberg.org/dergs/tidalwave/internal/ui/components/horizontal_list"
-	"codeberg.org/dergs/tidalwave/internal/ui/components/media_card"
-	"codeberg.org/dergs/tidalwave/internal/ui/components/shortcut_list"
-	"codeberg.org/dergs/tidalwave/internal/ui/components/tracklist"
-	"codeberg.org/dergs/tidalwave/pkg/schwifty"
-	"codeberg.org/dergs/tidalwave/pkg/schwifty/syntax"
-	. "codeberg.org/dergs/tidalwave/pkg/schwifty/syntax"
-	v2 "codeberg.org/dergs/tidalwave/pkg/tidalapi/models/v2"
+	"codeberg.org/dergs/tonearm/internal/ui/components/horizontal_list"
+	"codeberg.org/dergs/tonearm/internal/ui/components/media_card"
+	"codeberg.org/dergs/tonearm/internal/ui/components/shortcut_list"
+	"codeberg.org/dergs/tonearm/internal/ui/components/tracklist"
+	"codeberg.org/dergs/tonearm/pkg/schwifty"
+	"codeberg.org/dergs/tonearm/pkg/schwifty/syntax"
+	. "codeberg.org/dergs/tonearm/pkg/schwifty/syntax"
+	v2 "codeberg.org/dergs/tonearm/pkg/tidalapi/models/v2"
 	"github.com/jwijenbergh/puregotk/v4/gtk"
 )
 
@@ -40,9 +40,9 @@ func ForPageItem(pageItem v2.PageItem) schwifty.BaseWidgetable {
 		return list.SetPageMargin(40)
 	case v2.ItemTypeTrackList:
 		list := tracklist.NewTrackList[*v2.TrackItemData](
-			tracklist.GroupedColumn(3, gtk.AlignStartValue, tracklist.LegacyCoverColumn, tracklist.LegacyTitleAlbumColumn),
+			tracklist.GroupedColumn(2, gtk.AlignStartValue, tracklist.LegacyCoverColumn, tracklist.LegacyTitleAlbumColumn),
 			tracklist.LegacyArtistsColumn,
-			tracklist.LegacyExpandButtonColumn(2),
+			tracklist.LegacyExpandButtonColumn(1),
 			tracklist.GroupedColumn(1, gtk.AlignEndValue, tracklist.LegacyDurationColumn, tracklist.LegacyControlsColumn),
 		)
 		for _, track := range pageItem.Items {

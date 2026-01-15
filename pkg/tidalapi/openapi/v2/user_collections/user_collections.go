@@ -1,6 +1,6 @@
 package user_collections
 
-import "codeberg.org/dergs/tidalwave/pkg/tidalapi/internal"
+import "codeberg.org/dergs/tonearm/pkg/tidalapi/internal"
 
 type UserCollections struct {
 	client *internal.Client

@@ -3,8 +3,8 @@ package player
 import (
 	"fmt"
 
-	"codeberg.org/dergs/tidalwave/internal/signals"
-	"codeberg.org/dergs/tidalwave/pkg/mpris"
+	"codeberg.org/dergs/tonearm/internal/signals"
+	"codeberg.org/dergs/tonearm/pkg/mpris"
 	"github.com/infinytum/injector"
 )
 
@@ -15,7 +15,7 @@ func init() {
 			return signals.Continue
 		}
 
-		mprisServer.SetPosition(state.Position)
+		mprisServer.SetPosition(state.Position, state.IsSeeking)
 		switch state.Status {
 		case PlaybackStatusLoadingTrack, PlaybackStatusBuffering, PlaybackStatusPaused:
 			mprisServer.SetPlaybackStatus(mpris.PlaybackStatusPaused)
@@ -27,6 +27,24 @@ func init() {
 
 		return signals.Continue
 	})
+
+	RepeatModeChanged.On(func(rm RepeatMode) bool {
+		mprisServer, err := injector.Inject[*mpris.Server]()
+		if err != nil {
+			return signals.Continue
+		}
+
+		switch rm {
+		case RepeatModeNone:
+			mprisServer.SetLoopStatus(mpris.LoopNone)
+		case RepeatModeTrack:
+			mprisServer.SetLoopStatus(mpris.LoopTrack)
+		case RepeatModeQueue:
+			mprisServer.SetLoopStatus(mpris.LoopPlaylist)
+		}
+		return signals.Continue
+	})
+
 	TrackChanged.Signal.On(func(trackInfo *Track) bool {
 		mprisServer, err := injector.Inject[*mpris.Server]()
 		if err != nil {

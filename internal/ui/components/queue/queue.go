@@ -4,15 +4,15 @@ import (
 	"log/slog"
 	"slices"
 
-	"codeberg.org/dergs/tidalwave/internal/player"
-	"codeberg.org/dergs/tidalwave/internal/resources"
-	"codeberg.org/dergs/tidalwave/internal/signals"
-	"codeberg.org/dergs/tidalwave/internal/ui/components/tracklist"
-	"codeberg.org/dergs/tidalwave/pkg/schwifty"
-	"codeberg.org/dergs/tidalwave/pkg/schwifty/state"
-	. "codeberg.org/dergs/tidalwave/pkg/schwifty/syntax"
-	"codeberg.org/dergs/tidalwave/pkg/tidalapi/models/openapi"
-	"codeberg.org/dergs/tidalwave/pkg/utils/imgutil"
+	"codeberg.org/dergs/tonearm/internal/player"
+	"codeberg.org/dergs/tonearm/internal/resources"
+	"codeberg.org/dergs/tonearm/internal/signals"
+	"codeberg.org/dergs/tonearm/internal/ui/components/tracklist"
+	"codeberg.org/dergs/tonearm/pkg/schwifty"
+	"codeberg.org/dergs/tonearm/pkg/schwifty/state"
+	. "codeberg.org/dergs/tonearm/pkg/schwifty/syntax"
+	"codeberg.org/dergs/tonearm/pkg/tidalapi/models/openapi"
+	"codeberg.org/dergs/tonearm/pkg/utils/imgutil"
 	"github.com/infinytum/injector"
 	"github.com/jwijenbergh/puregotk/v4/gtk"
 	"github.com/jwijenbergh/puregotk/v4/pango"
@@ -25,7 +25,7 @@ var (
 	coverState    = state.NewStateful[schwifty.Paintable](resources.MissingAlbum())
 	trackTitle    = state.NewStateful[string]("")
 	trackArtists  = state.NewStateful[string]("")
-	playPauseIcon = state.NewStateful("media-playback-start-symbolic")
+	playPauseIcon = state.NewStateful("play-symbolic")
 )
 
 var miniPlayerCanControl = state.NewStateful(false)
@@ -54,7 +54,7 @@ func init() {
 func NewQueue() schwifty.Box {
 	trackList := tracklist.NewTrackList(
 		tracklist.GroupedColumn(3, gtk.AlignStartValue, tracklist.CoverColumn, tracklist.TitleAlbumColumn),
-		tracklist.ExpandCustomButtonColumn(2, func(_ string, position, _ int) {
+		tracklist.ExpandCustomButtonColumn(1, func(_ string, position, _ int) {
 			go player.SkipThoughQueue(player.UserQueue, position)
 		}),
 		tracklist.GroupedColumn(1, gtk.AlignCenterValue,
@@ -81,7 +81,7 @@ func NewQueue() schwifty.Box {
 
 	trackListBase := tracklist.NewTrackList(
 		tracklist.GroupedColumn(3, gtk.AlignStartValue, tracklist.CoverColumn, tracklist.TitleAlbumColumn),
-		tracklist.ExpandCustomButtonColumn(2, func(_ string, position, _ int) {
+		tracklist.ExpandCustomButtonColumn(1, func(_ string, position, _ int) {
 			go player.SkipThoughQueue(player.BaseQueue, position)
 		}),
 		tracklist.GroupedColumn(1, gtk.AlignCenterValue,
@@ -130,9 +130,9 @@ func NewQueue() schwifty.Box {
 		schwifty.OnMainThreadOncePure(func() {
 			switch state.Status {
 			case player.PlaybackStatusPaused, player.PlaybackStatusStopped:
-				playPauseIcon.SetValue("media-playback-start-symbolic")
+				playPauseIcon.SetValue("play-symbolic")
 			case player.PlaybackStatusPlaying:
-				playPauseIcon.SetValue("media-playback-pause-symbolic")
+				playPauseIcon.SetValue("pause-symbolic")
 			}
 		})
 		return signals.Continue
@@ -189,7 +189,7 @@ func NewQueue() schwifty.Box {
 					}),
 				Button().
 					WithCSSClass("transparent").
-					IconName("media-skip-forward-symbolic").
+					IconName("skip-forward-large-symbolic").
 					ActionName("win.player.next").
 					BindSensitive(miniPlayerCanControl),
 			).

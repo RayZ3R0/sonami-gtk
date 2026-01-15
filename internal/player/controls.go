@@ -4,7 +4,7 @@ import (
 	"math"
 	"time"
 
-	"codeberg.org/dergs/tidalwave/internal/signals"
+	"codeberg.org/dergs/tonearm/internal/signals"
 	"github.com/go-gst/go-gst/gst"
 )
 
@@ -109,6 +109,7 @@ func SeekToPosition(position time.Duration) {
 	PlaybackStateChanged.Notify(func(oldValue *PlaybackState) *PlaybackState {
 		newState := *oldValue
 		newState.Position = position
+		newState.IsSeeking = true
 		return &newState
 	})
 }
@@ -118,6 +119,10 @@ func SeekToPositionRelative(delta time.Duration) {
 }
 
 func SetRepeatMode(m RepeatMode) {
+	if m == RepeatModeChanged.CurrentValue() {
+		return
+	}
+
 	RepeatModeChanged.Notify(func(oldValue RepeatMode) RepeatMode {
 		return m
 	})
@@ -136,4 +141,16 @@ func SetVolume(volume float64) {
 func Stop() {
 	logger.Debug("player controls requested to stop")
 	playbin.SetState(gst.StateNull)
+}
+
+func ToggleShuffle() {
+	if ShuffleSeedChanged.CurrentValue() == 0 {
+		ShuffleSeedChanged.Notify(func(oldValue int64) int64 {
+			return time.Now().Unix()
+		})
+	} else {
+		ShuffleSeedChanged.Notify(func(oldValue int64) int64 {
+			return 0
+		})
+	}
 }

@@ -1,8 +1,8 @@
 package player
 
 import (
-	"codeberg.org/dergs/tidalwave/internal/signals"
-	v1 "codeberg.org/dergs/tidalwave/pkg/tidalapi/models/v1"
+	"codeberg.org/dergs/tonearm/internal/signals"
+	v1 "codeberg.org/dergs/tonearm/pkg/tidalapi/models/v1"
 )
 
 var ControllableStateChanged = signals.NewStatefulSignal(ControllableState{
@@ -31,6 +31,12 @@ var PlaybackQualityChanged = signals.NewStatefulSignal[v1.AudioQuality](v1.Audio
 //
 // The signal fires whenever the user changes the repeat mode.
 var RepeatModeChanged = signals.NewStatefulSignal[RepeatMode](RepeatModeNone)
+
+// Holds the seed chosen when the user selects shuffle mode.
+//
+// The signal fires whenever the user toggles the shuffle mode.
+// The value is 0 if shuffle mode is disabled.
+var ShuffleSeedChanged = signals.NewStatefulSignal[int64](0)
 
 // Holds the relevant information about the currently playing or last played track.
 // This can be nil if no track is currently playing. This is especially the case when

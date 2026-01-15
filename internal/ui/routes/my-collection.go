@@ -3,15 +3,15 @@ package routes
 import (
 	"context"
 
-	"codeberg.org/dergs/tidalwave/internal/router"
-	"codeberg.org/dergs/tidalwave/internal/secrets"
-	"codeberg.org/dergs/tidalwave/internal/ui/components"
-	"codeberg.org/dergs/tidalwave/internal/ui/components/horizontal_list"
-	"codeberg.org/dergs/tidalwave/internal/ui/components/media_card"
-	"codeberg.org/dergs/tidalwave/internal/ui/components/tracklist"
-	"codeberg.org/dergs/tidalwave/internal/ui/routes/my_collection"
-	. "codeberg.org/dergs/tidalwave/pkg/schwifty/syntax"
-	"codeberg.org/dergs/tidalwave/pkg/tidalapi"
+	"codeberg.org/dergs/tonearm/internal/router"
+	"codeberg.org/dergs/tonearm/internal/secrets"
+	"codeberg.org/dergs/tonearm/internal/ui/components"
+	"codeberg.org/dergs/tonearm/internal/ui/components/horizontal_list"
+	"codeberg.org/dergs/tonearm/internal/ui/components/media_card"
+	"codeberg.org/dergs/tonearm/internal/ui/components/tracklist"
+	"codeberg.org/dergs/tonearm/internal/ui/routes/my_collection"
+	. "codeberg.org/dergs/tonearm/pkg/schwifty/syntax"
+	"codeberg.org/dergs/tonearm/pkg/tidalapi"
 	"github.com/infinytum/injector"
 	"github.com/jwijenbergh/puregotk/v4/gtk"
 )
@@ -58,9 +58,9 @@ func MyCollection() *router.Response {
 	}
 
 	trackList := tracklist.NewTrackList(
-		tracklist.GroupedColumn(3, gtk.AlignStartValue, tracklist.CoverColumn, tracklist.TitleAlbumColumn),
+		tracklist.GroupedColumn(2, gtk.AlignStartValue, tracklist.CoverColumn, tracklist.TitleAlbumColumn),
 		tracklist.ArtistsColumn,
-		tracklist.ExpandButtonColumn(2),
+		tracklist.ExpandButtonColumn(1),
 		tracklist.GroupedColumn(1, gtk.AlignStartValue, tracklist.DurationColumn, tracklist.ControlsColumn),
 	)
 	for _, track := range userCollection.Included.Tracks(userCollection.Data.Relationships.Tracks.Data...) {

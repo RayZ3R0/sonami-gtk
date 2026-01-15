@@ -1,11 +1,11 @@
 package media_card
 
 import (
-	"codeberg.org/dergs/tidalwave/internal/resources"
-	"codeberg.org/dergs/tidalwave/internal/settings"
-	"codeberg.org/dergs/tidalwave/pkg/schwifty"
-	. "codeberg.org/dergs/tidalwave/pkg/schwifty/syntax"
-	"codeberg.org/dergs/tidalwave/pkg/utils/imgutil"
+	"codeberg.org/dergs/tonearm/internal/resources"
+	"codeberg.org/dergs/tonearm/internal/settings"
+	"codeberg.org/dergs/tonearm/pkg/schwifty"
+	. "codeberg.org/dergs/tonearm/pkg/schwifty/syntax"
+	"codeberg.org/dergs/tonearm/pkg/utils/imgutil"
 	"github.com/infinytum/injector"
 	"github.com/jwijenbergh/puregotk/v4/gtk"
 	"github.com/jwijenbergh/puregotk/v4/pango"
@@ -30,7 +30,7 @@ func Card[T any](title string, subTitle schwifty.Widgetable[T], coverUrl string)
 					FromPaintable(resources.MissingAlbum()).
 					ConnectConstruct(func(i *gtk.Image) {
 						if settings.Performance().AllowMediaCardImages() {
-							injector.MustInject[*imgutil.ImgUtil]().LoadIntoImage(coverUrl, i)
+							injector.MustInject[*imgutil.ImgUtil]().LoadIntoImageCropped(coverUrl, i)
 						}
 					}).CornerRadius(10).Overflow(gtk.OverflowHiddenValue),
 				Label(title).

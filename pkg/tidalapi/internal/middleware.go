@@ -5,7 +5,7 @@ import (
 	"net/http"
 	"time"
 
-	"codeberg.org/dergs/tidalwave/pkg/tidalapi/auth"
+	"codeberg.org/dergs/tonearm/pkg/tidalapi/auth"
 	"github.com/jeandeaual/go-locale"
 )
 
@@ -20,7 +20,7 @@ func (m MiddlewareRoundTripper) RoundTrip(req *http.Request) (*http.Response, er
 	req.Header.Set("x-tidal-token", UnauthenticatedClientID)
 
 	// Identify ourselves to TIDAL, we want to be a friendly citizen on their API.
-	req.Header.Set("User-Agent", "TidalWave/"+ClientVersion+" Mozilla/5.0 (Linux x86_64; rv:146.0) Gecko/20100101 Firefox/146.0")
+	req.Header.Set("User-Agent", "Tonearm/"+ClientVersion+" Mozilla/5.0 (Linux x86_64; rv:146.0) Gecko/20100101 Firefox/146.0")
 
 	// Configure the base URL unless set
 	if req.URL.Scheme == "" {

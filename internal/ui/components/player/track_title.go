@@ -1,11 +1,11 @@
 package player
 
 import (
-	"codeberg.org/dergs/tidalwave/internal/player"
-	"codeberg.org/dergs/tidalwave/internal/signals"
-	"codeberg.org/dergs/tidalwave/pkg/schwifty"
-	"codeberg.org/dergs/tidalwave/pkg/schwifty/state"
-	. "codeberg.org/dergs/tidalwave/pkg/schwifty/syntax"
+	"codeberg.org/dergs/tonearm/internal/player"
+	"codeberg.org/dergs/tonearm/internal/signals"
+	"codeberg.org/dergs/tonearm/pkg/schwifty"
+	"codeberg.org/dergs/tonearm/pkg/schwifty/state"
+	. "codeberg.org/dergs/tonearm/pkg/schwifty/syntax"
 	"github.com/jwijenbergh/puregotk/v4/gtk"
 	"github.com/jwijenbergh/puregotk/v4/pango"
 )
@@ -33,6 +33,5 @@ func trackTitle() schwifty.Label {
 		LineHeight(1.2).
 		HMargin(32).
 		HAlign(gtk.AlignCenterValue).
-		Ellipsis(pango.EllipsizeEndValue).
-		MarginTop(35)
+		Ellipsis(pango.EllipsizeEndValue)
 }

@@ -1,5 +1,5 @@
 package notifications
 
-import "codeberg.org/dergs/tidalwave/internal/signals"
+import "codeberg.org/dergs/tonearm/internal/signals"
 
 var OnToast = signals.NewStatelessSignal[string]()

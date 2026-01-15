@@ -6,7 +6,7 @@ import (
 	"fmt"
 	"net/http"
 
-	v1 "codeberg.org/dergs/tidalwave/pkg/tidalapi/models/v1"
+	v1 "codeberg.org/dergs/tonearm/pkg/tidalapi/models/v1"
 )
 
 func (t *Tracks) Mix(ctx context.Context, trackId int) (*v1.TrackMix, error) {

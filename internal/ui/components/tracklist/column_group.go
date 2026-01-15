@@ -1,7 +1,7 @@
 package tracklist
 
 import (
-	. "codeberg.org/dergs/tidalwave/pkg/schwifty/syntax"
+	. "codeberg.org/dergs/tonearm/pkg/schwifty/syntax"
 	"github.com/jwijenbergh/puregotk/v4/gtk"
 )
 

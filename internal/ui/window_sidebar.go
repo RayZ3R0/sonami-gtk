@@ -1,26 +1,26 @@
 package ui
 
 import (
-	"codeberg.org/dergs/tidalwave/internal/router"
-	"codeberg.org/dergs/tidalwave/internal/secrets"
-	"codeberg.org/dergs/tidalwave/internal/signals"
-	"codeberg.org/dergs/tidalwave/internal/ui/components"
-	"codeberg.org/dergs/tidalwave/internal/ui/components/lyrics"
-	"codeberg.org/dergs/tidalwave/internal/ui/components/player"
-	"codeberg.org/dergs/tidalwave/internal/ui/components/queue"
-	"codeberg.org/dergs/tidalwave/pkg/schwifty"
-	. "codeberg.org/dergs/tidalwave/pkg/schwifty/syntax"
+	"codeberg.org/dergs/tonearm/internal/router"
+	"codeberg.org/dergs/tonearm/internal/secrets"
+	"codeberg.org/dergs/tonearm/internal/signals"
+	"codeberg.org/dergs/tonearm/internal/ui/components"
+	"codeberg.org/dergs/tonearm/internal/ui/components/lyrics"
+	"codeberg.org/dergs/tonearm/internal/ui/components/player"
+	"codeberg.org/dergs/tonearm/internal/ui/components/queue"
+	"codeberg.org/dergs/tonearm/pkg/schwifty"
+	. "codeberg.org/dergs/tonearm/pkg/schwifty/syntax"
 	"github.com/jwijenbergh/puregotk/v4/adw"
 	"github.com/jwijenbergh/puregotk/v4/gio"
 	"github.com/jwijenbergh/puregotk/v4/gtk"
 )
 
 func (w *Window) buildSidebarHeader() *gtk.Widget {
-	windowTitle := WindowTitle("Tidal Wave", "")()
+	windowTitle := WindowTitle("Tonearm", "")()
 	router.NavigationCompleted.On(func(entry router.HistoryEntry) bool {
 		schwifty.OnMainThreadOncePure(func() {
 			windowTitle.SetSubtitle(entry.PageTitle)
-			w.SetTitle("Tidal Wave - " + entry.PageTitle)
+			w.SetTitle("Tonearm - " + entry.PageTitle)
 		})
 		return signals.Continue
 	})
@@ -33,7 +33,7 @@ func (w *Window) buildSidebarHeader() *gtk.Widget {
 	}
 	mainMenu.Append("Set as default page", "win.set-as-default")
 	mainMenu.Append("Preferences", "app.preferences")
-	mainMenu.Append("About", "app.about")
+	mainMenu.Append("About Tonearm", "app.about")
 	mainMenu.Append("Quit", "app.quit")
 	defer mainMenu.Unref()
 

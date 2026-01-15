@@ -4,13 +4,13 @@ import (
 	"context"
 	"fmt"
 
-	"codeberg.org/dergs/tidalwave/internal/notifications"
-	"codeberg.org/dergs/tidalwave/internal/resources"
-	"codeberg.org/dergs/tidalwave/internal/router"
-	"codeberg.org/dergs/tidalwave/internal/ui/components"
-	. "codeberg.org/dergs/tidalwave/pkg/schwifty/syntax"
-	"codeberg.org/dergs/tidalwave/pkg/tidalapi"
-	"codeberg.org/dergs/tidalwave/pkg/utils/imgutil"
+	"codeberg.org/dergs/tonearm/internal/notifications"
+	"codeberg.org/dergs/tonearm/internal/resources"
+	"codeberg.org/dergs/tonearm/internal/router"
+	"codeberg.org/dergs/tonearm/internal/ui/components"
+	. "codeberg.org/dergs/tonearm/pkg/schwifty/syntax"
+	"codeberg.org/dergs/tonearm/pkg/tidalapi"
+	"codeberg.org/dergs/tonearm/pkg/utils/imgutil"
 	"github.com/infinytum/injector"
 	"github.com/jwijenbergh/puregotk/v4/gdk"
 	"github.com/jwijenbergh/puregotk/v4/gtk"
@@ -71,7 +71,7 @@ func Artist(artistId string) *router.Response {
 				VStack(
 					HStack(
 						Button().
-							IconName("media-playlist-shuffle-symbolic").
+							IconName("playlist-shuffle-symbolic").
 							MinWidth(81).
 							CornerRadius(21).
 							Padding(9).
@@ -81,7 +81,7 @@ func Artist(artistId string) *router.Response {
 								// go player.PlayPlaylist(playlistUUID, true, "")
 							}),
 						Button().
-							IconName("media-playback-start-symbolic").
+							IconName("play-symbolic").
 							MinWidth(81).
 							CornerRadius(21).
 							Padding(9).
@@ -108,7 +108,7 @@ func Artist(artistId string) *router.Response {
 							WithCSSClass("transparent").
 							Sensitive(false),
 						Button().
-							IconName("folder-publicshare-symbolic").
+							IconName("share-alt-symbolic").
 							WithCSSClass("transparent").
 							ConnectClicked(func(gtk.Button) {
 								display := gdk.DisplayGetDefault()

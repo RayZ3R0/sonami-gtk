@@ -1,11 +1,11 @@
 package ui
 
 import (
-	"codeberg.org/dergs/tidalwave/internal/router"
-	"codeberg.org/dergs/tidalwave/internal/signals"
-	"codeberg.org/dergs/tidalwave/internal/ui/components"
-	"codeberg.org/dergs/tidalwave/pkg/schwifty"
-	. "codeberg.org/dergs/tidalwave/pkg/schwifty/syntax"
+	"codeberg.org/dergs/tonearm/internal/router"
+	"codeberg.org/dergs/tonearm/internal/signals"
+	"codeberg.org/dergs/tonearm/internal/ui/components"
+	"codeberg.org/dergs/tonearm/pkg/schwifty"
+	. "codeberg.org/dergs/tonearm/pkg/schwifty/syntax"
 	"github.com/jwijenbergh/puregotk/v4/gtk"
 )
 
@@ -14,7 +14,7 @@ func (w *Window) buildContentHeader() *gtk.Widget {
 	homeButton.Title("Home")
 	homeButton.Icon("go-home-symbolic")
 
-	exploreButton := components.NewRouteButton("pages/explore")
+	exploreButton := components.NewRouteButton("explore")
 	exploreButton.Title("Explore")
 	exploreButton.Icon("compass2-symbolic")
 
@@ -35,7 +35,7 @@ func (w *Window) buildContentHeader() *gtk.Widget {
 		ShowStartTitleButtons(false).
 		PackStart(
 			Button().
-				IconName("sidebar-show-symbolic").
+				IconName("dock-left-symbolic").
 				ActionName("win.toggle-sidebar"),
 			Button().
 				IconName("left-symbolic").

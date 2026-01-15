@@ -1,10 +1,12 @@
 package components
 
 import (
-	"codeberg.org/dergs/tidalwave/internal/router"
-	"codeberg.org/dergs/tidalwave/internal/signals"
-	"codeberg.org/dergs/tidalwave/pkg/schwifty"
-	. "codeberg.org/dergs/tidalwave/pkg/schwifty/syntax"
+	"strings"
+
+	"codeberg.org/dergs/tonearm/internal/router"
+	"codeberg.org/dergs/tonearm/internal/signals"
+	"codeberg.org/dergs/tonearm/pkg/schwifty"
+	. "codeberg.org/dergs/tonearm/pkg/schwifty/syntax"
 	"github.com/jwijenbergh/puregotk/v4/gtk"
 )
 
@@ -63,7 +65,7 @@ func NewRouteButton(path string) *RouteButton {
 
 	router.NavigationStarted.On(func(newPath string) bool {
 		schwifty.OnMainThreadOnce(func(u uintptr) {
-			routeButton.setActive(path == newPath)
+			routeButton.setActive(strings.HasPrefix(newPath, path))
 		}, 0)
 		return signals.Continue
 	})

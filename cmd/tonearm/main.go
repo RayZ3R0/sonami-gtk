@@ -5,19 +5,19 @@ import (
 	"os"
 	"strings"
 
-	_ "codeberg.org/dergs/tidalwave/internal/features/scrobbling"
-	"codeberg.org/dergs/tidalwave/internal/g"
-	_ "codeberg.org/dergs/tidalwave/internal/icons"
-	"codeberg.org/dergs/tidalwave/internal/player"
-	"codeberg.org/dergs/tidalwave/internal/router"
-	"codeberg.org/dergs/tidalwave/internal/secrets"
-	"codeberg.org/dergs/tidalwave/internal/settings"
-	_ "codeberg.org/dergs/tidalwave/internal/styles"
-	"codeberg.org/dergs/tidalwave/internal/ui"
-	"codeberg.org/dergs/tidalwave/pkg/mpris"
-	"codeberg.org/dergs/tidalwave/pkg/schwifty/tracking"
-	"codeberg.org/dergs/tidalwave/pkg/tidalapi"
-	"codeberg.org/dergs/tidalwave/pkg/utils/imgutil"
+	_ "codeberg.org/dergs/tonearm/internal/features/scrobbling"
+	"codeberg.org/dergs/tonearm/internal/g"
+	_ "codeberg.org/dergs/tonearm/internal/icons"
+	"codeberg.org/dergs/tonearm/internal/player"
+	"codeberg.org/dergs/tonearm/internal/router"
+	"codeberg.org/dergs/tonearm/internal/secrets"
+	"codeberg.org/dergs/tonearm/internal/settings"
+	_ "codeberg.org/dergs/tonearm/internal/styles"
+	"codeberg.org/dergs/tonearm/internal/ui"
+	"codeberg.org/dergs/tonearm/pkg/mpris"
+	"codeberg.org/dergs/tonearm/pkg/schwifty/tracking"
+	"codeberg.org/dergs/tonearm/pkg/tidalapi"
+	"codeberg.org/dergs/tonearm/pkg/utils/imgutil"
 	"github.com/infinytum/injector"
 	"github.com/jwijenbergh/puregotk/v4/adw"
 	"github.com/jwijenbergh/puregotk/v4/gio"
@@ -26,7 +26,7 @@ import (
 
 func init() {
 	slog.SetLogLoggerLevel(slog.LevelInfo)
-	if os.Getenv("TIDAL_WAVE_DEBUG") == "1" {
+	if os.Getenv("TONEARM_DEBUG") == "1" {
 		slog.SetLogLoggerLevel(slog.LevelDebug)
 		go tracking.LogAliveWidgets()
 	}
@@ -35,7 +35,7 @@ func init() {
 var app *adw.Application
 
 func main() {
-	app = adw.NewApplication("org.codeberg.dergs.tidalwave", gio.GApplicationHandlesCommandLineValue)
+	app = adw.NewApplication("dev.dergs.Tonearm", gio.GApplicationHandlesCommandLineValue)
 	defer app.Unref()
 	app.ConnectActivate(g.Ptr(onActivate))
 	app.ConnectCommandLine(g.Ptr(onCommandLine))
@@ -58,7 +58,7 @@ func main() {
 	})
 
 	injector.DeferredSingleton(func() *mpris.Server {
-		mprisServer := mpris.NewMprisServer("org.mpris.MediaPlayer2.TidalWave", app.GetApplicationId(), "Tidal Wave")
+		mprisServer := mpris.NewMprisServer("org.mpris.MediaPlayer2."+app.GetApplicationId(), app.GetApplicationId(), "Tonearm")
 		mprisServer.OnPlayPause(player.PlayPause)
 		mprisServer.OnPlay(player.Play)
 		mprisServer.OnTrackNext(player.Next)
@@ -69,12 +69,23 @@ func main() {
 			window.Show()
 			window.Present()
 		})
+		mprisServer.OnLoopStatusChanged(func(loopStatus mpris.LoopStatus) {
+			switch loopStatus {
+			case mpris.LoopNone:
+				go player.SetRepeatMode(player.RepeatModeNone)
+			case mpris.LoopTrack:
+				go player.SetRepeatMode(player.RepeatModeTrack)
+			case mpris.LoopPlaylist:
+				go player.SetRepeatMode(player.RepeatModeQueue)
+			}
+		})
 		mprisServer.OnSeek(player.SeekToPositionRelative)
 		mprisServer.OnSetPosition(player.SeekToPosition)
 		mprisServer.OnVolumeChanged(func(newVal float64) {
 			player.SetVolume(newVal)
 
 		})
+		mprisServer.Export()
 		return mprisServer
 	})
 

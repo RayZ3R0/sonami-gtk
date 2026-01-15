@@ -15,11 +15,11 @@ var (
 func getVersionPrefix(version string) (prefix string) {
 	if version[0] == 'v' {
 		if version[1] == '0' {
-			prefix = "β "
+			prefix = "α "
 		}
 	} else {
 		if version[0] == '0' {
-			prefix = "β "
+			prefix = "α "
 		} else {
 			prefix = "v"
 		}
@@ -28,60 +28,69 @@ func getVersionPrefix(version string) (prefix string) {
 	return
 }
 
-func getVersionNumber() (version string) {
-	version = Version
-
-	if version == "" {
+func getVersionNumber() string {
+	if Version == "" {
 		// If no version is available.
 		// This happens if the go binary is run directly, or through the Zed task
 
 		if Commit == "" {
 			// If no commit is available.
-			// This happens if the app is run with `go run ./cmd/tidalwave`.
+			// This happens if the app is run with `go run ./cmd/tonearm`.
 
-			version = "local"
+			return "local"
 		} else if ok, _ := regexp.MatchString(`^.*-\d+-g[0-9a-f]{7}$`, Commit); ok {
 			// If the commit matches the git describe scheme.
 			// This happens when the code is run locally, through a project-provided tool, and a tag is available.
-			// We can therefore display a git version, in the `v1.0.0 (r1.0123abc)` scheme.
+			// We can therefore display a git version, in the `v1.0.0 β(r1.0123abc)` scheme.
 
 			regex := regexp.MustCompile(`^(.*)-(\d+)-g([0-9a-f]{7})`)
 			parts := regex.FindStringSubmatch(Commit)
 
 			_, tag, offset, commitHash := parts[0], parts[1], parts[2], parts[3]
+			if tag[0] == 'v' {
+				tag = tag[1:]
+			}
+
 			prefix := getVersionPrefix(tag)
 
-			version = fmt.Sprintf("%s%s (r%s.%s)", prefix, tag, offset, commitHash)
+			suffix := ""
+			if offset != "0" {
+				suffix = "β"
+			}
+
+			return fmt.Sprintf("%s%s %s(r%s.%s)", prefix, tag, suffix, offset, commitHash)
 		} else {
 			// If the commit is not a git describe scheme.
 			// This happens when the code is run locally, through a project-provided tool, and no tag is available.
 			// We can therefore display a commit hash, with the alpha symbol.
-			version = fmt.Sprintf("α git+%s", Commit[:7])
+			return fmt.Sprintf("α git+%s", Commit[:7])
 		}
 	} else {
 		// If a version has been provided.
 		// We can therefore display the version, and the commit hash for clarity.
 
 		commit := Commit
-		if commit == "" {
-			commit = "dirty!"
-		} else {
-			commit = Commit[:7]
+		suffix := ""
+		if commit != "" {
+			suffix = fmt.Sprintf(" (%s)", commit[:7])
 		}
 
-		prefix := getVersionPrefix(Version)
+		version := Version
+		if version[0] == 'v' {
+			version = version[1:]
+		}
 
-		version = fmt.Sprintf("%s%s (%s)", prefix, Version, commit)
+		prefix := getVersionPrefix(version)
+
+		return fmt.Sprintf("%s%s%s", prefix, version, suffix)
 	}
-
-	return
 }
 
 func (w *Window) PresentAbout() {
 
 	about := adw.NewAboutDialog()
 	about.SetApplicationIcon("logo")
-	about.SetApplicationName("Tidal Wave")
+	about.SetApplicationName("Tonearm")
 	about.SetVersion(getVersionNumber())
 	about.SetLicenseType(gtk.LicenseGpl30Value)
 	about.SetDevelopers([]string{
@@ -89,8 +98,8 @@ func (w *Window) PresentAbout() {
 		"Dråfølin https://github.com/Drafolin",
 	})
 	about.SetCopyright("© 2026 Nila The Dragon")
-	about.SetWebsite("https://codeberg.org/dergs/TidalWave")
-	about.SetIssueUrl("https://codeberg.org/dergs/TidalWave/issues")
+	about.SetWebsite("https://codeberg.org/dergs/Tonearm")
+	about.SetIssueUrl("https://codeberg.org/dergs/Tonearm/issues")
 
 	about.AddLegalSection("GStreamer Bindings (go-gst/go-gst)", "© 2020 https://github.com/go-gst/go-gst", gtk.LicenseLgpl30Value, "")
 	about.AddLegalSection("DBus Client (godbus/dbus)", "© 2020 Georg Reinke https://github.com/godbus/dbus", gtk.LicenseBsdValue, "")

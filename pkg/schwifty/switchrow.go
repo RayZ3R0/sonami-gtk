@@ -2,7 +2,7 @@ package schwifty
 
 import "github.com/jwijenbergh/puregotk/v4/adw"
 
-//go:generate go run codeberg.org/dergs/tidalwave/pkg/schwifty/gen SwitchRow *adw.SwitchRow
+//go:generate go run codeberg.org/dergs/tonearm/pkg/schwifty/gen SwitchRow *adw.SwitchRow
 
 func (f SwitchRow) Subtitle(subtitle string) SwitchRow {
 	return func() *adw.SwitchRow {

@@ -1,8 +1,8 @@
 package schwifty
 
 import (
-	"codeberg.org/dergs/tidalwave/pkg/schwifty/callback"
-	"codeberg.org/dergs/tidalwave/pkg/schwifty/state"
+	"codeberg.org/dergs/tonearm/pkg/schwifty/callback"
+	"codeberg.org/dergs/tonearm/pkg/schwifty/state"
 	"fmt"
 	"github.com/jwijenbergh/puregotk/v4/adw"
 	"github.com/jwijenbergh/puregotk/v4/gtk"
@@ -35,10 +35,26 @@ func (f WindowTitle) ConnectDestroy(cb func(gtk.Widget)) WindowTitle {
 	}
 }
 
+func (f WindowTitle) ConnectMap(cb func(gtk.Widget)) WindowTitle {
+	return func() *adw.WindowTitle {
+		widget := f()
+		callback.HandleCallback(widget.Object, "map", cb)
+		return widget
+	}
+}
+
 func (f WindowTitle) ConnectRealize(cb func(gtk.Widget)) WindowTitle {
 	return func() *adw.WindowTitle {
 		widget := f()
 		callback.HandleCallback(widget.Object, "realize", cb)
+		return widget
+	}
+}
+
+func (f WindowTitle) ConnectUnmap(cb func(gtk.Widget)) WindowTitle {
+	return func() *adw.WindowTitle {
+		widget := f()
+		callback.HandleCallback(widget.Object, "unmap", cb)
 		return widget
 	}
 }

@@ -3,9 +3,9 @@ package lyrics
 import (
 	"time"
 
-	"codeberg.org/dergs/tidalwave/internal/player"
-	"codeberg.org/dergs/tidalwave/pkg/schwifty"
-	. "codeberg.org/dergs/tidalwave/pkg/schwifty/syntax"
+	"codeberg.org/dergs/tonearm/internal/player"
+	"codeberg.org/dergs/tonearm/pkg/schwifty"
+	. "codeberg.org/dergs/tonearm/pkg/schwifty/syntax"
 	"github.com/jwijenbergh/puregotk/v4/gtk"
 )
 
@@ -35,7 +35,10 @@ func lyricLine(text string, timing *lyricTiming) schwifty.Button {
 				ptr := b.GoPointer()
 				classListener = activeLyricIndex.AddCallback(func(newValue uintptr) {
 					widget := gtk.ButtonNewFromInternalPtr(ptr)
+					widget.Ref()
 					schwifty.OnMainThreadOncePure(func() {
+						defer widget.Unref()
+
 						if newValue == ptr {
 							widget.AddCssClass("active")
 						} else {
