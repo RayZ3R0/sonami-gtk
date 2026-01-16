@@ -7,8 +7,8 @@ import (
 	"strings"
 	"time"
 
-	"codeberg.org/dergs/tonearm/internal/g"
 	"codeberg.org/dergs/tonearm/internal/resources"
+	"codeberg.org/dergs/tonearm/pkg/schwifty"
 	. "codeberg.org/dergs/tonearm/pkg/schwifty/syntax"
 	"github.com/jwijenbergh/puregotk/v4/adw"
 	"github.com/jwijenbergh/puregotk/v4/gdk"
@@ -35,7 +35,7 @@ func (q *QRBuffer) Close() error {
 	return nil
 }
 
-func NewLinking(window *gtk.Window, code string, link string, cancel context.CancelFunc) *adw.AlertDialog {
+func NewLinking(window *gtk.Window, code string, link string, cancel context.CancelFunc) schwifty.AlertDialog {
 	encodedUrl, err := qrcode.New("https://" + link)
 	if err != nil {
 		slog.Error("could not generate QR code to sign in")
@@ -55,35 +55,36 @@ func NewLinking(window *gtk.Window, code string, link string, cancel context.Can
 		slog.Error("could not create texture from bytes")
 	}
 
-	dialog := adw.NewAlertDialog("Sign In", "Scan this QR code to sign into your TIDAL account.")
-	dialog.SetExtraChild(VStack(
-		AspectFrame(
-			QRCode.FromPaintable(texture),
-		).Background("alpha(var(--view-fg-color), 0.1)").HAlign(gtk.AlignCenterValue).CornerRadius(10).
-			Overflow(gtk.OverflowHiddenValue),
-		Code.Text(strings.Join(strings.Split(code, ""), "  ")),
-		Helper,
-		VStack(
-			Button().
-				Label("Open TIDAL page").
-				WithCSSClass("suggested-action").
-				HPadding(20).VPadding(10).
-				ConnectClicked(func(b gtk.Button) {
-					gtk.ShowUri(window, "https://"+link, uint32(time.Now().Unix()))
-				}),
-			Button().
-				Label("Cancel Login").
-				WithCSSClass("destructive-action").
-				HPadding(20).VPadding(10).
-				ConnectClicked(func(b gtk.Button) {
-					cancel()
-				}),
-		).Spacing(10),
-	).Spacing(20).ToGTK())
-	dialog.SetCanClose(false)
-	dialog.ConnectCloseAttempt(g.Ptr(func(adw.Dialog) {
-		cancel()
-	}))
-	dialog.AddCssClass("no-response")
-	return dialog
+	return AlertDialog("Sign In", "Scan this QR code to sign into your TIDAL account.").
+		WithCSSClass("no-response").
+		CanClose(false).
+		ConnectCloseAttempt(func(d adw.Dialog) {
+			cancel()
+		}).
+		ExtraChild(
+			VStack(
+				AspectFrame(
+					QRCode.FromPaintable(texture),
+				).Background("alpha(var(--view-fg-color), 0.1)").HAlign(gtk.AlignCenterValue).CornerRadius(10).
+					Overflow(gtk.OverflowHiddenValue),
+				Code.Text(strings.Join(strings.Split(code, ""), "  ")),
+				Helper,
+				VStack(
+					Button().
+						Label("Open TIDAL page").
+						WithCSSClass("suggested-action").
+						HPadding(20).VPadding(10).
+						ConnectClicked(func(b gtk.Button) {
+							gtk.ShowUri(window, "https://"+link, uint32(time.Now().Unix()))
+						}),
+					Button().
+						Label("Cancel Login").
+						WithCSSClass("destructive-action").
+						HPadding(20).VPadding(10).
+						ConnectClicked(func(b gtk.Button) {
+							cancel()
+						}),
+				).Spacing(10),
+			).Spacing(20),
+		)
 }

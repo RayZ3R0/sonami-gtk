@@ -129,8 +129,7 @@ func (w *Window) installActions() {
 			var dialog *adw.AlertDialog
 			resp, err := tidalapi.StartDeviceLinking(func(dlc *auth.DeviceLinkingChallenge, cancel context.CancelFunc) {
 				schwifty.OnMainThreadOnce(func(u uintptr) {
-					dialog = linking.NewLinking(&w.Window, dlc.UserCode, dlc.VerificationUriComplete, cancel)
-					defer dialog.Unref()
+					dialog = linking.NewLinking(&w.Window, dlc.UserCode, dlc.VerificationUriComplete, cancel)()
 					dialog.Present(&w.Widget)
 				}, 0)
 			})
