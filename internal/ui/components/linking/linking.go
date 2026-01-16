@@ -81,6 +81,7 @@ func NewLinking(window *gtk.Window, code string, link string, cancel context.Can
 		).Spacing(10),
 	).Spacing(20).ToGTK())
 	dialog.SetCanClose(false)
+	// FIX: Switch to Schwifty-managed Callbacks
 	dialog.ConnectCloseAttempt(g.Ptr(func(adw.Dialog) {
 		cancel()
 	}))
