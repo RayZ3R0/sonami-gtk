@@ -50,6 +50,12 @@ func CenterBox() gtkbindings.CenterBox {
 	})
 }
 
+func Grid() gtkbindings.Grid {
+	return managed("Grid", func() *gtk.Grid {
+		return gtk.NewGrid()
+	})
+}
+
 func Image() gtkbindings.Image {
 	return managed("Image", func() *gtk.Image {
 		return gtk.NewImage()

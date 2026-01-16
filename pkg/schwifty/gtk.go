@@ -10,6 +10,8 @@ type Button = gtk.Button
 
 type CenterBox = gtk.CenterBox
 
+type Grid = gtk.Grid
+
 type Image = gtk.Image
 
 type Label = gtk.Label
