@@ -4,9 +4,18 @@ import (
 	"codeberg.org/dergs/tonearm/pkg/schwifty/bindings"
 	adwbindings "codeberg.org/dergs/tonearm/pkg/schwifty/bindings/adw"
 	gtkbindings "codeberg.org/dergs/tonearm/pkg/schwifty/bindings/gtk"
+	"codeberg.org/dergs/tonearm/pkg/schwifty/callback"
 	"github.com/jwijenbergh/puregotk/v4/adw"
 	"github.com/jwijenbergh/puregotk/v4/gtk"
 )
+
+func AlertDialog(heading string, body string) adwbindings.AlertDialog {
+	return managed("AlertDialog", func() *adw.AlertDialog {
+		dialog := adw.NewAlertDialog(heading, body)
+		dialog.ConnectCloseAttempt(&callback.AlertDialogCloseAttempt)
+		return dialog
+	})
+}
 
 func Clamp() adwbindings.Clamp {
 	return managed("Clamp", func() *adw.Clamp {
