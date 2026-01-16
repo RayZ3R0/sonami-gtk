@@ -151,10 +151,6 @@ func (t *TrackList[TrackType]) onSetup(_ gtk.SignalListItemFactory, listItem *gt
 				return true
 			}))
 			grid.AddController(&dragSource.EventController)
-			// FIX: Switch to Schwifty-managed Callbacks
-			grid.ConnectDestroy(g.Ptr(func(w gtk.Widget) {
-				w.RemoveController(&dragSource.EventController)
-			}))
 		} else if dragSource != nil {
 			grid.RemoveController(&dragSource.EventController)
 			dragSource.Unref()
