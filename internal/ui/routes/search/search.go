@@ -1,18 +1,18 @@
 package search
 
 import (
-	"codeberg.org/dergs/tonearm/pkg/schwifty/bindings/adw"
+	"codeberg.org/dergs/tonearm/pkg/schwifty"
 	. "codeberg.org/dergs/tonearm/pkg/schwifty/syntax"
 )
 
-func PromptView() adw.StatusPage {
+func PromptView() schwifty.StatusPage {
 	return StatusPage().
 		IconName("loupe-symbolic").
 		Title("Search").
 		Description("Start typing in the search bar to search for songs, artists, albums or playlists.")
 }
 
-func LoadingView() adw.Clamp {
+func LoadingView() schwifty.Clamp {
 	return Clamp().
 		MaximumSize(50).
 		Child(Spinner())
