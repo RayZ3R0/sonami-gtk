@@ -28,13 +28,17 @@ var templateList = []string{
 }
 
 func main() {
-	if len(os.Args) != 3 {
-		fmt.Println("Usage: gen <type> <base_type>")
+	if len(os.Args) < 3 {
+		fmt.Println("Usage: gen <type> <base_type> <package>")
 		os.Exit(1)
 	}
 
 	typ := os.Args[1]
 	baseType := os.Args[2]
+	pkg := "schwifty"
+	if len(os.Args) > 3 {
+		pkg = os.Args[3]
+	}
 
 	additionalImports := []string{}
 	if strings.Contains(baseType, "adw.") {
@@ -51,7 +55,7 @@ func main() {
 		cleanedTemplates[i] = cleanTemplate(template)
 	}
 
-	output := "package schwifty\n\n"
+	output := fmt.Sprintf("package %s\n\n", pkg)
 	output += "import (\n"
 	output += generateFinalImports(parsedTemplates, additionalImports)
 	output += "\n)\n\n"

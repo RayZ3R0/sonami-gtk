@@ -9,6 +9,7 @@ import (
 	"codeberg.org/dergs/tonearm/internal/ui/components/player"
 	"codeberg.org/dergs/tonearm/internal/ui/components/queue"
 	"codeberg.org/dergs/tonearm/pkg/schwifty"
+	adwbindings "codeberg.org/dergs/tonearm/pkg/schwifty/bindings/adw"
 	. "codeberg.org/dergs/tonearm/pkg/schwifty/syntax"
 	"github.com/jwijenbergh/puregotk/v4/adw"
 	"github.com/jwijenbergh/puregotk/v4/gio"
@@ -52,7 +53,7 @@ func (w *Window) buildSidebarHeader() *gtk.Widget {
 		ToGTK()
 }
 
-func (w *Window) buildSidebar() schwifty.ViewStack {
+func (w *Window) buildSidebar() adwbindings.ViewStack {
 	return ViewStack().
 		AddTitledWithIcon(player.NewPlayer(), "player", "Player", "music-note-outline-symbolic").
 		AddTitledWithIcon(lyrics.NewLyricsPanel(), "lyrics", "Lyrics", "chat-bubble-text-symbolic").

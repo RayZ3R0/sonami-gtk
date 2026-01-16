@@ -18,8 +18,8 @@ type HorizontalList struct {
 	routeButtonState *state.State[any]
 }
 
-func (h *HorizontalList) Append(child any) *HorizontalList {
-	h.container.Append(schwifty.ResolveWidget(child))
+func (h *HorizontalList) Append(child schwifty.BaseWidgetable) *HorizontalList {
+	h.container.Append(child.ToGTK())
 	return h
 }
 
