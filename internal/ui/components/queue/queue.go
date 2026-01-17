@@ -3,7 +3,9 @@ package queue
 import (
 	"log/slog"
 	"slices"
+	"time"
 
+	"codeberg.org/dergs/tonearm/internal/g"
 	"codeberg.org/dergs/tonearm/internal/player"
 	"codeberg.org/dergs/tonearm/internal/resources"
 	"codeberg.org/dergs/tonearm/internal/signals"
@@ -16,6 +18,10 @@ import (
 	"github.com/infinytum/injector"
 	"github.com/jwijenbergh/puregotk/v4/gtk"
 	"github.com/jwijenbergh/puregotk/v4/pango"
+)
+
+const (
+	queueScrollMargin = 75
 )
 
 var baseQueueState = state.NewStateful([]*openapi.Track{})
@@ -206,13 +212,58 @@ func NewQueue() schwifty.Box {
 			CornerRadius(12),
 		ScrolledWindow().
 			HMargin(10).
-			VPadding(10).
 			VExpand(true).
 			Child(
 				VStack(
 					trackList.Background("alpha(var(--view-bg-color), 0.9)").CornerRadius(10),
 					trackListBase,
 				).Spacing(10).VAlign(gtk.AlignStartValue),
-			),
+			).
+			ConnectRealize(func(sw gtk.Widget) {
+				action := 0.0
+				ptr := sw.GoPointer()
+				controller := gtk.NewDropControllerMotion()
+				controller.ConnectMotion(g.Ptr(func(controller gtk.DropControllerMotion, _, y float64) {
+					sw := gtk.ScrolledWindowNewFromInternalPtr(ptr)
+					sw.Ref()
+					defer sw.Unref()
+
+					if y < queueScrollMargin {
+						speed := (queueScrollMargin - y) / queueScrollMargin
+						action = speed * -4
+					} else if h := sw.GetAllocatedHeight(); (float64(h) - y) < queueScrollMargin {
+						speed := (queueScrollMargin - (float64(h) - y)) / queueScrollMargin
+						action = speed * 4
+					} else {
+						action = 0
+					}
+
+				}))
+				controller.ConnectLeave(g.Ptr(func(gtk.DropControllerMotion) {
+					action = 0
+				}))
+
+				var fn func()
+
+				fn = func() {
+					sw := gtk.ScrolledWindowNewFromInternalPtr(ptr)
+					sw.Ref()
+					defer sw.Unref()
+
+					adj := sw.GetVadjustment()
+					schwifty.OnMainThreadOnce(func(u uintptr) {
+						adj := gtk.AdjustmentNewFromInternalPtr(u)
+						defer adj.Unref()
+
+						adj.SetValue(adj.GetValue() + float64(action)*10)
+					}, adj.GoPointer())
+
+					time.AfterFunc(10*time.Millisecond, fn)
+				}
+
+				time.AfterFunc(10*time.Millisecond, fn)
+
+				sw.AddController(&controller.EventController)
+			}),
 	)
 }
