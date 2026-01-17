@@ -10,7 +10,7 @@ import (
 )
 
 func AlertDialog(heading string, body string) adwbindings.AlertDialog {
-	return managed("AlertDialog", func() *adw.AlertDialog {
+	return managedWidget("AlertDialog", func() *adw.AlertDialog {
 		dialog := adw.NewAlertDialog(heading, body)
 		dialog.ConnectCloseAttempt(&callback.AlertDialogCloseAttempt)
 		return dialog
@@ -18,31 +18,31 @@ func AlertDialog(heading string, body string) adwbindings.AlertDialog {
 }
 
 func Clamp() adwbindings.Clamp {
-	return managed("Clamp", func() *adw.Clamp {
+	return managedWidget("Clamp", func() *adw.Clamp {
 		return adw.NewClamp()
 	})
 }
 
 func EntryRow() adwbindings.EntryRow {
-	return managed("EntryRow", func() *adw.EntryRow {
+	return managedWidget("EntryRow", func() *adw.EntryRow {
 		return adw.NewEntryRow()
 	})
 }
 
 func HeaderBar() adwbindings.HeaderBar {
-	return managed("HeaderBar", func() *adw.HeaderBar {
+	return managedWidget("HeaderBar", func() *adw.HeaderBar {
 		return adw.NewHeaderBar()
 	})
 }
 
 func PasswordEntryRow() adwbindings.PasswordEntryRow {
-	return managed("PasswordEntryRow", func() *adw.PasswordEntryRow {
+	return managedWidget("PasswordEntryRow", func() *adw.PasswordEntryRow {
 		return adw.NewPasswordEntryRow()
 	})
 }
 
 func PreferencesDialog(pages ...any) adwbindings.PreferencesDialog {
-	return managed("PreferencesDialog", func() *adw.PreferencesDialog {
+	return managedWidget("PreferencesDialog", func() *adw.PreferencesDialog {
 		dialog := adw.NewPreferencesDialog()
 		for _, page := range pages {
 			dialog.Add(bindings.ResolveTo[*adw.PreferencesPage, adwbindings.PreferencesPage](page))
@@ -52,7 +52,7 @@ func PreferencesDialog(pages ...any) adwbindings.PreferencesDialog {
 }
 
 func PreferencesGroup(children ...any) adwbindings.PreferencesGroup {
-	return managed("PreferencesGroup", func() *adw.PreferencesGroup {
+	return managedWidget("PreferencesGroup", func() *adw.PreferencesGroup {
 		group := adw.NewPreferencesGroup()
 		for _, child := range children {
 			group.Add(gtkbindings.ResolveWidget(child))
@@ -62,7 +62,7 @@ func PreferencesGroup(children ...any) adwbindings.PreferencesGroup {
 }
 
 func PreferencesPage(groups ...any) adwbindings.PreferencesPage {
-	return managed("PreferencesPage", func() *adw.PreferencesPage {
+	return managedWidget("PreferencesPage", func() *adw.PreferencesPage {
 		page := adw.NewPreferencesPage()
 		for _, group := range groups {
 			page.Add(bindings.ResolveTo[*adw.PreferencesGroup, adwbindings.PreferencesGroup](group))
@@ -72,25 +72,25 @@ func PreferencesPage(groups ...any) adwbindings.PreferencesPage {
 }
 
 func SpinRow(adjustment *gtk.Adjustment, climbRate float64, digits uint) adwbindings.SpinRow {
-	return managed("SpinRow", func() *adw.SpinRow {
+	return managedWidget("SpinRow", func() *adw.SpinRow {
 		return adw.NewSpinRow(adjustment, climbRate, digits)
 	})
 }
 
 func StatusPage() adwbindings.StatusPage {
-	return managed("StatusPage", func() *adw.StatusPage {
+	return managedWidget("StatusPage", func() *adw.StatusPage {
 		return adw.NewStatusPage()
 	})
 }
 
 func SwitchRow() adwbindings.SwitchRow {
-	return managed("SwitchRow", func() *adw.SwitchRow {
+	return managedWidget("SwitchRow", func() *adw.SwitchRow {
 		return adw.NewSwitchRow()
 	})
 }
 
 func ViewStack(children ...any) adwbindings.ViewStack {
-	return managed("ViewStack", func() *adw.ViewStack {
+	return managedWidget("ViewStack", func() *adw.ViewStack {
 		viewStack := adw.NewViewStack()
 		for _, child := range children {
 			viewStack.Add(gtkbindings.ResolveWidget(child))
@@ -100,13 +100,13 @@ func ViewStack(children ...any) adwbindings.ViewStack {
 }
 
 func WindowTitle(title string, subtitle string) adwbindings.WindowTitle {
-	return managed("WindowTitle", func() *adw.WindowTitle {
+	return managedWidget("WindowTitle", func() *adw.WindowTitle {
 		return adw.NewWindowTitle(title, subtitle)
 	})
 }
 
 func WrapBox(children ...any) adwbindings.WrapBox {
-	return managed("WrapBox", func() *adw.WrapBox {
+	return managedWidget("WrapBox", func() *adw.WrapBox {
 		box := adw.NewWrapBox()
 		for _, child := range children {
 			box.Append(gtkbindings.ResolveWidget(child))

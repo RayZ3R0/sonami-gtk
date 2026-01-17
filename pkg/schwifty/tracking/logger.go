@@ -7,13 +7,13 @@ import (
 
 var logger = slog.With("library", "schwifty", "module", "tracking")
 
-func LogAliveWidgets() {
+func LogAliveObjects() {
 	lastCount := 0
 	for {
-		widgets := Alive()
-		if lastCount != len(widgets) {
-			lastCount = len(widgets)
-			slog.Info("alive widget count", "count", len(widgets))
+		objects := Alive()
+		if lastCount != len(objects) {
+			lastCount = len(objects)
+			slog.Info("alive object count", "count", len(objects))
 		}
 		time.Sleep(1 * time.Second)
 	}

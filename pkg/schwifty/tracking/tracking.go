@@ -2,27 +2,27 @@ package tracking
 
 import "sync"
 
-type TrackedWidget struct {
+type TrackedObject struct {
 	IsReferencedByGo bool
 	Type             string
 }
 
-var trackedWidgets map[uintptr]*TrackedWidget = make(map[uintptr]*TrackedWidget)
+var trackedObjects map[uintptr]*TrackedObject = make(map[uintptr]*TrackedObject)
 var lock sync.Mutex = sync.Mutex{}
 
-func Track(ptr uintptr, widgetType string) {
+func Track(ptr uintptr, objectType string) {
 	lock.Lock()
 	defer lock.Unlock()
-	trackedWidgets[ptr] = &TrackedWidget{
+	trackedObjects[ptr] = &TrackedObject{
 		IsReferencedByGo: true,
-		Type:             widgetType,
+		Type:             objectType,
 	}
 }
 
 func TrackGC(ptr uintptr) {
 	lock.Lock()
 	defer lock.Unlock()
-	if val, ok := trackedWidgets[ptr]; ok {
+	if val, ok := trackedObjects[ptr]; ok {
 		val.IsReferencedByGo = false
 	}
 }
@@ -30,15 +30,15 @@ func TrackGC(ptr uintptr) {
 func Untrack(ptr uintptr) {
 	lock.Lock()
 	defer lock.Unlock()
-	delete(trackedWidgets, ptr)
+	delete(trackedObjects, ptr)
 }
 
-func Alive() []*TrackedWidget {
+func Alive() []*TrackedObject {
 	lock.Lock()
 	defer lock.Unlock()
-	var alive []*TrackedWidget
-	for _, widget := range trackedWidgets {
-		alive = append(alive, widget)
+	var alive []*TrackedObject
+	for _, object := range trackedObjects {
+		alive = append(alive, object)
 	}
 	return alive
 }

@@ -28,7 +28,7 @@ func init() {
 	slog.SetLogLoggerLevel(slog.LevelInfo)
 	if os.Getenv("TONEARM_DEBUG") == "1" {
 		slog.SetLogLoggerLevel(slog.LevelDebug)
-		go tracking.LogAliveWidgets()
+		go tracking.LogAliveObjects()
 	}
 }
 
