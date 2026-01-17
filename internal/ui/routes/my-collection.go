@@ -61,7 +61,7 @@ func MyCollection() *router.Response {
 		tracklist.GroupedColumn(2, gtk.AlignStartValue, tracklist.CoverColumn, tracklist.TitleAlbumColumn),
 		tracklist.ArtistsColumn,
 		tracklist.ExpandButtonColumn(1),
-		tracklist.GroupedColumn(1, gtk.AlignStartValue, tracklist.DurationColumn, tracklist.ControlsColumn),
+		tracklist.GroupedColumn(1, gtk.AlignEndValue, tracklist.DurationColumn, tracklist.ControlsColumn),
 	)
 	for _, track := range userCollection.Included.Tracks(userCollection.Data.Relationships.Tracks.Data...) {
 		trackList.AddTrack(&track)
@@ -75,8 +75,10 @@ func MyCollection() *router.Response {
 					artistList,
 					albumList,
 					playlistList,
-					components.NewRowTitle().SetTitle("Tracks").SetViewAllRoute("my-collection/tracks"),
-					trackList.HMargin(40),
+					VStack(
+						components.NewRowTitle().SetTitle("Tracks").SetViewAllRoute("my-collection/tracks"),
+						trackList,
+					).HMargin(40),
 					Spacer(),
 				).Spacing(25).VMargin(20).VAlign(gtk.AlignStartValue),
 			).
