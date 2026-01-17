@@ -10,6 +10,10 @@ type Button = gtk.Button
 
 type CenterBox = gtk.CenterBox
 
+type DragSource = gtk.DragSource
+
+type DropTargetAsync = gtk.DropTargetAsync
+
 type Grid = gtk.Grid
 
 type Image = gtk.Image

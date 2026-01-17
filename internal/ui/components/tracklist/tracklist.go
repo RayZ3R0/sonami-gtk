@@ -7,7 +7,6 @@ import (
 	"sync"
 	"unsafe"
 
-	"codeberg.org/dergs/tonearm/internal/g"
 	"codeberg.org/dergs/tonearm/pkg/schwifty"
 	"codeberg.org/dergs/tonearm/pkg/schwifty/factory"
 	"codeberg.org/dergs/tonearm/pkg/schwifty/state"
@@ -92,68 +91,62 @@ func (t *TrackList[TrackType]) onSetup(_ gtk.SignalListItemFactory, listItem *gt
 	var dragSource *gtk.DragSource
 	t.reorderable.AddCallback(func(newValue bool) {
 		if newValue && dragSource == nil {
-			dragSource = gtk.NewDragSource()
-			dragSource.SetActions(gdk.ActionMoveValue)
-			// FIX: Switch to Schwifty-managed Callbacks
-			dragSource.ConnectPrepare(g.Ptr(func(_ gtk.DragSource, _, _ float64) gdk.ContentProvider {
-				t.movingSourceIndex = int(listItem.GetPosition())
-				t.movingTargetIndex = int(listItem.GetPosition())
+			dragSource = DragSource().
+				Actions(gdk.ActionMoveValue).
+				ConnectPrepare(func(dragSource gtk.DragSource, x, y float64) gdk.ContentProvider {
+					t.movingSourceIndex = int(listItem.GetPosition())
+					t.movingTargetIndex = int(listItem.GetPosition())
 
-				track := t.trackList[t.movingSourceIndex]
-				return *gdk.NewContentProviderTyped(types.GType(glib.TYPE_POINTER), &track)
-			}))
-			// FIX: Switch to Schwifty-managed Callbacks
-			dragSource.ConnectDragBegin(g.Ptr(func(source gtk.DragSource, dragPtr uintptr) {
-				drag := gdk.DragNewFromInternalPtr(dragPtr)
-				drag.SetData("t", uintptr(unsafe.Pointer(t)))
+					track := t.trackList[t.movingSourceIndex]
+					return *gdk.NewContentProviderTyped(types.GType(glib.TYPE_POINTER), &track)
+				}).
+				ConnectDragBegin(func(dragSource gtk.DragSource, drag gdk.Drag) {
+					drag.SetData("t", uintptr(unsafe.Pointer(t)))
 
-				snapshot := gtk.NewSnapshot()
-				p := grid.Widget.GetParent()
-				defer p.Unref()
-				p.SnapshotChild(&grid.Widget, snapshot)
-				size := graphene.Size{}
-				size.Init(
-					float32(grid.Widget.GetAllocatedWidth()),
-					float32(grid.Widget.GetAllocatedHeight()),
-				)
-				paintable := snapshot.ToPaintable(&size)
+					snapshot := gtk.NewSnapshot()
+					p := grid.Widget.GetParent()
+					defer p.Unref()
+					p.SnapshotChild(&grid.Widget, snapshot)
+					size := graphene.Size{}
+					size.Init(
+						float32(grid.Widget.GetAllocatedWidth()),
+						float32(grid.Widget.GetAllocatedHeight()),
+					)
+					paintable := snapshot.ToPaintable(&size)
 
-				source.SetIcon(paintable, paintable.GetIntrinsicWidth()/2, paintable.GetIntrinsicHeight()/2)
+					dragSource.SetIcon(paintable, paintable.GetIntrinsicWidth()/2, paintable.GetIntrinsicHeight()/2)
 
-				t.trackList = append(t.trackList[:t.movingSourceIndex], t.trackList[t.movingSourceIndex+1:]...)
-				t.store.Remove(uint(t.movingSourceIndex))
+					t.trackList = append(t.trackList[:t.movingSourceIndex], t.trackList[t.movingSourceIndex+1:]...)
+					t.store.Remove(uint(t.movingSourceIndex))
 
-				trackType := reflect.TypeFor[TrackType]()
-				track := reflect.Zero(trackType).Interface().(TrackType)
-				t.trackList = append(t.trackList[:t.movingTargetIndex], append([]TrackType{track}, t.trackList[t.movingTargetIndex:]...)...)
-				t.store.Insert(uint(t.movingTargetIndex), &gtk.NewStringObject("").Object)
-			}))
-			// FIX: Switch to Schwifty-managed Callbacks
-			dragSource.ConnectDragCancel(g.Ptr(func(source gtk.DragSource, dragPtr uintptr, reason gdk.DragCancelReason) bool {
-				drag := gdk.DragNewFromInternalPtr(dragPtr)
-				content := drag.GetContent()
-				defer content.Unref()
+					trackType := reflect.TypeFor[TrackType]()
+					track := reflect.Zero(trackType).Interface().(TrackType)
+					t.trackList = append(t.trackList[:t.movingTargetIndex], append([]TrackType{track}, t.trackList[t.movingTargetIndex:]...)...)
+					t.store.Insert(uint(t.movingTargetIndex), &gtk.NewStringObject("").Object)
+				}).
+				ConnectDragCancel(func(dragSource gtk.DragSource, drag gdk.Drag, reason gdk.DragCancelReason) bool {
+					content := drag.GetContent()
+					defer content.Unref()
 
-				value := gobject.Value{}
-				value.Init(gobject.TypePointerVal)
-				content.GetValue(&value)
-				track := *(*TrackType)(unsafe.Pointer(value.GetPointer()))
+					value := gobject.Value{}
+					value.Init(gobject.TypePointerVal)
+					content.GetValue(&value)
+					track := *(*TrackType)(unsafe.Pointer(value.GetPointer()))
 
-				t.trackList = append(t.trackList[:t.movingTargetIndex], t.trackList[t.movingTargetIndex+1:]...)
-				t.store.Remove(uint(t.movingTargetIndex))
+					t.trackList = append(t.trackList[:t.movingTargetIndex], t.trackList[t.movingTargetIndex+1:]...)
+					t.store.Remove(uint(t.movingTargetIndex))
 
-				t.trackList = append(t.trackList[:t.movingSourceIndex], append([]TrackType{track}, t.trackList[t.movingSourceIndex:]...)...)
-				t.store.Insert(uint(t.movingSourceIndex), &gtk.NewStringObject("").Object)
+					t.trackList = append(t.trackList[:t.movingSourceIndex], append([]TrackType{track}, t.trackList[t.movingSourceIndex:]...)...)
+					t.store.Insert(uint(t.movingSourceIndex), &gtk.NewStringObject("").Object)
 
-				t.movingSourceIndex = -1
-				t.movingTargetIndex = -1
+					t.movingSourceIndex = -1
+					t.movingTargetIndex = -1
 
-				return true
-			}))
+					return true
+				})()
 			grid.AddController(&dragSource.EventController)
 		} else if dragSource != nil {
 			grid.RemoveController(&dragSource.EventController)
-			dragSource.Unref()
 			dragSource = nil
 		}
 	})
@@ -184,47 +177,40 @@ func NewTrackList[TrackType comparable](columnFuncs ...ColumnFunc[TrackType]) *T
 	var dropTarget *gtk.DropTargetAsync
 	t.reorderable.AddCallback(func(newValue bool) {
 		if newValue && dropTarget == nil {
-			dropTarget = gtk.NewDropTargetAsync(gdk.NewContentFormatsForGtype(types.GType(glib.TYPE_POINTER)), gdk.ActionMoveValue)
-			// FIX: Switch to Schwifty-managed Callbacks
-			dropTarget.ConnectAccept(g.Ptr(func(_ gtk.DropTargetAsync, dropPtr uintptr) bool {
-				drop := gdk.DropNewFromInternalPtr(dropPtr)
-
-				drag := drop.GetDrag()
-				defer drag.Unref()
-				if drag.GetData("t") != uintptr(unsafe.Pointer(t)) {
-					return false
-				}
-
-				return true
-			}))
-			// FIX: Switch to Schwifty-managed Callbacks
-			dropTarget.ConnectDragMotion(g.Ptr(func(target gtk.DropTargetAsync, dropPtr uintptr, x, y float64) gdk.DragAction {
-				height := listView.GetFirstChild().GetAllocatedHeight()
-				i := int(math.Floor(y / float64(height)))
-
-				if i != t.movingTargetIndex {
-					if i > len(t.trackList) {
-						return gdk.ActionNoneValue
-					}
-					trackList := slices.Clone(t.trackList)
-					if t.movingTargetIndex != -1 {
-						t.store.Remove(uint(t.movingTargetIndex))
-						trackList = append(t.trackList[:t.movingTargetIndex], t.trackList[t.movingTargetIndex+1:]...)
+			dropTarget = DropTargetAsync(gdk.NewContentFormatsForGtype(types.GType(glib.TYPE_POINTER)), gdk.ActionMoveValue).
+				ConnectAccept(func(dropTarget gtk.DropTargetAsync, drop gdk.Drop) bool {
+					drag := drop.GetDrag()
+					defer drag.Unref()
+					if drag.GetData("t") != uintptr(unsafe.Pointer(t)) {
+						return false
 					}
 
-					trackType := reflect.TypeFor[TrackType]()
-					track := reflect.Zero(trackType).Interface().(TrackType)
-					t.trackList = append(trackList[:i], append([]TrackType{track}, trackList[i:]...)...)
-					t.store.Insert(uint(i), &gtk.NewStringObject("").Object)
+					return true
+				}).
+				ConnectDragMotion(func(dropTarget gtk.DropTargetAsync, drop gdk.Drop, x, y float64) gdk.DragAction {
+					height := listView.GetFirstChild().GetAllocatedHeight()
+					i := int(math.Floor(y / float64(height)))
 
-					t.movingTargetIndex = i
-				}
+					if i != t.movingTargetIndex {
+						if i > len(t.trackList) {
+							return gdk.ActionNoneValue
+						}
+						trackList := slices.Clone(t.trackList)
+						if t.movingTargetIndex != -1 {
+							t.store.Remove(uint(t.movingTargetIndex))
+							trackList = append(t.trackList[:t.movingTargetIndex], t.trackList[t.movingTargetIndex+1:]...)
+						}
 
-				return gdk.ActionMoveValue
-			}))
-			// FIX: Switch to Schwifty-managed Callbacks
-			dropTarget.ConnectDrop(g.Ptr(func(target gtk.DropTargetAsync, dropPtr uintptr, x, y float64) bool {
-				drop := gdk.DropNewFromInternalPtr(dropPtr)
+						trackType := reflect.TypeFor[TrackType]()
+						track := reflect.Zero(trackType).Interface().(TrackType)
+						t.trackList = append(trackList[:i], append([]TrackType{track}, trackList[i:]...)...)
+						t.store.Insert(uint(i), &gtk.NewStringObject("").Object)
+
+						t.movingTargetIndex = i
+					}
+
+					return gdk.ActionMoveValue
+				}).ConnectDrop(func(dropTarget gtk.DropTargetAsync, drop gdk.Drop, x, y float64) bool {
 				value := gobject.Value{}
 				value.Init(gobject.TypePointerVal)
 				drop.GetDrag().GetContent().GetValue(&value)
@@ -237,15 +223,10 @@ func NewTrackList[TrackType comparable](columnFuncs ...ColumnFunc[TrackType]) *T
 				t.movingTargetIndex = -1
 
 				return true
-			}))
+			})()
 			listView.AddController(&dropTarget.EventController)
-			// FIX: Switch to Schwifty-managed Callbacks
-			listView.ConnectDestroy(g.Ptr(func(w gtk.Widget) {
-				w.RemoveController(&dropTarget.EventController)
-			}))
 		} else if dropTarget != nil {
 			listView.RemoveController(&dropTarget.EventController)
-			dropTarget.Unref()
 			dropTarget = nil
 		}
 	})

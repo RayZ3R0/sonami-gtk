@@ -3,6 +3,9 @@ package callback
 import "github.com/jwijenbergh/puregotk/v4/gtk"
 
 var (
+	DestroyCallback = func(widget gtk.Widget) {
+		CallbackHandler[any](widget.Object, "destroy", widget)
+	}
 	MapCallback = func(widget gtk.Widget) {
 		CallbackHandler[any](widget.Object, "map", widget)
 	}

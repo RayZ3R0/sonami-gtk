@@ -6,7 +6,6 @@ import (
 	"sync"
 
 	"github.com/jwijenbergh/puregotk/v4/gobject"
-	"github.com/jwijenbergh/puregotk/v4/gtk"
 )
 
 var (
@@ -83,14 +82,12 @@ func HandleCallback(object gobject.Object, signal string, callback any) {
 	}
 }
 
-func DeleteCallbacks(widget gtk.Widget) {
-	widget.Ref()
-	defer widget.Unref()
+func DeleteCallbacks(objectPtr uintptr) {
 	widgetCallbacksLock.Lock()
 	defer widgetCallbacksLock.Unlock()
-	delete(widgetCallbacks, widget.GoPointer())
+	delete(widgetCallbacks, objectPtr)
 	if shouldLogLifecycle {
-		logger.Debug("deleted all callbacks", "ptr", widget.GoPointer())
+		logger.Debug("deleted all callbacks", "ptr", objectPtr)
 	}
 }
 

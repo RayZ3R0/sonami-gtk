@@ -3,11 +3,12 @@ package syntax
 import (
 	gtkbindings "codeberg.org/dergs/tonearm/pkg/schwifty/bindings/gtk"
 	"codeberg.org/dergs/tonearm/pkg/schwifty/callback"
+	"github.com/jwijenbergh/puregotk/v4/gdk"
 	"github.com/jwijenbergh/puregotk/v4/gtk"
 )
 
 func AspectFrame(child any) gtkbindings.AspectFrame {
-	return managed("Scale", func() *gtk.AspectFrame {
+	return managedWidget("Scale", func() *gtk.AspectFrame {
 		aspectFrame := gtk.NewAspectFrame(0.5, 0.5, 1.0, false)
 		aspectFrame.SetChild(gtkbindings.ResolveWidget(child))
 		return aspectFrame
@@ -15,7 +16,7 @@ func AspectFrame(child any) gtkbindings.AspectFrame {
 }
 
 func Box(orientation gtk.Orientation, children ...any) gtkbindings.Box {
-	return managed("Box", func() *gtk.Box {
+	return managedWidget("Box", func() *gtk.Box {
 		box := gtk.NewBox(orientation, 0)
 		for _, child := range children {
 			box.Append(gtkbindings.ResolveWidget(child))
@@ -37,7 +38,7 @@ func VStack(children ...any) gtkbindings.Box {
 }
 
 func Button() gtkbindings.Button {
-	return managed("Button", func() *gtk.Button {
+	return managedWidget("Button", func() *gtk.Button {
 		btn := gtk.NewButton()
 		btn.ConnectClicked(&callback.ButtonClickedCallback)
 		return btn
@@ -45,43 +46,63 @@ func Button() gtkbindings.Button {
 }
 
 func CenterBox() gtkbindings.CenterBox {
-	return managed("CenterBox", func() *gtk.CenterBox {
+	return managedWidget("CenterBox", func() *gtk.CenterBox {
 		return gtk.NewCenterBox()
 	})
 }
 
+func DragSource() gtkbindings.DragSource {
+	return managedObject("DragSource", func() *gtk.DragSource {
+		dragSource := gtk.NewDragSource()
+		dragSource.ConnectDragBegin(&callback.DragSourceDragBegin)
+		dragSource.ConnectDragCancel(&callback.DragSourceDragCancel)
+		dragSource.ConnectPrepare(&callback.DragSourcePrepare)
+		return dragSource
+	})
+}
+
+func DropTargetAsync(formats *gdk.ContentFormats, actions gdk.DragAction) gtkbindings.DropTargetAsync {
+	return managedObject("DropTargetAsync", func() *gtk.DropTargetAsync {
+		dragSource := gtk.NewDropTargetAsync(formats, actions)
+		dragSource.ConnectAccept(&callback.DropTargetAsyncAccept)
+		dragSource.ConnectDragMotion(&callback.DropTargetAsyncDragMotion)
+		dragSource.ConnectDrop(&callback.DropTargetAsyncDrop)
+		return dragSource
+	})
+}
+
 func Grid() gtkbindings.Grid {
-	return managed("Grid", func() *gtk.Grid {
+	return managedWidget("Grid", func() *gtk.Grid {
 		return gtk.NewGrid()
 	})
 }
 
 func Image() gtkbindings.Image {
-	return managed("Image", func() *gtk.Image {
+	return managedWidget("Image", func() *gtk.Image {
 		return gtk.NewImage()
 	})
 }
 
 func Label(text string) gtkbindings.Label {
-	return managed("Label", func() *gtk.Label {
+	return managedWidget("Label", func() *gtk.Label {
 		return gtk.NewLabel(text)
 	})
 }
 
 func MenuButton() gtkbindings.MenuButton {
-	return managed("MenuButton", func() *gtk.MenuButton {
+	return managedWidget("MenuButton", func() *gtk.MenuButton {
 		return gtk.NewMenuButton()
 	})
 }
 
 func Picture() gtkbindings.Picture {
-	return managed("Picture", func() *gtk.Picture {
+	return managedWidget("Picture", func() *gtk.Picture {
 		return gtk.NewPicture()
 	})
 }
 
 func Popover(child any) gtkbindings.Popover {
-	return managed("Popover", func() *gtk.Popover {
+	return managedWidget("Popover", func() *gtk.Popover {
 		popover := gtk.NewPopover()
 		popover.SetChild(gtkbindings.ResolveWidget(child))
 		return popover
@@ -89,7 +110,7 @@ func Popover(child any) gtkbindings.Popover {
 }
 
 func Scale(orientation gtk.Orientation) gtkbindings.Scale {
-	return managed("Scale", func() *gtk.Scale {
+	return managedWidget("Scale", func() *gtk.Scale {
 		scale := gtk.NewScale(orientation, nil)
 		scale.ConnectChangeValue(&callback.RangeChangeValueCallback)
 		return scale
@@ -97,7 +118,7 @@ func Scale(orientation gtk.Orientation) gtkbindings.Scale {
 }
 
 func ScrolledWindow() gtkbindings.ScrolledWindow {
-	return managed("ScrolledWindow", func() *gtk.ScrolledWindow {
+	return managedWidget("ScrolledWindow", func() *gtk.ScrolledWindow {
 		scrolledWindow := gtk.NewScrolledWindow()
 		scrolledWindow.ConnectEdgeReached(&callback.ScrolledWindowEdgeReachedCallback)
 		return scrolledWindow
@@ -105,7 +126,7 @@ func ScrolledWindow() gtkbindings.ScrolledWindow {
 }
 
 func SearchEntry() gtkbindings.SearchEntry {
-	return managed("SearchEntry", func() *gtk.SearchEntry {
+	return managedWidget("SearchEntry", func() *gtk.SearchEntry {
 		searchEntry := gtk.NewSearchEntry()
 		searchEntry.ConnectActivate(&callback.SearchEntryActivateCallback)
 		searchEntry.ConnectSearchChanged(&callback.SearchChangedCallback)
@@ -114,7 +135,7 @@ func SearchEntry() gtkbindings.SearchEntry {
 }
 
 func Spinner() gtkbindings.Spinner {
-	return managed("Spinner", func() *gtk.Spinner {
+	return managedWidget("Spinner", func() *gtk.Spinner {
 		spinner := gtk.NewSpinner()
 		spinner.Start()
 		return spinner
@@ -129,7 +150,7 @@ func Widget(w *gtk.Widget) gtkbindings.Widget {
 
 // WARN: Do not manage reference counting for a schwifty-managed widget. If you are not in control of the widget's lifecycle, use Widget() instead.
 func ManagedWidget(w *gtk.Widget) gtkbindings.Widget {
-	return managed("ManagedWidget", func() *gtkbindings.WrappedWidget {
+	return managedWidget("ManagedWidget", func() *gtkbindings.WrappedWidget {
 		return &gtkbindings.WrappedWidget{Widget: *w}
 	})
 }
