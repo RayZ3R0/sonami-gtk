@@ -2,7 +2,6 @@ package tracklist
 
 import (
 	"math"
-	"reflect"
 	"slices"
 	"sync"
 	"unsafe"
@@ -11,11 +10,9 @@ import (
 	"codeberg.org/dergs/tonearm/pkg/schwifty/factory"
 	"codeberg.org/dergs/tonearm/pkg/schwifty/state"
 	. "codeberg.org/dergs/tonearm/pkg/schwifty/syntax"
-	"github.com/go-gst/go-glib/glib"
 	"github.com/jwijenbergh/puregotk/v4/gdk"
 	"github.com/jwijenbergh/puregotk/v4/gio"
 	"github.com/jwijenbergh/puregotk/v4/gobject"
-	"github.com/jwijenbergh/puregotk/v4/gobject/types"
 	"github.com/jwijenbergh/puregotk/v4/graphene"
 	"github.com/jwijenbergh/puregotk/v4/gtk"
 )
@@ -30,6 +27,7 @@ type TrackList[TrackType comparable] struct {
 	store       *gio.ListStore
 	trackList   []TrackType
 
+	trackBeingMoved   *TrackType
 	movingSourceIndex int
 	movingTargetIndex int
 	reorderable       *state.State[bool]
@@ -98,6 +96,7 @@ func (t *TrackList[TrackType]) onSetup(_ gtk.SignalListItemFactory, listItem *gt
 					t.movingTargetIndex = int(listItem.GetPosition())
 
 					track := t.trackList[t.movingSourceIndex]
+					t.trackBeingMoved = &track
 					return *gdk.NewContentProviderTyped(gobject.TypePointerVal, &track)
 				}).
 				ConnectDragBegin(func(dragSource gtk.DragSource, drag gdk.Drag) {
@@ -115,14 +114,6 @@ func (t *TrackList[TrackType]) onSetup(_ gtk.SignalListItemFactory, listItem *gt
 					paintable := snapshot.ToPaintable(&size)
 
 					dragSource.SetIcon(paintable, paintable.GetIntrinsicWidth()/2, paintable.GetIntrinsicHeight()/2)
-
-					t.trackList = append(t.trackList[:t.movingSourceIndex], t.trackList[t.movingSourceIndex+1:]...)
-					t.store.Remove(uint(t.movingSourceIndex))
-
-					trackType := reflect.TypeFor[TrackType]()
-					track := reflect.Zero(trackType).Interface().(TrackType)
-					t.trackList = append(t.trackList[:t.movingTargetIndex], append([]TrackType{track}, t.trackList[t.movingTargetIndex:]...)...)
-					t.store.Insert(uint(t.movingTargetIndex), &gtk.NewStringObject("").Object)
 				}).
 				ConnectDragCancel(func(dragSource gtk.DragSource, drag gdk.Drag, reason gdk.DragCancelReason) bool {
 					content := drag.GetContent()
@@ -131,16 +122,16 @@ func (t *TrackList[TrackType]) onSetup(_ gtk.SignalListItemFactory, listItem *gt
 					value := gobject.Value{}
 					value.Init(gobject.TypePointerVal)
 					content.GetValue(&value)
-					track := *(*TrackType)(unsafe.Pointer(value.GetPointer()))
 
 					t.trackList = append(t.trackList[:t.movingTargetIndex], t.trackList[t.movingTargetIndex+1:]...)
 					t.store.Remove(uint(t.movingTargetIndex))
 
-					t.trackList = append(t.trackList[:t.movingSourceIndex], append([]TrackType{track}, t.trackList[t.movingSourceIndex:]...)...)
+					t.trackList = append(t.trackList[:t.movingSourceIndex], append([]TrackType{*t.trackBeingMoved}, t.trackList[t.movingSourceIndex:]...)...)
 					t.store.Insert(uint(t.movingSourceIndex), &gtk.NewStringObject("").Object)
 
 					t.movingSourceIndex = -1
 					t.movingTargetIndex = -1
+					t.trackBeingMoved = nil
 
 					return true
 				})()
@@ -201,29 +192,24 @@ func NewTrackList[TrackType comparable](columnFuncs ...ColumnFunc[TrackType]) *T
 							trackList = append(t.trackList[:t.movingTargetIndex], t.trackList[t.movingTargetIndex+1:]...)
 						}
 
-						trackType := reflect.TypeFor[TrackType]()
-						track := reflect.Zero(trackType).Interface().(TrackType)
-						t.trackList = append(trackList[:i], append([]TrackType{track}, trackList[i:]...)...)
+						t.trackList = append(trackList[:i], append([]TrackType{*t.trackBeingMoved}, trackList[i:]...)...)
 						t.store.Insert(uint(i), &gtk.NewStringObject("").Object)
 
 						t.movingTargetIndex = i
 					}
 
 					return gdk.ActionMoveValue
-				}).ConnectDrop(func(dropTarget gtk.DropTargetAsync, drop gdk.Drop, x, y float64) bool {
-				value := gobject.Value{}
-				value.Init(gobject.TypePointerVal)
-				drop.GetDrag().GetContent().GetValue(&value)
-				track := *(*TrackType)(unsafe.Pointer(value.GetPointer()))
-				drop.Finish(gdk.ActionMoveValue)
+				}).
+				ConnectDrop(func(dropTarget gtk.DropTargetAsync, drop gdk.Drop, x, y float64) bool {
+					drop.Finish(gdk.ActionMoveValue)
 
-				t.reorderCallback(t.movingSourceIndex, t.movingTargetIndex, track)
+					t.reorderCallback(t.movingSourceIndex, t.movingTargetIndex, *t.trackBeingMoved)
 
-				t.movingSourceIndex = -1
-				t.movingTargetIndex = -1
+					t.movingSourceIndex = -1
+					t.movingTargetIndex = -1
 
-				return true
-			})()
+					return true
+				})()
 			listView.AddController(&dropTarget.EventController)
 		} else if dropTarget != nil {
 			listView.RemoveController(&dropTarget.EventController)
