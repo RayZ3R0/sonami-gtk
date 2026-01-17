@@ -98,7 +98,7 @@ func (t *TrackList[TrackType]) onSetup(_ gtk.SignalListItemFactory, listItem *gt
 					t.movingTargetIndex = int(listItem.GetPosition())
 
 					track := t.trackList[t.movingSourceIndex]
-					return *gdk.NewContentProviderTyped(types.GType(glib.TYPE_POINTER), &track)
+					return *gdk.NewContentProviderTyped(gobject.TypePointerVal, &track)
 				}).
 				ConnectDragBegin(func(dragSource gtk.DragSource, drag gdk.Drag) {
 					drag.SetData("t", uintptr(unsafe.Pointer(t)))
@@ -177,7 +177,7 @@ func NewTrackList[TrackType comparable](columnFuncs ...ColumnFunc[TrackType]) *T
 	var dropTarget *gtk.DropTargetAsync
 	t.reorderable.AddCallback(func(newValue bool) {
 		if newValue && dropTarget == nil {
-			dropTarget = DropTargetAsync(gdk.NewContentFormatsForGtype(types.GType(glib.TYPE_POINTER)), gdk.ActionMoveValue).
+			dropTarget = DropTargetAsync(gdk.NewContentFormatsForGtype(gobject.TypePointerVal), gdk.ActionMoveValue).
 				ConnectAccept(func(dropTarget gtk.DropTargetAsync, drop gdk.Drop) bool {
 					drag := drop.GetDrag()
 					defer drag.Unref()
