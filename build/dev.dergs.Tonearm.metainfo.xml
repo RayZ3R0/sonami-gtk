@@ -39,7 +39,7 @@
     <color type="primary" scheme_preference="dark">#690daf</color>
   </branding>
 
-  <url type="homepage">https://codeberg.org/dergs/Tonearm</url>
+  <url type="homepage">https://dergs.dev/projects/tonearm</url>
   <url type="bugtracker">https://codeberg.org/dergs/Tonearm/issues</url>
   <url type="vcs-browser">https://codeberg.org/dergs/Tonearm</url>
 
