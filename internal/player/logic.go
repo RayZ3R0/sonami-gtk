@@ -24,6 +24,10 @@ func playNextTrack() {
 	if nextTrack != nil {
 		logger.Info("playing next track", "track_id", nextTrack.Data.ID)
 		playTrack(nextTrack)
+		history.Push(&HistoryEntry{
+			TrackID: nextTrack.Data.ID,
+		})
+
 		return
 	}
 
