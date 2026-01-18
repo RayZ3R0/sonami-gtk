@@ -8,6 +8,7 @@ import (
 	"strings"
 	"time"
 
+	"codeberg.org/dergs/tonearm/internal/signals"
 	"github.com/zalando/go-keyring"
 )
 
@@ -15,6 +16,8 @@ const (
 	service         = "dev.dergs.Tonearm"
 	refreshTokenKey = "refresh_token"
 )
+
+var SignedInChanged = signals.NewStatefulSignal(HasRefreshToken())
 
 func HasRefreshToken() bool {
 	hasToken, timedOut := withTimeout(time.Second*2, func() bool {
@@ -51,6 +54,7 @@ func SetRefreshToken(token string) error {
 		slog.Error("timed out setting refresh token in keyring")
 		return nil
 	}
+	triggerSignedInChanged()
 	return err
 }
 
@@ -62,6 +66,7 @@ func DeleteRefreshToken() error {
 		slog.Error("timed out deleting refresh token from keyring")
 		return nil
 	}
+	triggerSignedInChanged()
 	return err
 }
 
@@ -110,4 +115,10 @@ func withTimeout[T any](timeout time.Duration, callback func() T) (T, bool) {
 	case <-time.After(timeout):
 		return *new(T), true
 	}
+}
+
+func triggerSignedInChanged() {
+	SignedInChanged.Notify(func(oldValue bool) bool {
+		return HasRefreshToken()
+	})
 }
