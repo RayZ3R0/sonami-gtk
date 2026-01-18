@@ -3,13 +3,30 @@ package player
 import (
 	"time"
 
+	"codeberg.org/dergs/tonearm/internal/player/queue"
+	"codeberg.org/dergs/tonearm/internal/signals"
 	"github.com/go-gst/go-gst/gst"
 )
 
 var (
-	BaseQueue = newQueue(logger, true)
-	UserQueue = newQueue(logger, false)
+	BaseQueue = queue.NewDurableQueue()
+	UserQueue = queue.NewQueue()
 )
+
+func init() {
+	ShuffleStateChanged.On(func(enabled bool) bool {
+		currentTrackId := ""
+		if TrackChanged.CurrentValue() != nil {
+			currentTrackId = TrackChanged.CurrentValue().ID
+		}
+		if enabled {
+			BaseQueue.Shuffle(currentTrackId)
+		} else {
+			BaseQueue.Restore(currentTrackId)
+		}
+		return signals.Continue
+	})
+}
 
 func playNextTrack() {
 	if RepeatModeChanged.CurrentValue() == RepeatModeTrack {
@@ -50,11 +67,17 @@ func playPreviousTrack() {
 
 	entry := history.Pop()
 	if entry != nil {
+		track, err := resolveTrack(TrackChanged.CurrentValue().ID)
+		if err != nil {
+			logger.Error("failed to resolve track", "trackID", entry.TrackID, "error", err)
+			return
+		}
+
 		// Re-Queue current song to front of user-queue
-		UserQueue.AddTrackID(TrackChanged.CurrentValue().ID, true)
+		UserQueue.Prepend(track)
 
 		// Switch to previous track without clearing base queue
-		track, err := resolveTrack(entry.TrackID)
+		track, err = resolveTrack(entry.TrackID)
 		if err != nil {
 			logger.Error("failed to resolve track", "trackID", entry.TrackID, "error", err)
 			return
@@ -62,4 +85,20 @@ func playPreviousTrack() {
 		logger.Debug("playing previous track", "track_id", track.Data.ID, "action", "previous")
 		playTrack(track)
 	}
+}
+
+func SkipThroughQueue(queue queue.Queue, to int) {
+	go func() {
+		setLoadingState()
+		if skipped, err := queue.Skip(to); err == nil {
+			for _, track := range skipped {
+				history.Push(&HistoryEntry{track.Data.ID})
+			}
+
+			playTrack(queue.Pop())
+		} else {
+			unsetLoadingState()
+			logger.Error("failed to skip through queue", "error", err)
+		}
+	}()
 }
