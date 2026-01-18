@@ -1,7 +1,9 @@
 package player
 
 import (
+	"fmt"
 	"math"
+	"sync"
 	"time"
 
 	"codeberg.org/dergs/tonearm/internal/signals"
@@ -103,15 +105,58 @@ func SeekToPercent(percent float64) {
 	SeekToPosition(time.Duration(int64(position)))
 }
 
+var (
+	seekMutex              sync.Mutex
+	seekDebounce           *time.Timer
+	seekOriginalState      gst.State
+	wasUpdateRunnerRunning bool
+)
+
 func SeekToPosition(position time.Duration) {
 	logger.Debug("player controls requested to seek to position", "position", position)
-	playbin.SeekTime(position, gst.SeekFlagFlush)
-	PlaybackStateChanged.Notify(func(oldValue *PlaybackState) *PlaybackState {
-		newState := *oldValue
-		newState.Position = position
-		newState.IsSeeking = true
-		return &newState
-	})
+	go func() {
+		seekMutex.Lock()
+		defer seekMutex.Unlock()
+
+		if seekDebounce != nil {
+			seekDebounce.Stop()
+		} else {
+			seekOriginalState = playbin.GetCurrentState()
+			playbin.SetState(gst.StatePaused)
+
+			if updateRunnerSourceHandle != 0 {
+				wasUpdateRunnerRunning = true
+				stopUpdateRunner()
+			}
+		}
+
+		seekDebounce = time.AfterFunc(100*time.Millisecond, func() {
+			seekMutex.Lock()
+			defer seekMutex.Unlock()
+
+			fmt.Println("Seeking. Playbin state ", seekOriginalState, " Update runner running", wasUpdateRunnerRunning)
+
+			if PlaybackStateChanged.CurrentValue().Position == position {
+				return
+			}
+
+			playbin.SeekTime(position, gst.SeekFlagFlush)
+			playbin.SetState(seekOriginalState)
+
+			if wasUpdateRunnerRunning {
+				startUpdateRunner()
+			}
+
+			seekDebounce = nil
+
+			PlaybackStateChanged.Notify(func(oldValue *PlaybackState) *PlaybackState {
+				newState := *oldValue
+				newState.Position = position
+				newState.IsSeeking = true
+				return &newState
+			})
+		})
+	}()
 }
 
 func SeekToPositionRelative(delta time.Duration) {
