@@ -52,10 +52,6 @@ func playTrack(track *openapi.Track) error {
 		return &newState
 	})
 
-	// history.Push(&HistoryEntry{
-	// 	TrackID: track.Data.ID,
-	// })
-
 	if !slices.Contains(track.Data.Attributes.Availability, openapi.TrackAvailabilityStream) {
 		notifications.OnToast.Notify("Track not available for streaming, skipping to next track")
 		Next()

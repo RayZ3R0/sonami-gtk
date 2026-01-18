@@ -73,7 +73,16 @@ func PlayTrack(trackId string) error {
 	}
 
 	clearQueues()
-	return playTrack(track)
+	err = playTrack(track)
+	if err != nil {
+		return err
+	}
+
+	history.Push(&HistoryEntry{
+		TrackID: track.Data.ID,
+	})
+
+	return nil
 }
 
 func PlayAlbum(albumId string, shuffle bool, position int) error {
@@ -179,6 +188,9 @@ func PlayTracklist(tracks []openapi.Track, shuffle bool, startAt int) error {
 	if nextTrack != nil {
 		logger.Info("playing next track", "track_id", nextTrack.Data.ID)
 		playTrack(nextTrack)
+		history.Push(&HistoryEntry{
+			TrackID: nextTrack.Data.ID,
+		})
 	} else {
 		unsetLoadingState()
 	}
