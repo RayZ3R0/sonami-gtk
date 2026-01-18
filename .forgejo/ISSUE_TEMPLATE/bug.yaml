@@ -51,7 +51,7 @@ body:
       required: true
   
   - type: dropdown
-    id: severity
+    id: packaging
     attributes:
       label: Package Manager / Packaging Method
       description: "How did you install Tonearm? What packaging method did you use?"
