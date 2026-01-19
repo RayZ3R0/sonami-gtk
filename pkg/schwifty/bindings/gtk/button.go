@@ -72,3 +72,11 @@ func (f Button) Label(label string) Button {
 		return button
 	}
 }
+
+func (f Button) TooltipText(tooltip string) Button {
+	return func() *gtk.Button {
+		button := f()
+		button.SetTooltipText(tooltip)
+		return button
+	}
+}

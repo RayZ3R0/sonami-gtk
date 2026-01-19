@@ -51,8 +51,9 @@ func (w *Window) buildSidebarHeader() *gtk.Widget {
 		PackEnd(
 			MenuButton().
 				IconName("menu-symbolic").
-				MenuModel(&mainMenu.MenuModel),
-			components.NewRouteButton("search").Icon("loupe-symbolic"),
+				MenuModel(&mainMenu.MenuModel).
+				TooltipText("Main Menu"),
+			components.NewRouteButton("search").Icon("loupe-symbolic").TooltipText("Search"),
 		).
 		ToGTK()
 }

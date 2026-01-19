@@ -57,3 +57,11 @@ func (f MenuButton) Popover(widget any) MenuButton {
 		return button
 	}
 }
+
+func (f MenuButton) TooltipText(tooltip string) MenuButton {
+	return func() *gtk.MenuButton {
+		button := f()
+		button.SetTooltipText(tooltip)
+		return button
+	}
+}
