@@ -49,13 +49,13 @@ func NewPlayer() schwifty.CenterBox {
 						ActionName("win.player.shuffle").
 						ConnectConstruct(func(b *gtk.Button) {
 							ptr := b.GoPointer()
-							player.ShuffleSeedChanged.On(func(seed int64) bool {
+							player.ShuffleStateChanged.On(func(enabled bool) bool {
 								schwifty.OnMainThreadOnce(func(ptr uintptr) {
 									b := gtk.ButtonNewFromInternalPtr(ptr)
-									if seed == 0 {
-										b.RemoveCssClass("color-accent")
-									} else {
+									if enabled {
 										b.AddCssClass("color-accent")
+									} else {
+										b.RemoveCssClass("color-accent")
 									}
 								}, ptr)
 								return signals.Continue
