@@ -35,7 +35,10 @@ func playTrack(track *openapi.Track) error {
 		for _, album := range track.Included.Albums(track.Data.Relationships.Albums.Data...) {
 			trackInfo.Albums = append(trackInfo.Albums, album)
 			for _, artwork := range album.Included.PlainArtworks(album.Data.Relationships.CoverArt.Data...) {
-				trackInfo.CoverURL = artwork.Attributes.Files.AtLeast(320).Href
+				if artwork.Attributes.IsPicture() {
+					trackInfo.CoverURL = artwork.Attributes.Files.AtLeast(320).Href
+					break
+				}
 			}
 		}
 

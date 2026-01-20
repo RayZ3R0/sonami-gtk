@@ -50,8 +50,10 @@ func CoverColumn(track *openapi.Track, grid *gtk.Grid, position int, column int)
 	}
 	for _, album := range track.Included.Albums(track.Data.Relationships.Albums.Data...) {
 		for _, artwork := range album.Included.PlainArtworks(album.Data.Relationships.CoverArt.Data...) {
-			url = artwork.Attributes.Files.AtLeast(80).Href
-			break
+			if artwork.Attributes.IsPicture() {
+				url = artwork.Attributes.Files.AtLeast(80).Href
+				break
+			}
 		}
 	}
 	return coverColumn(url, grid, position, column)

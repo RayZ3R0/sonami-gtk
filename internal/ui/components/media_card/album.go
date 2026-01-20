@@ -37,8 +37,10 @@ func NewLegacyAlbum(album *v2.AlbumItemData) schwifty.Button {
 func NewAlbum(album *openapi.Album) schwifty.Button {
 	coverUrl := ""
 	for _, artwork := range album.Included.PlainArtworks(album.Data.Relationships.CoverArt.Data...) {
-		coverUrl = artwork.Attributes.Files.AtLeast(160).Href
-		break
+		if artwork.Attributes.IsPicture() {
+			coverUrl = artwork.Attributes.Files.AtLeast(160).Href
+			break
+		}
 	}
 	artists := make([]string, 0)
 	for _, artist := range album.Included.PlainArtists(album.Data.Relationships.Artists.Data...) {
