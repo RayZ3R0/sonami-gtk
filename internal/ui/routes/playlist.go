@@ -61,7 +61,10 @@ func Playlist(playlistUUID string) *router.Response {
 
 	coverUrl := ""
 	for _, artwork := range playlist.Included.PlainArtworks(playlist.Data.Relationships.CoverArt.Data...) {
-		coverUrl = artwork.Attributes.Files.AtLeast(160).Href
+		if artwork.Attributes.IsPicture() {
+			coverUrl = artwork.Attributes.Files.AtLeast(160).Href
+			break
+		}
 	}
 
 	list := tracklist.NewTrackList(
