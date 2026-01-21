@@ -74,7 +74,7 @@ func (w *Window) build() *gtk.Widget {
 		layout.SetShowSidebar(newState)
 	}))
 	w.AddAction(sidebarAction)
-	w.GetApplication().SetAccelsForAction("win.toggle-sidebar", []string{"<Ctrl>B"})
+	w.GetApplication().SetAccelsForAction("win.toggle-sidebar", []string{"<Ctrl>B", "F9"})
 
 	toastLayout := adw.NewToastOverlay()
 	toastLayout.SetChild(&layout.Widget)
