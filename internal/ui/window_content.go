@@ -13,14 +13,17 @@ func (w *Window) buildContentHeader() *gtk.Widget {
 	homeButton := components.NewRouteButton("home")
 	homeButton.Title("Home")
 	homeButton.Icon("go-home-symbolic")
+	homeButton.TooltipText("Navigate to Home")
 
 	exploreButton := components.NewRouteButton("explore")
 	exploreButton.Title("Explore")
 	exploreButton.Icon("compass2-symbolic")
+	exploreButton.TooltipText("Navigate to Explore")
 
 	collectionButton := components.NewRouteButton("my-collection")
 	collectionButton.Title("Collection")
 	collectionButton.Icon("library-symbolic")
+	collectionButton.TooltipText("Navigate to Collection")
 
 	defaultToolbar := HStack(
 		Widget(&homeButton.Widget),
@@ -36,11 +39,13 @@ func (w *Window) buildContentHeader() *gtk.Widget {
 		PackStart(
 			Button().
 				IconName("dock-left-symbolic").
-				ActionName("win.toggle-sidebar"),
+				ActionName("win.toggle-sidebar").
+				TooltipText("Toggle Sidebar"),
 			Button().
 				IconName("left-symbolic").
 				ActionName("win.navigate-back").
 				Visible(false).
+				TooltipText("Navigate Back").
 				ConnectConstruct(func(b *gtk.Button) {
 					router.HistoryUpdated.On(func(history *router.History) bool {
 						schwifty.OnMainThreadOncePure(func() {

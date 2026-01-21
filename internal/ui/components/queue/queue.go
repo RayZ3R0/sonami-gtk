@@ -39,13 +39,13 @@ var miniPlayerCanControl = state.NewStateful(false)
 var log = slog.With("module", "queue")
 
 func init() {
-	player.BaseQueue.UpcomingEntries.On(func(tracks []*openapi.Track) bool {
+	player.BaseQueue.Entries().On(func(tracks []*openapi.Track) bool {
 		schwifty.OnMainThreadOnce(func(u uintptr) {
 			baseQueueState.SetValue(tracks)
 		}, 0)
 		return signals.Continue
 	})
-	player.UserQueue.UpcomingEntries.On(func(tracks []*openapi.Track) bool {
+	player.UserQueue.Entries().On(func(tracks []*openapi.Track) bool {
 		schwifty.OnMainThreadOnce(func(u uintptr) {
 			userQueueState.SetValue(tracks)
 		}, 0)
@@ -61,7 +61,7 @@ func NewQueue() schwifty.Box {
 	trackList := tracklist.NewTrackList(
 		tracklist.GroupedColumn(3, gtk.AlignStartValue, tracklist.CoverColumn, tracklist.TitleAlbumColumn),
 		tracklist.ExpandCustomButtonColumn(1, func(_ string, position, _ int) {
-			go player.SkipThoughQueue(player.UserQueue, position)
+			go player.SkipThroughQueue(player.UserQueue, position)
 		}),
 		tracklist.GroupedColumn(1, gtk.AlignCenterValue,
 			tracklist.CustomWidgetButtonColumn(func(_ string, position, _ int) *gtk.Widget {
@@ -69,7 +69,7 @@ func NewQueue() schwifty.Box {
 					IconName("user-trash-symbolic").
 					WithCSSClass("transparent").
 					ConnectClicked(func(b gtk.Button) {
-						go player.UserQueue.Remove(position)
+						go player.UserQueue.RemoveAt(position)
 					}).
 					ToGTK()
 			}),
@@ -77,7 +77,7 @@ func NewQueue() schwifty.Box {
 	)
 	trackList.BindTracks(userQueueState)
 	trackList.SetReorderCallback(func(sourceIndex, targetIndex int, track *openapi.Track) {
-		player.UserQueue.UpcomingEntries.Notify(func(oldValue []*openapi.Track) []*openapi.Track {
+		player.UserQueue.Entries().Notify(func(oldValue []*openapi.Track) []*openapi.Track {
 			q := slices.Clone(oldValue)
 			q = append(q[:sourceIndex], q[sourceIndex+1:]...)
 			q = append(q[:targetIndex], append([]*openapi.Track{track}, q[targetIndex:]...)...)
@@ -88,7 +88,7 @@ func NewQueue() schwifty.Box {
 	trackListBase := tracklist.NewTrackList(
 		tracklist.GroupedColumn(3, gtk.AlignStartValue, tracklist.CoverColumn, tracklist.TitleAlbumColumn),
 		tracklist.ExpandCustomButtonColumn(1, func(_ string, position, _ int) {
-			go player.SkipThoughQueue(player.BaseQueue, position)
+			go player.SkipThroughQueue(player.BaseQueue, position)
 		}),
 		tracklist.GroupedColumn(1, gtk.AlignCenterValue,
 			tracklist.CustomWidgetButtonColumn(func(_ string, position, _ int) *gtk.Widget {
@@ -96,7 +96,7 @@ func NewQueue() schwifty.Box {
 					IconName("user-trash-symbolic").
 					WithCSSClass("transparent").
 					ConnectClicked(func(b gtk.Button) {
-						go player.BaseQueue.Remove(position)
+						go player.BaseQueue.RemoveAt(position)
 					}).
 					ToGTK()
 			}),
@@ -104,7 +104,7 @@ func NewQueue() schwifty.Box {
 	)
 	trackListBase.BindTracks(baseQueueState)
 	trackListBase.SetReorderCallback(func(sourceIndex, targetIndex int, track *openapi.Track) {
-		player.BaseQueue.UpcomingEntries.Notify(func(oldValue []*openapi.Track) []*openapi.Track {
+		player.BaseQueue.Entries().Notify(func(oldValue []*openapi.Track) []*openapi.Track {
 			q := slices.Clone(oldValue)
 			q = append(q[:sourceIndex], q[sourceIndex+1:]...)
 			q = append(q[:targetIndex], append([]*openapi.Track{track}, q[targetIndex:]...)...)

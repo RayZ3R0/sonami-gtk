@@ -57,14 +57,17 @@ func Album(albumId string) *router.Response {
 
 	coverUrl := ""
 	for _, artwork := range album.Included.PlainArtworks(album.Data.Relationships.CoverArt.Data...) {
-		coverUrl = artwork.Attributes.Files.AtLeast(160).Href
+		if artwork.Attributes.IsPicture() {
+			coverUrl = artwork.Attributes.Files.AtLeast(160).Href
+			break
+		}
 	}
 
 	list := tracklist.NewTrackList(
 		tracklist.GroupedColumn(2, gtk.AlignStartValue, tracklist.PositionColumn, tracklist.TitleColumn),
 		tracklist.ArtistsColumn,
-		tracklist.ExpandCustomButtonColumn(1, func(trackId string, _, _ int) {
-			go player.PlayAlbum(albumId, false, trackId)
+		tracklist.ExpandCustomButtonColumn(1, func(trackId string, position, _ int) {
+			go player.PlayAlbum(albumId, false, position)
 		}),
 		tracklist.GroupedColumn(1, gtk.AlignEndValue, tracklist.DurationColumn, tracklist.ControlsColumn),
 	)
@@ -114,7 +117,7 @@ func Album(albumId string) *router.Response {
 						CornerRadius(21).
 						Padding(9).
 						ConnectClicked(func(b gtk.Button) {
-							go player.PlayAlbum(albumId, true, "")
+							go player.PlayAlbum(albumId, true, 0)
 						}).
 						BindSensitive(canPlayAlbumState),
 					Button().
@@ -132,7 +135,7 @@ func Album(albumId string) *router.Response {
 							}
 						`).
 						ConnectClicked(func(b gtk.Button) {
-							go player.PlayAlbum(albumId, false, "")
+							go player.PlayAlbum(albumId, false, 0)
 						}).
 						BindSensitive(canPlayAlbumState),
 				).

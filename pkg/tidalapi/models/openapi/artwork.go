@@ -9,6 +9,13 @@ type Artwork Response[ArtworkData]
 
 const ObjectTypeArtworks = "artworks"
 
+type ArtworkMediaType string
+
+const (
+	ArtworkMediaTypeImage ArtworkMediaType = "IMAGE"
+	ArtworkMediaTypeVideo ArtworkMediaType = "VIDEO"
+)
+
 type ArtworkData struct {
 	Attributes   ArtworkAttributes    `json:"attributes"`
 	ID           string               `json:"id"`
@@ -17,8 +24,12 @@ type ArtworkData struct {
 }
 
 type ArtworkAttributes struct {
-	Files     ArtworkFiles `json:"files"`
-	MediaType string       `json:"mediaType"`
+	Files     ArtworkFiles     `json:"files"`
+	MediaType ArtworkMediaType `json:"mediaType"`
+}
+
+func (a ArtworkAttributes) IsPicture() bool {
+	return a.MediaType == ArtworkMediaTypeImage
 }
 
 type ArtworkRelationships struct {

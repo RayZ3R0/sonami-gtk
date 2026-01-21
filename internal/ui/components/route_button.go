@@ -40,6 +40,11 @@ func (r *RouteButton) Icon(iconName string) *RouteButton {
 	return r
 }
 
+func (r *RouteButton) TooltipText(tooltip string) *RouteButton {
+	r.Button.SetTooltipText(tooltip)
+	return r
+}
+
 func NewRouteButton(path string) *RouteButton {
 	routeButton := &RouteButton{
 		icon:  Image().FromIconName("image-missing-symbolic")(),

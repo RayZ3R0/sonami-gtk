@@ -28,6 +28,10 @@ func (i *ImgUtil) LoadCropped(url string) (*gdk.Texture, error) {
 	texture, err := gdk.NewTextureFromBytes(gBytes)
 	gBytes.Unref()
 
+	if err != nil {
+		return nil, err
+	}
+
 	cropped := Crop(texture)
 	texture.Unref()
 

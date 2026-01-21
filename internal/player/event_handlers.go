@@ -5,6 +5,7 @@ import (
 	"strconv"
 	"time"
 
+	"codeberg.org/dergs/tonearm/internal/settings"
 	"codeberg.org/dergs/tonearm/internal/signals"
 	"codeberg.org/dergs/tonearm/pkg/tidalapi"
 	v1 "codeberg.org/dergs/tonearm/pkg/tidalapi/models/v1"
@@ -54,7 +55,7 @@ func onBusMessage(msg *gst.Message) bool {
 		logger.Error("playback failed", "code", err.Code(), "message", err.Message(), "error", err.Error(), "debug", err.DebugString())
 	case gst.MessageStreamStart:
 		startUpdateRunner()
-		playbin.SetProperty("volume", volumeBeforeEnqueue)
+		playbin.Set("volume", settings.Player().GetVolume())
 		// A hack to trigger the correct track updates with gapless playback
 		if TrackChanged.CurrentValue().ID != strconv.Itoa(currentlyEnqueuedTrackID) {
 			playNextTrack()
@@ -94,11 +95,12 @@ func onBusMessage(msg *gst.Message) bool {
 }
 
 func onVolumeChange() {
-	if volume, err := playbin.GetProperty("volume"); err == nil {
+	if volume, err := playbin.GetProperty("volume"); err != nil {
 		return
 	} else if volume.(float64) == VolumeChanged.CurrentValue() {
 		return
 	} else {
+		settings.Player().SetVolume(volume.(float64))
 		VolumeChanged.Notify(func(oldValue float64) float64 {
 			return volume.(float64)
 		})

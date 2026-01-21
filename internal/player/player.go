@@ -5,13 +5,11 @@ import (
 	"log/slog"
 	"strconv"
 
-	"codeberg.org/dergs/tonearm/internal/settings"
 	"codeberg.org/dergs/tonearm/pkg/tidalapi"
 	"codeberg.org/dergs/tonearm/pkg/tidalapi/models/openapi"
 	"codeberg.org/dergs/tonearm/pkg/tidalapi/pagination"
 	"github.com/go-gst/go-gst/gst"
 	"github.com/infinytum/injector"
-	"github.com/jwijenbergh/puregotk/v4/gobject"
 )
 
 var (
@@ -29,7 +27,6 @@ func init() {
 	playbin.GetBus().AddWatch(onBusMessage)
 	playbin.Connect("notify::volume", onVolumeChange)
 	playbin.Connect("about-to-finish", onAboutToFinish)
-	settings.PlayerSettings().BindVolume(gobject.ObjectNewFromInternalPtr(uintptr(playbin.BaseObject().Unsafe())), "volume")
 }
 
 func setLoadingState() {
@@ -48,21 +45,27 @@ func unsetLoadingState() {
 	})
 }
 
-func AddTrackToUserQueue(trackId string) {
-	UserQueue.AddTrackID(trackId, false)
+func AddTrackToUserQueue(trackId string) error {
+	track, err := resolveTrack(trackId)
+	if err != nil {
+		return err
+	}
+	UserQueue.Append(track)
 
 	// If we added a song to the queue and nothing is playing, the user likely wants to start playing the queue
 	if PlaybackStateChanged.CurrentValue().Status == PlaybackStatusStopped {
 		logger.Info("no track is currently playing, immediately playing track", "track_id", trackId)
 		Next()
-		return
+		return nil
 	}
+	return nil
 }
 
 func PlayTrack(trackId string) error {
 	setLoadingState()
 	track, err := resolveTrack(trackId)
 	if err != nil {
+		unsetLoadingState()
 		return err
 	}
 
@@ -79,10 +82,11 @@ func PlayTrack(trackId string) error {
 	return nil
 }
 
-func PlayAlbum(albumId string, shuffle bool, skipUntil string) error {
+func PlayAlbum(albumId string, shuffle bool, position int) error {
 	setLoadingState()
 	tidal, err := injector.Inject[*tidalapi.TidalAPI]()
 	if err != nil {
+		unsetLoadingState()
 		return err
 	}
 
@@ -92,27 +96,18 @@ func PlayAlbum(albumId string, shuffle bool, skipUntil string) error {
 
 	tracks, err := paginator.GetAll()
 	if err != nil {
+		unsetLoadingState()
 		return err
 	}
 
-	clearQueues()
-	BaseQueue.SetTracks(prepareTrackList(tracks, shuffle, skipUntil))
-	nextTrack := getNextTrackFromQueue(false)
-	if nextTrack != nil {
-		logger.Info("playing next track", "track_id", nextTrack.Data.ID)
-		playTrack(nextTrack)
-		history.Push(&HistoryEntry{
-			TrackID: nextTrack.Data.ID,
-		})
-	}
-
-	return nil
+	return PlayTracklist(tracks, shuffle, position)
 }
 
-func PlayPlaylist(playlistId string, shuffle bool, skipUntil string) error {
+func PlayPlaylist(playlistId string, shuffle bool, position int) error {
 	setLoadingState()
 	tidal, err := injector.Inject[*tidalapi.TidalAPI]()
 	if err != nil {
+		unsetLoadingState()
 		return err
 	}
 
@@ -122,40 +117,32 @@ func PlayPlaylist(playlistId string, shuffle bool, skipUntil string) error {
 
 	tracks, err := paginator.GetAll()
 	if err != nil {
+		unsetLoadingState()
 		return err
 	}
 
-	clearQueues()
-	BaseQueue.SetTracks(prepareTrackList(tracks, shuffle, skipUntil))
-	nextTrack := getNextTrackFromQueue(false)
-	if nextTrack != nil {
-		logger.Info("playing next track", "track_id", nextTrack.Data.ID)
-		playTrack(nextTrack)
-
-		history.Push(&HistoryEntry{
-			TrackID: nextTrack.Data.ID,
-		})
-	}
-
-	return nil
+	return PlayTracklist(tracks, shuffle, position)
 }
 
 func PlayTrackRadio(trackId string, skipSelf bool) error {
 	setLoadingState()
 	tidal, err := injector.Inject[*tidalapi.TidalAPI]()
 	if err != nil {
+		unsetLoadingState()
 		return err
 	}
 
 	trackIdInt, err := strconv.Atoi(trackId)
 	if err != nil {
 		logger.Error("failed to parse track id", "error", err)
+		unsetLoadingState()
 		return err
 	}
 
 	mix, err := tidal.V1.Tracks.Mix(context.Background(), trackIdInt)
 	if err != nil {
 		logger.Error("failed to retrieve mix", "error", err)
+		unsetLoadingState()
 		return err
 	}
 
@@ -165,22 +152,44 @@ func PlayTrackRadio(trackId string, skipSelf bool) error {
 
 	tracks, err := paginator.GetAll()
 	if err != nil {
+		unsetLoadingState()
 		return err
 	}
 
-	clearQueues()
-	BaseQueue.SetTracks(prepareTrackList(tracks, false, ""))
+	position := 0
 	if skipSelf {
-		getNextTrackFromQueue(false)
+		position = 1
 	}
+
+	return PlayTracklist(tracks, false, position)
+}
+
+func PlayTracklist(tracks []openapi.Track, shuffle bool, startAt int) error {
+	clearQueues()
+
+	trackPointers := make([]*openapi.Track, len(tracks))
+	for i, track := range tracks {
+		trackPointers[i] = &track
+	}
+	BaseQueue.Set(trackPointers)
+
+	if startAt > 0 {
+		BaseQueue.Skip(startAt)
+	}
+
+	if shuffle {
+		EnableShuffle()
+	}
+
 	nextTrack := getNextTrackFromQueue(false)
 	if nextTrack != nil {
 		logger.Info("playing next track", "track_id", nextTrack.Data.ID)
 		playTrack(nextTrack)
-
 		history.Push(&HistoryEntry{
 			TrackID: nextTrack.Data.ID,
 		})
+	} else {
+		unsetLoadingState()
 	}
 	return nil
 }

@@ -26,8 +26,10 @@ func NewLegacyArtist(artist *v2.ArtistItemData) schwifty.Button {
 func NewArtist(artist *openapi.Artist) schwifty.Button {
 	coverUrl := ""
 	for _, artwork := range artist.Included.PlainArtworks(artist.Data.Relationships.ProfileArt.Data...) {
-		coverUrl = artwork.Attributes.Files.AtLeast(160).Href
-		break
+		if artwork.Attributes.IsPicture() {
+			coverUrl = artwork.Attributes.Files.AtLeast(160).Href
+			break
+		}
 	}
 	return NewArtistGeneric(artist.Data.ID, artist.Data.Attributes.Name, coverUrl)
 }

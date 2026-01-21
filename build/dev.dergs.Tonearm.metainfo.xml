@@ -64,8 +64,6 @@
 
   <launchable type="desktop-id">dev.dergs.Tonearm.desktop</launchable>
 
-  <releases />
-
   <recommends>
     <control>keyboard</control>
     <control>pointing</control>
