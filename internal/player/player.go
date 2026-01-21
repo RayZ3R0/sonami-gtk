@@ -19,7 +19,7 @@ var (
 
 func init() {
 	gst.Init(nil)
-	pb, err := gst.NewElement("playbin")
+	pb, err := gst.NewElement("playbin3")
 	if err != nil {
 		panic(err)
 	}
@@ -32,7 +32,7 @@ func init() {
 func setLoadingState() {
 	playbin.SetState(gst.StateNull)
 	PlaybackStateChanged.Notify(func(oldValue *PlaybackState) *PlaybackState {
-		oldValue.Status = PlaybackStatusLoadingTrack
+		oldValue.Loading = true
 		return oldValue
 	})
 }
@@ -40,7 +40,7 @@ func setLoadingState() {
 func unsetLoadingState() {
 	playbin.SetState(gst.StatePlaying)
 	PlaybackStateChanged.Notify(func(oldValue *PlaybackState) *PlaybackState {
-		oldValue.Status = PlaybackStatusPlaying
+		oldValue.Loading = false
 		return oldValue
 	})
 }

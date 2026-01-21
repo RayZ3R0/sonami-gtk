@@ -27,10 +27,8 @@ import (
 var canPlayPlaylistState = state.NewStateful(false)
 
 func init() {
-	player.ControllableStateChanged.On(func(cs player.ControllableState) bool {
-		if v := cs.PlayerReady; v != canPlayPlaylistState.Value() {
-			canPlayPlaylistState.SetValue(v)
-		}
+	player.PlaybackStateChanged.On(func(ps *player.PlaybackState) bool {
+		canPlayPlaylistState.SetValue(!ps.Loading)
 		return signals.Continue
 	})
 

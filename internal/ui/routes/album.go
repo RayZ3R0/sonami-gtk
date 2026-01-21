@@ -27,10 +27,8 @@ var canPlayAlbumState = state.NewStateful(false)
 
 func init() {
 	router.Register("album/:id", Album)
-	player.ControllableStateChanged.On(func(cs player.ControllableState) bool {
-		if v := cs.PlayerReady; v != canPlayAlbumState.Value() {
-			canPlayAlbumState.SetValue(v)
-		}
+	player.PlaybackStateChanged.On(func(ps *player.PlaybackState) bool {
+		canPlayAlbumState.SetValue(!ps.Loading)
 		return signals.Continue
 	})
 }

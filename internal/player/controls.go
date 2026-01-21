@@ -2,9 +2,9 @@ package player
 
 import (
 	"math"
+	"sync"
 	"time"
 
-	"codeberg.org/dergs/tonearm/internal/signals"
 	"github.com/go-gst/go-gst/gst"
 )
 
@@ -15,34 +15,6 @@ type ControllableState struct {
 
 func (cs *ControllableState) CanControl() bool {
 	return cs.HasTrack && cs.PlayerReady
-}
-
-func init() {
-	PlaybackStateChanged.On(func(ps *PlaybackState) bool {
-		playerReady := ps.Status != PlaybackStatusBuffering &&
-			ps.Status != PlaybackStatusLoadingTrack
-
-		if playerReady != ControllableStateChanged.CurrentValue().PlayerReady {
-			ControllableStateChanged.Notify(func(oldValue ControllableState) ControllableState {
-				oldValue.PlayerReady = playerReady
-				return oldValue
-			})
-		}
-
-		return signals.Continue
-	})
-
-	TrackChanged.On(func(newTrack *Track) bool {
-		hasTrack := newTrack != nil
-		if hasTrack != ControllableStateChanged.CurrentValue().HasTrack {
-			ControllableStateChanged.Notify(func(oldValue ControllableState) ControllableState {
-				oldValue.HasTrack = hasTrack
-				return oldValue
-			})
-		}
-
-		return signals.Continue
-	})
 }
 
 func CycleRepeatMode() {
@@ -112,15 +84,46 @@ func SeekToPercent(percent float64) {
 	SeekToPosition(time.Duration(int64(position)))
 }
 
+var (
+	seekMutex    sync.Mutex
+	seekDebounce *time.Timer
+)
+
 func SeekToPosition(position time.Duration) {
 	logger.Debug("player controls requested to seek to position", "position", position)
-	playbin.SeekTime(position, gst.SeekFlagFlush)
-	PlaybackStateChanged.Notify(func(oldValue *PlaybackState) *PlaybackState {
-		newState := *oldValue
-		newState.Position = position
-		newState.IsSeeking = true
-		return &newState
-	})
+	go func() {
+		seekMutex.Lock()
+		defer seekMutex.Unlock()
+
+		if seekDebounce != nil {
+			seekDebounce.Stop()
+		} else {
+			playbin.SetState(gst.StatePaused)
+			if updateRunnerSourceHandle != 0 {
+				stopUpdateRunner()
+			}
+		}
+
+		seekDebounce = time.AfterFunc(500*time.Millisecond, func() {
+			seekMutex.Lock()
+			defer seekMutex.Unlock()
+
+			PlaybackStateChanged.Notify(func(oldValue *PlaybackState) *PlaybackState {
+				newState := *oldValue
+				newState.Position = position
+				newState.IsSeeking = true
+				return &newState
+			})
+
+			playbin.SeekTime(position, gst.SeekFlagFlush|gst.SeekFlagKeyUnit)
+			if PlaybackStateChanged.CurrentValue().Status == PlaybackStatusPlaying {
+				playbin.SetState(gst.StatePlaying)
+				startUpdateRunner()
+			}
+
+			seekDebounce = nil
+		})
+	}()
 }
 
 func SeekToPositionRelative(delta time.Duration) {

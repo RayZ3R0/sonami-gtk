@@ -68,6 +68,18 @@ func onBusMessage(msg *gst.Message) bool {
 			return &newState
 		})
 		go playNextTrack()
+	case gst.MessageBuffering:
+		percent := msg.ParseBuffering()
+		if percent == 100 {
+			switch PlaybackStateChanged.CurrentValue().Status {
+			case PlaybackStatusPlaying:
+				playbin.SetState(gst.StatePlaying)
+			default:
+				playbin.SetState(gst.StatePaused)
+			}
+		} else {
+			playbin.SetState(gst.StatePaused)
+		}
 	case gst.MessageStateChanged:
 		_, newState := msg.ParseStateChanged()
 		switch newState {
@@ -106,6 +118,8 @@ var onUpdateTick = glib.SourceFunc(func(uintptr) bool {
 			newState.Position = time.Duration(position)
 			newState.IsSeeking = false
 		}
+
+		logger.Debug("update", "position", newState.Position, "duration", newState.Duration)
 		return &newState
 	})
 	return glib.SOURCE_CONTINUE

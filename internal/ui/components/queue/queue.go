@@ -51,8 +51,8 @@ func init() {
 		}, 0)
 		return signals.Continue
 	})
-	player.ControllableStateChanged.On(func(cs player.ControllableState) bool {
-		miniPlayerCanControl.SetValue(cs.CanControl())
+	player.PlaybackStateChanged.On(func(ps *player.PlaybackState) bool {
+		miniPlayerCanControl.SetValue(!ps.Loading)
 		return signals.Continue
 	})
 }
@@ -179,8 +179,8 @@ func NewQueue() schwifty.Box {
 					BindSensitive(miniPlayerCanControl).
 					ConnectConstruct(func(b *gtk.Button) {
 						ptr := b.GoPointer()
-						miniPlayerLoadingIconSub = player.ControllableStateChanged.On(func(cs player.ControllableState) bool {
-							if !cs.PlayerReady {
+						miniPlayerLoadingIconSub = player.PlaybackStateChanged.On(func(ps *player.PlaybackState) bool {
+							if ps.Loading {
 								schwifty.OnMainThreadOncePure(func() {
 									b := gtk.ButtonNewFromInternalPtr(ptr)
 									child := Spinner().ToGTK()
@@ -191,7 +191,7 @@ func NewQueue() schwifty.Box {
 						})
 					}).
 					ConnectDestroy(func(w gtk.Widget) {
-						player.ControllableStateChanged.Unsubscribe(miniPlayerLoadingIconSub)
+						player.PlaybackStateChanged.Unsubscribe(miniPlayerLoadingIconSub)
 					}),
 				Button().
 					WithCSSClass("transparent").
