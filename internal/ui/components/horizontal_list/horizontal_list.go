@@ -84,7 +84,7 @@ func NewHorizontalList(title string) *HorizontalList {
 						nextButton,
 					).Spacing(10),
 				).BindHMargin(marginState),
-			).HMargin(10).MarginBottom(10),
+			).HMargin(10).MarginBottom(5),
 			ScrolledWindow().
 				Child(Widget(&container.Widget)).
 				VAlign(gtk.AlignStartValue).

@@ -54,7 +54,7 @@ func NewRowTitle() *RowTitle {
 			BindVisible(t.titleVisibility).
 			VAlign(gtk.AlignCenterValue).
 			MarginStart(10).
-			MarginBottom(10).
+			MarginBottom(5).
 			FontWeight(600).
 			FontSize(20),
 		Spacer().VExpand(false),
