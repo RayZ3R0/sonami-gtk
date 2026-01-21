@@ -40,6 +40,13 @@ func (w *Window) installActions() {
 	w.GetApplication().Application.AddAction(quitAction)
 	w.GetApplication().SetAccelsForAction("app.quit", []string{"<Ctrl>q"})
 
+	closeAction := gio.NewSimpleAction("close", nil)
+	closeAction.ConnectActivate(g.Ptr(func(action gio.SimpleAction, parameter uintptr) {
+		w.Close()
+	}))
+	w.AddAction(closeAction)
+	w.GetApplication().SetAccelsForAction("win.close", []string{"<Ctrl>w"})
+
 	navigateBackAction := gio.NewSimpleAction("navigate-back", nil)
 	navigateBackAction.ConnectActivate(g.Ptr(func(action gio.SimpleAction, parameter uintptr) {
 		router.Back()
