@@ -1,6 +1,7 @@
 package ui
 
 import (
+	"codeberg.org/dergs/tonearm/internal/g"
 	"codeberg.org/dergs/tonearm/internal/router"
 	"codeberg.org/dergs/tonearm/internal/secrets"
 	"codeberg.org/dergs/tonearm/internal/signals"
@@ -52,7 +53,14 @@ func (w *Window) buildSidebarHeader() *gtk.Widget {
 			MenuButton().
 				IconName("menu-symbolic").
 				MenuModel(&mainMenu.MenuModel).
-				TooltipText("Main Menu"),
+				TooltipText("Main Menu").ConnectConstruct(func(mb *gtk.MenuButton) {
+				menuAction := gio.NewSimpleAction("main-menu", nil)
+				menuAction.ConnectActivate(g.Ptr(func(action gio.SimpleAction, parameter uintptr) {
+					mb.Popup()
+				}))
+				w.AddAction(menuAction)
+				w.GetApplication().SetAccelsForAction("win.main-menu", []string{"F10"})
+			}),
 			components.NewRouteButton("search").Icon("loupe-symbolic").TooltipText("Search"),
 		).
 		ToGTK()
