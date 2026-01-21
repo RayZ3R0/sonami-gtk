@@ -1,6 +1,7 @@
 package player
 
 import (
+	"codeberg.org/dergs/tonearm/internal/settings"
 	"codeberg.org/dergs/tonearm/internal/signals"
 	v1 "codeberg.org/dergs/tonearm/pkg/tidalapi/models/v1"
 )
@@ -50,4 +51,4 @@ var TrackChanged = signals.NewStatefulSignal[*Track](nil)
 //
 // The signal fires whenever the volume changes. This could be either due to user input,
 // external volume control or MPRIS.
-var VolumeChanged = signals.NewStatefulSignal[float64](1.0)
+var VolumeChanged = signals.NewStatefulSignal[float64](settings.Player().GetVolume())
