@@ -43,10 +43,10 @@ func controlsPlayPause() schwifty.Button {
 		}).
 		ConnectConstruct(func(b *gtk.Button) {
 			ptr := b.GoPointer()
-			controllableStateSub = player.ControllableStateChanged.On(func(cs player.ControllableState) bool {
+			player.PlaybackStateChanged.On(func(ps *player.PlaybackState) bool {
 				b := gtk.ButtonNewFromInternalPtr(ptr)
 				schwifty.OnMainThreadOncePure(func() {
-					if !cs.PlayerReady {
+					if ps.Loading {
 						child := Spinner().ToGTK()
 						b.SetChild(child)
 					}
@@ -55,6 +55,6 @@ func controlsPlayPause() schwifty.Button {
 			})
 		}).
 		ConnectDestroy(func(w gtk.Widget) {
-			player.ControllableStateChanged.Unsubscribe(controllableStateSub)
+			player.PlaybackStateChanged.Unsubscribe(controllableStateSub)
 		})
 }

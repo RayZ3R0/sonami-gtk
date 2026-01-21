@@ -19,11 +19,9 @@ const (
 type PlaybackStatus string
 
 const (
-	PlaybackStatusLoadingTrack PlaybackStatus = "loading"
-	PlaybackStatusBuffering    PlaybackStatus = "buffering"
-	PlaybackStatusPlaying      PlaybackStatus = "playing"
-	PlaybackStatusPaused       PlaybackStatus = "paused"
-	PlaybackStatusStopped      PlaybackStatus = "stopped"
+	PlaybackStatusPlaying PlaybackStatus = "playing"
+	PlaybackStatusPaused  PlaybackStatus = "paused"
+	PlaybackStatusStopped PlaybackStatus = "stopped"
 )
 
 type PlaybackState struct {
@@ -37,6 +35,8 @@ type PlaybackState struct {
 	Position time.Duration
 
 	Status PlaybackStatus
+
+	Loading bool
 }
 
 type Track struct {

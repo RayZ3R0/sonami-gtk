@@ -84,13 +84,20 @@ func play(playbackInfo *v1.PlaybackInfo) error {
 
 	PlaybackStateChanged.Notify(func(oldValue *PlaybackState) *PlaybackState {
 		newState := *oldValue
-		newState.Status = PlaybackStatusBuffering
+		newState.Loading = true
 		return &newState
 	})
 
 	if err := enqueue(playbackInfo); err != nil {
 		return err
 	}
+
+	PlaybackStateChanged.Notify(func(oldValue *PlaybackState) *PlaybackState {
+		newState := *oldValue
+		newState.Status = PlaybackStatusPlaying
+		newState.Loading = false
+		return &newState
+	})
 
 	playbin.SetState(gst.StatePlaying)
 	return nil
