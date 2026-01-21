@@ -8,11 +8,11 @@ import (
 	"github.com/jwijenbergh/puregotk/v4/gobject"
 )
 
-type Player struct {
+type PlayerSettings struct {
 	settings *gio.Settings
 }
 
-func (p *Player) GetAudioQuality() v1.AudioQuality {
+func (p *PlayerSettings) GetAudioQuality() v1.AudioQuality {
 	quality := p.settings.GetString("audio-quality")
 	switch quality {
 	case string(v1.AudioQualityHighResLossless):
@@ -29,10 +29,18 @@ func (p *Player) GetAudioQuality() v1.AudioQuality {
 	}
 }
 
-func (p *Player) BindVolume(target *gobject.Object, property string) {
+func (p *PlayerSettings) BindVolume(target *gobject.Object, property string) {
 	p.settings.Bind("volume", target, property, gio.GSettingsBindNoSensitivityValue)
 }
 
-func (p *Player) SetAudioQuality(quality v1.AudioQuality) {
+func (p *PlayerSettings) GetVolume() float64 {
+	return p.settings.GetDouble("volume")
+}
+
+func (p *PlayerSettings) SetVolume(volume float64) {
+	p.settings.SetDouble("volume", volume)
+}
+
+func (p *PlayerSettings) SetAudioQuality(quality v1.AudioQuality) {
 	p.settings.SetString("audio-quality", string(quality))
 }

@@ -5,13 +5,11 @@ import (
 	"log/slog"
 	"strconv"
 
-	"codeberg.org/dergs/tonearm/internal/settings"
 	"codeberg.org/dergs/tonearm/pkg/tidalapi"
 	"codeberg.org/dergs/tonearm/pkg/tidalapi/models/openapi"
 	"codeberg.org/dergs/tonearm/pkg/tidalapi/pagination"
 	"github.com/go-gst/go-gst/gst"
 	"github.com/infinytum/injector"
-	"github.com/jwijenbergh/puregotk/v4/gobject"
 )
 
 var (
@@ -29,7 +27,6 @@ func init() {
 	playbin.GetBus().AddWatch(onBusMessage)
 	playbin.Connect("notify::volume", onVolumeChange)
 	playbin.Connect("about-to-finish", onAboutToFinish)
-	settings.PlayerSettings().BindVolume(gobject.ObjectNewFromInternalPtr(uintptr(playbin.BaseObject().Unsafe())), "volume")
 }
 
 func setLoadingState() {

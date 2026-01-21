@@ -21,17 +21,17 @@ var Performance = g.Lazy(func() *PerformanceSettings {
 	}
 })
 
+var Player = g.Lazy(func() *PlayerSettings {
+	return &PlayerSettings{
+		finalize(gio.NewSettings("dev.dergs.Tonearm.player")),
+	}
+})
+
 var Scrobbling = g.Lazy(func() *ScrobblingSettings {
 	return &ScrobblingSettings{
 		finalize(gio.NewSettings("dev.dergs.Tonearm.scrobbling")),
 	}
 })
-
-func PlayerSettings() *Player {
-	return &Player{
-		finalize(gio.NewSettings("dev.dergs.Tonearm.player")),
-	}
-}
 
 func finalize(settings *gio.Settings) *gio.Settings {
 	runtime.SetFinalizer(settings, func(s *gio.Settings) {

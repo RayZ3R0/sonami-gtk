@@ -6,12 +6,12 @@ import (
 	"fmt"
 	"os"
 
+	"codeberg.org/dergs/tonearm/internal/settings"
 	v1 "codeberg.org/dergs/tonearm/pkg/tidalapi/models/v1"
 )
 
 var (
 	currentlyEnqueuedTrackID int
-	volumeBeforeEnqueue      float64
 )
 
 type btsStream struct {
@@ -37,11 +37,8 @@ func enqueueBTSStream(info *v1.PlaybackInfo) error {
 		return fmt.Errorf("failed to unmarshal BTS stream: %w", err)
 	}
 
-	volume, err := playbin.GetProperty("volume")
-	if err == nil {
-		volumeBeforeEnqueue = volume.(float64)
-	}
 	playbin.SetArg("uri", stream.URLs[0])
+	playbin.Set("volume", settings.Player().GetVolume())
 	return nil
 }
 
@@ -67,11 +64,8 @@ func enqueueMPDStream(info *v1.PlaybackInfo) error {
 		return err
 	}
 
-	volume, err := playbin.GetProperty("volume")
-	if err == nil {
-		volumeBeforeEnqueue = volume.(float64)
-	}
 	playbin.SetArg("uri", "file://"+file.Name())
+	playbin.Set("volume", settings.Player().GetVolume())
 	return nil
 }
 
