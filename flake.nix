@@ -29,6 +29,7 @@
               libadwaita
               gobject-introspection
               librsvg
+              libsecret
             ]
           );
         };
@@ -50,6 +51,7 @@
             gopls
             gtk4
             librsvg
+            libsecret
             graphviz
             gst_all_1.gstreamer
             gst_all_1.gst-plugins-base
