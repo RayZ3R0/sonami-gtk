@@ -18,6 +18,12 @@ type PreferencesGroup = adw.PreferencesGroup
 
 type PreferencesPage = adw.PreferencesPage
 
+type ShortcutsDialog = adw.ShortcutsDialog
+
+type ShortcutsItem = adw.ShortcutsItem
+
+type ShortcutsSection = adw.ShortcutsSection
+
 type SpinRow = adw.SpinRow
 
 type StatusPage = adw.StatusPage

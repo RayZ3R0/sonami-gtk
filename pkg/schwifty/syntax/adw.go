@@ -71,6 +71,40 @@ func PreferencesPage(groups ...any) adwbindings.PreferencesPage {
 	})
 }
 
+func ShortcutsDialog(sections ...any) adwbindings.ShortcutsDialog {
+	return managedWidget("ShortcutsDialog", func() *adw.ShortcutsDialog {
+		dialog := adw.NewShortcutsDialog()
+		for _, section := range sections {
+			dialog.Add(bindings.ResolveTo[*adw.ShortcutsSection, adwbindings.ShortcutsSection](section))
+		}
+		return dialog
+	})
+}
+
+func ShortcutsItem(title string, accelerator string) adwbindings.ShortcutsItem {
+	return managedObject("ShortcutsItem", func() *adw.ShortcutsItem {
+		group := adw.NewShortcutsItem(title, accelerator)
+		return group
+	})
+}
+
+func ShortcutsItemFromAction(title string, action string) adwbindings.ShortcutsItem {
+	return managedObject("ShortcutsItem", func() *adw.ShortcutsItem {
+		group := adw.NewShortcutsItemFromAction(title, action)
+		return group
+	})
+}
+
+func ShortcutsSection(items ...any) adwbindings.ShortcutsSection {
+	return managedObject("ShortcutsSection", func() *adw.ShortcutsSection {
+		group := adw.NewShortcutsSection("")
+		for _, item := range items {
+			group.Add(bindings.ResolveTo[*adw.ShortcutsItem, adwbindings.ShortcutsItem](item))
+		}
+		return group
+	})
+}
+
 func SpinRow(adjustment *gtk.Adjustment, climbRate float64, digits uint) adwbindings.SpinRow {
 	return managedWidget("SpinRow", func() *adw.SpinRow {
 		return adw.NewSpinRow(adjustment, climbRate, digits)
