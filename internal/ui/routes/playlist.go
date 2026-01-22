@@ -157,7 +157,7 @@ func Playlist(playlistUUID string) *router.Response {
 					HStack(
 						Button().
 							IconName("heart-outline-thick-symbolic").
-							WithCSSClass("transparent"),
+							WithCSSClass("transparent").Sensitive(false),
 						Button().
 							IconName("share-alt-symbolic").
 							WithCSSClass("transparent").

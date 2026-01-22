@@ -17,7 +17,7 @@ func controlsColumn(trackId string, grid *gtk.Grid, position int, column int) in
 				IconName("heart-outline-thick-symbolic").
 				HAlign(gtk.AlignCenterValue).
 				VAlign(gtk.AlignCenterValue).
-				WithCSSClass("transparent"),
+				WithCSSClass("transparent").Sensitive(false),
 			Button().
 				IconName("plus-symbolic").
 				HAlign(gtk.AlignCenterValue).
