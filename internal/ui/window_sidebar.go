@@ -29,6 +29,7 @@ func (w *Window) buildSidebarHeader() *gtk.Widget {
 	mainMenu := gio.NewMenu()
 	mainMenu.Append("Sign In", "win.sign-in")
 	mainMenu.Append("Set as default page", "win.set-as-default")
+	mainMenu.Append("Shortcuts", "app.shortcuts")
 	mainMenu.Append("Preferences", "app.preferences")
 	mainMenu.Append("About Tonearm", "app.about")
 	mainMenu.Append("Quit", "app.quit")

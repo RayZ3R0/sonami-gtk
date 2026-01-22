@@ -33,6 +33,13 @@ func (w *Window) installActions() {
 	w.GetApplication().Application.AddAction(preferencesAction)
 	w.GetApplication().SetAccelsForAction("app.preferences", []string{"<Control>comma"})
 
+	shortcutsAction := gio.NewSimpleAction("shortcuts", nil)
+	shortcutsAction.ConnectActivate(g.Ptr(func(action gio.SimpleAction, parameter uintptr) {
+		w.PresentShortcuts()
+	}))
+	w.GetApplication().Application.AddAction(shortcutsAction)
+	w.GetApplication().SetAccelsForAction("app.shortcuts", []string{"<Control>question"})
+
 	quitAction := gio.NewSimpleAction("quit", nil)
 	quitAction.ConnectActivate(g.Ptr(func(action gio.SimpleAction, parameter uintptr) {
 		w.GetApplication().Quit()
