@@ -71,12 +71,7 @@ func onBusMessage(msg *gst.Message) bool {
 	case gst.MessageBuffering:
 		percent := msg.ParseBuffering()
 		if percent == 100 {
-			switch PlaybackStateChanged.CurrentValue().Status {
-			case PlaybackStatusPlaying:
-				playbin.SetState(gst.StatePlaying)
-			default:
-				playbin.SetState(gst.StatePaused)
-			}
+			playbin.SetState(gst.StatePlaying)
 		} else {
 			playbin.SetState(gst.StatePaused)
 		}

@@ -31,7 +31,7 @@ func init() {
 func playNextTrack() {
 	if RepeatModeChanged.CurrentValue() == RepeatModeTrack {
 		logger.Debug("single repeat mode is enabled, replaying track")
-		SeekToPosition(0)
+		playbin.SeekTime(0, gst.SeekFlagFlush|gst.SeekFlagKeyUnit)
 		startUpdateRunner()
 		return
 	}
