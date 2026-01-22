@@ -44,8 +44,8 @@
   <url type="vcs-browser">https://codeberg.org/dergs/Tonearm</url>
 
   <releases>
-    <release version="0.0.1" date="2026-01-14">
-      <url type="details">https://codeberg.org/dergs/Tonearm</url>
+    <release version="1.0.0" date="2026-01-22">
+      <url type="details">https://codeberg.org/dergs/Tonearm/releases/tag/v1.0.0</url>
       <description>
         <p
                 >Welcome to the first beta release of Tonearm. In this version, we added, well, everything. Give it a look and let us know what we can improve!</p>
