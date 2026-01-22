@@ -65,7 +65,7 @@
           pname = "tonearm";
           version = "0.0.1";
           src = pkgs.lib.cleanSource ./.;
-          vendorHash = "sha256-GXc+L59nQgHem6KdK7u0XouBxu0Ta0y57TjXPT3fMmk=";
+          vendorHash = "sha256-8Imw+UsGd/1YwZmTcytx1zBAWN8X88OmAJ5EWKjF3+Y=";
 
           ldflags = [
             "-X \"codeberg.org/dergs/tonearm/internal/ui.Commit=${(if (self ? rev) then self.rev else "")}\""
@@ -77,6 +77,7 @@
             gst_all_1.gst-plugins-base
             gst_all_1.gst-plugins-good
             gst_all_1.gst-plugins-bad
+            libsecret
           ];
           doCheck = false;
           nativeBuildInputs = with pkgs; [
