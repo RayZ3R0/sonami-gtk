@@ -89,13 +89,11 @@ then add this anywhere in your system configuration as you see fit
 ```
 
 ### Arch Linux (AUR) 
-For now, only the `-git` version is available, because the software doesn't have a release.
-
 You will require an AUR helper, such as yay or paru.
 
 This assumes you are using the [yay helper](https://github.com/Jguer/yay). If using paru, adapt the commands accordingly.
 ```
-yay -S tonearm-git
+yay -S tonearm
 ```
 
 ## Screenshots
