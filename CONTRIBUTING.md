@@ -6,6 +6,10 @@ We use Codeberg issues to track public bugs. Please ensure your description is c
 
 By contributing to Tonearm, you agree that your contributions will be licensed under the LICENSE file in the root directory of this source tree.
 
+## Code of Conduct
+
+We expect all contributors to adhere to the [GNOME Code of Conduct](https://conduct.gnome.org/).
+
 ## Development Environment
 
 Tonearm provides a standardized development environment in the form of a direnv file as well as a Nix dev-shell. Please ensure that you have direnv and nix, the package manager, installed on your system.
