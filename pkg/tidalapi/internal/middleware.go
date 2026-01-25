@@ -38,7 +38,7 @@ func (m MiddlewareRoundTripper) RoundTrip(req *http.Request) (*http.Response, er
 	queryParams.Set("timeOffset", utcOffset(time.Now(), nil))
 
 	// Detect locale based on system, fallback to en_US
-	if userLocale, err := locale.GetLocale(); err != nil {
+	if userLocale, err := locale.GetLocale(); err == nil {
 		queryParams.Set("locale", userLocale)
 	} else {
 		queryParams.Set("locale", "en_US")
