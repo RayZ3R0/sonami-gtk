@@ -22,6 +22,8 @@ github.com/jwijenbergh/purego v0.0.0-20251017112123-b71757b9ba42 h1:kQ0LX4ffJvtO
 github.com/jwijenbergh/purego v0.0.0-20251017112123-b71757b9ba42/go.mod h1:amE5lVGstyh2GTEIHFEbgJHmoMD0llIuapnzIlZx7Fc=
 github.com/jwijenbergh/puregotk v0.0.0-20251201161753-28ec1479c381 h1:Cy6in3ph8eGnl0w71S0NnH8ZCj0YhZZHzrwYEgtbtII=
 github.com/jwijenbergh/puregotk v0.0.0-20251201161753-28ec1479c381/go.mod h1:mZu8qSvCSqtVL+xoiebZuicnJijwrLfGRs6/eTVgFlc=
+github.com/leonelquinteros/gotext v1.7.2 h1:bDPndU8nt+/kRo1m4l/1OXiiy2v7Z7dfPQ9+YP7G1Mc=
+github.com/leonelquinteros/gotext v1.7.2/go.mod h1:9/haCkm5P7Jay1sxKDGJ5WIg4zkz8oZKw4ekNpALob8=
 github.com/lescuer97/go-libsecret v0.0.0-20251130160347-067b741bcf5a h1:0U0890+79rkdjJx4M3+0TGmRhcvRPqUcz4z2DHz3CB4=
 github.com/lescuer97/go-libsecret v0.0.0-20251130160347-067b741bcf5a/go.mod h1:NVIUI2eo6wJGm+999fHgjvc95/u1EfdXnBJ67+S7ai0=
 github.com/mattn/go-pointer v0.0.1 h1:n+XhsuGeVO6MEAp7xyEukFINEa+Quek5psIR/ylA6o0=

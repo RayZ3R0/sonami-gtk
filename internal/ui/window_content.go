@@ -1,6 +1,7 @@
 package ui
 
 import (
+	"codeberg.org/dergs/tonearm/internal/gettext"
 	"codeberg.org/dergs/tonearm/internal/router"
 	"codeberg.org/dergs/tonearm/internal/signals"
 	"codeberg.org/dergs/tonearm/internal/ui/components"
@@ -11,19 +12,19 @@ import (
 
 func (w *Window) buildContentHeader() *gtk.Widget {
 	homeButton := components.NewRouteButton("home")
-	homeButton.Title("Home")
+	homeButton.Title(gettext.Get("Home"))
 	homeButton.Icon("go-home-symbolic")
-	homeButton.TooltipText("Navigate to Home")
+	homeButton.TooltipText(gettext.Get("Navigate to Home"))
 
 	exploreButton := components.NewRouteButton("explore")
-	exploreButton.Title("Explore")
+	exploreButton.Title(gettext.Get("Explore"))
 	exploreButton.Icon("compass2-symbolic")
-	exploreButton.TooltipText("Navigate to Explore")
+	exploreButton.TooltipText(gettext.Get("Navigate to Explore"))
 
 	collectionButton := components.NewRouteButton("my-collection")
-	collectionButton.Title("Collection")
+	collectionButton.Title(gettext.Get("Collection"))
 	collectionButton.Icon("library-symbolic")
-	collectionButton.TooltipText("Navigate to Collection")
+	collectionButton.TooltipText(gettext.Get("Navigate to Collection"))
 
 	defaultToolbar := HStack(
 		Widget(&homeButton.Widget),
@@ -40,12 +41,12 @@ func (w *Window) buildContentHeader() *gtk.Widget {
 			Button().
 				IconName("dock-left-symbolic").
 				ActionName("win.toggle-sidebar").
-				TooltipText("Toggle Sidebar"),
+				TooltipText(gettext.Get("Toggle Sidebar")),
 			Button().
 				IconName("left-symbolic").
 				ActionName("win.navigate-back").
 				Visible(false).
-				TooltipText("Navigate Back").
+				TooltipText(gettext.Get("Navigate Back")).
 				ConnectConstruct(func(b *gtk.Button) {
 					router.HistoryUpdated.On(func(history *router.History) bool {
 						schwifty.OnMainThreadOncePure(func() {

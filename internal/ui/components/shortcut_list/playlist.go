@@ -1,8 +1,7 @@
 package shortcut_list
 
 import (
-	"fmt"
-
+	"codeberg.org/dergs/tonearm/internal/gettext"
 	"codeberg.org/dergs/tonearm/pkg/schwifty"
 	"codeberg.org/dergs/tonearm/pkg/tidalapi"
 	v2 "codeberg.org/dergs/tonearm/pkg/tidalapi/models/v2"
@@ -12,7 +11,7 @@ import (
 func newPlaylist(id string, title string, itemCount int, coverUrl string) schwifty.Button {
 	return NewShortcut(
 		title,
-		fmt.Sprintf("%d Tracks", itemCount),
+		gettext.GetN("%d Track", "%d Tracks", itemCount, itemCount),
 		coverUrl,
 	).ActionName("win.route.playlist").ActionTargetValue(glib.NewVariantString(id))
 }

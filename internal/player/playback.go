@@ -6,6 +6,7 @@ import (
 	"slices"
 	"strconv"
 
+	"codeberg.org/dergs/tonearm/internal/gettext"
 	"codeberg.org/dergs/tonearm/internal/notifications"
 	"codeberg.org/dergs/tonearm/pkg/tidalapi"
 	"codeberg.org/dergs/tonearm/pkg/tidalapi/models/openapi"
@@ -56,7 +57,7 @@ func playTrack(track *openapi.Track) error {
 	})
 
 	if !slices.Contains(track.Data.Attributes.Availability, openapi.TrackAvailabilityStream) {
-		notifications.OnToast.Notify("Track not available for streaming, skipping to next track")
+		notifications.OnToast.Notify(gettext.Get("Track not available for streaming, skipping to next track"))
 		Next()
 		return errors.New("track not available for streaming")
 	}

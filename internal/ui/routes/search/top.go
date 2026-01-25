@@ -1,6 +1,7 @@
 package search
 
 import (
+	"codeberg.org/dergs/tonearm/internal/gettext"
 	"codeberg.org/dergs/tonearm/internal/ui/components"
 	"codeberg.org/dergs/tonearm/internal/ui/components/horizontal_list"
 	"codeberg.org/dergs/tonearm/internal/ui/components/media_card"
@@ -27,12 +28,12 @@ func TopHits(searchResults *openapi.SearchResult) schwifty.Box {
 		trackList.AddTrack(&track)
 	}
 
-	albumList := horizontal_list.NewHorizontalList("Albums").SetPageMargin(40)
+	albumList := horizontal_list.NewHorizontalList(gettext.Get("Albums")).SetPageMargin(40)
 	for _, album := range searchResults.Included.Albums(searchResults.Data.Relationships.TopHits.Data...) {
 		albumList.Append(media_card.NewAlbum(&album))
 	}
 
-	playlistList := horizontal_list.NewHorizontalList("Playlists").SetPageMargin(40)
+	playlistList := horizontal_list.NewHorizontalList(gettext.Get("Playlists")).SetPageMargin(40)
 	for _, playlist := range searchResults.Included.Playlists(searchResults.Data.Relationships.TopHits.Data...) {
 		playlistList.Append(media_card.NewPlaylist(&playlist))
 	}
@@ -40,7 +41,7 @@ func TopHits(searchResults *openapi.SearchResult) schwifty.Box {
 	return VStack(
 		artistList,
 		VStack(
-			components.NewRowTitle().SetTitle("Tracks"),
+			components.NewRowTitle().SetTitle(gettext.Get("Tracks")),
 			trackList,
 		).HMargin(40),
 		albumList,

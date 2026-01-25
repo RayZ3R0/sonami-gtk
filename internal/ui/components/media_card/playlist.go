@@ -1,8 +1,7 @@
 package media_card
 
 import (
-	"fmt"
-
+	"codeberg.org/dergs/tonearm/internal/gettext"
 	"codeberg.org/dergs/tonearm/pkg/schwifty"
 	. "codeberg.org/dergs/tonearm/pkg/schwifty/syntax"
 	"codeberg.org/dergs/tonearm/pkg/tidalapi"
@@ -16,7 +15,7 @@ func NewPlaylistGeneric(id string, title string, creator string, itemCount int, 
 		title,
 		VStack(
 			SubTitle(creator),
-			SubTitle(fmt.Sprintf("%d Tracks", itemCount)),
+			SubTitle(gettext.GetN("%d Track", "%d Tracks", itemCount, itemCount)),
 		),
 		coverUrl,
 	).ActionName("win.route.playlist").ActionTargetValue(glib.NewVariantString(id))

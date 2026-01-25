@@ -3,6 +3,7 @@ package routes
 import (
 	"context"
 
+	"codeberg.org/dergs/tonearm/internal/gettext"
 	"codeberg.org/dergs/tonearm/internal/router"
 	"codeberg.org/dergs/tonearm/internal/ui/components"
 	. "codeberg.org/dergs/tonearm/pkg/schwifty/syntax"
@@ -24,7 +25,7 @@ func Explore(pageName string) *router.Response {
 	tidal := injector.MustInject[*tidalapi.TidalAPI]()
 	page, err := tidal.V1.Pages.Page(context.Background(), pageName)
 	if err != nil {
-		return router.FromError("Explore", err)
+		return router.FromError(gettext.Get("Explore"), err)
 	}
 
 	body := VStack().Spacing(25).VMargin(20)

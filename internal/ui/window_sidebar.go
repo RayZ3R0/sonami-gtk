@@ -2,6 +2,7 @@ package ui
 
 import (
 	"codeberg.org/dergs/tonearm/internal/g"
+	"codeberg.org/dergs/tonearm/internal/gettext"
 	"codeberg.org/dergs/tonearm/internal/router"
 	"codeberg.org/dergs/tonearm/internal/secrets"
 	"codeberg.org/dergs/tonearm/internal/signals"
@@ -27,19 +28,19 @@ func (w *Window) buildSidebarHeader() *gtk.Widget {
 	})
 
 	mainMenu := gio.NewMenu()
-	mainMenu.Append("Sign In", "win.sign-in")
-	mainMenu.Append("Set as default page", "win.set-as-default")
-	mainMenu.Append("Shortcuts", "app.shortcuts")
-	mainMenu.Append("Preferences", "app.preferences")
-	mainMenu.Append("About Tonearm", "app.about")
-	mainMenu.Append("Quit", "app.quit")
+	mainMenu.Append(gettext.Get("Sign In"), "win.sign-in")
+	mainMenu.Append(gettext.Get("Set as default page"), "win.set-as-default")
+	mainMenu.Append(gettext.Get("Keyboard Shortcuts"), "app.shortcuts")
+	mainMenu.Append(gettext.Get("Preferences"), "app.preferences")
+	mainMenu.Append(gettext.Get("About Tonearm"), "app.about")
+	mainMenu.Append(gettext.Get("Quit"), "app.quit")
 
 	secrets.SignedInChanged.On(func(signedIn bool) bool {
 		mainMenu.Remove(0)
 		if signedIn {
-			mainMenu.Insert(0, "Sign Out", "win.sign-out")
+			mainMenu.Insert(0, gettext.Get("Sign Out"), "win.sign-out")
 		} else {
-			mainMenu.Insert(0, "Sign In", "win.sign-in")
+			mainMenu.Insert(0, gettext.Get("Sign In"), "win.sign-in")
 		}
 		return signals.Continue
 	})
@@ -54,7 +55,7 @@ func (w *Window) buildSidebarHeader() *gtk.Widget {
 			MenuButton().
 				IconName("menu-symbolic").
 				MenuModel(&mainMenu.MenuModel).
-				TooltipText("Main Menu").ConnectConstruct(func(mb *gtk.MenuButton) {
+				TooltipText(gettext.Get("Main Menu")).ConnectConstruct(func(mb *gtk.MenuButton) {
 				menuAction := gio.NewSimpleAction("main-menu", nil)
 				menuAction.ConnectActivate(g.Ptr(func(action gio.SimpleAction, parameter uintptr) {
 					mb.Popup()
@@ -62,16 +63,16 @@ func (w *Window) buildSidebarHeader() *gtk.Widget {
 				w.AddAction(menuAction)
 				w.GetApplication().SetAccelsForAction("win.main-menu", []string{"F10"})
 			}),
-			components.NewRouteButton("search").Icon("loupe-symbolic").TooltipText("Search"),
+			components.NewRouteButton("search").Icon("loupe-symbolic").TooltipText(gettext.Get("Search")),
 		).
 		ToGTK()
 }
 
 func (w *Window) buildSidebar() schwifty.ViewStack {
 	return ViewStack().
-		AddTitledWithIcon(player.NewPlayer(), "player", "Player", "music-note-outline-symbolic").
-		AddTitledWithIcon(lyrics.NewLyricsPanel(), "lyrics", "Lyrics", "chat-bubble-text-symbolic").
-		AddTitledWithIcon(queue.NewQueue(), "queue", "Queue", "music-queue-symbolic")
+		AddTitledWithIcon(player.NewPlayer(), "player", gettext.Get("Player"), "music-note-outline-symbolic").
+		AddTitledWithIcon(lyrics.NewLyricsPanel(), "lyrics", gettext.Get("Lyrics"), "chat-bubble-text-symbolic").
+		AddTitledWithIcon(queue.NewQueue(), "queue", gettext.Get("Queue"), "music-queue-symbolic")
 }
 
 func (w *Window) buildSidebarFooter(viewStack *adw.ViewStack) *gtk.Widget {

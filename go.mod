@@ -22,6 +22,7 @@ require (
 	github.com/golang/freetype v0.0.0-20170609003504-e2365dfdc4a0 // indirect
 	github.com/infinytum/structures v0.0.1 // indirect
 	github.com/jwijenbergh/purego v0.0.0-20251017112123-b71757b9ba42 // indirect
+	github.com/leonelquinteros/gotext v1.7.2 // indirect
 	github.com/mattn/go-pointer v0.0.1 // indirect
 	github.com/pkg/errors v0.9.1 // indirect
 	github.com/stretchr/testify v1.11.1 // indirect

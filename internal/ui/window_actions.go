@@ -5,6 +5,7 @@ import (
 	"unsafe"
 
 	"codeberg.org/dergs/tonearm/internal/g"
+	"codeberg.org/dergs/tonearm/internal/gettext"
 	"codeberg.org/dergs/tonearm/internal/notifications"
 	"codeberg.org/dergs/tonearm/internal/player"
 	"codeberg.org/dergs/tonearm/internal/router"
@@ -149,11 +150,11 @@ func (w *Window) installActions() {
 			})
 			defer dialog.ForceClose()
 			if err != nil {
-				notifications.OnToast.Notify("Sign in failed or aborted")
+				notifications.OnToast.Notify(gettext.Get("Sign in failed or aborted"))
 				return
 			}
 			secrets.SetRefreshToken(resp.RefreshToken)
-			notifications.OnToast.Notify("Signed in as " + resp.User.Email)
+			notifications.OnToast.Notify(gettext.Get("Signed in as %s", resp.User.Email))
 			router.Refresh()
 		}()
 	}))
@@ -163,7 +164,7 @@ func (w *Window) installActions() {
 	signOutAction.ConnectActivate(g.Ptr(func(action gio.SimpleAction, parameter uintptr) {
 		go func() {
 			secrets.DeleteRefreshToken()
-			notifications.OnToast.Notify("Signed out")
+			notifications.OnToast.Notify(gettext.Get("Signed out"))
 			router.Refresh()
 		}()
 	}))
@@ -172,7 +173,7 @@ func (w *Window) installActions() {
 	setAsDefaultAction := gio.NewSimpleAction("set-as-default", nil)
 	setAsDefaultAction.ConnectActivate(g.Ptr(func(action gio.SimpleAction, parameter uintptr) {
 		settings.General().SetDefaultPage(router.Current().Path)
-		notifications.OnToast.Notify("Set current page as default")
+		notifications.OnToast.Notify(gettext.Get("Set current page as default"))
 	}))
 	w.AddAction(setAsDefaultAction)
 }

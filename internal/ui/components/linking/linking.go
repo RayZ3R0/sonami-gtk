@@ -7,6 +7,7 @@ import (
 	"strings"
 	"time"
 
+	"codeberg.org/dergs/tonearm/internal/gettext"
 	"codeberg.org/dergs/tonearm/internal/resources"
 	"codeberg.org/dergs/tonearm/pkg/schwifty"
 	. "codeberg.org/dergs/tonearm/pkg/schwifty/syntax"
@@ -25,7 +26,7 @@ var QRCode = Image().
 
 var Code = Label("D  E  R  G  S").FontWeight(900).FontSize(24)
 
-var Helper = Label("You can also open the linking page using the button below.")
+var Helper = Label(gettext.Get("You can also open the linking page using the button below."))
 
 type QRBuffer struct {
 	bytes.Buffer
@@ -55,7 +56,7 @@ func NewLinking(window *gtk.Window, code string, link string, cancel context.Can
 		slog.Error("could not create texture from bytes")
 	}
 
-	return AlertDialog("Sign In", "Scan this QR code to sign into your TIDAL account.").
+	return AlertDialog(gettext.Get("Sign In"), gettext.Get("Scan this QR code to sign into your TIDAL account.")).
 		WithCSSClass("no-response").
 		CanClose(false).
 		ConnectCloseAttempt(func(d adw.Dialog) {
@@ -71,14 +72,14 @@ func NewLinking(window *gtk.Window, code string, link string, cancel context.Can
 				Helper,
 				VStack(
 					Button().
-						Label("Open TIDAL page").
+						Label(gettext.Get("Open TIDAL page")).
 						WithCSSClass("suggested-action").
 						HPadding(20).VPadding(10).
 						ConnectClicked(func(b gtk.Button) {
 							gtk.ShowUri(window, "https://"+link, uint32(time.Now().Unix()))
 						}),
 					Button().
-						Label("Cancel Login").
+						Label(gettext.Get("Cancel Login")).
 						WithCSSClass("destructive-action").
 						HPadding(20).VPadding(10).
 						ConnectClicked(func(b gtk.Button) {

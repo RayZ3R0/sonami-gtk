@@ -5,6 +5,7 @@ import (
 	"log/slog"
 	"unsafe"
 
+	"codeberg.org/dergs/tonearm/internal/gettext"
 	"codeberg.org/dergs/tonearm/internal/router"
 	"codeberg.org/dergs/tonearm/internal/secrets"
 	"codeberg.org/dergs/tonearm/internal/ui/components/tracklist"
@@ -31,8 +32,8 @@ func Tracks() *router.Response {
 	userId := secrets.UserID()
 	if userId == "" {
 		return &router.Response{
-			PageTitle: "My Collection",
-			View:      Label("Please log in to view your collection"),
+			PageTitle: gettext.Get("My Collection"),
+			View:      Label(gettext.Get("Please log in to view your collection")),
 		}
 	}
 
@@ -46,7 +47,7 @@ func Tracks() *router.Response {
 	userCollection, err := paginator.GetFirstPage()
 	if err != nil {
 		return &router.Response{
-			PageTitle: "My Collection",
+			PageTitle: gettext.Get("My Collection"),
 			Error:     err,
 		}
 	}
@@ -63,7 +64,7 @@ func Tracks() *router.Response {
 	}
 
 	return &router.Response{
-		PageTitle: "My Tracks",
+		PageTitle: gettext.Get("My Tracks"),
 		View: ScrolledWindow().
 			Child(
 				trackList.HMargin(40).VAlign(gtk.AlignStartValue),

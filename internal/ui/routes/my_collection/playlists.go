@@ -3,6 +3,7 @@ package my_collection
 import (
 	"context"
 
+	"codeberg.org/dergs/tonearm/internal/gettext"
 	"codeberg.org/dergs/tonearm/internal/router"
 	"codeberg.org/dergs/tonearm/internal/secrets"
 	"codeberg.org/dergs/tonearm/internal/ui/components/media_card"
@@ -18,15 +19,15 @@ func Playlists() *router.Response {
 	userId := secrets.UserID()
 	if userId == "" {
 		return &router.Response{
-			PageTitle: "My Collection",
-			View:      Label("Please log in to view your collection"),
+			PageTitle: gettext.Get("My Collection"),
+			View:      Label(gettext.Get("Please log in to view your collection")),
 		}
 	}
 
 	userCollection, err := tidal.OpenAPI.V2.UserCollections.Playlists(context.Background(), userId, "", "playlists.coverArt", "playlists.ownerProfiles")
 	if err != nil {
 		return &router.Response{
-			PageTitle: "My Collection",
+			PageTitle: gettext.Get("My Collection"),
 			Error:     err,
 		}
 	}
@@ -37,7 +38,7 @@ func Playlists() *router.Response {
 	}
 
 	return &router.Response{
-		PageTitle: "My Collection",
+		PageTitle: gettext.Get("My Collection"),
 		View: ScrolledWindow().
 			Child(
 				WrapBox(children...).VMargin(20).VAlign(gtk.AlignStartValue).Justify(adw.JustifyFillValue).JustifyLastLine(true),

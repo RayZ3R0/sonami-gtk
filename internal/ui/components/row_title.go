@@ -1,6 +1,7 @@
 package components
 
 import (
+	"codeberg.org/dergs/tonearm/internal/gettext"
 	"codeberg.org/dergs/tonearm/internal/router"
 	"codeberg.org/dergs/tonearm/pkg/schwifty"
 	"codeberg.org/dergs/tonearm/pkg/schwifty/state"
@@ -28,7 +29,7 @@ func (t *RowTitle) SetTitle(title string) *RowTitle {
 
 func (t *RowTitle) SetViewAllRoute(path string) *RowTitle {
 	t.routeButtonState.SetValue(Button().Child(
-		Label("View All").FontSize(12),
+		Label(gettext.Get("View All")).FontSize(12),
 	).
 		MinHeight(10).
 		MinWidth(10).

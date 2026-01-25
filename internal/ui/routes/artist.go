@@ -4,6 +4,7 @@ import (
 	"context"
 	"fmt"
 
+	"codeberg.org/dergs/tonearm/internal/gettext"
 	"codeberg.org/dergs/tonearm/internal/notifications"
 	"codeberg.org/dergs/tonearm/internal/resources"
 	"codeberg.org/dergs/tonearm/internal/router"
@@ -26,7 +27,7 @@ func Artist(artistId string) *router.Response {
 
 	artistPage, err := tidal.V2.Artist.Artist(context.Background(), artistId)
 	if err != nil {
-		return router.FromError("Artist", err)
+		return router.FromError(gettext.Get("Artist"), err)
 	}
 
 	body := VStack().Spacing(25).VMargin(20)
@@ -35,7 +36,7 @@ func Artist(artistId string) *router.Response {
 	}
 
 	return &router.Response{
-		PageTitle: "Artist",
+		PageTitle: gettext.Get("Artist"),
 		View: VStack(
 			HStack(
 				AspectFrame(
@@ -53,7 +54,7 @@ func Artist(artistId string) *router.Response {
 						FontSize(18).
 						FontWeight(700).
 						HAlign(gtk.AlignStartValue),
-					Label(fmt.Sprintf("%d Fans", artistPage.Header.FollowersAmount)).
+					Label(gettext.GetN("%d Fan", "%d Fans", artistPage.Header.FollowersAmount, artistPage.Header.FollowersAmount)).
 						FontSize(14).
 						FontWeight(600).
 						HAlign(gtk.AlignStartValue),
@@ -117,7 +118,7 @@ func Artist(artistId string) *router.Response {
 								defer clipboard.Unref()
 
 								clipboard.SetText(fmt.Sprintf("https://tidal.com/artist/%s", artistId))
-								notifications.OnToast.Notify("Copied artist URL to clipboard.")
+								notifications.OnToast.Notify(gettext.Get("Copied artist URL to clipboard."))
 							}),
 					).
 						Spacing(10).
