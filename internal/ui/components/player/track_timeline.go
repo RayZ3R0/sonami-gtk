@@ -1,6 +1,7 @@
 package player
 
 import (
+	"codeberg.org/dergs/tonearm/internal/gettext"
 	"codeberg.org/dergs/tonearm/internal/player"
 	"codeberg.org/dergs/tonearm/internal/signals"
 	"codeberg.org/dergs/tonearm/pkg/schwifty"
@@ -48,16 +49,16 @@ func init() {
 		schwifty.OnMainThreadOncePure(func() {
 			switch quality {
 			case v1.AudioQualityLossy:
-				playbackQualityText.SetValue("Low (96 kbps)")
+				playbackQualityText.SetValue(gettext.Get("Low (96 kbps)"))
 				playbackQualityClass.SetValue("low")
 			case v1.AudioQualityHighRes:
-				playbackQualityText.SetValue("Low (320 kbps)")
+				playbackQualityText.SetValue(gettext.Get("Low (320 kbps)"))
 				playbackQualityClass.SetValue("low")
 			case v1.AudioQualityLossless:
-				playbackQualityText.SetValue("High")
+				playbackQualityText.SetValue(gettext.Get("High"))
 				playbackQualityClass.SetValue("high")
 			case v1.AudioQualityHighResLossless:
-				playbackQualityText.SetValue("Max")
+				playbackQualityText.SetValue(gettext.Get("Max"))
 				playbackQualityClass.SetValue("max")
 			}
 		})

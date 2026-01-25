@@ -10,6 +10,7 @@ import (
 	"time"
 
 	"codeberg.org/dergs/tonearm/internal/g"
+	"codeberg.org/dergs/tonearm/internal/gettext"
 	"codeberg.org/dergs/tonearm/internal/player"
 	"codeberg.org/dergs/tonearm/internal/resources"
 	"codeberg.org/dergs/tonearm/internal/signals"
@@ -380,7 +381,7 @@ func init() {
 				trackTitle.SetValue("")
 				trackArtists.SetValue("")
 
-				setLyricsEmptyState("No song currently playing")
+				setLyricsEmptyState(gettext.Get("No song currently playing"))
 			})
 
 			return signals.Continue
@@ -391,14 +392,14 @@ func init() {
 		if err != nil {
 			logger.Error("Error while fetching lyrics", "error", err)
 			schwifty.OnMainThreadOncePure(func() {
-				setLyricsEmptyState("Error fetching lyrics")
+				setLyricsEmptyState(gettext.Get("Error fetching lyrics"))
 			})
 
 			return signals.Continue
 		}
 
 		if lyrics == "" {
-			setLyricsEmptyState("No lyrics available")
+			setLyricsEmptyState(gettext.Get("No lyrics available"))
 
 			return signals.Continue
 		}

@@ -3,6 +3,7 @@ package routes
 import (
 	"context"
 
+	"codeberg.org/dergs/tonearm/internal/gettext"
 	"codeberg.org/dergs/tonearm/internal/router"
 	"codeberg.org/dergs/tonearm/internal/secrets"
 	"codeberg.org/dergs/tonearm/internal/ui/components"
@@ -29,30 +30,30 @@ func MyCollection() *router.Response {
 	userId := secrets.UserID()
 	if userId == "" {
 		return &router.Response{
-			PageTitle: "My Collection",
-			View:      Label("Please log in to view your collection"),
+			PageTitle: gettext.Get("My Collection"),
+			View:      Label(gettext.Get("Please log in to view your collection")),
 		}
 	}
 
 	userCollection, err := tidal.OpenAPI.V2.UserCollections.UserCollection(context.Background(), userId, "albums.coverArt", "artists.profileArt", "playlists.coverArt", "tracks.artists", "tracks.albums.coverArt")
 	if err != nil {
 		return &router.Response{
-			PageTitle: "My Collection",
-			View:      Label("Error loading collection"),
+			PageTitle: gettext.Get("My Collection"),
+			View:      Label(gettext.Get("Error loading collection")),
 		}
 	}
 
-	artistList := horizontal_list.NewHorizontalList("Artists").SetPageMargin(40).SetViewAllRoute("my-collection/artists")
+	artistList := horizontal_list.NewHorizontalList(gettext.Get("Artists")).SetPageMargin(40).SetViewAllRoute("my-collection/artists")
 	for _, artist := range userCollection.Included.Artists(userCollection.Data.Relationships.Artists.Data...) {
 		artistList.Append(media_card.NewArtist(&artist))
 	}
 
-	albumList := horizontal_list.NewHorizontalList("Albums").SetPageMargin(40).SetViewAllRoute("my-collection/albums")
+	albumList := horizontal_list.NewHorizontalList(gettext.Get("Albums")).SetPageMargin(40).SetViewAllRoute("my-collection/albums")
 	for _, album := range userCollection.Included.Albums(userCollection.Data.Relationships.Albums.Data...) {
 		albumList.Append(media_card.NewAlbum(&album))
 	}
 
-	playlistList := horizontal_list.NewHorizontalList("Playlists").SetPageMargin(40).SetViewAllRoute("my-collection/playlists")
+	playlistList := horizontal_list.NewHorizontalList(gettext.Get("Playlists")).SetPageMargin(40).SetViewAllRoute("my-collection/playlists")
 	for _, playlist := range userCollection.Included.Playlists(userCollection.Data.Relationships.Playlists.Data...) {
 		playlistList.Append(media_card.NewPlaylist(&playlist))
 	}
@@ -68,7 +69,7 @@ func MyCollection() *router.Response {
 	}
 
 	return &router.Response{
-		PageTitle: "My Collection",
+		PageTitle: gettext.Get("My Collection"),
 		View: ScrolledWindow().
 			Child(
 				VStack(
@@ -76,7 +77,7 @@ func MyCollection() *router.Response {
 					albumList,
 					playlistList,
 					VStack(
-						components.NewRowTitle().SetTitle("Tracks").SetViewAllRoute("my-collection/tracks"),
+						components.NewRowTitle().SetTitle(gettext.Get("Tracks")).SetViewAllRoute("my-collection/tracks"),
 						trackList,
 					).HMargin(40),
 					Spacer(),

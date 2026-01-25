@@ -6,6 +6,7 @@ import (
 	"log/slog"
 	"unsafe"
 
+	"codeberg.org/dergs/tonearm/internal/gettext"
 	"codeberg.org/dergs/tonearm/internal/notifications"
 	"codeberg.org/dergs/tonearm/internal/player"
 	"codeberg.org/dergs/tonearm/internal/resources"
@@ -40,7 +41,7 @@ func Playlist(playlistUUID string) *router.Response {
 
 	playlist, err := tidal.OpenAPI.V2.Playlists.Playlist(context.Background(), playlistUUID, "coverArt", "ownerProfiles")
 	if err != nil {
-		return router.FromError("Playlist", err)
+		return router.FromError(gettext.Get("Playlist"), err)
 	}
 
 	paginator := pagination.NewPaginator(tidal.OpenAPI.V2.Playlists, playlistUUID, func(r *openapi.Response[[]openapi.Relationship]) []openapi.Track {
@@ -48,7 +49,7 @@ func Playlist(playlistUUID string) *router.Response {
 	}, "items", "items.artists", "items.albums.coverArt")
 	items, err := paginator.GetFirstPage()
 	if err != nil {
-		return router.FromError("Playlist", err)
+		return router.FromError(gettext.Get("Playlist"), err)
 	}
 
 	creator := "TIDAL"
@@ -80,9 +81,9 @@ func Playlist(playlistUUID string) *router.Response {
 
 	var playlistMetadata schwifty.Label
 	if playlist.Data.Attributes.PlaylistType != openapi.PlaylistTypeMix {
-		playlistMetadata = Label(fmt.Sprintf("%d Tracks (%s)", playlist.Data.Attributes.NumberOfItems, tidalapi.FormatDuration(playlist.Data.Attributes.Duration.Duration)))
+		playlistMetadata = Label(gettext.GetN("%d Track (%s)", "%d Tracks (%s)", playlist.Data.Attributes.NumberOfItems, playlist.Data.Attributes.NumberOfItems, tidalapi.FormatDuration(playlist.Data.Attributes.Duration.Duration)))
 	} else {
-		playlistMetadata = Label("Personal Mix")
+		playlistMetadata = Label(gettext.Get("Personal Mix"))
 	}
 
 	return &router.Response{
@@ -164,7 +165,7 @@ func Playlist(playlistUUID string) *router.Response {
 							ConnectClicked(func(gtk.Button) {
 								id := playlist.Data.ID
 								if id == "" {
-									notifications.OnToast.Notify("No playlist could be shared.")
+									notifications.OnToast.Notify(gettext.Get("No playlist could be shared."))
 									return
 								}
 
@@ -174,7 +175,7 @@ func Playlist(playlistUUID string) *router.Response {
 								defer clipboard.Unref()
 
 								clipboard.SetText(fmt.Sprintf("https://tidal.com/playlist/%s", id))
-								notifications.OnToast.Notify("Copied playlist URL to clipboard.")
+								notifications.OnToast.Notify(gettext.Get("Copied playlist URL to clipboard."))
 							}),
 					).
 						Spacing(10).

@@ -9,6 +9,7 @@ require (
 	github.com/infinytum/injector v0.0.3
 	github.com/jeandeaual/go-locale v0.0.0-20250612000132-0ef82f21eade
 	github.com/jwijenbergh/puregotk v0.0.0-20251201161753-28ec1479c381
+	github.com/leonelquinteros/gotext v1.7.2
 	github.com/lescuer97/go-libsecret v0.0.0-20251130160347-067b741bcf5a
 	github.com/qjebbs/go-jsons v1.0.0-alpha.4
 	github.com/sosodev/duration v1.3.1

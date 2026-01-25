@@ -2,11 +2,11 @@ package routes
 
 import (
 	"context"
-	"fmt"
 	"log/slog"
 	"strings"
 	"unsafe"
 
+	"codeberg.org/dergs/tonearm/internal/gettext"
 	"codeberg.org/dergs/tonearm/internal/player"
 	"codeberg.org/dergs/tonearm/internal/resources"
 	"codeberg.org/dergs/tonearm/internal/router"
@@ -42,12 +42,12 @@ func Album(albumId string) *router.Response {
 
 	album, err := tidal.OpenAPI.V2.Albums.Album(context.Background(), albumId, "coverArt", "artists", "coverArt")
 	if err != nil {
-		return router.FromError("Album", err)
+		return router.FromError(gettext.Get("Album"), err)
 	}
 
 	items, err := paginator.GetFirstPage()
 	if err != nil {
-		return router.FromError("Album", err)
+		return router.FromError(gettext.Get("Album"), err)
 	}
 
 	artists := []string{}
@@ -103,7 +103,7 @@ func Album(albumId string) *router.Response {
 						FontSize(16).
 						FontWeight(500).
 						HAlign(gtk.AlignStartValue),
-					Label(fmt.Sprintf("%d Tracks (%s)", album.Data.Attributes.NumberOfItems, tidalapi.FormatDuration(album.Data.Attributes.Duration.Duration))).
+					Label(gettext.GetN("%d Track (%s)", "%d Tracks (%s)", album.Data.Attributes.NumberOfItems, album.Data.Attributes.NumberOfItems, tidalapi.FormatDuration(album.Data.Attributes.Duration.Duration))).
 						FontSize(14).
 						FontWeight(600).
 						HAlign(gtk.AlignStartValue).

@@ -1,15 +1,16 @@
 package router
 
 import (
+	"codeberg.org/dergs/tonearm/internal/gettext"
 	. "codeberg.org/dergs/tonearm/pkg/schwifty/syntax"
 )
 
 func notFoundHandler() *Response {
 	return &Response{
-		PageTitle: "Not Found",
+		PageTitle: gettext.Get("Not Found"),
 		View: StatusPage().
-			Title("Not found").
-			Description("The requested deeplink did not have any available handlers.").
+			Title(gettext.Get("Not found")).
+			Description(gettext.Get("The requested deeplink did not have any available handlers.")).
 			IconName("sentiment-dissatisfied-symbolic"),
 	}
 }

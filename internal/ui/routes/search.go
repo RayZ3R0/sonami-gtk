@@ -5,6 +5,7 @@ import (
 	"log/slog"
 	"time"
 
+	"codeberg.org/dergs/tonearm/internal/gettext"
 	"codeberg.org/dergs/tonearm/internal/router"
 	"codeberg.org/dergs/tonearm/internal/ui/routes/search"
 	"codeberg.org/dergs/tonearm/pkg/schwifty/state"
@@ -21,11 +22,11 @@ func init() {
 		searchHandler := OnSearch(scrollChildState)
 
 		return &router.Response{
-			PageTitle: "Search",
+			PageTitle: gettext.Get("Search"),
 			Toolbar: SearchEntry().
 				HExpand(true).
 				MarginEnd(40).
-				PlaceholderText("E.g. Fox Stevenson").
+				PlaceholderText(gettext.Get("E.g. Fox Stevenson")).
 				SearchDelay(1000).
 				ConnectActivate(func(se gtk.SearchEntry) {
 					searchState.SetValue(true)

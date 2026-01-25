@@ -6,6 +6,7 @@ import (
 	"log/slog"
 	"strconv"
 
+	"codeberg.org/dergs/tonearm/internal/gettext"
 	"codeberg.org/dergs/tonearm/internal/notifications"
 	"codeberg.org/dergs/tonearm/internal/player"
 	"codeberg.org/dergs/tonearm/internal/router"
@@ -57,7 +58,7 @@ func controlsButtonRow() schwifty.Box {
 
 				if err != nil {
 					if err.Error() == "unexpected status code: 404" {
-						notifications.OnToast.Notify("No mix found for the current track")
+						notifications.OnToast.Notify(gettext.Get("No mix found for the current track"))
 						return
 					}
 
@@ -98,7 +99,7 @@ func controlsButtonRow() schwifty.Box {
 			BindSensitive(isTrackLoaded).
 			ConnectClicked(func(gtk.Button) {
 				if trackID == "" {
-					notifications.OnToast.Notify("No track is currently playing.")
+					notifications.OnToast.Notify(gettext.Get("No track is currently playing."))
 					return
 				}
 
@@ -108,7 +109,7 @@ func controlsButtonRow() schwifty.Box {
 				defer clipboard.Unref()
 
 				clipboard.SetText(fmt.Sprintf("https://tidal.com/track/%s?u", trackID))
-				notifications.OnToast.Notify("Copied track URL to clipboard.")
+				notifications.OnToast.Notify(gettext.Get("Copied track URL to clipboard."))
 			}),
 	).
 		HAlign(gtk.AlignCenterValue).

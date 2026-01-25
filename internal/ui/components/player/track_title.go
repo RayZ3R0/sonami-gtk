@@ -1,6 +1,7 @@
 package player
 
 import (
+	"codeberg.org/dergs/tonearm/internal/gettext"
 	"codeberg.org/dergs/tonearm/internal/player"
 	"codeberg.org/dergs/tonearm/internal/signals"
 	"codeberg.org/dergs/tonearm/pkg/schwifty"
@@ -16,7 +17,7 @@ func init() {
 	player.TrackChanged.On(func(trackInfo *player.Track) bool {
 		schwifty.OnMainThreadOncePure(func() {
 			if trackInfo == nil {
-				titleState.SetValue("No Track")
+				titleState.SetValue(gettext.Get("No Track"))
 			} else {
 				titleState.SetValue(trackInfo.Title)
 			}
@@ -26,7 +27,7 @@ func init() {
 }
 
 func trackTitle() schwifty.Label {
-	return Label("No Track").
+	return Label(gettext.Get("No Track")).
 		BindText(titleState).
 		FontSize(24).
 		FontWeight(800).

@@ -3,6 +3,7 @@ package shortcut_list
 import (
 	"time"
 
+	"codeberg.org/dergs/tonearm/internal/gettext"
 	"codeberg.org/dergs/tonearm/internal/router"
 	"codeberg.org/dergs/tonearm/pkg/schwifty"
 	v2 "codeberg.org/dergs/tonearm/pkg/tidalapi/models/v2"
@@ -13,7 +14,7 @@ import (
 func newDeepLink(id string, name string, external bool, url string, coverUrl string) schwifty.Button {
 	subtitle := ""
 	if external {
-		subtitle = "External Link"
+		subtitle = gettext.Get("External Link")
 	}
 	return NewShortcut(
 		name,
