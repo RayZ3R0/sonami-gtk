@@ -63,7 +63,7 @@ func NewPlayer() schwifty.CenterBox {
 						}),
 					Button().
 						BindSensitive(isControllable).
-						IconName("seek-backward-symbolic").
+						IconName("skip-backward-large-symbolic").
 						MinHeight(34).
 						MinWidth(34).
 						WithCSSClass("transparent").
@@ -71,7 +71,7 @@ func NewPlayer() schwifty.CenterBox {
 					controlsPlayPause(),
 					Button().
 						BindSensitive(isControllable).
-						IconName("seek-forward-symbolic").
+						IconName("skip-forward-large-symbolic").
 						MinHeight(34).
 						MinWidth(34).
 						WithCSSClass("transparent").
