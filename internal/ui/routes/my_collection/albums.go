@@ -2,17 +2,30 @@ package my_collection
 
 import (
 	"context"
+	"log/slog"
 
 	"codeberg.org/dergs/tonearm/internal/gettext"
 	"codeberg.org/dergs/tonearm/internal/router"
 	"codeberg.org/dergs/tonearm/internal/secrets"
 	"codeberg.org/dergs/tonearm/internal/ui/components/media_card"
+	"codeberg.org/dergs/tonearm/pkg/schwifty"
 	. "codeberg.org/dergs/tonearm/pkg/schwifty/syntax"
 	"codeberg.org/dergs/tonearm/pkg/tidalapi"
+	"codeberg.org/dergs/tonearm/pkg/tidalapi/models/openapi"
+	"codeberg.org/dergs/tonearm/pkg/tidalapi/openapi/v2/user_collections"
+	"codeberg.org/dergs/tonearm/pkg/tidalapi/pagination"
 	"github.com/infinytum/injector"
 	"github.com/jwijenbergh/puregotk/v4/adw"
 	"github.com/jwijenbergh/puregotk/v4/gtk"
 )
+
+type itemizedUserAlbumsCollection struct {
+	*user_collections.UserCollections
+}
+
+func (i *itemizedUserAlbumsCollection) Items(ctx context.Context, id, cursor string, include ...string) (*openapi.Response[[]openapi.Relationship], error) {
+	return i.Albums(ctx, id, cursor, include...)
+}
 
 func Albums() *router.Response {
 	tidal := injector.MustInject[*tidalapi.TidalAPI]()
@@ -24,7 +37,13 @@ func Albums() *router.Response {
 		}
 	}
 
-	userCollection, err := tidal.OpenAPI.V2.UserCollections.Albums(context.Background(), userId, "", "albums.coverArt", "albums.artists")
+	itemizedCollection := &itemizedUserAlbumsCollection{tidal.OpenAPI.V2.UserCollections}
+
+	paginator := pagination.NewPaginator(itemizedCollection, userId, func(r *openapi.Response[[]openapi.Relationship]) []openapi.Album {
+		return r.Included.Albums(r.Data...)
+	}, "albums.coverArt", "albums.artists")
+
+	userCollection, err := paginator.GetFirstPage()
 	if err != nil {
 		return &router.Response{
 			PageTitle: gettext.Get("My Collection"),
@@ -33,16 +52,38 @@ func Albums() *router.Response {
 	}
 
 	children := make([]any, 0)
-	for _, album := range userCollection.Included.Albums(userCollection.Data...) {
+	for _, album := range userCollection {
 		children = append(children, CenterBox().CenterWidget(media_card.NewAlbum(&album)))
 	}
+
+	list := WrapBox(children...).VMargin(20).VAlign(gtk.AlignStartValue).Justify(adw.JustifyFillValue).JustifyLastLine(true).ToGTK()
 
 	return &router.Response{
 		PageTitle: gettext.Get("My Albums"),
 		View: ScrolledWindow().
-			Child(
-				WrapBox(children...).VMargin(20).VAlign(gtk.AlignStartValue).Justify(adw.JustifyFillValue).JustifyLastLine(true),
-			).
+			Child(list).
+			ConnectEdgeReached(func(sw gtk.ScrolledWindow, pt gtk.PositionType) {
+				if pt == gtk.PosBottomValue {
+					go func() {
+						if !paginator.IsConsumed() {
+							items, err := paginator.Next()
+							if err != nil {
+								return
+							}
+
+							schwifty.OnMainThreadOnce(func(u uintptr) {
+								list := adw.WrapBoxNewFromInternalPtr(u)
+								for _, album := range items {
+									child := CenterBox().CenterWidget(media_card.NewAlbum(&album)).ToGTK()
+									list.Append(child)
+								}
+							}, list.GoPointer())
+						} else {
+							slog.Debug("No more albums to fetch")
+						}
+					}()
+				}
+			}).
 			Policy(gtk.PolicyNeverValue, gtk.PolicyAutomaticValue),
 	}
 }
