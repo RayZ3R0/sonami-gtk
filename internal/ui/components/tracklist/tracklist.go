@@ -81,6 +81,12 @@ func (t *TrackList[TrackType]) onBind(_ gtk.SignalListItemFactory, listItem *gtk
 	}
 }
 
+func (t *TrackList[TrackType]) onUnbind(_ gtk.SignalListItemFactory, listItem *gtk.ListItem) {
+	grid := gtk.GridNewFromInternalPtr(listItem.GetChild().GoPointer())
+	defer grid.Unref()
+	grid.RemoveRow(0)
+}
+
 func (t *TrackList[TrackType]) onSetup(_ gtk.SignalListItemFactory, listItem *gtk.ListItem) {
 	grid := gtk.NewGrid()
 	defer grid.Unref()
@@ -159,7 +165,8 @@ func NewTrackList[TrackType comparable](columnFuncs ...ColumnFunc[TrackType]) *T
 
 	factory := factory.NewSignalListItemFactory().
 		ConnectSetup(t.onSetup).
-		ConnectBind(t.onBind)()
+		ConnectBind(t.onBind).
+		ConnectUnbind(t.onUnbind)()
 
 	listView := gtk.NewListView(gtk.NewNoSelection(t.store), &factory.ListItemFactory)
 	listView.SetSingleClickActivate(false)
