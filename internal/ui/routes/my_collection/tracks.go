@@ -19,11 +19,11 @@ import (
 	"github.com/jwijenbergh/puregotk/v4/gtk"
 )
 
-type ItemizedUserTracksCollection struct {
+type itemizedUserTracksCollection struct {
 	*user_collections.UserCollections
 }
 
-func (i *ItemizedUserTracksCollection) Items(ctx context.Context, id, cursor string, include ...string) (*openapi.Response[[]openapi.Relationship], error) {
+func (i *itemizedUserTracksCollection) Items(ctx context.Context, id, cursor string, include ...string) (*openapi.Response[[]openapi.Relationship], error) {
 	return i.Tracks(ctx, id, cursor, include...)
 }
 
@@ -38,7 +38,7 @@ func Tracks() *router.Response {
 	}
 
 	// userCollection, err := tidal.OpenAPI.V2.UserCollections.Tracks(context.Background(), userId, "", "tracks.artists", "tracks.albums.coverArt")
-	paginatedCollection := &ItemizedUserTracksCollection{tidal.OpenAPI.V2.UserCollections}
+	paginatedCollection := &itemizedUserTracksCollection{tidal.OpenAPI.V2.UserCollections}
 
 	paginator := pagination.NewPaginator(paginatedCollection, userId, func(r *openapi.Response[[]openapi.Relationship]) []openapi.Track {
 		return r.Included.Tracks(r.Data...)
