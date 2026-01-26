@@ -31,6 +31,7 @@
     <file alias="seek-backward-symbolic.svg">scalable/actions/seek-backward-symbolic.svg</file>
     <file alias="seek-forward-symbolic.svg">scalable/actions/seek-forward-symbolic.svg</file>
     <file alias="user-trash-symbolic.svg">scalable/actions/user-trash-symbolic.svg</file>
+    <file alias="skip-backward-large-symbolic.svg">scalable/actions/skip-backward-large-symbolic.svg</file>
     <file alias="skip-forward-large-symbolic.svg">scalable/actions/skip-forward-large-symbolic.svg</file>
     <file alias="image-missing-symbolic.svg">scalable/actions/image-missing-symbolic.svg</file>
     <file alias="speedometer5-symbolic.svg">scalable/actions/speedometer5-symbolic.svg</file>
