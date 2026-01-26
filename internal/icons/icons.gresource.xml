@@ -28,8 +28,6 @@
     <file alias="speakers-symbolic.svg">scalable/actions/speakers-symbolic.svg</file>
     <file alias="share-alt-symbolic.svg">scalable/actions/share-alt-symbolic.svg</file>
     <file alias="playlist-shuffle-symbolic.svg">scalable/actions/playlist-shuffle-symbolic.svg</file>
-    <file alias="seek-backward-symbolic.svg">scalable/actions/seek-backward-symbolic.svg</file>
-    <file alias="seek-forward-symbolic.svg">scalable/actions/seek-forward-symbolic.svg</file>
     <file alias="user-trash-symbolic.svg">scalable/actions/user-trash-symbolic.svg</file>
     <file alias="skip-backward-large-symbolic.svg">scalable/actions/skip-backward-large-symbolic.svg</file>
     <file alias="skip-forward-large-symbolic.svg">scalable/actions/skip-forward-large-symbolic.svg</file>
