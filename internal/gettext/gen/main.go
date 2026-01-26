@@ -1,10 +1,13 @@
 package main
 
 import (
+	"bufio"
+	"bytes"
 	"fmt"
 	"go/ast"
 	"go/parser"
 	"go/token"
+	"io"
 	"os"
 	"os/exec"
 	"path/filepath"
@@ -51,13 +54,17 @@ func main() {
 		return
 	}
 
-	err = generatePOTFile(outputFile, messages)
+	changed, err := generatePOTFile(outputFile, messages)
 	if err != nil {
 		fmt.Fprintf(os.Stderr, "Error generating POT file: %v\n", err)
 		os.Exit(1)
 	}
 
-	fmt.Printf("Generated %s with %d messages\n", outputFile, len(messages))
+	if changed {
+		fmt.Printf("Generated %s with %d messages\n", outputFile, len(messages))
+	} else {
+		fmt.Printf("%s is up to date with %d messages\n", outputFile, len(messages))
+	}
 }
 
 func findProjectRoot() (string, error) {
@@ -224,56 +231,102 @@ func extractStringLiteral(expr ast.Expr) string {
 	return ""
 }
 
-func generatePOTFile(filename string, messages []Message) error {
-	file, err := os.Create(filename)
+func generatePOTFile(filename string, messages []Message) (bool, error) {
+	var buf bytes.Buffer
+	err := writePOTContent(&buf, messages)
 	if err != nil {
-		return err
+		return false, err
 	}
-	defer file.Close()
+	newContent := buf.Bytes()
 
+	existingContent, err := os.ReadFile(filename)
+	if err == nil {
+		if messagesEqual(existingContent, newContent) {
+			return false, nil
+		}
+	}
+
+	err = os.WriteFile(filename, newContent, 0644)
+	if err != nil {
+		return false, err
+	}
+
+	return true, nil
+}
+
+func writePOTContent(w io.Writer, messages []Message) error {
 	version := "PACKAGE VERSION"
 	cmd := exec.Command("git", "describe", "--tags", "--long", "--abbrev=7")
 	if output, err := cmd.Output(); err == nil {
 		version = strings.TrimSpace(string(output))
 	}
 
-	fmt.Fprintln(file, "# SOME DESCRIPTIVE TITLE.")
-	fmt.Fprintln(file, "# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER")
-	fmt.Fprintln(file, "# This file is distributed under the same license as the PACKAGE package.")
-	fmt.Fprintln(file, "# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.")
-	fmt.Fprintln(file, "#")
-	fmt.Fprintln(file, "#, fuzzy")
-	fmt.Fprintln(file, "msgid \"\"")
-	fmt.Fprintln(file, "msgstr \"\"")
-	fmt.Fprintln(file, "\"Project-Id-Version: "+version+"\\n\"")
-	fmt.Fprintln(file, "\"Report-Msgid-Bugs-To: \\n\"")
-	fmt.Fprintf(file, "\"POT-Creation-Date: %s\\n\"\n", time.Now().Format("2006-01-02 15:04-0700"))
-	fmt.Fprintln(file, "\"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\\n\"")
-	fmt.Fprintln(file, "\"Last-Translator: FULL NAME <EMAIL@ADDRESS>\\n\"")
-	fmt.Fprintln(file, "\"Language-Team: LANGUAGE <LL@li.org>\\n\"")
-	fmt.Fprintln(file, "\"Language: \\n\"")
-	fmt.Fprintln(file, "\"MIME-Version: 1.0\\n\"")
-	fmt.Fprintln(file, "\"Content-Type: text/plain; charset=UTF-8\\n\"")
-	fmt.Fprintln(file, "\"Content-Transfer-Encoding: 8bit\\n\"")
-	fmt.Fprintln(file)
+	fmt.Fprintln(w, "# SOME DESCRIPTIVE TITLE.")
+	fmt.Fprintln(w, "# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER")
+	fmt.Fprintln(w, "# This file is distributed under the same license as the PACKAGE package.")
+	fmt.Fprintln(w, "# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.")
+	fmt.Fprintln(w, "#")
+	fmt.Fprintln(w, "#, fuzzy")
+	fmt.Fprintln(w, "msgid \"\"")
+	fmt.Fprintln(w, "msgstr \"\"")
+	fmt.Fprintln(w, "\"Project-Id-Version: "+version+"\\n\"")
+	fmt.Fprintln(w, "\"Report-Msgid-Bugs-To: \\n\"")
+	fmt.Fprintf(w, "\"POT-Creation-Date: %s\\n\"\n", time.Now().Format("2006-01-02 15:04-0700"))
+	fmt.Fprintln(w, "\"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\\n\"")
+	fmt.Fprintln(w, "\"Last-Translator: FULL NAME <EMAIL@ADDRESS>\\n\"")
+	fmt.Fprintln(w, "\"Language-Team: LANGUAGE <LL@li.org>\\n\"")
+	fmt.Fprintln(w, "\"Language: \\n\"")
+	fmt.Fprintln(w, "\"MIME-Version: 1.0\\n\"")
+	fmt.Fprintln(w, "\"Content-Type: text/plain; charset=UTF-8\\n\"")
+	fmt.Fprintln(w, "\"Content-Transfer-Encoding: 8bit\\n\"")
+	fmt.Fprintln(w)
 
-	// Write messages
 	for _, msg := range messages {
-		fmt.Fprintf(file, "#: %s:%d\n", msg.File, msg.Line)
+		fmt.Fprintf(w, "#: %s:%d\n", msg.File, msg.Line)
 
 		if msg.IsPlural {
-			fmt.Fprintf(file, "msgid %s\n", quotePOString(msg.ID))
-			fmt.Fprintf(file, "msgid_plural %s\n", quotePOString(msg.IDPlural))
-			fmt.Fprintln(file, "msgstr[0] \"\"")
-			fmt.Fprintln(file, "msgstr[1] \"\"")
+			fmt.Fprintf(w, "msgid %s\n", quotePOString(msg.ID))
+			fmt.Fprintf(w, "msgid_plural %s\n", quotePOString(msg.IDPlural))
+			fmt.Fprintln(w, "msgstr[0] \"\"")
+			fmt.Fprintln(w, "msgstr[1] \"\"")
 		} else {
-			fmt.Fprintf(file, "msgid %s\n", quotePOString(msg.ID))
-			fmt.Fprintln(file, "msgstr \"\"")
+			fmt.Fprintf(w, "msgid %s\n", quotePOString(msg.ID))
+			fmt.Fprintln(w, "msgstr \"\"")
 		}
-		fmt.Fprintln(file)
+		fmt.Fprintln(w)
 	}
 
 	return nil
+}
+
+func messagesEqual(content1, content2 []byte) bool {
+	msgs1 := extractMessageSection(content1)
+	msgs2 := extractMessageSection(content2)
+	return bytes.Equal(msgs1, msgs2)
+}
+
+func extractMessageSection(content []byte) []byte {
+	scanner := bufio.NewScanner(bytes.NewReader(content))
+	var result bytes.Buffer
+	inHeader := true
+
+	for scanner.Scan() {
+		line := scanner.Text()
+
+		// Skip until we find the first message entry
+		if inHeader {
+			if strings.HasPrefix(line, "#:") {
+				inHeader = false
+			} else {
+				continue
+			}
+		}
+
+		result.WriteString(line)
+		result.WriteByte('\n')
+	}
+
+	return result.Bytes()
 }
 
 func quotePOString(s string) string {
@@ -283,18 +336,19 @@ func quotePOString(s string) string {
 			return fmt.Sprintf("\"%s\"", escapeForPO(s))
 		}
 
-		result := "\"\"\n"
+		var buf bytes.Buffer
+		fmt.Fprint(&buf, "\"\"\n")
 		for i, line := range lines {
 			if i == len(lines)-1 && line == "" {
 				break
 			}
 			if i == len(lines)-1 {
-				result += fmt.Sprintf("\"%s\"", escapeForPO(line))
+				fmt.Fprintf(&buf, "\"%s\"", escapeForPO(line))
 			} else {
-				result += fmt.Sprintf("\"%s\\n\"\n", escapeForPO(line))
+				fmt.Fprintf(&buf, "\"%s\\n\"\n", escapeForPO(line))
 			}
 		}
-		return result
+		return buf.String()
 	}
 
 	return fmt.Sprintf("\"%s\"", escapeForPO(s))
