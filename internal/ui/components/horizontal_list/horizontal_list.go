@@ -51,6 +51,7 @@ func NewHorizontalList(title string) *HorizontalList {
 	nextButton := Button().
 		MinHeight(10).MinWidth(10).HPadding(10).
 		Child(Image().FromIconName("right-symbolic").PixelSize(10)).
+		TooltipText(gettext.Get("Scroll to the right")).
 		ConnectClicked(func(b gtk.Button) {
 			current := hAdjust.GetValue()
 			current -= math.Mod(current, 192)
@@ -61,6 +62,7 @@ func NewHorizontalList(title string) *HorizontalList {
 	previousButton := Button().
 		MinHeight(10).MinWidth(10).HPadding(10).
 		Child(Image().FromIconName("left-symbolic").PixelSize(10)).
+		TooltipText(gettext.Get("Scroll to the left")).
 		ConnectClicked(func(b gtk.Button) {
 			current := hAdjust.GetValue()
 			if math.Mod(current, 192) > 0 {

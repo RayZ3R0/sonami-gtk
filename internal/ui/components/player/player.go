@@ -1,6 +1,7 @@
 package player
 
 import (
+	"codeberg.org/dergs/tonearm/internal/gettext"
 	"codeberg.org/dergs/tonearm/internal/player"
 	"codeberg.org/dergs/tonearm/internal/signals"
 	"codeberg.org/dergs/tonearm/pkg/schwifty"
@@ -43,6 +44,7 @@ func NewPlayer() schwifty.CenterBox {
 				HStack(
 					Button().
 						IconName("playlist-shuffle-symbolic").
+						TooltipText(gettext.Get("Toggle Shuffle")).
 						MinHeight(34).
 						MinWidth(34).
 						WithCSSClass("transparent").
@@ -63,6 +65,7 @@ func NewPlayer() schwifty.CenterBox {
 						}),
 					Button().
 						BindSensitive(isControllable).
+						TooltipText(gettext.Get("Previous")).
 						IconName("skip-backward-large-symbolic").
 						MinHeight(34).
 						MinWidth(34).
@@ -71,12 +74,14 @@ func NewPlayer() schwifty.CenterBox {
 					controlsPlayPause(),
 					Button().
 						BindSensitive(isControllable).
+						TooltipText(gettext.Get("Next")).
 						IconName("skip-forward-large-symbolic").
 						MinHeight(34).
 						MinWidth(34).
 						WithCSSClass("transparent").
 						ActionName("win.player.next"),
 					Button().
+						TooltipText(gettext.Get("Toggle Repeat")).
 						MinHeight(34).
 						MinWidth(34).
 						WithCSSClass("transparent").

@@ -1,6 +1,7 @@
 package player
 
 import (
+	"codeberg.org/dergs/tonearm/internal/gettext"
 	"codeberg.org/dergs/tonearm/internal/player"
 	"codeberg.org/dergs/tonearm/internal/signals"
 	"codeberg.org/dergs/tonearm/pkg/schwifty"
@@ -31,6 +32,7 @@ func init() {
 func controlsPlayPause() schwifty.Button {
 	var controllableStateSub *signals.Subscription
 	return Button().
+		TooltipText(gettext.Get("Play / Pause")).
 		IconName(playPauseIconState.Value()).
 		BindIconName(playPauseIconState).
 		BindSensitive(isControllable).
