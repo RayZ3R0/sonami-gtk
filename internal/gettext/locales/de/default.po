@@ -2,20 +2,22 @@
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the PACKAGE package.
 # FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+# Nila The Dragon <nilathedragon@pm.me>, 2026.
 #
-#, fuzzy
 msgid ""
 msgstr ""
-"Project-Id-Version: v1.0.0-12-g1ce38cd\n"
+"Project-Id-Version: 1\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2026-01-26 02:40+0100\n"
-"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
-"Language-Team: LANGUAGE <LL@li.org>\n"
-"Language: \n"
+"PO-Revision-Date: 2026-01-26 02:52+0100\n"
+"Last-Translator: Nila The Dragon <nilathedragon@pm.me>\n"
+"Language-Team: en_US\n"
+"Language: en_US\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Generator: Gtranslator 49.0\n"
 
 #: internal/ui/routes/artist.go:57
 msgid "%d Fan"
@@ -26,18 +28,18 @@ msgstr[1] ""
 #: internal/ui/components/media_card/playlist.go:18
 msgid "%d Track"
 msgid_plural "%d Tracks"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "%d Titel"
+msgstr[1] "%d Titel"
 
 #: internal/ui/routes/album.go:106
 msgid "%d Track (%s)"
 msgid_plural "%d Tracks (%s)"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "%d Titel (%s)"
+msgstr[1] "%d Titel (%s)"
 
 #: internal/ui/window_sidebar.go:35
 msgid "About Tonearm"
-msgstr ""
+msgstr "Über Tonearm"
 
 #: internal/ui/routes/album.go:45
 msgid "Album"
@@ -45,167 +47,173 @@ msgstr ""
 
 #: internal/ui/routes/my-collection.go:51
 msgid "Albums"
-msgstr ""
+msgstr "Alben"
 
 #: internal/ui/window_preferences.go:14
 msgid "Allow Background Activity"
-msgstr ""
+msgstr "Hintergrundaktivitäten erlauben"
 
 #: internal/ui/window_preferences.go:45
 msgid "Allow Media Card Images"
-msgstr ""
+msgstr "Bilder bei Media Cards"
 
 #: internal/ui/window_preferences.go:51
 msgid "Allow Shortcut Images"
-msgstr ""
+msgstr "Bilder bei Verknüpfungen"
 
 #: internal/ui/window_preferences.go:46
 msgid "Allow Tonearm to load images for media card buttons."
-msgstr ""
+msgstr "Das Laden von Bildern bei Media Cards erlauben"
 
 #: internal/ui/window_preferences.go:52
 msgid "Allow Tonearm to load images for shortcut buttons."
-msgstr ""
+msgstr "Das Laden von Bildern bei Verknüpfungen erlauben"
 
 #: internal/ui/window_preferences.go:58
 msgid "Allow Tonearm to load images for tracklists with the cover column."
-msgstr ""
+msgstr "Das Laden von Bildern in der Titelliste erlauben"
 
 #: internal/ui/window_preferences.go:15
-msgid "Allow Tonearm to run in the background by hiding the player window instead of quitting the application"
-msgstr ""
+msgid ""
+"Allow Tonearm to run in the background by hiding the player window instead "
+"of quitting the application"
+msgstr "Erlaube Tonearm im Hintergrund weiter zu laufen"
 
 #: internal/ui/window_preferences.go:75
 msgid "Allow Tonearm to send scrobbling data to ListenBrainz"
-msgstr ""
+msgstr "Erlaube Tonearm Scrobbling Daten an ListenBrainz zu senden"
 
 #: internal/ui/window_preferences.go:64
-msgid "Allow Tonearm to temporarily store images on the file system to improve performance and reduce network traffic."
+msgid ""
+"Allow Tonearm to temporarily store images on the file system to improve "
+"performance and reduce network traffic."
 msgstr ""
+"Erlaube Tonearm Bilder auf deinem Computer zwischenzuspeichern um die "
+"Leistung zu verbessern und den Netzwerkverkehr zu reduzieren."
 
 #: internal/ui/window_preferences.go:57
 msgid "Allow Tracklist Images"
-msgstr ""
+msgstr "Bilder bei Titellisten"
 
 #: internal/ui/routes/artist.go:30
 msgid "Artist"
-msgstr ""
+msgstr "Künstler"
 
 #: internal/ui/routes/my-collection.go:46
 msgid "Artists"
-msgstr ""
+msgstr "Künstler"
 
 #: internal/ui/window_shortcuts.go:19
 msgid "Back"
-msgstr ""
+msgstr "Zurück"
 
 #: internal/ui/window_preferences.go:20
 msgid "Background Activity"
-msgstr ""
+msgstr "Hintergrundaktivität"
 
 #: internal/ui/window_shortcuts.go:17
 msgid "Basic Shortcuts"
-msgstr ""
+msgstr "Grundlegende Kurzbefehle"
 
 #: internal/ui/window_preferences.go:63
 msgid "Cache Images"
-msgstr ""
+msgstr "Bilder zwischenspeichern"
 
 #: internal/ui/components/linking/linking.go:82
 msgid "Cancel Login"
-msgstr ""
+msgstr "Anmeldevorgang abbrechen"
 
 #: internal/ui/window_shortcuts.go:11
 msgid "Close"
-msgstr ""
+msgstr "Schliessen"
 
 #: internal/ui/window_content.go:25
 msgid "Collection"
-msgstr ""
+msgstr "Sammlung"
 
 #: internal/ui/window_preferences.go:86
 msgid "Configure Tonearm to send scrobbling data to ListenBrainz."
-msgstr ""
+msgstr "Konfiguriere Tonearm um Scrobbling Daten an ListenBrainz zu senden"
 
 #: internal/ui/window_preferences.go:68
 msgid "Configure the behaviour of Tonearm regarding images."
-msgstr ""
+msgstr "Entscheide welche Bilder Tonearm laden soll"
 
 #: internal/ui/window_preferences.go:39
 msgid "Configure the behaviour of Tonearm when navigating between pages."
-msgstr ""
+msgstr "Entscheide wie Tonearm sich bei der Navigation verhalten soll"
 
 #: internal/ui/window_preferences.go:21
 msgid "Configure the behaviour of Tonearm when running in the background."
-msgstr ""
+msgstr "Entscheide wie Tonearm sich im Hintergrund verhalten soll"
 
 #: internal/ui/routes/artist.go:121
 msgid "Copied artist URL to clipboard."
-msgstr ""
+msgstr "Profillink kopiert"
 
 #: internal/ui/routes/playlist.go:178
 msgid "Copied playlist URL to clipboard."
-msgstr ""
+msgstr "Playlistlink kopiert"
 
 #: internal/ui/components/player/controls_buttonrow.go:112
 msgid "Copied track URL to clipboard."
-msgstr ""
+msgstr "Titellink kopiert"
 
 #: internal/ui/window_preferences.go:24
 msgid "Default Page"
-msgstr ""
+msgstr "Hauptseite"
 
 #: internal/ui/routes/search.go:29
 msgid "E.g. Fox Stevenson"
-msgstr ""
+msgstr "z.B. Fox Stevenson"
 
 #: internal/ui/window_preferences.go:74
 msgid "Enable ListenBrainz"
-msgstr ""
+msgstr "ListenBrainz aktivieren"
 
 #: internal/ui/components/lyrics/lyrics.go:395
 msgid "Error fetching lyrics"
-msgstr ""
+msgstr "Während dem Abruf des Songtextes ist ein Fehler aufgetreten"
 
 #: internal/ui/routes/my-collection.go:42
 msgid "Error loading collection"
-msgstr ""
+msgstr "Während dem Abruf deiner Sammlung ist ein Fehler aufgetreten"
 
 #: internal/ui/routes/explore.go:28
 msgid "Explore"
-msgstr ""
+msgstr "Entdecken"
 
 #: internal/ui/components/shortcut_list/deeplink.go:17
 msgid "External Link"
-msgstr ""
+msgstr "Externer Link"
 
 #: internal/ui/window_preferences.go:40
 msgid "General"
-msgstr ""
+msgstr "Allgemein"
 
 #: internal/ui/components/player/track_timeline.go:58
 msgid "High"
-msgstr ""
+msgstr "Hoch"
 
 #: internal/ui/window_preferences.go:32
 msgid "History Length"
-msgstr ""
+msgstr "Maximale Verlaufslänge"
 
 #: internal/ui/routes/home.go:23
 msgid "Home"
-msgstr ""
+msgstr "Hauptseite"
 
 #: internal/ui/window_preferences.go:68
 msgid "Images"
-msgstr ""
+msgstr "Bilder"
 
 #: internal/router/handler_error.go:10
 msgid "Internal Error"
-msgstr ""
+msgstr "Interner Fehler"
 
 #: internal/ui/window_shortcuts.go:15
 msgid "Keyboard Shortcuts"
-msgstr ""
+msgstr "Tastaturkurzbefehle"
 
 #: internal/ui/window_preferences.go:85
 msgid "ListenBrainz"
@@ -213,67 +221,68 @@ msgstr ""
 
 #: internal/ui/window_preferences.go:80
 msgid "ListenBrainz API Token"
-msgstr ""
+msgstr "ListenBrainz API Schlüssel"
 
 #: internal/ui/components/player/track_timeline.go:55
 msgid "Low (320 kbps)"
-msgstr ""
+msgstr "Niedrig (320 kbps)"
 
 #: internal/ui/components/player/track_timeline.go:52
 msgid "Low (96 kbps)"
-msgstr ""
+msgstr "Niedrig (96 kbps)"
 
 #: internal/ui/window_sidebar.go:74
 msgid "Lyrics"
-msgstr ""
+msgstr "Songtext"
 
 #: internal/ui/window_shortcuts.go:14
 msgid "Main Menu"
-msgstr ""
+msgstr "Hauptmenü"
 
 #: internal/ui/components/player/track_timeline.go:61
 msgid "Max"
-msgstr ""
+msgstr "Max"
 
 #: internal/ui/window_preferences.go:33
 msgid "Maximum history length before dropping old entries."
 msgstr ""
+"Maximale Anzahl Einträge im Verlauf bevor alte Einträge gelöscht werden."
 
 #: internal/ui/routes/my_collection/albums.go:41
 msgid "My Albums"
-msgstr ""
+msgstr "Meine Alben"
 
 #: internal/ui/routes/my_collection/artists.go:41
 msgid "My Artists"
-msgstr ""
+msgstr "Meine Profile"
 
 #: internal/ui/routes/my-collection.go:33
 msgid "My Collection"
-msgstr ""
+msgstr "Meine Musik"
 
 #: internal/ui/routes/my_collection/playlists.go:41
 msgid "My Playlists"
-msgstr ""
+msgstr "Meine Playlisten"
 
 #: internal/ui/routes/my_collection/tracks.go:67
 msgid "My Tracks"
-msgstr ""
+msgstr "Meine Titel"
 
 #: internal/ui/window_content.go:49
 msgid "Navigate Back"
-msgstr ""
+msgstr "Zurück navigieren"
 
 #: internal/ui/window_content.go:27
 msgid "Navigate to Collection"
-msgstr ""
+msgstr "Zur Sammlung navigieren"
 
 #: internal/ui/window_content.go:22
 msgid "Navigate to Explore"
-msgstr ""
+msgstr "Zu Entdecken navigieren"
 
 #: internal/ui/window_content.go:17
 msgid "Navigate to Home"
-msgstr ""
+msgstr "Zur Hauptseite navigieren"
 
 #: internal/ui/window_shortcuts.go:21
 msgid "Navigation"
@@ -281,43 +290,43 @@ msgstr ""
 
 #: internal/ui/window_preferences.go:38
 msgid "Navigation Behaviour"
-msgstr ""
+msgstr "Navigation"
 
 #: internal/ui/components/player/track_title.go:20
 msgid "No Track"
-msgstr ""
+msgstr "Kein Titel"
 
 #: internal/ui/components/lyrics/lyrics.go:402
 msgid "No lyrics available"
-msgstr ""
+msgstr "Songtext nicht verfügbar"
 
 #: internal/ui/components/player/controls_buttonrow.go:61
 msgid "No mix found for the current track"
-msgstr ""
+msgstr "Für diesen Titel ist kein Mix verfügbar"
 
 #: internal/ui/routes/playlist.go:168
 msgid "No playlist could be shared."
-msgstr ""
+msgstr "Playlist konnte nicht geteilt werden."
 
 #: internal/ui/components/lyrics/lyrics.go:384
 msgid "No song currently playing"
-msgstr ""
+msgstr "Aktuell wird kein Titel abgespielt"
 
 #: internal/ui/components/player/controls_buttonrow.go:102
 msgid "No track is currently playing."
-msgstr ""
+msgstr "Aktuell wird kein Titel abgespielt."
 
 #: internal/router/handler_notfound.go:10
 msgid "Not Found"
-msgstr ""
+msgstr "Nicht Gefunden"
 
 #: internal/router/handler_notfound.go:12
 msgid "Not found"
-msgstr ""
+msgstr "Nicht gefunden"
 
 #: internal/ui/components/linking/linking.go:75
 msgid "Open TIDAL page"
-msgstr ""
+msgstr "TIDAL Webseite öffnen"
 
 #: internal/ui/window_preferences.go:69
 msgid "Performance"
@@ -325,11 +334,11 @@ msgstr ""
 
 #: internal/ui/routes/playlist.go:86
 msgid "Personal Mix"
-msgstr ""
+msgstr "Persönlicher Mix"
 
 #: internal/ui/window_sidebar.go:73
 msgid "Player"
-msgstr ""
+msgstr "Player"
 
 #: internal/ui/routes/playlist.go:44
 msgid "Playlist"
@@ -337,27 +346,27 @@ msgstr ""
 
 #: internal/ui/routes/my-collection.go:56
 msgid "Playlists"
-msgstr ""
+msgstr "Playlisten"
 
 #: internal/ui/routes/my-collection.go:34
 msgid "Please log in to view your collection"
-msgstr ""
+msgstr "Bitte melde dich an um deine Sammlung zu betrachten."
 
 #: internal/ui/window_shortcuts.go:16
 msgid "Preferences"
-msgstr ""
+msgstr "Einstellungen"
 
 #: internal/ui/window_sidebar.go:75
 msgid "Queue"
-msgstr ""
+msgstr "Warteschlange"
 
 #: internal/ui/window_shortcuts.go:12
 msgid "Quit"
-msgstr ""
+msgstr "Beenden"
 
 #: internal/ui/components/linking/linking.go:59
 msgid "Scan this QR code to sign into your TIDAL account."
-msgstr ""
+msgstr "Scanne diesen QR Code um dich bei TIDAL anzumelden."
 
 #: internal/ui/window_preferences.go:87
 msgid "Scrobbling"
@@ -365,72 +374,86 @@ msgstr ""
 
 #: internal/ui/routes/search/search.go:12
 msgid "Search"
-msgstr ""
+msgstr "Suche"
 
 #: internal/ui/window_sidebar.go:32
 msgid "Set as default page"
-msgstr ""
+msgstr "Als Startseite festlegen"
 
 #: internal/ui/window_actions.go:176
 msgid "Set current page as default"
-msgstr ""
+msgstr "Aktuelle Seite als Startseite festlegen"
 
 #: internal/ui/window_shortcuts.go:13
 msgid "Side Pane"
-msgstr ""
+msgstr "Seitenleiste"
 
 #: internal/ui/components/linking/linking.go:59
 msgid "Sign In"
-msgstr ""
+msgstr "Anmelden"
 
 #: internal/ui/window_sidebar.go:41
 msgid "Sign Out"
-msgstr ""
+msgstr "Abmelden"
 
 #: internal/ui/window_actions.go:153
 msgid "Sign in failed or aborted"
-msgstr ""
+msgstr "Anmeldevorgang fehlgeschlagen oder abgebrochen"
 
 #: internal/ui/window_actions.go:157
 msgid "Signed in as %s"
-msgstr ""
+msgstr "Angemeldet als %s"
 
 #: internal/ui/window_actions.go:167
 msgid "Signed out"
-msgstr ""
+msgstr "Abgemeldet"
 
 #: internal/ui/routes/search/search.go:13
-msgid "Start typing in the search bar to search for songs, artists, albums or playlists."
+msgid ""
+"Start typing in the search bar to search for songs, artists, albums or "
+"playlists."
 msgstr ""
+"Tippe in der Suchleiste um nach Songs, Künstlern, Alben oder Playlists zu "
+"suchen."
 
 #: internal/router/handler_notfound.go:13
 msgid "The requested deeplink did not have any available handlers."
-msgstr ""
+msgstr "Die gewünschte Seite konnte nicht gefunden werden"
 
 #: internal/ui/window_content.go:44
 msgid "Toggle Sidebar"
-msgstr ""
+msgstr "Seitenleiste ein/ausklappen"
 
 #: internal/player/playback.go:60
 msgid "Track not available for streaming, skipping to next track"
 msgstr ""
+"Dieser Titel ist nicht zum Streamen verfügbar, springe zum nächsten Titel."
 
 #: internal/ui/routes/my-collection.go:80
 msgid "Tracks"
-msgstr ""
+msgstr "Titel"
 
 #: internal/router/handler_error.go:13
 msgid ""
-"Unfortunately an error occurred while loading this view. Please try again later. If the error persists, please open an issue!\n"
+"Unfortunately an error occurred while loading this view. Please try again "
+"later. If the error persists, please open an issue!\n"
 "\n"
 "Error Message: "
 msgstr ""
+"Leider ist während dem Laden der gewünschten Seite ein Fehler aufgetreten. "
+"Bitte versuche es später erneut. Falls dieser Fehler permanent auftritt, "
+"eröffne ein Ticket!\n"
+"\n"
+"Fehlermeldung: "
 
 #: internal/ui/components/horizontal_list/horizontal_list.go:34
 msgid "View All"
-msgstr ""
+msgstr "Alles"
 
 #: internal/ui/components/linking/linking.go:29
 msgid "You can also open the linking page using the button below."
 msgstr ""
+"Mit dem folgenden Knopf kannst du auch direkt zur Anmeldeseite wechseln."
 
+#~ msgid "Shortcuts"
+#~ msgstr "Tastenkombinationen"
