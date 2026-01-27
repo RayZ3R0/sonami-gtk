@@ -52,6 +52,10 @@ github.com/jwijenbergh/puregotk/v4/graphene
 github.com/jwijenbergh/puregotk/v4/gsk
 github.com/jwijenbergh/puregotk/v4/gtk
 github.com/jwijenbergh/puregotk/v4/pango
+# github.com/leonelquinteros/gotext v1.7.2
+## explicit; go 1.23.5
+github.com/leonelquinteros/gotext
+github.com/leonelquinteros/gotext/plurals
 # github.com/lescuer97/go-libsecret v0.0.0-20251130160347-067b741bcf5a
 ## explicit; go 1.25.4
 github.com/lescuer97/go-libsecret
