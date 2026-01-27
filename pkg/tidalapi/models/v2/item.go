@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"log/slog"
+	"strconv"
 )
 
 type baseItem struct {
@@ -177,6 +178,10 @@ type TrackItemData struct {
 	Following bool   `json:"following"`
 	ID        int    `json:"id"`
 	Title     string `json:"title"`
+}
+
+func (t TrackItemData) GetID() string {
+	return strconv.Itoa(t.ID)
 }
 
 type TrackItemDataAlbum struct {

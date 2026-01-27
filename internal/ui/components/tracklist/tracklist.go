@@ -6,10 +6,13 @@ import (
 	"sync"
 	"unsafe"
 
+	"codeberg.org/dergs/tonearm/internal/player"
+	"codeberg.org/dergs/tonearm/internal/signals"
 	"codeberg.org/dergs/tonearm/pkg/schwifty"
 	"codeberg.org/dergs/tonearm/pkg/schwifty/factory"
 	"codeberg.org/dergs/tonearm/pkg/schwifty/state"
 	. "codeberg.org/dergs/tonearm/pkg/schwifty/syntax"
+	"github.com/jwijenbergh/puregotk/v4/adw"
 	"github.com/jwijenbergh/puregotk/v4/gdk"
 	"github.com/jwijenbergh/puregotk/v4/gio"
 	"github.com/jwijenbergh/puregotk/v4/gobject"
@@ -17,9 +20,14 @@ import (
 	"github.com/jwijenbergh/puregotk/v4/gtk"
 )
 
-type ColumnFunc[TrackType comparable] func(track TrackType, grid *gtk.Grid, position int, column int) int
+type TrackWithID interface {
+	comparable
+	GetID() string
+}
 
-type TrackList[TrackType comparable] struct {
+type ColumnFunc[TrackType TrackWithID] func(track TrackType, grid *gtk.Grid, position int, column int) int
+
+type TrackList[TrackType TrackWithID] struct {
 	schwifty.Widget
 
 	columnFuncs []ColumnFunc[TrackType]
@@ -72,25 +80,42 @@ func (t *TrackList[TrackType]) SetReorderCallback(cb func(sourceIndex, targetInd
 
 func (t *TrackList[TrackType]) onBind(_ gtk.SignalListItemFactory, listItem *gtk.ListItem) {
 	track := t.trackList[listItem.GetPosition()]
-	grid := gtk.GridNewFromInternalPtr(listItem.GetChild().GoPointer())
-	defer grid.Unref()
+	container := adw.BinNewFromInternalPtr(listItem.GetChild().GoPointer())
+
+	var subscription *signals.Subscription
+	grid := Grid().
+		ConnectConstruct(func(g *gtk.Grid) {
+			subscription = player.TrackChanged.On(func(t *player.Track) bool {
+				if t != nil && track.GetID() == t.ID {
+					g.AddCssClass("playing")
+				} else {
+					g.RemoveCssClass("playing")
+				}
+				return signals.Continue
+			})
+		}).
+		ConnectDestroy(func(w gtk.Widget) {
+			player.TrackChanged.Unsubscribe(subscription)
+		})()
+	grid.SetColumnHomogeneous(true)
 
 	width := 0
 	for _, columnFunc := range t.columnFuncs {
 		width += columnFunc(track, grid, int(listItem.GetPosition()), width)
 	}
+
+	container.SetChild(&grid.Widget)
 }
 
 func (t *TrackList[TrackType]) onUnbind(_ gtk.SignalListItemFactory, listItem *gtk.ListItem) {
-	grid := gtk.GridNewFromInternalPtr(listItem.GetChild().GoPointer())
-	defer grid.Unref()
-	grid.RemoveRow(0)
+	container := adw.BinNewFromInternalPtr(listItem.GetChild().GoPointer())
+	defer container.Unref()
+	container.SetChild(nil)
 }
 
 func (t *TrackList[TrackType]) onSetup(_ gtk.SignalListItemFactory, listItem *gtk.ListItem) {
-	grid := gtk.NewGrid()
-	defer grid.Unref()
-	grid.SetColumnHomogeneous(true)
+	container := Bin()()
+	defer container.Unref()
 
 	var dragSource *gtk.DragSource
 	t.reorderable.AddCallback(func(newValue bool) {
@@ -109,13 +134,13 @@ func (t *TrackList[TrackType]) onSetup(_ gtk.SignalListItemFactory, listItem *gt
 					drag.SetData("t", uintptr(unsafe.Pointer(t)))
 
 					snapshot := gtk.NewSnapshot()
-					p := grid.Widget.GetParent()
+					p := container.Widget.GetParent()
 					defer p.Unref()
-					p.SnapshotChild(&grid.Widget, snapshot)
+					p.SnapshotChild(&container.Widget, snapshot)
 					size := graphene.Size{}
 					size.Init(
-						float32(grid.Widget.GetAllocatedWidth()),
-						float32(grid.Widget.GetAllocatedHeight()),
+						float32(container.Widget.GetAllocatedWidth()),
+						float32(container.Widget.GetAllocatedHeight()),
 					)
 					paintable := snapshot.ToPaintable(&size)
 
@@ -141,18 +166,18 @@ func (t *TrackList[TrackType]) onSetup(_ gtk.SignalListItemFactory, listItem *gt
 
 					return true
 				})()
-			grid.AddController(&dragSource.EventController)
+			container.AddController(&dragSource.EventController)
 		} else if dragSource != nil {
-			grid.RemoveController(&dragSource.EventController)
+			container.RemoveController(&dragSource.EventController)
 			dragSource = nil
 		}
 	})
 
-	listItem.SetChild(&grid.Widget)
+	listItem.SetChild(&container.Widget)
 	listItem.SetActivatable(false)
 }
 
-func NewTrackList[TrackType comparable](columnFuncs ...ColumnFunc[TrackType]) *TrackList[TrackType] {
+func NewTrackList[TrackType TrackWithID](columnFuncs ...ColumnFunc[TrackType]) *TrackList[TrackType] {
 	t := &TrackList[TrackType]{
 		columnFuncs: columnFuncs,
 		trackList:   make([]TrackType, 0),
@@ -224,6 +249,6 @@ func NewTrackList[TrackType comparable](columnFuncs ...ColumnFunc[TrackType]) *T
 		}
 	})
 
-	t.Widget = ManagedWidget(&listView.Widget).Background("transparent")
+	t.Widget = ManagedWidget(&listView.Widget).Background("transparent").WithCSSClass("tracklist")
 	return t
 }
