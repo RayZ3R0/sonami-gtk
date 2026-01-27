@@ -4,6 +4,8 @@ import "codeberg.org/dergs/tonearm/pkg/schwifty/bindings/adw"
 
 type AlertDialog = adw.AlertDialog
 
+type Bin = adw.Bin
+
 type Clamp = adw.Clamp
 
 type EntryRow = adw.EntryRow
