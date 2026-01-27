@@ -7,6 +7,7 @@ import (
 	"codeberg.org/dergs/tonearm/internal/gettext"
 	"codeberg.org/dergs/tonearm/internal/router"
 	"codeberg.org/dergs/tonearm/internal/secrets"
+	"codeberg.org/dergs/tonearm/internal/signals"
 	"codeberg.org/dergs/tonearm/internal/ui/components/media_card"
 	"codeberg.org/dergs/tonearm/pkg/schwifty"
 	. "codeberg.org/dergs/tonearm/pkg/schwifty/syntax"
@@ -62,27 +63,25 @@ func Albums() *router.Response {
 		PageTitle: gettext.Get("My Albums"),
 		View: ScrolledWindow().
 			Child(list).
-			ConnectEdgeReached(func(sw gtk.ScrolledWindow, pt gtk.PositionType) {
-				if pt == gtk.PosBottomValue {
-					go func() {
-						if !paginator.IsConsumed() {
-							items, err := paginator.Next()
-							if err != nil {
-								return
-							}
+			ConnectReachEdgeSoon(gtk.PosBottomValue, func() bool {
+				if !paginator.IsConsumed() {
+					items, err := paginator.Next()
+					if err != nil {
+						return signals.Continue
+					}
 
-							schwifty.OnMainThreadOnce(func(u uintptr) {
-								list := adw.WrapBoxNewFromInternalPtr(u)
-								for _, album := range items {
-									child := CenterBox().CenterWidget(media_card.NewAlbum(&album)).ToGTK()
-									list.Append(child)
-								}
-							}, list.GoPointer())
-						} else {
-							slog.Debug("No more albums to fetch")
+					schwifty.OnMainThreadOnce(func(u uintptr) {
+						list := adw.WrapBoxNewFromInternalPtr(u)
+						for _, album := range items {
+							child := CenterBox().CenterWidget(media_card.NewAlbum(&album)).ToGTK()
+							list.Append(child)
 						}
-					}()
+					}, list.GoPointer())
+				} else {
+					slog.Debug("No more albums to fetch")
+					return signals.Unsubscribe
 				}
+				return signals.Continue
 			}).
 			Policy(gtk.PolicyNeverValue, gtk.PolicyAutomaticValue),
 	}

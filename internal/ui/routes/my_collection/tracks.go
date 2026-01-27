@@ -8,6 +8,7 @@ import (
 	"codeberg.org/dergs/tonearm/internal/gettext"
 	"codeberg.org/dergs/tonearm/internal/router"
 	"codeberg.org/dergs/tonearm/internal/secrets"
+	"codeberg.org/dergs/tonearm/internal/signals"
 	"codeberg.org/dergs/tonearm/internal/ui/components/tracklist"
 	"codeberg.org/dergs/tonearm/pkg/schwifty"
 	. "codeberg.org/dergs/tonearm/pkg/schwifty/syntax"
@@ -69,27 +70,25 @@ func Tracks() *router.Response {
 			Child(
 				trackList.HMargin(40).VAlign(gtk.AlignStartValue),
 			).
-			ConnectEdgeReached(func(sw gtk.ScrolledWindow, pt gtk.PositionType) {
-				if pt == gtk.PosBottomValue {
-					go func() {
-						if !paginator.IsConsumed() {
-							items, err := paginator.Next()
-							if err != nil {
-								return
-							}
+			ConnectReachEdgeSoon(gtk.PosBottomValue, func() bool {
+				if !paginator.IsConsumed() {
+					items, err := paginator.Next()
+					if err != nil {
+						return signals.Continue
+					}
 
-							schwifty.OnMainThreadOnce(func(u uintptr) {
-								var list *tracklist.TrackList[*openapi.Track]
-								list = (*tracklist.TrackList[*openapi.Track])(unsafe.Pointer(u))
-								for _, track := range items {
-									list.AddTrack(&track)
-								}
-							}, uintptr(unsafe.Pointer(trackList)))
-						} else {
-							slog.Debug("No more tracks to fetch")
+					schwifty.OnMainThreadOnce(func(u uintptr) {
+						var list *tracklist.TrackList[*openapi.Track]
+						list = (*tracklist.TrackList[*openapi.Track])(unsafe.Pointer(u))
+						for _, track := range items {
+							list.AddTrack(&track)
 						}
-					}()
+					}, uintptr(unsafe.Pointer(trackList)))
+				} else {
+					slog.Debug("No more tracks to fetch")
+					return signals.Unsubscribe
 				}
+				return signals.Continue
 			}).
 			Policy(gtk.PolicyNeverValue, gtk.PolicyAutomaticValue),
 	}
