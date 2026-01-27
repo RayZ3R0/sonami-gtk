@@ -17,6 +17,12 @@ func AlertDialog(heading string, body string) adwbindings.AlertDialog {
 	})
 }
 
+func Bin() adwbindings.Bin {
+	return managedWidget("Bin", func() *adw.Bin {
+		return adw.NewBin()
+	})
+}
+
 func Clamp() adwbindings.Clamp {
 	return managedWidget("Clamp", func() *adw.Clamp {
 		return adw.NewClamp()

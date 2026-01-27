@@ -1,6 +1,7 @@
 package signals
 
 import (
+	"maps"
 	"reflect"
 	"sync"
 
@@ -35,7 +36,7 @@ func (b *Signal[T]) removeHandler(sub *Subscription) {
 
 func (b *Signal[T]) Notify(args ...any) {
 	b.mutex.Lock()
-	handlers := b.handlers
+	handlers := maps.Clone(b.handlers)
 	b.mutex.Unlock()
 
 	wg := sync.WaitGroup{}
