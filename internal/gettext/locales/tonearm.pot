@@ -6,9 +6,9 @@
 #, fuzzy
 msgid ""
 msgstr ""
-"Project-Id-Version: v1.0.0-22-gda0ed1a\n"
+"Project-Id-Version: v1.0.0-26-g6264155\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-01-27 19:10+0100\n"
+"POT-Creation-Date: 2026-01-27 19:20+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -165,6 +165,10 @@ msgstr ""
 
 #: internal/ui/routes/playlist.go:166
 msgid "Copy Playlist URL"
+msgstr ""
+
+#: internal/ui/components/player/controls_buttonrow.go:101
+msgid "Copy Track URL"
 msgstr ""
 
 #: internal/ui/window_preferences.go:24
@@ -433,10 +437,6 @@ msgstr ""
 
 #: internal/ui/window_actions.go:176
 msgid "Set current page as default"
-msgstr ""
-
-#: internal/ui/components/player/controls_buttonrow.go:101
-msgid "Share Track URL"
 msgstr ""
 
 #: internal/ui/routes/album.go:115

@@ -8,11 +8,11 @@ msgid ""
 msgstr ""
 "Project-Id-Version: 1\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-01-27 19:10+0100\n"
-"PO-Revision-Date: 2026-01-26 02:52+0100\n"
+"POT-Creation-Date: 2026-01-27 19:20+0100\n"
+"PO-Revision-Date: 2026-01-27 19:22+0100\n"
 "Last-Translator: Nila The Dragon <nilathedragon@pm.me>\n"
-"Language-Team: en_US\n"
-"Language: en_US\n"
+"Language-Team: German\n"
+"Language: de\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -42,13 +42,12 @@ msgid "About Tonearm"
 msgstr "Über Tonearm"
 
 #: internal/ui/components/player/controls_buttonrow.go:42
-#, fuzzy
 msgid "Add to Collection"
-msgstr "Sammlung"
+msgstr "Zur Sammlung hinzufügen"
 
 #: internal/ui/components/tracklist/column_controls.go:24
 msgid "Add to Queue"
-msgstr ""
+msgstr "Zur Warteschlange hinzufügen"
 
 #: internal/ui/routes/album.go:45
 msgid "Album"
@@ -169,14 +168,16 @@ msgid "Copied track URL to clipboard."
 msgstr "Titellink kopiert"
 
 #: internal/ui/routes/artist.go:115
-#, fuzzy
 msgid "Copy Artist URL"
-msgstr "Meine Profile"
+msgstr "Künstlerlink kopieren"
 
 #: internal/ui/routes/playlist.go:166
-#, fuzzy
 msgid "Copy Playlist URL"
-msgstr "Meine Playlisten"
+msgstr "Playlistlink kopieren"
+
+#: internal/ui/components/player/controls_buttonrow.go:101
+msgid "Copy Track URL"
+msgstr "Titellink kopieren"
 
 #: internal/ui/window_preferences.go:24
 msgid "Default Page"
@@ -292,9 +293,8 @@ msgid "Navigate Back"
 msgstr "Zurück navigieren"
 
 #: internal/ui/components/player/controls_buttonrow.go:75
-#, fuzzy
 msgid "Navigate to Album"
-msgstr "Zur Hauptseite navigieren"
+msgstr "Zum Album navigieren"
 
 #: internal/ui/window_content.go:27
 msgid "Navigate to Collection"
@@ -309,9 +309,8 @@ msgid "Navigate to Home"
 msgstr "Zur Hauptseite navigieren"
 
 #: internal/ui/components/player/controls_buttonrow.go:47
-#, fuzzy
 msgid "Navigate to Track Mix"
-msgstr "Zurück navigieren"
+msgstr "Zum Titelradio navigieren"
 
 #: internal/ui/window_shortcuts.go:21
 msgid "Navigation"
@@ -323,7 +322,7 @@ msgstr "Navigation"
 
 #: internal/ui/components/player/player.go:77
 msgid "Next"
-msgstr ""
+msgstr "Nächster Titel"
 
 #: internal/ui/components/player/track_title.go:20
 msgid "No Track"
@@ -374,19 +373,16 @@ msgid "Play / Pause"
 msgstr ""
 
 #: internal/ui/routes/album.go:125
-#, fuzzy
 msgid "Play Album"
-msgstr "Meine Alben"
+msgstr "Album abspielen"
 
 #: internal/ui/routes/playlist.go:138
-#, fuzzy
 msgid "Play Playlist"
-msgstr "Meine Playlisten"
+msgstr "Playlist abspielen"
 
 #: internal/ui/routes/artist.go:86
-#, fuzzy
 msgid "Play Top Tracks"
-msgstr "Meine Titel"
+msgstr "Top Titel abspielen"
 
 #: internal/ui/window_sidebar.go:73
 msgid "Player"
@@ -410,7 +406,7 @@ msgstr "Einstellungen"
 
 #: internal/ui/components/player/player.go:68
 msgid "Previous"
-msgstr ""
+msgstr "Vorheriger Titel"
 
 #: internal/ui/window_sidebar.go:75
 msgid "Queue"
@@ -422,7 +418,7 @@ msgstr "Beenden"
 
 #: internal/ui/components/queue/queue.go:70
 msgid "Remove Track from Queue"
-msgstr ""
+msgstr "Titel von der Warteschlange entfernen"
 
 #: internal/ui/components/linking/linking.go:59
 msgid "Scan this QR code to sign into your TIDAL account."
@@ -434,11 +430,11 @@ msgstr ""
 
 #: internal/ui/components/horizontal_list/horizontal_list.go:65
 msgid "Scroll to the left"
-msgstr ""
+msgstr "Nach links scrollen"
 
 #: internal/ui/components/horizontal_list/horizontal_list.go:54
 msgid "Scroll to the right"
-msgstr ""
+msgstr "Nach rechts scrollen"
 
 #: internal/ui/routes/search/search.go:12
 msgid "Search"
@@ -452,22 +448,17 @@ msgstr "Als Startseite festlegen"
 msgid "Set current page as default"
 msgstr "Aktuelle Seite als Startseite festlegen"
 
-#: internal/ui/components/player/controls_buttonrow.go:101
-msgid "Share Track URL"
-msgstr ""
-
 #: internal/ui/routes/album.go:115
 msgid "Shuffle Album"
-msgstr ""
+msgstr "Album im Zufallsmodus abspielen"
 
 #: internal/ui/routes/playlist.go:127
-#, fuzzy
 msgid "Shuffle Playlist"
-msgstr "Meine Playlisten"
+msgstr "Playlist im Zufallsmodus abspielen"
 
 #: internal/ui/routes/artist.go:75
 msgid "Shuffle Top Tracks"
-msgstr ""
+msgstr "Top Titel im Zufallsmodus abspielen"
 
 #: internal/ui/window_shortcuts.go:13
 msgid "Side Pane"
@@ -503,21 +494,19 @@ msgstr ""
 
 #: internal/ui/components/lyrics/lyrics.go:435
 msgid "Sync with track"
-msgstr ""
+msgstr "Mit Titel synchronisieren"
 
 #: internal/router/handler_notfound.go:13
 msgid "The requested deeplink did not have any available handlers."
 msgstr "Die gewünschte Seite konnte nicht gefunden werden"
 
 #: internal/ui/components/player/player.go:84
-#, fuzzy
 msgid "Toggle Repeat"
-msgstr "Seitenleiste ein/ausklappen"
+msgstr "Wiederholungsmodus ein-/ausschalten"
 
 #: internal/ui/components/player/player.go:47
-#, fuzzy
 msgid "Toggle Shuffle"
-msgstr "Seitenleiste ein/ausklappen"
+msgstr "Zufallsmodus ein-/ausschalten"
 
 #: internal/ui/window_content.go:44
 msgid "Toggle Sidebar"
@@ -551,7 +540,7 @@ msgstr "Alles"
 
 #: internal/ui/components/player/controls_buttonrow.go:37
 msgid "Volume"
-msgstr ""
+msgstr "Lautstärke"
 
 #: internal/ui/components/linking/linking.go:29
 msgid "You can also open the linking page using the button below."

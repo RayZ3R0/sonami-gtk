@@ -98,7 +98,7 @@ func controlsButtonRow() schwifty.Box {
 				router.Navigate("album/" + albumID)
 			}),
 		Button().
-			TooltipText(gettext.Get("Share Track URL")).
+			TooltipText(gettext.Get("Copy Track URL")).
 			IconName("share-alt-symbolic").
 			WithCSSClass("transparent").
 			BindSensitive(isTrackLoaded).
