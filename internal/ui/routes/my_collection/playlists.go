@@ -38,7 +38,7 @@ func Playlists() *router.Response {
 	}
 
 	return &router.Response{
-		PageTitle: gettext.Get("My Collection"),
+		PageTitle: gettext.Get("My Playlists"),
 		View: ScrolledWindow().
 			Child(
 				WrapBox(children...).VMargin(20).VAlign(gtk.AlignStartValue).Justify(adw.JustifyFillValue).JustifyLastLine(true),
