@@ -17,6 +17,14 @@ func (g *GeneralSettings) BindDefaultPage(target *gobject.Object, property strin
 	g.settings.Bind("default-page", target, property, gio.GSettingsBindNoSensitivityValue)
 }
 
+func (g *GeneralSettings) BindHideSecretServiceWarning(target *gobject.Object, property string) {
+	g.settings.Bind("hide-secret-service-warning", target, property, gio.GSettingsBindNoSensitivityValue)
+}
+
+func (g *GeneralSettings) ShouldHideSecretServiceWarning() bool {
+	return g.settings.GetBoolean("hide-secret-service-warning")
+}
+
 func (g *GeneralSettings) ShouldRunInBackground() bool {
 	return g.settings.GetBoolean("allow-running-in-background")
 }
@@ -35,6 +43,10 @@ func (g *GeneralSettings) GetWindowWidth() int {
 
 func (g *GeneralSettings) SetDefaultPage(path string) {
 	g.settings.SetString("default-page", path)
+}
+
+func (g *GeneralSettings) SetHideSecretServiceWarning(hide bool) bool {
+	return g.settings.SetBoolean("hide-secret-service-warning", hide)
 }
 
 func (g *GeneralSettings) SetWindowHeight(height int) {
