@@ -6,9 +6,9 @@
 #, fuzzy
 msgid ""
 msgstr ""
-"Project-Id-Version: v1.0.0-29-g601b864\n"
+"Project-Id-Version: v1.0.0-30-g8ca9db4\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-01-28 17:28+0100\n"
+"POT-Creation-Date: 2026-01-28 17:31+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -51,23 +51,23 @@ msgstr ""
 msgid "Allow Background Activity"
 msgstr ""
 
-#: internal/ui/window_preferences.go:54
+#: internal/ui/window_preferences.go:45
 msgid "Allow Media Card Images"
 msgstr ""
 
-#: internal/ui/window_preferences.go:60
+#: internal/ui/window_preferences.go:51
 msgid "Allow Shortcut Images"
 msgstr ""
 
-#: internal/ui/window_preferences.go:55
+#: internal/ui/window_preferences.go:46
 msgid "Allow Tonearm to load images for media card buttons."
 msgstr ""
 
-#: internal/ui/window_preferences.go:61
+#: internal/ui/window_preferences.go:52
 msgid "Allow Tonearm to load images for shortcut buttons."
 msgstr ""
 
-#: internal/ui/window_preferences.go:67
+#: internal/ui/window_preferences.go:58
 msgid "Allow Tonearm to load images for tracklists with the cover column."
 msgstr ""
 
@@ -75,15 +75,15 @@ msgstr ""
 msgid "Allow Tonearm to run in the background by hiding the player window instead of quitting the application"
 msgstr ""
 
-#: internal/ui/window_preferences.go:84
+#: internal/ui/window_preferences.go:75
 msgid "Allow Tonearm to send scrobbling data to ListenBrainz"
 msgstr ""
 
-#: internal/ui/window_preferences.go:73
+#: internal/ui/window_preferences.go:64
 msgid "Allow Tonearm to temporarily store images on the file system to improve performance and reduce network traffic."
 msgstr ""
 
-#: internal/ui/window_preferences.go:66
+#: internal/ui/window_preferences.go:57
 msgid "Allow Tracklist Images"
 msgstr ""
 
@@ -116,7 +116,7 @@ msgstr ""
 msgid "Basic Shortcuts"
 msgstr ""
 
-#: internal/ui/window_preferences.go:72
+#: internal/ui/window_preferences.go:63
 msgid "Cache Images"
 msgstr ""
 
@@ -132,11 +132,11 @@ msgstr ""
 msgid "Collection"
 msgstr ""
 
-#: internal/ui/window_preferences.go:95
+#: internal/ui/window_preferences.go:86
 msgid "Configure Tonearm to send scrobbling data to ListenBrainz."
 msgstr ""
 
-#: internal/ui/window_preferences.go:77
+#: internal/ui/window_preferences.go:68
 msgid "Configure the behaviour of Tonearm regarding images."
 msgstr ""
 
@@ -168,10 +168,6 @@ msgstr ""
 msgid "Default Page"
 msgstr ""
 
-#: internal/ui/window_preferences.go:43
-msgid "Do not show a warning in case the secret service health check fails"
-msgstr ""
-
 #: internal/ui/window_popups.go:21
 msgid "Don't show again"
 msgstr ""
@@ -180,7 +176,7 @@ msgstr ""
 msgid "E.g. Fox Stevenson"
 msgstr ""
 
-#: internal/ui/window_preferences.go:83
+#: internal/ui/window_preferences.go:74
 msgid "Enable ListenBrainz"
 msgstr ""
 
@@ -200,12 +196,8 @@ msgstr ""
 msgid "External Link"
 msgstr ""
 
-#: internal/ui/window_preferences.go:49
+#: internal/ui/window_preferences.go:40
 msgid "General"
-msgstr ""
-
-#: internal/ui/window_preferences.go:42
-msgid "Hide Secret Service Warning"
 msgstr ""
 
 #: internal/ui/components/player/track_timeline.go:58
@@ -220,7 +212,7 @@ msgstr ""
 msgid "Home"
 msgstr ""
 
-#: internal/ui/window_preferences.go:77
+#: internal/ui/window_preferences.go:68
 msgid "Images"
 msgstr ""
 
@@ -232,11 +224,11 @@ msgstr ""
 msgid "Keyboard Shortcuts"
 msgstr ""
 
-#: internal/ui/window_preferences.go:94
+#: internal/ui/window_preferences.go:85
 msgid "ListenBrainz"
 msgstr ""
 
-#: internal/ui/window_preferences.go:89
+#: internal/ui/window_preferences.go:80
 msgid "ListenBrainz API Token"
 msgstr ""
 
@@ -262,10 +254,6 @@ msgstr ""
 
 #: internal/ui/window_preferences.go:33
 msgid "Maximum history length before dropping old entries."
-msgstr ""
-
-#: internal/ui/window_preferences.go:48
-msgid "Miscellaneous"
 msgstr ""
 
 #: internal/ui/routes/my_collection/albums.go:41
@@ -357,7 +345,7 @@ msgstr ""
 msgid "Open TIDAL page"
 msgstr ""
 
-#: internal/ui/window_preferences.go:78
+#: internal/ui/window_preferences.go:69
 msgid "Performance"
 msgstr ""
 
@@ -397,7 +385,7 @@ msgstr ""
 msgid "Scan this QR code to sign into your TIDAL account."
 msgstr ""
 
-#: internal/ui/window_preferences.go:96
+#: internal/ui/window_preferences.go:87
 msgid "Scrobbling"
 msgstr ""
 

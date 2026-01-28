@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: 1\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-01-28 17:28+0100\n"
+"POT-Creation-Date: 2026-01-28 17:31+0100\n"
 "PO-Revision-Date: 2026-01-28 00:10+0100\n"
 "Last-Translator: Nila The Dragon <nilathedragon@pm.me>\n"
 "Language-Team: German\n"
@@ -53,23 +53,23 @@ msgstr "Alben"
 msgid "Allow Background Activity"
 msgstr "Hintergrundaktivitäten erlauben"
 
-#: internal/ui/window_preferences.go:54
+#: internal/ui/window_preferences.go:45
 msgid "Allow Media Card Images"
 msgstr "Bilder bei Media Cards"
 
-#: internal/ui/window_preferences.go:60
+#: internal/ui/window_preferences.go:51
 msgid "Allow Shortcut Images"
 msgstr "Bilder bei Verknüpfungen"
 
-#: internal/ui/window_preferences.go:55
+#: internal/ui/window_preferences.go:46
 msgid "Allow Tonearm to load images for media card buttons."
 msgstr "Das Laden von Bildern bei Media Cards erlauben"
 
-#: internal/ui/window_preferences.go:61
+#: internal/ui/window_preferences.go:52
 msgid "Allow Tonearm to load images for shortcut buttons."
 msgstr "Das Laden von Bildern bei Verknüpfungen erlauben"
 
-#: internal/ui/window_preferences.go:67
+#: internal/ui/window_preferences.go:58
 msgid "Allow Tonearm to load images for tracklists with the cover column."
 msgstr "Das Laden von Bildern in der Titelliste erlauben"
 
@@ -79,11 +79,11 @@ msgid ""
 "of quitting the application"
 msgstr "Erlaube Tonearm im Hintergrund weiter zu laufen"
 
-#: internal/ui/window_preferences.go:84
+#: internal/ui/window_preferences.go:75
 msgid "Allow Tonearm to send scrobbling data to ListenBrainz"
 msgstr "Erlaube Tonearm Scrobbling Daten an ListenBrainz zu senden"
 
-#: internal/ui/window_preferences.go:73
+#: internal/ui/window_preferences.go:64
 msgid ""
 "Allow Tonearm to temporarily store images on the file system to improve "
 "performance and reduce network traffic."
@@ -91,7 +91,7 @@ msgstr ""
 "Erlaube Tonearm Bilder auf deinem Computer zwischenzuspeichern um die "
 "Leistung zu verbessern und den Netzwerkverkehr zu reduzieren."
 
-#: internal/ui/window_preferences.go:66
+#: internal/ui/window_preferences.go:57
 msgid "Allow Tracklist Images"
 msgstr "Bilder bei Titellisten"
 
@@ -132,7 +132,7 @@ msgstr "Hintergrundaktivität"
 msgid "Basic Shortcuts"
 msgstr "Grundlegende Kurzbefehle"
 
-#: internal/ui/window_preferences.go:72
+#: internal/ui/window_preferences.go:63
 msgid "Cache Images"
 msgstr "Bilder zwischenspeichern"
 
@@ -148,11 +148,11 @@ msgstr "Schliessen"
 msgid "Collection"
 msgstr "Sammlung"
 
-#: internal/ui/window_preferences.go:95
+#: internal/ui/window_preferences.go:86
 msgid "Configure Tonearm to send scrobbling data to ListenBrainz."
 msgstr "Konfiguriere Tonearm um Scrobbling Daten an ListenBrainz zu senden"
 
-#: internal/ui/window_preferences.go:77
+#: internal/ui/window_preferences.go:68
 msgid "Configure the behaviour of Tonearm regarding images."
 msgstr "Entscheide welche Bilder Tonearm laden soll"
 
@@ -184,12 +184,6 @@ msgstr "Titellink kopiert"
 msgid "Default Page"
 msgstr "Hauptseite"
 
-#: internal/ui/window_preferences.go:43
-msgid "Do not show a warning in case the secret service health check fails"
-msgstr ""
-"Im Falle eines fehlgeschlagenen Secret Service Selbsttest keine Warnung "
-"anzeigen "
-
 #: internal/ui/window_popups.go:21
 msgid "Don't show again"
 msgstr ""
@@ -198,7 +192,7 @@ msgstr ""
 msgid "E.g. Fox Stevenson"
 msgstr "z.B. Fox Stevenson"
 
-#: internal/ui/window_preferences.go:83
+#: internal/ui/window_preferences.go:74
 msgid "Enable ListenBrainz"
 msgstr "ListenBrainz aktivieren"
 
@@ -218,13 +212,9 @@ msgstr "Entdecken"
 msgid "External Link"
 msgstr "Externer Link"
 
-#: internal/ui/window_preferences.go:49
+#: internal/ui/window_preferences.go:40
 msgid "General"
 msgstr "Allgemein"
-
-#: internal/ui/window_preferences.go:42
-msgid "Hide Secret Service Warning"
-msgstr "Secret Service Warnungen verstecken"
 
 #: internal/ui/components/player/track_timeline.go:58
 msgid "High"
@@ -238,7 +228,7 @@ msgstr "Maximale Verlaufslänge"
 msgid "Home"
 msgstr "Hauptseite"
 
-#: internal/ui/window_preferences.go:77
+#: internal/ui/window_preferences.go:68
 msgid "Images"
 msgstr "Bilder"
 
@@ -250,11 +240,11 @@ msgstr "Interner Fehler"
 msgid "Keyboard Shortcuts"
 msgstr "Tastaturkurzbefehle"
 
-#: internal/ui/window_preferences.go:94
+#: internal/ui/window_preferences.go:85
 msgid "ListenBrainz"
 msgstr ""
 
-#: internal/ui/window_preferences.go:89
+#: internal/ui/window_preferences.go:80
 msgid "ListenBrainz API Token"
 msgstr "ListenBrainz API Schlüssel"
 
@@ -282,10 +272,6 @@ msgstr "Max"
 msgid "Maximum history length before dropping old entries."
 msgstr ""
 "Maximale Anzahl Einträge im Verlauf bevor alte Einträge gelöscht werden."
-
-#: internal/ui/window_preferences.go:48
-msgid "Miscellaneous"
-msgstr "Verschiedenes"
 
 #: internal/ui/routes/my_collection/albums.go:41
 msgid "My Albums"
@@ -384,7 +370,7 @@ msgstr "Nicht gefunden"
 msgid "Open TIDAL page"
 msgstr "TIDAL Webseite öffnen"
 
-#: internal/ui/window_preferences.go:78
+#: internal/ui/window_preferences.go:69
 msgid "Performance"
 msgstr ""
 
@@ -424,7 +410,7 @@ msgstr "Beenden"
 msgid "Scan this QR code to sign into your TIDAL account."
 msgstr "Scanne diesen QR Code um dich bei TIDAL anzumelden."
 
-#: internal/ui/window_preferences.go:96
+#: internal/ui/window_preferences.go:87
 msgid "Scrobbling"
 msgstr ""
 
@@ -543,6 +529,17 @@ msgstr ""
 "\n"
 "Tonearm wird keine Anmeldedaten abspeichern können und jeglicher "
 "Anmeldeversuch wird fehlschlagen."
+
+#~ msgid "Do not show a warning in case the secret service health check fails"
+#~ msgstr ""
+#~ "Im Falle eines fehlgeschlagenen Secret Service Selbsttest keine Warnung "
+#~ "anzeigen "
+
+#~ msgid "Hide Secret Service Warning"
+#~ msgstr "Secret Service Warnungen verstecken"
+
+#~ msgid "Miscellaneous"
+#~ msgstr "Verschiedenes"
 
 #~ msgid "Never Show This Again"
 #~ msgstr "Nie mehr anzeigen"

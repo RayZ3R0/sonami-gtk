@@ -37,15 +37,6 @@ var preferencesGeneral = PreferencesPage(
 	).
 		Title(gettext.Get("Navigation Behaviour")).
 		Description(gettext.Get("Configure the behaviour of Tonearm when navigating between pages.")),
-	PreferencesGroup(
-		SwitchRow().
-			Title(gettext.Get("Hide Secret Service Warning")).
-			Subtitle(gettext.Get("Do not show a warning in case the secret service health check fails")).
-			ConnectConstruct(func(sr *adw.SwitchRow) {
-				settings.General().BindHideSecretServiceWarning(&sr.Object, "active")
-			}),
-	).
-		Title(gettext.Get("Miscellaneous")),
 ).Title(gettext.Get("General")).IconName("settings-symbolic")
 
 var preferencesPerformance = PreferencesPage(
