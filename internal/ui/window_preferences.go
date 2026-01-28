@@ -81,6 +81,11 @@ var preferencesScrobbling = PreferencesPage(
 			ConnectConstruct(func(sr *adw.PasswordEntryRow) {
 				settings.Scrobbling().BindListenBrainzToken(&sr.Object, "text")
 			}),
+		EntryRow().
+			Title(gettext.Get("ListenBrainz API URL")).
+			ConnectConstruct(func(sr *adw.EntryRow) {
+				settings.Scrobbling().BindListenBrainzUrl(&sr.Object, "text")
+			}),
 	).
 		Title(gettext.Get("ListenBrainz")).
 		Description(gettext.Get("Configure Tonearm to send scrobbling data to ListenBrainz.")),

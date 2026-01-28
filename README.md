@@ -38,7 +38,7 @@ Tonearm is not affiliated with or endorsed by TIDAL. Tonearm is provided as-is w
 - MPRIS playback information and player controls
 - Position-aware Lyrics Viewer
   - Fallback to plain lyrics viewer if the song does not have timestamped lyrics
-- Scrobbling to ListenBrainz
+- Scrobbling to ListenBrainz-compatible servers
 - Sign-in to your account via QR code / device linking code
   - Also works without signing in, with limited playback duration (Same as TIDAL web) 
 - Supports playback of tracks in Max (AKA Master) quality

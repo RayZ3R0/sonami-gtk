@@ -84,5 +84,10 @@
 			<summary>ListenBrainz Token</summary>
 			<description>The token used to authenticate with ListenBrainz</description>
 		</key>
+		<key name="listenbrainz-url" type="s">
+            <default>'https://api.listenbrainz.org'</default>
+            <summary>ListenBrainz API URL</summary>
+            <description>ListenBrainz-compatible instance API URL</description>
+        </key>
     </schema>
 </schemalist>
