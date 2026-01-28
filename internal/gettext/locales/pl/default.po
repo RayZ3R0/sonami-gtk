@@ -503,7 +503,7 @@ msgstr "Synchronizuj z utworem"
 
 #: internal/router/handler_notfound.go:13
 msgid "The requested deeplink did not have any available handlers."
-msgstr "Żądany deeplikn nie miał żadnych dostępnych handlerów."
+msgstr "Żądany deeplink nie miał żadnych dostępnych handlerów."
 
 #: internal/ui/components/player/player.go:84
 msgid "Toggle Repeat"
