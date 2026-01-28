@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: v1.0.0-12-g1ce38cd\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-01-28 23:02+0100\n"
+"POT-Creation-Date: 2026-01-28 23:39+0100\n"
 "PO-Revision-Date: 2026-01-28 10:41+0100\n"
 "Last-Translator: Dråfølin <derg at drafolin dot ch>\n"
 "Language-Team: French\n"
@@ -107,6 +107,16 @@ msgstr ""
 msgid "Allow Tracklist Images"
 msgstr "Autoriser les images des listes de morceaux"
 
+#: internal/secrets/service_linux.go:55
+msgid ""
+"An unknown error occurred when checking for a secret service provider.\n"
+"\n"
+"Signing in may or may not work. Please see the raw error message for more "
+"details:\n"
+"\n"
+"%s"
+msgstr ""
+
 #: internal/ui/routes/artist.go:30
 msgid "Artist"
 msgstr "Artiste"
@@ -161,6 +171,10 @@ msgid "Configure the behaviour of Tonearm when running in the background."
 msgstr ""
 "Configurer le comportement de Tonearm lors de l'execution en arrière-plan."
 
+#: internal/ui/window_popups.go:28
+msgid "Continue"
+msgstr ""
+
 #: internal/ui/routes/artist.go:125
 msgid "Copied artist URL to clipboard."
 msgstr "URL de l'artiste copiée."
@@ -188,6 +202,10 @@ msgstr "Copier l'URL du morceau"
 #: internal/ui/window_preferences.go:24
 msgid "Default Page"
 msgstr "Page par défaut"
+
+#: internal/ui/window_popups.go:21
+msgid "Don't show again"
+msgstr ""
 
 #: internal/ui/routes/search.go:29
 msgid "E.g. Fox Stevenson"
@@ -346,6 +364,16 @@ msgstr "Aucun mix trouvé pour le morceau actuel"
 msgid "No playlist could be shared."
 msgstr "La Liste de lecture n'a pas pu être partagée."
 
+#: internal/secrets/service_linux.go:40
+msgid ""
+"No secret service provider is available.\n"
+"\n"
+"Tonearm will not be able to store any authentication-related data and you "
+"will not be able to sign in.\n"
+"\n"
+"Please install a secret service provider such as GNOME Keyring or KDE Wallet."
+msgstr ""
+
 #: internal/ui/components/lyrics/lyrics.go:384
 msgid "No song currently playing"
 msgstr "Pas de morceaux en lecture"
@@ -445,6 +473,19 @@ msgstr "Défiler vers la droite"
 #: internal/ui/routes/search/search.go:12
 msgid "Search"
 msgstr "Rechercher"
+
+#: internal/secrets/service_linux.go:54
+msgid "Secret Service Error"
+msgstr ""
+
+#: internal/secrets/service_linux.go:47
+msgid "Secret Service Issue"
+msgstr ""
+
+#: internal/secrets/service_linux.go:39
+#, fuzzy
+msgid "Secret Service Unavailable"
+msgstr ""
 
 #: internal/ui/window_sidebar.go:32
 msgid "Set as default page"
@@ -551,6 +592,18 @@ msgstr "Volume"
 msgid "You can also open the linking page using the button below."
 msgstr ""
 "Vous pouvez également ouvrir la page de connexion avec le boouton ci-dessous."
+
+#: internal/secrets/service_linux.go:48
+msgid ""
+"Your secret service provider was found, but refused to interact with "
+"Tonearm.\n"
+"\n"
+"This could because you cancelled a prompt or, if you are using a Flatpak, "
+"the provider not implementing the XDG Secret Portal service.\n"
+"\n"
+"Tonearm will not be able to store any authentication-related data and you "
+"will not be able to sign in."
+msgstr ""
 
 #: internal/ui/window_about.go:101
 msgid "translator-credits"
