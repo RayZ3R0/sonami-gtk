@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: 1\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-01-28 22:41+0100\n"
+"POT-Creation-Date: 2026-01-28 23:39+0100\n"
 "PO-Revision-Date: 2026-01-28 22:43+0100\n"
 "Last-Translator: Nila The Dragon <nilathedragon@pm.me>\n"
 "Language-Team: German\n"
@@ -176,7 +176,7 @@ msgstr "Entscheide wie Tonearm sich im Hintergrund verhalten soll"
 msgid "Continue"
 msgstr "Weiter"
 
-#: internal/ui/routes/artist.go:121
+#: internal/ui/routes/artist.go:125
 msgid "Copied artist URL to clipboard."
 msgstr "Profillink kopiert"
 
@@ -622,6 +622,10 @@ msgstr ""
 "Tonearm wird keine Anmeldedaten abspeichern können und jeglicher "
 "Anmeldeversuch wird fehlschlagen."
 
+#: internal/ui/window_about.go:101
+msgid "translator-credits"
+msgstr "Nila The Dragon https://github.com/NilaTheDragon"
+
 #~ msgid "Do not show a warning in case the secret service health check fails"
 #~ msgstr ""
 #~ "Im Falle eines fehlgeschlagenen Secret Service Selbsttest keine Warnung "
@@ -635,10 +639,6 @@ msgstr ""
 
 #~ msgid "Never Show This Again"
 #~ msgstr "Nie mehr anzeigen"
-
-#: internal/ui/window_about.go:101
-msgid "translator-credits"
-msgstr "Nila The Dragon https://github.com/NilaTheDragon"
 
 #~ msgid "Shortcuts"
 #~ msgstr "Tastenkombinationen"

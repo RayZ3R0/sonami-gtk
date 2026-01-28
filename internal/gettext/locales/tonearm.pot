@@ -6,9 +6,9 @@
 #, fuzzy
 msgid ""
 msgstr ""
-"Project-Id-Version: v1.0.1-9-ge8d17eb\n"
+"Project-Id-Version: v1.0.1-14-g0bf34a1\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-01-28 23:02+0100\n"
+"POT-Creation-Date: 2026-01-28 23:39+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -160,7 +160,7 @@ msgstr ""
 msgid "Continue"
 msgstr ""
 
-#: internal/ui/routes/artist.go:121
+#: internal/ui/routes/artist.go:125
 msgid "Copied artist URL to clipboard."
 msgstr ""
 
@@ -571,7 +571,9 @@ msgid ""
 "This could because you cancelled a prompt or, if you are using a Flatpak, the provider not implementing the XDG Secret Portal service.\n"
 "\n"
 "Tonearm will not be able to store any authentication-related data and you will not be able to sign in."
+msgstr ""
 
 #: internal/ui/window_about.go:101
 msgid "translator-credits"
 msgstr ""
+
