@@ -17,10 +17,6 @@ func (g *GeneralSettings) BindDefaultPage(target *gobject.Object, property strin
 	g.settings.Bind("default-page", target, property, gio.GSettingsBindNoSensitivityValue)
 }
 
-func (g *GeneralSettings) BindHideSecretServiceWarning(target *gobject.Object, property string) {
-	g.settings.Bind("hide-secret-service-warning", target, property, gio.GSettingsBindNoSensitivityValue)
-}
-
 func (g *GeneralSettings) ShouldHideSecretServiceWarning() bool {
 	return g.settings.GetBoolean("hide-secret-service-warning")
 }
