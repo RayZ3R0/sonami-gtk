@@ -1,0 +1,553 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+# Dråfølin <derg at drafolin dot ch>, 2026.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: v1.0.0-12-g1ce38cd\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-01-27 19:20+0100\n"
+"PO-Revision-Date: 2026-01-28 10:41+0100\n"
+"Last-Translator: Dråfølin <derg at drafolin dot ch>\n"
+"Language-Team: French\n"
+"Language: fr\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n > 1);\n"
+"X-Generator: Gtranslator 49.0\n"
+
+#: internal/ui/routes/artist.go:57
+msgid "%d Fan"
+msgid_plural "%d Fans"
+msgstr[0] "%d Fan"
+msgstr[1] "%d Fans"
+
+#: internal/ui/components/media_card/playlist.go:18
+msgid "%d Track"
+msgid_plural "%d Tracks"
+msgstr[0] "%d Morceau"
+msgstr[1] "%d Morceaux"
+
+#: internal/ui/routes/album.go:106
+msgid "%d Track (%s)"
+msgid_plural "%d Tracks (%s)"
+msgstr[0] "%d Morceau (%s)"
+msgstr[1] "%d Morceaux (%s)"
+
+#: internal/ui/window_sidebar.go:35
+msgid "About Tonearm"
+msgstr "À propos de Tonearm"
+
+#: internal/ui/components/player/controls_buttonrow.go:42
+msgid "Add to Collection"
+msgstr "Ajouter à la collection"
+
+#: internal/ui/components/tracklist/column_controls.go:24
+msgid "Add to Queue"
+msgstr "Ajouter à la file d'attente"
+
+#: internal/ui/routes/album.go:45
+msgid "Album"
+msgstr "Album"
+
+#: internal/ui/routes/my-collection.go:51
+msgid "Albums"
+msgstr "Albums"
+
+#: internal/ui/window_preferences.go:14
+msgid "Allow Background Activity"
+msgstr "Autoriser l'activité en arrière plan"
+
+#: internal/ui/window_preferences.go:45
+msgid "Allow Media Card Images"
+msgstr "Autoriser les images des cartes média"
+
+#: internal/ui/window_preferences.go:51
+msgid "Allow Shortcut Images"
+msgstr "Autoriser les images des raccourcis"
+
+#: internal/ui/window_preferences.go:46
+msgid "Allow Tonearm to load images for media card buttons."
+msgstr "Autoriser Tonearm à charger des images pour les boutons cartes média."
+
+#: internal/ui/window_preferences.go:52
+msgid "Allow Tonearm to load images for shortcut buttons."
+msgstr "Autoriser Tonearm à charger des images pour les boutons de raccourcis."
+
+#: internal/ui/window_preferences.go:58
+msgid "Allow Tonearm to load images for tracklists with the cover column."
+msgstr ""
+"Autoriser Tonearm à charger des images pour les listes de morceaux avec une "
+"colonne album."
+
+#: internal/ui/window_preferences.go:15
+msgid ""
+"Allow Tonearm to run in the background by hiding the player window instead "
+"of quitting the application"
+msgstr ""
+"Autoriser Tonearm à s'executer en arrière-plan en cachant le lecteur au lieu "
+"de quitter l'application."
+
+#: internal/ui/window_preferences.go:75
+msgid "Allow Tonearm to send scrobbling data to ListenBrainz"
+msgstr "Autoriser Tonearm à envoyer des données de scrobbling à ListenBrainz"
+
+#: internal/ui/window_preferences.go:64
+msgid ""
+"Allow Tonearm to temporarily store images on the file system to improve "
+"performance and reduce network traffic."
+msgstr ""
+"Autoriser Tonearm à temporairement enregistrer des images sur le système "
+"pour améliorer la performance et réduire le traffic."
+
+#: internal/ui/window_preferences.go:57
+msgid "Allow Tracklist Images"
+msgstr "Autoriser les images des listes de morceaux"
+
+#: internal/ui/routes/artist.go:30
+msgid "Artist"
+msgstr "Artiste"
+
+#: internal/ui/routes/my-collection.go:46
+msgid "Artists"
+msgstr "Artistes"
+
+#: internal/ui/window_shortcuts.go:19
+msgid "Back"
+msgstr "Retour"
+
+#: internal/ui/window_preferences.go:20
+msgid "Background Activity"
+msgstr "Activité en arrière-plan"
+
+#: internal/ui/window_shortcuts.go:17
+msgid "Basic Shortcuts"
+msgstr "Raccourcis de base"
+
+#: internal/ui/window_preferences.go:63
+msgid "Cache Images"
+msgstr "Images en cache"
+
+#: internal/ui/components/linking/linking.go:82
+msgid "Cancel Login"
+msgstr "Annuler la connexion"
+
+#: internal/ui/window_shortcuts.go:11
+msgid "Close"
+msgstr "Fermer"
+
+#: internal/ui/window_content.go:25
+msgid "Collection"
+msgstr "Collection"
+
+#: internal/ui/window_preferences.go:86
+msgid "Configure Tonearm to send scrobbling data to ListenBrainz."
+msgstr ""
+"Configurer Tonearm pour l'envoi de données de scrobbling à ListenBrainz."
+
+#: internal/ui/window_preferences.go:68
+msgid "Configure the behaviour of Tonearm regarding images."
+msgstr "Configurer le comportement de Tonearm envers les images."
+
+#: internal/ui/window_preferences.go:39
+msgid "Configure the behaviour of Tonearm when navigating between pages."
+msgstr "Configurer le comportement de Tonearm à la navigation entre les pages."
+
+#: internal/ui/window_preferences.go:21
+msgid "Configure the behaviour of Tonearm when running in the background."
+msgstr ""
+"Configurer le comportement de Tonearm lors de l'execution en arrière-plan."
+
+#: internal/ui/routes/artist.go:125
+msgid "Copied artist URL to clipboard."
+msgstr "URL de l'artiste copiée."
+
+#: internal/ui/routes/playlist.go:182
+msgid "Copied playlist URL to clipboard."
+msgstr "URL de la liste de lecture copiée."
+
+#: internal/ui/components/player/controls_buttonrow.go:117
+msgid "Copied track URL to clipboard."
+msgstr "URL du morceau copiée."
+
+#: internal/ui/routes/artist.go:115
+msgid "Copy Artist URL"
+msgstr "Copier l'URL de l'artiste"
+
+#: internal/ui/routes/playlist.go:166
+msgid "Copy Playlist URL"
+msgstr "Copier l'URL de la liste de lecture"
+
+#: internal/ui/components/player/controls_buttonrow.go:101
+msgid "Copy Track URL"
+msgstr "Copier l'URL du morceau"
+
+#: internal/ui/window_preferences.go:24
+msgid "Default Page"
+msgstr "Page par défaut"
+
+#: internal/ui/routes/search.go:29
+msgid "E.g. Fox Stevenson"
+msgstr "P.ex. Fox Stevenson"
+
+#: internal/ui/window_preferences.go:74
+msgid "Enable ListenBrainz"
+msgstr "Activer ListenBrainz"
+
+#: internal/ui/components/lyrics/lyrics.go:395
+msgid "Error fetching lyrics"
+msgstr "Erreur pendant la récupération des paroles"
+
+#: internal/ui/routes/my-collection.go:42
+msgid "Error loading collection"
+msgstr "Erreur pendant le chargement de la collection"
+
+#: internal/ui/routes/explore.go:28
+msgid "Explore"
+msgstr "Explorer"
+
+#: internal/ui/components/shortcut_list/deeplink.go:17
+msgid "External Link"
+msgstr "Lien externe"
+
+#: internal/ui/window_preferences.go:40
+msgid "General"
+msgstr "Général"
+
+#: internal/ui/components/player/track_timeline.go:58
+msgid "High"
+msgstr "Haute"
+
+#: internal/ui/window_preferences.go:32
+msgid "History Length"
+msgstr "Taille de l'historique"
+
+#: internal/ui/routes/home.go:23
+msgid "Home"
+msgstr "Accueil"
+
+#: internal/ui/window_preferences.go:68
+msgid "Images"
+msgstr "Images"
+
+#: internal/router/handler_error.go:10
+msgid "Internal Error"
+msgstr "Erreur interne"
+
+#: internal/ui/window_shortcuts.go:15
+msgid "Keyboard Shortcuts"
+msgstr "Raccourcis claviers"
+
+#: internal/ui/window_preferences.go:85
+msgid "ListenBrainz"
+msgstr "ListenBrainz"
+
+#: internal/ui/window_preferences.go:80
+msgid "ListenBrainz API Token"
+msgstr "Clé d'API ListenBrainz"
+
+#: internal/ui/components/player/track_timeline.go:55
+msgid "Low (320 kbps)"
+msgstr "Basse (320 kbps)"
+
+#: internal/ui/components/player/track_timeline.go:52
+msgid "Low (96 kbps)"
+msgstr "Basse (96 kbps)"
+
+#: internal/ui/window_sidebar.go:74
+msgid "Lyrics"
+msgstr "Paroles"
+
+#: internal/ui/window_shortcuts.go:14
+msgid "Main Menu"
+msgstr "Menu principal"
+
+#: internal/ui/components/player/track_timeline.go:61
+msgid "Max"
+msgstr "Max"
+
+#: internal/ui/window_preferences.go:33
+msgid "Maximum history length before dropping old entries."
+msgstr ""
+"Taille de l'historique maximale avant d'oublier les entrées plus vieilles."
+
+#: internal/ui/routes/my_collection/albums.go:41
+msgid "My Albums"
+msgstr "Mes Albums"
+
+#: internal/ui/routes/my_collection/artists.go:41
+msgid "My Artists"
+msgstr "Mes Artistes"
+
+#: internal/ui/routes/my-collection.go:33
+msgid "My Collection"
+msgstr "Ma Collection"
+
+#: internal/ui/routes/my_collection/playlists.go:41
+msgid "My Playlists"
+msgstr "Mes Listes de lecture"
+
+#: internal/ui/routes/my_collection/tracks.go:67
+msgid "My Tracks"
+msgstr "Mes Morceaux"
+
+#: internal/ui/window_content.go:49
+msgid "Navigate Back"
+msgstr "Revenir en arrière"
+
+#: internal/ui/components/player/controls_buttonrow.go:75
+msgid "Navigate to Album"
+msgstr "Naviguer vers l'album"
+
+#: internal/ui/window_content.go:27
+msgid "Navigate to Collection"
+msgstr "Aller à la collection"
+
+#: internal/ui/window_content.go:22
+msgid "Navigate to Explore"
+msgstr "Aller vers l'exploration"
+
+#: internal/ui/window_content.go:17
+msgid "Navigate to Home"
+msgstr "Retourner à l'accueil"
+
+#: internal/ui/components/player/controls_buttonrow.go:47
+msgid "Navigate to Track Mix"
+msgstr "Revenir en arrière"
+
+#: internal/ui/window_shortcuts.go:21
+msgid "Navigation"
+msgstr "Navigation"
+
+#: internal/ui/window_preferences.go:38
+msgid "Navigation Behaviour"
+msgstr "Comportement de la navigation"
+
+#: internal/ui/components/player/player.go:77
+msgid "Next"
+msgstr "Suivant"
+
+#: internal/ui/components/player/track_title.go:20
+msgid "No Track"
+msgstr "Pas de Morceau"
+
+#: internal/ui/components/lyrics/lyrics.go:402
+msgid "No lyrics available"
+msgstr "Pas de paroles disponibles"
+
+#: internal/ui/components/player/controls_buttonrow.go:64
+msgid "No mix found for the current track"
+msgstr "Aucun mix trouvé pour le morceau actuel"
+
+#: internal/ui/routes/playlist.go:172
+msgid "No playlist could be shared."
+msgstr "La Liste de lecture n'a pas pu être partagée."
+
+#: internal/ui/components/lyrics/lyrics.go:384
+msgid "No song currently playing"
+msgstr "Pas de morceaux en lecture"
+
+#: internal/ui/components/player/controls_buttonrow.go:107
+msgid "No track is currently playing."
+msgstr "Pas de morceaux en lecture"
+
+#: internal/router/handler_notfound.go:10
+msgid "Not Found"
+msgstr "Non trouvé"
+
+#: internal/router/handler_notfound.go:12
+msgid "Not found"
+msgstr "Non trouvé"
+
+#: internal/ui/components/linking/linking.go:75
+msgid "Open TIDAL page"
+msgstr "Ouvrir dans TIDAL"
+
+#: internal/ui/window_preferences.go:69
+msgid "Performance"
+msgstr "Performance"
+
+#: internal/ui/routes/playlist.go:86
+msgid "Personal Mix"
+msgstr "Mix Personnalisé"
+
+#: internal/ui/components/player/controls_play_pause.go:35
+msgid "Play / Pause"
+msgstr "Play / Pause"
+
+#: internal/ui/routes/album.go:125
+msgid "Play Album"
+msgstr "Jouer l'album"
+
+#: internal/ui/routes/playlist.go:138
+msgid "Play Playlist"
+msgstr "Jouer la Liste de lecture"
+
+#: internal/ui/routes/artist.go:86
+msgid "Play Top Tracks"
+msgstr "Jouer les titres les plus écoutés"
+
+#: internal/ui/window_sidebar.go:73
+msgid "Player"
+msgstr "Lecteur"
+
+#: internal/ui/routes/playlist.go:44
+msgid "Playlist"
+msgstr "Liste de lecture"
+
+#: internal/ui/routes/my-collection.go:56
+msgid "Playlists"
+msgstr "Listes de lecture"
+
+#: internal/ui/routes/my-collection.go:34
+msgid "Please log in to view your collection"
+msgstr "Veuillez vous connecter pour voir votre collection"
+
+#: internal/ui/window_shortcuts.go:16
+msgid "Preferences"
+msgstr "Préférences"
+
+#: internal/ui/components/player/player.go:68
+msgid "Previous"
+msgstr "Précédent"
+
+#: internal/ui/window_sidebar.go:75
+msgid "Queue"
+msgstr "File d'attente"
+
+#: internal/ui/window_shortcuts.go:12
+msgid "Quit"
+msgstr "Quitter"
+
+#: internal/ui/components/queue/queue.go:70
+msgid "Remove Track from Queue"
+msgstr "Retirer de la file d'attente"
+
+#: internal/ui/components/linking/linking.go:59
+msgid "Scan this QR code to sign into your TIDAL account."
+msgstr "Scannez ce code QR pour vous connecter à votre compte TIDAL."
+
+#: internal/ui/window_preferences.go:87
+msgid "Scrobbling"
+msgstr "Scrobbling"
+
+#: internal/ui/components/horizontal_list/horizontal_list.go:65
+msgid "Scroll to the left"
+msgstr "Défiler vers la gauche"
+
+#: internal/ui/components/horizontal_list/horizontal_list.go:54
+msgid "Scroll to the right"
+msgstr "Défiler vers la droite"
+
+#: internal/ui/routes/search/search.go:12
+msgid "Search"
+msgstr "Rechercher"
+
+#: internal/ui/window_sidebar.go:32
+msgid "Set as default page"
+msgstr "Définir comme page par défaut"
+
+#: internal/ui/window_actions.go:176
+msgid "Set current page as default"
+msgstr "Définir la page actuelle comme page par défaut"
+
+#: internal/ui/routes/album.go:115
+msgid "Shuffle Album"
+msgstr "Jouer l'album en mode aléatoire"
+
+#: internal/ui/routes/playlist.go:127
+msgid "Shuffle Playlist"
+msgstr "Jouer la liste de lecture en mode aléatoire"
+
+#: internal/ui/routes/artist.go:75
+msgid "Shuffle Top Tracks"
+msgstr "Jouer les titres les plus écoutés en mode aléatoire"
+
+#: internal/ui/window_shortcuts.go:13
+msgid "Side Pane"
+msgstr "Panneau latéral"
+
+#: internal/ui/components/linking/linking.go:59
+msgid "Sign In"
+msgstr "Se connecter"
+
+#: internal/ui/window_sidebar.go:41
+msgid "Sign Out"
+msgstr "Se déconnecter"
+
+#: internal/ui/window_actions.go:153
+msgid "Sign in failed or aborted"
+msgstr "Connexion échouée ou annulée"
+
+#: internal/ui/window_actions.go:157
+msgid "Signed in as %s"
+msgstr "Connectée en tant que %s"
+
+#: internal/ui/window_actions.go:167
+msgid "Signed out"
+msgstr "Déconnecté"
+
+#: internal/ui/routes/search/search.go:13
+msgid ""
+"Start typing in the search bar to search for songs, artists, albums or "
+"playlists."
+msgstr ""
+"Commencer à écrire dans la barre de recherche pour chercher des musiques, "
+"artistes, albums ou listes de lecture."
+
+#: internal/ui/components/lyrics/lyrics.go:435
+msgid "Sync with track"
+msgstr "Synchroniser avec le morceau"
+
+#: internal/router/handler_notfound.go:13
+msgid "The requested deeplink did not have any available handlers."
+msgstr "Le raccourcis sélectionné n'a pas de gestionnaire défini."
+
+#: internal/ui/components/player/player.go:84
+msgid "Toggle Repeat"
+msgstr "Basculer le mode répétition"
+
+#: internal/ui/components/player/player.go:47
+msgid "Toggle Shuffle"
+msgstr "Basculer le mode aléatoire"
+
+#: internal/ui/window_content.go:44
+msgid "Toggle Sidebar"
+msgstr "Afficher/Masquer le panneau latéral"
+
+#: internal/player/playback.go:60
+msgid "Track not available for streaming, skipping to next track"
+msgstr "Morceau non disponible au streaming, passage au suivant"
+
+#: internal/ui/routes/my-collection.go:80
+msgid "Tracks"
+msgstr "Morceaux"
+
+#: internal/router/handler_error.go:13
+msgid ""
+"Unfortunately an error occurred while loading this view. Please try again "
+"later. If the error persists, please open an issue!\n"
+"\n"
+"Error Message: "
+msgstr ""
+"Malheureusement, une erreur s'est produite lors du chargement de cette vue. "
+"Veuillez réessayer plus tard. Si cette erreur persiste, veuillez ouvrir un "
+"ticket!\n"
+"\n"
+"Message d'erreur: "
+
+#: internal/ui/components/horizontal_list/horizontal_list.go:34
+msgid "View All"
+msgstr "Voir tout"
+
+#: internal/ui/components/player/controls_buttonrow.go:37
+msgid "Volume"
+msgstr "Volume"
+
+#: internal/ui/components/linking/linking.go:29
+msgid "You can also open the linking page using the button below."
+msgstr ""
+"Vous pouvez également ouvrir la page de connexion avec le boouton ci-dessous."
