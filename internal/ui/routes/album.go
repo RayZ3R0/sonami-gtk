@@ -112,6 +112,7 @@ func Album(albumId string) *router.Response {
 				Spacer().VExpand(false),
 				HStack(
 					Button().
+						TooltipText(gettext.Get("Shuffle Album")).
 						IconName("playlist-shuffle-symbolic").
 						MinWidth(81).
 						CornerRadius(21).
@@ -121,6 +122,7 @@ func Album(albumId string) *router.Response {
 						}).
 						BindSensitive(canPlayAlbumState),
 					Button().
+						TooltipText(gettext.Get("Play Album")).
 						IconName("play-symbolic").
 						MinWidth(81).
 						CornerRadius(21).
