@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: 1\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-01-28 00:02+0100\n"
+"POT-Creation-Date: 2026-01-28 17:28+0100\n"
 "PO-Revision-Date: 2026-01-28 00:10+0100\n"
 "Last-Translator: Nila The Dragon <nilathedragon@pm.me>\n"
 "Language-Team: German\n"
@@ -164,7 +164,7 @@ msgstr "Entscheide wie Tonearm sich bei der Navigation verhalten soll"
 msgid "Configure the behaviour of Tonearm when running in the background."
 msgstr "Entscheide wie Tonearm sich im Hintergrund verhalten soll"
 
-#: internal/ui/window_popups.go:23
+#: internal/ui/window_popups.go:28
 msgid "Continue"
 msgstr "Weiter"
 
@@ -189,6 +189,10 @@ msgid "Do not show a warning in case the secret service health check fails"
 msgstr ""
 "Im Falle eines fehlgeschlagenen Secret Service Selbsttest keine Warnung "
 "anzeigen "
+
+#: internal/ui/window_popups.go:21
+msgid "Don't show again"
+msgstr ""
 
 #: internal/ui/routes/search.go:29
 msgid "E.g. Fox Stevenson"
@@ -326,10 +330,6 @@ msgstr ""
 #: internal/ui/window_preferences.go:38
 msgid "Navigation Behaviour"
 msgstr "Navigation"
-
-#: internal/ui/window_popups.go:26
-msgid "Never Show This Again"
-msgstr "Nie mehr anzeigen"
 
 #: internal/ui/components/player/track_title.go:20
 msgid "No Track"
@@ -543,6 +543,9 @@ msgstr ""
 "\n"
 "Tonearm wird keine Anmeldedaten abspeichern können und jeglicher "
 "Anmeldeversuch wird fehlschlagen."
+
+#~ msgid "Never Show This Again"
+#~ msgstr "Nie mehr anzeigen"
 
 #~ msgid "Shortcuts"
 #~ msgstr "Tastenkombinationen"

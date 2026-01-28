@@ -6,9 +6,9 @@
 #, fuzzy
 msgid ""
 msgstr ""
-"Project-Id-Version: v1.0.0-28-g59ff11c\n"
+"Project-Id-Version: v1.0.0-29-g601b864\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-01-28 00:02+0100\n"
+"POT-Creation-Date: 2026-01-28 17:28+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -148,7 +148,7 @@ msgstr ""
 msgid "Configure the behaviour of Tonearm when running in the background."
 msgstr ""
 
-#: internal/ui/window_popups.go:23
+#: internal/ui/window_popups.go:28
 msgid "Continue"
 msgstr ""
 
@@ -170,6 +170,10 @@ msgstr ""
 
 #: internal/ui/window_preferences.go:43
 msgid "Do not show a warning in case the secret service health check fails"
+msgstr ""
+
+#: internal/ui/window_popups.go:21
+msgid "Don't show again"
 msgstr ""
 
 #: internal/ui/routes/search.go:29
@@ -306,10 +310,6 @@ msgstr ""
 
 #: internal/ui/window_preferences.go:38
 msgid "Navigation Behaviour"
-msgstr ""
-
-#: internal/ui/window_popups.go:26
-msgid "Never Show This Again"
 msgstr ""
 
 #: internal/ui/components/player/track_title.go:20

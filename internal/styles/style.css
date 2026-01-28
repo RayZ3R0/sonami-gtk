@@ -76,3 +76,7 @@ menubutton.transparent button:not(:hover):not(.active) {
     background-color: alpha(var(--accent-color), 0.1);
     border-radius: 10px;
 }
+
+checkbutton.space-2 check {
+    margin-right: 0.5rem;
+}
