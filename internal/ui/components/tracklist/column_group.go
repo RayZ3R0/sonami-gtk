@@ -17,7 +17,7 @@ func groupedColumn(columns []any, width int, grid *gtk.Grid, row int, column int
 	return width
 }
 
-func GroupedColumn[TrackType comparable](width int, align gtk.Align, columns ...ColumnFunc[TrackType]) ColumnFunc[TrackType] {
+func GroupedColumn[TrackType TrackWithID](width int, align gtk.Align, columns ...ColumnFunc[TrackType]) ColumnFunc[TrackType] {
 	return func(track TrackType, grid *gtk.Grid, position, column int) int {
 		subGrid := gtk.NewGrid()
 		subGrid.SetValign(gtk.AlignCenterValue)

@@ -1,5 +1,7 @@
 package v1
 
+import "strconv"
+
 type Track struct {
 	Album struct {
 		Cover string `json:"cover"`
@@ -17,4 +19,8 @@ type Track struct {
 
 type TrackMix struct {
 	ID string `json:"id"`
+}
+
+func (t Track) GetID() string {
+	return strconv.Itoa(t.ID)
 }

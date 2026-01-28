@@ -32,6 +32,11 @@
   strip-components: 3
   type: archive
   url: https://proxy.golang.org/github.com/jwijenbergh/puregotk/@v/v0.0.0-20251201161753-28ec1479c381.zip
+- dest: vendor/github.com/leonelquinteros/gotext
+  sha256: 4c01b94fd68ece10bea56ce49f37de834907ebff69a84b21e4b487511488859f
+  strip-components: 3
+  type: archive
+  url: https://proxy.golang.org/github.com/leonelquinteros/gotext/@v/v1.7.2.zip
 - dest: vendor/github.com/lescuer97/go-libsecret
   sha256: 10a7fbab46f2c68a5ba5eb773c259aa13c8e3af842152ac5e27b559de6fc24f3
   strip-components: 3

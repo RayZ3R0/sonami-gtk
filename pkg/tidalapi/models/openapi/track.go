@@ -8,6 +8,10 @@ import (
 
 type Track Response[TrackData]
 
+func (t Track) GetID() string {
+	return t.Data.ID
+}
+
 const ObjectTypeTracks = "tracks"
 
 type TrackExternalLinkType string

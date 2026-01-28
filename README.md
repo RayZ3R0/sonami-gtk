@@ -19,6 +19,8 @@
     <a href="#features">Features</a>
     &middot;
     <a href="https://codeberg.org/dergs/Tonearm/issues/new">Report Bug or Request Feature</a>
+    &middot;
+    <a href="https://matrix.to/#/%23tonearm:derg.social">Join the Matrix Room</a>
   </p>
 
   <img width="700" src=".codeberg/images/home.png" alt="Screenshot of the home page of Tonearm">

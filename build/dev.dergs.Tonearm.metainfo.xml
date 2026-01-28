@@ -42,8 +42,28 @@
   <url type="homepage">https://dergs.dev/projects/tonearm</url>
   <url type="bugtracker">https://codeberg.org/dergs/Tonearm/issues</url>
   <url type="vcs-browser">https://codeberg.org/dergs/Tonearm</url>
+  <url type="contact">https://matrix.to/#/%23tonearm:derg.social</url>
 
   <releases>
+    <release version="1.0.1" date="2026-01-28">
+        <url type="details">https://codeberg.org/dergs/Tonearm/releases/tag/v1.0.1</url>
+        <description>
+            <p>Bug Fixes:</p>
+            <ul>
+                <li>Fixed a bug where shuffling an empty queue would crash the app</li>
+                <li>Fixed a bug where Tonearm would always request the english home and explore pages</li>
+                <li>Now using the correct icons for skipping instead of seeking</li>
+                <li>Fixed a bug where large track lists would start overlaying after ~200 tracks</li>
+                <li>Fixed a rare concurrent map access that would crash the app</li>
+            </ul>
+            <p>New Features</p>
+            <ul>
+                <li>Tonearm is now translated into German</li>
+                <li>Tonearm now marks the currently playing track in the tracklists</li>
+            </ul>
+            <p>Tonearm now also has a Matrix room for contributions and issues!</p>
+        </description>
+    </release>
     <release version="1.0.0" date="2026-01-22">
       <url type="details">https://codeberg.org/dergs/Tonearm/releases/tag/v1.0.0</url>
       <description>
