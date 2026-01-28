@@ -1,579 +1,529 @@
-# SOME DESCRIPTIVE TITLE.
-# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
-# This file is distributed under the same license as the PACKAGE package.
-# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
-# Nila The Dragon <nilathedragon@pm.me>, 2026.
+# Polish translations for v1.0.0-26-g6264155 package
+# Polskie tłumaczenia dla pakietu v1.0.0-26-g6264155.
+# Copyright (C) 2026 THE v1.0.0-26-g6264155'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the v1.0.0-26-g6264155 package.
+# Łukasz Horodecki <lukasz@horodecki.net>, 2026.
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: 1\n"
+"Project-Id-Version: v1.0.0-26-g6264155\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-01-28 22:41+0100\n"
-"PO-Revision-Date: 2026-01-28 22:43+0100\n"
-"Last-Translator: Nila The Dragon <nilathedragon@pm.me>\n"
-"Language-Team: German\n"
-"Language: de\n"
+"POT-Creation-Date: 2026-01-28 23:02+0100\n"
+"PO-Revision-Date: 2026-01-28 18:52+0100\n"
+"Last-Translator: Łukasz Horodecki <lukasz@horodecki.net>\n"
+"Language-Team: Polish\n"
+"Language: pl\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"Plural-Forms: nplurals=3; plural=(n==1 ? 0 : n%10>=2 && n%10<=4 && (n%100<10 "
+"|| n%100>=20) ? 1 : 2);\n"
 "X-Generator: Gtranslator 49.0\n"
 
 #: internal/ui/routes/artist.go:57
 msgid "%d Fan"
 msgid_plural "%d Fans"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "%d fan"
+msgstr[1] "%d fanów"
+msgstr[2] "%d fanów"
 
 #: internal/ui/components/media_card/playlist.go:18
 msgid "%d Track"
 msgid_plural "%d Tracks"
-msgstr[0] "%d Titel"
-msgstr[1] "%d Titel"
+msgstr[0] "%d utwór"
+msgstr[1] "%d utwory"
+msgstr[2] "%d utworów"
 
 #: internal/ui/routes/album.go:106
 msgid "%d Track (%s)"
 msgid_plural "%d Tracks (%s)"
-msgstr[0] "%d Titel (%s)"
-msgstr[1] "%d Titel (%s)"
+msgstr[0] "%d utwór (%s)"
+msgstr[1] "%d utwory (%s)"
+msgstr[2] "%d utworów (%s)"
 
 #: internal/ui/window_sidebar.go:35
 msgid "About Tonearm"
-msgstr "Über Tonearm"
+msgstr "O programie"
 
 #: internal/ui/components/player/controls_buttonrow.go:42
 msgid "Add to Collection"
-msgstr "Zur Sammlung hinzufügen"
+msgstr "Dodaj do kolekcji"
 
 #: internal/ui/components/tracklist/column_controls.go:24
 msgid "Add to Queue"
-msgstr "Zur Warteschlange hinzufügen"
+msgstr "Dodaj do kolejki"
 
 #: internal/ui/routes/album.go:45
 msgid "Album"
-msgstr ""
+msgstr "Album"
 
 #: internal/ui/routes/my-collection.go:51
 msgid "Albums"
-msgstr "Alben"
+msgstr "Albumy"
 
 #: internal/ui/window_preferences.go:14
 msgid "Allow Background Activity"
-msgstr "Hintergrundaktivitäten erlauben"
+msgstr "Pozwól na działanie w tle"
 
 #: internal/ui/window_preferences.go:45
 msgid "Allow Media Card Images"
-msgstr "Bilder bei Media Cards"
+msgstr "Pozwól na obrazy albumów"
 
 #: internal/ui/window_preferences.go:51
 msgid "Allow Shortcut Images"
-msgstr "Bilder bei Verknüpfungen"
+msgstr "Pozwól na obrazy na skrótach"
 
 #: internal/ui/window_preferences.go:46
 msgid "Allow Tonearm to load images for media card buttons."
-msgstr "Das Laden von Bildern bei Media Cards erlauben"
+msgstr "Pozwól Tonearm na wczytywanie obrazów na listach albumów."
 
 #: internal/ui/window_preferences.go:52
 msgid "Allow Tonearm to load images for shortcut buttons."
-msgstr "Das Laden von Bildern bei Verknüpfungen erlauben"
+msgstr "Pozwól Tonearm na wczytywanie obrazów na przyciskach skrótów."
 
 #: internal/ui/window_preferences.go:58
 msgid "Allow Tonearm to load images for tracklists with the cover column."
-msgstr "Das Laden von Bildern in der Titelliste erlauben"
+msgstr "Pozwól Tonearm na wczytywanie obrazów na listach utworów z okładkami."
 
 #: internal/ui/window_preferences.go:15
 msgid ""
 "Allow Tonearm to run in the background by hiding the player window instead "
 "of quitting the application"
-msgstr "Erlaube Tonearm im Hintergrund weiter zu laufen"
+msgstr ""
+"Pozwól Tonearm na działanie w tle przez ukrywanie okna odtwarzacza zamiast "
+"zamykania aplikacji."
 
 #: internal/ui/window_preferences.go:75
 msgid "Allow Tonearm to send scrobbling data to ListenBrainz"
-msgstr "Erlaube Tonearm Scrobbling Daten an ListenBrainz zu senden"
+msgstr "Pozwól Tonearm na wysyłanie danych scrobblowania do ListenBrainz"
 
 #: internal/ui/window_preferences.go:64
 msgid ""
 "Allow Tonearm to temporarily store images on the file system to improve "
 "performance and reduce network traffic."
 msgstr ""
-"Erlaube Tonearm Bilder auf deinem Computer zwischenzuspeichern um die "
-"Leistung zu verbessern und den Netzwerkverkehr zu reduzieren."
+"Pozwól Tonearm na tymczasowe przechowywanie obrazów, by poprawić wydajność i "
+"zmniejszyć obciążenie sieci."
 
 #: internal/ui/window_preferences.go:57
 msgid "Allow Tracklist Images"
-msgstr "Bilder bei Titellisten"
-
-#: internal/secrets/service_linux.go:55
-msgid ""
-"An unknown error occurred when checking for a secret service provider.\n"
-"\n"
-"Signing in may or may not work. Please see the raw error message for more "
-"details:\n"
-"\n"
-"%s"
-msgstr ""
-"Während der Suche nach einer Secret Service Implementation ist ein Fehler "
-"aufgetreten.\n"
-"\n"
-"Anmeldeversuche werden möglicherweise fehlschlagen. Der folgende Fehlertext "
-"könnte weitere Informationen beinhalten:\n"
-"\n"
-"%s"
+msgstr "Pozwól na obrazy na listach utworów"
 
 #: internal/ui/routes/artist.go:30
 msgid "Artist"
-msgstr "Künstler"
+msgstr "Artysta"
 
 #: internal/ui/routes/my-collection.go:46
 msgid "Artists"
-msgstr "Künstler"
+msgstr "Artyści"
 
 #: internal/ui/window_shortcuts.go:19
 msgid "Back"
-msgstr "Zurück"
+msgstr "Wstecz"
 
 #: internal/ui/window_preferences.go:20
 msgid "Background Activity"
-msgstr "Hintergrundaktivität"
+msgstr "Działanie w tle"
 
 #: internal/ui/window_shortcuts.go:17
 msgid "Basic Shortcuts"
-msgstr "Grundlegende Kurzbefehle"
+msgstr "Ogólne"
 
 #: internal/ui/window_preferences.go:63
 msgid "Cache Images"
-msgstr "Bilder zwischenspeichern"
+msgstr "Pamięć podręczna obrazów"
 
 #: internal/ui/components/linking/linking.go:82
 msgid "Cancel Login"
-msgstr "Anmeldevorgang abbrechen"
+msgstr "Anuluj logowanie"
 
 #: internal/ui/window_shortcuts.go:11
 msgid "Close"
-msgstr "Schliessen"
+msgstr "Zamknij"
 
 #: internal/ui/window_content.go:25
 msgid "Collection"
-msgstr "Sammlung"
+msgstr "Kolekcja"
 
 #: internal/ui/window_preferences.go:86
 msgid "Configure Tonearm to send scrobbling data to ListenBrainz."
-msgstr "Konfiguriere Tonearm um Scrobbling Daten an ListenBrainz zu senden"
+msgstr "Skonfiguruj Tonearm do wysyłania danych scrobblowania do ListenBrainz."
 
 #: internal/ui/window_preferences.go:68
 msgid "Configure the behaviour of Tonearm regarding images."
-msgstr "Entscheide welche Bilder Tonearm laden soll"
+msgstr "Skonfiguruj zachowanie Tonearm dotyczące obrazów."
 
 #: internal/ui/window_preferences.go:39
 msgid "Configure the behaviour of Tonearm when navigating between pages."
-msgstr "Entscheide wie Tonearm sich bei der Navigation verhalten soll"
+msgstr "Skonfiguruj zachowanie Tonearm podczas nawigowania między stronami."
 
 #: internal/ui/window_preferences.go:21
 msgid "Configure the behaviour of Tonearm when running in the background."
-msgstr "Entscheide wie Tonearm sich im Hintergrund verhalten soll"
+msgstr "Skonfiguruj zachowanie Tonearm w czasie pracy w tle."
 
-#: internal/ui/window_popups.go:28
-msgid "Continue"
-msgstr "Weiter"
-
-#: internal/ui/routes/artist.go:121
+#: internal/ui/routes/artist.go:125
 msgid "Copied artist URL to clipboard."
-msgstr "Profillink kopiert"
+msgstr "Skopiowano do schowka adres URL artysty."
 
 #: internal/ui/routes/playlist.go:182
 msgid "Copied playlist URL to clipboard."
-msgstr "Playlistlink kopiert"
+msgstr "Skopiowano do schowka adres URL playlisty."
 
 #: internal/ui/components/player/controls_buttonrow.go:117
 msgid "Copied track URL to clipboard."
-msgstr "Titellink kopiert"
+msgstr "Skopiowano do schowka adres URL utworu."
 
 #: internal/ui/routes/artist.go:115
 msgid "Copy Artist URL"
-msgstr "Künstlerlink kopieren"
+msgstr "Skopiuj adres URL artysty"
 
 #: internal/ui/routes/playlist.go:166
 msgid "Copy Playlist URL"
-msgstr "Playlistlink kopieren"
+msgstr "Skopiuj adres URL playlisty"
 
 #: internal/ui/components/player/controls_buttonrow.go:101
 msgid "Copy Track URL"
-msgstr "Titellink kopieren"
+msgstr "Skopiuj adres URL utworu"
 
 #: internal/ui/window_preferences.go:24
 msgid "Default Page"
-msgstr "Hauptseite"
-
-#: internal/ui/window_popups.go:21
-msgid "Don't show again"
-msgstr ""
+msgstr "Strona domyślna"
 
 #: internal/ui/routes/search.go:29
 msgid "E.g. Fox Stevenson"
-msgstr "z.B. Fox Stevenson"
+msgstr "Np. Fox Stevenson"
 
 #: internal/ui/window_preferences.go:74
 msgid "Enable ListenBrainz"
-msgstr "ListenBrainz aktivieren"
+msgstr "Włącz ListenBrainz"
 
 #: internal/ui/components/lyrics/lyrics.go:395
 msgid "Error fetching lyrics"
-msgstr "Während dem Abruf des Songtextes ist ein Fehler aufgetreten"
+msgstr "Błąd pobierania tekstu utworu"
 
 #: internal/ui/routes/my-collection.go:42
 msgid "Error loading collection"
-msgstr "Während dem Abruf deiner Sammlung ist ein Fehler aufgetreten"
+msgstr "Błąd wczytywania kolekcji"
 
 #: internal/ui/routes/explore.go:28
 msgid "Explore"
-msgstr "Entdecken"
+msgstr "Eksploruj"
 
 #: internal/ui/components/shortcut_list/deeplink.go:17
 msgid "External Link"
-msgstr "Externer Link"
+msgstr "Odnośnik zewnętrzny"
 
 #: internal/ui/window_preferences.go:40
 msgid "General"
-msgstr "Allgemein"
+msgstr "Ogólne"
 
 #: internal/ui/components/player/track_timeline.go:58
 msgid "High"
-msgstr "Hoch"
+msgstr "Wysoka"
 
 #: internal/ui/window_preferences.go:32
 msgid "History Length"
-msgstr "Maximale Verlaufslänge"
+msgstr "Długość historii"
 
 #: internal/ui/routes/home.go:23
 msgid "Home"
-msgstr "Hauptseite"
+msgstr "Muzyka"
 
 #: internal/ui/window_preferences.go:68
 msgid "Images"
-msgstr "Bilder"
+msgstr "Obrazy"
 
 #: internal/router/handler_error.go:10
 msgid "Internal Error"
-msgstr "Interner Fehler"
+msgstr "Błąd wewnętrzny"
 
 #: internal/ui/window_shortcuts.go:15
 msgid "Keyboard Shortcuts"
-msgstr "Tastaturkurzbefehle"
+msgstr "Skróty klawiszowe"
 
 #: internal/ui/window_preferences.go:85
 msgid "ListenBrainz"
-msgstr ""
+msgstr "ListenBrainz"
 
 #: internal/ui/window_preferences.go:80
 msgid "ListenBrainz API Token"
-msgstr "ListenBrainz API Schlüssel"
+msgstr "Token API ListenBrainz"
 
 #: internal/ui/components/player/track_timeline.go:55
 msgid "Low (320 kbps)"
-msgstr "Niedrig (320 kbps)"
+msgstr "Niska (320 kbps)"
 
 #: internal/ui/components/player/track_timeline.go:52
 msgid "Low (96 kbps)"
-msgstr "Niedrig (96 kbps)"
+msgstr "Niska (96 kbps)"
 
 #: internal/ui/window_sidebar.go:74
 msgid "Lyrics"
-msgstr "Songtext"
+msgstr "Tekst"
 
 #: internal/ui/window_shortcuts.go:14
 msgid "Main Menu"
-msgstr "Hauptmenü"
+msgstr "Menu główne"
 
 #: internal/ui/components/player/track_timeline.go:61
 msgid "Max"
-msgstr "Max"
+msgstr "Najwyższa"
 
 #: internal/ui/window_preferences.go:33
 msgid "Maximum history length before dropping old entries."
-msgstr ""
-"Maximale Anzahl Einträge im Verlauf bevor alte Einträge gelöscht werden."
+msgstr "Maksymalna długość historii przed usuwaniem starych pozycji."
 
 #: internal/ui/routes/my_collection/albums.go:41
 msgid "My Albums"
-msgstr "Meine Alben"
+msgstr "Moje albumy"
 
 #: internal/ui/routes/my_collection/artists.go:41
 msgid "My Artists"
-msgstr "Meine Profile"
+msgstr "Moi artyści"
 
 #: internal/ui/routes/my-collection.go:33
 msgid "My Collection"
-msgstr "Meine Musik"
+msgstr "Moja kolekcja"
 
 #: internal/ui/routes/my_collection/playlists.go:41
 msgid "My Playlists"
-msgstr "Meine Playlisten"
+msgstr "Moje playlisty"
 
 #: internal/ui/routes/my_collection/tracks.go:67
 msgid "My Tracks"
-msgstr "Meine Titel"
+msgstr "Moje utwory"
 
 #: internal/ui/window_content.go:49
 msgid "Navigate Back"
-msgstr "Zurück navigieren"
+msgstr "Przejdź wstecz"
 
 #: internal/ui/components/player/controls_buttonrow.go:75
 msgid "Navigate to Album"
-msgstr "Zum Album navigieren"
+msgstr "Przejdź do albumu"
 
 #: internal/ui/window_content.go:27
 msgid "Navigate to Collection"
-msgstr "Zur Sammlung navigieren"
+msgstr "Przejdź do kolekcji"
 
 #: internal/ui/window_content.go:22
 msgid "Navigate to Explore"
-msgstr "Zu Entdecken navigieren"
+msgstr "Przejdź do eksplorowania"
 
 #: internal/ui/window_content.go:17
 msgid "Navigate to Home"
-msgstr "Zur Hauptseite navigieren"
+msgstr "Przejdź do strony głównej"
 
 #: internal/ui/components/player/controls_buttonrow.go:47
 msgid "Navigate to Track Mix"
-msgstr "Zum Titelradio navigieren"
+msgstr "Przejdź do radia utworu"
 
 #: internal/ui/window_shortcuts.go:21
 msgid "Navigation"
-msgstr ""
+msgstr "Nawigacja"
 
 #: internal/ui/window_preferences.go:38
 msgid "Navigation Behaviour"
-msgstr "Navigation"
+msgstr "Zachowanie nawigacji"
 
 #: internal/ui/components/player/player.go:77
 msgid "Next"
-msgstr "Nächster Titel"
+msgstr "Następny"
 
 #: internal/ui/components/player/track_title.go:20
 msgid "No Track"
-msgstr "Kein Titel"
+msgstr "Brak utworu"
 
 #: internal/ui/components/lyrics/lyrics.go:402
 msgid "No lyrics available"
-msgstr "Songtext nicht verfügbar"
+msgstr "Brak dostępnego tekstu utworu"
 
 #: internal/ui/components/player/controls_buttonrow.go:64
 msgid "No mix found for the current track"
-msgstr "Für diesen Titel ist kein Mix verfügbar"
+msgstr "Brak radia dla aktualnego utworu"
 
 #: internal/ui/routes/playlist.go:172
 msgid "No playlist could be shared."
-msgstr "Playlist konnte nicht geteilt werden."
-
-#: internal/secrets/service_linux.go:40
-msgid ""
-"No secret service provider is available.\n"
-"\n"
-"Tonearm will not be able to store any authentication-related data and you "
-"will not be able to sign in.\n"
-"\n"
-"Please install a secret service provider such as GNOME Keyring or KDE Wallet."
-msgstr ""
-"Es konnte keine Secret Service Implementation gefunden werden.\n"
-"\n"
-"Tonearm wird keine Anmeldedaten abspeichern können und jeglicher "
-"Anmeldeversuch wird fehlschlagen.\n"
-"\n"
-"Bitte installiere eine Secret Service Implementation wie zum Beispiel GNOME "
-"Keyring oder KDE Wallet."
+msgstr "Brak playlisty do udostępnienia."
 
 #: internal/ui/components/lyrics/lyrics.go:384
 msgid "No song currently playing"
-msgstr "Aktuell wird kein Titel abgespielt"
+msgstr "Brak aktualnie odtwarzanej piosenki"
 
 #: internal/ui/components/player/controls_buttonrow.go:107
 msgid "No track is currently playing."
-msgstr "Aktuell wird kein Titel abgespielt."
+msgstr "Żaden utwór nie jest aktualnie odtwarzany."
 
 #: internal/router/handler_notfound.go:10
 msgid "Not Found"
-msgstr "Nicht Gefunden"
+msgstr "Nie znaleziono"
 
 #: internal/router/handler_notfound.go:12
 msgid "Not found"
-msgstr "Nicht gefunden"
+msgstr "Nie znaleziono"
 
 #: internal/ui/components/linking/linking.go:75
 msgid "Open TIDAL page"
-msgstr "TIDAL Webseite öffnen"
+msgstr "Otwórz stronę TIDAL"
 
 #: internal/ui/window_preferences.go:69
 msgid "Performance"
-msgstr ""
+msgstr "Wydajność"
 
 #: internal/ui/routes/playlist.go:86
 msgid "Personal Mix"
-msgstr "Persönlicher Mix"
+msgstr "Spersonalizowany miks"
 
 #: internal/ui/components/player/controls_play_pause.go:35
 msgid "Play / Pause"
-msgstr ""
+msgstr "Odtwarzaj / wstrzymaj"
 
 #: internal/ui/routes/album.go:125
 msgid "Play Album"
-msgstr "Album abspielen"
+msgstr "Odtwórz album"
 
 #: internal/ui/routes/playlist.go:138
 msgid "Play Playlist"
-msgstr "Playlist abspielen"
+msgstr "Odtwórz playlistę"
 
 #: internal/ui/routes/artist.go:86
 msgid "Play Top Tracks"
-msgstr "Top Titel abspielen"
+msgstr "Odtwarzaj top utwory"
 
 #: internal/ui/window_sidebar.go:73
 msgid "Player"
-msgstr "Player"
+msgstr "Odtwarzacz"
 
 #: internal/ui/routes/playlist.go:44
 msgid "Playlist"
-msgstr ""
+msgstr "Playlista"
 
 #: internal/ui/routes/my-collection.go:56
 msgid "Playlists"
-msgstr "Playlisten"
+msgstr "Playlisty"
 
 #: internal/ui/routes/my-collection.go:34
 msgid "Please log in to view your collection"
-msgstr "Bitte melde dich an um deine Sammlung zu betrachten."
+msgstr "Zaloguj się, by zobaczyć swoją kolekcję"
 
 #: internal/ui/window_shortcuts.go:16
 msgid "Preferences"
-msgstr "Einstellungen"
+msgstr "Preferencje"
 
 #: internal/ui/components/player/player.go:68
 msgid "Previous"
-msgstr "Vorheriger Titel"
+msgstr "Poprzedni"
 
 #: internal/ui/window_sidebar.go:75
 msgid "Queue"
-msgstr "Warteschlange"
+msgstr "Kolejka"
 
 #: internal/ui/window_shortcuts.go:12
 msgid "Quit"
-msgstr "Beenden"
+msgstr "Wyjdź"
 
 #: internal/ui/components/queue/queue.go:70
 msgid "Remove Track from Queue"
-msgstr "Titel von der Warteschlange entfernen"
+msgstr "Usuń utwór z kolejki"
 
 #: internal/ui/components/linking/linking.go:59
 msgid "Scan this QR code to sign into your TIDAL account."
-msgstr "Scanne diesen QR Code um dich bei TIDAL anzumelden."
+msgstr "Zeskanuj ten kod QR, by zalogować się do swojego konta TIDAL."
 
 #: internal/ui/window_preferences.go:87
 msgid "Scrobbling"
-msgstr ""
+msgstr "Scrobblowanie"
 
 #: internal/ui/components/horizontal_list/horizontal_list.go:65
 msgid "Scroll to the left"
-msgstr "Nach links scrollen"
+msgstr "Przewiń w lewo"
 
 #: internal/ui/components/horizontal_list/horizontal_list.go:54
 msgid "Scroll to the right"
-msgstr "Nach rechts scrollen"
+msgstr "Przewiń w prawo"
 
 #: internal/ui/routes/search/search.go:12
 msgid "Search"
-msgstr "Suche"
-
-#: internal/secrets/service_linux.go:54
-msgid "Secret Service Error"
-msgstr "Secret Service Fehler"
-
-#: internal/secrets/service_linux.go:47
-msgid "Secret Service Issue"
-msgstr "Secret Service Fehler"
-
-#: internal/secrets/service_linux.go:39
-msgid "Secret Service Unavailable"
-msgstr "Secret Service nicht verfügbar"
+msgstr "Wyszukiwanie"
 
 #: internal/ui/window_sidebar.go:32
 msgid "Set as default page"
-msgstr "Als Startseite festlegen"
+msgstr "Ustaw jako stronę domyślną"
 
 #: internal/ui/window_actions.go:176
 msgid "Set current page as default"
-msgstr "Aktuelle Seite als Startseite festlegen"
+msgstr "Ustaw aktualną stronę jako domyślną"
 
 #: internal/ui/routes/album.go:115
 msgid "Shuffle Album"
-msgstr "Album im Zufallsmodus abspielen"
+msgstr "Odtwarzaj losowo album"
 
 #: internal/ui/routes/playlist.go:127
 msgid "Shuffle Playlist"
-msgstr "Playlist im Zufallsmodus abspielen"
+msgstr "Odtwarzaj losowo playlistę"
 
 #: internal/ui/routes/artist.go:75
 msgid "Shuffle Top Tracks"
-msgstr "Top Titel im Zufallsmodus abspielen"
+msgstr "Odtwarzaj losowo topowe utwory"
 
 #: internal/ui/window_shortcuts.go:13
 msgid "Side Pane"
-msgstr "Seitenleiste"
+msgstr "Panel boczny"
 
 #: internal/ui/components/linking/linking.go:59
 msgid "Sign In"
-msgstr "Anmelden"
+msgstr "Zaloguj"
 
 #: internal/ui/window_sidebar.go:41
 msgid "Sign Out"
-msgstr "Abmelden"
+msgstr "Wyloguj"
 
 #: internal/ui/window_actions.go:153
 msgid "Sign in failed or aborted"
-msgstr "Anmeldevorgang fehlgeschlagen oder abgebrochen"
+msgstr "Logowanie nieudane lub przerwane"
 
 #: internal/ui/window_actions.go:157
 msgid "Signed in as %s"
-msgstr "Angemeldet als %s"
+msgstr "Zalogowano jako %s"
 
 #: internal/ui/window_actions.go:167
 msgid "Signed out"
-msgstr "Abgemeldet"
+msgstr "Wylogowano"
 
 #: internal/ui/routes/search/search.go:13
 msgid ""
 "Start typing in the search bar to search for songs, artists, albums or "
 "playlists."
 msgstr ""
-"Tippe in der Suchleiste um nach Songs, Künstlern, Alben oder Playlists zu "
-"suchen."
+"Zacznij wpisywać w pasku wyszukiwania by szukać piosenek, artystów lub "
+"playlist."
 
 #: internal/ui/components/lyrics/lyrics.go:435
 msgid "Sync with track"
-msgstr "Mit Titel synchronisieren"
+msgstr "Synchronizuj z utworem"
 
 #: internal/router/handler_notfound.go:13
 msgid "The requested deeplink did not have any available handlers."
-msgstr "Die gewünschte Seite konnte nicht gefunden werden"
+msgstr "Żądany deeplink nie miał żadnych dostępnych handlerów."
 
 #: internal/ui/components/player/player.go:84
 msgid "Toggle Repeat"
-msgstr "Wiederholungsmodus ein-/ausschalten"
+msgstr "Przełącz powtarzanie"
 
 #: internal/ui/components/player/player.go:47
 msgid "Toggle Shuffle"
-msgstr "Zufallsmodus ein-/ausschalten"
+msgstr "Przełącz losowanie"
 
 #: internal/ui/window_content.go:44
 msgid "Toggle Sidebar"
-msgstr "Seitenleiste ein/ausklappen"
+msgstr "Przełącz panel boczny"
 
 #: internal/player/playback.go:60
 msgid "Track not available for streaming, skipping to next track"
-msgstr ""
-"Dieser Titel ist nicht zum Streamen verfügbar, springe zum nächsten Titel."
+msgstr "Utwór niedostępny w streamingu, przeskakuję do następnego utworu"
 
 #: internal/ui/routes/my-collection.go:80
 msgid "Tracks"
-msgstr "Titel"
+msgstr "Utwory"
 
 #: internal/router/handler_error.go:13
 msgid ""
@@ -582,63 +532,23 @@ msgid ""
 "\n"
 "Error Message: "
 msgstr ""
-"Leider ist während dem Laden der gewünschten Seite ein Fehler aufgetreten. "
-"Bitte versuche es später erneut. Falls dieser Fehler permanent auftritt, "
-"eröffne ein Ticket!\n"
+"Niestety wystąpił błąd przy wczytywaniu tego widoku. Proszę spróbuj ponownie "
+"później. Jeżeli błąd będzie nadal występował, proszę go zgłosić!\n"
 "\n"
-"Fehlermeldung: "
+"Komunikat błędu:"
 
 #: internal/ui/components/horizontal_list/horizontal_list.go:34
 msgid "View All"
-msgstr "Alles"
+msgstr "Wszystkie"
 
 #: internal/ui/components/player/controls_buttonrow.go:37
 msgid "Volume"
-msgstr "Lautstärke"
+msgstr "Głośność"
 
 #: internal/ui/components/linking/linking.go:29
 msgid "You can also open the linking page using the button below."
-msgstr ""
-"Mit dem folgenden Knopf kannst du auch direkt zur Anmeldeseite wechseln."
-
-#: internal/secrets/service_linux.go:48
-msgid ""
-"Your secret service provider was found, but refused to interact with "
-"Tonearm.\n"
-"\n"
-"This could because you cancelled a prompt or, if you are using a Flatpak, "
-"the provider not implementing the XDG Secret Portal service.\n"
-"\n"
-"Tonearm will not be able to store any authentication-related data and you "
-"will not be able to sign in."
-msgstr ""
-"Eine Secret Service Implementation wurde gefunden, diese lehnte jedoch "
-"jegliche Kommunikation mit Tonearm ab.\n"
-"\n"
-"Dies kann passieren wenn ein Popup zum Entsperren des Keyrings geschlossen "
-"wird oder, falls ein Flatpak verwendet wird, die Implementation den XDG "
-"Secret Portal Dienst nicht unterstützt.\n"
-"\n"
-"Tonearm wird keine Anmeldedaten abspeichern können und jeglicher "
-"Anmeldeversuch wird fehlschlagen."
-
-#~ msgid "Do not show a warning in case the secret service health check fails"
-#~ msgstr ""
-#~ "Im Falle eines fehlgeschlagenen Secret Service Selbsttest keine Warnung "
-#~ "anzeigen "
-
-#~ msgid "Hide Secret Service Warning"
-#~ msgstr "Secret Service Warnungen verstecken"
-
-#~ msgid "Miscellaneous"
-#~ msgstr "Verschiedenes"
-
-#~ msgid "Never Show This Again"
-#~ msgstr "Nie mehr anzeigen"
+msgstr "Możesz również otworzyć stronę łączenia, klikając przycisk poniżej."
 
 #: internal/ui/window_about.go:101
 msgid "translator-credits"
-msgstr "Nila The Dragon https://github.com/NilaTheDragon"
-
-#~ msgid "Shortcuts"
-#~ msgstr "Tastenkombinationen"
+msgstr ""

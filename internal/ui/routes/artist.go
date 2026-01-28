@@ -72,6 +72,7 @@ func Artist(artistId string) *router.Response {
 				VStack(
 					HStack(
 						Button().
+							TooltipText(gettext.Get("Shuffle Top Tracks")).
 							IconName("playlist-shuffle-symbolic").
 							MinWidth(81).
 							CornerRadius(21).
@@ -82,6 +83,7 @@ func Artist(artistId string) *router.Response {
 								// go player.PlayPlaylist(playlistUUID, true, "")
 							}),
 						Button().
+							TooltipText(gettext.Get("Play Top Tracks")).
 							IconName("play-symbolic").
 							MinWidth(81).
 							CornerRadius(21).
@@ -105,10 +107,12 @@ func Artist(artistId string) *router.Response {
 						HAlign(gtk.AlignEndValue),
 					HStack(
 						Button().
+							TooltipText(gettext.Get("Add to Collection")).
 							IconName("heart-outline-thick-symbolic").
 							WithCSSClass("transparent").
 							Sensitive(false),
 						Button().
+							TooltipText(gettext.Get("Copy Artist URL")).
 							IconName("share-alt-symbolic").
 							WithCSSClass("transparent").
 							ConnectClicked(func(gtk.Button) {

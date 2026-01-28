@@ -6,6 +6,7 @@ import (
 	"time"
 
 	"codeberg.org/dergs/tonearm/internal/g"
+	"codeberg.org/dergs/tonearm/internal/gettext"
 	"codeberg.org/dergs/tonearm/internal/player"
 	"codeberg.org/dergs/tonearm/internal/resources"
 	"codeberg.org/dergs/tonearm/internal/signals"
@@ -66,6 +67,7 @@ func NewQueue() schwifty.Box {
 		tracklist.GroupedColumn(1, gtk.AlignCenterValue,
 			tracklist.CustomWidgetButtonColumn(func(_ string, position, _ int) *gtk.Widget {
 				return Button().
+					TooltipText(gettext.Get("Remove Track from Queue")).
 					IconName("user-trash-symbolic").
 					WithCSSClass("transparent").
 					ConnectClicked(func(b gtk.Button) {
@@ -93,6 +95,7 @@ func NewQueue() schwifty.Box {
 		tracklist.GroupedColumn(1, gtk.AlignCenterValue,
 			tracklist.CustomWidgetButtonColumn(func(_ string, position, _ int) *gtk.Widget {
 				return Button().
+					TooltipText(gettext.Get("Remove Track from Queue")).
 					IconName("user-trash-symbolic").
 					WithCSSClass("transparent").
 					ConnectClicked(func(b gtk.Button) {
@@ -171,6 +174,7 @@ func NewQueue() schwifty.Box {
 			Spacer().VExpand(false),
 			HStack(
 				Button().
+					TooltipText(gettext.Get("Play / Pause")).
 					WithCSSClass("transparent").
 					BindIconName(playPauseIcon).
 					ConnectClicked(func(b gtk.Button) {
@@ -194,6 +198,7 @@ func NewQueue() schwifty.Box {
 						player.PlaybackStateChanged.Unsubscribe(miniPlayerLoadingIconSub)
 					}),
 				Button().
+					TooltipText(gettext.Get("Next")).
 					WithCSSClass("transparent").
 					IconName("skip-forward-large-symbolic").
 					ActionName("win.player.next").

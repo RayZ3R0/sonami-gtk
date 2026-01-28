@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"regexp"
 
+	"codeberg.org/dergs/tonearm/internal/gettext"
 	"github.com/jwijenbergh/puregotk/v4/adw"
 	"github.com/jwijenbergh/puregotk/v4/gtk"
 )
@@ -97,9 +98,11 @@ func (w *Window) PresentAbout() {
 		"Nila The Dragon https://github.com/NilaTheDragon",
 		"Dråfølin https://github.com/Drafolin",
 	})
+	about.SetTranslatorCredits(gettext.Get("translator-credits"))
 	about.SetCopyright("© 2026 Nila The Dragon")
-	about.SetWebsite("https://codeberg.org/dergs/Tonearm")
+	about.SetWebsite("https://dergs.dev/projects/tonearm")
 	about.SetIssueUrl("https://codeberg.org/dergs/Tonearm/issues")
+	about.SetSupportUrl("https://matrix.to/#/%23tonearm:derg.social")
 
 	about.AddLegalSection("GStreamer Bindings (go-gst/go-gst)", "© 2020 https://github.com/go-gst/go-gst", gtk.LicenseLgpl30Value, "")
 	about.AddLegalSection("DBus Client (godbus/dbus)", "© 2020 Georg Reinke https://github.com/godbus/dbus", gtk.LicenseBsdValue, "")

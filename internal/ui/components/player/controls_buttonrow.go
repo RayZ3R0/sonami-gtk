@@ -34,14 +34,17 @@ func controlsButtonRow() schwifty.Box {
 
 	return HStack(
 		MenuButton().
+			TooltipText(gettext.Get("Volume")).
 			Popover(controlsVolumeSlider()).
 			IconName("speakers-symbolic").
 			WithCSSClass("transparent"),
 		Button().
+			TooltipText(gettext.Get("Add to Collection")).
 			ActionName("unimplemented").
 			IconName("heart-outline-thick-symbolic").
 			WithCSSClass("transparent"),
 		Button().
+			TooltipText(gettext.Get("Navigate to Track Mix")).
 			IconName("compass2-symbolic").
 			BindSensitive(isTrackLoaded).
 			WithCSSClass("transparent").
@@ -69,6 +72,7 @@ func controlsButtonRow() schwifty.Box {
 				router.Navigate("playlist/" + mix.ID)
 			}),
 		Button().
+			TooltipText(gettext.Get("Navigate to Album")).
 			IconName("library-symbolic").
 			WithCSSClass("transparent").
 			BindSensitive(isTrackLoaded).
@@ -94,6 +98,7 @@ func controlsButtonRow() schwifty.Box {
 				router.Navigate("album/" + albumID)
 			}),
 		Button().
+			TooltipText(gettext.Get("Copy Track URL")).
 			IconName("share-alt-symbolic").
 			WithCSSClass("transparent").
 			BindSensitive(isTrackLoaded).

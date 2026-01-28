@@ -6,9 +6,9 @@
 #, fuzzy
 msgid ""
 msgstr ""
-"Project-Id-Version: v1.0.0-30-g8ca9db4\n"
+"Project-Id-Version: v1.0.1-9-ge8d17eb\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-01-28 17:31+0100\n"
+"POT-Creation-Date: 2026-01-28 23:02+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -37,6 +37,14 @@ msgstr[1] ""
 
 #: internal/ui/window_sidebar.go:35
 msgid "About Tonearm"
+msgstr ""
+
+#: internal/ui/components/player/controls_buttonrow.go:42
+msgid "Add to Collection"
+msgstr ""
+
+#: internal/ui/components/tracklist/column_controls.go:24
+msgid "Add to Queue"
 msgstr ""
 
 #: internal/ui/routes/album.go:45
@@ -156,12 +164,24 @@ msgstr ""
 msgid "Copied artist URL to clipboard."
 msgstr ""
 
-#: internal/ui/routes/playlist.go:178
+#: internal/ui/routes/playlist.go:182
 msgid "Copied playlist URL to clipboard."
 msgstr ""
 
-#: internal/ui/components/player/controls_buttonrow.go:112
+#: internal/ui/components/player/controls_buttonrow.go:117
 msgid "Copied track URL to clipboard."
+msgstr ""
+
+#: internal/ui/routes/artist.go:115
+msgid "Copy Artist URL"
+msgstr ""
+
+#: internal/ui/routes/playlist.go:166
+msgid "Copy Playlist URL"
+msgstr ""
+
+#: internal/ui/components/player/controls_buttonrow.go:101
+msgid "Copy Track URL"
 msgstr ""
 
 #: internal/ui/window_preferences.go:24
@@ -280,6 +300,10 @@ msgstr ""
 msgid "Navigate Back"
 msgstr ""
 
+#: internal/ui/components/player/controls_buttonrow.go:75
+msgid "Navigate to Album"
+msgstr ""
+
 #: internal/ui/window_content.go:27
 msgid "Navigate to Collection"
 msgstr ""
@@ -292,12 +316,20 @@ msgstr ""
 msgid "Navigate to Home"
 msgstr ""
 
+#: internal/ui/components/player/controls_buttonrow.go:47
+msgid "Navigate to Track Mix"
+msgstr ""
+
 #: internal/ui/window_shortcuts.go:21
 msgid "Navigation"
 msgstr ""
 
 #: internal/ui/window_preferences.go:38
 msgid "Navigation Behaviour"
+msgstr ""
+
+#: internal/ui/components/player/player.go:77
+msgid "Next"
 msgstr ""
 
 #: internal/ui/components/player/track_title.go:20
@@ -308,11 +340,11 @@ msgstr ""
 msgid "No lyrics available"
 msgstr ""
 
-#: internal/ui/components/player/controls_buttonrow.go:61
+#: internal/ui/components/player/controls_buttonrow.go:64
 msgid "No mix found for the current track"
 msgstr ""
 
-#: internal/ui/routes/playlist.go:168
+#: internal/ui/routes/playlist.go:172
 msgid "No playlist could be shared."
 msgstr ""
 
@@ -329,7 +361,7 @@ msgstr ""
 msgid "No song currently playing"
 msgstr ""
 
-#: internal/ui/components/player/controls_buttonrow.go:102
+#: internal/ui/components/player/controls_buttonrow.go:107
 msgid "No track is currently playing."
 msgstr ""
 
@@ -353,6 +385,22 @@ msgstr ""
 msgid "Personal Mix"
 msgstr ""
 
+#: internal/ui/components/player/controls_play_pause.go:35
+msgid "Play / Pause"
+msgstr ""
+
+#: internal/ui/routes/album.go:125
+msgid "Play Album"
+msgstr ""
+
+#: internal/ui/routes/playlist.go:138
+msgid "Play Playlist"
+msgstr ""
+
+#: internal/ui/routes/artist.go:86
+msgid "Play Top Tracks"
+msgstr ""
+
 #: internal/ui/window_sidebar.go:73
 msgid "Player"
 msgstr ""
@@ -373,6 +421,10 @@ msgstr ""
 msgid "Preferences"
 msgstr ""
 
+#: internal/ui/components/player/player.go:68
+msgid "Previous"
+msgstr ""
+
 #: internal/ui/window_sidebar.go:75
 msgid "Queue"
 msgstr ""
@@ -381,12 +433,24 @@ msgstr ""
 msgid "Quit"
 msgstr ""
 
+#: internal/ui/components/queue/queue.go:70
+msgid "Remove Track from Queue"
+msgstr ""
+
 #: internal/ui/components/linking/linking.go:59
 msgid "Scan this QR code to sign into your TIDAL account."
 msgstr ""
 
 #: internal/ui/window_preferences.go:87
 msgid "Scrobbling"
+msgstr ""
+
+#: internal/ui/components/horizontal_list/horizontal_list.go:65
+msgid "Scroll to the left"
+msgstr ""
+
+#: internal/ui/components/horizontal_list/horizontal_list.go:54
+msgid "Scroll to the right"
 msgstr ""
 
 #: internal/ui/routes/search/search.go:12
@@ -411,6 +475,18 @@ msgstr ""
 
 #: internal/ui/window_actions.go:176
 msgid "Set current page as default"
+msgstr ""
+
+#: internal/ui/routes/album.go:115
+msgid "Shuffle Album"
+msgstr ""
+
+#: internal/ui/routes/playlist.go:127
+msgid "Shuffle Playlist"
+msgstr ""
+
+#: internal/ui/routes/artist.go:75
+msgid "Shuffle Top Tracks"
 msgstr ""
 
 #: internal/ui/window_shortcuts.go:13
@@ -441,8 +517,20 @@ msgstr ""
 msgid "Start typing in the search bar to search for songs, artists, albums or playlists."
 msgstr ""
 
+#: internal/ui/components/lyrics/lyrics.go:435
+msgid "Sync with track"
+msgstr ""
+
 #: internal/router/handler_notfound.go:13
 msgid "The requested deeplink did not have any available handlers."
+msgstr ""
+
+#: internal/ui/components/player/player.go:84
+msgid "Toggle Repeat"
+msgstr ""
+
+#: internal/ui/components/player/player.go:47
+msgid "Toggle Shuffle"
 msgstr ""
 
 #: internal/ui/window_content.go:44
@@ -468,6 +556,10 @@ msgstr ""
 msgid "View All"
 msgstr ""
 
+#: internal/ui/components/player/controls_buttonrow.go:37
+msgid "Volume"
+msgstr ""
+
 #: internal/ui/components/linking/linking.go:29
 msgid "You can also open the linking page using the button below."
 msgstr ""
@@ -479,5 +571,7 @@ msgid ""
 "This could because you cancelled a prompt or, if you are using a Flatpak, the provider not implementing the XDG Secret Portal service.\n"
 "\n"
 "Tonearm will not be able to store any authentication-related data and you will not be able to sign in."
-msgstr ""
 
+#: internal/ui/window_about.go:101
+msgid "translator-credits"
+msgstr ""

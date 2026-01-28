@@ -432,6 +432,7 @@ func NewLyricsPanel() schwifty.Box {
 		HAlign(gtk.AlignEndValue).
 		VAlign(gtk.AlignEndValue).
 		Margin(7).
+		TooltipText(gettext.Get("Sync with track")).
 		BindVisible(userManuallyScrolled).
 		ConnectClicked(func(b gtk.Button) {
 			if activeLyricButtonPtr := activeLyricIndex.Value(); activeLyricButtonPtr != 0 {
