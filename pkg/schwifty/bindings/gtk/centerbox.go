@@ -49,6 +49,14 @@ func (f CenterBox) EndWidget(child any) CenterBox {
 	}
 }
 
+func (f CenterBox) Orientation(orientation gtk.Orientation) CenterBox {
+	return func() *gtk.CenterBox {
+		centerBox := f()
+		centerBox.SetOrientation(orientation)
+		return centerBox
+	}
+}
+
 func (f CenterBox) StartWidget(child any) CenterBox {
 	return func() *gtk.CenterBox {
 		centerBox := f()
