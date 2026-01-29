@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: 1\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-01-28 23:39+0100\n"
+"POT-Creation-Date: 2026-01-29 20:30+0100\n"
 "PO-Revision-Date: 2026-01-28 22:43+0100\n"
 "Last-Translator: Nila The Dragon <nilathedragon@pm.me>\n"
 "Language-Team: German\n"
@@ -156,7 +156,7 @@ msgstr "Schliessen"
 msgid "Collection"
 msgstr "Sammlung"
 
-#: internal/ui/window_preferences.go:86
+#: internal/ui/window_preferences.go:91
 msgid "Configure Tonearm to send scrobbling data to ListenBrainz."
 msgstr "Konfiguriere Tonearm um Scrobbling Daten an ListenBrainz zu senden"
 
@@ -260,13 +260,18 @@ msgstr "Interner Fehler"
 msgid "Keyboard Shortcuts"
 msgstr "Tastaturkurzbefehle"
 
-#: internal/ui/window_preferences.go:85
+#: internal/ui/window_preferences.go:90
 msgid "ListenBrainz"
 msgstr ""
 
 #: internal/ui/window_preferences.go:80
 msgid "ListenBrainz API Token"
 msgstr "ListenBrainz API Schlüssel"
+
+#: internal/ui/window_preferences.go:85
+#, fuzzy
+msgid "ListenBrainz API URL"
+msgstr ""
 
 #: internal/ui/components/player/track_timeline.go:55
 msgid "Low (320 kbps)"
@@ -466,7 +471,7 @@ msgstr "Titel von der Warteschlange entfernen"
 msgid "Scan this QR code to sign into your TIDAL account."
 msgstr "Scanne diesen QR Code um dich bei TIDAL anzumelden."
 
-#: internal/ui/window_preferences.go:87
+#: internal/ui/window_preferences.go:92
 msgid "Scrobbling"
 msgstr ""
 
