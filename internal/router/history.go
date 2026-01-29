@@ -10,7 +10,7 @@ import (
 
 var history = &History{
 	Mutex:   sync.Mutex{},
-	Current: &HistoryEntry{},
+	Current: nil,
 	Entries: []*HistoryEntry{},
 }
 
@@ -65,10 +65,13 @@ func (h *History) Push(entry *HistoryEntry) {
 	defer h.Unlock()
 	defer HistoryUpdated.Notify(h)
 
-	if len(h.Entries) >= settings.Performance().MaxRouterHistorySize() {
-		h.Entries = h.Entries[1:]
+	if h.Current != nil {
+		if len(h.Entries) >= settings.Performance().MaxRouterHistorySize() {
+			h.Entries = h.Entries[1:]
+		}
+
+		h.Entries = append(h.Entries, h.Current)
 	}
 
-	h.Entries = append(h.Entries, h.Current)
 	h.Current = entry
 }
