@@ -40,6 +40,8 @@ func NewWindow(app *adw.Application) *Window {
 	})
 
 	window.installActions()
+	window.installMouseClickHandler()
+
 	window.SetContent(window.build())
 	window.SetTitle("Tonearm")
 	window.SetIconName("logo-symbolic")
