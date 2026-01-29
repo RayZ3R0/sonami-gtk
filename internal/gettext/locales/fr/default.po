@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: v1.0.0-12-g1ce38cd\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2026-01-28 23:39+0100\n"
-"PO-Revision-Date: 2026-01-28 10:41+0100\n"
+"PO-Revision-Date: 2026-01-29 08:04+0100\n"
 "Last-Translator: Dråfølin <derg at drafolin dot ch>\n"
 "Language-Team: French\n"
 "Language: fr\n"
@@ -173,7 +173,7 @@ msgstr ""
 
 #: internal/ui/window_popups.go:28
 msgid "Continue"
-msgstr ""
+msgstr "Continuer"
 
 #: internal/ui/routes/artist.go:125
 msgid "Copied artist URL to clipboard."
@@ -205,7 +205,7 @@ msgstr "Page par défaut"
 
 #: internal/ui/window_popups.go:21
 msgid "Don't show again"
-msgstr ""
+msgstr "Ne plus afficher"
 
 #: internal/ui/routes/search.go:29
 msgid "E.g. Fox Stevenson"
@@ -373,6 +373,13 @@ msgid ""
 "\n"
 "Please install a secret service provider such as GNOME Keyring or KDE Wallet."
 msgstr ""
+"Aucun fournisseur de service de secret disponible.\n"
+"\n"
+"Tonearm ne pourra pas sauvegarder d'informations liées à l'authentication, "
+"vous ne pourrez donc pas vous connecter.\n"
+"\n"
+"Veuillez installer un fournisseur de service de secret tel que GNOME Keyring "
+"ou KDE Wallet."
 
 #: internal/ui/components/lyrics/lyrics.go:384
 msgid "No song currently playing"
@@ -476,16 +483,15 @@ msgstr "Rechercher"
 
 #: internal/secrets/service_linux.go:54
 msgid "Secret Service Error"
-msgstr ""
+msgstr "Erreur du service de secret"
 
 #: internal/secrets/service_linux.go:47
 msgid "Secret Service Issue"
-msgstr ""
+msgstr "Problème du service de secret"
 
 #: internal/secrets/service_linux.go:39
-#, fuzzy
 msgid "Secret Service Unavailable"
-msgstr ""
+msgstr "Service de secret non disponible"
 
 #: internal/ui/window_sidebar.go:32
 msgid "Set as default page"
@@ -604,7 +610,16 @@ msgid ""
 "Tonearm will not be able to store any authentication-related data and you "
 "will not be able to sign in."
 msgstr ""
+"Votre service de secret a été trouvé, mais a refusé d'interagir avec "
+"Tonearm.\n"
+"\n"
+"Cela peut être dû à la fermeture d'un message, ou, si vous utilisez Flatpak, "
+"que votre fournisseur n'implémente pas le portail XDG pour les services de "
+"secret.\n"
+"\n"
+"Tonearm ne pourra pas sauvegarder d'informations liées à l'authentication, "
+"vous ne pourrez donc pas vous connecter."
 
 #: internal/ui/window_about.go:101
 msgid "translator-credits"
-msgstr ""
+msgstr "Dråfølin Nattfløyen https://github.com/drafolin"
