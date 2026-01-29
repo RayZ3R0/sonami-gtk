@@ -551,4 +551,4 @@ msgstr "Możesz również otworzyć stronę łączenia, klikając przycisk poni�
 
 #: internal/ui/window_about.go:101
 msgid "translator-credits"
-msgstr ""
+msgstr "Łukasz Horodecki https://horodecki.net"
