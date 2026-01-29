@@ -5,6 +5,7 @@ import (
 
 	"codeberg.org/dergs/tonearm/internal/signals"
 	"codeberg.org/dergs/tonearm/pkg/mpris"
+	"github.com/godbus/dbus/v5"
 	"github.com/infinytum/injector"
 )
 
@@ -76,6 +77,7 @@ func init() {
 		}
 
 		mprisServer.SetTrackMetadata(map[string]any{
+			"mpris:trackid":     dbus.ObjectPath("/org/mpris/MediaPlayer2/TrackList/Track" + trackInfo.ID),
 			"mpris:artUrl":      trackInfo.CoverURL,
 			"mpris:length":      trackInfo.Duration.Microseconds(),
 			"xesam:album":       album.Data.Attributes.Title,
