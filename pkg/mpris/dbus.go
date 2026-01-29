@@ -222,7 +222,7 @@ func (o *MprisDBusObject) Raise() *dbus.Error {
 	return &dbus.ErrMsgUnknownMethod
 }
 
-func (o *MprisDBusObject) Seek(offsetUs int) *dbus.Error {
+func (o *MprisDBusObject) Seek(offsetUs int64) *dbus.Error {
 	if onSeek := o.OnSeek; onSeek != nil {
 		onSeek(time.Duration(offsetUs) * time.Microsecond)
 		return nil
@@ -231,7 +231,7 @@ func (o *MprisDBusObject) Seek(offsetUs int) *dbus.Error {
 	return &dbus.ErrMsgUnknownMethod
 }
 
-func (o *MprisDBusObject) SetPosition(_ dbus.ObjectPath, offsetUs int) *dbus.Error {
+func (o *MprisDBusObject) SetPosition(_ dbus.ObjectPath, offsetUs int64) *dbus.Error {
 	if onSetPosition := o.OnSetPosition; onSetPosition != nil {
 		onSetPosition(time.Duration(offsetUs) * time.Microsecond)
 		return nil

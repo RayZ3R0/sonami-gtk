@@ -178,7 +178,7 @@ func PlayTracklist(tracks []openapi.Track, shuffle bool, startAt int) error {
 	}
 
 	if shuffle {
-		EnableShuffle()
+		SetShuffle(true)
 	}
 
 	nextTrack := getNextTrackFromQueue(false)

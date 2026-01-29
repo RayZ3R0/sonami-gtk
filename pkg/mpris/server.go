@@ -97,6 +97,19 @@ func (c *Server) OnLoopStatusChanged(cb func(loopStatus LoopStatus)) {
 	}
 }
 
+func (c *Server) OnShuffleChanged(cb func(shuffle bool)) {
+	c.object.Properties[playerInterface]["Shuffle"].Callback = func(newVal *prop.Change) *dbus.Error {
+		val, ok := newVal.Value.(bool)
+		if !ok {
+			slog.Error("Unexpected format from client for Shuffle value")
+			return &dbus.ErrMsgInvalidArg
+		}
+
+		cb(val)
+		return nil
+	}
+}
+
 func (c *Server) OnVolumeChanged(cb func(newVal float64)) {
 	c.object.Properties[playerInterface]["Volume"].Callback = func(newVal *prop.Change) *dbus.Error {
 		val, ok := newVal.Value.(float64)
