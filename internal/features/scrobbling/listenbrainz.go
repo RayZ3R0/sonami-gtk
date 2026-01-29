@@ -54,7 +54,7 @@ func makeListenBrainzRequest(reqBody listenBrainzRequest) {
 		return
 	}
 
-	req, err := http.NewRequest("POST", "https://api.listenbrainz.org/1/submit-listens", bytes.NewBuffer(encoded))
+	req, err := http.NewRequest("POST", settings.Scrobbling().ListenBrainzUrl()+"/1/submit-listens", bytes.NewBuffer(encoded))
 	if err != nil {
 		logger.Error("failed to create request to listenbrainz", err)
 		return

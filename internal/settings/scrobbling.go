@@ -17,9 +17,16 @@ func (s *ScrobblingSettings) BindListenBrainzToken(target *gobject.Object, prope
 	s.settings.Bind("listenbrainz-token", target, property, gio.GSettingsBindNoSensitivityValue)
 }
 
+func (s *ScrobblingSettings) BindListenBrainzUrl(target *gobject.Object, property string) {
+	s.settings.Bind("listenbrainz-url", target, property, gio.GSettingsBindNoSensitivityValue)
+}
+
 func (s *ScrobblingSettings) ShouldEnableListenBrainz() bool {
 	return s.settings.GetBoolean("enable-listenbrainz")
 }
 func (s *ScrobblingSettings) ListenBrainzToken() string {
 	return s.settings.GetString("listenbrainz-token")
+}
+func (s *ScrobblingSettings) ListenBrainzUrl() string {
+	return s.settings.GetString("listenbrainz-url")
 }
