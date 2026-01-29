@@ -59,6 +59,7 @@ func main() {
 
 	injector.DeferredSingleton(func() *mpris.Server {
 		mprisServer := mpris.NewMprisServer("org.mpris.MediaPlayer2."+app.GetApplicationId(), app.GetApplicationId(), "Tonearm")
+		mprisServer.OnPause(player.Pause)
 		mprisServer.OnPlayPause(player.PlayPause)
 		mprisServer.OnPlay(player.Play)
 		mprisServer.OnTrackNext(player.Next)
