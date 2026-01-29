@@ -604,4 +604,4 @@ msgstr ""
 
 #: internal/ui/window_about.go:101
 msgid "translator-credits"
-msgstr ""
+msgstr "Łukasz Horodecki https://horodecki.net"
