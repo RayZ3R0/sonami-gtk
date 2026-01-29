@@ -50,7 +50,7 @@ func (w *Window) buildContentHeader() *gtk.Widget {
 				ConnectConstruct(func(b *gtk.Button) {
 					router.HistoryUpdated.On(func(history *router.History) bool {
 						schwifty.OnMainThreadOncePure(func() {
-							b.SetVisible(len(history.Entries) > 1)
+							b.SetVisible(len(history.Entries) > 0)
 						})
 						return signals.Continue
 					})

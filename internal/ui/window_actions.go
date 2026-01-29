@@ -18,6 +18,7 @@ import (
 	"github.com/jwijenbergh/puregotk/v4/adw"
 	"github.com/jwijenbergh/puregotk/v4/gio"
 	"github.com/jwijenbergh/puregotk/v4/glib"
+	"github.com/jwijenbergh/puregotk/v4/gtk"
 )
 
 func (w *Window) installActions() {
@@ -176,4 +177,23 @@ func (w *Window) installActions() {
 		notifications.OnToast.Notify(gettext.Get("Set current page as default"))
 	}))
 	w.AddAction(setAsDefaultAction)
+}
+
+const (
+	MouseButtonBack    = 8
+	MouseButtonForward = 9
+)
+
+func (w *Window) installMouseClickHandler() {
+	gestureController := gtk.NewGestureClick()
+	gestureController.SetButton(0)
+	gestureController.SetPropagationPhase(gtk.PhaseCaptureValue)
+	gestureController.ConnectPressed(g.Ptr(func(controller gtk.GestureClick, nPress int, x float64, y float64) {
+		switch controller.GetCurrentButton() {
+		case MouseButtonBack:
+			// Back button
+			w.ActivateAction("navigate-back", nil)
+		}
+	}))
+	w.AddController(&gestureController.EventController)
 }
