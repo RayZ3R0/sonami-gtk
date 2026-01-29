@@ -28,12 +28,12 @@ func CycleRepeatMode() {
 	}
 }
 
-func EnableShuffle() {
-	if ShuffleStateChanged.CurrentValue() {
+func SetShuffle(enabled bool) {
+	if ShuffleStateChanged.CurrentValue() == enabled {
 		return
 	}
 	ShuffleStateChanged.Notify(func(oldValue bool) bool {
-		return true
+		return enabled
 	})
 }
 

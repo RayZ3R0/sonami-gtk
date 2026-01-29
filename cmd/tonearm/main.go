@@ -84,7 +84,9 @@ func main() {
 		mprisServer.OnSetPosition(player.SeekToPosition)
 		mprisServer.OnVolumeChanged(func(newVal float64) {
 			player.SetVolume(newVal)
-
+		})
+		mprisServer.OnShuffleChanged(func(shuffle bool) {
+			player.SetShuffle(shuffle)
 		})
 		mprisServer.Export()
 		return mprisServer
