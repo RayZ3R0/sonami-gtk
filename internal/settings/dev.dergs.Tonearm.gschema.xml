@@ -12,6 +12,11 @@
 			<summary>Default Page</summary>
 			<description>The default page to open when the application starts</description>
 		</key>
+		<key name="hide-secret-service-warning" type="b">
+            <default>false</default>
+            <summary>Hide Secret Service Warning</summary>
+            <description>Do not show any warning when the secret service health check fails on startup</description>
+        </key>
     	<key name="window-height" type="i">
     		<default>920</default>
     		<summary>Window Height</summary>

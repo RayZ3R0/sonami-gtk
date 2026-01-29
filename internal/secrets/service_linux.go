@@ -2,7 +2,12 @@
 
 package secrets
 
-import golibsecret "github.com/lescuer97/go-libsecret"
+import (
+	"strings"
+
+	"codeberg.org/dergs/tonearm/internal/gettext"
+	golibsecret "github.com/lescuer97/go-libsecret"
+)
 
 var schema *golibsecret.Schema
 
@@ -18,6 +23,38 @@ func init() {
 
 type serviceLinux struct {
 	schema *golibsecret.Schema
+}
+
+func (s *serviceLinux) Available() *ServiceError {
+	// Fake secret fetch to see if the service is available
+	attrs := golibsecret.NewAttributes()
+	attrs.Set("key", "dummy_key")
+	val, err := golibsecret.PasswordLookupSync(s.schema, attrs)
+	if val == "" && err == nil {
+		return nil
+	}
+
+	if strings.Contains(err.Error(), "name is not activatable") || strings.Contains(err.Error(), "ServiceUnknown") {
+		return &ServiceError{
+			Title: gettext.Get("Secret Service Unavailable"),
+			Body:  gettext.Get("No secret service provider is available.\n\nTonearm will not be able to store any authentication-related data and you will not be able to sign in.\n\nPlease install a secret service provider such as GNOME Keyring or KDE Wallet."),
+			Fatal: false,
+		}
+	}
+
+	if strings.Contains(err.Error(), "user interaction failed") {
+		return &ServiceError{
+			Title: gettext.Get("Secret Service Issue"),
+			Body:  gettext.Get("Your secret service provider was found, but refused to interact with Tonearm.\n\nThis could because you cancelled a prompt or, if you are using a Flatpak, the provider not implementing the XDG Secret Portal service.\n\nTonearm will not be able to store any authentication-related data and you will not be able to sign in."),
+			Fatal: false,
+		}
+	}
+
+	return &ServiceError{
+		Title: gettext.Get("Secret Service Error"),
+		Body:  gettext.Get("An unknown error occurred when checking for a secret service provider.\n\nSigning in may or may not work. Please see the raw error message for more details:\n\n%s", err.Error()),
+		Fatal: false,
+	}
 }
 
 func (s *serviceLinux) Delete(key string) error {

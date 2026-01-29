@@ -112,6 +112,12 @@ func onActivate(_ gio.Application) {
 		}
 		return false
 	}))
+
+	if err := secrets.Healthcheck(); err != nil {
+		slog.Error("Secret service health check failed", "title", err.Title, "body", err.Body, "fatal", err.Fatal)
+		window.PresentSecretServiceError(err)
+	}
+
 }
 
 var isActive bool

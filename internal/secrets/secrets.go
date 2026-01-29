@@ -15,6 +15,7 @@ var getService = g.Lazy(func() Service {
 })
 
 type Service interface {
+	Available() *ServiceError
 	Delete(key string) error
 	Get(key string) (Item, error)
 	Has(key string) (bool, error)
@@ -24,4 +25,14 @@ type Service interface {
 type Item struct {
 	Label    string
 	Password string
+}
+
+type ServiceError struct {
+	Title string
+	Body  string
+	Fatal bool
+}
+
+func Healthcheck() *ServiceError {
+	return getService().Available()
 }
