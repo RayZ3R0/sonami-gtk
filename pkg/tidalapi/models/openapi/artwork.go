@@ -51,7 +51,7 @@ func (files ArtworkFiles) AtLeast(size int) ArtworkFile {
 		return files[i].Meta.Height < files[j].Meta.Height || files[i].Meta.Width < files[j].Meta.Width
 	})
 	for _, file := range files {
-		if file.Meta.Height >= size || file.Meta.Width >= size {
+		if min(file.Meta.Height, file.Meta.Width) >= size {
 			return file
 		}
 	}
