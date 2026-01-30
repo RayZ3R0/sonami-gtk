@@ -73,18 +73,18 @@ inputs = {
 ```
 then add this anywhere in your system configuration as you see fit
 ```nix
-{ tonearm, ... }:
+{ inputs, ... }:
 
 {
 
   # System Packages
   environment.systemPackages = [
-    tonearm.packages.${pkgs.stdenv.hostPlatform.system}.tonearm
+    inputs.tonearm.packages.${pkgs.stdenv.hostPlatform.system}.tonearm
   ];
 
   # Or if you prefer via Home Manager
   home.packages = [
-    tonearm.packages.${pkgs.stdenv.hostPlatform.system}.tonearm
+    inputs.tonearm.packages.${pkgs.stdenv.hostPlatform.system}.tonearm
   ];
 
 }
