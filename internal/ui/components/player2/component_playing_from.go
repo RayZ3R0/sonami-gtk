@@ -64,10 +64,10 @@ func PlayingFrom() schwifty.Button {
 				Image().
 					BindPaintable(playingFromCoverState).
 					Background("alpha(var(--view-fg-color), 0.1)").
-					PixelSize(32).
+					PixelSize(33).
 					HAlign(gtk.AlignEndValue).HExpand(true).
 					VAlign(gtk.AlignCenterValue).
 					Overflow(gtk.OverflowHiddenValue).CornerRadius(5),
 			).HAlign(gtk.AlignFillValue),
-		).WithCSSClass("transparent").CSS("button { margin-top: -5px; margin-bottom: -5px; margin-left: -10px; margin-right: -10px; }")
+		).WithCSSClass("transparent").CSS("button { margin-top: -10px; margin-bottom: -10px; margin-left: -10px; margin-right: -10px; padding-top: 10px; padding-bottom: 10px; }")
 }
