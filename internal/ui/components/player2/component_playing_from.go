@@ -6,6 +6,7 @@ import (
 	"codeberg.org/dergs/tonearm/internal/gettext"
 	"codeberg.org/dergs/tonearm/internal/player"
 	"codeberg.org/dergs/tonearm/internal/resources"
+	"codeberg.org/dergs/tonearm/internal/router"
 	"codeberg.org/dergs/tonearm/internal/signals"
 	"codeberg.org/dergs/tonearm/pkg/schwifty"
 	"codeberg.org/dergs/tonearm/pkg/schwifty/state"
@@ -18,6 +19,7 @@ import (
 
 var playingFromCoverState = state.NewStateful[schwifty.Paintable](resources.MissingAlbum())
 var playingFromTitleState = state.NewStateful[string]("Nothing")
+var playingFromCanNavigateState = state.NewStateful[bool](false)
 var playingFromNavTargetState = state.NewStateful[string]("")
 
 func init() {
@@ -25,6 +27,7 @@ func init() {
 		if s != nil {
 			playingFromTitleState.SetValue(s.Title)
 			playingFromNavTargetState.SetValue(s.Route)
+			playingFromCanNavigateState.SetValue(s.Route != "")
 
 			if s.CoverURL != "" {
 				texture, err := injector.MustInject[*imgutil.ImgUtil]().LoadCropped(s.CoverURL)
@@ -46,18 +49,25 @@ func init() {
 	})
 }
 
-func PlayingFrom() schwifty.Box {
-	return HStack(
-		VStack(
-			Label(gettext.Get("Playing From")).HAlign(gtk.AlignStartValue).WithCSSClass("caption-heading").WithCSSClass("dimmed"),
-			Label("").BindText(playingFromTitleState).HAlign(gtk.AlignStartValue).WithCSSClass("heading").Ellipsis(pango.EllipsizeEndValue),
-		).VAlign(gtk.AlignCenterValue).MarginEnd(10),
-		Image().
-			BindPaintable(playingFromCoverState).
-			Background("alpha(var(--view-fg-color), 0.1)").
-			PixelSize(30).
-			HAlign(gtk.AlignEndValue).HExpand(true).
-			VAlign(gtk.AlignCenterValue).
-			Overflow(gtk.OverflowHiddenValue).CornerRadius(5),
-	).HAlign(gtk.AlignFillValue)
+func PlayingFrom() schwifty.Button {
+	return Button().
+		BindSensitive(playingFromCanNavigateState).
+		ConnectClicked(func(b gtk.Button) {
+			router.Navigate(playingFromNavTargetState.Value())
+		}).
+		Child(
+			HStack(
+				VStack(
+					Label(gettext.Get("Playing From")).HAlign(gtk.AlignStartValue).WithCSSClass("caption-heading").WithCSSClass("dimmed"),
+					Label("").BindText(playingFromTitleState).HAlign(gtk.AlignStartValue).WithCSSClass("heading").Ellipsis(pango.EllipsizeEndValue),
+				).VAlign(gtk.AlignCenterValue).MarginEnd(10),
+				Image().
+					BindPaintable(playingFromCoverState).
+					Background("alpha(var(--view-fg-color), 0.1)").
+					PixelSize(32).
+					HAlign(gtk.AlignEndValue).HExpand(true).
+					VAlign(gtk.AlignCenterValue).
+					Overflow(gtk.OverflowHiddenValue).CornerRadius(5),
+			).HAlign(gtk.AlignFillValue),
+		).WithCSSClass("transparent").CSS("button { margin-top: -5px; margin-bottom: -5px; margin-left: -10px; margin-right: -10px; }")
 }
