@@ -63,9 +63,9 @@
 
         packages.tonearm = pkgs.buildGoModule (finalAttrs: {
           pname = "tonearm";
-          version = "0.0.1";
+          version = "1.0.1";
           src = pkgs.lib.cleanSource ./.;
-          vendorHash = "sha256-8Imw+UsGd/1YwZmTcytx1zBAWN8X88OmAJ5EWKjF3+Y=";
+          vendorHash = "sha256-j+7cobxVGNuZFYeRn5ad7XT4um8WNWE1byFo7qo9zK0=";
 
           ldflags = [
             "-X \"codeberg.org/dergs/tonearm/internal/ui.Commit=${(if (self ? rev) then self.rev else "")}\""
