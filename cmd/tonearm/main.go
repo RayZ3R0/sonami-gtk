@@ -5,14 +5,16 @@ import (
 	"os"
 	"strings"
 
-	_ "codeberg.org/dergs/tonearm/internal/features/scrobbling"
-	"codeberg.org/dergs/tonearm/internal/g"
 	_ "codeberg.org/dergs/tonearm/internal/icons"
+	_ "codeberg.org/dergs/tonearm/internal/styles"
+
+	_ "codeberg.org/dergs/tonearm/internal/features/scrobbling"
+
+	"codeberg.org/dergs/tonearm/internal/g"
 	"codeberg.org/dergs/tonearm/internal/player"
 	"codeberg.org/dergs/tonearm/internal/router"
 	"codeberg.org/dergs/tonearm/internal/secrets"
 	"codeberg.org/dergs/tonearm/internal/settings"
-	_ "codeberg.org/dergs/tonearm/internal/styles"
 	"codeberg.org/dergs/tonearm/internal/ui"
 	"codeberg.org/dergs/tonearm/pkg/mpris"
 	"codeberg.org/dergs/tonearm/pkg/schwifty/tracking"
