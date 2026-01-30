@@ -1,0 +1,106 @@
+package player2
+
+import (
+	"codeberg.org/dergs/tonearm/internal/gettext"
+	"codeberg.org/dergs/tonearm/internal/player"
+	"codeberg.org/dergs/tonearm/internal/signals"
+	"codeberg.org/dergs/tonearm/pkg/schwifty"
+	"codeberg.org/dergs/tonearm/pkg/schwifty/state"
+	. "codeberg.org/dergs/tonearm/pkg/schwifty/syntax"
+	"codeberg.org/dergs/tonearm/pkg/tidalapi"
+	v1 "codeberg.org/dergs/tonearm/pkg/tidalapi/models/v1"
+	"github.com/jwijenbergh/puregotk/v4/gtk"
+)
+
+var (
+	durationState       = state.NewStateful("00:00")
+	positionState       = state.NewStateful("00:00")
+	timelineSliderState = state.NewStateful(0.0)
+
+	playbackQualityText  = state.NewStateful("Max")
+	playbackQualityClass = state.NewStateful("max")
+)
+
+func init() {
+	player.TrackChanged.On(func(trackInfo *player.Track) bool {
+		schwifty.OnMainThreadOncePure(func() {
+			if trackInfo == nil {
+				durationState.SetValue("00:00")
+			} else {
+				durationState.SetValue(tidalapi.FormatDuration(trackInfo.Duration))
+			}
+		})
+		return signals.Continue
+	})
+
+	player.PlaybackStateChanged.On(func(state *player.PlaybackState) bool {
+		schwifty.OnMainThreadOncePure(func() {
+			positionState.SetValue(tidalapi.FormatDuration(state.Position))
+			if state.Duration > 0 {
+				durationState.SetValue(tidalapi.FormatDuration(state.Duration))
+				timelineSliderState.SetValue(100.0 / float64(state.Duration) * float64(state.Position))
+			} else {
+				timelineSliderState.SetValue(0)
+			}
+		})
+		return signals.Continue
+	})
+
+	player.PlaybackQualityChanged.On(func(quality v1.AudioQuality) bool {
+		schwifty.OnMainThreadOncePure(func() {
+			switch quality {
+			case v1.AudioQualityLossy:
+				playbackQualityText.SetValue(gettext.Get("Low (96 kbps)"))
+				playbackQualityClass.SetValue("low")
+			case v1.AudioQualityHighRes:
+				playbackQualityText.SetValue(gettext.Get("Low (320 kbps)"))
+				playbackQualityClass.SetValue("low")
+			case v1.AudioQualityLossless:
+				playbackQualityText.SetValue(gettext.Get("High"))
+				playbackQualityClass.SetValue("high")
+			case v1.AudioQualityHighResLossless:
+				playbackQualityText.SetValue(gettext.Get("Max"))
+				playbackQualityClass.SetValue("max")
+			}
+		})
+		return signals.Continue
+	})
+}
+
+func trackTimeline() schwifty.Widget {
+	overlay := gtk.NewOverlay()
+	overlay.SetChild(VStack(
+		Scale(gtk.OrientationHorizontalValue).
+			BindSensitive(isControllableState).
+			BindValue(timelineSliderState).
+			Increments(1, 1).
+			HExpand(true).
+			Range(0, 100).
+			Background("transparent").
+			HPadding(0).
+			ConnectChangeValue(func(r gtk.Range, st gtk.ScrollType, f float64) bool {
+				player.SeekToPercent(f)
+				return false
+			}),
+		HStack(
+			Label("").BindText(positionState),
+			Spacer().VExpand(false),
+			Label("").BindText(durationState),
+		),
+	).MarginBottom(2).ToGTK())
+	overlay.AddOverlay(
+		Label("").
+			VAlign(gtk.AlignEndValue).
+			WithCSSClass("quality-label").
+			WithCSSClass("caption-heading").
+			BindText(playbackQualityText).
+			BindCSSClass(playbackQualityClass).
+			CornerRadius(10).
+			HPadding(8).
+			VPadding(4).
+			HExpand(false).
+			HAlign(gtk.AlignCenterValue).ToGTK(),
+	)
+
+	return ManagedWidget(&overlay.Widget)
+}

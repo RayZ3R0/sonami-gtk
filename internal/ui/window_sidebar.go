@@ -8,7 +8,7 @@ import (
 	"codeberg.org/dergs/tonearm/internal/signals"
 	"codeberg.org/dergs/tonearm/internal/ui/components"
 	"codeberg.org/dergs/tonearm/internal/ui/components/lyrics"
-	"codeberg.org/dergs/tonearm/internal/ui/components/player"
+	"codeberg.org/dergs/tonearm/internal/ui/components/player2"
 	"codeberg.org/dergs/tonearm/internal/ui/components/queue"
 	"codeberg.org/dergs/tonearm/pkg/schwifty"
 	. "codeberg.org/dergs/tonearm/pkg/schwifty/syntax"
@@ -70,7 +70,7 @@ func (w *Window) buildSidebarHeader() *gtk.Widget {
 
 func (w *Window) buildSidebar() schwifty.ViewStack {
 	return ViewStack().
-		AddTitledWithIcon(player.NewPlayer(), "player", gettext.Get("Player"), "music-note-outline-symbolic").
+		AddTitledWithIcon(player2.NewPlayer(), "player", gettext.Get("Player"), "music-note-outline-symbolic").
 		AddTitledWithIcon(lyrics.NewLyricsPanel(), "lyrics", gettext.Get("Lyrics"), "chat-bubble-text-symbolic").
 		AddTitledWithIcon(queue.NewQueue(), "queue", gettext.Get("Queue"), "music-queue-symbolic")
 }

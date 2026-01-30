@@ -2,6 +2,7 @@ package player
 
 import (
 	"context"
+	"fmt"
 	"log/slog"
 	"strconv"
 
@@ -30,7 +31,6 @@ func init() {
 }
 
 func setLoadingState() {
-	playbin.SetState(gst.StateNull)
 	PlaybackStateChanged.Notify(func(oldValue *PlaybackState) *PlaybackState {
 		oldValue.Loading = true
 		return oldValue
@@ -38,7 +38,6 @@ func setLoadingState() {
 }
 
 func unsetLoadingState() {
-	playbin.SetState(gst.StatePlaying)
 	PlaybackStateChanged.Notify(func(oldValue *PlaybackState) *PlaybackState {
 		oldValue.Loading = false
 		return oldValue
@@ -75,6 +74,14 @@ func PlayTrack(trackId string) error {
 		return err
 	}
 
+	SourceChanged.Notify(func(oldValue *Source) *Source {
+		return &Source{
+			CoverURL: TrackChanged.CurrentValue().CoverURL,
+			Title:    TrackChanged.CurrentValue().Title,
+			Route:    fmt.Sprintf("/album/%s", TrackChanged.CurrentValue().ID),
+		}
+	})
+
 	history.Push(&HistoryEntry{
 		TrackID: track.Data.ID,
 	})
@@ -100,7 +107,20 @@ func PlayAlbum(albumId string, shuffle bool, position int) error {
 		return err
 	}
 
-	return PlayTracklist(tracks, shuffle, position)
+	if err := PlayTracklist(tracks, shuffle, position); err != nil {
+		unsetLoadingState()
+		return err
+	}
+
+	SourceChanged.Notify(func(oldValue *Source) *Source {
+		return &Source{
+			CoverURL: TrackChanged.CurrentValue().CoverURL,
+			Title:    TrackChanged.CurrentValue().Albums[0].Data.Attributes.Title,
+			Route:    fmt.Sprintf("/album/%s", albumId),
+		}
+	})
+
+	return nil
 }
 
 func PlayPlaylist(playlistId string, shuffle bool, position int) error {
@@ -121,7 +141,26 @@ func PlayPlaylist(playlistId string, shuffle bool, position int) error {
 		return err
 	}
 
-	return PlayTracklist(tracks, shuffle, position)
+	if err := PlayTracklist(tracks, shuffle, position); err != nil {
+		unsetLoadingState()
+		return err
+	}
+
+	playlist, err := tidal.OpenAPI.V2.Playlists.Playlist(context.Background(), playlistId, "coverArt")
+	if err != nil {
+		unsetLoadingState()
+		return err
+	}
+
+	SourceChanged.Notify(func(oldValue *Source) *Source {
+		return &Source{
+			CoverURL: playlist.Included.PlainArtworks(playlist.Data.Relationships.CoverArt.Data...).AtLeast(80),
+			Title:    playlist.Data.Attributes.Name,
+			Route:    fmt.Sprintf("/playlist/%s", playlistId),
+		}
+	})
+
+	return nil
 }
 
 func PlayTrackRadio(trackId string, skipSelf bool) error {
@@ -146,22 +185,12 @@ func PlayTrackRadio(trackId string, skipSelf bool) error {
 		return err
 	}
 
-	paginator := pagination.NewPaginator(tidal.OpenAPI.V2.Playlists, mix.ID, func(items *openapi.Response[[]openapi.Relationship]) []openapi.Track {
-		return items.Included.Tracks(items.Data...)
-	}, "items", "items.artists", "items.albums.coverArt")
-
-	tracks, err := paginator.GetAll()
-	if err != nil {
-		unsetLoadingState()
-		return err
-	}
-
 	position := 0
 	if skipSelf {
 		position = 1
 	}
 
-	return PlayTracklist(tracks, false, position)
+	return PlayPlaylist(mix.ID, false, position)
 }
 
 func PlayTracklist(tracks []openapi.Track, shuffle bool, startAt int) error {

@@ -58,7 +58,20 @@ func (files ArtworkFiles) AtLeast(size int) ArtworkFile {
 	return files[0]
 }
 
-func (i IncludedObjects) PlainArtworks(relationships ...Relationship) []ArtworkData {
+type Artworks []ArtworkData
+
+func (artworks Artworks) AtLeast(size int) string {
+	coverUrl := ""
+	for _, artwork := range artworks {
+		if artwork.Attributes.IsPicture() {
+			coverUrl = artwork.Attributes.Files.AtLeast(size).Href
+			break
+		}
+	}
+	return coverUrl
+}
+
+func (i IncludedObjects) PlainArtworks(relationships ...Relationship) Artworks {
 	var objects = i.FromRelationships(relationships, ObjectTypeArtworks)
 
 	var artworks []ArtworkData

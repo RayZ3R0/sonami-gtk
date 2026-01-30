@@ -98,6 +98,12 @@ func (w *Window) installActions() {
 	}))
 	w.AddAction(nextAction)
 
+	playPauseAction := gio.NewSimpleAction("player.play-pause", nil)
+	playPauseAction.ConnectActivate(g.Ptr(func(action gio.SimpleAction, parameter uintptr) {
+		go player.PlayPause()
+	}))
+	w.AddAction(playPauseAction)
+
 	previousAction := gio.NewSimpleAction("player.previous", nil)
 	previousAction.ConnectActivate(g.Ptr(func(action gio.SimpleAction, parameter uintptr) {
 		go player.Previous()
