@@ -17,22 +17,40 @@ import (
 	"github.com/infinytum/injector"
 	"github.com/jwijenbergh/puregotk/v4/gdk"
 	"github.com/jwijenbergh/puregotk/v4/gio"
+	"github.com/jwijenbergh/puregotk/v4/glib"
 	"github.com/jwijenbergh/puregotk/v4/gtk"
 )
 
 var (
-	isTrackLoaded   = state.NewStateful(false)
-	artistMenuModel = gio.NewMenu()
+	artistButtonSingle = Button().
+				TooltipText(gettext.Get("Navigate to Artist")).
+				IconName("music-artist2-symbolic").
+				BindSensitive(isTrackLoadedState).
+				WithCSSClass("transparent")
+	artistButtonMultiple = MenuButton().
+				TooltipText(gettext.Get("Navigate to Artist")).
+				IconName("music-artist2-symbolic").
+				BindSensitive(isTrackLoadedState).
+				WithCSSClass("transparent")
+
+	isTrackLoadedState = state.NewStateful(false)
+	artistButtonState  = state.NewStateful[any](artistButtonSingle)
 )
 
 func init() {
 	player.TrackChanged.OnLazy(func(t *player.Track) bool {
-		isTrackLoaded.SetValue(t != nil)
+		isTrackLoadedState.SetValue(t != nil)
 
 		if t != nil {
-			artistMenuModel.RemoveAll()
-			for _, artist := range t.Artists {
-				artistMenuModel.AppendItem(gio.NewMenuItem(artist.Attributes.Name, "win.route.artist::"+artist.ID))
+			if len(t.Artists) > 1 {
+				menu := gio.NewMenu()
+				defer menu.Unref()
+				for _, artist := range t.Artists {
+					menu.AppendItem(gio.NewMenuItem(artist.Attributes.Name, "win.route.artist::"+artist.ID))
+				}
+				artistButtonState.SetValue(artistButtonMultiple.MenuModel(&menu.MenuModel))
+			} else {
+				artistButtonState.SetValue(artistButtonSingle.ActionName("win.route.artist").ActionTargetValue(glib.NewVariantString(t.Artists[0].ID)))
 			}
 		}
 
@@ -56,7 +74,7 @@ func actionRow() schwifty.Box {
 		Button().
 			TooltipText(gettext.Get("Navigate to Album")).
 			IconName("cd-symbolic").
-			BindSensitive(isTrackLoaded).
+			BindSensitive(isTrackLoadedState).
 			WithCSSClass("transparent").
 			ConnectClicked(func(b gtk.Button) {
 				track := player.TrackChanged.CurrentValue()
@@ -79,16 +97,11 @@ func actionRow() schwifty.Box {
 
 				router.Navigate("album/" + albumID)
 			}),
-		MenuButton().
-			TooltipText(gettext.Get("Navigate to Artist")).
-			IconName("music-artist2-symbolic").
-			MenuModel(&artistMenuModel.MenuModel).
-			BindSensitive(isTrackLoaded).
-			WithCSSClass("transparent"),
+		Bin().BindChild(artistButtonState),
 		Button().
 			TooltipText(gettext.Get("Navigate to Track Mix")).
 			IconName("compass2-symbolic").
-			BindSensitive(isTrackLoaded).
+			BindSensitive(isTrackLoadedState).
 			WithCSSClass("transparent").
 			ConnectClicked(func(b gtk.Button) {
 				track := player.TrackChanged.CurrentValue()
@@ -115,7 +128,7 @@ func actionRow() schwifty.Box {
 		Button().
 			TooltipText(gettext.Get("Copy Track URL")).
 			IconName("share-alt-symbolic").
-			BindSensitive(isTrackLoaded).
+			BindSensitive(isTrackLoadedState).
 			WithCSSClass("transparent").
 			ConnectClicked(func(gtk.Button) {
 				display := gdk.DisplayGetDefault()
