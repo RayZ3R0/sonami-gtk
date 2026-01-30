@@ -78,7 +78,7 @@ func PlayTrack(trackId string) error {
 		return &Source{
 			CoverURL: TrackChanged.CurrentValue().CoverURL,
 			Title:    TrackChanged.CurrentValue().Title,
-			Route:    fmt.Sprintf("/album/%s", TrackChanged.CurrentValue().ID),
+			Route:    fmt.Sprintf("album/%s", TrackChanged.CurrentValue().ID),
 		}
 	})
 
@@ -116,7 +116,7 @@ func PlayAlbum(albumId string, shuffle bool, position int) error {
 		return &Source{
 			CoverURL: TrackChanged.CurrentValue().CoverURL,
 			Title:    TrackChanged.CurrentValue().Albums[0].Data.Attributes.Title,
-			Route:    fmt.Sprintf("/album/%s", albumId),
+			Route:    fmt.Sprintf("album/%s", albumId),
 		}
 	})
 
@@ -156,7 +156,7 @@ func PlayPlaylist(playlistId string, shuffle bool, position int) error {
 		return &Source{
 			CoverURL: playlist.Included.PlainArtworks(playlist.Data.Relationships.CoverArt.Data...).AtLeast(80),
 			Title:    playlist.Data.Attributes.Name,
-			Route:    fmt.Sprintf("/playlist/%s", playlistId),
+			Route:    fmt.Sprintf("playlist/%s", playlistId),
 		}
 	})
 
