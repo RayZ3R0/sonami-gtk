@@ -28,7 +28,6 @@ func controlsVolumeSlider() schwifty.Popover {
 		Scale(gtk.OrientationVerticalValue).
 			Inverted(true).
 			Range(0, 1).
-			Value(0.5).
 			MinHeight(100).
 			HExpand(true).
 			CSS(`scale:active { background-color: transparent; }`).

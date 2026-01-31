@@ -58,7 +58,7 @@ func onBusMessage(msg *gst.Message) bool {
 		playbin.Set("volume", settings.Player().GetVolume())
 		// A hack to trigger the correct track updates with gapless playback
 		if TrackChanged.CurrentValue().ID != strconv.Itoa(currentlyEnqueuedTrackID) {
-			playNextTrack()
+			go playNextTrack()
 		}
 	case gst.MessageEOS:
 		stopUpdateRunner()

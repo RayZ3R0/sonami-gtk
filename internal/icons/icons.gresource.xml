@@ -34,6 +34,8 @@
     <file alias="image-missing-symbolic.svg">scalable/actions/image-missing-symbolic.svg</file>
     <file alias="speedometer5-symbolic.svg">scalable/actions/speedometer5-symbolic.svg</file>
     <file alias="dock-left-symbolic.svg">scalable/actions/dock-left-symbolic.svg</file>
+    <file alias="cd-symbolic.svg">scalable/actions/cd-symbolic.svg</file>
+    <file alias="music-artist2-symbolic.svg">scalable/actions/music-artist2-symbolic.svg</file>
   </gresource>
   <gresource prefix="/dev/dergs/Tonearm/icons/scalable/state/">
     <file alias="missing-album.svg">scalable/state/missing-album.svg</file>

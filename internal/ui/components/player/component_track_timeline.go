@@ -13,11 +13,12 @@ import (
 )
 
 var (
-	durationState        = state.NewStateful("00:00")
-	positionState        = state.NewStateful("00:00")
-	playbackQualityText  = state.NewStateful("High")
-	playbackQualityClass = state.NewStateful("high")
-	timelineSliderState  = state.NewStateful(0.0)
+	durationState       = state.NewStateful("00:00")
+	positionState       = state.NewStateful("00:00")
+	timelineSliderState = state.NewStateful(0.0)
+
+	playbackQualityText  = state.NewStateful("Max")
+	playbackQualityClass = state.NewStateful("max")
 )
 
 func init() {
@@ -70,12 +71,11 @@ func trackTimeline() schwifty.Widget {
 	overlay := gtk.NewOverlay()
 	overlay.SetChild(VStack(
 		Scale(gtk.OrientationHorizontalValue).
-			BindSensitive(isControllable).
+			BindSensitive(isControllableState).
 			BindValue(timelineSliderState).
 			Increments(1, 1).
 			HExpand(true).
 			Range(0, 100).
-			Value(0).
 			Background("transparent").
 			HPadding(0).
 			ConnectChangeValue(func(r gtk.Range, st gtk.ScrollType, f float64) bool {
@@ -83,18 +83,17 @@ func trackTimeline() schwifty.Widget {
 				return false
 			}),
 		HStack(
-			Label("00:00").BindText(positionState),
+			Label("").BindText(positionState),
 			Spacer().VExpand(false),
-			Label("00:00").BindText(durationState),
+			Label("").BindText(durationState),
 		),
 	).MarginBottom(2).ToGTK())
 	overlay.AddOverlay(
-		Label("Max").
+		Label("").
 			VAlign(gtk.AlignEndValue).
 			WithCSSClass("quality-label").
+			WithCSSClass("caption-heading").
 			BindText(playbackQualityText).
-			FontSize(10).
-			FontWeight(700).
 			BindCSSClass(playbackQualityClass).
 			CornerRadius(10).
 			HPadding(8).

@@ -39,6 +39,12 @@ type PlaybackState struct {
 	Loading bool
 }
 
+type Source struct {
+	CoverURL string
+	Title    string
+	Route    string
+}
+
 type Track struct {
 	Artists  []openapi.ArtistData
 	Albums   []openapi.Album

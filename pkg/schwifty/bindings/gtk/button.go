@@ -25,6 +25,31 @@ func (f Button) ActionTargetValue(targetValue *glib.Variant) Button {
 	}
 }
 
+func (f Button) BindChild(state *state.State[any]) Button {
+	return func() *gtk.Button {
+		var callbackId string
+		return f.ConnectConstruct(func(w *gtk.Button) {
+			widgetPtr := w.GoPointer()
+			callbackId = state.AddCallback(func(newValue any) {
+				widget := ResolveWidget(newValue)
+				if widget == nil {
+					callback.OnMainThreadOnce(func(u uintptr) {
+						gtk.ButtonNewFromInternalPtr(u).SetChild(nil)
+					}, widgetPtr)
+				} else {
+					widget.Ref()
+					callback.OnMainThreadOnce(func(u uintptr) {
+						gtk.ButtonNewFromInternalPtr(u).SetChild(widget)
+						widget.Unref()
+					}, widgetPtr)
+				}
+			})
+		}).ConnectDestroy(func(w gtk.Widget) {
+			state.RemoveCallback(callbackId)
+		})()
+	}
+}
+
 func (f Button) BindIconName(state *state.State[string]) Button {
 	return func() *gtk.Button {
 		var callbackId string
