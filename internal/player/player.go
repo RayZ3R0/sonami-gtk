@@ -8,6 +8,7 @@ import (
 
 	"codeberg.org/dergs/tonearm/pkg/tidalapi"
 	"codeberg.org/dergs/tonearm/pkg/tidalapi/models/openapi"
+	v2 "codeberg.org/dergs/tonearm/pkg/tidalapi/models/v2"
 	"codeberg.org/dergs/tonearm/pkg/tidalapi/pagination"
 	"github.com/go-gst/go-gst/gst"
 	"github.com/infinytum/injector"
@@ -119,6 +120,41 @@ func PlayAlbum(albumId string, shuffle bool, position int) error {
 			Route:    fmt.Sprintf("album/%s", albumId),
 		}
 	})
+
+	return nil
+}
+
+func PlayArtistTopSongs(artistId string, shuffle bool, position int) error {
+	setLoadingState()
+	tidal, err := injector.Inject[*tidalapi.TidalAPI]()
+	if err != nil {
+		unsetLoadingState()
+		return err
+	}
+
+	artist, err := tidal.V2.Artist.Artist(context.Background(), artistId)
+	if err != nil {
+		unsetLoadingState()
+		return err
+	}
+
+	var module v2.PageItem
+	for _, item := range artist.Items {
+		if item.ModuleID == "ARTIST_TOP_TRACKS" {
+			module = item
+			break
+		}
+	}
+
+	var topTracks []openapi.Track
+
+	for _, LegacyTopTrackItem := range module.Items {
+		if LegacyTopTrackItem.Type == v2.ItemTypeTrack {
+			topTrack, _ := resolveTrack(strconv.Itoa(LegacyTopTrackItem.Data.Track.ID))
+			topTracks = append(topTracks, *topTrack)
+		}
+	}
+	PlayTracklist(topTracks, shuffle, position)
 
 	return nil
 }

@@ -6,6 +6,7 @@ import (
 
 	"codeberg.org/dergs/tonearm/internal/gettext"
 	"codeberg.org/dergs/tonearm/internal/notifications"
+	"codeberg.org/dergs/tonearm/internal/player"
 	"codeberg.org/dergs/tonearm/internal/resources"
 	"codeberg.org/dergs/tonearm/internal/router"
 	"codeberg.org/dergs/tonearm/internal/ui/components"
@@ -78,9 +79,8 @@ func Artist(artistId string) *router.Response {
 							CornerRadius(21).
 							Padding(9).
 							VAlign(gtk.AlignCenterValue).
-							Sensitive(false).
 							ConnectClicked(func(b gtk.Button) {
-								// go player.PlayPlaylist(playlistUUID, true, "")
+								go player.PlayArtistTopSongs(artistId, true, 0)
 							}),
 						Button().
 							TooltipText(gettext.Get("Play Top Tracks")).
@@ -98,9 +98,8 @@ func Artist(artistId string) *router.Response {
 								}
 							`).
 							VAlign(gtk.AlignCenterValue).
-							Sensitive(false).
 							ConnectClicked(func(b gtk.Button) {
-								// go player.PlayPlaylist(playlistUUID, false, "")
+								go player.PlayArtistTopSongs(artistId, false, 0)
 							}),
 					).
 						Spacing(5).
