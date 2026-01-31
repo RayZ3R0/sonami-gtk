@@ -100,19 +100,19 @@
     <screenshot type="default">
       <caption>Tonearm displaying the public, unauthenticated home page</caption>
       <image>
-      https://codeberg.org/dergs/Tonearm/raw/commit/445f3b86ff6cc6b058cfd7c4a79e8b47fe2a5b34/.codeberg/images/home.png
+      https://codeberg.org/dergs/Tonearm/raw/commit/55e9b066a70bceba923991fff38af8724c97cbf4/.codeberg/images/home.png
       </image>
     </screenshot>
     <screenshot>
       <caption>Tonearm showing the explore page</caption>
       <image>
-      https://codeberg.org/dergs/Tonearm/raw/commit/445f3b86ff6cc6b058cfd7c4a79e8b47fe2a5b34/.codeberg/images/explore.png
+      https://codeberg.org/dergs/Tonearm/raw/commit/55e9b066a70bceba923991fff38af8724c97cbf4/.codeberg/images/explore.png
       </image>
     </screenshot>
     <screenshot>
       <caption>Tonearm showing the search page, while displaying the lyrics of the current song</caption>
       <image>
-      https://codeberg.org/dergs/Tonearm/raw/commit/9b2dc1b1c68493a1a567fcc9eaf1bf3623421031/.codeberg/images/search_lyrics.png
+      https://codeberg.org/dergs/Tonearm/raw/commit/55e9b066a70bceba923991fff38af8724c97cbf4/.codeberg/images/search_lyrics.png
       </image>
     </screenshot>
   </screenshots>
