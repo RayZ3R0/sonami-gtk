@@ -19,7 +19,7 @@ const (
 )
 
 var (
-	playPauseIconState = state.NewStateful(playIcon)
+	playPauseChildState = state.NewStateful[any](Image().FromIconName(playIcon))
 
 	repeatClassState = state.NewStateful("")
 	repeatIconState  = state.NewStateful(repeatListIcon)
@@ -34,13 +34,20 @@ var controlButton = Button().
 	VAlign(gtk.AlignCenterValue)
 
 func init() {
+	wasLoading := false
 	player.PlaybackStateChanged.On(func(state *player.PlaybackState) bool {
 		schwifty.OnMainThreadOncePure(func() {
-			switch state.Status {
-			case player.PlaybackStatusPlaying:
-				playPauseIconState.SetValue(pauseIcon)
-			case player.PlaybackStatusPaused, player.PlaybackStatusStopped:
-				playPauseIconState.SetValue(playIcon)
+			if state.Loading && !wasLoading {
+				playPauseChildState.SetValue(Spinner().SizeRequest(16, 16))
+				wasLoading = true
+			} else {
+				wasLoading = false
+				switch state.Status {
+				case player.PlaybackStatusPlaying:
+					playPauseChildState.SetValue(Image().FromIconName(pauseIcon))
+				case player.PlaybackStatusPaused, player.PlaybackStatusStopped:
+					playPauseChildState.SetValue(Image().FromIconName(playIcon))
+				}
 			}
 		})
 
@@ -88,7 +95,7 @@ func controls() schwifty.Box {
 		Button().
 			TooltipText(gettext.Get("Play / Pause")).
 			ActionName("win.player.play-pause").
-			BindIconName(playPauseIconState).
+			BindChild(playPauseChildState).
 			BindSensitive(isControllableState).
 			WithCSSClass("suggested-action").CornerRadius(21).
 			HPadding(32).VPadding(9),
