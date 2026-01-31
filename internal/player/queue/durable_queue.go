@@ -192,11 +192,14 @@ func (q *durableQueue) Shuffle(currentTrackID string) {
 		}
 	}
 
-	if trackOffset+1 < len(sourceTracks) {
-		sourceTracks = append(sourceTracks[trackOffset+1:], sourceTracks[:trackOffset]...)
-	} else {
-		sourceTracks = []*openapi.Track{}
+	if trackOffset != -1 {
+		if trackOffset+1 < len(sourceTracks) {
+			sourceTracks = append(sourceTracks[:trackOffset], sourceTracks[trackOffset+1:]...)
+		} else {
+			sourceTracks = []*openapi.Track{}
+		}
 	}
+
 	rand.Shuffle(len(sourceTracks), func(i, j int) {
 		sourceTracks[i], sourceTracks[j] = sourceTracks[j], sourceTracks[i]
 	})

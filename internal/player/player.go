@@ -8,6 +8,7 @@ import (
 
 	"codeberg.org/dergs/tonearm/pkg/tidalapi"
 	"codeberg.org/dergs/tonearm/pkg/tidalapi/models/openapi"
+	v2 "codeberg.org/dergs/tonearm/pkg/tidalapi/models/v2"
 	"codeberg.org/dergs/tonearm/pkg/tidalapi/pagination"
 	"github.com/go-gst/go-gst/gst"
 	"github.com/infinytum/injector"
@@ -123,6 +124,44 @@ func PlayAlbum(albumId string, shuffle bool, position int) error {
 	return nil
 }
 
+func PlayArtistTopSongs(artistId string, shuffle bool, position int) error {
+	setLoadingState()
+	tidal, err := injector.Inject[*tidalapi.TidalAPI]()
+	if err != nil {
+		unsetLoadingState()
+		return err
+	}
+
+	artist, err := tidal.V2.Artist.Artist(context.Background(), artistId)
+	if err != nil {
+		unsetLoadingState()
+		return err
+	}
+
+	var module v2.PageItem
+	for _, item := range artist.Items {
+		if item.ModuleID == "ARTIST_TOP_TRACKS" {
+			module = item
+			break
+		}
+	}
+
+	var topTracks []openapi.Track
+
+	for _, legacyTopTrackItem := range module.Items {
+		if legacyTopTrackItem.Type == v2.ItemTypeTrack {
+			topTrack, err := resolveTrack(strconv.Itoa(legacyTopTrackItem.Data.Track.ID))
+			if err != nil {
+				logger.Error("error while resolving Top Track item", "track_id", legacyTopTrackItem.Data.Track.ID, "message", err.Error())
+				continue
+			}
+
+			topTracks = append(topTracks, *topTrack)
+		}
+	}
+	return PlayTracklist(topTracks, shuffle, position)
+}
+
 func PlayPlaylist(playlistId string, shuffle bool, position int) error {
 	setLoadingState()
 	tidal, err := injector.Inject[*tidalapi.TidalAPI]()
@@ -195,6 +234,9 @@ func PlayTrackRadio(trackId string, skipSelf bool) error {
 
 func PlayTracklist(tracks []openapi.Track, shuffle bool, startAt int) error {
 	clearQueues()
+	TrackChanged.Notify(func(oldValue *Track) *Track {
+		return nil
+	})
 
 	trackPointers := make([]*openapi.Track, len(tracks))
 	for i, track := range tracks {
