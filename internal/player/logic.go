@@ -101,7 +101,7 @@ func SkipThroughQueue(queue queue.Queue, to int) {
 
 			playTrack(queue.Pop())
 		} else {
-			unsetLoadingState()
+			resetLoadingState()
 			logger.Error("failed to skip through queue", "error", err)
 		}
 	}()
