@@ -49,7 +49,6 @@ func (f ScrolledWindow) ConnectReachEdgeSoon(edge gtk.PositionType, cb func() bo
 	return func() *gtk.ScrolledWindow {
 		scrolledWindow := f()
 		var adj *gtk.Adjustment
-		defer adj.Unref()
 
 		if edge == gtk.PosTopValue || edge == gtk.PosBottomValue {
 			adj = scrolledWindow.GetVadjustment()
@@ -58,6 +57,8 @@ func (f ScrolledWindow) ConnectReachEdgeSoon(edge gtk.PositionType, cb func() bo
 		} else {
 			panic("Invalid edge type")
 		}
+
+		defer adj.Unref()
 
 		mutex := sync.Mutex{}
 		var (
