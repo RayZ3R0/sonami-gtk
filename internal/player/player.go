@@ -195,6 +195,9 @@ func PlayTrackRadio(trackId string, skipSelf bool) error {
 
 func PlayTracklist(tracks []openapi.Track, shuffle bool, startAt int) error {
 	clearQueues()
+	TrackChanged.Notify(func(oldValue *Track) *Track {
+		return nil
+	})
 
 	trackPointers := make([]*openapi.Track, len(tracks))
 	for i, track := range tracks {
