@@ -1,6 +1,7 @@
 package player
 
 import (
+	"codeberg.org/dergs/tonearm/internal/g"
 	"codeberg.org/dergs/tonearm/internal/gettext"
 	"codeberg.org/dergs/tonearm/internal/player"
 	"codeberg.org/dergs/tonearm/internal/signals"
@@ -11,15 +12,22 @@ import (
 )
 
 const (
-	pauseIcon = "pause-symbolic"
-	playIcon  = "play-symbolic"
-
 	repeatListIcon  = "playlist-repeat-symbolic"
 	repeatTrackIcon = "playlist-repeat-song-symbolic"
 )
 
+var pauseIcon = g.Lazy(func() any {
+	return Image().FromIconName("pause-symbolic")()
+})
+var playIcon = g.Lazy(func() any {
+	return Image().FromIconName("play-symbolic")()
+})
+var playSpinner = g.Lazy(func() any {
+	return Spinner().SizeRequest(16, 16)()
+})
+
 var (
-	playPauseChildState = state.NewStateful[any](Image().FromIconName(playIcon))
+	playPauseChildState = state.NewStateful[any](nil)
 
 	repeatClassState = state.NewStateful("")
 	repeatIconState  = state.NewStateful(repeatListIcon)
@@ -38,15 +46,15 @@ func init() {
 	player.PlaybackStateChanged.On(func(state *player.PlaybackState) bool {
 		schwifty.OnMainThreadOncePure(func() {
 			if state.Loading && !wasLoading {
-				playPauseChildState.SetValue(Spinner().SizeRequest(16, 16))
+				playPauseChildState.SetValue(playSpinner())
 				wasLoading = true
 			} else {
 				wasLoading = false
 				switch state.Status {
 				case player.PlaybackStatusPlaying:
-					playPauseChildState.SetValue(Image().FromIconName(pauseIcon))
+					playPauseChildState.SetValue(pauseIcon())
 				case player.PlaybackStatusPaused, player.PlaybackStatusStopped:
-					playPauseChildState.SetValue(Image().FromIconName(playIcon))
+					playPauseChildState.SetValue(playIcon())
 				}
 			}
 		})
