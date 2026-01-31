@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: v1.0.0-26-g6264155\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-01-29 20:30+0100\n"
-"PO-Revision-Date: 2026-01-28 18:52+0100\n"
+"POT-Creation-Date: 2026-01-31 08:54+0100\n"
+"PO-Revision-Date: 2026-01-31 09:05+0100\n"
 "Last-Translator: Łukasz Horodecki <lukasz@horodecki.net>\n"
 "Language-Team: Polish\n"
 "Language: pl\n"
@@ -20,7 +20,7 @@ msgstr ""
 "|| n%100>=20) ? 1 : 2);\n"
 "X-Generator: Gtranslator 49.0\n"
 
-#: internal/ui/routes/artist.go:57
+#: internal/ui/routes/artist.go:58
 msgid "%d Fan"
 msgid_plural "%d Fans"
 msgstr[0] "%d fan"
@@ -45,7 +45,7 @@ msgstr[2] "%d utworów (%s)"
 msgid "About Tonearm"
 msgstr "O programie"
 
-#: internal/ui/components/player/controls_buttonrow.go:42
+#: internal/ui/components/player/component_action_row.go:69
 msgid "Add to Collection"
 msgstr "Dodaj do kolekcji"
 
@@ -118,8 +118,14 @@ msgid ""
 "\n"
 "%s"
 msgstr ""
+"Wystąpił nieznany błąd w czasie sprawdzania dostawcy sekretów.\n"
+"\n"
+"Zalogowanie może zadziałać lub nie. Proszę sprawdzić treść komunikatu błędu "
+"po więcej szczegółów.\n"
+"\n"
+"%s"
 
-#: internal/ui/routes/artist.go:30
+#: internal/ui/routes/artist.go:31
 msgid "Artist"
 msgstr "Artysta"
 
@@ -173,9 +179,9 @@ msgstr "Skonfiguruj zachowanie Tonearm w czasie pracy w tle."
 
 #: internal/ui/window_popups.go:28
 msgid "Continue"
-msgstr ""
+msgstr "Kontynuuj"
 
-#: internal/ui/routes/artist.go:125
+#: internal/ui/routes/artist.go:124
 msgid "Copied artist URL to clipboard."
 msgstr "Skopiowano do schowka adres URL artysty."
 
@@ -183,11 +189,11 @@ msgstr "Skopiowano do schowka adres URL artysty."
 msgid "Copied playlist URL to clipboard."
 msgstr "Skopiowano do schowka adres URL playlisty."
 
-#: internal/ui/components/player/controls_buttonrow.go:117
+#: internal/ui/components/player/component_action_row.go:140
 msgid "Copied track URL to clipboard."
 msgstr "Skopiowano do schowka adres URL utworu."
 
-#: internal/ui/routes/artist.go:115
+#: internal/ui/routes/artist.go:114
 msgid "Copy Artist URL"
 msgstr "Skopiuj adres URL artysty"
 
@@ -195,7 +201,7 @@ msgstr "Skopiuj adres URL artysty"
 msgid "Copy Playlist URL"
 msgstr "Skopiuj adres URL playlisty"
 
-#: internal/ui/components/player/controls_buttonrow.go:101
+#: internal/ui/components/player/component_action_row.go:129
 msgid "Copy Track URL"
 msgstr "Skopiuj adres URL utworu"
 
@@ -205,7 +211,7 @@ msgstr "Strona domyślna"
 
 #: internal/ui/window_popups.go:21
 msgid "Don't show again"
-msgstr ""
+msgstr "Nie pokazuj ponownie"
 
 #: internal/ui/routes/search.go:29
 msgid "E.g. Fox Stevenson"
@@ -235,7 +241,7 @@ msgstr "Odnośnik zewnętrzny"
 msgid "General"
 msgstr "Ogólne"
 
-#: internal/ui/components/player/track_timeline.go:58
+#: internal/ui/components/player/component_track_timeline.go:59
 msgid "High"
 msgstr "Wysoka"
 
@@ -268,15 +274,14 @@ msgid "ListenBrainz API Token"
 msgstr "Token API ListenBrainz"
 
 #: internal/ui/window_preferences.go:85
-#, fuzzy
 msgid "ListenBrainz API URL"
-msgstr ""
+msgstr "Adres URL API ListenBrainz"
 
-#: internal/ui/components/player/track_timeline.go:55
+#: internal/ui/components/player/component_track_timeline.go:56
 msgid "Low (320 kbps)"
 msgstr "Niska (320 kbps)"
 
-#: internal/ui/components/player/track_timeline.go:52
+#: internal/ui/components/player/component_track_timeline.go:53
 msgid "Low (96 kbps)"
 msgstr "Niska (96 kbps)"
 
@@ -288,7 +293,7 @@ msgstr "Tekst"
 msgid "Main Menu"
 msgstr "Menu główne"
 
-#: internal/ui/components/player/track_timeline.go:61
+#: internal/ui/components/player/component_track_timeline.go:62
 msgid "Max"
 msgstr "Najwyższa"
 
@@ -320,9 +325,13 @@ msgstr "Moje utwory"
 msgid "Navigate Back"
 msgstr "Przejdź wstecz"
 
-#: internal/ui/components/player/controls_buttonrow.go:75
+#: internal/ui/components/player/component_action_row.go:75
 msgid "Navigate to Album"
 msgstr "Przejdź do albumu"
+
+#: internal/ui/components/player/component_action_row.go:26
+msgid "Navigate to Artist"
+msgstr "Przejdź do artysty"
 
 #: internal/ui/window_content.go:27
 msgid "Navigate to Collection"
@@ -336,7 +345,7 @@ msgstr "Przejdź do eksplorowania"
 msgid "Navigate to Home"
 msgstr "Przejdź do strony głównej"
 
-#: internal/ui/components/player/controls_buttonrow.go:47
+#: internal/ui/components/player/component_action_row.go:102
 msgid "Navigate to Track Mix"
 msgstr "Przejdź do radia utworu"
 
@@ -348,11 +357,15 @@ msgstr "Nawigacja"
 msgid "Navigation Behaviour"
 msgstr "Zachowanie nawigacji"
 
-#: internal/ui/components/player/player.go:77
+#: internal/ui/components/player/component_controls.go:104
 msgid "Next"
 msgstr "Następny"
 
-#: internal/ui/components/player/track_title.go:20
+#: internal/ui/components/player/component_track_info.go:22
+msgid "No Artist"
+msgstr "Brak artysty"
+
+#: internal/ui/components/player/component_track_info.go:21
 msgid "No Track"
 msgstr "Brak utworu"
 
@@ -360,7 +373,7 @@ msgstr "Brak utworu"
 msgid "No lyrics available"
 msgstr "Brak dostępnego tekstu utworu"
 
-#: internal/ui/components/player/controls_buttonrow.go:64
+#: internal/ui/components/player/component_action_row.go:119
 msgid "No mix found for the current track"
 msgstr "Brak radia dla aktualnego utworu"
 
@@ -377,14 +390,17 @@ msgid ""
 "\n"
 "Please install a secret service provider such as GNOME Keyring or KDE Wallet."
 msgstr ""
+"Dostawca sekretów jest niedostępny.\n"
+"\n"
+"Tonearm nie będzie w stanie zapisać danych uwierzytelniania i nie będziesz "
+"móc się zalogować.\n"
+"\n"
+"Proszę zainstalować dostawcę sekretów takiego jak GNOME Keyring lub KDE "
+"Wallet."
 
 #: internal/ui/components/lyrics/lyrics.go:384
 msgid "No song currently playing"
 msgstr "Brak aktualnie odtwarzanej piosenki"
-
-#: internal/ui/components/player/controls_buttonrow.go:107
-msgid "No track is currently playing."
-msgstr "Żaden utwór nie jest aktualnie odtwarzany."
 
 #: internal/router/handler_notfound.go:10
 msgid "Not Found"
@@ -406,7 +422,7 @@ msgstr "Wydajność"
 msgid "Personal Mix"
 msgstr "Spersonalizowany miks"
 
-#: internal/ui/components/player/controls_play_pause.go:35
+#: internal/ui/components/player/component_controls.go:96
 msgid "Play / Pause"
 msgstr "Odtwarzaj / wstrzymaj"
 
@@ -426,6 +442,10 @@ msgstr "Odtwarzaj top utwory"
 msgid "Player"
 msgstr "Odtwarzacz"
 
+#: internal/ui/components/player/component_playing_from.go:61
+msgid "Playing From"
+msgstr "Odtwarzane z"
+
 #: internal/ui/routes/playlist.go:44
 msgid "Playlist"
 msgstr "Playlista"
@@ -442,7 +462,7 @@ msgstr "Zaloguj się, by zobaczyć swoją kolekcję"
 msgid "Preferences"
 msgstr "Preferencje"
 
-#: internal/ui/components/player/player.go:68
+#: internal/ui/components/player/component_controls.go:91
 msgid "Previous"
 msgstr "Poprzedni"
 
@@ -480,21 +500,21 @@ msgstr "Wyszukiwanie"
 
 #: internal/secrets/service_linux.go:54
 msgid "Secret Service Error"
-msgstr ""
+msgstr "Błąd usługi sekretów"
 
 #: internal/secrets/service_linux.go:47
 msgid "Secret Service Issue"
-msgstr ""
+msgstr "Problem z usługą sekretów"
 
 #: internal/secrets/service_linux.go:39
 msgid "Secret Service Unavailable"
-msgstr ""
+msgstr "Usługa sekretów niedostępna"
 
 #: internal/ui/window_sidebar.go:32
 msgid "Set as default page"
 msgstr "Ustaw jako stronę domyślną"
 
-#: internal/ui/window_actions.go:176
+#: internal/ui/window_actions.go:183
 msgid "Set current page as default"
 msgstr "Ustaw aktualną stronę jako domyślną"
 
@@ -506,7 +526,7 @@ msgstr "Odtwarzaj losowo album"
 msgid "Shuffle Playlist"
 msgstr "Odtwarzaj losowo playlistę"
 
-#: internal/ui/routes/artist.go:75
+#: internal/ui/routes/artist.go:76
 msgid "Shuffle Top Tracks"
 msgstr "Odtwarzaj losowo topowe utwory"
 
@@ -522,15 +542,15 @@ msgstr "Zaloguj"
 msgid "Sign Out"
 msgstr "Wyloguj"
 
-#: internal/ui/window_actions.go:153
+#: internal/ui/window_actions.go:160
 msgid "Sign in failed or aborted"
 msgstr "Logowanie nieudane lub przerwane"
 
-#: internal/ui/window_actions.go:157
+#: internal/ui/window_actions.go:164
 msgid "Signed in as %s"
 msgstr "Zalogowano jako %s"
 
-#: internal/ui/window_actions.go:167
+#: internal/ui/window_actions.go:174
 msgid "Signed out"
 msgstr "Wylogowano"
 
@@ -550,11 +570,11 @@ msgstr "Synchronizuj z utworem"
 msgid "The requested deeplink did not have any available handlers."
 msgstr "Żądany deeplink nie miał żadnych dostępnych handlerów."
 
-#: internal/ui/components/player/player.go:84
+#: internal/ui/components/player/component_controls.go:109
 msgid "Toggle Repeat"
 msgstr "Przełącz powtarzanie"
 
-#: internal/ui/components/player/player.go:47
+#: internal/ui/components/player/component_controls.go:85
 msgid "Toggle Shuffle"
 msgstr "Przełącz losowanie"
 
@@ -586,7 +606,7 @@ msgstr ""
 msgid "View All"
 msgstr "Wszystkie"
 
-#: internal/ui/components/player/controls_buttonrow.go:37
+#: internal/ui/components/player/component_action_row.go:64
 msgid "Volume"
 msgstr "Głośność"
 
@@ -605,6 +625,13 @@ msgid ""
 "Tonearm will not be able to store any authentication-related data and you "
 "will not be able to sign in."
 msgstr ""
+"Znaleziono twojego dostawcę sekretów, ale odmówił interakcji z Tonearm.\n"
+"\n"
+"Mogło to mieć miejsce z powodu anulowania łączenia, lub, jeżeli używasz "
+"Flatpaka, dostawca nie zaimplementował usługi XDG Portal Sekretów.\n"
+"\n"
+"Tonearm nie będzie w stanie zapisać danych uwierzytelniania i nie będziesz "
+"móc się zalogować."
 
 #: internal/ui/window_about.go:101
 msgid "translator-credits"
