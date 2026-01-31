@@ -1,7 +1,6 @@
 package player
 
 import (
-	"codeberg.org/dergs/tonearm/internal/gettext"
 	"codeberg.org/dergs/tonearm/internal/player"
 	"codeberg.org/dergs/tonearm/internal/signals"
 	"codeberg.org/dergs/tonearm/pkg/schwifty"
@@ -10,107 +9,28 @@ import (
 	"github.com/jwijenbergh/puregotk/v4/gtk"
 )
 
-var trackID = ""
-
 var (
-	isControllable = state.NewStateful(false)
+	isControllableState = state.NewStateful(false)
 )
 
 func init() {
 	player.PlaybackStateChanged.On(func(ps *player.PlaybackState) bool {
-		isControllable.SetValue(!ps.Loading)
-		return signals.Continue
-	})
-
-	player.TrackChanged.On(func(trackInfo *player.Track) bool {
-		if trackInfo == nil {
-			trackID = ""
-		} else {
-			trackID = trackInfo.ID
-		}
+		isControllableState.SetValue(!ps.Loading)
 		return signals.Continue
 	})
 }
 
-func NewPlayer() schwifty.CenterBox {
-	return CenterBox().WithCSSClass("player").
-		CenterWidget(
-			VStack(
-				trackCover(),
-				trackTitle().MarginTop(30),
-				trackArtists(),
-				controlsButtonRow().MarginTop(20),
-				trackTimeline().MarginTop(20),
-				HStack(
-					Button().
-						IconName("playlist-shuffle-symbolic").
-						TooltipText(gettext.Get("Toggle Shuffle")).
-						MinHeight(34).
-						MinWidth(34).
-						WithCSSClass("transparent").
-						ActionName("win.player.shuffle").
-						ConnectConstruct(func(b *gtk.Button) {
-							ptr := b.GoPointer()
-							player.ShuffleStateChanged.On(func(enabled bool) bool {
-								schwifty.OnMainThreadOnce(func(ptr uintptr) {
-									b := gtk.ButtonNewFromInternalPtr(ptr)
-									if enabled {
-										b.AddCssClass("color-accent")
-									} else {
-										b.RemoveCssClass("color-accent")
-									}
-								}, ptr)
-								return signals.Continue
-							})
-						}),
-					Button().
-						BindSensitive(isControllable).
-						TooltipText(gettext.Get("Previous")).
-						IconName("skip-backward-large-symbolic").
-						MinHeight(34).
-						MinWidth(34).
-						WithCSSClass("transparent").
-						ActionName("win.player.previous"),
-					controlsPlayPause(),
-					Button().
-						BindSensitive(isControllable).
-						TooltipText(gettext.Get("Next")).
-						IconName("skip-forward-large-symbolic").
-						MinHeight(34).
-						MinWidth(34).
-						WithCSSClass("transparent").
-						ActionName("win.player.next"),
-					Button().
-						TooltipText(gettext.Get("Toggle Repeat")).
-						MinHeight(34).
-						MinWidth(34).
-						WithCSSClass("transparent").
-						ActionName("win.player.repeat").
-						ConnectConstruct(func(b *gtk.Button) {
-							ptr := b.GoPointer()
-							player.RepeatModeChanged.On(func(state player.RepeatMode) bool {
-								schwifty.OnMainThreadOnce(func(ptr uintptr) {
-									b := gtk.ButtonNewFromInternalPtr(ptr)
-									switch state {
-									case player.RepeatModeNone:
-										b.RemoveCssClass("color-accent")
-										b.SetIconName("playlist-repeat-symbolic")
-									case player.RepeatModeQueue:
-										b.AddCssClass("color-accent")
-										b.SetIconName("playlist-repeat-symbolic")
-									case player.RepeatModeTrack:
-										b.AddCssClass("color-accent")
-										b.SetIconName("playlist-repeat-song-symbolic")
-									}
-								}, ptr)
-								return signals.Continue
-							})
-						}),
-				).
-					Spacing(7).
-					HAlign(gtk.AlignCenterValue).
-					MarginTop(42),
-			).VAlign(gtk.AlignCenterValue),
-		).
-		Margin(20)
+func NewPlayer() schwifty.Box {
+	return VStack(
+		PlayingFrom(),
+		trackCover(),
+		trackInfo(),
+		actionRow(),
+		trackTimeline(),
+		controls(),
+	).
+		WithCSSClass("player").
+		HPadding(24).
+		Spacing(25).
+		VAlign(gtk.AlignCenterValue)
 }

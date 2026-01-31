@@ -1,4 +1,4 @@
-package player2
+package player
 
 import (
 	"context"

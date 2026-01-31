@@ -11,28 +11,35 @@ import (
 	"github.com/jwijenbergh/puregotk/v4/pango"
 )
 
-var titleState = state.NewStateful("No Track")
+var titleState = state.NewStateful("")
+var artistState = state.NewStateful("")
 
 func init() {
 	player.TrackChanged.On(func(trackInfo *player.Track) bool {
 		schwifty.OnMainThreadOncePure(func() {
 			if trackInfo == nil {
 				titleState.SetValue(gettext.Get("No Track"))
+				artistState.SetValue(gettext.Get("No Artist"))
 			} else {
 				titleState.SetValue(trackInfo.Title)
+				artistState.SetValue(trackInfo.ArtistNames())
 			}
 		})
 		return signals.Continue
 	})
 }
 
-func trackTitle() schwifty.Label {
-	return Label(gettext.Get("No Track")).
-		BindText(titleState).
-		FontSize(24).
-		FontWeight(800).
-		LineHeight(1.2).
-		HMargin(32).
-		HAlign(gtk.AlignCenterValue).
-		Ellipsis(pango.EllipsizeEndValue)
+func trackInfo() schwifty.Box {
+	return VStack(
+		Label("").
+			BindText(titleState).
+			HAlign(gtk.AlignCenterValue).
+			Ellipsis(pango.EllipsizeEndValue).
+			WithCSSClass("title-4"),
+		Label("").
+			BindText(artistState).
+			HAlign(gtk.AlignCenterValue).
+			Ellipsis(pango.EllipsizeEndValue).
+			WithCSSClass("heading").WithCSSClass("dimmed"),
+	).Spacing(5)
 }
