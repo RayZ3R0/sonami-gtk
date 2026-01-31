@@ -148,15 +148,18 @@ func PlayArtistTopSongs(artistId string, shuffle bool, position int) error {
 
 	var topTracks []openapi.Track
 
-	for _, LegacyTopTrackItem := range module.Items {
-		if LegacyTopTrackItem.Type == v2.ItemTypeTrack {
-			topTrack, _ := resolveTrack(strconv.Itoa(LegacyTopTrackItem.Data.Track.ID))
+	for _, legacyTopTrackItem := range module.Items {
+		if legacyTopTrackItem.Type == v2.ItemTypeTrack {
+			topTrack, err := resolveTrack(strconv.Itoa(legacyTopTrackItem.Data.Track.ID))
+			if err != nil {
+				logger.Error("error while resolving Top Track item", "track_id", legacyTopTrackItem.Data.Track.ID, "message", err.Error())
+				continue
+			}
+
 			topTracks = append(topTracks, *topTrack)
 		}
 	}
-	PlayTracklist(topTracks, shuffle, position)
-
-	return nil
+	return PlayTracklist(topTracks, shuffle, position)
 }
 
 func PlayPlaylist(playlistId string, shuffle bool, position int) error {
