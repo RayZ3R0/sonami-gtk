@@ -15,6 +15,12 @@ var General = g.Lazy(func() *GeneralSettings {
 	}
 })
 
+var Playback = g.Lazy(func() *PlaybackSettings {
+	return &PlaybackSettings{
+		finalize(gio.NewSettings("dev.dergs.Tonearm.playback")),
+	}
+})
+
 var Performance = g.Lazy(func() *PerformanceSettings {
 	return &PerformanceSettings{
 		finalize(gio.NewSettings("dev.dergs.Tonearm.performance")),
