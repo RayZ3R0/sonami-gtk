@@ -29,9 +29,6 @@ func CycleRepeatMode() {
 }
 
 func SetShuffle(enabled bool) {
-	if ShuffleStateChanged.CurrentValue() == enabled {
-		return
-	}
 	ShuffleStateChanged.Notify(func(oldValue bool) bool {
 		return enabled
 	})
