@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: 1\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-02-01 03:10+0100\n"
+"POT-Creation-Date: 2026-02-01 16:59+0100\n"
 "PO-Revision-Date: 2026-01-28 22:43+0100\n"
 "Last-Translator: Nila The Dragon <nilathedragon@pm.me>\n"
 "Language-Team: German\n"
@@ -37,7 +37,7 @@ msgid_plural "%d Tracks (%s)"
 msgstr[0] "%d Titel (%s)"
 msgstr[1] "%d Titel (%s)"
 
-#: internal/ui/window_sidebar.go:35
+#: internal/ui/window_sidebar.go:37
 msgid "About Tonearm"
 msgstr "Über Tonearm"
 
@@ -294,7 +294,7 @@ msgstr "Niedrig (320 kbps)"
 msgid "Low (96 kbps)"
 msgstr "Niedrig (96 kbps)"
 
-#: internal/ui/window_sidebar.go:74
+#: internal/ui/window_sidebar.go:79
 msgid "Lyrics"
 msgstr "Songtext"
 
@@ -311,11 +311,11 @@ msgid "Maximum history length before dropping old entries."
 msgstr ""
 "Maximale Anzahl Einträge im Verlauf bevor alte Einträge gelöscht werden."
 
-#: internal/ui/routes/my_collection/albums.go:41
+#: internal/ui/routes/my_collection/albums.go:63
 msgid "My Albums"
 msgstr "Meine Alben"
 
-#: internal/ui/routes/my_collection/artists.go:41
+#: internal/ui/routes/my_collection/artists.go:62
 msgid "My Artists"
 msgstr "Meine Profile"
 
@@ -323,11 +323,11 @@ msgstr "Meine Profile"
 msgid "My Collection"
 msgstr "Meine Musik"
 
-#: internal/ui/routes/my_collection/playlists.go:41
+#: internal/ui/routes/my_collection/playlists.go:62
 msgid "My Playlists"
 msgstr "Meine Playlisten"
 
-#: internal/ui/routes/my_collection/tracks.go:67
+#: internal/ui/routes/my_collection/tracks.go:68
 msgid "My Tracks"
 msgstr "Meine Titel"
 
@@ -452,7 +452,7 @@ msgstr "Top Titel abspielen"
 msgid "Playback"
 msgstr ""
 
-#: internal/ui/window_sidebar.go:73
+#: internal/ui/window_sidebar.go:78
 msgid "Player"
 msgstr "Player"
 
@@ -480,7 +480,7 @@ msgstr "Einstellungen"
 msgid "Previous"
 msgstr "Vorheriger Titel"
 
-#: internal/ui/window_sidebar.go:75
+#: internal/ui/window_sidebar.go:80
 msgid "Queue"
 msgstr "Warteschlange"
 
@@ -524,11 +524,11 @@ msgstr "Secret Service Fehler"
 msgid "Secret Service Unavailable"
 msgstr "Secret Service nicht verfügbar"
 
-#: internal/ui/window_sidebar.go:32
+#: internal/ui/window_sidebar.go:34
 msgid "Set as default page"
 msgstr "Als Startseite festlegen"
 
-#: internal/ui/window_actions.go:183
+#: internal/ui/window_actions.go:185
 msgid "Set current page as default"
 msgstr "Aktuelle Seite als Startseite festlegen"
 
@@ -552,19 +552,19 @@ msgstr "Seitenleiste"
 msgid "Sign In"
 msgstr "Anmelden"
 
-#: internal/ui/window_sidebar.go:41
+#: internal/ui/window_sidebar.go:46
 msgid "Sign Out"
 msgstr "Abmelden"
 
-#: internal/ui/window_actions.go:160
+#: internal/ui/window_actions.go:162
 msgid "Sign in failed or aborted"
 msgstr "Anmeldevorgang fehlgeschlagen oder abgebrochen"
 
-#: internal/ui/window_actions.go:164
+#: internal/ui/window_actions.go:166
 msgid "Signed in as %s"
 msgstr "Angemeldet als %s"
 
-#: internal/ui/window_actions.go:174
+#: internal/ui/window_actions.go:176
 msgid "Signed out"
 msgstr "Abgemeldet"
 
@@ -652,7 +652,7 @@ msgstr ""
 "Tonearm wird keine Anmeldedaten abspeichern können und jeglicher "
 "Anmeldeversuch wird fehlschlagen."
 
-#: internal/ui/window_about.go:101
+#: internal/ui/window_about.go:132
 msgid "translator-credits"
 msgstr "Nila The Dragon https://github.com/NilaTheDragon"
 

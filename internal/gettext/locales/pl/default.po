@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: v1.0.0-26-g6264155\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-02-01 03:10+0100\n"
+"POT-Creation-Date: 2026-02-01 16:59+0100\n"
 "PO-Revision-Date: 2026-02-01 09:21+0100\n"
 "Last-Translator: Łukasz Horodecki <lukasz@horodecki.net>\n"
 "Language-Team: Polish\n"
@@ -41,7 +41,7 @@ msgstr[0] "%d utwór (%s)"
 msgstr[1] "%d utwory (%s)"
 msgstr[2] "%d utworów (%s)"
 
-#: internal/ui/window_sidebar.go:35
+#: internal/ui/window_sidebar.go:37
 msgid "About Tonearm"
 msgstr "O programie"
 
@@ -301,7 +301,7 @@ msgstr "Niska (320 kbps)"
 msgid "Low (96 kbps)"
 msgstr "Niska (96 kbps)"
 
-#: internal/ui/window_sidebar.go:74
+#: internal/ui/window_sidebar.go:79
 msgid "Lyrics"
 msgstr "Tekst"
 
@@ -317,11 +317,11 @@ msgstr "Najwyższa"
 msgid "Maximum history length before dropping old entries."
 msgstr "Maksymalna długość historii przed usuwaniem starych pozycji."
 
-#: internal/ui/routes/my_collection/albums.go:41
+#: internal/ui/routes/my_collection/albums.go:63
 msgid "My Albums"
 msgstr "Moje albumy"
 
-#: internal/ui/routes/my_collection/artists.go:41
+#: internal/ui/routes/my_collection/artists.go:62
 msgid "My Artists"
 msgstr "Moi artyści"
 
@@ -329,11 +329,11 @@ msgstr "Moi artyści"
 msgid "My Collection"
 msgstr "Moja kolekcja"
 
-#: internal/ui/routes/my_collection/playlists.go:41
+#: internal/ui/routes/my_collection/playlists.go:62
 msgid "My Playlists"
 msgstr "Moje playlisty"
 
-#: internal/ui/routes/my_collection/tracks.go:67
+#: internal/ui/routes/my_collection/tracks.go:68
 msgid "My Tracks"
 msgstr "Moje utwory"
 
@@ -458,7 +458,7 @@ msgstr "Odtwarzaj top utwory"
 msgid "Playback"
 msgstr "Odtwarzanie"
 
-#: internal/ui/window_sidebar.go:73
+#: internal/ui/window_sidebar.go:78
 msgid "Player"
 msgstr "Odtwarzacz"
 
@@ -486,7 +486,7 @@ msgstr "Preferencje"
 msgid "Previous"
 msgstr "Poprzedni"
 
-#: internal/ui/window_sidebar.go:75
+#: internal/ui/window_sidebar.go:80
 msgid "Queue"
 msgstr "Kolejka"
 
@@ -530,11 +530,11 @@ msgstr "Problem z usługą sekretów"
 msgid "Secret Service Unavailable"
 msgstr "Usługa sekretów niedostępna"
 
-#: internal/ui/window_sidebar.go:32
+#: internal/ui/window_sidebar.go:34
 msgid "Set as default page"
 msgstr "Ustaw jako stronę domyślną"
 
-#: internal/ui/window_actions.go:183
+#: internal/ui/window_actions.go:185
 msgid "Set current page as default"
 msgstr "Ustaw aktualną stronę jako domyślną"
 
@@ -558,19 +558,19 @@ msgstr "Panel boczny"
 msgid "Sign In"
 msgstr "Zaloguj"
 
-#: internal/ui/window_sidebar.go:41
+#: internal/ui/window_sidebar.go:46
 msgid "Sign Out"
 msgstr "Wyloguj"
 
-#: internal/ui/window_actions.go:160
+#: internal/ui/window_actions.go:162
 msgid "Sign in failed or aborted"
 msgstr "Logowanie nieudane lub przerwane"
 
-#: internal/ui/window_actions.go:164
+#: internal/ui/window_actions.go:166
 msgid "Signed in as %s"
 msgstr "Zalogowano jako %s"
 
-#: internal/ui/window_actions.go:174
+#: internal/ui/window_actions.go:176
 msgid "Signed out"
 msgstr "Wylogowano"
 
@@ -653,6 +653,6 @@ msgstr ""
 "Tonearm nie będzie w stanie zapisać danych uwierzytelniania i nie będziesz "
 "móc się zalogować."
 
-#: internal/ui/window_about.go:101
+#: internal/ui/window_about.go:132
 msgid "translator-credits"
 msgstr "Łukasz Horodecki https://horodecki.net"
