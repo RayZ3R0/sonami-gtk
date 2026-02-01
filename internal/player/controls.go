@@ -62,7 +62,8 @@ func PlayPause() {
 	case PlaybackStatusPaused:
 		Play()
 	case PlaybackStatusStopped:
-		SeekToPosition(0)
+		seekToPosition(0)
+		Play()
 	}
 }
 
@@ -85,6 +86,10 @@ var (
 	seekMutex    sync.Mutex
 	seekDebounce *time.Timer
 )
+
+func seekToPosition(position time.Duration) {
+	playbin.SeekTime(position, gst.SeekFlagFlush|gst.SeekFlagKeyUnit)
+}
 
 func SeekToPosition(position time.Duration) {
 	logger.Debug("player controls requested to seek to position", "position", position)
@@ -112,7 +117,7 @@ func SeekToPosition(position time.Duration) {
 				return &newState
 			})
 
-			playbin.SeekTime(position, gst.SeekFlagFlush|gst.SeekFlagKeyUnit)
+			seekToPosition(position)
 			if PlaybackStateChanged.CurrentValue().Status == PlaybackStatusPlaying {
 				playbin.SetState(gst.StatePlaying)
 				startUpdateRunner()

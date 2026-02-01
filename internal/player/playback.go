@@ -72,7 +72,7 @@ func playTrack(track *openapi.Track) error {
 		return play(playbackInfo)
 	}
 	logger.Debug("gapless playback detected, not enqueueing track again")
-	unsetLoadingState()
+	resetLoadingState()
 	return nil
 }
 

@@ -6,9 +6,9 @@
 #, fuzzy
 msgid ""
 msgstr ""
-"Project-Id-Version: v1.0.1-63-g4c7cbb4\n"
+"Project-Id-Version: v1.1.0-10-g286f1c9\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-01-31 08:54+0100\n"
+"POT-Creation-Date: 2026-02-01 03:10+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -59,23 +59,23 @@ msgstr ""
 msgid "Allow Background Activity"
 msgstr ""
 
-#: internal/ui/window_preferences.go:45
+#: internal/ui/window_preferences.go:56
 msgid "Allow Media Card Images"
 msgstr ""
 
-#: internal/ui/window_preferences.go:51
+#: internal/ui/window_preferences.go:62
 msgid "Allow Shortcut Images"
 msgstr ""
 
-#: internal/ui/window_preferences.go:46
+#: internal/ui/window_preferences.go:57
 msgid "Allow Tonearm to load images for media card buttons."
 msgstr ""
 
-#: internal/ui/window_preferences.go:52
+#: internal/ui/window_preferences.go:63
 msgid "Allow Tonearm to load images for shortcut buttons."
 msgstr ""
 
-#: internal/ui/window_preferences.go:58
+#: internal/ui/window_preferences.go:69
 msgid "Allow Tonearm to load images for tracklists with the cover column."
 msgstr ""
 
@@ -83,15 +83,19 @@ msgstr ""
 msgid "Allow Tonearm to run in the background by hiding the player window instead of quitting the application"
 msgstr ""
 
-#: internal/ui/window_preferences.go:75
+#: internal/ui/window_preferences.go:86
 msgid "Allow Tonearm to send scrobbling data to ListenBrainz"
 msgstr ""
 
-#: internal/ui/window_preferences.go:64
+#: internal/ui/window_preferences.go:46
+msgid "Allow Tonearm to start a mix with the current playing song when you're at the end of an album/queue"
+msgstr ""
+
+#: internal/ui/window_preferences.go:75
 msgid "Allow Tonearm to temporarily store images on the file system to improve performance and reduce network traffic."
 msgstr ""
 
-#: internal/ui/window_preferences.go:57
+#: internal/ui/window_preferences.go:68
 msgid "Allow Tracklist Images"
 msgstr ""
 
@@ -124,7 +128,7 @@ msgstr ""
 msgid "Basic Shortcuts"
 msgstr ""
 
-#: internal/ui/window_preferences.go:63
+#: internal/ui/window_preferences.go:74
 msgid "Cache Images"
 msgstr ""
 
@@ -140,12 +144,16 @@ msgstr ""
 msgid "Collection"
 msgstr ""
 
-#: internal/ui/window_preferences.go:91
+#: internal/ui/window_preferences.go:102
 msgid "Configure Tonearm to send scrobbling data to ListenBrainz."
 msgstr ""
 
-#: internal/ui/window_preferences.go:68
+#: internal/ui/window_preferences.go:79
 msgid "Configure the behaviour of Tonearm regarding images."
+msgstr ""
+
+#: internal/ui/window_preferences.go:50
+msgid "Configure the behaviour of Tonearm regarding playback."
 msgstr ""
 
 #: internal/ui/window_preferences.go:39
@@ -196,8 +204,12 @@ msgstr ""
 msgid "E.g. Fox Stevenson"
 msgstr ""
 
-#: internal/ui/window_preferences.go:74
+#: internal/ui/window_preferences.go:85
 msgid "Enable ListenBrainz"
+msgstr ""
+
+#: internal/ui/window_preferences.go:45
+msgid "Enable autoplay"
 msgstr ""
 
 #: internal/ui/components/lyrics/lyrics.go:395
@@ -232,7 +244,7 @@ msgstr ""
 msgid "Home"
 msgstr ""
 
-#: internal/ui/window_preferences.go:68
+#: internal/ui/window_preferences.go:79
 msgid "Images"
 msgstr ""
 
@@ -244,15 +256,15 @@ msgstr ""
 msgid "Keyboard Shortcuts"
 msgstr ""
 
-#: internal/ui/window_preferences.go:90
+#: internal/ui/window_preferences.go:101
 msgid "ListenBrainz"
 msgstr ""
 
-#: internal/ui/window_preferences.go:80
+#: internal/ui/window_preferences.go:91
 msgid "ListenBrainz API Token"
 msgstr ""
 
-#: internal/ui/window_preferences.go:85
+#: internal/ui/window_preferences.go:96
 msgid "ListenBrainz API URL"
 msgstr ""
 
@@ -336,7 +348,7 @@ msgstr ""
 msgid "Navigation Behaviour"
 msgstr ""
 
-#: internal/ui/components/player/component_controls.go:104
+#: internal/ui/components/player/component_controls.go:112
 msgid "Next"
 msgstr ""
 
@@ -385,7 +397,7 @@ msgstr ""
 msgid "Open TIDAL page"
 msgstr ""
 
-#: internal/ui/window_preferences.go:69
+#: internal/ui/window_preferences.go:80
 msgid "Performance"
 msgstr ""
 
@@ -393,7 +405,7 @@ msgstr ""
 msgid "Personal Mix"
 msgstr ""
 
-#: internal/ui/components/player/component_controls.go:96
+#: internal/ui/components/player/component_controls.go:104
 msgid "Play / Pause"
 msgstr ""
 
@@ -407,6 +419,10 @@ msgstr ""
 
 #: internal/ui/routes/artist.go:86
 msgid "Play Top Tracks"
+msgstr ""
+
+#: internal/ui/window_preferences.go:50
+msgid "Playback"
 msgstr ""
 
 #: internal/ui/window_sidebar.go:73
@@ -433,7 +449,7 @@ msgstr ""
 msgid "Preferences"
 msgstr ""
 
-#: internal/ui/components/player/component_controls.go:91
+#: internal/ui/components/player/component_controls.go:99
 msgid "Previous"
 msgstr ""
 
@@ -453,7 +469,7 @@ msgstr ""
 msgid "Scan this QR code to sign into your TIDAL account."
 msgstr ""
 
-#: internal/ui/window_preferences.go:92
+#: internal/ui/window_preferences.go:103
 msgid "Scrobbling"
 msgstr ""
 
@@ -537,11 +553,11 @@ msgstr ""
 msgid "The requested deeplink did not have any available handlers."
 msgstr ""
 
-#: internal/ui/components/player/component_controls.go:109
+#: internal/ui/components/player/component_controls.go:117
 msgid "Toggle Repeat"
 msgstr ""
 
-#: internal/ui/components/player/component_controls.go:85
+#: internal/ui/components/player/component_controls.go:93
 msgid "Toggle Shuffle"
 msgstr ""
 

@@ -39,6 +39,17 @@ var preferencesGeneral = PreferencesPage(
 		Description(gettext.Get("Configure the behaviour of Tonearm when navigating between pages.")),
 ).Title(gettext.Get("General")).IconName("settings-symbolic")
 
+var preferencesPlayback = PreferencesPage(
+	PreferencesGroup(
+		SwitchRow().
+			Title(gettext.Get("Enable autoplay")).
+			Subtitle(gettext.Get("Allow Tonearm to start a mix with the current playing song when you're at the end of an album/queue")).
+			ConnectConstruct(func(sr *adw.SwitchRow) {
+				settings.Playback().BindAllowAutoplay(&sr.Object, "active")
+			}),
+	).Title(gettext.Get("Playback")).Description(gettext.Get("Configure the behaviour of Tonearm regarding playback.")),
+).Title(gettext.Get("Playback")).IconName("media-playback-start-symbolic")
+
 var preferencesPerformance = PreferencesPage(
 	PreferencesGroup(
 		SwitchRow().
@@ -94,6 +105,7 @@ var preferencesScrobbling = PreferencesPage(
 func (w *Window) PresentPreferences() {
 	PreferencesDialog(
 		preferencesGeneral,
+		preferencesPlayback,
 		preferencesPerformance,
 		preferencesScrobbling,
 	).Present(w)

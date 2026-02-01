@@ -61,6 +61,7 @@ func onBusMessage(msg *gst.Message) bool {
 			go playNextTrack()
 		}
 	case gst.MessageEOS:
+		playbin.SetState(gst.StateNull)
 		stopUpdateRunner()
 		PlaybackStateChanged.Notify(func(oldValue *PlaybackState) *PlaybackState {
 			newState := *oldValue
@@ -79,6 +80,7 @@ func onBusMessage(msg *gst.Message) bool {
 		_, newState := msg.ParseStateChanged()
 		switch newState {
 		case gst.StatePlaying:
+			startUpdateRunner()
 			PlaybackStateChanged.Notify(func(oldValue *PlaybackState) *PlaybackState {
 				newState := *oldValue
 				newState.Status = PlaybackStatusPlaying

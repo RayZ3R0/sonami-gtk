@@ -38,7 +38,7 @@ func setLoadingState() {
 	})
 }
 
-func unsetLoadingState() {
+func resetLoadingState() {
 	PlaybackStateChanged.Notify(func(oldValue *PlaybackState) *PlaybackState {
 		oldValue.Loading = false
 		return oldValue
@@ -65,7 +65,7 @@ func PlayTrack(trackId string) error {
 	setLoadingState()
 	track, err := resolveTrack(trackId)
 	if err != nil {
-		unsetLoadingState()
+		resetLoadingState()
 		return err
 	}
 
@@ -94,7 +94,7 @@ func PlayAlbum(albumId string, shuffle bool, position int) error {
 	setLoadingState()
 	tidal, err := injector.Inject[*tidalapi.TidalAPI]()
 	if err != nil {
-		unsetLoadingState()
+		resetLoadingState()
 		return err
 	}
 
@@ -104,12 +104,12 @@ func PlayAlbum(albumId string, shuffle bool, position int) error {
 
 	tracks, err := paginator.GetAll()
 	if err != nil {
-		unsetLoadingState()
+		resetLoadingState()
 		return err
 	}
 
 	if err := PlayTracklist(tracks, shuffle, position); err != nil {
-		unsetLoadingState()
+		resetLoadingState()
 		return err
 	}
 
@@ -128,13 +128,13 @@ func PlayArtistTopSongs(artistId string, shuffle bool, position int) error {
 	setLoadingState()
 	tidal, err := injector.Inject[*tidalapi.TidalAPI]()
 	if err != nil {
-		unsetLoadingState()
+		resetLoadingState()
 		return err
 	}
 
 	artist, err := tidal.V2.Artist.Artist(context.Background(), artistId)
 	if err != nil {
-		unsetLoadingState()
+		resetLoadingState()
 		return err
 	}
 
@@ -166,7 +166,7 @@ func PlayPlaylist(playlistId string, shuffle bool, position int) error {
 	setLoadingState()
 	tidal, err := injector.Inject[*tidalapi.TidalAPI]()
 	if err != nil {
-		unsetLoadingState()
+		resetLoadingState()
 		return err
 	}
 
@@ -176,18 +176,18 @@ func PlayPlaylist(playlistId string, shuffle bool, position int) error {
 
 	tracks, err := paginator.GetAll()
 	if err != nil {
-		unsetLoadingState()
+		resetLoadingState()
 		return err
 	}
 
 	if err := PlayTracklist(tracks, shuffle, position); err != nil {
-		unsetLoadingState()
+		resetLoadingState()
 		return err
 	}
 
 	playlist, err := tidal.OpenAPI.V2.Playlists.Playlist(context.Background(), playlistId, "coverArt")
 	if err != nil {
-		unsetLoadingState()
+		resetLoadingState()
 		return err
 	}
 
@@ -206,21 +206,21 @@ func PlayTrackRadio(trackId string, skipSelf bool) error {
 	setLoadingState()
 	tidal, err := injector.Inject[*tidalapi.TidalAPI]()
 	if err != nil {
-		unsetLoadingState()
+		resetLoadingState()
 		return err
 	}
 
 	trackIdInt, err := strconv.Atoi(trackId)
 	if err != nil {
 		logger.Error("failed to parse track id", "error", err)
-		unsetLoadingState()
+		resetLoadingState()
 		return err
 	}
 
 	mix, err := tidal.V1.Tracks.Mix(context.Background(), trackIdInt)
 	if err != nil {
 		logger.Error("failed to retrieve mix", "error", err)
-		unsetLoadingState()
+		resetLoadingState()
 		return err
 	}
 
@@ -260,7 +260,7 @@ func PlayTracklist(tracks []openapi.Track, shuffle bool, startAt int) error {
 			TrackID: nextTrack.Data.ID,
 		})
 	} else {
-		unsetLoadingState()
+		resetLoadingState()
 	}
 	return nil
 }
