@@ -14,7 +14,7 @@ func positionColumn(grid *gtk.Grid, position int, column int) int {
 		FontWeight(500).
 		HAlign(gtk.AlignStartValue).
 		HExpand(false).
-		Margin(10)
+		Margin(10).HPadding(10)
 	grid.Attach(widget.ToGTK(), column, 0, 1, 1)
 	return 1
 }
