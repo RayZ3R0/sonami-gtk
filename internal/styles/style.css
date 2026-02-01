@@ -11,41 +11,79 @@ menubutton.transparent button:not(:hover):not(.active) {
   padding-bottom: 10px;
 }
 
-.player label.quality-label {
+.player .quality-selector > button {
+  padding: 0;
+  background-color: transparent;
+}
+.player .quality-selector > button label {
   text-transform: uppercase;
 }
-.player label.quality-label.low {
+.player .quality-selector > button label.low {
   background-color: #ffffff1a;
   color: #e4e4e7;
 }
 @media (prefers-color-scheme: light) {
-  .player label.quality-label.low {
+  .player .quality-selector > button label.low {
     background-color: #0000001a;
     color: #1b1b18;
   }
 }
-.player label.quality-label.high {
+.player .quality-selector > button label.high {
   background-color: #21feec1a;
   color: #33ffee;
 }
 @media (prefers-color-scheme: light) {
-  .player label.quality-label.high {
-    background-color: #04a69a1a;
+  .player .quality-selector > button label.high {
     /* Light cyan */
-    color: #039187;
+    background-color: #04a69a1a;
     /* Darker teal */
+    color: #039187;
   }
 }
-.player label.quality-label.max {
+.player .quality-selector > button label.max {
   background-color: #ffd4321a;
   color: #ffd432;
 }
 @media (prefers-color-scheme: light) {
-  .player label.quality-label.max {
-    background-color: #ffd4327a;
+  .player .quality-selector > button label.max {
     /* Soft yellow */
-    color: #905300;
+    background-color: #ffd4327a;
     /* Dark yellow/brown */
+    color: #905300;
+  }
+}
+.player .quality-selector > popover .selector .low {
+  background-color: #ffffff1a;
+  color: #e4e4e7;
+}
+@media (prefers-color-scheme: light) {
+  .player .quality-selector > popover .selector .low {
+    background-color: #0000001a;
+    color: #1b1b18;
+  }
+}
+.player .quality-selector > popover .selector .high {
+  background-color: #21feec1a;
+  color: #33ffee;
+}
+@media (prefers-color-scheme: light) {
+  .player .quality-selector > popover .selector .high {
+    /* Light cyan */
+    background-color: #04a69a7a;
+    /* Darker teal */
+    color: #039187;
+  }
+}
+.player .quality-selector > popover .selector .max {
+  background-color: #ffd4321a;
+  color: #ffd432;
+}
+@media (prefers-color-scheme: light) {
+  .player .quality-selector > popover .selector .max {
+    /* Soft yellow */
+    background-color: #ffd4327a;
+    /* Dark yellow/brown */
+    color: #905300;
   }
 }
 

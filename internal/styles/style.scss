@@ -17,40 +17,84 @@ menubutton.transparent button:not(:hover):not(.active) {
 }
 
 .player {
-    label.quality-label {
-        text-transform: uppercase;
+    .quality-selector {
+        > button {
+            padding: 0;
+            background-color: transparent;
 
-        &.low {
-            background-color: #ffffff1a;
-            color: #e4e4e7;
+            label {
+                text-transform: uppercase;
 
-            @media (prefers-color-scheme: light) {
-                background-color: #0000001a;
-                color: #1b1b18;
+                &.low {
+                    background-color: #ffffff1a;
+                    color: #e4e4e7;
+
+                    @media (prefers-color-scheme: light) {
+                        background-color: #0000001a;
+                        color: #1b1b18;
+                    }
+                }
+
+                &.high {
+                    background-color: #21feec1a;
+                    color: #33ffee;
+
+                    @media (prefers-color-scheme: light) {
+                        /* Light cyan */
+                        background-color: #04a69a1a;
+                        /* Darker teal */
+                        color: #039187;
+                    }
+                }
+
+                &.max {
+                    background-color: #ffd4321a;
+                    color: #ffd432;
+
+                    @media (prefers-color-scheme: light) {
+                        /* Soft yellow */
+                        background-color: #ffd4327a;
+                        /* Dark yellow/brown */
+                        color: #905300;
+                    }
+                }
             }
         }
+        > popover {
+            .selector {
+                .low {
+                    background-color: #ffffff1a;
+                    color: #e4e4e7;
 
-        &.high {
-            background-color: #21feec1a;
-            color: #33ffee;
+                    @media (prefers-color-scheme: light) {
+                        background-color: #0000001a;
+                        color: #1b1b18;
+                    }
+                }
 
-            @media (prefers-color-scheme: light) {
-                /* Light cyan */
-                background-color: #04a69a1a;
-                /* Darker teal */
-                color: #039187;
-            }
-        }
+                .high {
+                    background-color: #21feec1a;
+                    color: #33ffee;
 
-        &.max {
-            background-color: #ffd4321a;
-            color: #ffd432;
+                    @media (prefers-color-scheme: light) {
+                        /* Light cyan */
+                        background-color: #04a69a7a;
+                        /* Darker teal */
+                        color: #039187;
+                    }
+                }
 
-            @media (prefers-color-scheme: light) {
-                /* Soft yellow */
-                background-color: #ffd4327a;
-                /* Dark yellow/brown */
-                color: #905300;
+                .max {
+                    background-color: #ffd4321a;
+                    color: #ffd432;
+
+                    @media (prefers-color-scheme: light) {
+                        /* Soft yellow */
+                        background-color: #ffd4327a;
+                        /* Dark yellow/brown */
+                        color: #905300;
+                    }
+                }
             }
         }
     }

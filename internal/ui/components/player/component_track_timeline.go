@@ -89,17 +89,65 @@ func trackTimeline() schwifty.Widget {
 		),
 	).MarginBottom(2).ToGTK())
 	overlay.AddOverlay(
-		Label("").
-			VAlign(gtk.AlignEndValue).
-			WithCSSClass("quality-label").
-			WithCSSClass("caption-heading").
-			BindText(playbackQualityText).
-			BindCSSClass(playbackQualityClass).
-			CornerRadius(10).
-			HPadding(8).
-			VPadding(4).
+		MenuButton().
+			WithCSSClass("quality-selector").
+			Child(
+				Label("").
+					WithCSSClass("caption-heading").
+					BindText(playbackQualityText).
+					BindCSSClass(playbackQualityClass).
+					CornerRadius(10).
+					HPadding(8).
+					VPadding(4),
+			).
+			Popover(
+				Popover(
+					VStack(
+						Button().
+							Child(VStack(
+								Label("Low (96 kbps)").WithCSSClass("heading"),
+								Label("96 kbps AAC").WithCSSClass("caption"),
+							)).
+							ConnectClicked(func(b gtk.Button) {
+
+							}).
+							WithCSSClass("low"),
+						Button().
+							Child(VStack(
+								Label("Low (320 kbps)").WithCSSClass("heading"),
+								Label("320 kbps AAC").WithCSSClass("caption"),
+							)).
+							ConnectClicked(func(b gtk.Button) {
+
+							}).
+							WithCSSClass("low"),
+						Button().
+							Child(VStack(
+								Label("High").WithCSSClass("heading"),
+								Label("16-bit 44.1 kHz FLAC").WithCSSClass("caption"),
+							)).
+							ConnectClicked(func(b gtk.Button) {
+
+							}).
+							WithCSSClass("high"),
+						Button().
+							Child(VStack(
+								Label("Max").WithCSSClass("heading"),
+								Label("24-bit 48 kHz FLAC").WithCSSClass("caption"),
+							)).
+							ConnectClicked(func(b gtk.Button) {
+
+							}).
+							WithCSSClass("max"),
+					).
+						WithCSSClass("selector").
+						Spacing(8),
+				),
+			).
 			HExpand(false).
-			HAlign(gtk.AlignCenterValue).ToGTK(),
+			VAlign(gtk.AlignEndValue).
+			HAlign(gtk.AlignCenterValue).
+			ToGTK(),
 	)
 
 	return ManagedWidget(&overlay.Widget)
