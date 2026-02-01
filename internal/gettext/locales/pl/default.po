@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: v1.0.0-26-g6264155\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-01-31 08:54+0100\n"
+"POT-Creation-Date: 2026-01-31 23:55+0100\n"
 "PO-Revision-Date: 2026-01-31 09:05+0100\n"
 "Last-Translator: Łukasz Horodecki <lukasz@horodecki.net>\n"
 "Language-Team: Polish\n"
@@ -65,23 +65,23 @@ msgstr "Albumy"
 msgid "Allow Background Activity"
 msgstr "Pozwól na działanie w tle"
 
-#: internal/ui/window_preferences.go:45
+#: internal/ui/window_preferences.go:56
 msgid "Allow Media Card Images"
 msgstr "Pozwól na obrazy albumów"
 
-#: internal/ui/window_preferences.go:51
+#: internal/ui/window_preferences.go:62
 msgid "Allow Shortcut Images"
 msgstr "Pozwól na obrazy na skrótach"
 
-#: internal/ui/window_preferences.go:46
+#: internal/ui/window_preferences.go:57
 msgid "Allow Tonearm to load images for media card buttons."
 msgstr "Pozwól Tonearm na wczytywanie obrazów na listach albumów."
 
-#: internal/ui/window_preferences.go:52
+#: internal/ui/window_preferences.go:63
 msgid "Allow Tonearm to load images for shortcut buttons."
 msgstr "Pozwól Tonearm na wczytywanie obrazów na przyciskach skrótów."
 
-#: internal/ui/window_preferences.go:58
+#: internal/ui/window_preferences.go:69
 msgid "Allow Tonearm to load images for tracklists with the cover column."
 msgstr "Pozwól Tonearm na wczytywanie obrazów na listach utworów z okładkami."
 
@@ -93,11 +93,17 @@ msgstr ""
 "Pozwól Tonearm na działanie w tle przez ukrywanie okna odtwarzacza zamiast "
 "zamykania aplikacji."
 
-#: internal/ui/window_preferences.go:75
+#: internal/ui/window_preferences.go:86
 msgid "Allow Tonearm to send scrobbling data to ListenBrainz"
 msgstr "Pozwól Tonearm na wysyłanie danych scrobblowania do ListenBrainz"
 
-#: internal/ui/window_preferences.go:64
+#: internal/ui/window_preferences.go:46
+msgid ""
+"Allow Tonearm to start a mix with the current playing song when you're at "
+"the end of an album/queue"
+msgstr ""
+
+#: internal/ui/window_preferences.go:75
 msgid ""
 "Allow Tonearm to temporarily store images on the file system to improve "
 "performance and reduce network traffic."
@@ -105,7 +111,7 @@ msgstr ""
 "Pozwól Tonearm na tymczasowe przechowywanie obrazów, by poprawić wydajność i "
 "zmniejszyć obciążenie sieci."
 
-#: internal/ui/window_preferences.go:57
+#: internal/ui/window_preferences.go:68
 msgid "Allow Tracklist Images"
 msgstr "Pozwól na obrazy na listach utworów"
 
@@ -145,7 +151,7 @@ msgstr "Działanie w tle"
 msgid "Basic Shortcuts"
 msgstr "Ogólne"
 
-#: internal/ui/window_preferences.go:63
+#: internal/ui/window_preferences.go:74
 msgid "Cache Images"
 msgstr "Pamięć podręczna obrazów"
 
@@ -161,11 +167,11 @@ msgstr "Zamknij"
 msgid "Collection"
 msgstr "Kolekcja"
 
-#: internal/ui/window_preferences.go:91
+#: internal/ui/window_preferences.go:102
 msgid "Configure Tonearm to send scrobbling data to ListenBrainz."
 msgstr "Skonfiguruj Tonearm do wysyłania danych scrobblowania do ListenBrainz."
 
-#: internal/ui/window_preferences.go:68
+#: internal/ui/window_preferences.go:79
 msgid "Configure the behaviour of Tonearm regarding images."
 msgstr "Skonfiguruj zachowanie Tonearm dotyczące obrazów."
 
@@ -176,6 +182,11 @@ msgstr "Skonfiguruj zachowanie Tonearm podczas nawigowania między stronami."
 #: internal/ui/window_preferences.go:21
 msgid "Configure the behaviour of Tonearm when running in the background."
 msgstr "Skonfiguruj zachowanie Tonearm w czasie pracy w tle."
+
+#: internal/ui/window_preferences.go:50
+#, fuzzy
+msgid "Configure the behaviour of tonearm regarding playback."
+msgstr "Skonfiguruj zachowanie Tonearm dotyczące obrazów."
 
 #: internal/ui/window_popups.go:28
 msgid "Continue"
@@ -217,9 +228,13 @@ msgstr "Nie pokazuj ponownie"
 msgid "E.g. Fox Stevenson"
 msgstr "Np. Fox Stevenson"
 
-#: internal/ui/window_preferences.go:74
+#: internal/ui/window_preferences.go:85
 msgid "Enable ListenBrainz"
 msgstr "Włącz ListenBrainz"
+
+#: internal/ui/window_preferences.go:45
+msgid "Enable autoplay"
+msgstr ""
 
 #: internal/ui/components/lyrics/lyrics.go:395
 msgid "Error fetching lyrics"
@@ -253,7 +268,7 @@ msgstr "Długość historii"
 msgid "Home"
 msgstr "Muzyka"
 
-#: internal/ui/window_preferences.go:68
+#: internal/ui/window_preferences.go:79
 msgid "Images"
 msgstr "Obrazy"
 
@@ -265,15 +280,15 @@ msgstr "Błąd wewnętrzny"
 msgid "Keyboard Shortcuts"
 msgstr "Skróty klawiszowe"
 
-#: internal/ui/window_preferences.go:90
+#: internal/ui/window_preferences.go:101
 msgid "ListenBrainz"
 msgstr "ListenBrainz"
 
-#: internal/ui/window_preferences.go:80
+#: internal/ui/window_preferences.go:91
 msgid "ListenBrainz API Token"
 msgstr "Token API ListenBrainz"
 
-#: internal/ui/window_preferences.go:85
+#: internal/ui/window_preferences.go:96
 msgid "ListenBrainz API URL"
 msgstr "Adres URL API ListenBrainz"
 
@@ -414,7 +429,7 @@ msgstr "Nie znaleziono"
 msgid "Open TIDAL page"
 msgstr "Otwórz stronę TIDAL"
 
-#: internal/ui/window_preferences.go:69
+#: internal/ui/window_preferences.go:80
 msgid "Performance"
 msgstr "Wydajność"
 
@@ -436,6 +451,11 @@ msgstr "Odtwórz playlistę"
 
 #: internal/ui/routes/artist.go:86
 msgid "Play Top Tracks"
+msgstr "Odtwarzaj top utwory"
+
+#: internal/ui/window_preferences.go:50
+#, fuzzy
+msgid "Playback"
 msgstr "Odtwarzaj top utwory"
 
 #: internal/ui/window_sidebar.go:73
@@ -482,7 +502,7 @@ msgstr "Usuń utwór z kolejki"
 msgid "Scan this QR code to sign into your TIDAL account."
 msgstr "Zeskanuj ten kod QR, by zalogować się do swojego konta TIDAL."
 
-#: internal/ui/window_preferences.go:92
+#: internal/ui/window_preferences.go:103
 msgid "Scrobbling"
 msgstr "Scrobblowanie"
 
