@@ -13,6 +13,37 @@ var (
 	Commit, Version string
 )
 
+func isStable() bool {
+	if Version != "" {
+		return true
+	}
+
+	if Commit == "" {
+		// If no commit is available.
+		// This happens if the app is run with `go run ./cmd/tonearm`.
+
+		return false
+	} else if ok, _ := regexp.MatchString(`^.*-\d+-g[0-9a-f]{7}$`, Commit); ok {
+		// If the commit matches the git describe scheme.
+		// This happens when the code is run locally, through a project-provided tool, and a tag is available.
+
+		regex := regexp.MustCompile(`^(.*)-(\d+)-g([0-9a-f]{7})`)
+		parts := regex.FindStringSubmatch(Commit)
+
+		offset := parts[2]
+
+		if offset != "0" {
+			return false
+		}
+
+		return true
+	} else {
+		// If the commit is not a git describe scheme.
+		// This happens when the code is run locally, through a project-provided tool, and no tag is available.
+		return false
+	}
+}
+
 func getVersionPrefix(version string) (prefix string) {
 	if version[0] == 'v' {
 		if version[1] == '0' {
