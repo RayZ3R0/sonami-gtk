@@ -1,32 +1,18 @@
 package my_collection
 
 import (
-	"context"
-	"log/slog"
-
 	"codeberg.org/dergs/tonearm/internal/gettext"
 	"codeberg.org/dergs/tonearm/internal/router"
 	"codeberg.org/dergs/tonearm/internal/secrets"
-	"codeberg.org/dergs/tonearm/internal/signals"
 	"codeberg.org/dergs/tonearm/internal/ui/components/media_card"
+	"codeberg.org/dergs/tonearm/internal/ui/pages"
 	"codeberg.org/dergs/tonearm/pkg/schwifty"
 	. "codeberg.org/dergs/tonearm/pkg/schwifty/syntax"
 	"codeberg.org/dergs/tonearm/pkg/tidalapi"
 	"codeberg.org/dergs/tonearm/pkg/tidalapi/models/openapi"
-	"codeberg.org/dergs/tonearm/pkg/tidalapi/openapi/v2/user_collections"
 	"codeberg.org/dergs/tonearm/pkg/tidalapi/pagination"
 	"github.com/infinytum/injector"
-	"github.com/jwijenbergh/puregotk/v4/adw"
-	"github.com/jwijenbergh/puregotk/v4/gtk"
 )
-
-type itemizedUserArtistsCollection struct {
-	*user_collections.UserCollections
-}
-
-func (i *itemizedUserArtistsCollection) Items(ctx context.Context, id, cursor string, include ...string) (*openapi.Response[[]openapi.Relationship], error) {
-	return i.Artists(ctx, id, cursor, include...)
-}
 
 func Artists() *router.Response {
 	tidal := injector.MustInject[*tidalapi.TidalAPI]()
@@ -38,51 +24,17 @@ func Artists() *router.Response {
 		}
 	}
 
-	itemizedCollection := &itemizedUserArtistsCollection{tidal.OpenAPI.V2.UserCollections}
-	paginator := pagination.NewPaginator(itemizedCollection, userId, func(r *openapi.Response[[]openapi.Relationship]) []openapi.Artist {
+	paginator := pagination.NewPaginator(tidal.OpenAPI.V2.UserCollections.Artists, userId, func(r *openapi.Response[[]openapi.Relationship]) []openapi.Artist {
 		return r.Included.Artists(r.Data...)
 	}, "artists.profileArt")
 
-	userCollection, err := paginator.GetFirstPage()
-	if err != nil {
-		return &router.Response{
-			PageTitle: gettext.Get("My Collection"),
-			Error:     err,
-		}
-	}
-
-	children := make([]any, 0)
-	for _, artist := range userCollection {
-		children = append(children, CenterBox().CenterWidget(media_card.NewArtist(&artist)))
-	}
-
-	list := WrapBox(children...).VMargin(20).VAlign(gtk.AlignStartValue).Justify(adw.JustifyFillValue).JustifyLastLine(true).ToGTK()
+	page, err := pages.NewPaginatedMediaCardPage(paginator, func(artist openapi.Artist) schwifty.BaseWidgetable {
+		return media_card.NewArtist(&artist)
+	})
 
 	return &router.Response{
 		PageTitle: gettext.Get("My Artists"),
-		View: ScrolledWindow().
-			Child(list).
-			ConnectReachEdgeSoon(gtk.PosBottomValue, func() bool {
-				if !paginator.IsConsumed() {
-					items, err := paginator.Next()
-					if err != nil {
-						return signals.Continue
-					}
-
-					schwifty.OnMainThreadOnce(func(u uintptr) {
-						list := adw.WrapBoxNewFromInternalPtr(u)
-						for _, artist := range items {
-							child := CenterBox().CenterWidget(media_card.NewArtist(&artist)).ToGTK()
-							list.Append(child)
-						}
-					}, list.GoPointer())
-				} else {
-					slog.Debug("No more artists to fetch")
-					return signals.Unsubscribe
-				}
-
-				return signals.Continue
-			}).
-			Policy(gtk.PolicyNeverValue, gtk.PolicyAutomaticValue),
+		Error:     err,
+		View:      page,
 	}
 }

@@ -7,9 +7,7 @@ import (
 	"codeberg.org/dergs/tonearm/pkg/tidalapi/models/openapi"
 )
 
-type Paginated interface {
-	Items(ctx context.Context, id string, cursor string, include ...string) (*openapi.Response[[]openapi.Relationship], error)
-}
+type Paginated func(ctx context.Context, id string, cursor string, include ...string) (*openapi.Response[[]openapi.Relationship], error)
 
 type Paginator[T any] struct {
 	resource   Paginated
@@ -24,7 +22,7 @@ type Paginator[T any] struct {
 // It uses pagination to fetch all items.
 // GetAll doesn't consume the paginator, and is simply a convenience method for fetching all items.
 func (p *Paginator[T]) GetAll() ([]T, error) {
-	items, err := p.resource.Items(context.Background(), p.resourceID, "", p.included...)
+	items, err := p.resource(context.Background(), p.resourceID, "", p.included...)
 	if err != nil {
 		return nil, err
 	}
@@ -38,7 +36,7 @@ func (p *Paginator[T]) GetAll() ([]T, error) {
 
 	for cursorPtr != nil {
 		cursor := *cursorPtr
-		items, err := p.resource.Items(context.Background(), p.resourceID, cursor, p.included...)
+		items, err := p.resource(context.Background(), p.resourceID, cursor, p.included...)
 		if err != nil {
 			return nil, err
 		}
@@ -60,7 +58,7 @@ func (p *Paginator[T]) IsConsumed() bool {
 
 // GetFirstPage retrieves the first page of items. It also resets the cursor to the first position.
 func (p *Paginator[T]) GetFirstPage() ([]T, error) {
-	items, err := p.resource.Items(context.Background(), p.resourceID, "", p.included...)
+	items, err := p.resource(context.Background(), p.resourceID, "", p.included...)
 	if err != nil {
 		return nil, err
 	}
@@ -83,7 +81,7 @@ func (p *Paginator[T]) Next() ([]T, error) {
 		return nil, fmt.Errorf("no more pages")
 	}
 
-	items, err := p.resource.Items(context.Background(), p.resourceID, *p.cursor, p.included...)
+	items, err := p.resource(context.Background(), p.resourceID, *p.cursor, p.included...)
 	if err != nil {
 		return nil, err
 	}

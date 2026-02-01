@@ -3,8 +3,6 @@ package routes
 import (
 	"context"
 	"fmt"
-	"log/slog"
-	"unsafe"
 
 	"codeberg.org/dergs/tonearm/internal/gettext"
 	"codeberg.org/dergs/tonearm/internal/notifications"
@@ -13,6 +11,7 @@ import (
 	"codeberg.org/dergs/tonearm/internal/router"
 	"codeberg.org/dergs/tonearm/internal/signals"
 	"codeberg.org/dergs/tonearm/internal/ui/components/tracklist"
+	"codeberg.org/dergs/tonearm/internal/ui/pages"
 	"codeberg.org/dergs/tonearm/pkg/schwifty"
 	"codeberg.org/dergs/tonearm/pkg/schwifty/state"
 	. "codeberg.org/dergs/tonearm/pkg/schwifty/syntax"
@@ -44,13 +43,9 @@ func Playlist(playlistUUID string) *router.Response {
 		return router.FromError(gettext.Get("Playlist"), err)
 	}
 
-	paginator := pagination.NewPaginator(tidal.OpenAPI.V2.Playlists, playlistUUID, func(r *openapi.Response[[]openapi.Relationship]) []openapi.Track {
+	paginator := pagination.NewPaginator(tidal.OpenAPI.V2.Playlists.Items, playlistUUID, func(r *openapi.Response[[]openapi.Relationship]) []openapi.Track {
 		return r.Included.Tracks(r.Data...)
 	}, "items", "items.artists", "items.albums.coverArt")
-	items, err := paginator.GetFirstPage()
-	if err != nil {
-		return router.FromError(gettext.Get("Playlist"), err)
-	}
 
 	creator := "TIDAL"
 	for _, artist := range playlist.Included.PlainArtists(playlist.Data.Relationships.OwnerProfiles.Data...) {
@@ -66,19 +61,6 @@ func Playlist(playlistUUID string) *router.Response {
 		}
 	}
 
-	list := tracklist.NewTrackList(
-		tracklist.GroupedColumn(2, gtk.AlignStartValue, tracklist.CoverColumn, tracklist.TitleAlbumColumn),
-		tracklist.ArtistsColumn,
-		tracklist.ExpandCustomButtonColumn(1, func(trackId string, position, _ int) {
-			go player.PlayPlaylist(playlistUUID, false, position)
-		}),
-		tracklist.GroupedColumn(1, gtk.AlignEndValue, tracklist.DurationColumn, tracklist.ControlsColumn),
-	)
-
-	for _, track := range items {
-		list.AddTrack(&track)
-	}
-
 	var playlistMetadata schwifty.Label
 	if playlist.Data.Attributes.PlaylistType != openapi.PlaylistTypeMix {
 		playlistMetadata = Label(gettext.GetN("%d Track (%s)", "%d Tracks (%s)", playlist.Data.Attributes.NumberOfItems, playlist.Data.Attributes.NumberOfItems, tidalapi.FormatDuration(playlist.Data.Attributes.Duration.Duration)))
@@ -86,8 +68,25 @@ func Playlist(playlistUUID string) *router.Response {
 		playlistMetadata = Label(gettext.Get("Personal Mix"))
 	}
 
+	page, err := pages.NewPaginatedTracklistPage(
+		paginator,
+		func() *tracklist.TrackList[*openapi.Track] {
+			return tracklist.NewTrackList(
+				tracklist.GroupedColumn(2, gtk.AlignStartValue, tracklist.CoverColumn, tracklist.TitleAlbumColumn),
+				tracklist.ArtistsColumn,
+				tracklist.ExpandCustomButtonColumn(1, func(trackId string, position, _ int) {
+					go player.PlayPlaylist(playlistUUID, false, position)
+				}),
+				tracklist.GroupedColumn(1, gtk.AlignEndValue, tracklist.DurationColumn, tracklist.ControlsColumn),
+			)
+		}, func(tl *tracklist.TrackList[*openapi.Track]) schwifty.BaseWidgetable {
+			return tl.HMargin(30).VAlign(gtk.AlignStartValue)
+		},
+	)
+
 	return &router.Response{
 		PageTitle: playlist.Data.Attributes.Name,
+		Error:     err,
 		View: VStack(
 			HStack(
 				AspectFrame(
@@ -187,32 +186,8 @@ func Playlist(playlistUUID string) *router.Response {
 				).
 					Spacing(20).
 					VAlign(gtk.AlignCenterValue),
-			),
-			ScrolledWindow().
-				Child(list).
-				Policy(gtk.PolicyNeverValue, gtk.PolicyAutomaticValue).
-				VExpand(true).
-				MarginTop(20).
-				ConnectReachEdgeSoon(gtk.PosBottomValue, func() bool {
-					if !paginator.IsConsumed() {
-						items, err := paginator.Next()
-						if err != nil {
-							return signals.Continue
-						}
-
-						schwifty.OnMainThreadOnce(func(u uintptr) {
-							var list *tracklist.TrackList[*openapi.Track]
-							list = (*tracklist.TrackList[*openapi.Track])(unsafe.Pointer(u))
-							for _, track := range items {
-								list.AddTrack(&track)
-							}
-						}, uintptr(unsafe.Pointer(list)))
-					} else {
-						slog.Debug("No more tracks to fetch")
-						return signals.Unsubscribe
-					}
-					return signals.Continue
-				}),
-		).HMargin(40).VMargin(20),
+			).HMargin(40),
+			page.VExpand(true).MarginTop(20),
+		).VMargin(20),
 	}
 }
