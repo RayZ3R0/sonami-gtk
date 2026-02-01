@@ -81,22 +81,23 @@ func (t *TrackList[TrackType]) SetReorderCallback(cb func(sourceIndex, targetInd
 func (t *TrackList[TrackType]) onBind(_ gtk.SignalListItemFactory, listItem *gtk.ListItem) {
 	track := t.trackList[listItem.GetPosition()]
 	container := adw.BinNewFromInternalPtr(listItem.GetChild().GoPointer())
+	defer container.Unref()
 
 	var subscription *signals.Subscription
-	grid := Grid().
-		ConnectConstruct(func(g *gtk.Grid) {
-			subscription = player.TrackChanged.On(func(t *player.Track) bool {
-				if t != nil && track.GetID() == t.ID {
-					g.AddCssClass("playing")
-				} else {
-					g.RemoveCssClass("playing")
-				}
-				return signals.Continue
-			})
-		}).
-		ConnectDestroy(func(w gtk.Widget) {
-			player.TrackChanged.Unsubscribe(subscription)
-		})()
+	grid := Grid().ConnectConstruct(func(g *gtk.Grid) {
+		gridPtr := g.GoPointer()
+		subscription = player.TrackChanged.On(func(t *player.Track) bool {
+			grid := gtk.GridNewFromInternalPtr(gridPtr)
+			if t != nil && track.GetID() == t.ID {
+				grid.AddCssClass("playing")
+			} else {
+				grid.RemoveCssClass("playing")
+			}
+			return signals.Continue
+		})
+	}).ConnectDestroy(func(w gtk.Widget) {
+		player.TrackChanged.Unsubscribe(subscription)
+	})()
 	grid.SetColumnHomogeneous(true)
 
 	width := 0
