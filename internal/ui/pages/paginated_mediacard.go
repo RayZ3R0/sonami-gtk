@@ -20,7 +20,7 @@ func NewPaginatedMediaCardPage[T any](
 		return nil, err
 	}
 
-	list := WrapBox().VMargin(20).VAlign(gtk.AlignStartValue).Justify(adw.JustifyFillValue).JustifyLastLine(true)()
+	list := WrapBox().VMargin(20).HMargin(40).VAlign(gtk.AlignStartValue).Justify(adw.JustifyFillValue).JustifyLastLine(true)()
 	for _, item := range firstPage {
 		child := CenterBox().CenterWidget(factory(item)).ToGTK()
 		list.Append(child)
