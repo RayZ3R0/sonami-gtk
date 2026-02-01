@@ -98,7 +98,7 @@ func PlayAlbum(albumId string, shuffle bool, position int) error {
 		return err
 	}
 
-	paginator := pagination.NewPaginator(tidal.OpenAPI.V2.Albums, albumId, func(items *openapi.Response[[]openapi.Relationship]) []openapi.Track {
+	paginator := pagination.NewPaginator(tidal.OpenAPI.V2.Albums.Items, albumId, func(items *openapi.Response[[]openapi.Relationship]) []openapi.Track {
 		return items.Included.Tracks(items.Data...)
 	}, "items", "items.artists", "items.albums.coverArt")
 
@@ -170,7 +170,7 @@ func PlayPlaylist(playlistId string, shuffle bool, position int) error {
 		return err
 	}
 
-	paginator := pagination.NewPaginator(tidal.OpenAPI.V2.Playlists, playlistId, func(items *openapi.Response[[]openapi.Relationship]) []openapi.Track {
+	paginator := pagination.NewPaginator(tidal.OpenAPI.V2.Playlists.Items, playlistId, func(items *openapi.Response[[]openapi.Relationship]) []openapi.Track {
 		return items.Included.Tracks(items.Data...)
 	}, "items", "items.artists", "items.albums.coverArt")
 
