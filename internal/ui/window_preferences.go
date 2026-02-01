@@ -47,7 +47,7 @@ var preferencesPlayback = PreferencesPage(
 			ConnectConstruct(func(sr *adw.SwitchRow) {
 				settings.Playback().BindAllowAutoplay(&sr.Object, "active")
 			}),
-	).Title(gettext.Get("Playback")).Description(gettext.Get("Configure the behaviour of tonearm regarding playback.")),
+	).Title(gettext.Get("Playback")).Description(gettext.Get("Configure the behaviour of Tonearm regarding playback.")),
 ).Title(gettext.Get("Playback")).IconName("media-playback-start-symbolic")
 
 var preferencesPerformance = PreferencesPage(

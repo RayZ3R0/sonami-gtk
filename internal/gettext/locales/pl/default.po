@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: v1.0.0-26-g6264155\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-01-31 23:55+0100\n"
+"POT-Creation-Date: 2026-02-01 03:10+0100\n"
 "PO-Revision-Date: 2026-01-31 09:05+0100\n"
 "Last-Translator: Łukasz Horodecki <lukasz@horodecki.net>\n"
 "Language-Team: Polish\n"
@@ -175,6 +175,10 @@ msgstr "Skonfiguruj Tonearm do wysyłania danych scrobblowania do ListenBrainz."
 msgid "Configure the behaviour of Tonearm regarding images."
 msgstr "Skonfiguruj zachowanie Tonearm dotyczące obrazów."
 
+#: internal/ui/window_preferences.go:50
+msgid "Configure the behaviour of Tonearm regarding playback."
+msgstr ""
+
 #: internal/ui/window_preferences.go:39
 msgid "Configure the behaviour of Tonearm when navigating between pages."
 msgstr "Skonfiguruj zachowanie Tonearm podczas nawigowania między stronami."
@@ -182,10 +186,6 @@ msgstr "Skonfiguruj zachowanie Tonearm podczas nawigowania między stronami."
 #: internal/ui/window_preferences.go:21
 msgid "Configure the behaviour of Tonearm when running in the background."
 msgstr "Skonfiguruj zachowanie Tonearm w czasie pracy w tle."
-
-#: internal/ui/window_preferences.go:50
-msgid "Configure the behaviour of tonearm regarding playback."
-msgstr ""
 
 #: internal/ui/window_popups.go:28
 msgid "Continue"
@@ -371,7 +371,7 @@ msgstr "Nawigacja"
 msgid "Navigation Behaviour"
 msgstr "Zachowanie nawigacji"
 
-#: internal/ui/components/player/component_controls.go:104
+#: internal/ui/components/player/component_controls.go:112
 msgid "Next"
 msgstr "Następny"
 
@@ -436,7 +436,7 @@ msgstr "Wydajność"
 msgid "Personal Mix"
 msgstr "Spersonalizowany miks"
 
-#: internal/ui/components/player/component_controls.go:96
+#: internal/ui/components/player/component_controls.go:104
 msgid "Play / Pause"
 msgstr "Odtwarzaj / wstrzymaj"
 
@@ -480,7 +480,7 @@ msgstr "Zaloguj się, by zobaczyć swoją kolekcję"
 msgid "Preferences"
 msgstr "Preferencje"
 
-#: internal/ui/components/player/component_controls.go:91
+#: internal/ui/components/player/component_controls.go:99
 msgid "Previous"
 msgstr "Poprzedni"
 
@@ -588,11 +588,11 @@ msgstr "Synchronizuj z utworem"
 msgid "The requested deeplink did not have any available handlers."
 msgstr "Żądany deeplink nie miał żadnych dostępnych handlerów."
 
-#: internal/ui/components/player/component_controls.go:109
+#: internal/ui/components/player/component_controls.go:117
 msgid "Toggle Repeat"
 msgstr "Przełącz powtarzanie"
 
-#: internal/ui/components/player/component_controls.go:85
+#: internal/ui/components/player/component_controls.go:93
 msgid "Toggle Shuffle"
 msgstr "Przełącz losowanie"
 

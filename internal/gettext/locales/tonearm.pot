@@ -6,9 +6,9 @@
 #, fuzzy
 msgid ""
 msgstr ""
-"Project-Id-Version: v1.1.0-2-g7abf1ec\n"
+"Project-Id-Version: v1.1.0-10-g286f1c9\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-01-31 23:55+0100\n"
+"POT-Creation-Date: 2026-02-01 03:10+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -152,16 +152,16 @@ msgstr ""
 msgid "Configure the behaviour of Tonearm regarding images."
 msgstr ""
 
+#: internal/ui/window_preferences.go:50
+msgid "Configure the behaviour of Tonearm regarding playback."
+msgstr ""
+
 #: internal/ui/window_preferences.go:39
 msgid "Configure the behaviour of Tonearm when navigating between pages."
 msgstr ""
 
 #: internal/ui/window_preferences.go:21
 msgid "Configure the behaviour of Tonearm when running in the background."
-msgstr ""
-
-#: internal/ui/window_preferences.go:50
-msgid "Configure the behaviour of tonearm regarding playback."
 msgstr ""
 
 #: internal/ui/window_popups.go:28
@@ -348,7 +348,7 @@ msgstr ""
 msgid "Navigation Behaviour"
 msgstr ""
 
-#: internal/ui/components/player/component_controls.go:104
+#: internal/ui/components/player/component_controls.go:112
 msgid "Next"
 msgstr ""
 
@@ -405,7 +405,7 @@ msgstr ""
 msgid "Personal Mix"
 msgstr ""
 
-#: internal/ui/components/player/component_controls.go:96
+#: internal/ui/components/player/component_controls.go:104
 msgid "Play / Pause"
 msgstr ""
 
@@ -449,7 +449,7 @@ msgstr ""
 msgid "Preferences"
 msgstr ""
 
-#: internal/ui/components/player/component_controls.go:91
+#: internal/ui/components/player/component_controls.go:99
 msgid "Previous"
 msgstr ""
 
@@ -553,11 +553,11 @@ msgstr ""
 msgid "The requested deeplink did not have any available handlers."
 msgstr ""
 
-#: internal/ui/components/player/component_controls.go:109
+#: internal/ui/components/player/component_controls.go:117
 msgid "Toggle Repeat"
 msgstr ""
 
-#: internal/ui/components/player/component_controls.go:85
+#: internal/ui/components/player/component_controls.go:93
 msgid "Toggle Shuffle"
 msgstr ""
 

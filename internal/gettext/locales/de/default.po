@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: 1\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-01-31 23:55+0100\n"
+"POT-Creation-Date: 2026-02-01 03:10+0100\n"
 "PO-Revision-Date: 2026-01-28 22:43+0100\n"
 "Last-Translator: Nila The Dragon <nilathedragon@pm.me>\n"
 "Language-Team: German\n"
@@ -170,6 +170,10 @@ msgstr "Konfiguriere Tonearm um Scrobbling Daten an ListenBrainz zu senden"
 msgid "Configure the behaviour of Tonearm regarding images."
 msgstr "Entscheide welche Bilder Tonearm laden soll"
 
+#: internal/ui/window_preferences.go:50
+msgid "Configure the behaviour of Tonearm regarding playback."
+msgstr ""
+
 #: internal/ui/window_preferences.go:39
 msgid "Configure the behaviour of Tonearm when navigating between pages."
 msgstr "Entscheide wie Tonearm sich bei der Navigation verhalten soll"
@@ -177,10 +181,6 @@ msgstr "Entscheide wie Tonearm sich bei der Navigation verhalten soll"
 #: internal/ui/window_preferences.go:21
 msgid "Configure the behaviour of Tonearm when running in the background."
 msgstr "Entscheide wie Tonearm sich im Hintergrund verhalten soll"
-
-#: internal/ui/window_preferences.go:50
-msgid "Configure the behaviour of tonearm regarding playback."
-msgstr ""
 
 #: internal/ui/window_popups.go:28
 msgid "Continue"
@@ -367,7 +367,7 @@ msgstr ""
 msgid "Navigation Behaviour"
 msgstr "Navigation"
 
-#: internal/ui/components/player/component_controls.go:104
+#: internal/ui/components/player/component_controls.go:112
 msgid "Next"
 msgstr "Nächster Titel"
 
@@ -432,7 +432,7 @@ msgstr ""
 msgid "Personal Mix"
 msgstr "Persönlicher Mix"
 
-#: internal/ui/components/player/component_controls.go:96
+#: internal/ui/components/player/component_controls.go:104
 msgid "Play / Pause"
 msgstr ""
 
@@ -476,7 +476,7 @@ msgstr "Bitte melde dich an um deine Sammlung zu betrachten."
 msgid "Preferences"
 msgstr "Einstellungen"
 
-#: internal/ui/components/player/component_controls.go:91
+#: internal/ui/components/player/component_controls.go:99
 msgid "Previous"
 msgstr "Vorheriger Titel"
 
@@ -584,11 +584,11 @@ msgstr "Mit Titel synchronisieren"
 msgid "The requested deeplink did not have any available handlers."
 msgstr "Die gewünschte Seite konnte nicht gefunden werden"
 
-#: internal/ui/components/player/component_controls.go:109
+#: internal/ui/components/player/component_controls.go:117
 msgid "Toggle Repeat"
 msgstr "Wiederholungsmodus ein-/ausschalten"
 
-#: internal/ui/components/player/component_controls.go:85
+#: internal/ui/components/player/component_controls.go:93
 msgid "Toggle Shuffle"
 msgstr "Zufallsmodus ein-/ausschalten"
 
