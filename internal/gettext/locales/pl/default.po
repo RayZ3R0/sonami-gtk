@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: v1.0.0-26-g6264155\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2026-02-01 03:10+0100\n"
-"PO-Revision-Date: 2026-01-31 09:05+0100\n"
+"PO-Revision-Date: 2026-02-01 09:21+0100\n"
 "Last-Translator: Łukasz Horodecki <lukasz@horodecki.net>\n"
 "Language-Team: Polish\n"
 "Language: pl\n"
@@ -102,6 +102,8 @@ msgid ""
 "Allow Tonearm to start a mix with the current playing song when you're at "
 "the end of an album/queue"
 msgstr ""
+"Pozwól Tonearm na rozpoczęcie miksu z aktualnie odtwarzaną piosenką, gdy "
+"jesteś na końcu albumu/kolejki"
 
 #: internal/ui/window_preferences.go:75
 msgid ""
@@ -177,7 +179,7 @@ msgstr "Skonfiguruj zachowanie Tonearm dotyczące obrazów."
 
 #: internal/ui/window_preferences.go:50
 msgid "Configure the behaviour of Tonearm regarding playback."
-msgstr ""
+msgstr "Skonfiguruj zachowanie Tonearm dotyczące odtwarzania."
 
 #: internal/ui/window_preferences.go:39
 msgid "Configure the behaviour of Tonearm when navigating between pages."
@@ -233,7 +235,7 @@ msgstr "Włącz ListenBrainz"
 
 #: internal/ui/window_preferences.go:45
 msgid "Enable autoplay"
-msgstr ""
+msgstr "Włącz autoodtwarzanie"
 
 #: internal/ui/components/lyrics/lyrics.go:395
 msgid "Error fetching lyrics"
@@ -454,7 +456,7 @@ msgstr "Odtwarzaj top utwory"
 
 #: internal/ui/window_preferences.go:50
 msgid "Playback"
-msgstr ""
+msgstr "Odtwarzanie"
 
 #: internal/ui/window_sidebar.go:73
 msgid "Player"
