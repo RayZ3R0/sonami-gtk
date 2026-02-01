@@ -3,14 +3,15 @@
 # This file is distributed under the same license as the PACKAGE package.
 # FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
 # Dråfølin <derg at drafolin dot ch>, 2026.
+# Dråfølin Nattfløyen <derg at drafolin dot ch>, 2026.
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: v1.0.0-12-g1ce38cd\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2026-01-31 23:55+0100\n"
-"PO-Revision-Date: 2026-01-29 08:04+0100\n"
-"Last-Translator: Dråfølin <derg at drafolin dot ch>\n"
+"PO-Revision-Date: 2026-02-01 02:58+0100\n"
+"Last-Translator: Dråfølin Nattfløyen <derg at drafolin dot ch>\n"
 "Language-Team: French\n"
 "Language: fr\n"
 "MIME-Version: 1.0\n"
@@ -100,6 +101,8 @@ msgid ""
 "Allow Tonearm to start a mix with the current playing song when you're at "
 "the end of an album/queue"
 msgstr ""
+"Autoriser Tonearm à lancer un Mix avec le titre en cours de lecture lorsque "
+"la fin d'une file d'attente est atteinte"
 
 #: internal/ui/window_preferences.go:75
 msgid ""
@@ -122,6 +125,13 @@ msgid ""
 "\n"
 "%s"
 msgstr ""
+"Une erreur inconnue s'est produite lors de la recherche d'un gestionnaire de "
+"secrets.\n"
+"\n"
+"Les connexions à un compte peuvent ne pas fonctionner correctement. Veuillez "
+"vérifier le message d'erreur pour plus d'informations:\n"
+"\n"
+"%s"
 
 #: internal/ui/routes/artist.go:31
 msgid "Artist"
@@ -178,9 +188,8 @@ msgstr ""
 "Configurer le comportement de Tonearm lors de l'execution en arrière-plan."
 
 #: internal/ui/window_preferences.go:50
-#, fuzzy
 msgid "Configure the behaviour of tonearm regarding playback."
-msgstr "Configurer le comportement de Tonearm envers les images."
+msgstr "Configurer le comportement de Tonearm envers la lecture."
 
 #: internal/ui/window_popups.go:28
 msgid "Continue"
@@ -228,7 +237,7 @@ msgstr "Activer ListenBrainz"
 
 #: internal/ui/window_preferences.go:45
 msgid "Enable autoplay"
-msgstr ""
+msgstr "Activer la lecture automatique"
 
 #: internal/ui/components/lyrics/lyrics.go:395
 msgid "Error fetching lyrics"
@@ -284,7 +293,7 @@ msgstr "Clé d'API ListenBrainz"
 
 #: internal/ui/window_preferences.go:96
 msgid "ListenBrainz API URL"
-msgstr ""
+msgstr "URL d'API ListenBrainz"
 
 #: internal/ui/components/player/component_track_timeline.go:56
 msgid "Low (320 kbps)"
@@ -340,9 +349,8 @@ msgid "Navigate to Album"
 msgstr "Naviguer vers l'album"
 
 #: internal/ui/components/player/component_action_row.go:26
-#, fuzzy
 msgid "Navigate to Artist"
-msgstr "Naviguer vers l'album"
+msgstr "Naviguer vers l'artiste"
 
 #: internal/ui/window_content.go:27
 msgid "Navigate to Collection"
@@ -373,9 +381,8 @@ msgid "Next"
 msgstr "Suivant"
 
 #: internal/ui/components/player/component_track_info.go:22
-#, fuzzy
 msgid "No Artist"
-msgstr "Artiste"
+msgstr "Pas d'Artiste"
 
 #: internal/ui/components/player/component_track_info.go:21
 msgid "No Track"
@@ -451,9 +458,8 @@ msgid "Play Top Tracks"
 msgstr "Jouer les titres les plus écoutés"
 
 #: internal/ui/window_preferences.go:50
-#, fuzzy
 msgid "Playback"
-msgstr "Jouer les titres les plus écoutés"
+msgstr "Lecture"
 
 #: internal/ui/window_sidebar.go:73
 msgid "Player"
@@ -461,7 +467,7 @@ msgstr "Lecteur"
 
 #: internal/ui/components/player/component_playing_from.go:61
 msgid "Playing From"
-msgstr ""
+msgstr "Lecture depuis"
 
 #: internal/ui/routes/playlist.go:44
 msgid "Playlist"
