@@ -53,7 +53,7 @@ func CallbackHandler[T any](object gobject.Object, signal string, args ...any) [
 	return nil
 }
 
-func HandleCallback(object gobject.Object, signal string, callback any) {
+func HandleCallback(object gobject.Object, signal string, callback any) int {
 	object.Ref()
 	defer object.Unref()
 	widgetCallbacksLock.Lock()
@@ -79,6 +79,36 @@ func HandleCallback(object gobject.Object, signal string, callback any) {
 	widgetCallbacks[id] = allCallbacks
 	if shouldLogLifecycle {
 		logger.Debug("registered callback", "ptr", object.GoPointer(), "signal", signal)
+	}
+	return len(signalCallbacks) - 1
+}
+
+func DeleteCallback(object gobject.Object, signal string, callbackId int) {
+	widgetCallbacksLock.Lock()
+	defer widgetCallbacksLock.Unlock()
+
+	id := object.GoPointer()
+
+	// Check if the widget has any callbacks registered
+	allCallbacks, ok := widgetCallbacks[id]
+	if !ok {
+		return
+	}
+
+	// Check if the signal has any callbacks registered
+	signalCallbacks, ok := allCallbacks[signal]
+	if !ok {
+		return
+	}
+
+	// Delete the callback from the list of callbacks for the signal
+	if callbackId >= 0 && callbackId < len(signalCallbacks) {
+		signalCallbacks = append(signalCallbacks[:callbackId], signalCallbacks[callbackId+1:]...)
+		allCallbacks[signal] = signalCallbacks
+		widgetCallbacks[id] = allCallbacks
+		if shouldLogLifecycle {
+			logger.Debug("deleted callback", "ptr", object.GoPointer(), "signal", signal, "id", callbackId)
+		}
 	}
 }
 
