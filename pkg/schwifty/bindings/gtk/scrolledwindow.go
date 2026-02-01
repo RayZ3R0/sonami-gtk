@@ -3,10 +3,10 @@ package gtk
 import (
 	"sync"
 
-	"codeberg.org/dergs/tonearm/internal/g"
 	"codeberg.org/dergs/tonearm/internal/signals"
 	"codeberg.org/dergs/tonearm/pkg/schwifty/callback"
 	"codeberg.org/dergs/tonearm/pkg/schwifty/state"
+	"codeberg.org/dergs/tonearm/pkg/schwifty/tracking"
 	"github.com/jwijenbergh/puregotk/v4/gtk"
 )
 
@@ -62,17 +62,18 @@ func (f ScrolledWindow) ConnectReachEdgeSoon(edge gtk.PositionType, cb func() bo
 
 		mutex := sync.Mutex{}
 		var (
-			valueChangedSubscription, changedSubscription uint32
+			valueChangedSubscription = -1
+			changedSubscription      = -1
 		)
 
 		unsub := func(adj *gtk.Adjustment) {
-			if valueChangedSubscription != 0 {
-				adj.DisconnectSignal(valueChangedSubscription)
-				valueChangedSubscription = 0
+			if valueChangedSubscription >= 0 {
+				callback.DeleteCallback(adj.Object, "value-changed", valueChangedSubscription)
+				valueChangedSubscription = -1
 			}
-			if changedSubscription != 0 {
-				adj.DisconnectSignal(changedSubscription)
-				changedSubscription = 0
+			if changedSubscription >= 0 {
+				callback.DeleteCallback(adj.Object, "changed", changedSubscription)
+				changedSubscription = -1
 			}
 		}
 
@@ -84,7 +85,8 @@ func (f ScrolledWindow) ConnectReachEdgeSoon(edge gtk.PositionType, cb func() bo
 			}
 		}
 
-		valueChangedSubscription = adj.ConnectValueChanged(g.Ptr(func(adj gtk.Adjustment) {
+		adj.ConnectValueChanged(&callback.AdjustmentValueChangedCallback)
+		valueChangedSubscription = callback.HandleCallback(adj.Object, "value-changed", func(adj gtk.Adjustment) {
 			if !mutex.TryLock() {
 				return
 			}
@@ -103,9 +105,10 @@ func (f ScrolledWindow) ConnectReachEdgeSoon(edge gtk.PositionType, cb func() bo
 					}
 				}()
 			}
-		}))
+		})
 
-		changedSubscription = adj.ConnectChanged(g.Ptr(func(adj gtk.Adjustment) {
+		adj.ConnectChanged(&callback.AdjustmentChangedCallback)
+		changedSubscription = callback.HandleCallback(adj.Object, "changed", func(adj gtk.Adjustment) {
 			if !mutex.TryLock() {
 				return
 			}
@@ -137,7 +140,9 @@ func (f ScrolledWindow) ConnectReachEdgeSoon(edge gtk.PositionType, cb func() bo
 					}
 				}()
 			}
-		}))
+		})
+
+		tracking.SetFinalizer("Adjustment", adj)
 
 		return scrolledWindow
 	}
