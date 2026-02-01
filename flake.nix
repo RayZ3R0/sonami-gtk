@@ -59,6 +59,7 @@
             gst_all_1.gst-plugins-good
             gst_all_1.gst-plugins-bad
             pkg-config # Needed for the first compile with CGO
+            sass
           ];
         };
 
