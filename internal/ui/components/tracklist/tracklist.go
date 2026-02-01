@@ -249,6 +249,6 @@ func NewTrackList[TrackType TrackWithID](columnFuncs ...ColumnFunc[TrackType]) *
 		}
 	})
 
-	t.Widget = ManagedWidget(&listView.Widget).Background("transparent").WithCSSClass("tracklist")
+	t.Widget = ManagedWidget(&listView.Widget).WithCSSClass("tracklist")
 	return t
 }

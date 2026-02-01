@@ -71,6 +71,10 @@ menubutton.transparent button:not(:hover):not(.active) {
     color: var(--accent-color);
 }
 
+.tracklist {
+    background-color: transparent;
+}
+
 .tracklist grid.playing {
     color: var(--accent-color);
     background-color: alpha(var(--accent-color), 0.1);
