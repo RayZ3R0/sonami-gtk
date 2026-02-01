@@ -2,7 +2,6 @@ package my_collection
 
 import (
 	"context"
-	"fmt"
 	"log/slog"
 
 	"codeberg.org/dergs/tonearm/internal/gettext"
@@ -64,7 +63,6 @@ func Artists() *router.Response {
 		View: ScrolledWindow().
 			Child(list).
 			ConnectReachEdgeSoon(gtk.PosBottomValue, func() bool {
-				fmt.Println("reached")
 				if !paginator.IsConsumed() {
 					items, err := paginator.Next()
 					if err != nil {
