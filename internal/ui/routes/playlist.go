@@ -193,27 +193,25 @@ func Playlist(playlistUUID string) *router.Response {
 				Policy(gtk.PolicyNeverValue, gtk.PolicyAutomaticValue).
 				VExpand(true).
 				MarginTop(20).
-				ConnectEdgeReached(func(sw gtk.ScrolledWindow, pt gtk.PositionType) {
-					if pt == gtk.PosBottomValue {
-						go func() {
-							if !paginator.IsConsumed() {
-								items, err := paginator.Next()
-								if err != nil {
-									return
-								}
+				ConnectReachEdgeSoon(gtk.PosBottomValue, func() bool {
+					if !paginator.IsConsumed() {
+						items, err := paginator.Next()
+						if err != nil {
+							return signals.Continue
+						}
 
-								schwifty.OnMainThreadOnce(func(u uintptr) {
-									var list *tracklist.TrackList[*openapi.Track]
-									list = (*tracklist.TrackList[*openapi.Track])(unsafe.Pointer(u))
-									for _, track := range items {
-										list.AddTrack(&track)
-									}
-								}, uintptr(unsafe.Pointer(list)))
-							} else {
-								slog.Debug("No more tracks to fetch")
+						schwifty.OnMainThreadOnce(func(u uintptr) {
+							var list *tracklist.TrackList[*openapi.Track]
+							list = (*tracklist.TrackList[*openapi.Track])(unsafe.Pointer(u))
+							for _, track := range items {
+								list.AddTrack(&track)
 							}
-						}()
+						}, uintptr(unsafe.Pointer(list)))
+					} else {
+						slog.Debug("No more tracks to fetch")
+						return signals.Unsubscribe
 					}
+					return signals.Continue
 				}),
 		).HMargin(40).VMargin(20),
 	}

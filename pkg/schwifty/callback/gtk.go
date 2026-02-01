@@ -6,6 +6,13 @@ import (
 )
 
 var (
+	AdjustmentValueChangedCallback = func(adj gtk.Adjustment) {
+		CallbackHandler[any](adj.Object, "value-changed", adj)
+	}
+	AdjustmentChangedCallback = func(adj gtk.Adjustment) {
+		CallbackHandler[any](adj.Object, "changed", adj)
+	}
+
 	DragSourcePrepare = func(dragSource gtk.DragSource, x float64, y float64) gdk.ContentProvider {
 		results := CallbackHandler[gdk.ContentProvider](dragSource.Object, "prepare", dragSource, x, y)
 		if len(results) > 0 {
