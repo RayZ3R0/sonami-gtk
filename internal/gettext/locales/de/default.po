@@ -179,9 +179,8 @@ msgid "Configure the behaviour of Tonearm when running in the background."
 msgstr "Entscheide wie Tonearm sich im Hintergrund verhalten soll"
 
 #: internal/ui/window_preferences.go:50
-#, fuzzy
 msgid "Configure the behaviour of tonearm regarding playback."
-msgstr "Entscheide welche Bilder Tonearm laden soll"
+msgstr ""
 
 #: internal/ui/window_popups.go:28
 msgid "Continue"
@@ -341,9 +340,8 @@ msgid "Navigate to Album"
 msgstr "Zum Album navigieren"
 
 #: internal/ui/components/player/component_action_row.go:26
-#, fuzzy
 msgid "Navigate to Artist"
-msgstr "Zum Album navigieren"
+msgstr ""
 
 #: internal/ui/window_content.go:27
 msgid "Navigate to Collection"
@@ -374,9 +372,8 @@ msgid "Next"
 msgstr "Nächster Titel"
 
 #: internal/ui/components/player/component_track_info.go:22
-#, fuzzy
 msgid "No Artist"
-msgstr "Künstler"
+msgstr ""
 
 #: internal/ui/components/player/component_track_info.go:21
 msgid "No Track"
@@ -452,9 +449,8 @@ msgid "Play Top Tracks"
 msgstr "Top Titel abspielen"
 
 #: internal/ui/window_preferences.go:50
-#, fuzzy
 msgid "Playback"
-msgstr "Top Titel abspielen"
+msgstr ""
 
 #: internal/ui/window_sidebar.go:73
 msgid "Player"

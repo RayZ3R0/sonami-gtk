@@ -184,9 +184,8 @@ msgid "Configure the behaviour of Tonearm when running in the background."
 msgstr "Skonfiguruj zachowanie Tonearm w czasie pracy w tle."
 
 #: internal/ui/window_preferences.go:50
-#, fuzzy
 msgid "Configure the behaviour of tonearm regarding playback."
-msgstr "Skonfiguruj zachowanie Tonearm dotyczące obrazów."
+msgstr ""
 
 #: internal/ui/window_popups.go:28
 msgid "Continue"
@@ -454,9 +453,8 @@ msgid "Play Top Tracks"
 msgstr "Odtwarzaj top utwory"
 
 #: internal/ui/window_preferences.go:50
-#, fuzzy
 msgid "Playback"
-msgstr "Odtwarzaj top utwory"
+msgstr ""
 
 #: internal/ui/window_sidebar.go:73
 msgid "Player"
