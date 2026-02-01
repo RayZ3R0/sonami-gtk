@@ -37,7 +37,7 @@ func Tracks() *router.Response {
 			tracklist.GroupedColumn(1, gtk.AlignEndValue, tracklist.DurationColumn, tracklist.ControlsColumn),
 		)
 	}, func(tl *tracklist.TrackList[*openapi.Track]) schwifty.BaseWidgetable {
-		return tl.HMargin(40).VAlign(gtk.AlignStartValue)
+		return tl.VPadding(20).HMargin(40).VAlign(gtk.AlignStartValue)
 	})
 
 	return &router.Response{
