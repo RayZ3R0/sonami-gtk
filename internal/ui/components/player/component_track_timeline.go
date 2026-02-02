@@ -2,6 +2,7 @@ package player
 
 import (
 	"codeberg.org/dergs/tonearm/internal/gettext"
+	"codeberg.org/dergs/tonearm/internal/notifications"
 	"codeberg.org/dergs/tonearm/internal/player"
 	"codeberg.org/dergs/tonearm/internal/settings"
 	"codeberg.org/dergs/tonearm/internal/signals"
@@ -77,6 +78,8 @@ func hideCheckmarkHook(quality v1.AudioQuality) func(*gtk.Label) {
 				} else {
 					l.Hide()
 				}
+
+				notifications.OnToast.Notify(gettext.Get("Playback quality saved. Changes will be applied on next track change."))
 
 				return signals.Continue
 			},
