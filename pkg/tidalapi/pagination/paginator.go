@@ -7,7 +7,7 @@ import (
 	"codeberg.org/dergs/tonearm/pkg/tidalapi/models/openapi"
 )
 
-type Paginated func(ctx context.Context, id string, cursor string, include ...string) (*openapi.Response[[]openapi.Relationship], error)
+type Paginated func(context.Context, string, string, ...string) (*openapi.Response[[]openapi.Relationship], error)
 
 type Paginator[T any] struct {
 	resource   Paginated
