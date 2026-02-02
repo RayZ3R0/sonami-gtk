@@ -58,6 +58,10 @@ func NewWindow(app *adw.Application) *Window {
 
 	router.Navigate(settings.General().DefaultPage())
 
+	if !isStable() {
+		window.AddCssClass("devel")
+	}
+
 	return window
 }
 

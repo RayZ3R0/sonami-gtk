@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: v1.0.0-12-g1ce38cd\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-02-01 03:10+0100\n"
+"POT-Creation-Date: 2026-02-01 16:59+0100\n"
 "PO-Revision-Date: 2026-02-01 02:58+0100\n"
 "Last-Translator: Dråfølin Nattfløyen <derg at drafolin dot ch>\n"
 "Language-Team: French\n"
@@ -38,7 +38,7 @@ msgid_plural "%d Tracks (%s)"
 msgstr[0] "%d Morceau (%s)"
 msgstr[1] "%d Morceaux (%s)"
 
-#: internal/ui/window_sidebar.go:35
+#: internal/ui/window_sidebar.go:37
 msgid "About Tonearm"
 msgstr "À propos de Tonearm"
 
@@ -303,7 +303,7 @@ msgstr "Basse (320 kbps)"
 msgid "Low (96 kbps)"
 msgstr "Basse (96 kbps)"
 
-#: internal/ui/window_sidebar.go:74
+#: internal/ui/window_sidebar.go:79
 msgid "Lyrics"
 msgstr "Paroles"
 
@@ -320,11 +320,11 @@ msgid "Maximum history length before dropping old entries."
 msgstr ""
 "Taille de l'historique maximale avant d'oublier les entrées plus vieilles."
 
-#: internal/ui/routes/my_collection/albums.go:41
+#: internal/ui/routes/my_collection/albums.go:63
 msgid "My Albums"
 msgstr "Mes Albums"
 
-#: internal/ui/routes/my_collection/artists.go:41
+#: internal/ui/routes/my_collection/artists.go:62
 msgid "My Artists"
 msgstr "Mes Artistes"
 
@@ -332,11 +332,11 @@ msgstr "Mes Artistes"
 msgid "My Collection"
 msgstr "Ma Collection"
 
-#: internal/ui/routes/my_collection/playlists.go:41
+#: internal/ui/routes/my_collection/playlists.go:62
 msgid "My Playlists"
 msgstr "Mes Listes de lecture"
 
-#: internal/ui/routes/my_collection/tracks.go:67
+#: internal/ui/routes/my_collection/tracks.go:68
 msgid "My Tracks"
 msgstr "Mes Morceaux"
 
@@ -461,7 +461,7 @@ msgstr "Jouer les titres les plus écoutés"
 msgid "Playback"
 msgstr "Lecture"
 
-#: internal/ui/window_sidebar.go:73
+#: internal/ui/window_sidebar.go:78
 msgid "Player"
 msgstr "Lecteur"
 
@@ -489,7 +489,7 @@ msgstr "Préférences"
 msgid "Previous"
 msgstr "Précédent"
 
-#: internal/ui/window_sidebar.go:75
+#: internal/ui/window_sidebar.go:80
 msgid "Queue"
 msgstr "File d'attente"
 
@@ -533,11 +533,11 @@ msgstr "Problème du service de secret"
 msgid "Secret Service Unavailable"
 msgstr "Service de secret non disponible"
 
-#: internal/ui/window_sidebar.go:32
+#: internal/ui/window_sidebar.go:34
 msgid "Set as default page"
 msgstr "Définir comme page par défaut"
 
-#: internal/ui/window_actions.go:183
+#: internal/ui/window_actions.go:185
 msgid "Set current page as default"
 msgstr "Définir la page actuelle comme page par défaut"
 
@@ -561,19 +561,19 @@ msgstr "Panneau latéral"
 msgid "Sign In"
 msgstr "Se connecter"
 
-#: internal/ui/window_sidebar.go:41
+#: internal/ui/window_sidebar.go:46
 msgid "Sign Out"
 msgstr "Se déconnecter"
 
-#: internal/ui/window_actions.go:160
+#: internal/ui/window_actions.go:162
 msgid "Sign in failed or aborted"
 msgstr "Connexion échouée ou annulée"
 
-#: internal/ui/window_actions.go:164
+#: internal/ui/window_actions.go:166
 msgid "Signed in as %s"
 msgstr "Connectée en tant que %s"
 
-#: internal/ui/window_actions.go:174
+#: internal/ui/window_actions.go:176
 msgid "Signed out"
 msgstr "Déconnecté"
 
@@ -660,7 +660,7 @@ msgstr ""
 "Tonearm ne pourra pas sauvegarder d'informations liées à l'authentication, "
 "vous ne pourrez donc pas vous connecter."
 
-#: internal/ui/window_about.go:101
+#: internal/ui/window_about.go:132
 msgid "translator-credits"
 msgstr "Dråfølin Nattfløyen https://github.com/drafolin"
 

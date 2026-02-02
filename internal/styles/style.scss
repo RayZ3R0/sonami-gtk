@@ -118,10 +118,14 @@ menubutton.transparent button:not(:hover):not(.active) {
     color: var(--accent-color);
 }
 
-.tracklist grid.playing {
-    color: var(--accent-color);
-    background-color: gtk-alpha(var(--accent-color), 0.1);
-    border-radius: 10px;
+.tracklist {
+    background-color: transparent;
+
+    grid.playing {
+        color: var(--accent-color);
+        background-color: gtk-alpha(var(--accent-color), 0.1);
+        border-radius: 10px;
+    }
 }
 
 checkbutton.space-2 check {

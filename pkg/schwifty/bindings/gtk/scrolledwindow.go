@@ -58,8 +58,6 @@ func (f ScrolledWindow) ConnectReachEdgeSoon(edge gtk.PositionType, cb func() bo
 			panic("Invalid edge type")
 		}
 
-		defer adj.Unref()
-
 		mutex := sync.Mutex{}
 		var (
 			valueChangedSubscription = -1

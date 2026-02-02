@@ -2,9 +2,7 @@ package routes
 
 import (
 	"context"
-	"log/slog"
 	"strings"
-	"unsafe"
 
 	"codeberg.org/dergs/tonearm/internal/gettext"
 	"codeberg.org/dergs/tonearm/internal/player"
@@ -12,6 +10,7 @@ import (
 	"codeberg.org/dergs/tonearm/internal/router"
 	"codeberg.org/dergs/tonearm/internal/signals"
 	"codeberg.org/dergs/tonearm/internal/ui/components/tracklist"
+	"codeberg.org/dergs/tonearm/internal/ui/pages"
 	"codeberg.org/dergs/tonearm/pkg/schwifty"
 	"codeberg.org/dergs/tonearm/pkg/schwifty/state"
 	. "codeberg.org/dergs/tonearm/pkg/schwifty/syntax"
@@ -36,16 +35,11 @@ func init() {
 func Album(albumId string) *router.Response {
 	tidal := injector.MustInject[*tidalapi.TidalAPI]()
 
-	paginator := pagination.NewPaginator(tidal.OpenAPI.V2.Albums, albumId, func(items *openapi.Response[[]openapi.Relationship]) []openapi.Track {
+	paginator := pagination.NewPaginator(tidal.OpenAPI.V2.Albums.Items, albumId, func(items *openapi.Response[[]openapi.Relationship]) []openapi.Track {
 		return items.Included.Tracks(items.Data...)
 	}, "items", "items.artists", "items.albums.coverArt")
 
 	album, err := tidal.OpenAPI.V2.Albums.Album(context.Background(), albumId, "coverArt", "artists", "coverArt")
-	if err != nil {
-		return router.FromError(gettext.Get("Album"), err)
-	}
-
-	items, err := paginator.GetFirstPage()
 	if err != nil {
 		return router.FromError(gettext.Get("Album"), err)
 	}
@@ -63,21 +57,25 @@ func Album(albumId string) *router.Response {
 		}
 	}
 
-	list := tracklist.NewTrackList(
-		tracklist.GroupedColumn(2, gtk.AlignStartValue, tracklist.PositionColumn, tracklist.TitleColumn),
-		tracklist.ArtistsColumn,
-		tracklist.ExpandCustomButtonColumn(1, func(trackId string, position, _ int) {
-			go player.PlayAlbum(albumId, false, position)
-		}),
-		tracklist.GroupedColumn(1, gtk.AlignEndValue, tracklist.DurationColumn, tracklist.ControlsColumn),
+	page, err := pages.NewPaginatedTracklistPage(
+		paginator,
+		func() *tracklist.TrackList[*openapi.Track] {
+			return tracklist.NewTrackList(
+				tracklist.GroupedColumn(2, gtk.AlignStartValue, tracklist.PositionColumn, tracklist.TitleColumn),
+				tracklist.ArtistsColumn,
+				tracklist.ExpandCustomButtonColumn(1, func(trackId string, position, _ int) {
+					go player.PlayAlbum(albumId, false, position)
+				}),
+				tracklist.GroupedColumn(1, gtk.AlignEndValue, tracklist.DurationColumn, tracklist.ControlsColumn),
+			)
+		}, func(tl *tracklist.TrackList[*openapi.Track]) schwifty.BaseWidgetable {
+			return tl.HMargin(30).VAlign(gtk.AlignStartValue)
+		},
 	)
-
-	for _, track := range items {
-		list.AddTrack(&track)
-	}
 
 	return &router.Response{
 		PageTitle: album.Data.Attributes.Title,
+		Error:     err,
 		View: VStack(
 			HStack(
 				AspectFrame(
@@ -143,33 +141,8 @@ func Album(albumId string) *router.Response {
 				).
 					VAlign(gtk.AlignCenterValue).
 					Spacing(5),
-			),
-			ScrolledWindow().
-				Child(list).
-				Policy(gtk.PolicyNeverValue, gtk.PolicyAutomaticValue).
-				VExpand(true).
-				MarginTop(20).
-				ConnectReachEdgeSoon(gtk.PosBottomValue, func() bool {
-					if !paginator.IsConsumed() {
-						items, err := paginator.Next()
-						if err != nil {
-							return signals.Continue
-						}
-
-						schwifty.OnMainThreadOnce(func(u uintptr) {
-							var list *tracklist.TrackList[*openapi.Track]
-							list = (*tracklist.TrackList[*openapi.Track])(unsafe.Pointer(u))
-							for _, track := range items {
-								list.AddTrack(&track)
-							}
-						}, uintptr(unsafe.Pointer(list)))
-					} else {
-						slog.Debug("No more tracks to fetch")
-						return signals.Unsubscribe
-					}
-
-					return signals.Continue
-				}),
-		).HMargin(40).VMargin(20),
+			).HMargin(40),
+			page.VExpand(true).MarginTop(20),
+		).VMargin(20),
 	}
 }
