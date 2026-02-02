@@ -27,7 +27,7 @@ func init() {
 		}
 
 		logger.Debug("notifying scrobblers that a new track has started playing")
-		TrackStarted.Notify(t)
+		go TrackStarted.Notify(t)
 
 		if scrobbleClock != nil {
 			scrobbleClock.Stop()
