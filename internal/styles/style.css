@@ -53,35 +53,27 @@ menubutton.transparent button:not(:hover):not(.active) {
   }
 }
 .player .quality-selector > popover .selector .low {
-  background-color: #ffffff1a;
   color: #e4e4e7;
 }
 @media (prefers-color-scheme: light) {
   .player .quality-selector > popover .selector .low {
-    background-color: #0000001a;
     color: #1b1b18;
   }
 }
 .player .quality-selector > popover .selector .high {
-  background-color: #21feec1a;
   color: #33ffee;
 }
 @media (prefers-color-scheme: light) {
   .player .quality-selector > popover .selector .high {
-    /* Light cyan */
-    background-color: #04a69a7a;
     /* Darker teal */
     color: #039187;
   }
 }
 .player .quality-selector > popover .selector .max {
-  background-color: #ffd4321a;
   color: #ffd432;
 }
 @media (prefers-color-scheme: light) {
   .player .quality-selector > popover .selector .max {
-    /* Soft yellow */
-    background-color: #ffd4327a;
     /* Dark yellow/brown */
     color: #905300;
   }

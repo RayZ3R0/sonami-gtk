@@ -3,6 +3,7 @@ package player
 import (
 	"codeberg.org/dergs/tonearm/internal/gettext"
 	"codeberg.org/dergs/tonearm/internal/player"
+	"codeberg.org/dergs/tonearm/internal/settings"
 	"codeberg.org/dergs/tonearm/internal/signals"
 	"codeberg.org/dergs/tonearm/pkg/schwifty"
 	"codeberg.org/dergs/tonearm/pkg/schwifty/state"
@@ -67,6 +68,47 @@ func init() {
 	})
 }
 
+func hideCheckmarkHook(quality v1.AudioQuality) func(*gtk.Label) {
+	return func(l *gtk.Label) {
+		settings.Player().ConnectAudioQualityChanged(
+			func(aq v1.AudioQuality) bool {
+				if aq == quality {
+					l.Show()
+				} else {
+					l.Hide()
+				}
+
+				return signals.Continue
+			},
+		)
+
+		if settings.Player().GetAudioQuality() == quality {
+			l.Show()
+		} else {
+			l.Hide()
+		}
+	}
+}
+
+func makeQualitySelectEntry(quality v1.AudioQuality, css, label, details string, popover **gtk.Popover) schwifty.Button {
+	return Button().
+		Child(
+			HStack(
+				VStack(
+					Label(label).WithCSSClass("heading").HAlign(gtk.AlignStartValue),
+					Label(details).WithCSSClass("caption").HAlign(gtk.AlignStartValue),
+				),
+				Spacer(),
+				Label("✓").ConnectConstruct(hideCheckmarkHook(quality)),
+			).Spacing(10),
+		).
+		ConnectClicked(func(b gtk.Button) {
+			settings.Player().SetAudioQuality(quality)
+			(*popover).Hide()
+		}).
+		WithCSSClass(css)
+}
+
 func trackTimeline() schwifty.Widget {
 	overlay := gtk.NewOverlay()
 	overlay.SetChild(VStack(
@@ -88,6 +130,19 @@ func trackTimeline() schwifty.Widget {
 			Label("").BindText(durationState),
 		),
 	).MarginBottom(2).ToGTK())
+
+	var popover *gtk.Popover
+	popover = Popover(
+		VStack(
+			makeQualitySelectEntry(v1.AudioQualityLossy, "low", "Low (96 kbps)", "96 kbps AAC", &popover),
+			makeQualitySelectEntry(v1.AudioQualityHighRes, "low", "Low (320 kbps)", "320 kbps AAC", &popover),
+			makeQualitySelectEntry(v1.AudioQualityLossless, "high", "High", "16-bit 44.1 kHz FLAC", &popover),
+			makeQualitySelectEntry(v1.AudioQualityHighResLossless, "max", "Max", "24-bit 48 kHz FLAC", &popover),
+		).
+			WithCSSClass("selector").
+			Spacing(8),
+	)()
+
 	overlay.AddOverlay(
 		MenuButton().
 			WithCSSClass("quality-selector").
@@ -100,50 +155,7 @@ func trackTimeline() schwifty.Widget {
 					HPadding(8).
 					VPadding(4),
 			).
-			Popover(
-				Popover(
-					VStack(
-						Button().
-							Child(VStack(
-								Label("Low (96 kbps)").WithCSSClass("heading"),
-								Label("96 kbps AAC").WithCSSClass("caption"),
-							)).
-							ConnectClicked(func(b gtk.Button) {
-
-							}).
-							WithCSSClass("low"),
-						Button().
-							Child(VStack(
-								Label("Low (320 kbps)").WithCSSClass("heading"),
-								Label("320 kbps AAC").WithCSSClass("caption"),
-							)).
-							ConnectClicked(func(b gtk.Button) {
-
-							}).
-							WithCSSClass("low"),
-						Button().
-							Child(VStack(
-								Label("High").WithCSSClass("heading"),
-								Label("16-bit 44.1 kHz FLAC").WithCSSClass("caption"),
-							)).
-							ConnectClicked(func(b gtk.Button) {
-
-							}).
-							WithCSSClass("high"),
-						Button().
-							Child(VStack(
-								Label("Max").WithCSSClass("heading"),
-								Label("24-bit 48 kHz FLAC").WithCSSClass("caption"),
-							)).
-							ConnectClicked(func(b gtk.Button) {
-
-							}).
-							WithCSSClass("max"),
-					).
-						WithCSSClass("selector").
-						Spacing(8),
-				),
-			).
+			Popover(popover).
 			HExpand(false).
 			VAlign(gtk.AlignEndValue).
 			HAlign(gtk.AlignCenterValue).

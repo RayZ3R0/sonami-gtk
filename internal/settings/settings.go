@@ -2,6 +2,7 @@ package settings
 
 import (
 	"runtime"
+	"sync"
 
 	"codeberg.org/dergs/tonearm/internal/g"
 	"github.com/jwijenbergh/puregotk/v4/gio"
@@ -28,9 +29,14 @@ var Performance = g.Lazy(func() *PerformanceSettings {
 })
 
 var Player = g.Lazy(func() *PlayerSettings {
-	return &PlayerSettings{
+	playerSettings := &PlayerSettings{
 		finalize(gio.NewSettings("dev.dergs.Tonearm.player")),
+
+		sync.RWMutex{},
+		nil,
 	}
+
+	return playerSettings
 })
 
 var Scrobbling = g.Lazy(func() *ScrobblingSettings {
