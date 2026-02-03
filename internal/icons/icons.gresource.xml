@@ -4,6 +4,7 @@
     <file alias="logo.svg">hicolor/scalable/apps/dev.dergs.Tonearm.svg</file>
   </gresource>
   <gresource prefix="/dev/dergs/Tonearm/icons/scalable/actions/">
+    <file alias="bell-outline-symbolic.svg">scalable/actions/bell-outline-symbolic.svg</file>
     <file alias="go-home-symbolic.svg">scalable/actions/go-home-symbolic.svg</file>
     <file alias="plus-square-filled-symbolic.svg">scalable/actions/plus-square-filled-symbolic.svg</file>
     <file alias="loupe-symbolic.svg">scalable/actions/loupe-symbolic.svg</file>
