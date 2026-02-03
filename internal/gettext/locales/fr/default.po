@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: v1.0.0-12-g1ce38cd\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-02-03 08:42+0100\n"
+"POT-Creation-Date: 2026-02-03 23:35+0100\n"
 "PO-Revision-Date: 2026-02-03 08:43+0100\n"
 "Last-Translator: Dråfølin <derg at drafolin dot ch>\n"
 "Language-Team: French\n"
@@ -254,6 +254,10 @@ msgstr "Explorer"
 msgid "External Link"
 msgstr "Lien externe"
 
+#: internal/ui/routes/feed.go:52
+msgid "Feed"
+msgstr ""
+
 #: internal/ui/window_preferences.go:40
 msgid "General"
 msgstr "Général"
@@ -302,7 +306,7 @@ msgstr "Basse (320 kbps)"
 msgid "Low (96 kbps)"
 msgstr "Basse (96 kbps)"
 
-#: internal/ui/window_sidebar.go:74
+#: internal/ui/window_sidebar.go:75
 msgid "Lyrics"
 msgstr "Paroles"
 
@@ -466,7 +470,7 @@ msgstr ""
 "Qualité de lecture sauvegardée. Les changements seront appliqués à partir du "
 "prochain morceau."
 
-#: internal/ui/window_sidebar.go:73
+#: internal/ui/window_sidebar.go:74
 msgid "Player"
 msgstr "Lecteur"
 
@@ -494,7 +498,7 @@ msgstr "Préférences"
 msgid "Previous"
 msgstr "Précédent"
 
-#: internal/ui/window_sidebar.go:75
+#: internal/ui/window_sidebar.go:76
 msgid "Queue"
 msgstr "File d'attente"
 
@@ -522,7 +526,7 @@ msgstr "Défiler vers la gauche"
 msgid "Scroll to the right"
 msgstr "Défiler vers la droite"
 
-#: internal/ui/routes/search/search.go:12
+#: internal/ui/routes/search/albums.go:31
 msgid "Search"
 msgstr "Rechercher"
 

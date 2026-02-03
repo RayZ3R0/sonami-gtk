@@ -253,6 +253,10 @@ msgstr "Eksploruj"
 msgid "External Link"
 msgstr "Odnośnik zewnętrzny"
 
+#: internal/ui/routes/feed.go:52
+msgid "Feed"
+msgstr ""
+
 #: internal/ui/window_preferences.go:40
 msgid "General"
 msgstr "Ogólne"
@@ -301,7 +305,7 @@ msgstr "Niska (320 kbps)"
 msgid "Low (96 kbps)"
 msgstr "Niska (96 kbps)"
 
-#: internal/ui/window_sidebar.go:74
+#: internal/ui/window_sidebar.go:75
 msgid "Lyrics"
 msgstr "Tekst"
 
@@ -490,7 +494,7 @@ msgstr "Preferencje"
 msgid "Previous"
 msgstr "Poprzedni"
 
-#: internal/ui/window_sidebar.go:75
+#: internal/ui/window_sidebar.go:76
 msgid "Queue"
 msgstr "Kolejka"
 

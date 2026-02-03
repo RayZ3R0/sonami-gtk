@@ -6,9 +6,9 @@
 #, fuzzy
 msgid ""
 msgstr ""
-"Project-Id-Version: v1.1.0-44-g701dc46\n"
+"Project-Id-Version: v1.1.0-72-g63ec315\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-02-03 08:42+0100\n"
+"POT-Creation-Date: 2026-02-03 23:35+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -228,6 +228,10 @@ msgstr ""
 msgid "External Link"
 msgstr ""
 
+#: internal/ui/routes/feed.go:52
+msgid "Feed"
+msgstr ""
+
 #: internal/ui/window_preferences.go:40
 msgid "General"
 msgstr ""
@@ -276,7 +280,7 @@ msgstr ""
 msgid "Low (96 kbps)"
 msgstr ""
 
-#: internal/ui/window_sidebar.go:74
+#: internal/ui/window_sidebar.go:75
 msgid "Lyrics"
 msgstr ""
 
@@ -429,7 +433,7 @@ msgstr ""
 msgid "Playback quality saved. Changes will be applied on next track change."
 msgstr ""
 
-#: internal/ui/window_sidebar.go:73
+#: internal/ui/window_sidebar.go:74
 msgid "Player"
 msgstr ""
 
@@ -457,7 +461,7 @@ msgstr ""
 msgid "Previous"
 msgstr ""
 
-#: internal/ui/window_sidebar.go:75
+#: internal/ui/window_sidebar.go:76
 msgid "Queue"
 msgstr ""
 
@@ -485,7 +489,7 @@ msgstr ""
 msgid "Scroll to the right"
 msgstr ""
 
-#: internal/ui/routes/search/search.go:12
+#: internal/ui/routes/search/albums.go:31
 msgid "Search"
 msgstr ""
 
