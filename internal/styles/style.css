@@ -46,7 +46,7 @@
 }
 
 .tracklist {
-    background-color: var(--window-bg-color);
+    background-color: transparent;
 }
 
 .tracklist grid.playing {
