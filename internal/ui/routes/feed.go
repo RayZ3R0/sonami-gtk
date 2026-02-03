@@ -1,0 +1,200 @@
+package routes
+
+import (
+	"context"
+	"fmt"
+	"log/slog"
+	"slices"
+	"strconv"
+	"strings"
+	"time"
+
+	"codeberg.org/dergs/tonearm/internal/gettext"
+	"codeberg.org/dergs/tonearm/internal/router"
+	"codeberg.org/dergs/tonearm/internal/secrets"
+	"codeberg.org/dergs/tonearm/pkg/schwifty"
+	. "codeberg.org/dergs/tonearm/pkg/schwifty/syntax"
+	"codeberg.org/dergs/tonearm/pkg/tidalapi"
+	"codeberg.org/dergs/tonearm/pkg/tidalapi/v2/feed"
+	"codeberg.org/dergs/tonearm/pkg/utils/imgutil"
+	"github.com/infinytum/injector"
+	"github.com/jwijenbergh/puregotk/v4/gtk"
+)
+
+func init() {
+	router.Register("feed", Feed)
+	router.Register("feed/activities", Feed)
+}
+
+func makeEntry(widgets ...any) schwifty.Button {
+	return Button().
+		Child(
+			HStack(widgets...).
+				VPadding(6).
+				Spacing(16),
+		).
+		HExpand(true)
+}
+
+const (
+	lastWeekStage = iota
+	lastMonthStage
+	olderStage
+)
+
+func Feed() *router.Response {
+	tidal := injector.MustInject[*tidalapi.TidalAPI]()
+	userId := secrets.UserID()
+
+	activities, err := tidal.V2.Feed.Activities(context.Background(), userId)
+
+	if err != nil {
+		return router.FromError(gettext.Get("Feed"), err)
+	}
+
+	body := VStack().Spacing(36).VMargin(20)
+	isRead := true
+
+	slices.SortFunc(activities, func(a1, a2 *feed.Activity) int {
+		return 0
+		// return int(a1.FollowableActivity.OccuredAt.Unix() - a2.FollowableActivity.OccuredAt.Unix())
+	})
+
+	stage := lastWeekStage
+	box := VStack(Label("Last Week").WithCSSClass("title-2")).Spacing(12)
+
+	for _, activity := range activities {
+		fmt.Println(activity.FollowableActivity.OccuredAt)
+		if activity.FollowableActivity.OccuredAt.Before(time.Now().Add(-7*24*time.Hour)) && stage == lastWeekStage {
+			stage = lastMonthStage
+			body = body.Append(box)
+			box = VStack(Label("Last Month").WithCSSClass("title-2")).Spacing(12)
+		} else if activity.FollowableActivity.OccuredAt.Before(time.Now().Add(-30*24*time.Hour)) && stage == lastMonthStage {
+			stage = olderStage
+			body = body.Append(box)
+			box = VStack(Label("Older").WithCSSClass("title-2")).Spacing(12)
+		}
+
+		if isRead && !activity.Seen {
+			isRead = false
+		}
+
+		if !isRead && activity.Seen {
+			sep := gtk.NewSeparator(gtk.OrientationVerticalValue)
+			box = box.Append(
+				ManagedWidget(&sep.Widget).
+					CSS("separator { color: var(--accent-color); height: 5px; }"),
+			)
+			isRead = true
+		}
+
+		switch activity.FollowableActivity.ActivityType {
+		case feed.ActivityTypeNewAlbumRelease:
+			album := activity.FollowableActivity.Album
+
+			artists := []string{}
+			for _, artist := range album.Artists {
+				artists = append(artists, artist.Name)
+			}
+
+			if len(artists) >= 2 {
+				artists = append(artists[:len(artists)-1], "and "+artists[len(artists)-1])
+			}
+
+			artistsString := strings.Join(artists, ", ")
+
+			subtitle := ""
+			switch album.Type {
+			case feed.AlbumTypeSingle:
+				subtitle = fmt.Sprintf("Single by %s", artistsString)
+			case feed.AlbumTypeAlbum:
+				subtitle = fmt.Sprintf("Album by %s", artistsString)
+			default:
+				subtitle = "Unknown album type"
+			}
+
+			box = box.Append(
+				makeEntry(
+					AspectFrame(
+						Image().
+							ConnectConstruct(func(i *gtk.Image) {
+								go func() {
+									img, _ := injector.Inject[*imgutil.ImgUtil]()
+									tidal, _ := injector.Inject[*tidalapi.TidalAPI]()
+
+									album, err := tidal.OpenAPI.V2.Albums.Album(context.TODO(), strconv.Itoa(album.ID), "coverArt")
+									if err != nil {
+										slog.Error("Failed to fetch album")
+										return
+									}
+
+									for _, cover := range album.Included.PlainArtworks(album.Data.Relationships.CoverArt.Data...) {
+										if cover.Attributes.IsPicture() {
+											img.LoadIntoImage(cover.Attributes.Files.AtLeast(160).Href, i)
+											break
+										}
+									}
+								}()
+							}).
+							PixelSize(54),
+					).
+						Overflow(gtk.OverflowHiddenValue).
+						CornerRadius(6),
+					VStack(
+						Label(album.Title).HAlign(gtk.AlignStartValue).WithCSSClass("heading"),
+						Label(subtitle).HAlign(gtk.AlignStartValue).WithCSSClass("body"),
+					).
+						VAlign(gtk.AlignCenterValue),
+				),
+			)
+		case feed.ActivityTypeNewHistoryMix:
+			mix := activity.FollowableActivity.HistoryMix
+
+			img, _ := injector.Inject[*imgutil.ImgUtil]()
+			texture, err := img.Load(mix.Images.Medium.Url)
+			if err != nil {
+				return &router.Response{
+					PageTitle: "Feed",
+					Error:     err,
+				}
+			}
+
+			box = box.Append(
+				makeEntry(
+					AspectFrame(
+						Image().
+							FromPaintable(texture).
+							PixelSize(54),
+					).
+						Overflow(gtk.OverflowHiddenValue).
+						CornerRadius(6),
+					VStack(
+						Label(mix.Title).HAlign(gtk.AlignStartValue).WithCSSClass("heading"),
+						Label(mix.Subtitle).HAlign(gtk.AlignStartValue).WithCSSClass("body"),
+					).
+						VAlign(gtk.AlignCenterValue),
+				),
+			)
+		default:
+			box = box.Append(
+				Bin().
+					Child(
+						Label("Unsupported activity"),
+					),
+			)
+		}
+	}
+
+	body = body.Append(box)
+
+	// TODO: Implement read action.
+	// Currently, no idea what the API route is. I/We have to wait until
+	// an artist releases an album or a mix is released.
+
+	return &router.Response{
+		PageTitle: "Feed",
+		View: ScrolledWindow().
+			Child(Clamp().Child(body).Orientation(gtk.OrientationHorizontalValue).MaximumSize(800).HPadding(8)).
+			Policy(gtk.PolicyNeverValue, gtk.PolicyAutomaticValue),
+	}
+}
