@@ -6,10 +6,17 @@ import (
 	"codeberg.org/dergs/tonearm/internal/g"
 	"codeberg.org/dergs/tonearm/pkg/schwifty/callback"
 	"codeberg.org/dergs/tonearm/pkg/schwifty/tracking"
+	"codeberg.org/dergs/tonearm/pkg/utils/cutil"
 	"github.com/jwijenbergh/puregotk/v4/gio"
 )
 
 //go:generate glib-compile-schemas .
+
+var (
+	GioSettingsChangedCallback = func(settings gio.Settings, setting string) {
+		callback.CallbackHandler[any](settings.Object, "changed", settings, cutil.ParseNullTerminatedString(setting))
+	}
+)
 
 var General = g.Lazy(func() *GeneralSettings {
 	return &GeneralSettings{
@@ -31,7 +38,7 @@ var Performance = g.Lazy(func() *PerformanceSettings {
 
 var Player = g.Lazy(func() *PlayerSettings {
 	settings := gio.NewSettings("dev.dergs.Tonearm.player")
-	settings.ConnectChanged(&callback.GioSettingsChangedCallback)
+	settings.ConnectChanged(&GioSettingsChangedCallback)
 	tracking.Track(settings.GoPointer(), "Settings")
 	return &PlayerSettings{
 		settings: settings,
