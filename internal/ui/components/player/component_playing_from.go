@@ -69,5 +69,5 @@ func PlayingFrom() schwifty.Button {
 					VAlign(gtk.AlignCenterValue).
 					Overflow(gtk.OverflowHiddenValue).CornerRadius(5),
 			).HAlign(gtk.AlignFillValue),
-		).WithCSSClass("transparent").CSS("button { margin-top: -10px; margin-bottom: -10px; margin-left: -10px; margin-right: -10px; padding-top: 10px; padding-bottom: 10px; }")
+		).WithCSSClass("flat").CSS("button { margin-top: -10px; margin-bottom: -10px; margin-left: -10px; margin-right: -10px; padding-top: 10px; padding-bottom: 10px; }")
 }

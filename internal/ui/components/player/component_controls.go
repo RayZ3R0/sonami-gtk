@@ -38,7 +38,7 @@ var (
 var controlButton = Button().
 	BindSensitive(isControllableState).
 	MinHeight(34).MinWidth(34).
-	WithCSSClass("transparent").
+	WithCSSClass("flat").
 	VAlign(gtk.AlignCenterValue)
 
 func init() {

@@ -108,12 +108,12 @@ func Artist(artistId string) *router.Response {
 						Button().
 							TooltipText(gettext.Get("Add to Collection")).
 							IconName("heart-outline-thick-symbolic").
-							WithCSSClass("transparent").
+							WithCSSClass("flat").
 							Sensitive(false),
 						Button().
 							TooltipText(gettext.Get("Copy Artist URL")).
 							IconName("share-alt-symbolic").
-							WithCSSClass("transparent").
+							WithCSSClass("flat").
 							ConnectClicked(func(gtk.Button) {
 								display := gdk.DisplayGetDefault()
 								defer display.Unref()

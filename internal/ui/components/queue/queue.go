@@ -69,7 +69,7 @@ func NewQueue() schwifty.Box {
 				return Button().
 					TooltipText(gettext.Get("Remove Track from Queue")).
 					IconName("user-trash-symbolic").
-					WithCSSClass("transparent").
+					WithCSSClass("flat").
 					ConnectClicked(func(b gtk.Button) {
 						go player.UserQueue.RemoveAt(position)
 					}).
@@ -97,7 +97,7 @@ func NewQueue() schwifty.Box {
 				return Button().
 					TooltipText(gettext.Get("Remove Track from Queue")).
 					IconName("user-trash-symbolic").
-					WithCSSClass("transparent").
+					WithCSSClass("flat").
 					ConnectClicked(func(b gtk.Button) {
 						go player.BaseQueue.RemoveAt(position)
 					}).
@@ -175,7 +175,7 @@ func NewQueue() schwifty.Box {
 			HStack(
 				Button().
 					TooltipText(gettext.Get("Play / Pause")).
-					WithCSSClass("transparent").
+					WithCSSClass("flat").
 					BindIconName(playPauseIcon).
 					ConnectClicked(func(b gtk.Button) {
 						player.PlayPause()
@@ -199,7 +199,7 @@ func NewQueue() schwifty.Box {
 					}),
 				Button().
 					TooltipText(gettext.Get("Next")).
-					WithCSSClass("transparent").
+					WithCSSClass("flat").
 					IconName("skip-forward-large-symbolic").
 					ActionName("win.player.next").
 					BindSensitive(miniPlayerCanControl),

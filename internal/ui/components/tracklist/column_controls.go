@@ -19,7 +19,7 @@ func controlsColumn(trackId string, grid *gtk.Grid, position int, column int) in
 				IconName("heart-outline-thick-symbolic").
 				HAlign(gtk.AlignCenterValue).
 				VAlign(gtk.AlignCenterValue).
-				WithCSSClass("transparent").Sensitive(false),
+				WithCSSClass("flat").Sensitive(false),
 			Button().
 				TooltipText(gettext.Get("Add to Queue")).
 				IconName("plus-symbolic").
@@ -27,7 +27,7 @@ func controlsColumn(trackId string, grid *gtk.Grid, position int, column int) in
 				VAlign(gtk.AlignCenterValue).
 				ActionName("win.player.queue-track").
 				ActionTargetValue(glib.NewVariantString(trackId)).
-				WithCSSClass("transparent"),
+				WithCSSClass("flat"),
 		).
 			Margin(10).
 			HAlign(gtk.AlignEndValue).

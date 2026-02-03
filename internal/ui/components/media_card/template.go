@@ -45,5 +45,5 @@ func Card[T any](title string, subTitle schwifty.Widgetable[T], coverUrl string)
 		Padding(10).
 		HExpand(false).
 		VExpand(false).
-		WithCSSClass("transparent")
+		WithCSSClass("flat")
 }

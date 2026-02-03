@@ -17,7 +17,7 @@ func customButtonColumn(trackId string, grid *gtk.Grid, position int, column int
 			ConnectClicked(func(b gtk.Button) {
 				onClick(trackId, position, column)
 			}).
-			WithCSSClass("transparent").
+			WithCSSClass("flat").
 			ToGTK(),
 		0,
 		0,
