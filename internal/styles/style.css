@@ -59,10 +59,6 @@
     color: var(--view-fg-color);
 }
 
-.color-accent {
-    color: var(--accent-color);
-}
-
 .tracklist {
     background-color: transparent;
 }
