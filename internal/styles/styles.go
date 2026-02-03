@@ -8,8 +8,7 @@ import (
 	"github.com/jwijenbergh/puregotk/v4/glib"
 )
 
-//go:generate scss -C -t compact --sourcemap=none style.scss style.css
-//go:generate glib-compile-resources styles.gresource.xml
+//go:generate scss style.scss style.css && glib-compile-resources styles.gresource.xml
 
 //go:embed styles.gresource
 var Resources []byte
