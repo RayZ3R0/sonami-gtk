@@ -67,6 +67,12 @@ func init() {
 		})
 		return signals.Continue
 	})
+
+	settings.Player().ConnectAudioQualityChanged(func(aq v1.AudioQuality) bool {
+		notifications.OnToast.Notify(gettext.Get("Playback quality saved. Changes will be applied on next track change."))
+
+		return signals.Continue
+	})
 }
 
 func hideCheckmarkHook(quality v1.AudioQuality) func(*gtk.Label) {
@@ -78,8 +84,6 @@ func hideCheckmarkHook(quality v1.AudioQuality) func(*gtk.Label) {
 				} else {
 					l.Hide()
 				}
-
-				notifications.OnToast.Notify(gettext.Get("Playback quality saved. Changes will be applied on next track change."))
 
 				return signals.Continue
 			},
