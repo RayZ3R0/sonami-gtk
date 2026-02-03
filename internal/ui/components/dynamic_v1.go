@@ -21,6 +21,7 @@ import (
 func ForModule(module v1.Module) schwifty.BaseWidgetable {
 	switch module.Type {
 	case v1.ModuleTypeVideoList:
+		// TODO: Implement video lists
 		return HStack()
 	case v1.ModuleTypeFeaturedPromotions:
 		list := horizontal_list.NewHorizontalList(module.Title)
@@ -121,7 +122,19 @@ func ForModule(module v1.Module) schwifty.BaseWidgetable {
 			NewRowTitle().SetTitle(module.Title).HPadding(40),
 			list.HMargin(50),
 		)
+	case v1.ModuleTypePageLinks:
+		list := shortcut_list.NewShortcutList()
+		for _, item := range module.PagedList.Items {
+			list.Append(shortcut_list.NewTextShortcut(item.Title, "").ConnectClicked(func(b gtk.Button) {
+				router.Navigate(strings.ReplaceAll(item.APIPath, "pages/", "explore/"))
+			}))
+		}
+		return VStack(
+			NewRowTitle().SetTitle(module.Title).HPadding(40),
+			list.HMargin(50),
+		)
 	default:
+		logger.Warn("Unsupported module type", "type", module.Type)
 		return HStack(
 			Label("Unsupported Element").
 				Background("alpha(var(--view-fg-color), 0.1)").
