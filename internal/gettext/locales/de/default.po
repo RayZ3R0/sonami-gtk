@@ -96,6 +96,8 @@ msgid ""
 "Allow Tonearm to start a mix with the current playing song when you're at "
 "the end of an album/queue"
 msgstr ""
+"Erlaube Tonearm das Titel-Radio des aktuellen Titels abzuspielen, sobald du "
+"das Ende der Warteschlange erreicht hast"
 
 #: internal/ui/window_preferences.go:75
 msgid ""
@@ -172,7 +174,7 @@ msgstr "Entscheide welche Bilder Tonearm laden soll"
 
 #: internal/ui/window_preferences.go:50
 msgid "Configure the behaviour of Tonearm regarding playback."
-msgstr ""
+msgstr "Entscheide wie Tonearm sich bei der Wiedergabe verhalten soll"
 
 #: internal/ui/window_preferences.go:39
 msgid "Configure the behaviour of Tonearm when navigating between pages."
@@ -228,7 +230,7 @@ msgstr "ListenBrainz aktivieren"
 
 #: internal/ui/window_preferences.go:45
 msgid "Enable autoplay"
-msgstr ""
+msgstr "Autoplay aktivieren"
 
 #: internal/ui/components/lyrics/lyrics.go:395
 msgid "Error fetching lyrics"
@@ -345,7 +347,7 @@ msgstr "Zum Album navigieren"
 
 #: internal/ui/components/player/component_action_row.go:26
 msgid "Navigate to Artist"
-msgstr ""
+msgstr "Zum Künstler navigieren"
 
 #: internal/ui/window_content.go:27
 msgid "Navigate to Collection"
@@ -377,7 +379,7 @@ msgstr "Nächster Titel"
 
 #: internal/ui/components/player/component_track_info.go:22
 msgid "No Artist"
-msgstr ""
+msgstr "Kein Künstler"
 
 #: internal/ui/components/player/component_track_info.go:21
 msgid "No Track"
@@ -454,7 +456,7 @@ msgstr "Top Titel abspielen"
 
 #: internal/ui/window_preferences.go:50
 msgid "Playback"
-msgstr ""
+msgstr "Wiedergabe"
 
 #: internal/ui/components/player/component_track_timeline.go:72
 msgid "Playback quality saved. Changes will be applied on next track change."
@@ -466,7 +468,7 @@ msgstr "Player"
 
 #: internal/ui/components/player/component_playing_from.go:61
 msgid "Playing From"
-msgstr ""
+msgstr "Abgespielt aus"
 
 #: internal/ui/routes/playlist.go:43
 msgid "Playlist"
