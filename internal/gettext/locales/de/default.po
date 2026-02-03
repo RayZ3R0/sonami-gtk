@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: 1\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-02-01 16:59+0100\n"
+"POT-Creation-Date: 2026-02-03 08:42+0100\n"
 "PO-Revision-Date: 2026-01-28 22:43+0100\n"
 "Last-Translator: Nila The Dragon <nilathedragon@pm.me>\n"
 "Language-Team: German\n"
@@ -31,13 +31,13 @@ msgid_plural "%d Tracks"
 msgstr[0] "%d Titel"
 msgstr[1] "%d Titel"
 
-#: internal/ui/routes/album.go:106
+#: internal/ui/routes/album.go:104
 msgid "%d Track (%s)"
 msgid_plural "%d Tracks (%s)"
 msgstr[0] "%d Titel (%s)"
 msgstr[1] "%d Titel (%s)"
 
-#: internal/ui/window_sidebar.go:37
+#: internal/ui/window_sidebar.go:35
 msgid "About Tonearm"
 msgstr "Über Tonearm"
 
@@ -49,7 +49,7 @@ msgstr "Zur Sammlung hinzufügen"
 msgid "Add to Queue"
 msgstr "Zur Warteschlange hinzufügen"
 
-#: internal/ui/routes/album.go:45
+#: internal/ui/routes/album.go:44
 msgid "Album"
 msgstr ""
 
@@ -190,7 +190,7 @@ msgstr "Weiter"
 msgid "Copied artist URL to clipboard."
 msgstr "Profillink kopiert"
 
-#: internal/ui/routes/playlist.go:182
+#: internal/ui/routes/playlist.go:181
 msgid "Copied playlist URL to clipboard."
 msgstr "Playlistlink kopiert"
 
@@ -202,7 +202,7 @@ msgstr "Titellink kopiert"
 msgid "Copy Artist URL"
 msgstr "Künstlerlink kopieren"
 
-#: internal/ui/routes/playlist.go:166
+#: internal/ui/routes/playlist.go:165
 msgid "Copy Playlist URL"
 msgstr "Playlistlink kopieren"
 
@@ -250,7 +250,7 @@ msgstr "Externer Link"
 msgid "General"
 msgstr "Allgemein"
 
-#: internal/ui/components/player/component_track_timeline.go:59
+#: internal/ui/components/player/component_track_timeline.go:61
 msgid "High"
 msgstr "Hoch"
 
@@ -286,15 +286,15 @@ msgstr "ListenBrainz API Schlüssel"
 msgid "ListenBrainz API URL"
 msgstr ""
 
-#: internal/ui/components/player/component_track_timeline.go:56
+#: internal/ui/components/player/component_track_timeline.go:58
 msgid "Low (320 kbps)"
 msgstr "Niedrig (320 kbps)"
 
-#: internal/ui/components/player/component_track_timeline.go:53
+#: internal/ui/components/player/component_track_timeline.go:55
 msgid "Low (96 kbps)"
 msgstr "Niedrig (96 kbps)"
 
-#: internal/ui/window_sidebar.go:79
+#: internal/ui/window_sidebar.go:74
 msgid "Lyrics"
 msgstr "Songtext"
 
@@ -302,7 +302,7 @@ msgstr "Songtext"
 msgid "Main Menu"
 msgstr "Hauptmenü"
 
-#: internal/ui/components/player/component_track_timeline.go:62
+#: internal/ui/components/player/component_track_timeline.go:64
 msgid "Max"
 msgstr "Max"
 
@@ -311,11 +311,11 @@ msgid "Maximum history length before dropping old entries."
 msgstr ""
 "Maximale Anzahl Einträge im Verlauf bevor alte Einträge gelöscht werden."
 
-#: internal/ui/routes/my_collection/albums.go:63
+#: internal/ui/routes/my_collection/albums.go:36
 msgid "My Albums"
 msgstr "Meine Alben"
 
-#: internal/ui/routes/my_collection/artists.go:62
+#: internal/ui/routes/my_collection/artists.go:36
 msgid "My Artists"
 msgstr "Meine Profile"
 
@@ -323,11 +323,11 @@ msgstr "Meine Profile"
 msgid "My Collection"
 msgstr "Meine Musik"
 
-#: internal/ui/routes/my_collection/playlists.go:62
+#: internal/ui/routes/my_collection/playlists.go:36
 msgid "My Playlists"
 msgstr "Meine Playlisten"
 
-#: internal/ui/routes/my_collection/tracks.go:68
+#: internal/ui/routes/my_collection/tracks.go:44
 msgid "My Tracks"
 msgstr "Meine Titel"
 
@@ -387,7 +387,7 @@ msgstr "Songtext nicht verfügbar"
 msgid "No mix found for the current track"
 msgstr "Für diesen Titel ist kein Mix verfügbar"
 
-#: internal/ui/routes/playlist.go:172
+#: internal/ui/routes/playlist.go:171
 msgid "No playlist could be shared."
 msgstr "Playlist konnte nicht geteilt werden."
 
@@ -428,7 +428,7 @@ msgstr "TIDAL Webseite öffnen"
 msgid "Performance"
 msgstr ""
 
-#: internal/ui/routes/playlist.go:86
+#: internal/ui/routes/playlist.go:68
 msgid "Personal Mix"
 msgstr "Persönlicher Mix"
 
@@ -436,11 +436,11 @@ msgstr "Persönlicher Mix"
 msgid "Play / Pause"
 msgstr ""
 
-#: internal/ui/routes/album.go:125
+#: internal/ui/routes/album.go:123
 msgid "Play Album"
 msgstr "Album abspielen"
 
-#: internal/ui/routes/playlist.go:138
+#: internal/ui/routes/playlist.go:137
 msgid "Play Playlist"
 msgstr "Playlist abspielen"
 
@@ -452,7 +452,11 @@ msgstr "Top Titel abspielen"
 msgid "Playback"
 msgstr ""
 
-#: internal/ui/window_sidebar.go:78
+#: internal/ui/components/player/component_track_timeline.go:72
+msgid "Playback quality saved. Changes will be applied on next track change."
+msgstr ""
+
+#: internal/ui/window_sidebar.go:73
 msgid "Player"
 msgstr "Player"
 
@@ -460,7 +464,7 @@ msgstr "Player"
 msgid "Playing From"
 msgstr ""
 
-#: internal/ui/routes/playlist.go:44
+#: internal/ui/routes/playlist.go:43
 msgid "Playlist"
 msgstr ""
 
@@ -480,7 +484,7 @@ msgstr "Einstellungen"
 msgid "Previous"
 msgstr "Vorheriger Titel"
 
-#: internal/ui/window_sidebar.go:80
+#: internal/ui/window_sidebar.go:75
 msgid "Queue"
 msgstr "Warteschlange"
 
@@ -524,19 +528,19 @@ msgstr "Secret Service Fehler"
 msgid "Secret Service Unavailable"
 msgstr "Secret Service nicht verfügbar"
 
-#: internal/ui/window_sidebar.go:34
+#: internal/ui/window_sidebar.go:32
 msgid "Set as default page"
 msgstr "Als Startseite festlegen"
 
-#: internal/ui/window_actions.go:185
+#: internal/ui/window_actions.go:183
 msgid "Set current page as default"
 msgstr "Aktuelle Seite als Startseite festlegen"
 
-#: internal/ui/routes/album.go:115
+#: internal/ui/routes/album.go:113
 msgid "Shuffle Album"
 msgstr "Album im Zufallsmodus abspielen"
 
-#: internal/ui/routes/playlist.go:127
+#: internal/ui/routes/playlist.go:126
 msgid "Shuffle Playlist"
 msgstr "Playlist im Zufallsmodus abspielen"
 
@@ -552,19 +556,19 @@ msgstr "Seitenleiste"
 msgid "Sign In"
 msgstr "Anmelden"
 
-#: internal/ui/window_sidebar.go:46
+#: internal/ui/window_sidebar.go:41
 msgid "Sign Out"
 msgstr "Abmelden"
 
-#: internal/ui/window_actions.go:162
+#: internal/ui/window_actions.go:160
 msgid "Sign in failed or aborted"
 msgstr "Anmeldevorgang fehlgeschlagen oder abgebrochen"
 
-#: internal/ui/window_actions.go:166
+#: internal/ui/window_actions.go:164
 msgid "Signed in as %s"
 msgstr "Angemeldet als %s"
 
-#: internal/ui/window_actions.go:176
+#: internal/ui/window_actions.go:174
 msgid "Signed out"
 msgstr "Abgemeldet"
 
@@ -596,7 +600,7 @@ msgstr "Zufallsmodus ein-/ausschalten"
 msgid "Toggle Sidebar"
 msgstr "Seitenleiste ein/ausklappen"
 
-#: internal/player/playback.go:60
+#: internal/player/playback.go:61
 msgid "Track not available for streaming, skipping to next track"
 msgstr ""
 "Dieser Titel ist nicht zum Streamen verfügbar, springe zum nächsten Titel."
