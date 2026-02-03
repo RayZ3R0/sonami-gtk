@@ -1,15 +1,15 @@
 package settings
 
 import (
+	"fmt"
 	"log/slog"
-	"maps"
 	"sync"
 
 	"codeberg.org/dergs/tonearm/internal/g"
 	"codeberg.org/dergs/tonearm/internal/signals"
+	"codeberg.org/dergs/tonearm/pkg/schwifty/callback"
 	v1 "codeberg.org/dergs/tonearm/pkg/tidalapi/models/v1"
 	"codeberg.org/dergs/tonearm/pkg/utils/cutil"
-	"github.com/google/uuid"
 	"github.com/jwijenbergh/puregotk/v4/gio"
 	"github.com/jwijenbergh/puregotk/v4/glib"
 	"github.com/jwijenbergh/puregotk/v4/gobject"
@@ -20,17 +20,15 @@ type PropertyChangedCallback func(*glib.Variant) bool
 type PlayerSettings struct {
 	settings *gio.Settings
 
-	cbMutex   sync.RWMutex
-	callbacks map[string]map[*signals.Subscription]PropertyChangedCallback
+	changedCallback     uint32
+	changedCallbackLock sync.RWMutex
 }
 
 func (p *PlayerSettings) initCallbackAggregator() {
-	p.cbMutex.Lock()
-	defer p.cbMutex.Unlock()
+	p.changedCallbackLock.Lock()
+	defer p.changedCallbackLock.Unlock()
 
-	p.callbacks = make(map[string]map[*signals.Subscription]PropertyChangedCallback)
-
-	p.settings.ConnectChanged(g.Ptr(func(s gio.Settings, setting string) {
+	p.changedCallback = p.settings.ConnectChanged(g.Ptr(func(s gio.Settings, setting string) {
 		setting = cutil.ParseNullTerminatedString(setting)
 		if setting == "" {
 			return
@@ -38,37 +36,26 @@ func (p *PlayerSettings) initCallbackAggregator() {
 
 		val := s.GetValue(setting)
 
-		if callbacks, ok := p.callbacks[setting]; ok {
-			p.cbMutex.RLock()
-			callbacks := maps.Clone(callbacks)
-			p.cbMutex.RUnlock()
-
-			for id, callback := range callbacks {
-				if callback(val) == signals.Unsubscribe {
-					p.cbMutex.Lock()
-					delete(p.callbacks[setting], id)
-					p.cbMutex.Unlock()
-				}
-			}
-		}
+		callback.CallbackHandler[any](s.Object, fmt.Sprintf("changed::%s", setting), val)
 	}))
 }
 
 func (p *PlayerSettings) ConnectAudioQualityChanged(cb func(v1.AudioQuality) bool) {
-	var array map[*signals.Subscription]PropertyChangedCallback
-	var ok bool
-
-	if p.callbacks == nil {
+	if p.changedCallback == 0 {
 		p.initCallbackAggregator()
 	}
 
-	p.settings.GetString("audio-quality")
-
-	if array, ok = p.callbacks["audio-quality"]; !ok {
-		array = make(map[*signals.Subscription]PropertyChangedCallback, 0)
+	if !callback.HasCallback(p.settings.Object, "changed::audio-quality") {
+		// Ensure that audio-quality gets watched by gio,
+		// since ConnectChanged specifies "
+		// 	Note that @settings only emits this signal if you have read
+		// 	@key at least once while a signal handler was already connected for @key.
+		// "
+		p.settings.GetString("audio-quality")
 	}
-	id := signals.Subscription(uuid.New())
-	array[&id] = func(val *glib.Variant) bool {
+
+	subscription := new(int)
+	(*subscription) = callback.HandleCallback(p.settings.Object, "changed::audio-quality", func(val *glib.Variant) {
 		var quality v1.AudioQuality
 		switch val.GetString(nil) {
 		case string(v1.AudioQualityHighResLossless):
@@ -84,10 +71,13 @@ func (p *PlayerSettings) ConnectAudioQualityChanged(cb func(v1.AudioQuality) boo
 			quality = v1.AudioQualityHighResLossless
 		}
 
-		return cb(quality)
-	}
+		next := cb(quality)
+		if next == signals.Unsubscribe {
+			callback.DeleteCallback(p.settings.Object, "changed::audio-quality", *subscription)
+		}
 
-	p.callbacks["audio-quality"] = array
+		return
+	})
 }
 
 func (p *PlayerSettings) GetAudioQuality() v1.AudioQuality {
