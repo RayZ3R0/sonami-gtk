@@ -160,11 +160,11 @@ func Playlist(playlistUUID string) *router.Response {
 						Button().
 							TooltipText(gettext.Get("Add to Collection")).
 							IconName("heart-outline-thick-symbolic").
-							WithCSSClass("transparent").Sensitive(false),
+							WithCSSClass("flat").Sensitive(false),
 						Button().
 							TooltipText(gettext.Get("Copy Playlist URL")).
 							IconName("share-alt-symbolic").
-							WithCSSClass("transparent").
+							WithCSSClass("flat").
 							ConnectClicked(func(gtk.Button) {
 								id := playlist.Data.ID
 								if id == "" {

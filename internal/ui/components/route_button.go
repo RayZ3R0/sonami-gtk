@@ -66,7 +66,7 @@ func NewRouteButton(path string) *RouteButton {
 				HMargin(9).
 				VMargin(2),
 		).
-		WithCSSClass("transparent")()
+		WithCSSClass("flat")()
 
 	router.NavigationStarted.On(func(newPath string) bool {
 		schwifty.OnMainThreadOnce(func(u uintptr) {

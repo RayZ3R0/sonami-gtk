@@ -15,7 +15,7 @@ func buttonColumn(trackId string, grid *gtk.Grid, position int, column int) int 
 		Button().
 			ActionName("win.player.play-track").
 			ActionTargetValue(glib.NewVariantString(trackId)).
-			WithCSSClass("transparent").
+			WithCSSClass("flat").
 			ToGTK(),
 		0,
 		0,

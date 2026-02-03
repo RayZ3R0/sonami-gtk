@@ -25,12 +25,11 @@ func lyricLine(text string, timing *lyricTiming) schwifty.Button {
 		PaddingBottom(24).
 		PaddingStart(16).
 		PaddingEnd(16).
-		CornerRadius(12).
-		WithCSSClass("lyric")
+		CornerRadius(12)
 
 	if timing != nil {
 		b = b.
-			WithCSSClass("timed").
+			WithCSSClass("dimmed").
 			ConnectConstruct(func(b *gtk.Button) {
 				ptr := b.GoPointer()
 				classListener = activeLyricIndex.AddCallback(func(newValue uintptr) {
@@ -40,9 +39,9 @@ func lyricLine(text string, timing *lyricTiming) schwifty.Button {
 						defer widget.Unref()
 
 						if newValue == ptr {
-							widget.AddCssClass("active")
+							widget.RemoveCssClass("dimmed")
 						} else {
-							widget.RemoveCssClass("active")
+							widget.AddCssClass("dimmed")
 						}
 					})
 				})
