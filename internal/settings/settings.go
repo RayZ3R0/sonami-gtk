@@ -4,6 +4,8 @@ import (
 	"runtime"
 
 	"codeberg.org/dergs/tonearm/internal/g"
+	"codeberg.org/dergs/tonearm/pkg/schwifty/callback"
+	"codeberg.org/dergs/tonearm/pkg/schwifty/tracking"
 	"github.com/jwijenbergh/puregotk/v4/gio"
 )
 
@@ -28,11 +30,12 @@ var Performance = g.Lazy(func() *PerformanceSettings {
 })
 
 var Player = g.Lazy(func() *PlayerSettings {
-	playerSettings := &PlayerSettings{
-		settings: finalize(gio.NewSettings("dev.dergs.Tonearm.player")),
+	settings := gio.NewSettings("dev.dergs.Tonearm.player")
+	settings.ConnectChanged(&callback.GioSettingsChangedCallback)
+	tracking.Track(settings.GoPointer(), "Settings")
+	return &PlayerSettings{
+		settings: settings,
 	}
-
-	return playerSettings
 })
 
 var Scrobbling = g.Lazy(func() *ScrobblingSettings {
