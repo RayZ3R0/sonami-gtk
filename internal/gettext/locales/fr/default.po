@@ -256,7 +256,7 @@ msgstr "Lien externe"
 
 #: internal/ui/routes/feed.go:52
 msgid "Feed"
-msgstr ""
+msgstr "Fil d'actualité"
 
 #: internal/ui/window_preferences.go:40
 msgid "General"

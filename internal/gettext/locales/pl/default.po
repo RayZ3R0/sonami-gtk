@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: v1.0.0-26-g6264155\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-02-03 08:42+0100\n"
+"POT-Creation-Date: 2026-02-03 23:35+0100\n"
 "PO-Revision-Date: 2026-02-01 09:21+0100\n"
 "Last-Translator: Łukasz Horodecki <lukasz@horodecki.net>\n"
 "Language-Team: Polish\n"
@@ -464,9 +464,11 @@ msgstr "Odtwarzanie"
 
 #: internal/ui/components/player/component_track_timeline.go:72
 msgid "Playback quality saved. Changes will be applied on next track change."
-msgstr "Jakość dźwięku została zapisana. Zmiany zostaną zastosowane przy następnej zmianie utworu."
+msgstr ""
+"Jakość dźwięku została zapisana. Zmiany zostaną zastosowane przy następnej "
+"zmianie utworu."
 
-#: internal/ui/window_sidebar.go:73
+#: internal/ui/window_sidebar.go:74
 msgid "Player"
 msgstr "Odtwarzacz"
 
@@ -522,7 +524,7 @@ msgstr "Przewiń w lewo"
 msgid "Scroll to the right"
 msgstr "Przewiń w prawo"
 
-#: internal/ui/routes/search/search.go:12
+#: internal/ui/routes/search/albums.go:31
 msgid "Search"
 msgstr "Wyszukiwanie"
 
