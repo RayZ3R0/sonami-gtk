@@ -26,12 +26,12 @@ var (
 				TooltipText(gettext.Get("Navigate to Artist")).
 				IconName("music-artist2-symbolic").
 				BindSensitive(isTrackLoadedState).
-				WithCSSClass("transparent")
+				WithCSSClass("flat")
 	artistButtonMultiple = MenuButton().
 				TooltipText(gettext.Get("Navigate to Artist")).
 				IconName("music-artist2-symbolic").
 				BindSensitive(isTrackLoadedState).
-				WithCSSClass("transparent")
+				WithCSSClass("flat")
 
 	isTrackLoadedState = state.NewStateful(false)
 	artistButtonState  = state.NewStateful[any](artistButtonSingle)
@@ -64,18 +64,18 @@ func actionRow() schwifty.Box {
 			TooltipText(gettext.Get("Volume")).
 			Popover(controlsVolumeSlider()).
 			IconName("speakers-symbolic").
-			WithCSSClass("transparent"),
+			WithCSSClass("flat"),
 		Button().
 			TooltipText(gettext.Get("Add to Collection")).
 			ActionName("unimplemented").
 			IconName("heart-outline-thick-symbolic").
 			// BindSensitive(isTrackLoaded). // Turn on once we implemented this feature
-			WithCSSClass("transparent"),
+			WithCSSClass("flat"),
 		Button().
 			TooltipText(gettext.Get("Navigate to Album")).
 			IconName("cd-symbolic").
 			BindSensitive(isTrackLoadedState).
-			WithCSSClass("transparent").
+			WithCSSClass("flat").
 			ConnectClicked(func(b gtk.Button) {
 				track := player.TrackChanged.CurrentValue()
 				if track == nil {
@@ -102,7 +102,7 @@ func actionRow() schwifty.Box {
 			TooltipText(gettext.Get("Navigate to Track Mix")).
 			IconName("compass2-symbolic").
 			BindSensitive(isTrackLoadedState).
-			WithCSSClass("transparent").
+			WithCSSClass("flat").
 			ConnectClicked(func(b gtk.Button) {
 				track := player.TrackChanged.CurrentValue()
 				if track == nil {
@@ -129,7 +129,7 @@ func actionRow() schwifty.Box {
 			TooltipText(gettext.Get("Copy Track URL")).
 			IconName("share-alt-symbolic").
 			BindSensitive(isTrackLoadedState).
-			WithCSSClass("transparent").
+			WithCSSClass("flat").
 			ConnectClicked(func(gtk.Button) {
 				display := gdk.DisplayGetDefault()
 				defer display.Unref()

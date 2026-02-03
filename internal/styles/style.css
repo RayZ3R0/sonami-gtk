@@ -1,11 +1,3 @@
-button.transparent:not(:hover):not(.active) {
-    background-color: transparent;
-}
-
-menubutton.transparent button:not(:hover):not(.active) {
-    background-color: transparent;
-}
-
 .no-response .response-area {
     padding: 0;
     padding-bottom: 10px;
