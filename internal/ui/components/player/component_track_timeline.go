@@ -2,7 +2,9 @@ package player
 
 import (
 	"codeberg.org/dergs/tonearm/internal/gettext"
+	"codeberg.org/dergs/tonearm/internal/notifications"
 	"codeberg.org/dergs/tonearm/internal/player"
+	"codeberg.org/dergs/tonearm/internal/settings"
 	"codeberg.org/dergs/tonearm/internal/signals"
 	"codeberg.org/dergs/tonearm/pkg/schwifty"
 	"codeberg.org/dergs/tonearm/pkg/schwifty/state"
@@ -65,6 +67,53 @@ func init() {
 		})
 		return signals.Continue
 	})
+
+	settings.Player().ConnectAudioQualityChanged(func(aq v1.AudioQuality) bool {
+		notifications.OnToast.Notify(gettext.Get("Playback quality saved. Changes will be applied on next track change."))
+
+		return signals.Continue
+	})
+}
+
+func hideCheckmarkHook(quality v1.AudioQuality) func(*gtk.Label) {
+	return func(l *gtk.Label) {
+		settings.Player().ConnectAudioQualityChanged(
+			func(aq v1.AudioQuality) bool {
+				if aq == quality {
+					l.Show()
+				} else {
+					l.Hide()
+				}
+
+				return signals.Continue
+			},
+		)
+
+		if settings.Player().GetAudioQuality() == quality {
+			l.Show()
+		} else {
+			l.Hide()
+		}
+	}
+}
+
+func makeQualitySelectEntry(quality v1.AudioQuality, css, label, details string, popover **gtk.Popover) schwifty.Button {
+	return Button().
+		Child(
+			HStack(
+				VStack(
+					Label(label).WithCSSClass("heading").HAlign(gtk.AlignStartValue),
+					Label(details).WithCSSClass("caption").HAlign(gtk.AlignStartValue),
+				),
+				Spacer(),
+				Label("✓").ConnectConstruct(hideCheckmarkHook(quality)),
+			).Spacing(10),
+		).
+		ConnectClicked(func(b gtk.Button) {
+			settings.Player().SetAudioQuality(quality)
+			(*popover).Hide()
+		}).
+		WithCSSClass(css)
 }
 
 func trackTimeline() schwifty.Widget {
@@ -88,18 +137,36 @@ func trackTimeline() schwifty.Widget {
 			Label("").BindText(durationState),
 		),
 	).MarginBottom(2).ToGTK())
+
+	var popover *gtk.Popover
+	popover = Popover(
+		VStack(
+			makeQualitySelectEntry(v1.AudioQualityLossy, "low", "Low (96 kbps)", "96 kbps AAC", &popover),
+			makeQualitySelectEntry(v1.AudioQualityHighRes, "low", "Low (320 kbps)", "320 kbps AAC", &popover),
+			makeQualitySelectEntry(v1.AudioQualityLossless, "high", "High", "16-bit 44.1 kHz FLAC", &popover),
+			makeQualitySelectEntry(v1.AudioQualityHighResLossless, "max", "Max", "24-bit 48 kHz FLAC", &popover),
+		).
+			WithCSSClass("selector").
+			Spacing(8),
+	)()
+
 	overlay.AddOverlay(
-		Label("").
-			VAlign(gtk.AlignEndValue).
-			WithCSSClass("quality-label").
-			WithCSSClass("caption-heading").
-			BindText(playbackQualityText).
-			BindCSSClass(playbackQualityClass).
-			CornerRadius(10).
-			HPadding(8).
-			VPadding(4).
+		MenuButton().
+			WithCSSClass("quality-selector").
+			Child(
+				Label("").
+					WithCSSClass("caption-heading").
+					BindText(playbackQualityText).
+					BindCSSClass(playbackQualityClass).
+					CornerRadius(10).
+					HPadding(8).
+					VPadding(4),
+			).
+			Popover(popover).
 			HExpand(false).
-			HAlign(gtk.AlignCenterValue).ToGTK(),
+			VAlign(gtk.AlignEndValue).
+			HAlign(gtk.AlignCenterValue).
+			ToGTK(),
 	)
 
 	return ManagedWidget(&overlay.Widget)

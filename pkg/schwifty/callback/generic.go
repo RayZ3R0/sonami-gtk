@@ -83,6 +83,27 @@ func HandleCallback(object gobject.Object, signal string, callback any) int {
 	return len(signalCallbacks) - 1
 }
 
+func HasCallback(object gobject.Object, signal string) bool {
+	widgetCallbacksLock.RLock()
+	defer widgetCallbacksLock.RUnlock()
+
+	id := object.GoPointer()
+
+	// Check if the widget has any callbacks registered
+	allCallbacks, ok := widgetCallbacks[id]
+	if !ok {
+		return false
+	}
+
+	// Check if the signal has any callbacks registered
+	signalCallbacks, ok := allCallbacks[signal]
+	if !ok {
+		return false
+	}
+
+	return len(signalCallbacks) > 0
+}
+
 func DeleteCallback(object gobject.Object, signal string, callbackId int) {
 	widgetCallbacksLock.Lock()
 	defer widgetCallbacksLock.Unlock()

@@ -8,6 +8,7 @@ import (
 
 	"codeberg.org/dergs/tonearm/internal/gettext"
 	"codeberg.org/dergs/tonearm/internal/notifications"
+	"codeberg.org/dergs/tonearm/internal/settings"
 	"codeberg.org/dergs/tonearm/pkg/tidalapi"
 	"codeberg.org/dergs/tonearm/pkg/tidalapi/models/openapi"
 	v1 "codeberg.org/dergs/tonearm/pkg/tidalapi/models/v1"
@@ -64,7 +65,13 @@ func playTrack(track *openapi.Track) error {
 
 	if strconv.Itoa(currentlyEnqueuedTrackID) != track.Data.ID {
 		logger.Debug("fetching playback info for track", "track_id", track.Data.ID)
-		playbackInfo, err := tidal.V1.Tracks.PlaybackInfo(context.Background(), track.Data.ID, tracksv1.PlaybackInfoOptions{})
+		playbackInfo, err := tidal.V1.Tracks.PlaybackInfo(
+			context.Background(),
+			track.Data.ID,
+			tracksv1.PlaybackInfoOptions{
+				AudioQuality: settings.Player().GetAudioQuality(),
+			},
+		)
 		if err != nil {
 			logger.Error("unable to fetch playback info for track", "error", err)
 			return err
