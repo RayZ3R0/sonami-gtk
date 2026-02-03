@@ -3,15 +3,14 @@
 # This file is distributed under the same license as the PACKAGE package.
 # FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
 # Dråfølin <derg at drafolin dot ch>, 2026.
-# Dråfølin Nattfløyen <derg at drafolin dot ch>, 2026.
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: v1.0.0-12-g1ce38cd\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2026-02-03 08:42+0100\n"
-"PO-Revision-Date: 2026-02-01 02:58+0100\n"
-"Last-Translator: Dråfølin Nattfløyen <derg at drafolin dot ch>\n"
+"PO-Revision-Date: 2026-02-03 08:43+0100\n"
+"Last-Translator: Dråfølin <derg at drafolin dot ch>\n"
 "Language-Team: French\n"
 "Language: fr\n"
 "MIME-Version: 1.0\n"
@@ -464,6 +463,8 @@ msgstr "Lecture"
 #: internal/ui/components/player/component_track_timeline.go:72
 msgid "Playback quality saved. Changes will be applied on next track change."
 msgstr ""
+"Qualité de lecture sauvegardée. Les changements seront appliqués à partir du "
+"prochain morceau."
 
 #: internal/ui/window_sidebar.go:73
 msgid "Player"
