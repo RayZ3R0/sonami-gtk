@@ -61,7 +61,7 @@ func Feed() *router.Response {
 		return int(a2.FollowableActivity.OccuredAt.Unix() - a1.FollowableActivity.OccuredAt.Unix())
 	})
 
-	stage := lastWeekStage
+	stage := todayStage
 	box := VStack(Label(gettext.Get("Today")).WithCSSClass("title-2")).Spacing(12)
 	hasElements := false
 
