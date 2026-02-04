@@ -164,7 +164,10 @@ func Feed() *router.Response {
 						Label(subtitle).HAlign(gtk.AlignStartValue).WithCSSClass("body"),
 					).
 						VAlign(gtk.AlignCenterValue),
-				),
+				).
+					ConnectClicked(func(b gtk.Button) {
+						router.Navigate(fmt.Sprintf("album/%s", strconv.Itoa(album.ID)))
+					}),
 			)
 			hasElements = true
 		case feed.ActivityTypeNewHistoryMix:
@@ -193,7 +196,10 @@ func Feed() *router.Response {
 						Label(mix.Subtitle).HAlign(gtk.AlignStartValue).WithCSSClass("body"),
 					).
 						VAlign(gtk.AlignCenterValue),
-				),
+				).
+					ConnectClicked(func(b gtk.Button) {
+						router.Navigate(fmt.Sprintf("playlist/%s", mix.Id))
+					}),
 			)
 			hasElements = true
 		default:
