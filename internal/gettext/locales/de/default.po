@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: 1\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-02-03 08:42+0100\n"
-"PO-Revision-Date: 2026-01-28 22:43+0100\n"
+"POT-Creation-Date: 2026-02-04 17:32+0100\n"
+"PO-Revision-Date: 2026-02-04 16:49+0100\n"
 "Last-Translator: Nila The Dragon <nilathedragon@pm.me>\n"
 "Language-Team: German\n"
 "Language: de\n"
@@ -37,6 +37,10 @@ msgid_plural "%d Tracks (%s)"
 msgstr[0] "%d Titel (%s)"
 msgstr[1] "%d Titel (%s)"
 
+#: internal/ui/routes/feed.go:160
+msgid "%s and %s"
+msgstr "%s und %s"
+
 #: internal/ui/window_sidebar.go:35
 msgid "About Tonearm"
 msgstr "Über Tonearm"
@@ -52,6 +56,10 @@ msgstr "Zur Warteschlange hinzufügen"
 #: internal/ui/routes/album.go:44
 msgid "Album"
 msgstr ""
+
+#: internal/ui/routes/feed.go:168
+msgid "Album by %s"
+msgstr "Album von %s"
 
 #: internal/ui/routes/my-collection.go:51
 msgid "Albums"
@@ -96,6 +104,8 @@ msgid ""
 "Allow Tonearm to start a mix with the current playing song when you're at "
 "the end of an album/queue"
 msgstr ""
+"Erlaube Tonearm das Titel-Radio des aktuellen Titels abzuspielen, sobald du "
+"das Ende der Warteschlange erreicht hast"
 
 #: internal/ui/window_preferences.go:75
 msgid ""
@@ -133,6 +143,10 @@ msgstr "Künstler"
 #: internal/ui/routes/my-collection.go:46
 msgid "Artists"
 msgstr "Künstler"
+
+#: internal/ui/routes/feed.go:101
+msgid "Authentication required"
+msgstr "Anmeldung erforderlich"
 
 #: internal/ui/window_shortcuts.go:19
 msgid "Back"
@@ -172,7 +186,7 @@ msgstr "Entscheide welche Bilder Tonearm laden soll"
 
 #: internal/ui/window_preferences.go:50
 msgid "Configure the behaviour of Tonearm regarding playback."
-msgstr ""
+msgstr "Entscheide wie Tonearm sich bei der Wiedergabe verhalten soll"
 
 #: internal/ui/window_preferences.go:39
 msgid "Configure the behaviour of Tonearm when navigating between pages."
@@ -222,13 +236,17 @@ msgstr "Nicht erneut anzeigen"
 msgid "E.g. Fox Stevenson"
 msgstr "z.B. Fox Stevenson"
 
+#: internal/ui/routes/feed.go:170
+msgid "EP by %s"
+msgstr "EP von %s"
+
 #: internal/ui/window_preferences.go:85
 msgid "Enable ListenBrainz"
 msgstr "ListenBrainz aktivieren"
 
 #: internal/ui/window_preferences.go:45
 msgid "Enable autoplay"
-msgstr ""
+msgstr "Autoplay aktivieren"
 
 #: internal/ui/components/lyrics/lyrics.go:395
 msgid "Error fetching lyrics"
@@ -245,6 +263,10 @@ msgstr "Entdecken"
 #: internal/ui/components/shortcut_list/deeplink.go:17
 msgid "External Link"
 msgstr "Externer Link"
+
+#: internal/ui/routes/feed.go:98
+msgid "Feed"
+msgstr ""
 
 #: internal/ui/window_preferences.go:40
 msgid "General"
@@ -274,6 +296,14 @@ msgstr "Interner Fehler"
 msgid "Keyboard Shortcuts"
 msgstr "Tastaturkurzbefehle"
 
+#: internal/ui/routes/feed.go:84
+msgid "Last Month"
+msgstr "Letzter Monat"
+
+#: internal/ui/routes/feed.go:80
+msgid "Last Week"
+msgstr "Letzte Woche"
+
 #: internal/ui/window_preferences.go:101
 msgid "ListenBrainz"
 msgstr ""
@@ -294,7 +324,7 @@ msgstr "Niedrig (320 kbps)"
 msgid "Low (96 kbps)"
 msgstr "Niedrig (96 kbps)"
 
-#: internal/ui/window_sidebar.go:74
+#: internal/ui/window_sidebar.go:75
 msgid "Lyrics"
 msgstr "Songtext"
 
@@ -341,7 +371,7 @@ msgstr "Zum Album navigieren"
 
 #: internal/ui/components/player/component_action_row.go:26
 msgid "Navigate to Artist"
-msgstr ""
+msgstr "Zum Künstler navigieren"
 
 #: internal/ui/window_content.go:27
 msgid "Navigate to Collection"
@@ -373,7 +403,7 @@ msgstr "Nächster Titel"
 
 #: internal/ui/components/player/component_track_info.go:22
 msgid "No Artist"
-msgstr ""
+msgstr "Kein Künstler"
 
 #: internal/ui/components/player/component_track_info.go:21
 msgid "No Track"
@@ -420,6 +450,10 @@ msgstr "Nicht Gefunden"
 msgid "Not found"
 msgstr "Nicht gefunden"
 
+#: internal/ui/routes/feed.go:86
+msgid "Older"
+msgstr "Älter"
+
 #: internal/ui/components/linking/linking.go:75
 msgid "Open TIDAL page"
 msgstr "TIDAL Webseite öffnen"
@@ -450,19 +484,21 @@ msgstr "Top Titel abspielen"
 
 #: internal/ui/window_preferences.go:50
 msgid "Playback"
-msgstr ""
+msgstr "Wiedergabe"
 
 #: internal/ui/components/player/component_track_timeline.go:72
 msgid "Playback quality saved. Changes will be applied on next track change."
 msgstr ""
+"Wiedergabe Qualität gespeichert. Die Änderungen werden beim nächsten Titel "
+"wirksam."
 
-#: internal/ui/window_sidebar.go:73
+#: internal/ui/window_sidebar.go:74
 msgid "Player"
 msgstr "Player"
 
 #: internal/ui/components/player/component_playing_from.go:61
 msgid "Playing From"
-msgstr ""
+msgstr "Abgespielt aus"
 
 #: internal/ui/routes/playlist.go:43
 msgid "Playlist"
@@ -484,7 +520,7 @@ msgstr "Einstellungen"
 msgid "Previous"
 msgstr "Vorheriger Titel"
 
-#: internal/ui/window_sidebar.go:75
+#: internal/ui/window_sidebar.go:76
 msgid "Queue"
 msgstr "Warteschlange"
 
@@ -512,7 +548,7 @@ msgstr "Nach links scrollen"
 msgid "Scroll to the right"
 msgstr "Nach rechts scrollen"
 
-#: internal/ui/routes/search/search.go:12
+#: internal/ui/routes/search/albums.go:31
 msgid "Search"
 msgstr "Suche"
 
@@ -572,6 +608,10 @@ msgstr "Angemeldet als %s"
 msgid "Signed out"
 msgstr "Abgemeldet"
 
+#: internal/ui/routes/feed.go:166
+msgid "Single by %s"
+msgstr "Single von %s"
+
 #: internal/ui/routes/search/search.go:13
 msgid ""
 "Start typing in the search bar to search for songs, artists, albums or "
@@ -587,6 +627,18 @@ msgstr "Mit Titel synchronisieren"
 #: internal/router/handler_notfound.go:13
 msgid "The requested deeplink did not have any available handlers."
 msgstr "Die gewünschte Seite konnte nicht gefunden werden"
+
+#: internal/ui/routes/feed.go:82
+msgid "This Month"
+msgstr "Diesen Monat"
+
+#: internal/ui/routes/feed.go:78
+msgid "This Week"
+msgstr "Diese Woche"
+
+#: internal/ui/routes/feed.go:76
+msgid "Today"
+msgstr "Heute"
 
 #: internal/ui/components/player/component_controls.go:117
 msgid "Toggle Repeat"
@@ -622,6 +674,14 @@ msgstr ""
 "\n"
 "Fehlermeldung: "
 
+#: internal/ui/routes/feed.go:172
+msgid "Unknown album type"
+msgstr "Unbekannter Album Typ"
+
+#: internal/ui/routes/feed.go:236
+msgid "Unsupported activity"
+msgstr "Nicht-unterstützte Aktivität"
+
 #: internal/ui/components/horizontal_list/horizontal_list.go:34
 msgid "View All"
 msgstr "Alles"
@@ -634,6 +694,10 @@ msgstr "Lautstärke"
 msgid "You can also open the linking page using the button below."
 msgstr ""
 "Mit dem folgenden Knopf kannst du auch direkt zur Anmeldeseite wechseln."
+
+#: internal/ui/routes/feed.go:102
+msgid "You need to sign in to your account to access this page"
+msgstr "Du musst angemeldet sein um diese Seite zu betrachten"
 
 #: internal/secrets/service_linux.go:48
 msgid ""
@@ -659,6 +723,9 @@ msgstr ""
 #: internal/ui/window_about.go:132
 msgid "translator-credits"
 msgstr "Nila The Dragon https://github.com/NilaTheDragon"
+
+#~ msgid "Connection required"
+#~ msgstr "Anmeldung erforderlich"
 
 #~ msgid "No track is currently playing."
 #~ msgstr "Aktuell wird kein Titel abgespielt."

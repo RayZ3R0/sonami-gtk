@@ -3,14 +3,15 @@
 # This file is distributed under the same license as the PACKAGE package.
 # FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
 # Dråfølin <derg at drafolin dot ch>, 2026.
+# Dråfølin Nattfløyen <derg at drafolin dot ch>, 2026.
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: v1.0.0-12-g1ce38cd\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-02-03 08:42+0100\n"
-"PO-Revision-Date: 2026-02-03 08:43+0100\n"
-"Last-Translator: Dråfølin <derg at drafolin dot ch>\n"
+"POT-Creation-Date: 2026-02-04 17:32+0100\n"
+"PO-Revision-Date: 2026-02-04 15:57+0100\n"
+"Last-Translator: Dråfølin Nattfløyen <derg at drafolin dot ch>\n"
 "Language-Team: French\n"
 "Language: fr\n"
 "MIME-Version: 1.0\n"
@@ -37,6 +38,10 @@ msgid_plural "%d Tracks (%s)"
 msgstr[0] "%d Morceau (%s)"
 msgstr[1] "%d Morceaux (%s)"
 
+#: internal/ui/routes/feed.go:160
+msgid "%s and %s"
+msgstr "%s, et %s"
+
 #: internal/ui/window_sidebar.go:35
 msgid "About Tonearm"
 msgstr "À propos de Tonearm"
@@ -52,6 +57,10 @@ msgstr "Ajouter à la file d'attente"
 #: internal/ui/routes/album.go:44
 msgid "Album"
 msgstr "Album"
+
+#: internal/ui/routes/feed.go:168
+msgid "Album by %s"
+msgstr "Album de %s"
 
 #: internal/ui/routes/my-collection.go:51
 msgid "Albums"
@@ -139,6 +148,10 @@ msgstr "Artiste"
 #: internal/ui/routes/my-collection.go:46
 msgid "Artists"
 msgstr "Artistes"
+
+#: internal/ui/routes/feed.go:101
+msgid "Authentication required"
+msgstr "Connexion requise"
 
 #: internal/ui/window_shortcuts.go:19
 msgid "Back"
@@ -230,6 +243,10 @@ msgstr "Ne plus afficher"
 msgid "E.g. Fox Stevenson"
 msgstr "P.ex. Fox Stevenson"
 
+#: internal/ui/routes/feed.go:170
+msgid "EP by %s"
+msgstr "EP de %s"
+
 #: internal/ui/window_preferences.go:85
 msgid "Enable ListenBrainz"
 msgstr "Activer ListenBrainz"
@@ -253,6 +270,10 @@ msgstr "Explorer"
 #: internal/ui/components/shortcut_list/deeplink.go:17
 msgid "External Link"
 msgstr "Lien externe"
+
+#: internal/ui/routes/feed.go:98
+msgid "Feed"
+msgstr "Fil d'actualité"
 
 #: internal/ui/window_preferences.go:40
 msgid "General"
@@ -282,6 +303,14 @@ msgstr "Erreur interne"
 msgid "Keyboard Shortcuts"
 msgstr "Raccourcis claviers"
 
+#: internal/ui/routes/feed.go:84
+msgid "Last Month"
+msgstr "Le mois dernier"
+
+#: internal/ui/routes/feed.go:80
+msgid "Last Week"
+msgstr "La semaine dernière"
+
 #: internal/ui/window_preferences.go:101
 msgid "ListenBrainz"
 msgstr "ListenBrainz"
@@ -302,7 +331,7 @@ msgstr "Basse (320 kbps)"
 msgid "Low (96 kbps)"
 msgstr "Basse (96 kbps)"
 
-#: internal/ui/window_sidebar.go:74
+#: internal/ui/window_sidebar.go:75
 msgid "Lyrics"
 msgstr "Paroles"
 
@@ -428,6 +457,10 @@ msgstr "Non trouvé"
 msgid "Not found"
 msgstr "Non trouvé"
 
+#: internal/ui/routes/feed.go:86
+msgid "Older"
+msgstr "Plus vieux"
+
 #: internal/ui/components/linking/linking.go:75
 msgid "Open TIDAL page"
 msgstr "Ouvrir dans TIDAL"
@@ -466,7 +499,7 @@ msgstr ""
 "Qualité de lecture sauvegardée. Les changements seront appliqués à partir du "
 "prochain morceau."
 
-#: internal/ui/window_sidebar.go:73
+#: internal/ui/window_sidebar.go:74
 msgid "Player"
 msgstr "Lecteur"
 
@@ -494,7 +527,7 @@ msgstr "Préférences"
 msgid "Previous"
 msgstr "Précédent"
 
-#: internal/ui/window_sidebar.go:75
+#: internal/ui/window_sidebar.go:76
 msgid "Queue"
 msgstr "File d'attente"
 
@@ -522,7 +555,7 @@ msgstr "Défiler vers la gauche"
 msgid "Scroll to the right"
 msgstr "Défiler vers la droite"
 
-#: internal/ui/routes/search/search.go:12
+#: internal/ui/routes/search/albums.go:31
 msgid "Search"
 msgstr "Rechercher"
 
@@ -582,6 +615,10 @@ msgstr "Connectée en tant que %s"
 msgid "Signed out"
 msgstr "Déconnecté"
 
+#: internal/ui/routes/feed.go:166
+msgid "Single by %s"
+msgstr "Single de %s"
+
 #: internal/ui/routes/search/search.go:13
 msgid ""
 "Start typing in the search bar to search for songs, artists, albums or "
@@ -597,6 +634,18 @@ msgstr "Synchroniser avec le morceau"
 #: internal/router/handler_notfound.go:13
 msgid "The requested deeplink did not have any available handlers."
 msgstr "Le raccourcis sélectionné n'a pas de gestionnaire défini."
+
+#: internal/ui/routes/feed.go:82
+msgid "This Month"
+msgstr "Ce mois-ci"
+
+#: internal/ui/routes/feed.go:78
+msgid "This Week"
+msgstr "Cette semaine"
+
+#: internal/ui/routes/feed.go:76
+msgid "Today"
+msgstr "Aujourd'hui"
 
 #: internal/ui/components/player/component_controls.go:117
 msgid "Toggle Repeat"
@@ -631,6 +680,14 @@ msgstr ""
 "\n"
 "Message d'erreur: "
 
+#: internal/ui/routes/feed.go:172
+msgid "Unknown album type"
+msgstr "Type d'album inconnu"
+
+#: internal/ui/routes/feed.go:236
+msgid "Unsupported activity"
+msgstr "Activité non supportée"
+
 #: internal/ui/components/horizontal_list/horizontal_list.go:34
 msgid "View All"
 msgstr "Voir tout"
@@ -643,6 +700,10 @@ msgstr "Volume"
 msgid "You can also open the linking page using the button below."
 msgstr ""
 "Vous pouvez également ouvrir la page de connexion avec le boouton ci-dessous."
+
+#: internal/ui/routes/feed.go:102
+msgid "You need to sign in to your account to access this page"
+msgstr "Vous devez vous connecter à votre compte pour accéder à cette page"
 
 #: internal/secrets/service_linux.go:48
 msgid ""
@@ -668,6 +729,9 @@ msgstr ""
 #: internal/ui/window_about.go:132
 msgid "translator-credits"
 msgstr "Dråfølin Nattfløyen https://github.com/drafolin"
+
+#~ msgid "Connection required"
+#~ msgstr "Connexion requise"
 
 #~ msgid "No track is currently playing."
 #~ msgstr "Pas de morceaux en lecture"

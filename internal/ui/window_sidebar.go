@@ -64,6 +64,7 @@ func (w *Window) buildSidebarHeader() *gtk.Widget {
 				w.GetApplication().SetAccelsForAction("win.main-menu", []string{"F10"})
 			}),
 			components.NewRouteButton("search").Icon("loupe-symbolic").TooltipText(gettext.Get("Search")),
+			components.NewRouteButton("feed").Icon("bell-outline-symbolic").TooltipText(gettext.Get("Feed")),
 		).
 		ToGTK()
 }

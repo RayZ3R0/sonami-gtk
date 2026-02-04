@@ -3,6 +3,7 @@ package v2
 import (
 	"codeberg.org/dergs/tonearm/pkg/tidalapi/internal"
 	"codeberg.org/dergs/tonearm/pkg/tidalapi/v2/artist"
+	"codeberg.org/dergs/tonearm/pkg/tidalapi/v2/feed"
 	"codeberg.org/dergs/tonearm/pkg/tidalapi/v2/home"
 )
 
@@ -10,6 +11,7 @@ type V2 struct {
 	client *internal.Client
 	Artist *artist.Artist
 	Home   *home.Home
+	Feed   *feed.Feed
 }
 
 func New(client *internal.Client) *V2 {
@@ -17,5 +19,6 @@ func New(client *internal.Client) *V2 {
 		client: client,
 		Artist: artist.New(client),
 		Home:   home.New(client),
+		Feed:   feed.New(client),
 	}
 }
