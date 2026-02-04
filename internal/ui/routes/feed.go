@@ -37,7 +37,8 @@ func makeEntry(widgets ...any) schwifty.Button {
 }
 
 const (
-	lastWeekStage = iota
+	todayStage = iota
+	lastWeekStage
 	lastMonthStage
 	olderStage
 )
@@ -56,23 +57,39 @@ func Feed() *router.Response {
 	isRead := true
 
 	slices.SortFunc(activities, func(a1, a2 *feed.Activity) int {
-		return 0
-		// return int(a1.FollowableActivity.OccuredAt.Unix() - a2.FollowableActivity.OccuredAt.Unix())
+		return int(a1.FollowableActivity.OccuredAt.Unix() - a2.FollowableActivity.OccuredAt.Unix())
 	})
 
 	stage := lastWeekStage
-	box := VStack(Label("Last Week").WithCSSClass("title-2")).Spacing(12)
+	box := VStack(Label("Today").WithCSSClass("title-2")).Spacing(12)
+	hasElements := false
 
 	for _, activity := range activities {
-		fmt.Println(activity.FollowableActivity.OccuredAt)
+		if activity.FollowableActivity.OccuredAt.Before(time.Now().Add(-24*time.Hour)) && stage == todayStage {
+			stage = lastWeekStage
+			if hasElements {
+				body = body.Append(box)
+			}
+			box = VStack(Label("Last Week").WithCSSClass("title-2")).Spacing(12)
+			hasElements = false
+		}
+
 		if activity.FollowableActivity.OccuredAt.Before(time.Now().Add(-7*24*time.Hour)) && stage == lastWeekStage {
 			stage = lastMonthStage
-			body = body.Append(box)
+			if hasElements {
+				body = body.Append(box)
+			}
 			box = VStack(Label("Last Month").WithCSSClass("title-2")).Spacing(12)
-		} else if activity.FollowableActivity.OccuredAt.Before(time.Now().Add(-30*24*time.Hour)) && stage == lastMonthStage {
+			hasElements = false
+		}
+
+		if activity.FollowableActivity.OccuredAt.Before(time.Now().Add(-30*24*time.Hour)) && stage == lastMonthStage {
 			stage = olderStage
-			body = body.Append(box)
+			if hasElements {
+				body = body.Append(box)
+			}
 			box = VStack(Label("Older").WithCSSClass("title-2")).Spacing(12)
+			hasElements = false
 		}
 
 		if isRead && !activity.Seen {
@@ -147,6 +164,7 @@ func Feed() *router.Response {
 						VAlign(gtk.AlignCenterValue),
 				),
 			)
+			hasElements = true
 		case feed.ActivityTypeNewHistoryMix:
 			mix := activity.FollowableActivity.HistoryMix
 
@@ -175,6 +193,7 @@ func Feed() *router.Response {
 						VAlign(gtk.AlignCenterValue),
 				),
 			)
+			hasElements = true
 		default:
 			box = box.Append(
 				Bin().
@@ -182,6 +201,7 @@ func Feed() *router.Response {
 						Label("Unsupported activity"),
 					),
 			)
+			hasElements = true
 		}
 	}
 
