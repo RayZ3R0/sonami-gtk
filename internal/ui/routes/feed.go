@@ -46,6 +46,16 @@ func Feed() *router.Response {
 	tidal := injector.MustInject[*tidalapi.TidalAPI]()
 	userId := secrets.UserID()
 
+	if userId == "" {
+		return &router.Response{
+			PageTitle: gettext.Get("Feed"),
+			View: StatusPage().
+				IconName("avatar-default-symbolic").
+				Title(gettext.Get("Connection required")).
+				Description(gettext.Get("You need to sign in to your account to access this page")),
+		}
+	}
+
 	activities, err := tidal.V2.Feed.Activities(context.Background(), userId)
 
 	if err != nil {

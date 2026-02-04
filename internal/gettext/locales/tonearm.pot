@@ -6,9 +6,9 @@
 #, fuzzy
 msgid ""
 msgstr ""
-"Project-Id-Version: v1.1.0-82-g24ebbf6\n"
+"Project-Id-Version: v1.1.0-84-gd4b7bf7\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-02-04 14:08+0100\n"
+"POT-Creation-Date: 2026-02-04 15:31+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -35,7 +35,7 @@ msgid_plural "%d Tracks (%s)"
 msgstr[0] ""
 msgstr[1] ""
 
-#: internal/ui/routes/feed.go:122
+#: internal/ui/routes/feed.go:131
 msgid "%s and %s"
 msgstr ""
 
@@ -55,7 +55,7 @@ msgstr ""
 msgid "Album"
 msgstr ""
 
-#: internal/ui/routes/feed.go:130
+#: internal/ui/routes/feed.go:139
 msgid "Album by %s"
 msgstr ""
 
@@ -172,6 +172,10 @@ msgstr ""
 msgid "Configure the behaviour of Tonearm when running in the background."
 msgstr ""
 
+#: internal/ui/routes/feed.go:54
+msgid "Connection required"
+msgstr ""
+
 #: internal/ui/window_popups.go:28
 msgid "Continue"
 msgstr ""
@@ -212,7 +216,7 @@ msgstr ""
 msgid "E.g. Fox Stevenson"
 msgstr ""
 
-#: internal/ui/routes/feed.go:132
+#: internal/ui/routes/feed.go:141
 msgid "EP by %s"
 msgstr ""
 
@@ -240,7 +244,7 @@ msgstr ""
 msgid "External Link"
 msgstr ""
 
-#: internal/ui/routes/feed.go:53
+#: internal/ui/routes/feed.go:51
 msgid "Feed"
 msgstr ""
 
@@ -272,11 +276,11 @@ msgstr ""
 msgid "Keyboard Shortcuts"
 msgstr ""
 
-#: internal/ui/routes/feed.go:83
+#: internal/ui/routes/feed.go:92
 msgid "Last Month"
 msgstr ""
 
-#: internal/ui/routes/feed.go:74
+#: internal/ui/routes/feed.go:83
 msgid "Last Week"
 msgstr ""
 
@@ -417,7 +421,7 @@ msgstr ""
 msgid "Not found"
 msgstr ""
 
-#: internal/ui/routes/feed.go:92
+#: internal/ui/routes/feed.go:101
 msgid "Older"
 msgstr ""
 
@@ -573,7 +577,7 @@ msgstr ""
 msgid "Signed out"
 msgstr ""
 
-#: internal/ui/routes/feed.go:128
+#: internal/ui/routes/feed.go:137
 msgid "Single by %s"
 msgstr ""
 
@@ -589,7 +593,7 @@ msgstr ""
 msgid "The requested deeplink did not have any available handlers."
 msgstr ""
 
-#: internal/ui/routes/feed.go:65
+#: internal/ui/routes/feed.go:74
 msgid "Today"
 msgstr ""
 
@@ -620,11 +624,11 @@ msgid ""
 "Error Message: "
 msgstr ""
 
-#: internal/ui/routes/feed.go:134
+#: internal/ui/routes/feed.go:143
 msgid "Unknown album type"
 msgstr ""
 
-#: internal/ui/routes/feed.go:211
+#: internal/ui/routes/feed.go:207
 msgid "Unsupported activity"
 msgstr ""
 
@@ -638,6 +642,10 @@ msgstr ""
 
 #: internal/ui/components/linking/linking.go:29
 msgid "You can also open the linking page using the button below."
+msgstr ""
+
+#: internal/ui/routes/feed.go:55
+msgid "You need to sign in to your account to access this page"
 msgstr ""
 
 #: internal/secrets/service_linux.go:48
