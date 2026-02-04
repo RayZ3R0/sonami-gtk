@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: v1.0.0-12-g1ce38cd\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2026-02-04 09:09+0100\n"
-"PO-Revision-Date: 2026-02-03 08:43+0100\n"
+"PO-Revision-Date: 2026-02-04 09:11+0100\n"
 "Last-Translator: Dråfølin <derg at drafolin dot ch>\n"
 "Language-Team: French\n"
 "Language: fr\n"
@@ -39,7 +39,7 @@ msgstr[1] "%d Morceaux (%s)"
 
 #: internal/ui/routes/feed.go:121
 msgid "%s and %s"
-msgstr ""
+msgstr "%s, et %s"
 
 #: internal/ui/window_sidebar.go:35
 msgid "About Tonearm"
@@ -59,7 +59,7 @@ msgstr "Album"
 
 #: internal/ui/routes/feed.go:129
 msgid "Album by %s"
-msgstr ""
+msgstr "Album de %s"
 
 #: internal/ui/routes/my-collection.go:51
 msgid "Albums"
@@ -296,11 +296,11 @@ msgstr "Raccourcis claviers"
 
 #: internal/ui/routes/feed.go:82
 msgid "Last Month"
-msgstr ""
+msgstr "Le mois dernier"
 
 #: internal/ui/routes/feed.go:73
 msgid "Last Week"
-msgstr ""
+msgstr "La semaine dernière"
 
 #: internal/ui/window_preferences.go:101
 msgid "ListenBrainz"
@@ -450,7 +450,7 @@ msgstr "Non trouvé"
 
 #: internal/ui/routes/feed.go:91
 msgid "Older"
-msgstr ""
+msgstr "Plus vieux"
 
 #: internal/ui/components/linking/linking.go:75
 msgid "Open TIDAL page"
@@ -608,7 +608,7 @@ msgstr "Déconnecté"
 
 #: internal/ui/routes/feed.go:127
 msgid "Single by %s"
-msgstr ""
+msgstr "Single de %s"
 
 #: internal/ui/routes/search/search.go:13
 msgid ""
@@ -628,7 +628,7 @@ msgstr "Le raccourcis sélectionné n'a pas de gestionnaire défini."
 
 #: internal/ui/routes/feed.go:64
 msgid "Today"
-msgstr ""
+msgstr "Aujourd'hui"
 
 #: internal/ui/components/player/component_controls.go:117
 msgid "Toggle Repeat"
@@ -665,7 +665,7 @@ msgstr ""
 
 #: internal/ui/routes/feed.go:202
 msgid "Unsupported activity"
-msgstr ""
+msgstr "Activité non supportée"
 
 #: internal/ui/components/horizontal_list/horizontal_list.go:34
 msgid "View All"
