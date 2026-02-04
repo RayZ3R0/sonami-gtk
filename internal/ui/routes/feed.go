@@ -61,7 +61,7 @@ func Feed() *router.Response {
 	})
 
 	stage := lastWeekStage
-	box := VStack(Label("Today").WithCSSClass("title-2")).Spacing(12)
+	box := VStack(Label(gettext.Get("Today")).WithCSSClass("title-2")).Spacing(12)
 	hasElements := false
 
 	for _, activity := range activities {
@@ -70,7 +70,7 @@ func Feed() *router.Response {
 			if hasElements {
 				body = body.Append(box)
 			}
-			box = VStack(Label("Last Week").WithCSSClass("title-2")).Spacing(12)
+			box = VStack(Label(gettext.Get("Last Week")).WithCSSClass("title-2")).Spacing(12)
 			hasElements = false
 		}
 
@@ -79,7 +79,7 @@ func Feed() *router.Response {
 			if hasElements {
 				body = body.Append(box)
 			}
-			box = VStack(Label("Last Month").WithCSSClass("title-2")).Spacing(12)
+			box = VStack(Label(gettext.Get("Last Month")).WithCSSClass("title-2")).Spacing(12)
 			hasElements = false
 		}
 
@@ -88,7 +88,7 @@ func Feed() *router.Response {
 			if hasElements {
 				body = body.Append(box)
 			}
-			box = VStack(Label("Older").WithCSSClass("title-2")).Spacing(12)
+			box = VStack(Label(gettext.Get("Older")).WithCSSClass("title-2")).Spacing(12)
 			hasElements = false
 		}
 
@@ -114,18 +114,19 @@ func Feed() *router.Response {
 				artists = append(artists, artist.Name)
 			}
 
-			if len(artists) >= 2 {
-				artists = append(artists[:len(artists)-1], "and "+artists[len(artists)-1])
-			}
-
 			artistsString := strings.Join(artists, ", ")
+			if len(artists) >= 2 {
+				artistsString = strings.Join(artists[:len(artists)-1], ", ")
+
+				artistsString = fmt.Sprintf(gettext.Get("%s and %s"), artistsString, artists[len(artists)-1])
+			}
 
 			subtitle := ""
 			switch album.Type {
 			case feed.AlbumTypeSingle:
-				subtitle = fmt.Sprintf("Single by %s", artistsString)
+				subtitle = fmt.Sprintf(gettext.Get("Single by %s"), artistsString)
 			case feed.AlbumTypeAlbum:
-				subtitle = fmt.Sprintf("Album by %s", artistsString)
+				subtitle = fmt.Sprintf(gettext.Get("Album by %s"), artistsString)
 			default:
 				subtitle = "Unknown album type"
 			}
@@ -172,7 +173,7 @@ func Feed() *router.Response {
 			texture, err := img.Load(mix.Images.Medium.Url)
 			if err != nil {
 				return &router.Response{
-					PageTitle: "Feed",
+					PageTitle: gettext.Get("Feed"),
 					Error:     err,
 				}
 			}
@@ -198,7 +199,7 @@ func Feed() *router.Response {
 			box = box.Append(
 				Bin().
 					Child(
-						Label("Unsupported activity"),
+						Label(gettext.Get("Unsupported activity")),
 					),
 			)
 			hasElements = true
@@ -212,7 +213,7 @@ func Feed() *router.Response {
 	// an artist releases an album or a mix is released.
 
 	return &router.Response{
-		PageTitle: "Feed",
+		PageTitle: gettext.Get("Feed"),
 		View: ScrolledWindow().
 			Child(Clamp().Child(body).Orientation(gtk.OrientationHorizontalValue).MaximumSize(800).HPadding(8)).
 			Policy(gtk.PolicyNeverValue, gtk.PolicyAutomaticValue),
