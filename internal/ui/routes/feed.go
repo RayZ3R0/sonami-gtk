@@ -22,7 +22,6 @@ import (
 
 func init() {
 	router.Register("feed", Feed)
-	router.Register("feed/activities", Feed)
 }
 
 func makeEntry(widgets ...any) schwifty.Button {
