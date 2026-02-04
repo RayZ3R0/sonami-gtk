@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: 1\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-02-04 15:55+0100\n"
+"POT-Creation-Date: 2026-02-04 17:32+0100\n"
 "PO-Revision-Date: 2026-02-04 16:49+0100\n"
 "Last-Translator: Nila The Dragon <nilathedragon@pm.me>\n"
 "Language-Team: German\n"
@@ -144,6 +144,10 @@ msgstr "Künstler"
 msgid "Artists"
 msgstr "Künstler"
 
+#: internal/ui/routes/feed.go:101
+msgid "Authentication required"
+msgstr "Anmeldung erforderlich"
+
 #: internal/ui/window_shortcuts.go:19
 msgid "Back"
 msgstr "Zurück"
@@ -191,10 +195,6 @@ msgstr "Entscheide wie Tonearm sich bei der Navigation verhalten soll"
 #: internal/ui/window_preferences.go:21
 msgid "Configure the behaviour of Tonearm when running in the background."
 msgstr "Entscheide wie Tonearm sich im Hintergrund verhalten soll"
-
-#: internal/ui/routes/feed.go:101
-msgid "Connection required"
-msgstr "Anmeldung erforderlich"
 
 #: internal/ui/window_popups.go:28
 msgid "Continue"
@@ -723,6 +723,9 @@ msgstr ""
 #: internal/ui/window_about.go:132
 msgid "translator-credits"
 msgstr "Nila The Dragon https://github.com/NilaTheDragon"
+
+#~ msgid "Connection required"
+#~ msgstr "Anmeldung erforderlich"
 
 #~ msgid "No track is currently playing."
 #~ msgstr "Aktuell wird kein Titel abgespielt."

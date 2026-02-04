@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: v1.0.0-12-g1ce38cd\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-02-04 15:55+0100\n"
+"POT-Creation-Date: 2026-02-04 17:32+0100\n"
 "PO-Revision-Date: 2026-02-04 15:57+0100\n"
 "Last-Translator: Dråfølin Nattfløyen <derg at drafolin dot ch>\n"
 "Language-Team: French\n"
@@ -149,6 +149,10 @@ msgstr "Artiste"
 msgid "Artists"
 msgstr "Artistes"
 
+#: internal/ui/routes/feed.go:101
+msgid "Authentication required"
+msgstr "Connexion requise"
+
 #: internal/ui/window_shortcuts.go:19
 msgid "Back"
 msgstr "Retour"
@@ -198,10 +202,6 @@ msgstr "Configurer le comportement de Tonearm à la navigation entre les pages."
 msgid "Configure the behaviour of Tonearm when running in the background."
 msgstr ""
 "Configurer le comportement de Tonearm lors de l'execution en arrière-plan."
-
-#: internal/ui/routes/feed.go:101
-msgid "Connection required"
-msgstr "Connexion requise"
 
 #: internal/ui/window_popups.go:28
 msgid "Continue"
@@ -729,6 +729,9 @@ msgstr ""
 #: internal/ui/window_about.go:132
 msgid "translator-credits"
 msgstr "Dråfølin Nattfløyen https://github.com/drafolin"
+
+#~ msgid "Connection required"
+#~ msgstr "Connexion requise"
 
 #~ msgid "No track is currently playing."
 #~ msgstr "Pas de morceaux en lecture"

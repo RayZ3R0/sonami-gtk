@@ -98,7 +98,7 @@ func Feed() *router.Response {
 			PageTitle: gettext.Get("Feed"),
 			View: StatusPage().
 				IconName("avatar-default-symbolic").
-				Title(gettext.Get("Connection required")).
+				Title(gettext.Get("Authentication required")).
 				Description(gettext.Get("You need to sign in to your account to access this page")),
 		}
 	}

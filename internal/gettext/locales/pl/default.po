@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: v1.0.0-26-g6264155\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-02-04 15:55+0100\n"
+"POT-Creation-Date: 2026-02-04 17:32+0100\n"
 "PO-Revision-Date: 2026-02-04 16:35+0100\n"
 "Last-Translator: Łukasz Horodecki <lukasz@horodecki.net>\n"
 "Language-Team: Polish\n"
@@ -149,6 +149,10 @@ msgstr "Artysta"
 msgid "Artists"
 msgstr "Artyści"
 
+#: internal/ui/routes/feed.go:101
+msgid "Authentication required"
+msgstr "Wymagane połączenie"
+
 #: internal/ui/window_shortcuts.go:19
 msgid "Back"
 msgstr "Wstecz"
@@ -196,10 +200,6 @@ msgstr "Skonfiguruj zachowanie Tonearm podczas nawigowania między stronami."
 #: internal/ui/window_preferences.go:21
 msgid "Configure the behaviour of Tonearm when running in the background."
 msgstr "Skonfiguruj zachowanie Tonearm w czasie pracy w tle."
-
-#: internal/ui/routes/feed.go:101
-msgid "Connection required"
-msgstr "Wymagane połączenie"
 
 #: internal/ui/window_popups.go:28
 msgid "Continue"
@@ -722,3 +722,6 @@ msgstr ""
 #: internal/ui/window_about.go:132
 msgid "translator-credits"
 msgstr "Łukasz Horodecki https://horodecki.net"
+
+#~ msgid "Connection required"
+#~ msgstr "Wymagane połączenie"
