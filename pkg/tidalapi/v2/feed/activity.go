@@ -54,6 +54,7 @@ type AlbumType string
 const (
 	AlbumTypeSingle AlbumType = "SINGLE"
 	AlbumTypeAlbum  AlbumType = "ALBUM"
+	AlbumTypeEP     AlbumType = "EP"
 )
 
 type Album struct {

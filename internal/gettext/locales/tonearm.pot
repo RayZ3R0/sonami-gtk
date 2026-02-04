@@ -6,9 +6,9 @@
 #, fuzzy
 msgid ""
 msgstr ""
-"Project-Id-Version: v1.1.0-77-g3341db0\n"
+"Project-Id-Version: v1.1.0-81-g6f81238\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-02-04 09:09+0100\n"
+"POT-Creation-Date: 2026-02-04 14:07+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -35,7 +35,7 @@ msgid_plural "%d Tracks (%s)"
 msgstr[0] ""
 msgstr[1] ""
 
-#: internal/ui/routes/feed.go:121
+#: internal/ui/routes/feed.go:122
 msgid "%s and %s"
 msgstr ""
 
@@ -55,7 +55,7 @@ msgstr ""
 msgid "Album"
 msgstr ""
 
-#: internal/ui/routes/feed.go:129
+#: internal/ui/routes/feed.go:130
 msgid "Album by %s"
 msgstr ""
 
@@ -212,6 +212,10 @@ msgstr ""
 msgid "E.g. Fox Stevenson"
 msgstr ""
 
+#: internal/ui/routes/feed.go:132
+msgid "EP by %s"
+msgstr ""
+
 #: internal/ui/window_preferences.go:85
 msgid "Enable ListenBrainz"
 msgstr ""
@@ -268,11 +272,11 @@ msgstr ""
 msgid "Keyboard Shortcuts"
 msgstr ""
 
-#: internal/ui/routes/feed.go:82
+#: internal/ui/routes/feed.go:83
 msgid "Last Month"
 msgstr ""
 
-#: internal/ui/routes/feed.go:73
+#: internal/ui/routes/feed.go:74
 msgid "Last Week"
 msgstr ""
 
@@ -413,7 +417,7 @@ msgstr ""
 msgid "Not found"
 msgstr ""
 
-#: internal/ui/routes/feed.go:91
+#: internal/ui/routes/feed.go:92
 msgid "Older"
 msgstr ""
 
@@ -569,7 +573,7 @@ msgstr ""
 msgid "Signed out"
 msgstr ""
 
-#: internal/ui/routes/feed.go:127
+#: internal/ui/routes/feed.go:128
 msgid "Single by %s"
 msgstr ""
 
@@ -585,7 +589,7 @@ msgstr ""
 msgid "The requested deeplink did not have any available handlers."
 msgstr ""
 
-#: internal/ui/routes/feed.go:64
+#: internal/ui/routes/feed.go:65
 msgid "Today"
 msgstr ""
 
@@ -616,7 +620,7 @@ msgid ""
 "Error Message: "
 msgstr ""
 
-#: internal/ui/routes/feed.go:202
+#: internal/ui/routes/feed.go:211
 msgid "Unsupported activity"
 msgstr ""
 

@@ -128,6 +128,8 @@ func Feed() *router.Response {
 				subtitle = fmt.Sprintf(gettext.Get("Single by %s"), artistsString)
 			case feed.AlbumTypeAlbum:
 				subtitle = fmt.Sprintf(gettext.Get("Album by %s"), artistsString)
+			case feed.AlbumTypeEP:
+				subtitle = fmt.Sprintf(gettext.Get("EP by %s"), artistsString)
 			default:
 				subtitle = "Unknown album type"
 			}

@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: v1.0.0-26-g6264155\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-02-04 09:09+0100\n"
+"POT-Creation-Date: 2026-02-04 14:07+0100\n"
 "PO-Revision-Date: 2026-02-01 09:21+0100\n"
 "Last-Translator: Łukasz Horodecki <lukasz@horodecki.net>\n"
 "Language-Team: Polish\n"
@@ -41,7 +41,7 @@ msgstr[0] "%d utwór (%s)"
 msgstr[1] "%d utwory (%s)"
 msgstr[2] "%d utworów (%s)"
 
-#: internal/ui/routes/feed.go:121
+#: internal/ui/routes/feed.go:122
 msgid "%s and %s"
 msgstr ""
 
@@ -61,7 +61,7 @@ msgstr "Dodaj do kolejki"
 msgid "Album"
 msgstr "Album"
 
-#: internal/ui/routes/feed.go:129
+#: internal/ui/routes/feed.go:130
 msgid "Album by %s"
 msgstr ""
 
@@ -237,6 +237,10 @@ msgstr "Nie pokazuj ponownie"
 msgid "E.g. Fox Stevenson"
 msgstr "Np. Fox Stevenson"
 
+#: internal/ui/routes/feed.go:132
+msgid "EP by %s"
+msgstr ""
+
 #: internal/ui/window_preferences.go:85
 msgid "Enable ListenBrainz"
 msgstr "Włącz ListenBrainz"
@@ -293,11 +297,11 @@ msgstr "Błąd wewnętrzny"
 msgid "Keyboard Shortcuts"
 msgstr "Skróty klawiszowe"
 
-#: internal/ui/routes/feed.go:82
+#: internal/ui/routes/feed.go:83
 msgid "Last Month"
 msgstr ""
 
-#: internal/ui/routes/feed.go:73
+#: internal/ui/routes/feed.go:74
 msgid "Last Week"
 msgstr ""
 
@@ -446,7 +450,7 @@ msgstr "Nie znaleziono"
 msgid "Not found"
 msgstr "Nie znaleziono"
 
-#: internal/ui/routes/feed.go:91
+#: internal/ui/routes/feed.go:92
 msgid "Older"
 msgstr ""
 
@@ -604,7 +608,7 @@ msgstr "Zalogowano jako %s"
 msgid "Signed out"
 msgstr "Wylogowano"
 
-#: internal/ui/routes/feed.go:127
+#: internal/ui/routes/feed.go:128
 msgid "Single by %s"
 msgstr ""
 
@@ -624,7 +628,7 @@ msgstr "Synchronizuj z utworem"
 msgid "The requested deeplink did not have any available handlers."
 msgstr "Żądany deeplink nie miał żadnych dostępnych handlerów."
 
-#: internal/ui/routes/feed.go:64
+#: internal/ui/routes/feed.go:65
 msgid "Today"
 msgstr ""
 
@@ -660,7 +664,7 @@ msgstr ""
 "\n"
 "Komunikat błędu:"
 
-#: internal/ui/routes/feed.go:202
+#: internal/ui/routes/feed.go:211
 msgid "Unsupported activity"
 msgstr ""
 
