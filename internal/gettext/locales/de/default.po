@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: 1\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2026-02-04 15:55+0100\n"
-"PO-Revision-Date: 2026-01-28 22:43+0100\n"
+"PO-Revision-Date: 2026-02-04 16:49+0100\n"
 "Last-Translator: Nila The Dragon <nilathedragon@pm.me>\n"
 "Language-Team: German\n"
 "Language: de\n"
@@ -39,7 +39,7 @@ msgstr[1] "%d Titel (%s)"
 
 #: internal/ui/routes/feed.go:160
 msgid "%s and %s"
-msgstr ""
+msgstr "%s und %s"
 
 #: internal/ui/window_sidebar.go:35
 msgid "About Tonearm"
@@ -59,7 +59,7 @@ msgstr ""
 
 #: internal/ui/routes/feed.go:168
 msgid "Album by %s"
-msgstr ""
+msgstr "Album von %s"
 
 #: internal/ui/routes/my-collection.go:51
 msgid "Albums"
@@ -194,7 +194,7 @@ msgstr "Entscheide wie Tonearm sich im Hintergrund verhalten soll"
 
 #: internal/ui/routes/feed.go:101
 msgid "Connection required"
-msgstr ""
+msgstr "Anmeldung erforderlich"
 
 #: internal/ui/window_popups.go:28
 msgid "Continue"
@@ -238,7 +238,7 @@ msgstr "z.B. Fox Stevenson"
 
 #: internal/ui/routes/feed.go:170
 msgid "EP by %s"
-msgstr ""
+msgstr "EP von %s"
 
 #: internal/ui/window_preferences.go:85
 msgid "Enable ListenBrainz"
@@ -298,11 +298,11 @@ msgstr "Tastaturkurzbefehle"
 
 #: internal/ui/routes/feed.go:84
 msgid "Last Month"
-msgstr ""
+msgstr "Letzter Monat"
 
 #: internal/ui/routes/feed.go:80
 msgid "Last Week"
-msgstr ""
+msgstr "Letzte Woche"
 
 #: internal/ui/window_preferences.go:101
 msgid "ListenBrainz"
@@ -452,7 +452,7 @@ msgstr "Nicht gefunden"
 
 #: internal/ui/routes/feed.go:86
 msgid "Older"
-msgstr ""
+msgstr "Älter"
 
 #: internal/ui/components/linking/linking.go:75
 msgid "Open TIDAL page"
@@ -489,6 +489,8 @@ msgstr "Wiedergabe"
 #: internal/ui/components/player/component_track_timeline.go:72
 msgid "Playback quality saved. Changes will be applied on next track change."
 msgstr ""
+"Wiedergabe Qualität gespeichert. Die Änderungen werden beim nächsten Titel "
+"wirksam."
 
 #: internal/ui/window_sidebar.go:74
 msgid "Player"
@@ -608,7 +610,7 @@ msgstr "Abgemeldet"
 
 #: internal/ui/routes/feed.go:166
 msgid "Single by %s"
-msgstr ""
+msgstr "Single von %s"
 
 #: internal/ui/routes/search/search.go:13
 msgid ""
@@ -628,15 +630,15 @@ msgstr "Die gewünschte Seite konnte nicht gefunden werden"
 
 #: internal/ui/routes/feed.go:82
 msgid "This Month"
-msgstr ""
+msgstr "Diesen Monat"
 
 #: internal/ui/routes/feed.go:78
 msgid "This Week"
-msgstr ""
+msgstr "Diese Woche"
 
 #: internal/ui/routes/feed.go:76
 msgid "Today"
-msgstr ""
+msgstr "Heute"
 
 #: internal/ui/components/player/component_controls.go:117
 msgid "Toggle Repeat"
@@ -674,11 +676,11 @@ msgstr ""
 
 #: internal/ui/routes/feed.go:172
 msgid "Unknown album type"
-msgstr ""
+msgstr "Unbekannter Album Typ"
 
 #: internal/ui/routes/feed.go:236
 msgid "Unsupported activity"
-msgstr ""
+msgstr "Nicht-unterstützte Aktivität"
 
 #: internal/ui/components/horizontal_list/horizontal_list.go:34
 msgid "View All"
@@ -695,7 +697,7 @@ msgstr ""
 
 #: internal/ui/routes/feed.go:102
 msgid "You need to sign in to your account to access this page"
-msgstr ""
+msgstr "Du musst angemeldet sein um diese Seite zu betrachten"
 
 #: internal/secrets/service_linux.go:48
 msgid ""
