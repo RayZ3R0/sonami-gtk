@@ -57,7 +57,8 @@ func Feed() *router.Response {
 	isRead := true
 
 	slices.SortFunc(activities, func(a1, a2 *feed.Activity) int {
-		return int(a1.FollowableActivity.OccuredAt.Unix() - a2.FollowableActivity.OccuredAt.Unix())
+		// sub a1 from a2 to sort in descending order
+		return int(a2.FollowableActivity.OccuredAt.Unix() - a1.FollowableActivity.OccuredAt.Unix())
 	})
 
 	stage := lastWeekStage
