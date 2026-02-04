@@ -606,7 +606,7 @@ msgstr "Wylogowano"
 
 #: internal/ui/routes/feed.go:127
 msgid "Single by %s"
-msgstr "Singel autorstwa"
+msgstr "Singel autorstwa %s"
 
 #: internal/ui/routes/search/search.go:13
 msgid ""
