@@ -8,6 +8,7 @@ import (
 	_ "codeberg.org/dergs/tonearm/internal/icons"
 	_ "codeberg.org/dergs/tonearm/internal/styles"
 
+	_ "codeberg.org/dergs/tonearm/internal/features/macosfixes"
 	_ "codeberg.org/dergs/tonearm/internal/features/scrobbling"
 
 	"codeberg.org/dergs/tonearm/internal/g"
