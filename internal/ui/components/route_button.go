@@ -70,7 +70,13 @@ func NewRouteButton(path string) *RouteButton {
 
 	router.NavigationStarted.On(func(newPath string) bool {
 		schwifty.OnMainThreadOnce(func(u uintptr) {
-			routeButton.setActive(strings.HasPrefix(newPath, path))
+			if strings.HasPrefix(newPath, path) {
+				routeButton.RemoveCssClass("flat")
+				routeButton.AddCssClass("raised")
+			} else {
+				routeButton.RemoveCssClass("raised")
+				routeButton.AddCssClass("flat")
+			}
 		}, 0)
 		return signals.Continue
 	})
