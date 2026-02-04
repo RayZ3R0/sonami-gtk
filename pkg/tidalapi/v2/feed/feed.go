@@ -7,6 +7,7 @@ import (
 	"net/http"
 
 	"codeberg.org/dergs/tonearm/pkg/tidalapi/internal"
+	"codeberg.org/dergs/tonearm/pkg/tidalapi/models/v2/feed"
 )
 
 type Feed struct {
@@ -19,7 +20,7 @@ func New(client *internal.Client) *Feed {
 	}
 }
 
-func (f *Feed) Activities(ctx context.Context, id string) ([]*Activity, error) {
+func (f *Feed) Activities(ctx context.Context, id string) ([]*feed.Activity, error) {
 	req, err := http.NewRequestWithContext(ctx, http.MethodGet, "/v2/feed/activities", nil)
 	if err != nil {
 		return nil, err
@@ -39,9 +40,9 @@ func (f *Feed) Activities(ctx context.Context, id string) ([]*Activity, error) {
 		return nil, fmt.Errorf("unexpected status code: %d", resp.StatusCode)
 	}
 
-	var activities []*Activity
+	var activities []*feed.Activity
 	response := struct {
-		Activities *[]*Activity `json:"activities"`
+		Activities *[]*feed.Activity `json:"activities"`
 	}{
 		Activities: &activities,
 	}

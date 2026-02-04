@@ -1,53 +1,6 @@
 package feed
 
-import (
-	"time"
-)
-
-type ActivityType string
-
-const (
-	ActivityTypeNewAlbumRelease ActivityType = "NEW_ALBUM_RELEASE"
-	ActivityTypeNewHistoryMix   ActivityType = "NEW_HISTORY_MIX"
-)
-
-type FollowableActivity struct {
-	HistoryMix *HistoryMix `json:"historyMix"`
-	Album      *Album      `json:"album"`
-
-	ActivityType ActivityType `json:"activityType"`
-	OccuredAt    time.Time    `json:"occurredAt"`
-}
-
-type Activity struct {
-	FollowableActivity FollowableActivity
-	Seen               bool
-}
-
-type MixType string
-
-const (
-	MixTypeHistoryMonthly MixType = "HISTORY_MONTHLY_MIX"
-)
-
-type imageData struct {
-	Width, Height int
-	Url           string
-}
-
-type HistoryMix struct {
-	Id string
-	MixType
-	TitleTextInfo, SubtitleTextInfo struct {
-		text, color string
-	}
-	Updated              time.Time
-	Images, DetailImages struct {
-		Small, Medium, Large imageData
-	}
-	Master          bool
-	Title, Subtitle string
-}
+import "time"
 
 type AlbumType string
 

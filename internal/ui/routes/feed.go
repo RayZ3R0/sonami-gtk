@@ -14,7 +14,7 @@ import (
 	"codeberg.org/dergs/tonearm/pkg/schwifty"
 	. "codeberg.org/dergs/tonearm/pkg/schwifty/syntax"
 	"codeberg.org/dergs/tonearm/pkg/tidalapi"
-	"codeberg.org/dergs/tonearm/pkg/tidalapi/v2/feed"
+	"codeberg.org/dergs/tonearm/pkg/tidalapi/models/v2/feed"
 	"codeberg.org/dergs/tonearm/pkg/utils/imgutil"
 	"github.com/infinytum/injector"
 	"github.com/jwijenbergh/puregotk/v4/gtk"
