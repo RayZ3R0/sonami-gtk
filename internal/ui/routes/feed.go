@@ -3,7 +3,6 @@ package routes
 import (
 	"context"
 	"fmt"
-	"log/slog"
 	"slices"
 	"strconv"
 	"strings"
@@ -141,20 +140,7 @@ func Feed() *router.Response {
 							ConnectConstruct(func(i *gtk.Image) {
 								go func() {
 									img, _ := injector.Inject[*imgutil.ImgUtil]()
-									tidal, _ := injector.Inject[*tidalapi.TidalAPI]()
-
-									album, err := tidal.OpenAPI.V2.Albums.Album(context.TODO(), strconv.Itoa(album.ID), "coverArt")
-									if err != nil {
-										slog.Error("Failed to fetch album")
-										return
-									}
-
-									for _, cover := range album.Included.PlainArtworks(album.Data.Relationships.CoverArt.Data...) {
-										if cover.Attributes.IsPicture() {
-											img.LoadIntoImage(cover.Attributes.Files.AtLeast(160).Href, i)
-											break
-										}
-									}
+									img.LoadIntoImage(tidalapi.ImageURL(album.Cover), i)
 								}()
 							}).
 							PixelSize(54),
