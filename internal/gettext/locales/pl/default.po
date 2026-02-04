@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: v1.0.0-26-g6264155\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-02-04 15:31+0100\n"
+"POT-Creation-Date: 2026-02-04 15:55+0100\n"
 "PO-Revision-Date: 2026-02-01 09:21+0100\n"
 "Last-Translator: Łukasz Horodecki <lukasz@horodecki.net>\n"
 "Language-Team: Polish\n"
@@ -41,7 +41,7 @@ msgstr[0] "%d utwór (%s)"
 msgstr[1] "%d utwory (%s)"
 msgstr[2] "%d utworów (%s)"
 
-#: internal/ui/routes/feed.go:131
+#: internal/ui/routes/feed.go:160
 msgid "%s and %s"
 msgstr ""
 
@@ -61,7 +61,7 @@ msgstr "Dodaj do kolejki"
 msgid "Album"
 msgstr "Album"
 
-#: internal/ui/routes/feed.go:139
+#: internal/ui/routes/feed.go:168
 msgid "Album by %s"
 msgstr ""
 
@@ -197,7 +197,7 @@ msgstr "Skonfiguruj zachowanie Tonearm podczas nawigowania między stronami."
 msgid "Configure the behaviour of Tonearm when running in the background."
 msgstr "Skonfiguruj zachowanie Tonearm w czasie pracy w tle."
 
-#: internal/ui/routes/feed.go:54
+#: internal/ui/routes/feed.go:101
 msgid "Connection required"
 msgstr ""
 
@@ -241,7 +241,7 @@ msgstr "Nie pokazuj ponownie"
 msgid "E.g. Fox Stevenson"
 msgstr "Np. Fox Stevenson"
 
-#: internal/ui/routes/feed.go:141
+#: internal/ui/routes/feed.go:170
 msgid "EP by %s"
 msgstr ""
 
@@ -269,7 +269,7 @@ msgstr "Eksploruj"
 msgid "External Link"
 msgstr "Odnośnik zewnętrzny"
 
-#: internal/ui/routes/feed.go:51
+#: internal/ui/routes/feed.go:98
 msgid "Feed"
 msgstr ""
 
@@ -301,11 +301,11 @@ msgstr "Błąd wewnętrzny"
 msgid "Keyboard Shortcuts"
 msgstr "Skróty klawiszowe"
 
-#: internal/ui/routes/feed.go:92
+#: internal/ui/routes/feed.go:84
 msgid "Last Month"
 msgstr ""
 
-#: internal/ui/routes/feed.go:83
+#: internal/ui/routes/feed.go:80
 msgid "Last Week"
 msgstr ""
 
@@ -454,7 +454,7 @@ msgstr "Nie znaleziono"
 msgid "Not found"
 msgstr "Nie znaleziono"
 
-#: internal/ui/routes/feed.go:101
+#: internal/ui/routes/feed.go:86
 msgid "Older"
 msgstr ""
 
@@ -612,7 +612,7 @@ msgstr "Zalogowano jako %s"
 msgid "Signed out"
 msgstr "Wylogowano"
 
-#: internal/ui/routes/feed.go:137
+#: internal/ui/routes/feed.go:166
 msgid "Single by %s"
 msgstr ""
 
@@ -632,7 +632,15 @@ msgstr "Synchronizuj z utworem"
 msgid "The requested deeplink did not have any available handlers."
 msgstr "Żądany deeplink nie miał żadnych dostępnych handlerów."
 
-#: internal/ui/routes/feed.go:74
+#: internal/ui/routes/feed.go:82
+msgid "This Month"
+msgstr ""
+
+#: internal/ui/routes/feed.go:78
+msgid "This Week"
+msgstr ""
+
+#: internal/ui/routes/feed.go:76
 msgid "Today"
 msgstr ""
 
@@ -668,11 +676,11 @@ msgstr ""
 "\n"
 "Komunikat błędu:"
 
-#: internal/ui/routes/feed.go:143
+#: internal/ui/routes/feed.go:172
 msgid "Unknown album type"
 msgstr ""
 
-#: internal/ui/routes/feed.go:207
+#: internal/ui/routes/feed.go:236
 msgid "Unsupported activity"
 msgstr ""
 
@@ -688,7 +696,7 @@ msgstr "Głośność"
 msgid "You can also open the linking page using the button below."
 msgstr "Możesz również otworzyć stronę łączenia, klikając przycisk poniżej."
 
-#: internal/ui/routes/feed.go:55
+#: internal/ui/routes/feed.go:102
 msgid "You need to sign in to your account to access this page"
 msgstr ""
 

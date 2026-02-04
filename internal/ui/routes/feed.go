@@ -35,12 +35,59 @@ func makeEntry(widgets ...any) schwifty.Button {
 		HExpand(true)
 }
 
+type timeStage int
+
 const (
-	todayStage = iota
+	todayStage timeStage = iota
+	thisWeekStage
 	lastWeekStage
+	thisMonthStage
 	lastMonthStage
 	olderStage
 )
+
+func (stage timeStage) Threshold() time.Time {
+	switch stage {
+	case todayStage:
+		return time.Now().Truncate(24 * time.Hour)
+	case thisWeekStage:
+		day := time.Now().Weekday()
+		if day == time.Sunday {
+			day = 7
+		}
+		day -= 1
+		return todayStage.Threshold().AddDate(0, 0, -int(day))
+	case lastWeekStage:
+		return thisWeekStage.Threshold().AddDate(0, 0, -7)
+	case thisMonthStage:
+		return todayStage.Threshold().AddDate(0, 0, -time.Now().Day())
+	case lastMonthStage:
+		return thisMonthStage.Threshold().AddDate(0, -1, 0)
+	case olderStage:
+		return time.Time{}
+	default:
+		panic("invalid time stage")
+	}
+}
+
+func (stage timeStage) String() string {
+	switch stage {
+	case todayStage:
+		return gettext.Get("Today")
+	case thisWeekStage:
+		return gettext.Get("This Week")
+	case lastWeekStage:
+		return gettext.Get("Last Week")
+	case thisMonthStage:
+		return gettext.Get("This Month")
+	case lastMonthStage:
+		return gettext.Get("Last Month")
+	case olderStage:
+		return gettext.Get("Older")
+	default:
+		panic("invalid time stage")
+	}
+}
 
 func Feed() *router.Response {
 	tidal := injector.MustInject[*tidalapi.TidalAPI]()
@@ -71,34 +118,16 @@ func Feed() *router.Response {
 	})
 
 	stage := todayStage
-	box := VStack(Label(gettext.Get("Today")).WithCSSClass("title-2")).Spacing(12)
+	box := VStack(Label(stage.String()).WithCSSClass("title-2")).Spacing(12)
 	hasElements := false
 
 	for _, activity := range activities {
-		if activity.FollowableActivity.OccuredAt.Before(time.Now().Add(-24*time.Hour)) && stage == todayStage {
-			stage = lastWeekStage
+		for activity.FollowableActivity.OccuredAt.Before(stage.Threshold()) {
+			stage++
 			if hasElements {
 				body = body.Append(box)
 			}
-			box = VStack(Label(gettext.Get("Last Week")).WithCSSClass("title-2")).Spacing(12)
-			hasElements = false
-		}
-
-		if activity.FollowableActivity.OccuredAt.Before(time.Now().Add(-7*24*time.Hour)) && stage == lastWeekStage {
-			stage = lastMonthStage
-			if hasElements {
-				body = body.Append(box)
-			}
-			box = VStack(Label(gettext.Get("Last Month")).WithCSSClass("title-2")).Spacing(12)
-			hasElements = false
-		}
-
-		if activity.FollowableActivity.OccuredAt.Before(time.Now().Add(-30*24*time.Hour)) && stage == lastMonthStage {
-			stage = olderStage
-			if hasElements {
-				body = body.Append(box)
-			}
-			box = VStack(Label(gettext.Get("Older")).WithCSSClass("title-2")).Spacing(12)
+			box = VStack(Label(stage.String()).WithCSSClass("title-2")).Spacing(12)
 			hasElements = false
 		}
 
