@@ -3,14 +3,15 @@
 # This file is distributed under the same license as the PACKAGE package.
 # FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
 # Dråfølin <derg at drafolin dot ch>, 2026.
+# Dråfølin Nattfløyen <derg at drafolin dot ch>, 2026.
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: v1.0.0-12-g1ce38cd\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2026-02-04 15:55+0100\n"
-"PO-Revision-Date: 2026-02-04 09:11+0100\n"
-"Last-Translator: Dråfølin <derg at drafolin dot ch>\n"
+"PO-Revision-Date: 2026-02-04 15:57+0100\n"
+"Last-Translator: Dråfølin Nattfløyen <derg at drafolin dot ch>\n"
 "Language-Team: French\n"
 "Language: fr\n"
 "MIME-Version: 1.0\n"
@@ -200,7 +201,7 @@ msgstr ""
 
 #: internal/ui/routes/feed.go:101
 msgid "Connection required"
-msgstr ""
+msgstr "Connexion requise"
 
 #: internal/ui/window_popups.go:28
 msgid "Continue"
@@ -244,7 +245,7 @@ msgstr "P.ex. Fox Stevenson"
 
 #: internal/ui/routes/feed.go:170
 msgid "EP by %s"
-msgstr ""
+msgstr "EP de %s"
 
 #: internal/ui/window_preferences.go:85
 msgid "Enable ListenBrainz"
@@ -636,11 +637,11 @@ msgstr "Le raccourcis sélectionné n'a pas de gestionnaire défini."
 
 #: internal/ui/routes/feed.go:82
 msgid "This Month"
-msgstr ""
+msgstr "Ce mois-ci"
 
 #: internal/ui/routes/feed.go:78
 msgid "This Week"
-msgstr ""
+msgstr "Cette semaine"
 
 #: internal/ui/routes/feed.go:76
 msgid "Today"
@@ -681,7 +682,7 @@ msgstr ""
 
 #: internal/ui/routes/feed.go:172
 msgid "Unknown album type"
-msgstr ""
+msgstr "Type d'album inconnu"
 
 #: internal/ui/routes/feed.go:236
 msgid "Unsupported activity"
@@ -702,7 +703,7 @@ msgstr ""
 
 #: internal/ui/routes/feed.go:102
 msgid "You need to sign in to your account to access this page"
-msgstr ""
+msgstr "Vous devez vous connecter à votre compte pour accéder à cette page"
 
 #: internal/secrets/service_linux.go:48
 msgid ""
