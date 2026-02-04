@@ -131,7 +131,7 @@ func Feed() *router.Response {
 			case feed.AlbumTypeEP:
 				subtitle = fmt.Sprintf(gettext.Get("EP by %s"), artistsString)
 			default:
-				subtitle = "Unknown album type"
+				subtitle = gettext.Get("Unknown album type")
 			}
 
 			box = box.Append(

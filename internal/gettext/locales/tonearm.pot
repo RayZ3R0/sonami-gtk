@@ -6,9 +6,9 @@
 #, fuzzy
 msgid ""
 msgstr ""
-"Project-Id-Version: v1.1.0-81-g6f81238\n"
+"Project-Id-Version: v1.1.0-82-g24ebbf6\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-02-04 14:07+0100\n"
+"POT-Creation-Date: 2026-02-04 14:08+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -618,6 +618,10 @@ msgid ""
 "Unfortunately an error occurred while loading this view. Please try again later. If the error persists, please open an issue!\n"
 "\n"
 "Error Message: "
+msgstr ""
+
+#: internal/ui/routes/feed.go:134
+msgid "Unknown album type"
 msgstr ""
 
 #: internal/ui/routes/feed.go:211

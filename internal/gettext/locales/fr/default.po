@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: v1.0.0-12-g1ce38cd\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-02-04 14:07+0100\n"
+"POT-Creation-Date: 2026-02-04 14:08+0100\n"
 "PO-Revision-Date: 2026-02-04 09:11+0100\n"
 "Last-Translator: Dråfølin <derg at drafolin dot ch>\n"
 "Language-Team: French\n"
@@ -666,6 +666,10 @@ msgstr ""
 "ticket!\n"
 "\n"
 "Message d'erreur: "
+
+#: internal/ui/routes/feed.go:134
+msgid "Unknown album type"
+msgstr ""
 
 #: internal/ui/routes/feed.go:211
 msgid "Unsupported activity"
