@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: v1.0.0-26-g6264155\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2026-02-04 15:55+0100\n"
-"PO-Revision-Date: 2026-02-01 09:21+0100\n"
+"PO-Revision-Date: 2026-02-04 16:35+0100\n"
 "Last-Translator: Łukasz Horodecki <lukasz@horodecki.net>\n"
 "Language-Team: Polish\n"
 "Language: pl\n"
@@ -43,7 +43,7 @@ msgstr[2] "%d utworów (%s)"
 
 #: internal/ui/routes/feed.go:160
 msgid "%s and %s"
-msgstr ""
+msgstr "%s i %s"
 
 #: internal/ui/window_sidebar.go:35
 msgid "About Tonearm"
@@ -63,7 +63,7 @@ msgstr "Album"
 
 #: internal/ui/routes/feed.go:168
 msgid "Album by %s"
-msgstr ""
+msgstr "Album autorstwa %s"
 
 #: internal/ui/routes/my-collection.go:51
 msgid "Albums"
@@ -199,7 +199,7 @@ msgstr "Skonfiguruj zachowanie Tonearm w czasie pracy w tle."
 
 #: internal/ui/routes/feed.go:101
 msgid "Connection required"
-msgstr ""
+msgstr "Wymagane połączenie"
 
 #: internal/ui/window_popups.go:28
 msgid "Continue"
@@ -243,7 +243,7 @@ msgstr "Np. Fox Stevenson"
 
 #: internal/ui/routes/feed.go:170
 msgid "EP by %s"
-msgstr ""
+msgstr "EP autorstwa %s"
 
 #: internal/ui/window_preferences.go:85
 msgid "Enable ListenBrainz"
@@ -271,7 +271,7 @@ msgstr "Odnośnik zewnętrzny"
 
 #: internal/ui/routes/feed.go:98
 msgid "Feed"
-msgstr ""
+msgstr "Treści dla ciebie"
 
 #: internal/ui/window_preferences.go:40
 msgid "General"
@@ -303,11 +303,11 @@ msgstr "Skróty klawiszowe"
 
 #: internal/ui/routes/feed.go:84
 msgid "Last Month"
-msgstr ""
+msgstr "Ostatni miesiąc"
 
 #: internal/ui/routes/feed.go:80
 msgid "Last Week"
-msgstr ""
+msgstr "Ostatni tydzień"
 
 #: internal/ui/window_preferences.go:101
 msgid "ListenBrainz"
@@ -456,7 +456,7 @@ msgstr "Nie znaleziono"
 
 #: internal/ui/routes/feed.go:86
 msgid "Older"
-msgstr ""
+msgstr "Starsze"
 
 #: internal/ui/components/linking/linking.go:75
 msgid "Open TIDAL page"
@@ -614,7 +614,7 @@ msgstr "Wylogowano"
 
 #: internal/ui/routes/feed.go:166
 msgid "Single by %s"
-msgstr ""
+msgstr "Singel autorstwa %s"
 
 #: internal/ui/routes/search/search.go:13
 msgid ""
@@ -634,15 +634,15 @@ msgstr "Żądany deeplink nie miał żadnych dostępnych handlerów."
 
 #: internal/ui/routes/feed.go:82
 msgid "This Month"
-msgstr ""
+msgstr "W tym miesiącu"
 
 #: internal/ui/routes/feed.go:78
 msgid "This Week"
-msgstr ""
+msgstr "W tym tygodniu"
 
 #: internal/ui/routes/feed.go:76
 msgid "Today"
-msgstr ""
+msgstr "Dzisiaj"
 
 #: internal/ui/components/player/component_controls.go:117
 msgid "Toggle Repeat"
@@ -678,11 +678,11 @@ msgstr ""
 
 #: internal/ui/routes/feed.go:172
 msgid "Unknown album type"
-msgstr ""
+msgstr "Niewspierany typ albumu"
 
 #: internal/ui/routes/feed.go:236
 msgid "Unsupported activity"
-msgstr ""
+msgstr "Niewspierana aktywność"
 
 #: internal/ui/components/horizontal_list/horizontal_list.go:34
 msgid "View All"
@@ -698,7 +698,7 @@ msgstr "Możesz również otworzyć stronę łączenia, klikając przycisk poni�
 
 #: internal/ui/routes/feed.go:102
 msgid "You need to sign in to your account to access this page"
-msgstr ""
+msgstr "Musisz się zalogować na swoje konto, by mieć dostęp do tej strony"
 
 #: internal/secrets/service_linux.go:48
 msgid ""
