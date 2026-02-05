@@ -347,7 +347,7 @@ msgstr "Maksymalna długość historii przed usuwaniem starych pozycji."
 
 #: internal/ui/components/dynamic_v1.go:134
 msgid "More"
-msgstr ""
+msgstr "Więcej"
 
 #: internal/ui/routes/my_collection/albums.go:36
 msgid "My Albums"
