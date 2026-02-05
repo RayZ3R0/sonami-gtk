@@ -1,11 +1,30 @@
 package adw
 
 import (
-	"codeberg.org/dergs/tonearm/pkg/schwifty/bindings/gtk"
+	gtkbindings "codeberg.org/dergs/tonearm/pkg/schwifty/bindings/gtk"
+	"codeberg.org/dergs/tonearm/pkg/schwifty/callback"
+	"codeberg.org/dergs/tonearm/pkg/schwifty/state"
 	"github.com/jwijenbergh/puregotk/v4/adw"
+	"github.com/jwijenbergh/puregotk/v4/gtk"
 )
 
 //go:generate go run codeberg.org/dergs/tonearm/pkg/schwifty/gen HeaderBar *adw.HeaderBar adw
+
+func (f HeaderBar) BindDecorationLayout(state *state.State[string]) HeaderBar {
+	return func() *adw.HeaderBar {
+		var callbackId string
+		return f.ConnectConstruct(func(w *adw.HeaderBar) {
+			widgetPtr := w.GoPointer()
+			callbackId = state.AddCallback(func(newValue string) {
+				callback.OnMainThreadOnce(func(u uintptr) {
+					adw.HeaderBarNewFromInternalPtr(u).SetDecorationLayout(newValue)
+				}, widgetPtr)
+			})
+		}).ConnectDestroy(func(w gtk.Widget) {
+			state.RemoveCallback(callbackId)
+		})()
+	}
+}
 
 func (f HeaderBar) CenteringPolicy(policy adw.CenteringPolicy) HeaderBar {
 	return func() *adw.HeaderBar {
@@ -27,7 +46,7 @@ func (f HeaderBar) PackEnd(widget ...any) HeaderBar {
 	return func() *adw.HeaderBar {
 		hb := f()
 		for _, w := range widget {
-			hb.PackEnd(gtk.ResolveWidget(w))
+			hb.PackEnd(gtkbindings.ResolveWidget(w))
 		}
 		return hb
 	}
@@ -37,7 +56,7 @@ func (f HeaderBar) PackStart(widget ...any) HeaderBar {
 	return func() *adw.HeaderBar {
 		hb := f()
 		for _, w := range widget {
-			hb.PackStart(gtk.ResolveWidget(w))
+			hb.PackStart(gtkbindings.ResolveWidget(w))
 		}
 		return hb
 	}
@@ -70,7 +89,7 @@ func (f HeaderBar) ShowStartTitleButtons(show bool) HeaderBar {
 func (f HeaderBar) TitleWidget(widget any) HeaderBar {
 	return func() *adw.HeaderBar {
 		hb := f()
-		hb.SetTitleWidget(gtk.ResolveWidget(widget))
+		hb.SetTitleWidget(gtkbindings.ResolveWidget(widget))
 		return hb
 	}
 }

@@ -36,6 +36,7 @@ func (w *Window) buildContentHeader() *gtk.Widget {
 	defaultToolbar.Ref()
 
 	headerbar := HeaderBar().
+		BindDecorationLayout(decorationLayoutState).
 		ShowStartTitleButtons(false).
 		PackStart(
 			Button().
