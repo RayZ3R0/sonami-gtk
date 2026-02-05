@@ -134,14 +134,6 @@ func SearchEntry() gtkbindings.SearchEntry {
 	})
 }
 
-func Spinner() gtkbindings.Spinner {
-	return managedWidget("Spinner", func() *gtk.Spinner {
-		spinner := gtk.NewSpinner()
-		spinner.Start()
-		return spinner
-	})
-}
-
 func Widget(w *gtk.Widget) gtkbindings.Widget {
 	return func() *gtkbindings.WrappedWidget {
 		return &gtkbindings.WrappedWidget{Widget: *w}

@@ -1,25 +1,26 @@
-package gtk
+package adw
 
 import (
 	"codeberg.org/dergs/tonearm/pkg/schwifty/callback"
 	"codeberg.org/dergs/tonearm/pkg/schwifty/state"
 	"fmt"
+	"github.com/jwijenbergh/puregotk/v4/adw"
 	"github.com/jwijenbergh/puregotk/v4/gtk"
 )
 
 
-type Spinner func() *gtk.Spinner
+type Spinner func() *adw.Spinner
 
 func (f Spinner) AddController(controller *gtk.EventController) Spinner {
-	return func() *gtk.Spinner {
+	return func() *adw.Spinner {
 		widget := f()
 		widget.AddController(controller)
 		return widget
 	}
 }
 
-func (f Spinner) ConnectConstruct(cb func(*gtk.Spinner)) Spinner {
-	return func() *gtk.Spinner {
+func (f Spinner) ConnectConstruct(cb func(*adw.Spinner)) Spinner {
+	return func() *adw.Spinner {
 		widget := f()
 		cb(widget)
 		return widget
@@ -27,7 +28,7 @@ func (f Spinner) ConnectConstruct(cb func(*gtk.Spinner)) Spinner {
 }
 
 func (f Spinner) ConnectDestroy(cb func(gtk.Widget)) Spinner {
-	return func() *gtk.Spinner {
+	return func() *adw.Spinner {
 		widget := f()
 		callback.HandleCallback(widget.Object, "destroy", cb)
 		return widget
@@ -35,7 +36,7 @@ func (f Spinner) ConnectDestroy(cb func(gtk.Widget)) Spinner {
 }
 
 func (f Spinner) ConnectMap(cb func(gtk.Widget)) Spinner {
-	return func() *gtk.Spinner {
+	return func() *adw.Spinner {
 		widget := f()
 		callback.HandleCallback(widget.Object, "map", cb)
 		return widget
@@ -43,7 +44,7 @@ func (f Spinner) ConnectMap(cb func(gtk.Widget)) Spinner {
 }
 
 func (f Spinner) ConnectRealize(cb func(gtk.Widget)) Spinner {
-	return func() *gtk.Spinner {
+	return func() *adw.Spinner {
 		widget := f()
 		callback.HandleCallback(widget.Object, "realize", cb)
 		return widget
@@ -51,7 +52,7 @@ func (f Spinner) ConnectRealize(cb func(gtk.Widget)) Spinner {
 }
 
 func (f Spinner) ConnectUnmap(cb func(gtk.Widget)) Spinner {
-	return func() *gtk.Spinner {
+	return func() *adw.Spinner {
 		widget := f()
 		callback.HandleCallback(widget.Object, "unmap", cb)
 		return widget
@@ -59,7 +60,7 @@ func (f Spinner) ConnectUnmap(cb func(gtk.Widget)) Spinner {
 }
 
 func (f Spinner) ConnectUnrealize(cb func(gtk.Widget)) Spinner {
-	return func() *gtk.Spinner {
+	return func() *adw.Spinner {
 		widget := f()
 		callback.HandleCallback(widget.Object, "unrealize", cb)
 		return widget
@@ -67,7 +68,7 @@ func (f Spinner) ConnectUnrealize(cb func(gtk.Widget)) Spinner {
 }
 
 func (f Spinner) Focusable(focusable bool) Spinner {
-	return func() *gtk.Spinner {
+	return func() *adw.Spinner {
 		widget := f()
 		widget.SetFocusable(focusable)
 		return widget
@@ -75,7 +76,7 @@ func (f Spinner) Focusable(focusable bool) Spinner {
 }
 
 func (f Spinner) FocusOnClick(focusOnClick bool) Spinner {
-	return func() *gtk.Spinner {
+	return func() *adw.Spinner {
 		widget := f()
 		widget.SetFocusOnClick(focusOnClick)
 		return widget
@@ -83,7 +84,7 @@ func (f Spinner) FocusOnClick(focusOnClick bool) Spinner {
 }
 
 func (f Spinner) HAlign(align gtk.Align) Spinner {
-	return func() *gtk.Spinner {
+	return func() *adw.Spinner {
 		widget := f()
 		widget.SetHalign(align)
 		return widget
@@ -91,7 +92,7 @@ func (f Spinner) HAlign(align gtk.Align) Spinner {
 }
 
 func (f Spinner) HExpand(expand bool) Spinner {
-	return func() *gtk.Spinner {
+	return func() *adw.Spinner {
 		widget := f()
 		widget.SetHexpand(expand)
 		return widget
@@ -99,7 +100,7 @@ func (f Spinner) HExpand(expand bool) Spinner {
 }
 
 func (f Spinner) HMargin(horizontal int) Spinner {
-	return func() *gtk.Spinner {
+	return func() *adw.Spinner {
 		widget := f()
 		widget.SetMarginEnd(horizontal)
 		widget.SetMarginStart(horizontal)
@@ -108,7 +109,7 @@ func (f Spinner) HMargin(horizontal int) Spinner {
 }
 
 func (f Spinner) Margin(margin int) Spinner {
-	return func() *gtk.Spinner {
+	return func() *adw.Spinner {
 		widget := f()
 		widget.SetMarginBottom(margin)
 		widget.SetMarginEnd(margin)
@@ -119,7 +120,7 @@ func (f Spinner) Margin(margin int) Spinner {
 }
 
 func (f Spinner) MarginBottom(bottom int) Spinner {
-	return func() *gtk.Spinner {
+	return func() *adw.Spinner {
 		widget := f()
 		widget.SetMarginBottom(bottom)
 		return widget
@@ -127,7 +128,7 @@ func (f Spinner) MarginBottom(bottom int) Spinner {
 }
 
 func (f Spinner) MarginEnd(end int) Spinner {
-	return func() *gtk.Spinner {
+	return func() *adw.Spinner {
 		widget := f()
 		widget.SetMarginEnd(end)
 		return widget
@@ -135,7 +136,7 @@ func (f Spinner) MarginEnd(end int) Spinner {
 }
 
 func (f Spinner) MarginStart(start int) Spinner {
-	return func() *gtk.Spinner {
+	return func() *adw.Spinner {
 		widget := f()
 		widget.SetMarginStart(start)
 		return widget
@@ -143,7 +144,7 @@ func (f Spinner) MarginStart(start int) Spinner {
 }
 
 func (f Spinner) MarginTop(top int) Spinner {
-	return func() *gtk.Spinner {
+	return func() *adw.Spinner {
 		widget := f()
 		widget.SetMarginTop(top)
 		return widget
@@ -151,7 +152,7 @@ func (f Spinner) MarginTop(top int) Spinner {
 }
 
 func (f Spinner) Opacity(opacity float64) Spinner {
-	return func() *gtk.Spinner {
+	return func() *adw.Spinner {
 		widget := f()
 		widget.SetOpacity(opacity)
 		return widget
@@ -159,7 +160,7 @@ func (f Spinner) Opacity(opacity float64) Spinner {
 }
 
 func (f Spinner) Overflow(overflow gtk.Overflow) Spinner {
-	return func() *gtk.Spinner {
+	return func() *adw.Spinner {
 		widget := f()
 		widget.SetOverflow(overflow)
 		return widget
@@ -167,7 +168,7 @@ func (f Spinner) Overflow(overflow gtk.Overflow) Spinner {
 }
 
 func (f Spinner) Sensitive(sensitive bool) Spinner {
-	return func() *gtk.Spinner {
+	return func() *adw.Spinner {
 		widget := f()
 		widget.SetSensitive(sensitive)
 		return widget
@@ -175,7 +176,7 @@ func (f Spinner) Sensitive(sensitive bool) Spinner {
 }
 
 func (f Spinner) SizeRequest(width, height int) Spinner {
-	return func() *gtk.Spinner {
+	return func() *adw.Spinner {
 		widget := f()
 		widget.SetSizeRequest(width, height)
 		return widget
@@ -188,7 +189,7 @@ func (f Spinner) ToGTK() *gtk.Widget {
 }
 
 func (f Spinner) VAlign(align gtk.Align) Spinner {
-	return func() *gtk.Spinner {
+	return func() *adw.Spinner {
 		widget := f()
 		widget.SetValign(align)
 		return widget
@@ -196,7 +197,7 @@ func (f Spinner) VAlign(align gtk.Align) Spinner {
 }
 
 func (f Spinner) VExpand(expand bool) Spinner {
-	return func() *gtk.Spinner {
+	return func() *adw.Spinner {
 		widget := f()
 		widget.SetVexpand(expand)
 		return widget
@@ -204,7 +205,7 @@ func (f Spinner) VExpand(expand bool) Spinner {
 }
 
 func (f Spinner) Visible(visible bool) Spinner {
-	return func() *gtk.Spinner {
+	return func() *adw.Spinner {
 		widget := f()
 		widget.SetVisible(visible)
 		return widget
@@ -212,7 +213,7 @@ func (f Spinner) Visible(visible bool) Spinner {
 }
 
 func (f Spinner) VMargin(vertical int) Spinner {
-	return func() *gtk.Spinner {
+	return func() *adw.Spinner {
 		widget := f()
 		widget.SetMarginTop(vertical)
 		widget.SetMarginBottom(vertical)
@@ -223,7 +224,7 @@ func (f Spinner) VMargin(vertical int) Spinner {
 
 
 func (f Spinner) Background(color string) Spinner {
-	return func() *gtk.Spinner {
+	return func() *adw.Spinner {
 		return f.CSSWithCallback(func(elementName string) string {
 			return fmt.Sprintf("%s { background-color: %s; }", elementName, color)
 		})()
@@ -231,7 +232,7 @@ func (f Spinner) Background(color string) Spinner {
 }
 
 func (f Spinner) CornerRadius(radius int) Spinner {
-	return func() *gtk.Spinner {
+	return func() *adw.Spinner {
 		return f.CSSWithCallback(func(elementName string) string {
 			return fmt.Sprintf("%s { border-radius: %dpx; }", elementName, radius)
 		})()
@@ -239,7 +240,7 @@ func (f Spinner) CornerRadius(radius int) Spinner {
 }
 
 func (f Spinner) CSS(css string) Spinner {
-	return func() *gtk.Spinner {
+	return func() *adw.Spinner {
 		return f.CSSWithCallback(func(elementName string) string {
 			return css
 		})()
@@ -247,9 +248,9 @@ func (f Spinner) CSS(css string) Spinner {
 }
 
 func (f Spinner) BindCSSClass(state *state.State[string]) Spinner {
-	return func() *gtk.Spinner {
+	return func() *adw.Spinner {
 		var callbackId string
-		return f.ConnectConstruct(func(w *gtk.Spinner) {
+		return f.ConnectConstruct(func(w *adw.Spinner) {
 			ptr := w.GoPointer()
 			callbackId = state.AddCallback(func(newValue string) {
 				oldValue := state.Value()
@@ -269,7 +270,7 @@ func (f Spinner) BindCSSClass(state *state.State[string]) Spinner {
 }
 
 func (f Spinner) WithCSSClass(className string) Spinner {
-	return func() *gtk.Spinner {
+	return func() *adw.Spinner {
 		w := f()
 		styleContext := w.GetStyleContext()
 		defer styleContext.Unref()
@@ -280,9 +281,9 @@ func (f Spinner) WithCSSClass(className string) Spinner {
 }
 
 func (f Spinner) CSSWithCallback(cb func(elementName string) string) Spinner {
-	return func() *gtk.Spinner {
+	return func() *adw.Spinner {
 		provider := gtk.NewCssProvider()
-		return f.ConnectConstruct(func(t *gtk.Spinner) {
+		return f.ConnectConstruct(func(t *adw.Spinner) {
 			provider.LoadFromString(cb(t.GetCssName()))
 			t.GetStyleContext().AddProvider(provider, uint(gtk.STYLE_PROVIDER_PRIORITY_APPLICATION))
 		}).ConnectDestroy(func(w gtk.Widget) {
@@ -294,7 +295,7 @@ func (f Spinner) CSSWithCallback(cb func(elementName string) string) Spinner {
 }
 
 func (f Spinner) HPadding(padding int) Spinner {
-	return func() *gtk.Spinner {
+	return func() *adw.Spinner {
 		return f.CSSWithCallback(func(elementName string) string {
 			return fmt.Sprintf("%s { padding-left: %dpx; padding-right: %dpx; }", elementName, padding, padding)
 		})()
@@ -302,7 +303,7 @@ func (f Spinner) HPadding(padding int) Spinner {
 }
 
 func (f Spinner) MinHeight(minHeight int) Spinner {
-	return func() *gtk.Spinner {
+	return func() *adw.Spinner {
 		return f.CSSWithCallback(func(elementName string) string {
 			return fmt.Sprintf("%s { min-height: %dpx; }", elementName, minHeight)
 		})()
@@ -310,7 +311,7 @@ func (f Spinner) MinHeight(minHeight int) Spinner {
 }
 
 func (f Spinner) MinWidth(minWidth int) Spinner {
-	return func() *gtk.Spinner {
+	return func() *adw.Spinner {
 		return f.CSSWithCallback(func(elementName string) string {
 			return fmt.Sprintf("%s { min-width: %dpx; }", elementName, minWidth)
 		})()
@@ -318,7 +319,7 @@ func (f Spinner) MinWidth(minWidth int) Spinner {
 }
 
 func (f Spinner) Padding(padding int) Spinner {
-	return func() *gtk.Spinner {
+	return func() *adw.Spinner {
 		return f.CSSWithCallback(func(elementName string) string {
 			return fmt.Sprintf("%s { padding: %dpx; }", elementName, padding)
 		})()
@@ -326,7 +327,7 @@ func (f Spinner) Padding(padding int) Spinner {
 }
 
 func (f Spinner) PaddingBottom(padding int) Spinner {
-	return func() *gtk.Spinner {
+	return func() *adw.Spinner {
 		return f.CSSWithCallback(func(elementName string) string {
 			return fmt.Sprintf("%s { padding-bottom: %dpx; }", elementName, padding)
 		})()
@@ -334,7 +335,7 @@ func (f Spinner) PaddingBottom(padding int) Spinner {
 }
 
 func (f Spinner) PaddingEnd(padding int) Spinner {
-	return func() *gtk.Spinner {
+	return func() *adw.Spinner {
 		return f.CSSWithCallback(func(elementName string) string {
 			return fmt.Sprintf("%s { padding-right: %dpx; }", elementName, padding)
 		})()
@@ -342,7 +343,7 @@ func (f Spinner) PaddingEnd(padding int) Spinner {
 }
 
 func (f Spinner) PaddingStart(padding int) Spinner {
-	return func() *gtk.Spinner {
+	return func() *adw.Spinner {
 		return f.CSSWithCallback(func(elementName string) string {
 			return fmt.Sprintf("%s { padding-left: %dpx; }", elementName, padding)
 		})()
@@ -350,7 +351,7 @@ func (f Spinner) PaddingStart(padding int) Spinner {
 }
 
 func (f Spinner) PaddingTop(padding int) Spinner {
-	return func() *gtk.Spinner {
+	return func() *adw.Spinner {
 		return f.CSSWithCallback(func(elementName string) string {
 			return fmt.Sprintf("%s { padding-top: %dpx; }", elementName, padding)
 		})()
@@ -358,7 +359,7 @@ func (f Spinner) PaddingTop(padding int) Spinner {
 }
 
 func (f Spinner) VPadding(padding int) Spinner {
-	return func() *gtk.Spinner {
+	return func() *adw.Spinner {
 		return f.CSSWithCallback(func(elementName string) string {
 			return fmt.Sprintf("%s { padding-bottom: %dpx; padding-top: %dpx; }", elementName, padding, padding)
 		})()
@@ -368,9 +369,9 @@ func (f Spinner) VPadding(padding int) Spinner {
 
 
 func (f Spinner) BindVisible(state *state.State[bool]) Spinner {
-	return func() *gtk.Spinner {
+	return func() *adw.Spinner {
 		var callbackId string
-		return f.ConnectConstruct(func(w *gtk.Spinner) {
+		return f.ConnectConstruct(func(w *adw.Spinner) {
 			widgetPtr := w.GoPointer()
 			callbackId = state.AddCallback(func(newValue bool) {
 				callback.OnMainThreadOnce(func(u uintptr) {
@@ -384,9 +385,9 @@ func (f Spinner) BindVisible(state *state.State[bool]) Spinner {
 }
 
 func (f Spinner) BindHMargin(state *state.State[int]) Spinner {
-	return func() *gtk.Spinner {
+	return func() *adw.Spinner {
 		var callbackId string
-		return f.ConnectConstruct(func(w *gtk.Spinner) {
+		return f.ConnectConstruct(func(w *adw.Spinner) {
 			widgetPtr := w.GoPointer()
 			callbackId = state.AddCallback(func(newValue int) {
 				callback.OnMainThreadOnce(func(u uintptr) {
@@ -401,9 +402,9 @@ func (f Spinner) BindHMargin(state *state.State[int]) Spinner {
 }
 
 func (f Spinner) BindMargin(state *state.State[int]) Spinner {
-	return func() *gtk.Spinner {
+	return func() *adw.Spinner {
 		var callbackId string
-		return f.ConnectConstruct(func(widget *gtk.Spinner) {
+		return f.ConnectConstruct(func(widget *adw.Spinner) {
 			widgetPtr := widget.GoPointer()
 			callbackId = state.AddCallback(func(newValue int) {
 				callback.OnMainThreadOnce(func(u uintptr) {
@@ -420,9 +421,9 @@ func (f Spinner) BindMargin(state *state.State[int]) Spinner {
 }
 
 func (f Spinner) BindMarginBottom(state *state.State[int]) Spinner {
-	return func() *gtk.Spinner {
+	return func() *adw.Spinner {
 		var callbackId string
-		return f.ConnectConstruct(func(w *gtk.Spinner) {
+		return f.ConnectConstruct(func(w *adw.Spinner) {
 			widgetPtr := w.GoPointer()
 			callbackId = state.AddCallback(func(newValue int) {
 				callback.OnMainThreadOnce(func(u uintptr) {
@@ -436,9 +437,9 @@ func (f Spinner) BindMarginBottom(state *state.State[int]) Spinner {
 }
 
 func (f Spinner) BindMarginEnd(state *state.State[int]) Spinner {
-	return func() *gtk.Spinner {
+	return func() *adw.Spinner {
 		var callbackId string
-		return f.ConnectConstruct(func(w *gtk.Spinner) {
+		return f.ConnectConstruct(func(w *adw.Spinner) {
 			widgetPtr := w.GoPointer()
 			callbackId = state.AddCallback(func(newValue int) {
 				callback.OnMainThreadOnce(func(u uintptr) {
@@ -452,9 +453,9 @@ func (f Spinner) BindMarginEnd(state *state.State[int]) Spinner {
 }
 
 func (f Spinner) BindMarginStart(state *state.State[int]) Spinner {
-	return func() *gtk.Spinner {
+	return func() *adw.Spinner {
 		var callbackId string
-		return f.ConnectConstruct(func(w *gtk.Spinner) {
+		return f.ConnectConstruct(func(w *adw.Spinner) {
 			widgetPtr := w.GoPointer()
 			callbackId = state.AddCallback(func(newValue int) {
 				callback.OnMainThreadOnce(func(u uintptr) {
@@ -468,9 +469,9 @@ func (f Spinner) BindMarginStart(state *state.State[int]) Spinner {
 }
 
 func (f Spinner) BindMarginTop(state *state.State[int]) Spinner {
-	return func() *gtk.Spinner {
+	return func() *adw.Spinner {
 		var callbackId string
-		return f.ConnectConstruct(func(w *gtk.Spinner) {
+		return f.ConnectConstruct(func(w *adw.Spinner) {
 			widgetPtr := w.GoPointer()
 			callbackId = state.AddCallback(func(newValue int) {
 				callback.OnMainThreadOnce(func(u uintptr) {
@@ -484,9 +485,9 @@ func (f Spinner) BindMarginTop(state *state.State[int]) Spinner {
 }
 
 func (f Spinner) BindSensitive(state *state.State[bool]) Spinner {
-	return func() *gtk.Spinner {
+	return func() *adw.Spinner {
 		var callbackId string
-		return f.ConnectConstruct(func(w *gtk.Spinner) {
+		return f.ConnectConstruct(func(w *adw.Spinner) {
 			widgetPtr := w.GoPointer()
 			callbackId = state.AddCallback(func(newValue bool) {
 				callback.OnMainThreadOnce(func(u uintptr) {

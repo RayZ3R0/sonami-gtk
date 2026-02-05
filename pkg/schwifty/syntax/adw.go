@@ -111,6 +111,12 @@ func ShortcutsSection(items ...any) adwbindings.ShortcutsSection {
 	})
 }
 
+func Spinner() adwbindings.Spinner {
+	return managedWidget("Spinner", func() *adw.Spinner {
+		return adw.NewSpinner()
+	})
+}
+
 func SpinRow(adjustment *gtk.Adjustment, climbRate float64, digits uint) adwbindings.SpinRow {
 	return managedWidget("SpinRow", func() *adw.SpinRow {
 		return adw.NewSpinRow(adjustment, climbRate, digits)
