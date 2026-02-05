@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: 1\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2026-02-05 18:41+0100\n"
-"PO-Revision-Date: 2026-02-04 16:49+0100\n"
+"PO-Revision-Date: 2026-02-05 18:55+0100\n"
 "Last-Translator: Nila The Dragon <nilathedragon@pm.me>\n"
 "Language-Team: German\n"
 "Language: de\n"
@@ -343,7 +343,7 @@ msgstr ""
 
 #: internal/ui/components/dynamic_v1.go:134
 msgid "More"
-msgstr ""
+msgstr "Mehr"
 
 #: internal/ui/routes/my_collection/albums.go:36
 msgid "My Albums"
