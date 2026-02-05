@@ -53,3 +53,26 @@ func (f *Feed) Activities(ctx context.Context, id string) ([]*feed.Activity, err
 
 	return activities, nil
 }
+
+func (f *Feed) Seen(ctx context.Context, id string) error {
+	req, err := http.NewRequestWithContext(ctx, http.MethodPut, "/v2/feed/activities/seen", nil)
+	if err != nil {
+		return err
+	}
+
+	params := req.URL.Query()
+	params.Set("userId", id)
+	req.URL.RawQuery = params.Encode()
+
+	resp, err := f.client.Do(req)
+	if err != nil {
+		return err
+	}
+	defer resp.Body.Close()
+
+	if resp.StatusCode != http.StatusOK {
+		return fmt.Errorf("unexpected status code: %d", resp.StatusCode)
+	}
+
+	return nil
+}
