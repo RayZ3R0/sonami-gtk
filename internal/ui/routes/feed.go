@@ -228,7 +228,7 @@ func Feed() *router.Response {
 			sep := gtk.NewSeparator(gtk.OrientationVerticalValue)
 			box = box.Append(
 				ManagedWidget(&sep.Widget).
-					CSS("separator { color: var(--accent-color); }"),
+					CSS("separator { background-color: var(--accent-color); padding-top: 2px; border-radius: 5px; }"),
 			)
 		}
 	}
