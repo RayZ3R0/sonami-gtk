@@ -28,6 +28,8 @@ type ShortcutsSection = adw.ShortcutsSection
 
 type SpinRow = adw.SpinRow
 
+type Spinner = adw.Spinner
+
 type StatusPage = adw.StatusPage
 
 type SwitchRow = adw.SwitchRow

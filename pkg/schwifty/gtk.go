@@ -34,8 +34,6 @@ type ScrolledWindow = gtk.ScrolledWindow
 
 type SearchEntry = gtk.SearchEntry
 
-type Spinner = gtk.Spinner
-
 type Widget = gtk.Widget
 type BaseWidgetable = gtk.BaseWidgetable
 type Widgetable[T any] = gtk.Widgetable[T]
