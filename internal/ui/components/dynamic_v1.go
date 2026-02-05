@@ -125,21 +125,13 @@ func ForModule(module v1.Module) schwifty.BaseWidgetable {
 	case v1.ModuleTypePageLinks:
 		list := shortcut_list.NewShortcutList()
 		for _, item := range module.PagedList.Items {
-			list.Append(
-				shortcut_list.
-					NewTextShortcut(item.Title, "").
-					WithCSSClass("pill").
-					ConnectClicked(func(b gtk.Button) {
-						router.Navigate(strings.ReplaceAll(item.APIPath, "pages/", "explore/"))
-					}),
-			)
+			list.Append(shortcut_list.NewTextShortcut(item.Title, "").ConnectClicked(func(b gtk.Button) {
+				router.Navigate(strings.ReplaceAll(item.APIPath, "pages/", "explore/"))
+			}))
 		}
 		return VStack(
-			ManagedWidget(&gtk.NewSeparator(gtk.OrientationHorizontalValue).Widget).
-				WithCSSClass("spacer"),
-			Clamp().Child(
-				list.HMargin(50),
-			).MaximumSize(1200),
+			NewRowTitle().SetTitle("More").HPadding(40),
+			list.HMargin(50),
 		)
 	default:
 		logger.Warn("Unsupported module type", "type", module.Type)
