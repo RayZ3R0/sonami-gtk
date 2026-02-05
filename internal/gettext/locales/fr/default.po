@@ -9,8 +9,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: v1.0.0-12-g1ce38cd\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-02-04 17:32+0100\n"
-"PO-Revision-Date: 2026-02-04 15:57+0100\n"
+"POT-Creation-Date: 2026-02-05 18:41+0100\n"
+"PO-Revision-Date: 2026-02-05 19:49+0100\n"
 "Last-Translator: Dråfølin Nattfløyen <derg at drafolin dot ch>\n"
 "Language-Team: French\n"
 "Language: fr\n"
@@ -38,7 +38,7 @@ msgid_plural "%d Tracks (%s)"
 msgstr[0] "%d Morceau (%s)"
 msgstr[1] "%d Morceaux (%s)"
 
-#: internal/ui/routes/feed.go:160
+#: internal/ui/routes/feed.go:159
 msgid "%s and %s"
 msgstr "%s, et %s"
 
@@ -58,7 +58,7 @@ msgstr "Ajouter à la file d'attente"
 msgid "Album"
 msgstr "Album"
 
-#: internal/ui/routes/feed.go:168
+#: internal/ui/routes/feed.go:167
 msgid "Album by %s"
 msgstr "Album de %s"
 
@@ -149,7 +149,7 @@ msgstr "Artiste"
 msgid "Artists"
 msgstr "Artistes"
 
-#: internal/ui/routes/feed.go:101
+#: internal/ui/routes/feed.go:100
 msgid "Authentication required"
 msgstr "Connexion requise"
 
@@ -243,7 +243,7 @@ msgstr "Ne plus afficher"
 msgid "E.g. Fox Stevenson"
 msgstr "P.ex. Fox Stevenson"
 
-#: internal/ui/routes/feed.go:170
+#: internal/ui/routes/feed.go:169
 msgid "EP by %s"
 msgstr "EP de %s"
 
@@ -271,7 +271,7 @@ msgstr "Explorer"
 msgid "External Link"
 msgstr "Lien externe"
 
-#: internal/ui/routes/feed.go:98
+#: internal/ui/routes/feed.go:97
 msgid "Feed"
 msgstr "Fil d'actualité"
 
@@ -303,11 +303,11 @@ msgstr "Erreur interne"
 msgid "Keyboard Shortcuts"
 msgstr "Raccourcis claviers"
 
-#: internal/ui/routes/feed.go:84
+#: internal/ui/routes/feed.go:83
 msgid "Last Month"
 msgstr "Le mois dernier"
 
-#: internal/ui/routes/feed.go:80
+#: internal/ui/routes/feed.go:79
 msgid "Last Week"
 msgstr "La semaine dernière"
 
@@ -347,6 +347,10 @@ msgstr "Max"
 msgid "Maximum history length before dropping old entries."
 msgstr ""
 "Taille de l'historique maximale avant d'oublier les entrées plus vieilles."
+
+#: internal/ui/components/dynamic_v1.go:134
+msgid "More"
+msgstr "Plus"
 
 #: internal/ui/routes/my_collection/albums.go:36
 msgid "My Albums"
@@ -457,7 +461,7 @@ msgstr "Non trouvé"
 msgid "Not found"
 msgstr "Non trouvé"
 
-#: internal/ui/routes/feed.go:86
+#: internal/ui/routes/feed.go:85
 msgid "Older"
 msgstr "Plus vieux"
 
@@ -615,7 +619,7 @@ msgstr "Connectée en tant que %s"
 msgid "Signed out"
 msgstr "Déconnecté"
 
-#: internal/ui/routes/feed.go:166
+#: internal/ui/routes/feed.go:165
 msgid "Single by %s"
 msgstr "Single de %s"
 
@@ -635,15 +639,15 @@ msgstr "Synchroniser avec le morceau"
 msgid "The requested deeplink did not have any available handlers."
 msgstr "Le raccourcis sélectionné n'a pas de gestionnaire défini."
 
-#: internal/ui/routes/feed.go:82
+#: internal/ui/routes/feed.go:81
 msgid "This Month"
 msgstr "Ce mois-ci"
 
-#: internal/ui/routes/feed.go:78
+#: internal/ui/routes/feed.go:77
 msgid "This Week"
 msgstr "Cette semaine"
 
-#: internal/ui/routes/feed.go:76
+#: internal/ui/routes/feed.go:75
 msgid "Today"
 msgstr "Aujourd'hui"
 
@@ -680,11 +684,11 @@ msgstr ""
 "\n"
 "Message d'erreur: "
 
-#: internal/ui/routes/feed.go:172
+#: internal/ui/routes/feed.go:171
 msgid "Unknown album type"
 msgstr "Type d'album inconnu"
 
-#: internal/ui/routes/feed.go:236
+#: internal/ui/routes/feed.go:235
 msgid "Unsupported activity"
 msgstr "Activité non supportée"
 
@@ -701,7 +705,7 @@ msgid "You can also open the linking page using the button below."
 msgstr ""
 "Vous pouvez également ouvrir la page de connexion avec le boouton ci-dessous."
 
-#: internal/ui/routes/feed.go:102
+#: internal/ui/routes/feed.go:101
 msgid "You need to sign in to your account to access this page"
 msgstr "Vous devez vous connecter à votre compte pour accéder à cette page"
 

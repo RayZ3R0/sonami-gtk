@@ -1,6 +1,8 @@
 package components
 
 import (
+	"log/slog"
+
 	"codeberg.org/dergs/tonearm/internal/ui/components/horizontal_list"
 	"codeberg.org/dergs/tonearm/internal/ui/components/media_card"
 	"codeberg.org/dergs/tonearm/internal/ui/components/shortcut_list"
@@ -11,6 +13,8 @@ import (
 	v2 "codeberg.org/dergs/tonearm/pkg/tidalapi/models/v2"
 	"github.com/jwijenbergh/puregotk/v4/gtk"
 )
+
+var logger = slog.With("module", "components")
 
 func ForPageItem(pageItem v2.PageItem) schwifty.BaseWidgetable {
 	switch pageItem.Type {
@@ -71,6 +75,7 @@ func ForPageItem(pageItem v2.PageItem) schwifty.BaseWidgetable {
 		}
 		return list.HMargin(50)
 	default:
+		logger.Warn("Unsupported item type", "type", pageItem.Type)
 		return HStack(
 			Label("Unsupported Element").
 				Background("alpha(var(--view-fg-color), 0.1)").
