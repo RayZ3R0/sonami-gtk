@@ -5,6 +5,7 @@ import (
 	"strings"
 	"time"
 
+	"codeberg.org/dergs/tonearm/internal/gettext"
 	"codeberg.org/dergs/tonearm/internal/router"
 	"codeberg.org/dergs/tonearm/internal/ui/components/horizontal_list"
 	"codeberg.org/dergs/tonearm/internal/ui/components/media_card"
@@ -130,7 +131,7 @@ func ForModule(module v1.Module) schwifty.BaseWidgetable {
 			}))
 		}
 		return VStack(
-			NewRowTitle().SetTitle("More").HPadding(40),
+			NewRowTitle().SetTitle(gettext.Get("More")).HPadding(40),
 			list.HMargin(50),
 		)
 	default:
