@@ -45,6 +45,27 @@
   <url type="contact">https://matrix.to/#/%23tonearm:derg.social</url>
 
   <releases>
+    <release version="1.2.0" date="2026-02-05">
+        <url type="details">https://codeberg.org/dergs/Tonearm/releases/tag/v1.2.0</url>
+        <description>
+            <p>Bug Fixes:</p>
+            <ul>
+                <li>Fixed an issue where we would not deallocate GObjects properly</li>
+                <li>Fixed an issue where the track list in the search UI was misaligned</li>
+                <li>Fixed an issue where repeating a track would not work</li>
+                <li>Fixed an issue where scrobbling could block playback</li>
+                <li>Fixed an issue where Tonearm would fail to show window decorations when set to the left side</li>
+            </ul>
+            <p>New Features:</p>
+            <ul>
+                <li>You can now configure whether Tonearm should autoplay track radios after your queue ends</li>
+                <li>Added pagination to collection pages</li>
+                <li>Added sub-pages to all search result types</li>
+                <li>You can now configure your preferred maximum audio quality</li>
+                <li>You can now view your feed in Tonearm</li>
+            </ul>
+        </description>
+    </release>
     <release version="1.1.0" date="2026-01-31">
         <url type="details">https://codeberg.org/dergs/Tonearm/releases/tag/v1.1.0</url>
         <description>
