@@ -109,7 +109,6 @@ func Feed() *router.Response {
 	}
 
 	body := VStack().Spacing(36).VMargin(20)
-	isRead := true
 
 	slices.SortFunc(activities, func(a1, a2 *feed.Activity) int {
 		// sub a1 from a2 to sort in descending order
@@ -120,7 +119,7 @@ func Feed() *router.Response {
 	box := VStack(Label(stage.String()).WithCSSClass("title-2")).Spacing(12)
 	hasElements := false
 
-	for _, activity := range activities {
+	for i, activity := range activities {
 		for activity.FollowableActivity.OccuredAt.Before(stage.Threshold()) {
 			stage++
 			if hasElements {
@@ -128,19 +127,6 @@ func Feed() *router.Response {
 			}
 			box = VStack(Label(stage.String()).WithCSSClass("title-2")).Spacing(12)
 			hasElements = false
-		}
-
-		if isRead && !activity.Seen {
-			isRead = false
-		}
-
-		if !isRead && activity.Seen {
-			sep := gtk.NewSeparator(gtk.OrientationVerticalValue)
-			box = box.Append(
-				ManagedWidget(&sep.Widget).
-					CSS("separator { color: var(--accent-color); height: 5px; }"),
-			)
-			isRead = true
 		}
 
 		switch activity.FollowableActivity.ActivityType {
@@ -236,6 +222,14 @@ func Feed() *router.Response {
 					),
 			)
 			hasElements = true
+		}
+
+		if !activity.Seen && i+1 < len(activities) && activities[i+1].Seen {
+			sep := gtk.NewSeparator(gtk.OrientationVerticalValue)
+			box = box.Append(
+				ManagedWidget(&sep.Widget).
+					CSS("separator { background-color: var(--accent-color); padding-top: 2px; border-radius: 5px; }"),
+			)
 		}
 	}
 
