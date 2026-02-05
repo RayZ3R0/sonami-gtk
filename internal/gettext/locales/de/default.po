@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: 1\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-02-04 17:32+0100\n"
-"PO-Revision-Date: 2026-02-04 16:49+0100\n"
+"POT-Creation-Date: 2026-02-05 18:41+0100\n"
+"PO-Revision-Date: 2026-02-05 18:55+0100\n"
 "Last-Translator: Nila The Dragon <nilathedragon@pm.me>\n"
 "Language-Team: German\n"
 "Language: de\n"
@@ -37,7 +37,7 @@ msgid_plural "%d Tracks (%s)"
 msgstr[0] "%d Titel (%s)"
 msgstr[1] "%d Titel (%s)"
 
-#: internal/ui/routes/feed.go:160
+#: internal/ui/routes/feed.go:159
 msgid "%s and %s"
 msgstr "%s und %s"
 
@@ -57,7 +57,7 @@ msgstr "Zur Warteschlange hinzufügen"
 msgid "Album"
 msgstr ""
 
-#: internal/ui/routes/feed.go:168
+#: internal/ui/routes/feed.go:167
 msgid "Album by %s"
 msgstr "Album von %s"
 
@@ -144,7 +144,7 @@ msgstr "Künstler"
 msgid "Artists"
 msgstr "Künstler"
 
-#: internal/ui/routes/feed.go:101
+#: internal/ui/routes/feed.go:100
 msgid "Authentication required"
 msgstr "Anmeldung erforderlich"
 
@@ -236,7 +236,7 @@ msgstr "Nicht erneut anzeigen"
 msgid "E.g. Fox Stevenson"
 msgstr "z.B. Fox Stevenson"
 
-#: internal/ui/routes/feed.go:170
+#: internal/ui/routes/feed.go:169
 msgid "EP by %s"
 msgstr "EP von %s"
 
@@ -264,7 +264,7 @@ msgstr "Entdecken"
 msgid "External Link"
 msgstr "Externer Link"
 
-#: internal/ui/routes/feed.go:98
+#: internal/ui/routes/feed.go:97
 msgid "Feed"
 msgstr ""
 
@@ -296,11 +296,11 @@ msgstr "Interner Fehler"
 msgid "Keyboard Shortcuts"
 msgstr "Tastaturkurzbefehle"
 
-#: internal/ui/routes/feed.go:84
+#: internal/ui/routes/feed.go:83
 msgid "Last Month"
 msgstr "Letzter Monat"
 
-#: internal/ui/routes/feed.go:80
+#: internal/ui/routes/feed.go:79
 msgid "Last Week"
 msgstr "Letzte Woche"
 
@@ -340,6 +340,10 @@ msgstr "Max"
 msgid "Maximum history length before dropping old entries."
 msgstr ""
 "Maximale Anzahl Einträge im Verlauf bevor alte Einträge gelöscht werden."
+
+#: internal/ui/components/dynamic_v1.go:134
+msgid "More"
+msgstr "Mehr"
 
 #: internal/ui/routes/my_collection/albums.go:36
 msgid "My Albums"
@@ -450,7 +454,7 @@ msgstr "Nicht Gefunden"
 msgid "Not found"
 msgstr "Nicht gefunden"
 
-#: internal/ui/routes/feed.go:86
+#: internal/ui/routes/feed.go:85
 msgid "Older"
 msgstr "Älter"
 
@@ -608,7 +612,7 @@ msgstr "Angemeldet als %s"
 msgid "Signed out"
 msgstr "Abgemeldet"
 
-#: internal/ui/routes/feed.go:166
+#: internal/ui/routes/feed.go:165
 msgid "Single by %s"
 msgstr "Single von %s"
 
@@ -628,15 +632,15 @@ msgstr "Mit Titel synchronisieren"
 msgid "The requested deeplink did not have any available handlers."
 msgstr "Die gewünschte Seite konnte nicht gefunden werden"
 
-#: internal/ui/routes/feed.go:82
+#: internal/ui/routes/feed.go:81
 msgid "This Month"
 msgstr "Diesen Monat"
 
-#: internal/ui/routes/feed.go:78
+#: internal/ui/routes/feed.go:77
 msgid "This Week"
 msgstr "Diese Woche"
 
-#: internal/ui/routes/feed.go:76
+#: internal/ui/routes/feed.go:75
 msgid "Today"
 msgstr "Heute"
 
@@ -674,11 +678,11 @@ msgstr ""
 "\n"
 "Fehlermeldung: "
 
-#: internal/ui/routes/feed.go:172
+#: internal/ui/routes/feed.go:171
 msgid "Unknown album type"
 msgstr "Unbekannter Album Typ"
 
-#: internal/ui/routes/feed.go:236
+#: internal/ui/routes/feed.go:235
 msgid "Unsupported activity"
 msgstr "Nicht-unterstützte Aktivität"
 
@@ -695,7 +699,7 @@ msgid "You can also open the linking page using the button below."
 msgstr ""
 "Mit dem folgenden Knopf kannst du auch direkt zur Anmeldeseite wechseln."
 
-#: internal/ui/routes/feed.go:102
+#: internal/ui/routes/feed.go:101
 msgid "You need to sign in to your account to access this page"
 msgstr "Du musst angemeldet sein um diese Seite zu betrachten"
 
