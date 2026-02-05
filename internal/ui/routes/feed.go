@@ -118,6 +118,7 @@ func Feed() *router.Response {
 	stage := todayStage
 	box := VStack(Label(stage.String()).WithCSSClass("title-2")).Spacing(12)
 	hasElements := false
+	hasUnseenElements := false
 
 	for i, activity := range activities {
 		for activity.FollowableActivity.OccuredAt.Before(stage.Threshold()) {
@@ -224,6 +225,10 @@ func Feed() *router.Response {
 			hasElements = true
 		}
 
+		if !hasUnseenElements && !activity.Seen {
+			hasUnseenElements = true
+		}
+
 		if !activity.Seen && i+1 < len(activities) && activities[i+1].Seen {
 			sep := gtk.NewSeparator(gtk.OrientationVerticalValue)
 			box = box.Append(
@@ -235,9 +240,9 @@ func Feed() *router.Response {
 
 	body = body.Append(box)
 
-	// TODO: Implement read action.
-	// Currently, no idea what the API route is. I/We have to wait until
-	// an artist releases an album or a mix is released.
+	if hasUnseenElements {
+		tidal.V2.Feed.Seen(context.Background(), userId)
+	}
 
 	return &router.Response{
 		PageTitle: gettext.Get("Feed"),
