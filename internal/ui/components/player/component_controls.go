@@ -27,7 +27,8 @@ var playSpinner = g.Lazy(func() any {
 })
 
 var (
-	playPauseChildState = state.NewStateful[any](nil)
+	playPauseChildState       = state.NewStateful[any](nil)
+	actualPlayPauseChildState = state.NewStateful[any](nil)
 
 	repeatClassState = state.NewStateful("")
 	repeatIconState  = state.NewStateful(repeatListIcon)
@@ -42,24 +43,36 @@ var controlButton = Button().
 	VAlign(gtk.AlignCenterValue)
 
 func init() {
-	wasLoading := false
 	player.PlaybackStateChanged.On(func(state *player.PlaybackState) bool {
 		schwifty.OnMainThreadOncePure(func() {
-			if state.Loading && !wasLoading {
-				playPauseChildState.SetValue(playSpinner())
-				wasLoading = true
-			} else {
-				wasLoading = false
-				switch state.Status {
-				case player.PlaybackStatusPlaying:
-					playPauseChildState.SetValue(pauseIcon())
-				case player.PlaybackStatusPaused, player.PlaybackStatusStopped:
-					playPauseChildState.SetValue(playIcon())
-				}
+			var val any
+			switch state.Status {
+			case player.PlaybackStatusPlaying:
+				val = pauseIcon()
+			case player.PlaybackStatusPaused, player.PlaybackStatusStopped:
+				val = playIcon()
 			}
+
+			if isControllableState.Value() {
+				actualPlayPauseChildState.SetValue(val)
+			} else {
+				actualPlayPauseChildState.SetValue(playSpinner())
+			}
+
+			playPauseChildState.SetValue(val)
 		})
 
 		return signals.Continue
+	})
+
+	isControllableState.AddCallback(func(newValue bool) {
+		schwifty.OnMainThreadOncePure(func() {
+			if newValue {
+				actualPlayPauseChildState.SetValue(playPauseChildState.Value())
+			} else {
+				actualPlayPauseChildState.SetValue(playSpinner())
+			}
+		})
 	})
 
 	player.RepeatModeChanged.OnLazy(func(rm player.RepeatMode) bool {
@@ -103,7 +116,7 @@ func controls() schwifty.Box {
 		Button().
 			TooltipText(gettext.Get("Play / Pause")).
 			ActionName("win.player.play-pause").
-			BindChild(playPauseChildState).
+			BindChild(actualPlayPauseChildState).
 			BindSensitive(isControllableState).
 			WithCSSClass("suggested-action").CornerRadius(21).
 			HPadding(32).VPadding(9),
