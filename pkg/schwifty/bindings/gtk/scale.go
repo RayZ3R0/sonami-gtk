@@ -27,7 +27,7 @@ func (f Scale) BindValue(state *state.State[float64]) Scale {
 				callback.OnMainThreadOncePure(func() {
 					if obj := ref.Get(); obj != nil {
 						defer obj.Unref()
-						gtk.ScaleNewFromInternalPtr(obj.GoPointer()).SetValue(newValue)
+						gtk.ScaleNewFromInternalPtr(obj.Ptr).SetValue(newValue)
 					}
 				})
 			})
