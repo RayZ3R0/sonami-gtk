@@ -43,8 +43,8 @@ func playNextTrack() {
 		logger.Info("playing next track", "track_id", nextTrack.Data.ID)
 		if strconv.Itoa(currentlyEnqueuedTrackID) != nextTrack.Data.ID {
 			setLoadingState()
-			playTrack(nextTrack)
 		}
+		playTrack(nextTrack)
 
 		history.Push(&HistoryEntry{
 			TrackID: nextTrack.Data.ID,
