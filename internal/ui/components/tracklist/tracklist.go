@@ -84,18 +84,25 @@ func (t *TrackList[TrackType]) onBind(_ gtk.SignalListItemFactory, listItem *gtk
 	defer container.Unref()
 
 	var subscription *signals.Subscription
+	alive := true
 	grid := Grid().ConnectConstruct(func(g *gtk.Grid) {
 		gridPtr := g.GoPointer()
 		subscription = player.TrackChanged.On(func(t *player.Track) bool {
-			grid := gtk.GridNewFromInternalPtr(gridPtr)
-			if t != nil && track.GetID() == t.ID {
-				grid.AddCssClass("playing")
-			} else {
-				grid.RemoveCssClass("playing")
-			}
+			schwifty.OnMainThreadOncePure(func() {
+				if !alive {
+					return
+				}
+				grid := gtk.GridNewFromInternalPtr(gridPtr)
+				if t != nil && track.GetID() == t.ID {
+					grid.AddCssClass("playing")
+				} else {
+					grid.RemoveCssClass("playing")
+				}
+			})
 			return signals.Continue
 		})
 	}).ConnectDestroy(func(w gtk.Widget) {
+		alive = false
 		player.TrackChanged.Unsubscribe(subscription)
 	})()
 	grid.SetColumnHomogeneous(true)
