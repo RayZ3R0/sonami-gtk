@@ -48,6 +48,20 @@ func (x *WeakRef) Get() *gobject.Object {
 	return cls
 }
 
+func (x *WeakRef) Use(cb func(obj *gobject.Object)) bool {
+	if x.ptr == 0 {
+		return false
+	}
+
+	obj := x.Get()
+	if obj != nil {
+		defer obj.Unref()
+		cb(obj)
+		return true
+	}
+	return false
+}
+
 func NewWeakRef[T Trackable](obj T) *WeakRef {
 	x := &WeakRef{
 		ptr: glib.Malloc(uint(unsafe.Sizeof(uintptr(0)) * 2)),

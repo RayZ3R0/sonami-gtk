@@ -84,23 +84,20 @@ func (t *TrackList[TrackType]) onBind(_ gtk.SignalListItemFactory, listItem *gtk
 	container := adw.BinNewFromInternalPtr(listItem.GetChild().GoPointer())
 	defer container.Unref()
 
-	var subscription *signals.Subscription
-	var ref *tracking.WeakRef
 	grid := Grid().ConnectConstruct(func(g *gtk.Grid) {
-		ref = tracking.NewWeakRef(g)
-		subscription = player.TrackChanged.On(func(t *player.Track) bool {
-			if obj := ref.Get(); obj != nil {
-				grid := gtk.GridNewFromInternalPtr(obj.Ptr)
-				if t != nil && track.GetID() == t.ID {
-					grid.AddCssClass("playing")
-				} else {
-					grid.RemoveCssClass("playing")
-				}
-			}
-			return signals.Continue
+		var ref = tracking.NewWeakRef(g)
+		player.TrackChanged.On(func(t *player.Track) bool {
+			return signals.ContinueIf(
+				ref.Use(func(obj *gobject.Object) {
+					grid := gtk.GridNewFromInternalPtr(obj.Ptr)
+					if t != nil && track.GetID() == t.ID {
+						grid.AddCssClass("playing")
+					} else {
+						grid.RemoveCssClass("playing")
+					}
+				}),
+			)
 		})
-	}).ConnectDestroy(func(w gtk.Widget) {
-		player.TrackChanged.Unsubscribe(subscription)
 	})()
 	grid.SetColumnHomogeneous(true)
 
