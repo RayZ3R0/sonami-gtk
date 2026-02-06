@@ -3,6 +3,7 @@ package adw
 import (
 	"codeberg.org/dergs/tonearm/pkg/schwifty/callback"
 	"codeberg.org/dergs/tonearm/pkg/schwifty/state"
+	"codeberg.org/dergs/tonearm/pkg/schwifty/tracking"
 	"fmt"
 	"github.com/jwijenbergh/puregotk/v4/adw"
 	"github.com/jwijenbergh/puregotk/v4/gtk"
@@ -250,18 +251,23 @@ func (f Spinner) CSS(css string) Spinner {
 func (f Spinner) BindCSSClass(state *state.State[string]) Spinner {
 	return func() *adw.Spinner {
 		var callbackId string
+		var ref *tracking.WeakRef
 		return f.ConnectConstruct(func(w *adw.Spinner) {
-			ptr := w.GoPointer()
+			ref = tracking.NewWeakRef(&w.Widget)
 			callbackId = state.AddCallback(func(newValue string) {
 				oldValue := state.Value()
-				callback.OnMainThreadOnce(func(u uintptr) {
-					w := gtk.ButtonNewFromInternalPtr(u)
-					styleContext := w.GetStyleContext()
-					defer styleContext.Unref()
+				callback.OnMainThreadOncePure(func() {
+					if obj := ref.Get(); obj != nil {
+						defer obj.Unref()
 
-					styleContext.RemoveClass(oldValue)
-					styleContext.AddClass(newValue)
-				}, ptr)
+						w := gtk.WidgetNewFromInternalPtr(obj.Ptr)
+						styleContext := w.GetStyleContext()
+						defer styleContext.Unref()
+
+						styleContext.RemoveClass(oldValue)
+						styleContext.AddClass(newValue)
+					}
+				})
 			})
 		}).ConnectDestroy(func(w gtk.Widget) {
 			state.RemoveCallback(callbackId)
@@ -371,12 +377,16 @@ func (f Spinner) VPadding(padding int) Spinner {
 func (f Spinner) BindVisible(state *state.State[bool]) Spinner {
 	return func() *adw.Spinner {
 		var callbackId string
+		var ref *tracking.WeakRef
 		return f.ConnectConstruct(func(w *adw.Spinner) {
-			widgetPtr := w.GoPointer()
+			ref = tracking.NewWeakRef(&w.Widget)
 			callbackId = state.AddCallback(func(newValue bool) {
-				callback.OnMainThreadOnce(func(u uintptr) {
-					gtk.WidgetNewFromInternalPtr(u).SetVisible(newValue)
-				}, widgetPtr)
+				callback.OnMainThreadOncePure(func() {
+					if obj := ref.Get(); obj != nil {
+						defer obj.Unref()
+						gtk.WidgetNewFromInternalPtr(obj.Ptr).SetVisible(newValue)
+					}
+				})
 			})
 		}).ConnectDestroy(func(w gtk.Widget) {
 			state.RemoveCallback(callbackId)
@@ -387,13 +397,17 @@ func (f Spinner) BindVisible(state *state.State[bool]) Spinner {
 func (f Spinner) BindHMargin(state *state.State[int]) Spinner {
 	return func() *adw.Spinner {
 		var callbackId string
+		var ref *tracking.WeakRef
 		return f.ConnectConstruct(func(w *adw.Spinner) {
-			widgetPtr := w.GoPointer()
+			ref = tracking.NewWeakRef(&w.Widget)
 			callbackId = state.AddCallback(func(newValue int) {
-				callback.OnMainThreadOnce(func(u uintptr) {
-					gtk.WidgetNewFromInternalPtr(u).SetMarginEnd(newValue)
-					gtk.WidgetNewFromInternalPtr(u).SetMarginStart(newValue)
-				}, widgetPtr)
+				callback.OnMainThreadOncePure(func() {
+					if obj := ref.Get(); obj != nil {
+						defer obj.Unref()
+						gtk.WidgetNewFromInternalPtr(obj.Ptr).SetMarginEnd(newValue)
+						gtk.WidgetNewFromInternalPtr(obj.Ptr).SetMarginStart(newValue)
+					}
+				})
 			})
 		}).ConnectDestroy(func(w gtk.Widget) {
 			state.RemoveCallback(callbackId)
@@ -404,15 +418,19 @@ func (f Spinner) BindHMargin(state *state.State[int]) Spinner {
 func (f Spinner) BindMargin(state *state.State[int]) Spinner {
 	return func() *adw.Spinner {
 		var callbackId string
-		return f.ConnectConstruct(func(widget *adw.Spinner) {
-			widgetPtr := widget.GoPointer()
+		var ref *tracking.WeakRef
+		return f.ConnectConstruct(func(w *adw.Spinner) {
+			ref = tracking.NewWeakRef(&w.Widget)
 			callbackId = state.AddCallback(func(newValue int) {
-				callback.OnMainThreadOnce(func(u uintptr) {
-					gtk.WidgetNewFromInternalPtr(u).SetMarginBottom(newValue)
-					gtk.WidgetNewFromInternalPtr(u).SetMarginEnd(newValue)
-					gtk.WidgetNewFromInternalPtr(u).SetMarginStart(newValue)
-					gtk.WidgetNewFromInternalPtr(u).SetMarginTop(newValue)
-				}, widgetPtr)
+				callback.OnMainThreadOncePure(func() {
+					if obj := ref.Get(); obj != nil {
+						defer obj.Unref()
+						gtk.WidgetNewFromInternalPtr(obj.Ptr).SetMarginBottom(newValue)
+						gtk.WidgetNewFromInternalPtr(obj.Ptr).SetMarginEnd(newValue)
+						gtk.WidgetNewFromInternalPtr(obj.Ptr).SetMarginStart(newValue)
+						gtk.WidgetNewFromInternalPtr(obj.Ptr).SetMarginTop(newValue)
+					}
+				})
 			})
 		}).ConnectDestroy(func(gtk.Widget) {
 			state.RemoveCallback(callbackId)
@@ -423,12 +441,16 @@ func (f Spinner) BindMargin(state *state.State[int]) Spinner {
 func (f Spinner) BindMarginBottom(state *state.State[int]) Spinner {
 	return func() *adw.Spinner {
 		var callbackId string
+		var ref *tracking.WeakRef
 		return f.ConnectConstruct(func(w *adw.Spinner) {
-			widgetPtr := w.GoPointer()
+			ref = tracking.NewWeakRef(&w.Widget)
 			callbackId = state.AddCallback(func(newValue int) {
-				callback.OnMainThreadOnce(func(u uintptr) {
-					gtk.WidgetNewFromInternalPtr(u).SetMarginBottom(newValue)
-				}, widgetPtr)
+				callback.OnMainThreadOncePure(func() {
+					if obj := ref.Get(); obj != nil {
+						defer obj.Unref()
+						gtk.WidgetNewFromInternalPtr(obj.Ptr).SetMarginBottom(newValue)
+					}
+				})
 			})
 		}).ConnectDestroy(func(w gtk.Widget) {
 			state.RemoveCallback(callbackId)
@@ -439,12 +461,16 @@ func (f Spinner) BindMarginBottom(state *state.State[int]) Spinner {
 func (f Spinner) BindMarginEnd(state *state.State[int]) Spinner {
 	return func() *adw.Spinner {
 		var callbackId string
+		var ref *tracking.WeakRef
 		return f.ConnectConstruct(func(w *adw.Spinner) {
-			widgetPtr := w.GoPointer()
+			ref = tracking.NewWeakRef(&w.Widget)
 			callbackId = state.AddCallback(func(newValue int) {
-				callback.OnMainThreadOnce(func(u uintptr) {
-					gtk.WidgetNewFromInternalPtr(u).SetMarginEnd(newValue)
-				}, widgetPtr)
+				callback.OnMainThreadOncePure(func() {
+					if obj := ref.Get(); obj != nil {
+						defer obj.Unref()
+						gtk.WidgetNewFromInternalPtr(obj.Ptr).SetMarginEnd(newValue)
+					}
+				})
 			})
 		}).ConnectDestroy(func(w gtk.Widget) {
 			state.RemoveCallback(callbackId)
@@ -455,12 +481,16 @@ func (f Spinner) BindMarginEnd(state *state.State[int]) Spinner {
 func (f Spinner) BindMarginStart(state *state.State[int]) Spinner {
 	return func() *adw.Spinner {
 		var callbackId string
+		var ref *tracking.WeakRef
 		return f.ConnectConstruct(func(w *adw.Spinner) {
-			widgetPtr := w.GoPointer()
+			ref = tracking.NewWeakRef(&w.Widget)
 			callbackId = state.AddCallback(func(newValue int) {
-				callback.OnMainThreadOnce(func(u uintptr) {
-					gtk.WidgetNewFromInternalPtr(u).SetMarginStart(newValue)
-				}, widgetPtr)
+				callback.OnMainThreadOncePure(func() {
+					if obj := ref.Get(); obj != nil {
+						defer obj.Unref()
+						gtk.WidgetNewFromInternalPtr(obj.Ptr).SetMarginStart(newValue)
+					}
+				})
 			})
 		}).ConnectDestroy(func(w gtk.Widget) {
 			state.RemoveCallback(callbackId)
@@ -471,12 +501,16 @@ func (f Spinner) BindMarginStart(state *state.State[int]) Spinner {
 func (f Spinner) BindMarginTop(state *state.State[int]) Spinner {
 	return func() *adw.Spinner {
 		var callbackId string
+		var ref *tracking.WeakRef
 		return f.ConnectConstruct(func(w *adw.Spinner) {
-			widgetPtr := w.GoPointer()
+			ref = tracking.NewWeakRef(&w.Widget)
 			callbackId = state.AddCallback(func(newValue int) {
-				callback.OnMainThreadOnce(func(u uintptr) {
-					gtk.WidgetNewFromInternalPtr(u).SetMarginTop(newValue)
-				}, widgetPtr)
+				callback.OnMainThreadOncePure(func() {
+					if obj := ref.Get(); obj != nil {
+						defer obj.Unref()
+						gtk.WidgetNewFromInternalPtr(obj.Ptr).SetMarginTop(newValue)
+					}
+				})
 			})
 		}).ConnectDestroy(func(w gtk.Widget) {
 			state.RemoveCallback(callbackId)
@@ -487,12 +521,16 @@ func (f Spinner) BindMarginTop(state *state.State[int]) Spinner {
 func (f Spinner) BindSensitive(state *state.State[bool]) Spinner {
 	return func() *adw.Spinner {
 		var callbackId string
+		var ref *tracking.WeakRef
 		return f.ConnectConstruct(func(w *adw.Spinner) {
-			widgetPtr := w.GoPointer()
+			ref = tracking.NewWeakRef(&w.Widget)
 			callbackId = state.AddCallback(func(newValue bool) {
-				callback.OnMainThreadOnce(func(u uintptr) {
-					gtk.WidgetNewFromInternalPtr(u).SetSensitive(newValue)
-				}, widgetPtr)
+				callback.OnMainThreadOncePure(func() {
+					if obj := ref.Get(); obj != nil {
+						defer obj.Unref()
+						gtk.WidgetNewFromInternalPtr(obj.Ptr).SetSensitive(newValue)
+					}
+				})
 			})
 		}).ConnectDestroy(func(w gtk.Widget) {
 			state.RemoveCallback(callbackId)

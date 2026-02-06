@@ -15,20 +15,27 @@ import (
 func (f ScrolledWindow) BindChild(state *state.State[any]) ScrolledWindow {
 	return func() *gtk.ScrolledWindow {
 		var callbackId string
+		var ref *tracking.WeakRef
 		return f.ConnectConstruct(func(w *gtk.ScrolledWindow) {
-			widgetPtr := w.GoPointer()
+			ref = tracking.NewWeakRef(w)
 			callbackId = state.AddCallback(func(newValue any) {
 				widget := ResolveWidget(newValue)
 				if widget == nil {
-					callback.OnMainThreadOnce(func(u uintptr) {
-						gtk.ScrolledWindowNewFromInternalPtr(u).SetChild(nil)
-					}, widgetPtr)
+					callback.OnMainThreadOncePure(func() {
+						if obj := ref.Get(); obj != nil {
+							defer obj.Unref()
+							gtk.ScrolledWindowNewFromInternalPtr(obj.Ptr).SetChild(nil)
+						}
+					})
 				} else {
 					widget.Ref()
-					callback.OnMainThreadOnce(func(u uintptr) {
-						gtk.ScrolledWindowNewFromInternalPtr(u).SetChild(widget)
-						widget.Unref()
-					}, widgetPtr)
+					callback.OnMainThreadOncePure(func() {
+						defer widget.Unref()
+						if obj := ref.Get(); obj != nil {
+							defer obj.Unref()
+							gtk.ScrolledWindowNewFromInternalPtr(obj.Ptr).SetChild(widget)
+						}
+					})
 				}
 			})
 		}).ConnectDestroy(func(w gtk.Widget) {
