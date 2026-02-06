@@ -32,6 +32,7 @@ func init() {
 }
 
 func setLoadingState() {
+	playbin.SetState(gst.StateNull)
 	PlaybackStateChanged.Notify(func(oldValue *PlaybackState) *PlaybackState {
 		oldValue.Loading = true
 		return oldValue
