@@ -15,8 +15,8 @@ func NewShortcut(title string, subtitle string, coverUrl string) schwifty.Button
 		Child(
 			HStack(
 				VStack(
-					Label(title).HAlign(gtk.AlignStartValue).FontWeight(600).FontSize(16),
-					Label(subtitle).HAlign(gtk.AlignStartValue).Visible(subtitle != "").FontWeight(500).Color("#939393"),
+					Label(title).HAlign(gtk.AlignStartValue).WithCSSClass("heading"),
+					Label(subtitle).HAlign(gtk.AlignStartValue).Visible(subtitle != "").FontWeight(500).WithCSSClass("dimmed"),
 				).HAlign(gtk.AlignStartValue).VAlign(gtk.AlignCenterValue).HExpand(true),
 				AspectFrame(
 					Image().
@@ -40,8 +40,8 @@ func NewTextShortcut(title string, subtitle string) schwifty.Button {
 		Child(
 			HStack(
 				VStack(
-					Label(title).HAlign(gtk.AlignCenterValue).FontWeight(600).FontSize(16),
-					Label(subtitle).HAlign(gtk.AlignCenterValue).Visible(subtitle != "").FontWeight(500).Color("#939393"),
+					Label(title).HAlign(gtk.AlignCenterValue).WithCSSClass("heading"),
+					Label(subtitle).HAlign(gtk.AlignCenterValue).Visible(subtitle != "").FontWeight(500).WithCSSClass("dimmed"),
 				).HAlign(gtk.AlignCenterValue).VAlign(gtk.AlignCenterValue).HExpand(true),
 			),
 		).

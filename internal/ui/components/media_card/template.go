@@ -33,7 +33,7 @@ func Card[T any](title string, subTitle schwifty.Widgetable[T], coverUrl string)
 						}
 					}).CornerRadius(10).Overflow(gtk.OverflowHiddenValue),
 				Label(title).
-					FontSize(16).
+					WithCSSClass("heading").
 					MarginTop(10).
 					MaxWidthChars(15).
 					HAlign(gtk.AlignStartValue).

@@ -90,19 +90,17 @@ func Album(albumId string) *router.Response {
 				).CornerRadius(10).Overflow(gtk.OverflowHiddenValue),
 				VStack(
 					Label(album.Data.Attributes.Title).
-						FontSize(18).
-						FontWeight(700).
+						WithCSSClass("title-2").
 						HAlign(gtk.AlignStartValue),
 					Label(strings.Join(artists, ", ")).
-						FontSize(16).
-						FontWeight(500).
+						WithCSSClass("heading").WithCSSClass("dimmed").
+						PaddingTop(10).
 						HAlign(gtk.AlignStartValue),
 					Label(album.Data.Attributes.ReleaseDate.Format("2006")).
-						FontSize(16).
-						FontWeight(500).
+						WithCSSClass("heading").WithCSSClass("dimmed").
 						HAlign(gtk.AlignStartValue),
 					Label(gettext.GetN("%d Track (%s)", "%d Tracks (%s)", album.Data.Attributes.NumberOfItems, album.Data.Attributes.NumberOfItems, tidalapi.FormatDuration(album.Data.Attributes.Duration.Duration))).
-						FontWeight(600).
+						WithCSSClass("heading").WithCSSClass("dimmed").
 						HAlign(gtk.AlignStartValue).
 						MarginTop(10),
 				).MarginStart(20).VAlign(gtk.AlignCenterValue),
