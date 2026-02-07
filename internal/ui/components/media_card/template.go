@@ -13,10 +13,9 @@ import (
 
 func SubTitle(text string) schwifty.Label {
 	return Label(text).
-		FontSize(14).
 		FontWeight(400).
 		MaxWidthChars(15).
-		Color("#939393").
+		WithCSSClass("dimmed").
 		HAlign(gtk.AlignStartValue).
 		Ellipsis(pango.EllipsizeEndValue)
 }
