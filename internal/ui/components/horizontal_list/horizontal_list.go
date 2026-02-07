@@ -31,7 +31,7 @@ func (h *HorizontalList) SetPageMargin(margin int) *HorizontalList {
 
 func (h *HorizontalList) SetViewAllRoute(path string) *HorizontalList {
 	h.routeButtonState.SetValue(Button().Child(
-		Label(gettext.Get("View All")).FontSize(12),
+		Label(gettext.Get("View All")).WithCSSClass("caption-heading"),
 	).
 		MinHeight(10).
 		MinWidth(10).

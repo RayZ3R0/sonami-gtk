@@ -29,7 +29,7 @@ func (t *RowTitle) SetTitle(title string) *RowTitle {
 
 func (t *RowTitle) SetViewAllRoute(path string) *RowTitle {
 	t.routeButtonState.SetValue(Button().Child(
-		Label(gettext.Get("View All")).FontSize(12),
+		Label(gettext.Get("View All")).WithCSSClass("caption-heading"),
 	).
 		MinHeight(10).
 		MinWidth(10).
