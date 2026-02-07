@@ -56,7 +56,6 @@ func Artist(artistId string) *router.Response {
 						FontWeight(700).
 						HAlign(gtk.AlignStartValue),
 					Label(gettext.GetN("%d Fan", "%d Fans", artistPage.Header.FollowersAmount, artistPage.Header.FollowersAmount)).
-						FontSize(14).
 						FontWeight(600).
 						HAlign(gtk.AlignStartValue),
 					Label(artistPage.Header.Biography.Text).

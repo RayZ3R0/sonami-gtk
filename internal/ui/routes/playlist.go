@@ -113,7 +113,6 @@ func Playlist(playlistUUID string) *router.Response {
 						FontWeight(500).
 						HAlign(gtk.AlignStartValue),
 					playlistMetadata.
-						FontSize(14).
 						FontWeight(600).
 						HAlign(gtk.AlignStartValue).
 						MarginTop(10),

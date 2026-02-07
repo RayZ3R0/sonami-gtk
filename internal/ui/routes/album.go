@@ -102,7 +102,6 @@ func Album(albumId string) *router.Response {
 						FontWeight(500).
 						HAlign(gtk.AlignStartValue),
 					Label(gettext.GetN("%d Track (%s)", "%d Tracks (%s)", album.Data.Attributes.NumberOfItems, album.Data.Attributes.NumberOfItems, tidalapi.FormatDuration(album.Data.Attributes.Duration.Duration))).
-						FontSize(14).
 						FontWeight(600).
 						HAlign(gtk.AlignStartValue).
 						MarginTop(10),
