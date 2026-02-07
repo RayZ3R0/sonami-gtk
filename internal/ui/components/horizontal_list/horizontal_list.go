@@ -77,8 +77,7 @@ func NewHorizontalList(title string) *HorizontalList {
 			HStack(
 				HStack(
 					Label(title).
-						FontWeight(600).
-						FontSize(20).
+						WithCSSClass("title-2").
 						VAlign(gtk.AlignCenterValue),
 					Spacer().VExpand(false),
 					HStack(

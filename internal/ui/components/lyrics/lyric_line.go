@@ -62,8 +62,7 @@ func lyricLineText(lyricText string) schwifty.Label {
 	return Label(lyricText).
 		HAlign(gtk.AlignCenterValue).
 		VAlign(gtk.AlignCenterValue).
-		FontSize(20).
-		FontWeight(600).
+		WithCSSClass("title-2").
 		Wrap(true).
 		Justify(gtk.JustifyCenterValue)
 }

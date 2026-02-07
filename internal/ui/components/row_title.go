@@ -56,8 +56,7 @@ func NewRowTitle() *RowTitle {
 			VAlign(gtk.AlignCenterValue).
 			MarginStart(10).
 			MarginBottom(5).
-			FontWeight(600).
-			FontSize(20),
+			WithCSSClass("title-2"),
 		Spacer().VExpand(false),
 		CenterBox().BindCenterWidget(t.routeButtonState).HExpand(false).VExpand(false),
 	)
