@@ -63,7 +63,7 @@ func Playlist(playlistUUID string) *router.Response {
 
 	var playlistMetadata schwifty.Label
 	if playlist.Data.Attributes.PlaylistType != openapi.PlaylistTypeMix {
-		playlistMetadata = Label(gettext.GetN("%d Track (%s)", "%d Tracks (%s)", playlist.Data.Attributes.NumberOfItems, playlist.Data.Attributes.NumberOfItems, tidalapi.FormatDuration(playlist.Data.Attributes.Duration.Duration)))
+		playlistMetadata = Label(gettext.GetN("%d Track (%s)", "%d Tracks (%s)", playlist.Data.Attributes.NumberOfItems, playlist.Data.Attributes.NumberOfItems, tidalapi.FormatCustomDuration(playlist.Data.Attributes.Duration)))
 	} else {
 		playlistMetadata = Label(gettext.Get("Personal Mix"))
 	}

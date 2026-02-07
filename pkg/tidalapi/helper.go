@@ -4,6 +4,8 @@ import (
 	"fmt"
 	"strings"
 	"time"
+
+	"codeberg.org/dergs/tonearm/pkg/tidalapi/models/openapi"
 )
 
 func ImageURL(id string) string {
@@ -12,6 +14,13 @@ func ImageURL(id string) string {
 
 func ImageURLWithSize(id string, width int, height int) string {
 	return fmt.Sprintf("https://resources.tidal.com/images/%s/%dx%d.jpg", strings.ReplaceAll(id, "-", "/"), width, height)
+}
+
+func FormatCustomDuration(duration *openapi.Duration) string {
+	if duration == nil {
+		return "00:00"
+	}
+	return FormatDuration(duration.Duration)
 }
 
 func FormatDuration(duration time.Duration) string {
