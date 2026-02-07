@@ -24,7 +24,7 @@ var QRCode = Image().
 	PixelSize(186).
 	FromPaintable(resources.MissingAlbum())
 
-var Code = Label("D  E  R  G  S").FontWeight(900).FontSize(24)
+var Code = Label("D  E  R  G  S").WithCSSClass("title-1")
 
 var Helper = Label(gettext.Get("You can also open the linking page using the button below."))
 

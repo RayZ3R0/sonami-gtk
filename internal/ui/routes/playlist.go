@@ -101,20 +101,17 @@ func Playlist(playlistUUID string) *router.Response {
 				).CornerRadius(10).Overflow(gtk.OverflowHiddenValue),
 				VStack(
 					Label(playlist.Data.Attributes.Name).
-						FontSize(18).
-						FontWeight(700).
+						WithCSSClass("title-2").
 						HAlign(gtk.AlignStartValue),
 					Label(creator).
-						FontSize(16).
-						FontWeight(500).
+						WithCSSClass("heading").WithCSSClass("dimmed").
+						PaddingTop(10).
 						HAlign(gtk.AlignStartValue),
 					Label(playlist.Data.Attributes.CreatedAt.Format("2006")).
-						FontSize(16).
-						FontWeight(500).
+						WithCSSClass("heading").WithCSSClass("dimmed").
 						HAlign(gtk.AlignStartValue),
 					playlistMetadata.
-						FontSize(14).
-						FontWeight(600).
+						WithCSSClass("heading").WithCSSClass("dimmed").
 						HAlign(gtk.AlignStartValue).
 						MarginTop(10),
 				).MarginStart(20).VAlign(gtk.AlignCenterValue),

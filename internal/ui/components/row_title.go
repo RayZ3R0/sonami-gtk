@@ -29,7 +29,7 @@ func (t *RowTitle) SetTitle(title string) *RowTitle {
 
 func (t *RowTitle) SetViewAllRoute(path string) *RowTitle {
 	t.routeButtonState.SetValue(Button().Child(
-		Label(gettext.Get("View All")).FontSize(12),
+		Label(gettext.Get("View All")).WithCSSClass("caption-heading"),
 	).
 		MinHeight(10).
 		MinWidth(10).
@@ -56,8 +56,7 @@ func NewRowTitle() *RowTitle {
 			VAlign(gtk.AlignCenterValue).
 			MarginStart(10).
 			MarginBottom(5).
-			FontWeight(600).
-			FontSize(20),
+			WithCSSClass("title-2"),
 		Spacer().VExpand(false),
 		CenterBox().BindCenterWidget(t.routeButtonState).HExpand(false).VExpand(false),
 	)

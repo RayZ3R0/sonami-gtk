@@ -52,16 +52,14 @@ func Artist(artistId string) *router.Response {
 				).CornerRadius(10).Overflow(gtk.OverflowHiddenValue),
 				VStack(
 					Label(artistPage.Item.Data.Artist.Name).
-						FontSize(18).
-						FontWeight(700).
+						WithCSSClass("title-2").
 						HAlign(gtk.AlignStartValue),
 					Label(gettext.GetN("%d Fan", "%d Fans", artistPage.Header.FollowersAmount, artistPage.Header.FollowersAmount)).
-						FontSize(14).
-						FontWeight(600).
+						WithCSSClass("dimmed").
+						PaddingTop(5).
 						HAlign(gtk.AlignStartValue),
 					Label(artistPage.Header.Biography.Text).
-						FontSize(16).
-						FontWeight(500).
+						WithCSSClass("dimmed").
 						HAlign(gtk.AlignStartValue).
 						Lines(3).
 						Wrap(true).
