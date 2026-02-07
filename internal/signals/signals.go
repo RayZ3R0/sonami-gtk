@@ -68,3 +68,10 @@ func NewSignal[T any]() Signal[T] {
 		handlers: make(map[*Subscription]T),
 	}
 }
+
+func ContinueIf(condition bool) bool {
+	if condition {
+		return Continue
+	}
+	return Unsubscribe
+}

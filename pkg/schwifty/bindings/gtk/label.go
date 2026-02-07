@@ -5,6 +5,7 @@ import (
 
 	"codeberg.org/dergs/tonearm/pkg/schwifty/callback"
 	"codeberg.org/dergs/tonearm/pkg/schwifty/state"
+	"codeberg.org/dergs/tonearm/pkg/schwifty/tracking"
 	"github.com/jwijenbergh/puregotk/v4/gtk"
 	"github.com/jwijenbergh/puregotk/v4/pango"
 )
@@ -107,12 +108,16 @@ func (f Label) Text(text string) Label {
 func (f Label) BindText(state *state.State[string]) Label {
 	return func() *gtk.Label {
 		var callbackId string
+		var ref *tracking.WeakRef
 		return f.ConnectConstruct(func(w *gtk.Label) {
-			widgetPtr := w.GoPointer()
+			ref = tracking.NewWeakRef(w)
 			callbackId = state.AddCallback(func(newValue string) {
-				callback.OnMainThreadOnce(func(u uintptr) {
-					gtk.LabelNewFromInternalPtr(u).SetText(newValue)
-				}, widgetPtr)
+				callback.OnMainThreadOncePure(func() {
+					if obj := ref.Get(); obj != nil {
+						defer obj.Unref()
+						gtk.LabelNewFromInternalPtr(obj.Ptr).SetText(newValue)
+					}
+				})
 			})
 		}).ConnectDestroy(func(w gtk.Widget) {
 			state.RemoveCallback(callbackId)

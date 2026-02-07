@@ -4,6 +4,7 @@ import (
 	gtkbindings "codeberg.org/dergs/tonearm/pkg/schwifty/bindings/gtk"
 	"codeberg.org/dergs/tonearm/pkg/schwifty/callback"
 	"codeberg.org/dergs/tonearm/pkg/schwifty/state"
+	"codeberg.org/dergs/tonearm/pkg/schwifty/tracking"
 	"github.com/jwijenbergh/puregotk/v4/adw"
 	"github.com/jwijenbergh/puregotk/v4/gtk"
 )
@@ -13,12 +14,16 @@ import (
 func (f HeaderBar) BindDecorationLayout(state *state.State[string]) HeaderBar {
 	return func() *adw.HeaderBar {
 		var callbackId string
+		var ref *tracking.WeakRef
 		return f.ConnectConstruct(func(w *adw.HeaderBar) {
-			widgetPtr := w.GoPointer()
+			ref = tracking.NewWeakRef(w)
 			callbackId = state.AddCallback(func(newValue string) {
-				callback.OnMainThreadOnce(func(u uintptr) {
-					adw.HeaderBarNewFromInternalPtr(u).SetDecorationLayout(newValue)
-				}, widgetPtr)
+				callback.OnMainThreadOncePure(func() {
+					if obj := ref.Get(); obj != nil {
+						defer obj.Unref()
+						adw.HeaderBarNewFromInternalPtr(obj.Ptr).SetDecorationLayout(newValue)
+					}
+				})
 			})
 		}).ConnectDestroy(func(w gtk.Widget) {
 			state.RemoveCallback(callbackId)

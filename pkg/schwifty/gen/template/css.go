@@ -5,6 +5,7 @@ import (
 
 	"codeberg.org/dergs/tonearm/pkg/schwifty/callback"
 	"codeberg.org/dergs/tonearm/pkg/schwifty/state"
+	"codeberg.org/dergs/tonearm/pkg/schwifty/tracking"
 	"github.com/jwijenbergh/puregotk/v4/gtk"
 )
 
@@ -35,18 +36,23 @@ func (f TEMPLATE_TYPE) CSS(css string) TEMPLATE_TYPE {
 func (f TEMPLATE_TYPE) BindCSSClass(state *state.State[string]) TEMPLATE_TYPE {
 	return func() TEMPLATE_BASE_TYPE {
 		var callbackId string
+		var ref *tracking.WeakRef
 		return f.ConnectConstruct(func(w TEMPLATE_BASE_TYPE) {
-			ptr := w.GoPointer()
+			ref = tracking.NewWeakRef(&w.Widget)
 			callbackId = state.AddCallback(func(newValue string) {
 				oldValue := state.Value()
-				callback.OnMainThreadOnce(func(u uintptr) {
-					w := gtk.ButtonNewFromInternalPtr(u)
-					styleContext := w.GetStyleContext()
-					defer styleContext.Unref()
+				callback.OnMainThreadOncePure(func() {
+					if obj := ref.Get(); obj != nil {
+						defer obj.Unref()
 
-					styleContext.RemoveClass(oldValue)
-					styleContext.AddClass(newValue)
-				}, ptr)
+						w := gtk.WidgetNewFromInternalPtr(obj.Ptr)
+						styleContext := w.GetStyleContext()
+						defer styleContext.Unref()
+
+						styleContext.RemoveClass(oldValue)
+						styleContext.AddClass(newValue)
+					}
+				})
 			})
 		}).ConnectDestroy(func(w gtk.Widget) {
 			state.RemoveCallback(callbackId)

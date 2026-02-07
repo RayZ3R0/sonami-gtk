@@ -3,6 +3,7 @@ package gtk
 import (
 	"codeberg.org/dergs/tonearm/pkg/schwifty/callback"
 	"codeberg.org/dergs/tonearm/pkg/schwifty/state"
+	"codeberg.org/dergs/tonearm/pkg/schwifty/tracking"
 	"github.com/jwijenbergh/puregotk/v4/gtk"
 )
 
@@ -11,20 +12,27 @@ import (
 func (f CenterBox) BindCenterWidget(state *state.State[any]) CenterBox {
 	return func() *gtk.CenterBox {
 		var callbackId string
+		var ref *tracking.WeakRef
 		return f.ConnectConstruct(func(w *gtk.CenterBox) {
-			widgetPtr := w.GoPointer()
+			ref = tracking.NewWeakRef(w)
 			callbackId = state.AddCallback(func(newValue any) {
 				widget := ResolveWidget(newValue)
 				if widget == nil {
-					callback.OnMainThreadOnce(func(u uintptr) {
-						gtk.CenterBoxNewFromInternalPtr(u).SetCenterWidget(nil)
-					}, widgetPtr)
+					callback.OnMainThreadOncePure(func() {
+						if obj := ref.Get(); obj != nil {
+							defer obj.Unref()
+							gtk.CenterBoxNewFromInternalPtr(obj.Ptr).SetCenterWidget(nil)
+						}
+					})
 				} else {
 					widget.Ref()
-					callback.OnMainThreadOnce(func(u uintptr) {
-						gtk.CenterBoxNewFromInternalPtr(u).SetCenterWidget(widget)
-						widget.Unref()
-					}, widgetPtr)
+					callback.OnMainThreadOncePure(func() {
+						defer widget.Unref()
+						if obj := ref.Get(); obj != nil {
+							defer obj.Unref()
+							gtk.CenterBoxNewFromInternalPtr(obj.Ptr).SetCenterWidget(widget)
+						}
+					})
 				}
 			})
 		}).ConnectDestroy(func(w gtk.Widget) {

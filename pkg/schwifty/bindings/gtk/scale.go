@@ -3,6 +3,7 @@ package gtk
 import (
 	"codeberg.org/dergs/tonearm/pkg/schwifty/callback"
 	"codeberg.org/dergs/tonearm/pkg/schwifty/state"
+	"codeberg.org/dergs/tonearm/pkg/schwifty/tracking"
 	"github.com/jwijenbergh/puregotk/v4/gtk"
 )
 
@@ -19,12 +20,16 @@ func (s Scale) Value(value float64) Scale {
 func (f Scale) BindValue(state *state.State[float64]) Scale {
 	return func() *gtk.Scale {
 		var callbackId string
+		var ref *tracking.WeakRef
 		return f.ConnectConstruct(func(w *gtk.Scale) {
-			widgetPtr := w.GoPointer()
+			ref = tracking.NewWeakRef(w)
 			callbackId = state.AddCallback(func(newValue float64) {
-				callback.OnMainThreadOnce(func(u uintptr) {
-					gtk.ScaleNewFromInternalPtr(u).SetValue(newValue)
-				}, widgetPtr)
+				callback.OnMainThreadOncePure(func() {
+					if obj := ref.Get(); obj != nil {
+						defer obj.Unref()
+						gtk.ScaleNewFromInternalPtr(obj.Ptr).SetValue(newValue)
+					}
+				})
 			})
 		}).ConnectDestroy(func(w gtk.Widget) {
 			state.RemoveCallback(callbackId)

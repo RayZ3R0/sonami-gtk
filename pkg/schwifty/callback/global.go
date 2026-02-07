@@ -57,6 +57,10 @@ func OnMainThreadOnce(cb func(u uintptr), param uintptr) uint {
 	}, param)
 }
 
+func OnMainThreadOncePure(cb func()) uint {
+	return OnMainThreadOnce(func(uintptr) { cb() }, 0)
+}
+
 // IntPool manages a pool of integers that can be checked out and returned
 type IntPool struct {
 	mu       sync.Mutex

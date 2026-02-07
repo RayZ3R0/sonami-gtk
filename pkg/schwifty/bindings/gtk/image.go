@@ -3,6 +3,7 @@ package gtk
 import (
 	"codeberg.org/dergs/tonearm/pkg/schwifty/callback"
 	"codeberg.org/dergs/tonearm/pkg/schwifty/state"
+	"codeberg.org/dergs/tonearm/pkg/schwifty/tracking"
 	"github.com/jwijenbergh/puregotk/v4/gdk"
 	"github.com/jwijenbergh/puregotk/v4/gdkpixbuf"
 	"github.com/jwijenbergh/puregotk/v4/gtk"
@@ -13,14 +14,18 @@ import (
 func (f Image) BindPaintable(state *state.State[Paintable]) Image {
 	return func() *gtk.Image {
 		var callbackId string
+		var ref *tracking.WeakRef
 		return f.ConnectConstruct(func(w *gtk.Image) {
-			widgetPtr := w.GoPointer()
+			ref = tracking.NewWeakRef(w)
 			callbackId = state.AddCallback(func(newValue Paintable) {
 				newValue.Ref()
-				callback.OnMainThreadOnce(func(u uintptr) {
-					gtk.ImageNewFromInternalPtr(u).SetFromPaintable(newValue)
-					newValue.Unref()
-				}, widgetPtr)
+				callback.OnMainThreadOncePure(func() {
+					defer newValue.Unref()
+					if obj := ref.Get(); obj != nil {
+						defer obj.Unref()
+						gtk.ImageNewFromInternalPtr(obj.Ptr).SetFromPaintable(newValue)
+					}
+				})
 			})
 		}).ConnectDestroy(func(w gtk.Widget) {
 			state.RemoveCallback(callbackId)
@@ -31,14 +36,18 @@ func (f Image) BindPaintable(state *state.State[Paintable]) Image {
 func (f Image) BindPixbuf(state *state.State[*gdkpixbuf.Pixbuf]) Image {
 	return func() *gtk.Image {
 		var callbackId string
+		var ref *tracking.WeakRef
 		return f.ConnectConstruct(func(w *gtk.Image) {
-			widgetPtr := w.GoPointer()
+			ref = tracking.NewWeakRef(w)
 			callbackId = state.AddCallback(func(newValue *gdkpixbuf.Pixbuf) {
 				newValue.Ref()
-				callback.OnMainThreadOnce(func(u uintptr) {
-					gtk.ImageNewFromInternalPtr(u).SetFromPixbuf(newValue)
-					newValue.Unref()
-				}, widgetPtr)
+				callback.OnMainThreadOncePure(func() {
+					defer newValue.Unref()
+					if obj := ref.Get(); obj != nil {
+						defer obj.Unref()
+						gtk.ImageNewFromInternalPtr(obj.Ptr).SetFromPixbuf(newValue)
+					}
+				})
 			})
 		}).ConnectDestroy(func(w gtk.Widget) {
 			state.RemoveCallback(callbackId)
