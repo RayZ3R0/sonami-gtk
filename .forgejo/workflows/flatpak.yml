@@ -1,0 +1,36 @@
+name: Flatpak
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  flatpak:
+    name: Build Flatpak
+    runs-on: ubuntu-latest
+    container:
+      image: ghcr.io/flathub-infra/flatpak-github-actions:gnome-49
+      options: --privileged
+
+    steps:
+      - uses: https://code.forgejo.org/actions/checkout@v4
+
+      - name: Build Flatpak
+        run: |
+          flatpak-builder --repo=repo --disable-rofiles-fuse \
+            --install-deps-from=flathub \
+            --force-clean --default-branch=master \
+            flatpak_app build/flatpak/dev.dergs.Tonearm.yaml
+
+      - name: Create bundle
+        run: |
+          flatpak build-bundle repo dev.dergs.Tonearm.flatpak \
+            --runtime-repo=https://flathub.org/repo/flathub.flatpakrepo \
+            --arch=x86_64 dev.dergs.Tonearm master
+
+      - if: github.event_name != 'pull_request'
+        uses: https://code.forgejo.org/forgejo/upload-artifact@v4
+        with:
+          name: dev.dergs.Tonearm-x86_64.flatpak
+          path: dev.dergs.Tonearm.flatpak
