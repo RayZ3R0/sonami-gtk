@@ -41,10 +41,11 @@ func Artist(artistId string) *router.Response {
 		body = body.Append(components.ForPageItem(item))
 	}
 
-	favouriteIds, _ := state.Favourites()
+	favouriteIds, err := state.Favourites()
 
 	return &router.Response{
 		PageTitle: gettext.Get("Artist"),
+		Error:     err,
 		View: VStack(
 			HStack(
 				AspectFrame(

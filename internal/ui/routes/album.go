@@ -80,7 +80,11 @@ func Album(albumId string) *router.Response {
 		},
 	)
 
-	favouritesID, _ := appState.Favourites()
+	if err != nil {
+		return router.FromError(album.Data.Attributes.Title, err)
+	}
+
+	favouritesID, err := appState.Favourites()
 
 	return &router.Response{
 		PageTitle: album.Data.Attributes.Title,

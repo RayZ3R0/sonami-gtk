@@ -19,8 +19,17 @@ import (
 var logger = slog.With("module", "components/tracklist")
 
 func controlsColumn(trackId string, grid *gtk.Grid, position int, column int) int {
-	favouriteId, _ := state.Favourites()
-	tidal, _ := injector.Inject[*tidalapi.TidalAPI]()
+	favouriteId, err := state.Favourites()
+	if err != nil {
+		logger.Error("Failed to get favourites", err)
+		return 0
+	}
+
+	tidal, err := injector.Inject[*tidalapi.TidalAPI]()
+	if err != nil {
+		logger.Error("Failed to inject Tidal API", err)
+		return 0
+	}
 
 	grid.Attach(
 		HStack(

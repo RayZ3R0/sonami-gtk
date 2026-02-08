@@ -86,7 +86,11 @@ func Playlist(playlistUUID string) *router.Response {
 		},
 	)
 
-	favouriteIds, _ := appState.Favourites()
+	if err != nil {
+		return router.FromError(playlist.Data.Attributes.Name, err)
+	}
+
+	favouriteIds, err := appState.Favourites()
 
 	return &router.Response{
 		PageTitle: playlist.Data.Attributes.Name,
