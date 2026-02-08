@@ -3,21 +3,26 @@ package player
 import (
 	"context"
 	"fmt"
+	"slices"
 	"strconv"
 
 	"codeberg.org/dergs/tonearm/internal/gettext"
 	"codeberg.org/dergs/tonearm/internal/notifications"
 	"codeberg.org/dergs/tonearm/internal/player"
 	"codeberg.org/dergs/tonearm/internal/router"
+	"codeberg.org/dergs/tonearm/internal/secrets"
 	"codeberg.org/dergs/tonearm/internal/signals"
+	appState "codeberg.org/dergs/tonearm/internal/state"
 	"codeberg.org/dergs/tonearm/pkg/schwifty"
 	"codeberg.org/dergs/tonearm/pkg/schwifty/state"
 	. "codeberg.org/dergs/tonearm/pkg/schwifty/syntax"
+	"codeberg.org/dergs/tonearm/pkg/schwifty/tracking"
 	"codeberg.org/dergs/tonearm/pkg/tidalapi"
 	"github.com/infinytum/injector"
 	"github.com/jwijenbergh/puregotk/v4/gdk"
 	"github.com/jwijenbergh/puregotk/v4/gio"
 	"github.com/jwijenbergh/puregotk/v4/glib"
+	"github.com/jwijenbergh/puregotk/v4/gobject"
 	"github.com/jwijenbergh/puregotk/v4/gtk"
 )
 
@@ -59,6 +64,29 @@ func init() {
 }
 
 func actionRow() schwifty.Box {
+	isFavourited := signals.NewStatefulSignal(false)
+	favourites, err := appState.Favourites()
+	if err != nil {
+		logger.Error("error while fetching favourites", err)
+	}
+
+	player.TrackChanged.On(func(t *player.Track) bool {
+		if t == nil {
+			return signals.Continue
+		}
+
+		favourites, err = appState.Favourites()
+		if err != nil {
+			logger.Error("error while fetching favourites", err)
+		}
+
+		isFavourited.Notify(func(oldValue bool) bool {
+			return slices.Contains(favourites.Track, t.ID)
+		})
+
+		return signals.Continue
+	})
+
 	return HStack(
 		MenuButton().
 			TooltipText(gettext.Get("Volume")).
@@ -67,10 +95,52 @@ func actionRow() schwifty.Box {
 			WithCSSClass("flat"),
 		Button().
 			TooltipText(gettext.Get("Add to Collection")).
-			ActionName("unimplemented").
 			IconName("heart-outline-thick-symbolic").
-			// BindSensitive(isTrackLoaded). // Turn on once we implemented this feature
-			WithCSSClass("flat"),
+			WithCSSClass("flat").
+			ConnectConstruct(func(b *gtk.Button) {
+				weakRef := tracking.NewWeakRef(&b.Object)
+				isFavourited.On(func(value bool) bool {
+					schwifty.OnMainThreadOncePure(func() {
+						weakRef.Use(func(obj *gobject.Object) {
+							b := gtk.ButtonNewFromInternalPtr(obj.Ptr)
+
+							if value {
+								b.SetIconName("heart-filled-symbolic")
+								b.AddCssClass("accent")
+							} else {
+								b.SetIconName("heart-outline-thick-symbolic")
+								b.RemoveCssClass("accent")
+							}
+						})
+					})
+
+					return signals.Continue
+				})
+			}).
+			ConnectClicked(func(b gtk.Button) {
+				isFavourited.Notify(func(oldValue bool) bool {
+					tidal, _ := injector.Inject[*tidalapi.TidalAPI]()
+
+					if oldValue {
+						err := tidal.V1.Favourites.Tracks.Remove(context.Background(), secrets.UserID(), player.TrackChanged.CurrentValue().ID)
+						if err != nil {
+							logger.Error("error while removing track from favourites", "error", err)
+							return oldValue
+						}
+					} else {
+						err := tidal.V1.Favourites.Tracks.Add(context.Background(), secrets.UserID(), player.TrackChanged.CurrentValue().ID)
+						if err != nil {
+							logger.Error("error while adding track to favourites", "error", err)
+							return oldValue
+						}
+					}
+
+					appState.BustFavouritesCache()
+
+					return !oldValue
+				})
+			}).
+			BindSensitive(isTrackLoadedState),
 		Button().
 			TooltipText(gettext.Get("Navigate to Album")).
 			IconName("cd-symbolic").
