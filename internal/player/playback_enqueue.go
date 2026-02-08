@@ -81,7 +81,9 @@ func enqueue(playbackInfo *v1.PlaybackInfo) error {
 		return fmt.Errorf("unsupported manifest mime type: %s", playbackInfo.ManifestMimeType)
 	}
 	currentlyEnqueuedTrack = playbackInfo
-	applyReplayGain(playbackInfo)
+	if settings.Playback().NormalizeVolume() {
+		applyReplayGain(playbackInfo)
+	}
 	return nil
 }
 

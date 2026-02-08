@@ -47,6 +47,12 @@ var preferencesPlayback = PreferencesPage(
 			ConnectConstruct(func(sr *adw.SwitchRow) {
 				settings.Playback().BindAllowAutoplay(&sr.Object, "active")
 			}),
+		SwitchRow().
+			Title(gettext.Get("Normalize volume")).
+			Subtitle(gettext.Get("Set the same volume for all tracks.")).
+			ConnectConstruct(func(sr *adw.SwitchRow) {
+				settings.Playback().BindNormalizeVolume(&sr.Object, "active")
+			}),
 	).Title(gettext.Get("Playback")).Description(gettext.Get("Configure the behaviour of Tonearm regarding playback.")),
 ).Title(gettext.Get("Playback")).IconName("media-playback-start-symbolic")
 
