@@ -4,7 +4,6 @@ import (
 	"context"
 	"fmt"
 	"log/slog"
-	"slices"
 	"strings"
 
 	"codeberg.org/dergs/tonearm/internal/gettext"
@@ -12,22 +11,20 @@ import (
 	"codeberg.org/dergs/tonearm/internal/player"
 	"codeberg.org/dergs/tonearm/internal/resources"
 	"codeberg.org/dergs/tonearm/internal/router"
-	"codeberg.org/dergs/tonearm/internal/secrets"
 	"codeberg.org/dergs/tonearm/internal/signals"
 	appState "codeberg.org/dergs/tonearm/internal/state"
+	favouritebutton "codeberg.org/dergs/tonearm/internal/ui/components/favourite_button"
 	"codeberg.org/dergs/tonearm/internal/ui/components/tracklist"
 	"codeberg.org/dergs/tonearm/internal/ui/pages"
 	"codeberg.org/dergs/tonearm/pkg/schwifty"
 	"codeberg.org/dergs/tonearm/pkg/schwifty/state"
 	. "codeberg.org/dergs/tonearm/pkg/schwifty/syntax"
-	"codeberg.org/dergs/tonearm/pkg/schwifty/tracking"
 	"codeberg.org/dergs/tonearm/pkg/tidalapi"
 	"codeberg.org/dergs/tonearm/pkg/tidalapi/models/openapi"
 	"codeberg.org/dergs/tonearm/pkg/tidalapi/pagination"
 	"codeberg.org/dergs/tonearm/pkg/utils/imgutil"
 	"github.com/infinytum/injector"
 	"github.com/jwijenbergh/puregotk/v4/gdk"
-	"github.com/jwijenbergh/puregotk/v4/gobject"
 	"github.com/jwijenbergh/puregotk/v4/gtk"
 )
 
@@ -83,7 +80,7 @@ func Album(albumId string) *router.Response {
 		},
 	)
 
-	isAlbumFavourited := signals.NewStatefulSignal(false)
+	favouritesID, _ := appState.Favourites()
 
 	return &router.Response{
 		PageTitle: album.Data.Attributes.Title,
@@ -152,65 +149,7 @@ func Album(albumId string) *router.Response {
 						VAlign(gtk.AlignCenterValue).
 						Spacing(5),
 					HStack(
-						Button().
-							TooltipText(gettext.Get("Add to Collection")).
-							IconName("heart-outline-thick-symbolic").
-							WithCSSClass("flat").
-							ConnectConstruct(func(b *gtk.Button) {
-								favLists, err := appState.Favourites()
-								favList := favLists.Album
-								if err != nil {
-									albumLogger.Error("Failed to load favourites", err)
-									b.SetIconName("heart-outline-thick-symbolic")
-									b.RemoveCssClass("accent")
-
-									return
-								}
-
-								isAlbumFavourited.Notify(func(oldValue bool) bool {
-									return slices.Contains(favList, albumId)
-								})
-
-								weakRef := tracking.NewWeakRef(&b.Object)
-								isAlbumFavourited.On(func(value bool) bool {
-									schwifty.OnMainThreadOncePure(func() {
-										weakRef.Use(func(obj *gobject.Object) {
-											b := gtk.ButtonNewFromInternalPtr(obj.Ptr)
-
-											if value {
-												b.SetIconName("heart-filled-symbolic")
-												b.AddCssClass("accent")
-											} else {
-												b.SetIconName("heart-outline-thick-symbolic")
-												b.RemoveCssClass("accent")
-											}
-										})
-									})
-
-									return signals.Continue
-								})
-							}).
-							ConnectClicked(func(b gtk.Button) {
-								tidal, _ := injector.Inject[*tidalapi.TidalAPI]()
-
-								isAlbumFavourited.Notify(func(oldValue bool) bool {
-									if oldValue {
-										err := tidal.V1.Favourites.RemoveAlbum(context.Background(), secrets.UserID(), albumId)
-										if err != nil {
-											albumLogger.Error("error while removing album from favourites", "error", err)
-											return oldValue
-										}
-									} else {
-										err := tidal.V1.Favourites.AddAlbum(context.Background(), secrets.UserID(), albumId)
-										if err != nil {
-											albumLogger.Error("error while adding album to favourites", "error", err)
-											return oldValue
-										}
-									}
-
-									return !oldValue
-								})
-							}),
+						favouritebutton.FavouriteButton(favouritesID.Album, albumId, tidal.V1.Favourites.Albums),
 						Button().
 							TooltipText(gettext.Get("Copy Album URL")).
 							IconName("share-alt-symbolic").

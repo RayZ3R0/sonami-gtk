@@ -7,9 +7,21 @@ import (
 	"net/http"
 	"net/url"
 	"strings"
+
+	"codeberg.org/dergs/tonearm/pkg/tidalapi/internal"
 )
 
-func (f *Favourites) AddTrack(ctx context.Context, userID, trackId string) error {
+type FavouriteTrack struct {
+	client *internal.Client
+}
+
+func NewFavouriteTrack(client *internal.Client) *FavouriteTrack {
+	return &FavouriteTrack{
+		client: client,
+	}
+}
+
+func (f *FavouriteTrack) Add(ctx context.Context, userID, trackId string) error {
 	body := url.Values{
 		"trackIds":           {trackId},
 		"onArtifactNotFound": {"FAIL"},
@@ -40,7 +52,7 @@ func (f *Favourites) AddTrack(ctx context.Context, userID, trackId string) error
 	return nil
 }
 
-func (f *Favourites) RemoveTrack(ctx context.Context, userID, trackId string) error {
+func (f *FavouriteTrack) Remove(ctx context.Context, userID, trackId string) error {
 	req, err := http.NewRequestWithContext(ctx, http.MethodDelete, fmt.Sprintf("/v1/users/%s/favorites/tracks/%s", userID, trackId), nil)
 	if err != nil {
 		return err

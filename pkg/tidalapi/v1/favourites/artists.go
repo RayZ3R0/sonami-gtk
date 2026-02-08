@@ -7,9 +7,21 @@ import (
 	"net/http"
 	"net/url"
 	"strings"
+
+	"codeberg.org/dergs/tonearm/pkg/tidalapi/internal"
 )
 
-func (f *Favourites) AddArtist(ctx context.Context, userID, artistId string) error {
+type FavouriteArtist struct {
+	client *internal.Client
+}
+
+func NewFavouriteArtist(client *internal.Client) *FavouriteArtist {
+	return &FavouriteArtist{
+		client: client,
+	}
+}
+
+func (f *FavouriteArtist) Add(ctx context.Context, userID, artistId string) error {
 	body := url.Values{
 		"artistIds":          {artistId},
 		"onArtifactNotFound": {"FAIL"},
@@ -40,7 +52,7 @@ func (f *Favourites) AddArtist(ctx context.Context, userID, artistId string) err
 	return nil
 }
 
-func (f *Favourites) RemoveArtist(ctx context.Context, userID, artistId string) error {
+func (f *FavouriteArtist) Remove(ctx context.Context, userID, artistId string) error {
 	req, err := http.NewRequestWithContext(ctx, http.MethodDelete, fmt.Sprintf("/v1/users/%s/favorites/artists/%s", userID, artistId), nil)
 	if err != nil {
 		return err
