@@ -73,11 +73,13 @@ func controlsColumn(trackId string, grid *gtk.Grid, position int, column int) in
 							err := tidal.V1.Favourites.RemoveTrack(context.Background(), secrets.UserID(), trackId)
 							if err != nil {
 								logger.Error("error while removing track from favourites", "error", err)
+								return oldValue
 							}
 						} else {
 							err := tidal.V1.Favourites.AddTrack(context.Background(), secrets.UserID(), trackId)
 							if err != nil {
 								logger.Error("error while adding track to favourites", "error", err)
+								return oldValue
 							}
 						}
 
