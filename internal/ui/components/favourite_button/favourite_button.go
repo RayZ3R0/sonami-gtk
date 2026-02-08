@@ -8,6 +8,7 @@ import (
 	"codeberg.org/dergs/tonearm/internal/gettext"
 	"codeberg.org/dergs/tonearm/internal/secrets"
 	"codeberg.org/dergs/tonearm/internal/signals"
+	"codeberg.org/dergs/tonearm/internal/state"
 	"codeberg.org/dergs/tonearm/pkg/schwifty"
 	gtkbindings "codeberg.org/dergs/tonearm/pkg/schwifty/bindings/gtk"
 	. "codeberg.org/dergs/tonearm/pkg/schwifty/syntax"
@@ -67,6 +68,8 @@ func FavouriteButton(favList []string, resourceID string, apiEndpoint interface 
 						return oldValue
 					}
 				}
+
+				state.BustFavouritesCache()
 
 				return !oldValue
 			})

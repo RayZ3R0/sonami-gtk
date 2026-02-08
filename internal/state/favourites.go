@@ -50,3 +50,10 @@ func Favourites() (*v1.FavouritesIdLists, error) {
 
 	return list, nil
 }
+
+func BustFavouritesCache() {
+	favouritesMutex.Lock()
+	defer favouritesMutex.Unlock()
+
+	favouritesTimeStamp = time.Time{}
+}
