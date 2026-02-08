@@ -3,24 +3,29 @@ package routes
 import (
 	"context"
 	"fmt"
+	"slices"
 
 	"codeberg.org/dergs/tonearm/internal/gettext"
 	"codeberg.org/dergs/tonearm/internal/notifications"
 	"codeberg.org/dergs/tonearm/internal/player"
 	"codeberg.org/dergs/tonearm/internal/resources"
 	"codeberg.org/dergs/tonearm/internal/router"
+	"codeberg.org/dergs/tonearm/internal/secrets"
 	"codeberg.org/dergs/tonearm/internal/signals"
+	appState "codeberg.org/dergs/tonearm/internal/state"
 	"codeberg.org/dergs/tonearm/internal/ui/components/tracklist"
 	"codeberg.org/dergs/tonearm/internal/ui/pages"
 	"codeberg.org/dergs/tonearm/pkg/schwifty"
 	"codeberg.org/dergs/tonearm/pkg/schwifty/state"
 	. "codeberg.org/dergs/tonearm/pkg/schwifty/syntax"
+	"codeberg.org/dergs/tonearm/pkg/schwifty/tracking"
 	"codeberg.org/dergs/tonearm/pkg/tidalapi"
 	"codeberg.org/dergs/tonearm/pkg/tidalapi/models/openapi"
 	"codeberg.org/dergs/tonearm/pkg/tidalapi/pagination"
 	"codeberg.org/dergs/tonearm/pkg/utils/imgutil"
 	"github.com/infinytum/injector"
 	"github.com/jwijenbergh/puregotk/v4/gdk"
+	"github.com/jwijenbergh/puregotk/v4/gobject"
 	"github.com/jwijenbergh/puregotk/v4/gtk"
 )
 
@@ -83,6 +88,8 @@ func Playlist(playlistUUID string) *router.Response {
 			return tl.HMargin(30).VAlign(gtk.AlignStartValue)
 		},
 	)
+
+	isPlaylistFavourited := signals.NewStatefulSignal(false)
 
 	return &router.Response{
 		PageTitle: playlist.Data.Attributes.Name,
@@ -157,7 +164,62 @@ func Playlist(playlistUUID string) *router.Response {
 						Button().
 							TooltipText(gettext.Get("Add to Collection")).
 							IconName("heart-outline-thick-symbolic").
-							WithCSSClass("flat").Sensitive(false),
+							WithCSSClass("flat").
+							ConnectConstruct(func(b *gtk.Button) {
+								favLists, err := appState.Favourites()
+								favList := favLists.Playlist
+								if err != nil {
+									albumLogger.Error("Failed to load favourites", err)
+									b.SetIconName("heart-outline-thick-symbolic")
+									b.RemoveCssClass("accent")
+
+									return
+								}
+
+								isPlaylistFavourited.Notify(func(oldValue bool) bool {
+									return slices.Contains(favList, playlistUUID)
+								})
+
+								weakRef := tracking.NewWeakRef(&b.Object)
+								isPlaylistFavourited.On(func(value bool) bool {
+									schwifty.OnMainThreadOncePure(func() {
+										weakRef.Use(func(obj *gobject.Object) {
+											b := gtk.ButtonNewFromInternalPtr(obj.Ptr)
+
+											if value {
+												b.SetIconName("heart-filled-symbolic")
+												b.AddCssClass("accent")
+											} else {
+												b.SetIconName("heart-outline-thick-symbolic")
+												b.RemoveCssClass("accent")
+											}
+										})
+									})
+
+									return signals.Continue
+								})
+							}).
+							ConnectClicked(func(b gtk.Button) {
+								tidal, _ := injector.Inject[*tidalapi.TidalAPI]()
+
+								isPlaylistFavourited.Notify(func(oldValue bool) bool {
+									if oldValue {
+										err := tidal.V1.Favourites.RemovePlaylist(context.Background(), secrets.UserID(), playlistUUID)
+										if err != nil {
+											albumLogger.Error("error while removing playlist from favourites", "error", err)
+											return oldValue
+										}
+									} else {
+										err := tidal.V1.Favourites.AddPlaylist(context.Background(), secrets.UserID(), playlistUUID)
+										if err != nil {
+											albumLogger.Error("error while adding playlist to favourites", "error", err)
+											return oldValue
+										}
+									}
+
+									return !oldValue
+								})
+							}),
 						Button().
 							TooltipText(gettext.Get("Copy Playlist URL")).
 							IconName("share-alt-symbolic").
