@@ -29,6 +29,12 @@ func init() {
 	playbin.GetBus().AddWatch(onBusMessage)
 	playbin.Connect("notify::volume", onVolumeChange)
 	playbin.Connect("about-to-finish", onAboutToFinish)
+
+	audioFilterBin, err := buildReplayGainFilterBin()
+	if err != nil {
+		panic(err)
+	}
+	playbin.Set("audio-filter", audioFilterBin)
 }
 
 func setLoadingState() {
