@@ -8,7 +8,6 @@ import (
 	"codeberg.org/dergs/tonearm/internal/gettext"
 	"codeberg.org/dergs/tonearm/internal/secrets"
 	"codeberg.org/dergs/tonearm/internal/signals"
-	"codeberg.org/dergs/tonearm/internal/state"
 	"codeberg.org/dergs/tonearm/pkg/schwifty"
 	gtkbindings "codeberg.org/dergs/tonearm/pkg/schwifty/bindings/gtk"
 	. "codeberg.org/dergs/tonearm/pkg/schwifty/syntax"
@@ -30,16 +29,6 @@ func FavouriteButton(favList []string, resourceID string, apiEndpoint interface 
 		IconName("heart-outline-thick-symbolic").
 		WithCSSClass("flat").
 		ConnectConstruct(func(b *gtk.Button) {
-			favLists, err := state.Favourites()
-			favList := favLists.Album
-			if err != nil {
-				logger.Error("Failed to load favourites", err)
-				b.SetIconName("heart-outline-thick-symbolic")
-				b.RemoveCssClass("accent")
-
-				return
-			}
-
 			isFavourited.Notify(func(oldValue bool) bool {
 				return slices.Contains(favList, resourceID)
 			})
@@ -68,13 +57,13 @@ func FavouriteButton(favList []string, resourceID string, apiEndpoint interface 
 				if oldValue {
 					err := apiEndpoint.Remove(context.Background(), secrets.UserID(), resourceID)
 					if err != nil {
-						logger.Error("error while removing album from favourites", "error", err)
+						logger.Error("error while removing item from favourites", "error", err)
 						return oldValue
 					}
 				} else {
 					err := apiEndpoint.Add(context.Background(), secrets.UserID(), resourceID)
 					if err != nil {
-						logger.Error("error while adding album to favourites", "error", err)
+						logger.Error("error while adding item to favourites", "error", err)
 						return oldValue
 					}
 				}
