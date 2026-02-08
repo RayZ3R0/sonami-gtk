@@ -57,6 +57,6 @@ func injectReplayGainTags(rgvolume *gst.Element, info *v1.PlaybackInfo) {
 	if ok := sinkPad.SendEvent(tagEvent); !ok {
 		slog.Warn("failed to send ReplayGain tag event")
 	} else {
-		slog.Info("injected ReplayGain tags", "track", fmt.Sprint("%.2f dB", info.TrackReplayGain), "peak", fmt.Sprint("%.6f", info.TrackPeakAmplitude))
+		slog.Info("injected ReplayGain tags", "track", fmt.Sprintf("%.2f dB", info.TrackReplayGain), "peak", fmt.Sprintf("%.6f", info.TrackPeakAmplitude))
 	}
 }
