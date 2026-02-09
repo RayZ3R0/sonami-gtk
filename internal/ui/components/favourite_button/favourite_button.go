@@ -1,12 +1,10 @@
 package favouritebutton
 
 import (
-	"context"
 	"log/slog"
 	"slices"
 
 	"codeberg.org/dergs/tonearm/internal/gettext"
-	"codeberg.org/dergs/tonearm/internal/secrets"
 	"codeberg.org/dergs/tonearm/internal/signals"
 	"codeberg.org/dergs/tonearm/internal/state"
 	"codeberg.org/dergs/tonearm/pkg/schwifty"
@@ -19,10 +17,7 @@ import (
 
 var logger = slog.With("module", "ui/components", "component", "FavouriteButton")
 
-func FavouriteButton(favList []string, resourceID string, apiEndpoint interface {
-	Add(context.Context, string, string) error
-	Remove(context.Context, string, string) error
-}) gtkbindings.Button {
+func FavouriteButton(favouriteCache state.FavouriteCache, resourceID string) gtkbindings.Button {
 	isFavourited := signals.NewStatefulSignal(false)
 
 	return Button().
@@ -31,7 +26,13 @@ func FavouriteButton(favList []string, resourceID string, apiEndpoint interface 
 		WithCSSClass("flat").
 		ConnectConstruct(func(b *gtk.Button) {
 			isFavourited.Notify(func(oldValue bool) bool {
-				return slices.Contains(favList, resourceID)
+				items, err := favouriteCache.Get()
+				if err != nil {
+					logger.Error("Failed to get favourites", "error", err)
+					return false
+				}
+
+				return slices.Contains(*items, resourceID)
 			})
 
 			weakRef := tracking.NewWeakRef(&b.Object)
@@ -56,20 +57,18 @@ func FavouriteButton(favList []string, resourceID string, apiEndpoint interface 
 		ConnectClicked(func(b gtk.Button) {
 			isFavourited.Notify(func(oldValue bool) bool {
 				if oldValue {
-					err := apiEndpoint.Remove(context.Background(), secrets.UserID(), resourceID)
+					err := favouriteCache.Remove(resourceID)
 					if err != nil {
 						logger.Error("error while removing item from favourites", "error", err)
 						return oldValue
 					}
 				} else {
-					err := apiEndpoint.Add(context.Background(), secrets.UserID(), resourceID)
+					err := favouriteCache.Add(resourceID)
 					if err != nil {
 						logger.Error("error while adding item to favourites", "error", err)
 						return oldValue
 					}
 				}
-
-				state.BustFavouritesCache()
 
 				return !oldValue
 			})

@@ -41,11 +41,8 @@ func Artist(artistId string) *router.Response {
 		body = body.Append(components.ForPageItem(item))
 	}
 
-	favouriteIds, err := state.Favourites()
-
 	return &router.Response{
 		PageTitle: gettext.Get("Artist"),
-		Error:     err,
 		View: VStack(
 			HStack(
 				AspectFrame(
@@ -111,7 +108,7 @@ func Artist(artistId string) *router.Response {
 						Spacing(5).
 						HAlign(gtk.AlignEndValue),
 					HStack(
-						favouritebutton.FavouriteButton(favouriteIds.Artist, artistId, tidal.V1.Favourites.Artists),
+						favouritebutton.FavouriteButton(state.ArtistsCache, artistId),
 						Button().
 							TooltipText(gettext.Get("Copy Artist URL")).
 							IconName("share-alt-symbolic").

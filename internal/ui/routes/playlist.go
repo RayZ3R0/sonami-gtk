@@ -86,12 +86,6 @@ func Playlist(playlistUUID string) *router.Response {
 		},
 	)
 
-	if err != nil {
-		return router.FromError(playlist.Data.Attributes.Name, err)
-	}
-
-	favouriteIds, err := appState.Favourites()
-
 	return &router.Response{
 		PageTitle: playlist.Data.Attributes.Name,
 		Error:     err,
@@ -162,7 +156,7 @@ func Playlist(playlistUUID string) *router.Response {
 						Spacing(5).
 						HAlign(gtk.AlignEndValue),
 					HStack(
-						favouritebutton.FavouriteButton(favouriteIds.Playlist, playlistUUID, tidal.V1.Favourites.Playlists),
+						favouritebutton.FavouriteButton(appState.PlaylistsCache, playlistUUID),
 						Button().
 							TooltipText(gettext.Get("Copy Playlist URL")).
 							IconName("share-alt-symbolic").

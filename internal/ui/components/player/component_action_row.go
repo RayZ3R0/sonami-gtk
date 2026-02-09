@@ -10,7 +10,6 @@ import (
 	"codeberg.org/dergs/tonearm/internal/notifications"
 	"codeberg.org/dergs/tonearm/internal/player"
 	"codeberg.org/dergs/tonearm/internal/router"
-	"codeberg.org/dergs/tonearm/internal/secrets"
 	"codeberg.org/dergs/tonearm/internal/signals"
 	appState "codeberg.org/dergs/tonearm/internal/state"
 	"codeberg.org/dergs/tonearm/pkg/schwifty"
@@ -65,23 +64,18 @@ func init() {
 
 func actionRow() schwifty.Box {
 	isFavourited := signals.NewStatefulSignal(false)
-	favourites, err := appState.Favourites()
-	if err != nil {
-		logger.Error("error while fetching favourites", err)
-	}
-
 	player.TrackChanged.On(func(t *player.Track) bool {
 		if t == nil {
 			return signals.Continue
 		}
 
-		favourites, err = appState.Favourites()
+		favourites, err := appState.TracksCache.Get()
 		if err != nil {
 			logger.Error("error while fetching favourites", err)
 		}
 
 		isFavourited.Notify(func(oldValue bool) bool {
-			return slices.Contains(favourites.Track, t.ID)
+			return slices.Contains(*favourites, t.ID)
 		})
 
 		return signals.Continue
@@ -119,23 +113,21 @@ func actionRow() schwifty.Box {
 			}).
 			ConnectClicked(func(b gtk.Button) {
 				isFavourited.Notify(func(oldValue bool) bool {
-					tidal, _ := injector.Inject[*tidalapi.TidalAPI]()
-
 					if oldValue {
-						err := tidal.V1.Favourites.Tracks.Remove(context.Background(), secrets.UserID(), player.TrackChanged.CurrentValue().ID)
+						err := appState.TracksCache.Remove(player.TrackChanged.CurrentValue().ID)
 						if err != nil {
 							logger.Error("error while removing track from favourites", "error", err)
 							return oldValue
 						}
 					} else {
-						err := tidal.V1.Favourites.Tracks.Add(context.Background(), secrets.UserID(), player.TrackChanged.CurrentValue().ID)
+						err := appState.TracksCache.Add(player.TrackChanged.CurrentValue().ID)
 						if err != nil {
 							logger.Error("error while adding track to favourites", "error", err)
 							return oldValue
 						}
 					}
 
-					appState.BustFavouritesCache()
+					appState.TracksCache.Bust()
 
 					return !oldValue
 				})

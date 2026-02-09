@@ -84,8 +84,6 @@ func Album(albumId string) *router.Response {
 		return router.FromError(album.Data.Attributes.Title, err)
 	}
 
-	favouritesID, err := appState.Favourites()
-
 	return &router.Response{
 		PageTitle: album.Data.Attributes.Title,
 		Error:     err,
@@ -153,7 +151,7 @@ func Album(albumId string) *router.Response {
 						VAlign(gtk.AlignCenterValue).
 						Spacing(5),
 					HStack(
-						favouritebutton.FavouriteButton(favouritesID.Album, albumId, tidal.V1.Favourites.Albums),
+						favouritebutton.FavouriteButton(appState.AlbumsCache, albumId),
 						Button().
 							TooltipText(gettext.Get("Copy Album URL")).
 							IconName("share-alt-symbolic").

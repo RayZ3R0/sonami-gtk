@@ -8,10 +8,8 @@ import (
 	"codeberg.org/dergs/tonearm/internal/state"
 	favouritebutton "codeberg.org/dergs/tonearm/internal/ui/components/favourite_button"
 	. "codeberg.org/dergs/tonearm/pkg/schwifty/syntax"
-	"codeberg.org/dergs/tonearm/pkg/tidalapi"
 	"codeberg.org/dergs/tonearm/pkg/tidalapi/models/openapi"
 	v2 "codeberg.org/dergs/tonearm/pkg/tidalapi/models/v2"
-	"github.com/infinytum/injector"
 	"github.com/jwijenbergh/puregotk/v4/glib"
 	"github.com/jwijenbergh/puregotk/v4/gtk"
 )
@@ -19,21 +17,9 @@ import (
 var logger = slog.With("module", "components/tracklist")
 
 func controlsColumn(trackId string, grid *gtk.Grid, position int, column int) int {
-	favouriteId, err := state.Favourites()
-	if err != nil {
-		logger.Error("Failed to get favourites", err)
-		return 0
-	}
-
-	tidal, err := injector.Inject[*tidalapi.TidalAPI]()
-	if err != nil {
-		logger.Error("Failed to inject Tidal API", err)
-		return 0
-	}
-
 	grid.Attach(
 		HStack(
-			favouritebutton.FavouriteButton(favouriteId.Track, trackId, tidal.V1.Favourites.Tracks).
+			favouritebutton.FavouriteButton(state.TracksCache, trackId).
 				HAlign(gtk.AlignCenterValue).
 				VAlign(gtk.AlignCenterValue),
 			Button().
