@@ -44,8 +44,8 @@ type FavouriteCache interface {
 }
 
 var (
-	AlbumsCache    = &FavouriteCacheV2{}
-	ArtistsCache   = &FavouriteCacheV2{}
+	AlbumsCache    = &FavouriteCacheV1{}
+	ArtistsCache   = &FavouriteCacheV1{}
 	MixesCache     = &FavouriteCacheV2{}
 	PlaylistsCache = &FavouriteCacheV1{}
 	TracksCache    = &FavouriteCacheV1{}
@@ -61,13 +61,23 @@ func deferredInit() {
 
 	tidal, _ := injector.Inject[*tidalapi.TidalAPI]()
 
-	AlbumsCache.resource = tidal.V2.Favourites.Albums
-	ArtistsCache.resource = tidal.V2.Favourites.Artists
+	AlbumsCache.resource = tidal.V1.Favourites.Albums
+	AlbumsCache.listGetter = func(lists *v1.FavouritesIdLists) []string {
+		return lists.Album
+	}
+
+	ArtistsCache.resource = tidal.V1.Favourites.Artists
+	ArtistsCache.listGetter = func(lists *v1.FavouritesIdLists) []string {
+		return lists.Artist
+	}
+
 	MixesCache.resource = tidal.V2.Favourites.Mixes
+
 	PlaylistsCache.resource = tidal.V1.Favourites.Playlists
 	PlaylistsCache.listGetter = func(lists *v1.FavouritesIdLists) []string {
 		return lists.Playlist
 	}
+
 	TracksCache.resource = tidal.V1.Favourites.Tracks
 	TracksCache.listGetter = func(lists *v1.FavouritesIdLists) []string {
 		return lists.Track
@@ -77,8 +87,10 @@ func deferredInit() {
 func (cache *FavouriteCacheV1) Add(id string) error {
 	deferredInit()
 	cache.mutex.Lock()
-	defer cache.mutex.Unlock()
-	defer cache.Bust()
+	defer func() {
+		cache.mutex.Unlock()
+		cache.Bust()
+	}()
 
 	userId := secrets.UserID()
 	return cache.resource.Add(context.Background(), userId, id)
@@ -127,8 +139,10 @@ func (cache *FavouriteCacheV1) Bust() {
 func (cache *FavouriteCacheV1) Remove(id string) error {
 	deferredInit()
 	cache.mutex.Lock()
-	defer cache.mutex.Unlock()
-	defer cache.Bust()
+	defer func() {
+		cache.mutex.Unlock()
+		cache.Bust()
+	}()
 
 	userId := secrets.UserID()
 	return cache.resource.Remove(context.Background(), userId, id)
@@ -137,8 +151,10 @@ func (cache *FavouriteCacheV1) Remove(id string) error {
 func (cache *FavouriteCacheV2) Add(id string) error {
 	deferredInit()
 	cache.mutex.Lock()
-	defer cache.mutex.Unlock()
-	defer cache.Bust()
+	defer func() {
+		cache.mutex.Unlock()
+		cache.Bust()
+	}()
 
 	return cache.resource.Add(context.Background(), id)
 }
@@ -146,8 +162,10 @@ func (cache *FavouriteCacheV2) Add(id string) error {
 func (cache *FavouriteCacheV2) Remove(id string) error {
 	deferredInit()
 	cache.mutex.Lock()
-	defer cache.mutex.Unlock()
-	defer cache.Bust()
+	defer func() {
+		cache.mutex.Unlock()
+		cache.Bust()
+	}()
 
 	return cache.resource.Remove(context.Background(), id)
 }
