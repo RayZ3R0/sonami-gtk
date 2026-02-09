@@ -10,15 +10,16 @@ msgstr ""
 "Project-Id-Version: v1.0.0-12-g1ce38cd\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2026-02-05 18:41+0100\n"
-"PO-Revision-Date: 2026-02-05 19:49+0100\n"
-"Last-Translator: Dråfølin Nattfløyen <derg at drafolin dot ch>\n"
-"Language-Team: French\n"
+"PO-Revision-Date: 2026-02-09 11:43+0000\n"
+"Last-Translator: drafolin <drafolin@noreply.codeberg.org>\n"
+"Language-Team: French <https://translate.codeberg.org/projects/tonearm/"
+"tonearm/fr/>\n"
 "Language: fr\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=2; plural=(n > 1);\n"
-"X-Generator: Gtranslator 49.0\n"
+"Plural-Forms: nplurals=2; plural=n > 1;\n"
+"X-Generator: Weblate 5.15.2\n"
 
 #: internal/ui/routes/artist.go:58
 msgid "%d Fan"
@@ -98,7 +99,7 @@ msgid ""
 "of quitting the application"
 msgstr ""
 "Autoriser Tonearm à s'executer en arrière-plan en cachant le lecteur au lieu "
-"de quitter l'application."
+"de quitter l'application"
 
 #: internal/ui/window_preferences.go:86
 msgid "Allow Tonearm to send scrobbling data to ListenBrainz"
@@ -398,7 +399,7 @@ msgstr "Retourner à l'accueil"
 
 #: internal/ui/components/player/component_action_row.go:102
 msgid "Navigate to Track Mix"
-msgstr "Revenir en arrière"
+msgstr "Ouvrir le Mix du Titre"
 
 #: internal/ui/window_shortcuts.go:21
 msgid "Navigation"
@@ -455,7 +456,7 @@ msgstr "Pas de morceaux en lecture"
 
 #: internal/router/handler_notfound.go:10
 msgid "Not Found"
-msgstr "Non trouvé"
+msgstr "Non Trouvé"
 
 #: internal/router/handler_notfound.go:12
 msgid "Not found"
@@ -680,9 +681,9 @@ msgid ""
 msgstr ""
 "Malheureusement, une erreur s'est produite lors du chargement de cette vue. "
 "Veuillez réessayer plus tard. Si cette erreur persiste, veuillez ouvrir un "
-"ticket!\n"
+"ticket !\n"
 "\n"
-"Message d'erreur: "
+"Message d'erreur : "
 
 #: internal/ui/routes/feed.go:171
 msgid "Unknown album type"
