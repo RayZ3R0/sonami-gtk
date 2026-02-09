@@ -64,10 +64,13 @@ func Playlist(playlistUUID string) *router.Response {
 	}
 
 	var playlistMetadata schwifty.Label
+	var appCache appState.FavouriteCache
 	if playlist.Data.Attributes.PlaylistType != openapi.PlaylistTypeMix {
 		playlistMetadata = Label(gettext.GetN("%d Track (%s)", "%d Tracks (%s)", playlist.Data.Attributes.NumberOfItems, playlist.Data.Attributes.NumberOfItems, tidalapi.FormatCustomDuration(playlist.Data.Attributes.Duration)))
+		appCache = appState.PlaylistsCache
 	} else {
 		playlistMetadata = Label(gettext.Get("Personal Mix"))
+		appCache = appState.MixesCache
 	}
 
 	page, err := pages.NewPaginatedTracklistPage(
@@ -156,7 +159,7 @@ func Playlist(playlistUUID string) *router.Response {
 						Spacing(5).
 						HAlign(gtk.AlignEndValue),
 					HStack(
-						favouritebutton.FavouriteButton(appState.PlaylistsCache, playlistUUID),
+						favouritebutton.FavouriteButton(appCache, playlistUUID),
 						Button().
 							TooltipText(gettext.Get("Copy Playlist URL")).
 							IconName("share-alt-symbolic").
