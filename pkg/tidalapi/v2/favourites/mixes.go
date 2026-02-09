@@ -31,7 +31,7 @@ func (f *FavouriteMixes) Add(ctx context.Context, mixUUID string) error {
 	req, err := http.NewRequestWithContext(
 		ctx,
 		http.MethodPut,
-		"/v2/favourites/mixes/add",
+		"/v2/favorites/mixes/add",
 		strings.NewReader(body.Encode()),
 	)
 	req.Header.Set("Content-Type", "application/x-www-form-urlencoded")
@@ -58,7 +58,7 @@ func (f *FavouriteMixes) IDs(ctx context.Context, cursor, ifNoneMatch string) (d
 	req, err := http.NewRequestWithContext(
 		ctx,
 		http.MethodGet,
-		"/v2/favourites/mixes/ids",
+		"/v2/favorites/mixes/ids",
 		nil,
 	)
 	if err != nil {
@@ -99,7 +99,7 @@ func (f *FavouriteMixes) Remove(ctx context.Context, mixUUID string) error {
 	req, err := http.NewRequestWithContext(
 		ctx,
 		http.MethodPut,
-		"/v2/favourites/mixes/remove",
+		"/v2/favorites/mixes/remove",
 		nil)
 	if err != nil {
 		return err

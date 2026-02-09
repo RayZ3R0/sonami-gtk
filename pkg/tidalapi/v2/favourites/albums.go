@@ -31,7 +31,7 @@ func (f *FavouriteAlbum) Add(ctx context.Context, albumId string) error {
 	req, err := http.NewRequestWithContext(
 		ctx,
 		http.MethodPut,
-		"/v2/favourites/albums/add",
+		"/v2/favorites/albums/add",
 		strings.NewReader(body.Encode()),
 	)
 	req.Header.Set("Content-Type", "application/x-www-form-urlencoded")
@@ -58,7 +58,7 @@ func (f *FavouriteAlbum) IDs(ctx context.Context, cursor, ifNoneMatch string) (d
 	req, err := http.NewRequestWithContext(
 		ctx,
 		http.MethodGet,
-		"/v2/favourites/albums/ids",
+		"/v2/favorites/albums/ids",
 		nil,
 	)
 	if err != nil {
@@ -103,7 +103,7 @@ func (f *FavouriteAlbum) Remove(ctx context.Context, albumId string) error {
 	req, err := http.NewRequestWithContext(
 		ctx,
 		http.MethodPut,
-		"/v2/favourites/albums/remove",
+		"/v1/favorites/albums/remove",
 		nil)
 	if err != nil {
 		return err
