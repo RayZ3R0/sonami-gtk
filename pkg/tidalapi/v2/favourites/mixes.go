@@ -25,7 +25,7 @@ func NewFavouriteMixes(client *internal.Client) *FavouriteMixes {
 
 func (f *FavouriteMixes) Add(ctx context.Context, mixUUID string) error {
 	body := url.Values{
-		"uuids":              {mixUUID},
+		"mixIds":             {mixUUID},
 		"onArtifactNotFound": {"FAIL"},
 	}
 	req, err := http.NewRequestWithContext(
