@@ -63,7 +63,7 @@ func playTrack(track *openapi.Track) error {
 		return errors.New("track not available for streaming")
 	}
 
-	if strconv.Itoa(currentlyEnqueuedTrack.TrackID) != track.Data.ID {
+	if currentlyEnqueuedTrack == nil || strconv.Itoa(currentlyEnqueuedTrack.TrackID) != track.Data.ID {
 		logger.Debug("fetching playback info for track", "track_id", track.Data.ID)
 		playbackInfo, err := tidal.V1.Tracks.PlaybackInfo(
 			context.Background(),

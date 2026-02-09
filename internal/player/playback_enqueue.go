@@ -12,7 +12,7 @@ import (
 )
 
 var (
-	currentlyEnqueuedTrack *v1.PlaybackInfo = &v1.PlaybackInfo{}
+	currentlyEnqueuedTrack *v1.PlaybackInfo
 )
 
 type btsStream struct {
