@@ -98,6 +98,9 @@ This assumes you are using the [yay helper](https://github.com/Jguer/yay). If us
 yay -S tonearm
 ```
 
+## Translations
+You can bring Tonearm to even more people by helping us translate it into their native language! To make this easier, Tonearm's translations can be edited on [Codeberg's Weblate instance](https://translate.codeberg.org/projects/tonearm/tonearm/)!
+
 ## Screenshots
 <details>
   <summary>Explore Page</summary>
