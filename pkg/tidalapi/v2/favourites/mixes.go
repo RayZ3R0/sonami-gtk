@@ -106,7 +106,7 @@ func (f *FavouriteMixes) Remove(ctx context.Context, mixUUID string) error {
 	}
 
 	params := url.Values{}
-	params.Add("uuids", mixUUID)
+	params.Add("mixIds", mixUUID)
 	req.URL.RawQuery = params.Encode()
 
 	resp, err := f.client.Do(req)
