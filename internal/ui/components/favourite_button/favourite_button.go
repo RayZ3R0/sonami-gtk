@@ -91,6 +91,10 @@ func FavouriteButton(favouriteCache state.FavouriteCache, resourceID string) gtk
 		}).
 		ConnectClicked(func(b gtk.Button) {
 			go func() {
+				if isLoading.CurrentValue() {
+					return
+				}
+
 				isLoading.Set(true)
 				defer isLoading.Set(false)
 
