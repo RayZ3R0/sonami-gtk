@@ -116,7 +116,7 @@ func (f *FavouriteMixes) Remove(ctx context.Context, mixUUID string) error {
 	defer resp.Body.Close()
 
 	if resp.StatusCode != http.StatusOK {
-		return err
+		return fmt.Errorf("error while removing mix from favourites: %s", resp.Status)
 	}
 
 	return nil
