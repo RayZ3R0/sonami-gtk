@@ -3,6 +3,7 @@ package player
 import (
 	"context"
 	"fmt"
+	"slices"
 	"strconv"
 
 	"codeberg.org/dergs/tonearm/internal/gettext"
@@ -10,14 +11,18 @@ import (
 	"codeberg.org/dergs/tonearm/internal/player"
 	"codeberg.org/dergs/tonearm/internal/router"
 	"codeberg.org/dergs/tonearm/internal/signals"
+	appState "codeberg.org/dergs/tonearm/internal/state"
 	"codeberg.org/dergs/tonearm/pkg/schwifty"
 	"codeberg.org/dergs/tonearm/pkg/schwifty/state"
 	. "codeberg.org/dergs/tonearm/pkg/schwifty/syntax"
+	"codeberg.org/dergs/tonearm/pkg/schwifty/tracking"
 	"codeberg.org/dergs/tonearm/pkg/tidalapi"
 	"github.com/infinytum/injector"
+	"github.com/jwijenbergh/puregotk/v4/adw"
 	"github.com/jwijenbergh/puregotk/v4/gdk"
 	"github.com/jwijenbergh/puregotk/v4/gio"
 	"github.com/jwijenbergh/puregotk/v4/glib"
+	"github.com/jwijenbergh/puregotk/v4/gobject"
 	"github.com/jwijenbergh/puregotk/v4/gtk"
 )
 
@@ -58,6 +63,117 @@ func init() {
 	})
 }
 
+func spinner() *gtk.Widget {
+	return &adw.NewSpinner().Widget
+}
+
+func favouriteButton() schwifty.Button {
+	var (
+		isFavourited = signals.NewStatefulSignal(false)
+		isLoading    = signals.NewStatefulSignal(false)
+	)
+
+	player.TrackChanged.On(func(t *player.Track) bool {
+		isLoading.Set(true)
+		defer isLoading.Set(false)
+		if t == nil {
+			return signals.Continue
+		}
+
+		favourites, err := appState.TracksCache.Get()
+		if err != nil {
+			logger.Error("error while fetching favourites", err)
+			return signals.Continue
+		}
+
+		isFavourited.Notify(func(oldValue bool) bool {
+			return slices.Contains(*favourites, t.ID)
+		})
+
+		return signals.Continue
+	})
+
+	return Button().
+		TooltipText(gettext.Get("Add to Collection")).
+		IconName("heart-outline-thick-symbolic").
+		WithCSSClass("flat").
+		ConnectConstruct(func(b *gtk.Button) {
+			weakRef := tracking.NewWeakRef(&b.Object)
+
+			isLoading.On(func(loading bool) bool {
+				schwifty.OnMainThreadOncePure(func() {
+					weakRef.Use(func(obj *gobject.Object) {
+						b := gtk.ButtonNewFromInternalPtr(obj.Ptr)
+
+						if loading {
+							b.SetChild(spinner())
+							b.RemoveCssClass("accent")
+						} else {
+							if isFavourited.CurrentValue() {
+								b.SetIconName("heart-filled-symbolic")
+								b.AddCssClass("accent")
+							} else {
+								b.SetIconName("heart-outline-thick-symbolic")
+								b.RemoveCssClass("accent")
+							}
+						}
+					})
+				})
+
+				return signals.Continue
+			})
+
+			isFavourited.On(func(value bool) bool {
+				schwifty.OnMainThreadOncePure(func() {
+					weakRef.Use(func(obj *gobject.Object) {
+						b := gtk.ButtonNewFromInternalPtr(obj.Ptr)
+
+						if value {
+							b.SetIconName("heart-filled-symbolic")
+							b.AddCssClass("accent")
+						} else {
+							b.SetIconName("heart-outline-thick-symbolic")
+							b.RemoveCssClass("accent")
+						}
+					})
+				})
+
+				return signals.Continue
+			})
+		}).
+		ConnectClicked(func(b gtk.Button) {
+			go func() {
+				if isLoading.CurrentValue() {
+					return
+				}
+
+				isLoading.Set(true)
+				defer isLoading.Set(false)
+
+				isFavourited.Notify(func(oldValue bool) bool {
+					if oldValue {
+						err := appState.TracksCache.Remove(player.TrackChanged.CurrentValue().ID)
+						if err != nil {
+							logger.Error("error while removing track from favourites", "error", err)
+							return oldValue
+						}
+					} else {
+						err := appState.TracksCache.Add(player.TrackChanged.CurrentValue().ID)
+						if err != nil {
+							logger.Error("error while adding track to favourites", "error", err)
+							return oldValue
+						}
+					}
+
+					appState.TracksCache.Bust()
+
+					return !oldValue
+				})
+			}()
+		}).
+		BindSensitive(isTrackLoadedState)
+}
+
 func actionRow() schwifty.Box {
 	return HStack(
 		MenuButton().
@@ -65,12 +181,7 @@ func actionRow() schwifty.Box {
 			Popover(controlsVolumeSlider()).
 			IconName("speakers-symbolic").
 			WithCSSClass("flat"),
-		Button().
-			TooltipText(gettext.Get("Add to Collection")).
-			ActionName("unimplemented").
-			IconName("heart-outline-thick-symbolic").
-			// BindSensitive(isTrackLoaded). // Turn on once we implemented this feature
-			WithCSSClass("flat"),
+		favouriteButton(),
 		Button().
 			TooltipText(gettext.Get("Navigate to Album")).
 			IconName("cd-symbolic").

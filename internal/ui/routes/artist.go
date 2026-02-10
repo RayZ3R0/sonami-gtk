@@ -3,13 +3,16 @@ package routes
 import (
 	"context"
 	"fmt"
+	"log/slog"
 
 	"codeberg.org/dergs/tonearm/internal/gettext"
 	"codeberg.org/dergs/tonearm/internal/notifications"
 	"codeberg.org/dergs/tonearm/internal/player"
 	"codeberg.org/dergs/tonearm/internal/resources"
 	"codeberg.org/dergs/tonearm/internal/router"
+	"codeberg.org/dergs/tonearm/internal/state"
 	"codeberg.org/dergs/tonearm/internal/ui/components"
+	favouritebutton "codeberg.org/dergs/tonearm/internal/ui/components/favourite_button"
 	. "codeberg.org/dergs/tonearm/pkg/schwifty/syntax"
 	"codeberg.org/dergs/tonearm/pkg/tidalapi"
 	"codeberg.org/dergs/tonearm/pkg/utils/imgutil"
@@ -22,6 +25,8 @@ import (
 func init() {
 	router.Register("artist/:id", Artist)
 }
+
+var artistLogger = slog.With("module", "ui/routes", "route", "artist")
 
 func Artist(artistId string) *router.Response {
 	tidal := injector.MustInject[*tidalapi.TidalAPI]()
@@ -103,11 +108,7 @@ func Artist(artistId string) *router.Response {
 						Spacing(5).
 						HAlign(gtk.AlignEndValue),
 					HStack(
-						Button().
-							TooltipText(gettext.Get("Add to Collection")).
-							IconName("heart-outline-thick-symbolic").
-							WithCSSClass("flat").
-							Sensitive(false),
+						favouritebutton.FavouriteButton(state.ArtistsCache, artistId),
 						Button().
 							TooltipText(gettext.Get("Copy Artist URL")).
 							IconName("share-alt-symbolic").

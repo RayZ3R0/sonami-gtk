@@ -10,6 +10,8 @@ import (
 	"codeberg.org/dergs/tonearm/internal/resources"
 	"codeberg.org/dergs/tonearm/internal/router"
 	"codeberg.org/dergs/tonearm/internal/signals"
+	appState "codeberg.org/dergs/tonearm/internal/state"
+	favouritebutton "codeberg.org/dergs/tonearm/internal/ui/components/favourite_button"
 	"codeberg.org/dergs/tonearm/internal/ui/components/tracklist"
 	"codeberg.org/dergs/tonearm/internal/ui/pages"
 	"codeberg.org/dergs/tonearm/pkg/schwifty"
@@ -62,10 +64,13 @@ func Playlist(playlistUUID string) *router.Response {
 	}
 
 	var playlistMetadata schwifty.Label
+	var appCache appState.FavouriteCache
 	if playlist.Data.Attributes.PlaylistType != openapi.PlaylistTypeMix {
 		playlistMetadata = Label(gettext.GetN("%d Track (%s)", "%d Tracks (%s)", playlist.Data.Attributes.NumberOfItems, playlist.Data.Attributes.NumberOfItems, tidalapi.FormatCustomDuration(playlist.Data.Attributes.Duration)))
+		appCache = appState.PlaylistsCache
 	} else {
 		playlistMetadata = Label(gettext.Get("Personal Mix"))
+		appCache = appState.MixesCache
 	}
 
 	page, err := pages.NewPaginatedTracklistPage(
@@ -154,10 +159,7 @@ func Playlist(playlistUUID string) *router.Response {
 						Spacing(5).
 						HAlign(gtk.AlignEndValue),
 					HStack(
-						Button().
-							TooltipText(gettext.Get("Add to Collection")).
-							IconName("heart-outline-thick-symbolic").
-							WithCSSClass("flat").Sensitive(false),
+						favouritebutton.FavouriteButton(appCache, playlistUUID),
 						Button().
 							TooltipText(gettext.Get("Copy Playlist URL")).
 							IconName("share-alt-symbolic").

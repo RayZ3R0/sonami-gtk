@@ -2,13 +2,18 @@ package routes
 
 import (
 	"context"
+	"fmt"
+	"log/slog"
 	"strings"
 
 	"codeberg.org/dergs/tonearm/internal/gettext"
+	"codeberg.org/dergs/tonearm/internal/notifications"
 	"codeberg.org/dergs/tonearm/internal/player"
 	"codeberg.org/dergs/tonearm/internal/resources"
 	"codeberg.org/dergs/tonearm/internal/router"
 	"codeberg.org/dergs/tonearm/internal/signals"
+	appState "codeberg.org/dergs/tonearm/internal/state"
+	favouritebutton "codeberg.org/dergs/tonearm/internal/ui/components/favourite_button"
 	"codeberg.org/dergs/tonearm/internal/ui/components/tracklist"
 	"codeberg.org/dergs/tonearm/internal/ui/pages"
 	"codeberg.org/dergs/tonearm/pkg/schwifty"
@@ -19,9 +24,11 @@ import (
 	"codeberg.org/dergs/tonearm/pkg/tidalapi/pagination"
 	"codeberg.org/dergs/tonearm/pkg/utils/imgutil"
 	"github.com/infinytum/injector"
+	"github.com/jwijenbergh/puregotk/v4/gdk"
 	"github.com/jwijenbergh/puregotk/v4/gtk"
 )
 
+var albumLogger = slog.With("module", "ui/routes", "route", "album")
 var canPlayAlbumState = state.NewStateful(false)
 
 func init() {
@@ -73,6 +80,10 @@ func Album(albumId string) *router.Response {
 		},
 	)
 
+	if err != nil {
+		return router.FromError(album.Data.Attributes.Title, err)
+	}
+
 	return &router.Response{
 		PageTitle: album.Data.Attributes.Title,
 		Error:     err,
@@ -105,39 +116,67 @@ func Album(albumId string) *router.Response {
 						MarginTop(10),
 				).MarginStart(20).VAlign(gtk.AlignCenterValue),
 				Spacer().VExpand(false),
-				HStack(
-					Button().
-						TooltipText(gettext.Get("Shuffle Album")).
-						IconName("playlist-shuffle-symbolic").
-						MinWidth(81).
-						CornerRadius(21).
-						Padding(9).
-						ConnectClicked(func(b gtk.Button) {
-							go player.PlayAlbum(albumId, true, 0)
-						}).
-						BindSensitive(canPlayAlbumState),
-					Button().
-						TooltipText(gettext.Get("Play Album")).
-						IconName("play-symbolic").
-						MinWidth(81).
-						CornerRadius(21).
-						Padding(9).
-						CSS(`
-							button {
-								background-color: var(--accent-bg-color);
-							}
+				VStack(
+					HStack(
+						Button().
+							TooltipText(gettext.Get("Shuffle Album")).
+							IconName("playlist-shuffle-symbolic").
+							MinWidth(81).
+							CornerRadius(21).
+							Padding(9).
+							ConnectClicked(func(b gtk.Button) {
+								go player.PlayAlbum(albumId, true, 0)
+							}).
+							BindSensitive(canPlayAlbumState),
+						Button().
+							TooltipText(gettext.Get("Play Album")).
+							IconName("play-symbolic").
+							MinWidth(81).
+							CornerRadius(21).
+							Padding(9).
+							CSS(`
+								button {
+									background-color: var(--accent-bg-color);
+								}
 
-							button:hover {
-								background-color: var(--accent-color);
-							}
-						`).
-						ConnectClicked(func(b gtk.Button) {
-							go player.PlayAlbum(albumId, false, 0)
-						}).
-						BindSensitive(canPlayAlbumState),
+								button:hover {
+									background-color: var(--accent-color);
+								}
+							`).
+							ConnectClicked(func(b gtk.Button) {
+								go player.PlayAlbum(albumId, false, 0)
+							}).
+							BindSensitive(canPlayAlbumState),
+					).
+						VAlign(gtk.AlignCenterValue).
+						Spacing(5),
+					HStack(
+						favouritebutton.FavouriteButton(appState.AlbumsCache, albumId),
+						Button().
+							TooltipText(gettext.Get("Copy Album URL")).
+							IconName("share-alt-symbolic").
+							WithCSSClass("flat").
+							ConnectClicked(func(gtk.Button) {
+								id := album.Data.ID
+								if id == "" {
+									notifications.OnToast.Notify(gettext.Get("No album could be shared."))
+									return
+								}
+
+								display := gdk.DisplayGetDefault()
+								defer display.Unref()
+								clipboard := display.GetClipboard()
+								defer clipboard.Unref()
+
+								clipboard.SetText(fmt.Sprintf("https://tidal.com/album/%s?u", id))
+								notifications.OnToast.Notify(gettext.Get("Copied album URL to clipboard."))
+							}),
+					).
+						Spacing(10).
+						HAlign(gtk.AlignEndValue),
 				).
-					VAlign(gtk.AlignCenterValue).
-					Spacing(5),
+					Spacing(20).
+					VAlign(gtk.AlignCenterValue),
 			).HMargin(40),
 			page.VExpand(true).MarginTop(20),
 		).VMargin(20),

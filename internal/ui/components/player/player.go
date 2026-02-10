@@ -1,6 +1,8 @@
 package player
 
 import (
+	"log/slog"
+
 	"codeberg.org/dergs/tonearm/internal/player"
 	"codeberg.org/dergs/tonearm/internal/signals"
 	"codeberg.org/dergs/tonearm/pkg/schwifty"
@@ -8,6 +10,8 @@ import (
 	. "codeberg.org/dergs/tonearm/pkg/schwifty/syntax"
 	"github.com/jwijenbergh/puregotk/v4/gtk"
 )
+
+var logger = slog.With("module", "ui/components", "component", "player")
 
 var (
 	isControllableState = state.NewStateful(false)

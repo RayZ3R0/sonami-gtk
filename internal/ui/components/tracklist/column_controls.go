@@ -1,9 +1,12 @@
 package tracklist
 
 import (
+	"log/slog"
 	"strconv"
 
 	"codeberg.org/dergs/tonearm/internal/gettext"
+	"codeberg.org/dergs/tonearm/internal/state"
+	favouritebutton "codeberg.org/dergs/tonearm/internal/ui/components/favourite_button"
 	. "codeberg.org/dergs/tonearm/pkg/schwifty/syntax"
 	"codeberg.org/dergs/tonearm/pkg/tidalapi/models/openapi"
 	v2 "codeberg.org/dergs/tonearm/pkg/tidalapi/models/v2"
@@ -11,15 +14,14 @@ import (
 	"github.com/jwijenbergh/puregotk/v4/gtk"
 )
 
+var logger = slog.With("module", "components/tracklist")
+
 func controlsColumn(trackId string, grid *gtk.Grid, position int, column int) int {
 	grid.Attach(
 		HStack(
-			Button().
-				TooltipText(gettext.Get("Add to Collection")).
-				IconName("heart-outline-thick-symbolic").
+			favouritebutton.FavouriteButton(state.TracksCache, trackId).
 				HAlign(gtk.AlignCenterValue).
-				VAlign(gtk.AlignCenterValue).
-				WithCSSClass("flat").Sensitive(false),
+				VAlign(gtk.AlignCenterValue),
 			Button().
 				TooltipText(gettext.Get("Add to Queue")).
 				IconName("plus-symbolic").
