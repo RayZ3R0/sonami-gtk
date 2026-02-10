@@ -1,0 +1,674 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: v1.1.0-99-ga37b2fb\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-02-05 18:41+0100\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: Automatically generated\n"
+"Language-Team: none\n"
+"Language: et\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=n != 1;\n"
+
+#: internal/ui/routes/artist.go:58
+msgid "%d Fan"
+msgid_plural "%d Fans"
+msgstr[0] ""
+msgstr[1] ""
+
+#: internal/ui/components/media_card/playlist.go:18
+msgid "%d Track"
+msgid_plural "%d Tracks"
+msgstr[0] ""
+msgstr[1] ""
+
+#: internal/ui/routes/album.go:104
+msgid "%d Track (%s)"
+msgid_plural "%d Tracks (%s)"
+msgstr[0] ""
+msgstr[1] ""
+
+#: internal/ui/routes/feed.go:159
+msgid "%s and %s"
+msgstr ""
+
+#: internal/ui/window_sidebar.go:35
+msgid "About Tonearm"
+msgstr ""
+
+#: internal/ui/components/player/component_action_row.go:69
+msgid "Add to Collection"
+msgstr ""
+
+#: internal/ui/components/tracklist/column_controls.go:24
+msgid "Add to Queue"
+msgstr ""
+
+#: internal/ui/routes/album.go:44
+msgid "Album"
+msgstr ""
+
+#: internal/ui/routes/feed.go:167
+msgid "Album by %s"
+msgstr ""
+
+#: internal/ui/routes/my-collection.go:51
+msgid "Albums"
+msgstr ""
+
+#: internal/ui/window_preferences.go:14
+msgid "Allow Background Activity"
+msgstr ""
+
+#: internal/ui/window_preferences.go:56
+msgid "Allow Media Card Images"
+msgstr ""
+
+#: internal/ui/window_preferences.go:62
+msgid "Allow Shortcut Images"
+msgstr ""
+
+#: internal/ui/window_preferences.go:57
+msgid "Allow Tonearm to load images for media card buttons."
+msgstr ""
+
+#: internal/ui/window_preferences.go:63
+msgid "Allow Tonearm to load images for shortcut buttons."
+msgstr ""
+
+#: internal/ui/window_preferences.go:69
+msgid "Allow Tonearm to load images for tracklists with the cover column."
+msgstr ""
+
+#: internal/ui/window_preferences.go:15
+msgid "Allow Tonearm to run in the background by hiding the player window instead of quitting the application"
+msgstr ""
+
+#: internal/ui/window_preferences.go:86
+msgid "Allow Tonearm to send scrobbling data to ListenBrainz"
+msgstr ""
+
+#: internal/ui/window_preferences.go:46
+msgid "Allow Tonearm to start a mix with the current playing song when you're at the end of an album/queue"
+msgstr ""
+
+#: internal/ui/window_preferences.go:75
+msgid "Allow Tonearm to temporarily store images on the file system to improve performance and reduce network traffic."
+msgstr ""
+
+#: internal/ui/window_preferences.go:68
+msgid "Allow Tracklist Images"
+msgstr ""
+
+#: internal/secrets/service_linux.go:55
+msgid ""
+"An unknown error occurred when checking for a secret service provider.\n"
+"\n"
+"Signing in may or may not work. Please see the raw error message for more details:\n"
+"\n"
+"%s"
+msgstr ""
+
+#: internal/ui/routes/artist.go:31
+msgid "Artist"
+msgstr ""
+
+#: internal/ui/routes/my-collection.go:46
+msgid "Artists"
+msgstr ""
+
+#: internal/ui/routes/feed.go:100
+msgid "Authentication required"
+msgstr ""
+
+#: internal/ui/window_shortcuts.go:19
+msgid "Back"
+msgstr ""
+
+#: internal/ui/window_preferences.go:20
+msgid "Background Activity"
+msgstr ""
+
+#: internal/ui/window_shortcuts.go:17
+msgid "Basic Shortcuts"
+msgstr ""
+
+#: internal/ui/window_preferences.go:74
+msgid "Cache Images"
+msgstr ""
+
+#: internal/ui/components/linking/linking.go:82
+msgid "Cancel Login"
+msgstr ""
+
+#: internal/ui/window_shortcuts.go:11
+msgid "Close"
+msgstr ""
+
+#: internal/ui/window_content.go:25
+msgid "Collection"
+msgstr ""
+
+#: internal/ui/window_preferences.go:102
+msgid "Configure Tonearm to send scrobbling data to ListenBrainz."
+msgstr ""
+
+#: internal/ui/window_preferences.go:79
+msgid "Configure the behaviour of Tonearm regarding images."
+msgstr ""
+
+#: internal/ui/window_preferences.go:50
+msgid "Configure the behaviour of Tonearm regarding playback."
+msgstr ""
+
+#: internal/ui/window_preferences.go:39
+msgid "Configure the behaviour of Tonearm when navigating between pages."
+msgstr ""
+
+#: internal/ui/window_preferences.go:21
+msgid "Configure the behaviour of Tonearm when running in the background."
+msgstr ""
+
+#: internal/ui/window_popups.go:28
+msgid "Continue"
+msgstr ""
+
+#: internal/ui/routes/artist.go:124
+msgid "Copied artist URL to clipboard."
+msgstr ""
+
+#: internal/ui/routes/playlist.go:181
+msgid "Copied playlist URL to clipboard."
+msgstr ""
+
+#: internal/ui/components/player/component_action_row.go:140
+msgid "Copied track URL to clipboard."
+msgstr ""
+
+#: internal/ui/routes/artist.go:114
+msgid "Copy Artist URL"
+msgstr ""
+
+#: internal/ui/routes/playlist.go:165
+msgid "Copy Playlist URL"
+msgstr ""
+
+#: internal/ui/components/player/component_action_row.go:129
+msgid "Copy Track URL"
+msgstr ""
+
+#: internal/ui/window_preferences.go:24
+msgid "Default Page"
+msgstr ""
+
+#: internal/ui/window_popups.go:21
+msgid "Don't show again"
+msgstr ""
+
+#: internal/ui/routes/search.go:29
+msgid "E.g. Fox Stevenson"
+msgstr ""
+
+#: internal/ui/routes/feed.go:169
+msgid "EP by %s"
+msgstr ""
+
+#: internal/ui/window_preferences.go:85
+msgid "Enable ListenBrainz"
+msgstr ""
+
+#: internal/ui/window_preferences.go:45
+msgid "Enable autoplay"
+msgstr ""
+
+#: internal/ui/components/lyrics/lyrics.go:395
+msgid "Error fetching lyrics"
+msgstr ""
+
+#: internal/ui/routes/my-collection.go:42
+msgid "Error loading collection"
+msgstr ""
+
+#: internal/ui/routes/explore.go:28
+msgid "Explore"
+msgstr ""
+
+#: internal/ui/components/shortcut_list/deeplink.go:17
+msgid "External Link"
+msgstr ""
+
+#: internal/ui/routes/feed.go:97
+msgid "Feed"
+msgstr ""
+
+#: internal/ui/window_preferences.go:40
+msgid "General"
+msgstr ""
+
+#: internal/ui/components/player/component_track_timeline.go:61
+msgid "High"
+msgstr ""
+
+#: internal/ui/window_preferences.go:32
+msgid "History Length"
+msgstr ""
+
+#: internal/ui/routes/home.go:23
+msgid "Home"
+msgstr ""
+
+#: internal/ui/window_preferences.go:79
+msgid "Images"
+msgstr ""
+
+#: internal/router/handler_error.go:10
+msgid "Internal Error"
+msgstr ""
+
+#: internal/ui/window_shortcuts.go:15
+msgid "Keyboard Shortcuts"
+msgstr ""
+
+#: internal/ui/routes/feed.go:83
+msgid "Last Month"
+msgstr ""
+
+#: internal/ui/routes/feed.go:79
+msgid "Last Week"
+msgstr ""
+
+#: internal/ui/window_preferences.go:101
+msgid "ListenBrainz"
+msgstr ""
+
+#: internal/ui/window_preferences.go:91
+msgid "ListenBrainz API Token"
+msgstr ""
+
+#: internal/ui/window_preferences.go:96
+msgid "ListenBrainz API URL"
+msgstr ""
+
+#: internal/ui/components/player/component_track_timeline.go:58
+msgid "Low (320 kbps)"
+msgstr ""
+
+#: internal/ui/components/player/component_track_timeline.go:55
+msgid "Low (96 kbps)"
+msgstr ""
+
+#: internal/ui/window_sidebar.go:75
+msgid "Lyrics"
+msgstr ""
+
+#: internal/ui/window_shortcuts.go:14
+msgid "Main Menu"
+msgstr ""
+
+#: internal/ui/components/player/component_track_timeline.go:64
+msgid "Max"
+msgstr ""
+
+#: internal/ui/window_preferences.go:33
+msgid "Maximum history length before dropping old entries."
+msgstr ""
+
+#: internal/ui/components/dynamic_v1.go:134
+msgid "More"
+msgstr ""
+
+#: internal/ui/routes/my_collection/albums.go:36
+msgid "My Albums"
+msgstr ""
+
+#: internal/ui/routes/my_collection/artists.go:36
+msgid "My Artists"
+msgstr ""
+
+#: internal/ui/routes/my-collection.go:33
+msgid "My Collection"
+msgstr ""
+
+#: internal/ui/routes/my_collection/playlists.go:36
+msgid "My Playlists"
+msgstr ""
+
+#: internal/ui/routes/my_collection/tracks.go:44
+msgid "My Tracks"
+msgstr ""
+
+#: internal/ui/window_content.go:49
+msgid "Navigate Back"
+msgstr ""
+
+#: internal/ui/components/player/component_action_row.go:75
+msgid "Navigate to Album"
+msgstr ""
+
+#: internal/ui/components/player/component_action_row.go:26
+msgid "Navigate to Artist"
+msgstr ""
+
+#: internal/ui/window_content.go:27
+msgid "Navigate to Collection"
+msgstr ""
+
+#: internal/ui/window_content.go:22
+msgid "Navigate to Explore"
+msgstr ""
+
+#: internal/ui/window_content.go:17
+msgid "Navigate to Home"
+msgstr ""
+
+#: internal/ui/components/player/component_action_row.go:102
+msgid "Navigate to Track Mix"
+msgstr ""
+
+#: internal/ui/window_shortcuts.go:21
+msgid "Navigation"
+msgstr ""
+
+#: internal/ui/window_preferences.go:38
+msgid "Navigation Behaviour"
+msgstr ""
+
+#: internal/ui/components/player/component_controls.go:112
+msgid "Next"
+msgstr ""
+
+#: internal/ui/components/player/component_track_info.go:22
+msgid "No Artist"
+msgstr ""
+
+#: internal/ui/components/player/component_track_info.go:21
+msgid "No Track"
+msgstr ""
+
+#: internal/ui/components/lyrics/lyrics.go:402
+msgid "No lyrics available"
+msgstr ""
+
+#: internal/ui/components/player/component_action_row.go:119
+msgid "No mix found for the current track"
+msgstr ""
+
+#: internal/ui/routes/playlist.go:171
+msgid "No playlist could be shared."
+msgstr ""
+
+#: internal/secrets/service_linux.go:40
+msgid ""
+"No secret service provider is available.\n"
+"\n"
+"Tonearm will not be able to store any authentication-related data and you will not be able to sign in.\n"
+"\n"
+"Please install a secret service provider such as GNOME Keyring or KDE Wallet."
+msgstr ""
+
+#: internal/ui/components/lyrics/lyrics.go:384
+msgid "No song currently playing"
+msgstr ""
+
+#: internal/router/handler_notfound.go:10
+msgid "Not Found"
+msgstr ""
+
+#: internal/router/handler_notfound.go:12
+msgid "Not found"
+msgstr ""
+
+#: internal/ui/routes/feed.go:85
+msgid "Older"
+msgstr ""
+
+#: internal/ui/components/linking/linking.go:75
+msgid "Open TIDAL page"
+msgstr ""
+
+#: internal/ui/window_preferences.go:80
+msgid "Performance"
+msgstr ""
+
+#: internal/ui/routes/playlist.go:68
+msgid "Personal Mix"
+msgstr ""
+
+#: internal/ui/components/player/component_controls.go:104
+msgid "Play / Pause"
+msgstr ""
+
+#: internal/ui/routes/album.go:123
+msgid "Play Album"
+msgstr ""
+
+#: internal/ui/routes/playlist.go:137
+msgid "Play Playlist"
+msgstr ""
+
+#: internal/ui/routes/artist.go:86
+msgid "Play Top Tracks"
+msgstr ""
+
+#: internal/ui/window_preferences.go:50
+msgid "Playback"
+msgstr ""
+
+#: internal/ui/components/player/component_track_timeline.go:72
+msgid "Playback quality saved. Changes will be applied on next track change."
+msgstr ""
+
+#: internal/ui/window_sidebar.go:74
+msgid "Player"
+msgstr ""
+
+#: internal/ui/components/player/component_playing_from.go:61
+msgid "Playing From"
+msgstr ""
+
+#: internal/ui/routes/playlist.go:43
+msgid "Playlist"
+msgstr ""
+
+#: internal/ui/routes/my-collection.go:56
+msgid "Playlists"
+msgstr ""
+
+#: internal/ui/routes/my-collection.go:34
+msgid "Please log in to view your collection"
+msgstr ""
+
+#: internal/ui/window_shortcuts.go:16
+msgid "Preferences"
+msgstr ""
+
+#: internal/ui/components/player/component_controls.go:99
+msgid "Previous"
+msgstr ""
+
+#: internal/ui/window_sidebar.go:76
+msgid "Queue"
+msgstr ""
+
+#: internal/ui/window_shortcuts.go:12
+msgid "Quit"
+msgstr ""
+
+#: internal/ui/components/queue/queue.go:70
+msgid "Remove Track from Queue"
+msgstr ""
+
+#: internal/ui/components/linking/linking.go:59
+msgid "Scan this QR code to sign into your TIDAL account."
+msgstr ""
+
+#: internal/ui/window_preferences.go:103
+msgid "Scrobbling"
+msgstr ""
+
+#: internal/ui/components/horizontal_list/horizontal_list.go:65
+msgid "Scroll to the left"
+msgstr ""
+
+#: internal/ui/components/horizontal_list/horizontal_list.go:54
+msgid "Scroll to the right"
+msgstr ""
+
+#: internal/ui/routes/search/albums.go:31
+msgid "Search"
+msgstr ""
+
+#: internal/secrets/service_linux.go:54
+msgid "Secret Service Error"
+msgstr ""
+
+#: internal/secrets/service_linux.go:47
+msgid "Secret Service Issue"
+msgstr ""
+
+#: internal/secrets/service_linux.go:39
+msgid "Secret Service Unavailable"
+msgstr ""
+
+#: internal/ui/window_sidebar.go:32
+msgid "Set as default page"
+msgstr ""
+
+#: internal/ui/window_actions.go:183
+msgid "Set current page as default"
+msgstr ""
+
+#: internal/ui/routes/album.go:113
+msgid "Shuffle Album"
+msgstr ""
+
+#: internal/ui/routes/playlist.go:126
+msgid "Shuffle Playlist"
+msgstr ""
+
+#: internal/ui/routes/artist.go:76
+msgid "Shuffle Top Tracks"
+msgstr ""
+
+#: internal/ui/window_shortcuts.go:13
+msgid "Side Pane"
+msgstr ""
+
+#: internal/ui/components/linking/linking.go:59
+msgid "Sign In"
+msgstr ""
+
+#: internal/ui/window_sidebar.go:41
+msgid "Sign Out"
+msgstr ""
+
+#: internal/ui/window_actions.go:160
+msgid "Sign in failed or aborted"
+msgstr ""
+
+#: internal/ui/window_actions.go:164
+msgid "Signed in as %s"
+msgstr ""
+
+#: internal/ui/window_actions.go:174
+msgid "Signed out"
+msgstr ""
+
+#: internal/ui/routes/feed.go:165
+msgid "Single by %s"
+msgstr ""
+
+#: internal/ui/routes/search/search.go:13
+msgid "Start typing in the search bar to search for songs, artists, albums or playlists."
+msgstr ""
+
+#: internal/ui/components/lyrics/lyrics.go:435
+msgid "Sync with track"
+msgstr ""
+
+#: internal/router/handler_notfound.go:13
+msgid "The requested deeplink did not have any available handlers."
+msgstr ""
+
+#: internal/ui/routes/feed.go:81
+msgid "This Month"
+msgstr ""
+
+#: internal/ui/routes/feed.go:77
+msgid "This Week"
+msgstr ""
+
+#: internal/ui/routes/feed.go:75
+msgid "Today"
+msgstr ""
+
+#: internal/ui/components/player/component_controls.go:117
+msgid "Toggle Repeat"
+msgstr ""
+
+#: internal/ui/components/player/component_controls.go:93
+msgid "Toggle Shuffle"
+msgstr ""
+
+#: internal/ui/window_content.go:44
+msgid "Toggle Sidebar"
+msgstr ""
+
+#: internal/player/playback.go:61
+msgid "Track not available for streaming, skipping to next track"
+msgstr ""
+
+#: internal/ui/routes/my-collection.go:80
+msgid "Tracks"
+msgstr ""
+
+#: internal/router/handler_error.go:13
+msgid ""
+"Unfortunately an error occurred while loading this view. Please try again later. If the error persists, please open an issue!\n"
+"\n"
+"Error Message: "
+msgstr ""
+
+#: internal/ui/routes/feed.go:171
+msgid "Unknown album type"
+msgstr ""
+
+#: internal/ui/routes/feed.go:235
+msgid "Unsupported activity"
+msgstr ""
+
+#: internal/ui/components/horizontal_list/horizontal_list.go:34
+msgid "View All"
+msgstr ""
+
+#: internal/ui/components/player/component_action_row.go:64
+msgid "Volume"
+msgstr ""
+
+#: internal/ui/components/linking/linking.go:29
+msgid "You can also open the linking page using the button below."
+msgstr ""
+
+#: internal/ui/routes/feed.go:101
+msgid "You need to sign in to your account to access this page"
+msgstr ""
+
+#: internal/secrets/service_linux.go:48
+msgid ""
+"Your secret service provider was found, but refused to interact with Tonearm.\n"
+"\n"
+"This could because you cancelled a prompt or, if you are using a Flatpak, the provider not implementing the XDG Secret Portal service.\n"
+"\n"
+"Tonearm will not be able to store any authentication-related data and you will not be able to sign in."
+msgstr ""
+
+#: internal/ui/window_about.go:132
+msgid "translator-credits"
+msgstr ""
