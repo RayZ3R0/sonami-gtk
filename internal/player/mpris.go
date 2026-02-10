@@ -5,6 +5,7 @@ import (
 
 	"codeberg.org/dergs/tonearm/internal/signals"
 	"codeberg.org/dergs/tonearm/pkg/mpris"
+	"codeberg.org/dergs/tonearm/pkg/tonearm"
 	"github.com/godbus/dbus/v5"
 	"github.com/infinytum/injector"
 )
@@ -50,7 +51,7 @@ func init() {
 		return signals.Continue
 	})
 
-	TrackChanged.Signal.On(func(trackInfo *Track) bool {
+	TrackChanged.Signal.On(func(trackInfo tonearm.Track) bool {
 		mprisServer, err := injector.Inject[*mpris.Server]()
 		if err != nil {
 			return signals.Continue
@@ -65,26 +66,55 @@ func init() {
 
 		mprisServer.Connect()
 
-		artists := []string{}
-		for _, artist := range trackInfo.Artists {
-			artists = append(artists, artist.Attributes.Name)
+		artistsPaginator, err := trackInfo.Artists()
+		if err != nil {
+			return signals.Continue
 		}
 
-		album := trackInfo.Albums[0]
-		albumArtists := []string{}
-		for _, artist := range album.Included.Artists(album.Data.Relationships.Artists.Data...) {
-			albumArtists = append(albumArtists, artist.Data.Attributes.Name)
+		artists, err := artistsPaginator.GetAll()
+		if err != nil {
+			return signals.Continue
+		}
+
+		artistNames := []string{}
+		for _, artist := range artists {
+			artistNames = append(artistNames, artist.Name())
+		}
+
+		album, err := trackInfo.Album()
+		if err != nil {
+			return signals.Continue
+		}
+
+		albumArtistsPaginator, err := album.Artists()
+		if err != nil {
+			return signals.Continue
+		}
+
+		albumArtists, err := albumArtistsPaginator.GetAll()
+		if err != nil {
+			return signals.Continue
+		}
+
+		albumArtistNames := []string{}
+		for _, artist := range albumArtists {
+			albumArtistNames = append(albumArtistNames, artist.Name())
+		}
+
+		cover, err := album.Cover(-1)
+		if err != nil {
+			return signals.Continue
 		}
 
 		mprisServer.SetTrackMetadata(map[string]any{
-			"mpris:trackid":     dbus.ObjectPath("/org/mpris/MediaPlayer2/TrackList/Track" + trackInfo.ID),
-			"mpris:artUrl":      trackInfo.CoverURL,
-			"mpris:length":      trackInfo.Duration.Microseconds(),
-			"xesam:album":       album.Data.Attributes.Title,
-			"xesam:albumArtist": albumArtists,
+			"mpris:trackid":     dbus.ObjectPath("/org/mpris/MediaPlayer2/TrackList/Track" + trackInfo.ID()),
+			"mpris:artUrl":      cover,
+			"mpris:length":      trackInfo.Duration().Microseconds(),
+			"xesam:album":       album.Title(),
+			"xesam:albumArtist": albumArtistNames,
 			"xesam:artist":      artists,
 			"xesam:title":       trackInfo.Title,
-			"xesam:url":         fmt.Sprintf("https://tidal.com/track/%s", trackInfo.ID),
+			"xesam:url":         fmt.Sprintf("https://tidal.com/track/%s", trackInfo.ID()),
 		})
 
 		return signals.Continue

@@ -10,6 +10,7 @@ import (
 	"codeberg.org/dergs/tonearm/pkg/tidalapi"
 	v1 "codeberg.org/dergs/tonearm/pkg/tidalapi/models/v1"
 	tracksv1 "codeberg.org/dergs/tonearm/pkg/tidalapi/v1/tracks"
+	"codeberg.org/dergs/tonearm/pkg/tonearm"
 	"github.com/go-gst/go-gst/gst"
 	"github.com/infinytum/injector"
 	"github.com/jwijenbergh/puregotk/v4/glib"
@@ -44,7 +45,7 @@ func onAboutToFinish(_ *gst.Element) {
 		logger.Info("enqueued next song for gapless playback", "track_id", nextTrack.Data.ID)
 
 		// One-Shot Handler to update the track quality
-		TrackChanged.OnLazy(func(t *Track) bool {
+		TrackChanged.OnLazy(func(t tonearm.Track) bool {
 			logger.Debug("triggered one-shot handler to propagate gapless playback quality")
 			PlaybackQualityChanged.Notify(func(oldValue v1.AudioQuality) v1.AudioQuality {
 				return playbackInfo.AudioQuality
@@ -63,7 +64,7 @@ func onBusMessage(msg *gst.Message) bool {
 		startUpdateRunner()
 		playbin.Set("volume", settings.Player().GetVolume())
 		// A hack to trigger the correct track updates with gapless playback
-		if currentlyEnqueuedTrack == nil || TrackChanged.CurrentValue().ID != strconv.Itoa(currentlyEnqueuedTrack.TrackID) {
+		if currentlyEnqueuedTrack == nil || TrackChanged.CurrentValue().ID() != strconv.Itoa(currentlyEnqueuedTrack.TrackID) {
 			go playNextTrack()
 		}
 	case gst.MessageEOS:
