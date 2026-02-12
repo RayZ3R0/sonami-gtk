@@ -34,15 +34,14 @@ jobs:
             --force-clean --default-branch=master \
             flatpak_app build/flatpak/dev.dergs.Tonearm.yaml
 
-      - if: github.event_name != 'pull_request'
-        name: Create bundle
+      - name: Create bundle
         run: |
           flatpak build-bundle repo dev.dergs.Tonearm.flatpak \
             --runtime-repo=https://flathub.org/repo/flathub.flatpakrepo \
             --arch=x86_64 dev.dergs.Tonearm master
 
-      - if: github.event_name != 'pull_request'
-        uses: https://code.forgejo.org/forgejo/upload-artifact@v4
+      - uses: https://code.forgejo.org/forgejo/upload-artifact@v4
         with:
           name: dev.dergs.Tonearm-x86_64.flatpak
           path: dev.dergs.Tonearm.flatpak
+          retention-days: ${{ github.ref == 'refs/heads/main' && 7 || 3 }}
