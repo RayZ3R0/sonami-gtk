@@ -18,7 +18,7 @@ jobs:
 
       - name: Build Flatpak
         run: |
-          flatpak-builder --repo=repo --disable-rofiles-fuse \
+          flatpak-builder --user --repo=repo --disable-rofiles-fuse \
             --install-deps-from=flathub \
             --force-clean --default-branch=master \
             flatpak_app build/flatpak/dev.dergs.Tonearm.yaml
@@ -26,7 +26,7 @@ jobs:
       - name: Create bundle
         run: |
           flatpak build-bundle repo dev.dergs.Tonearm.flatpak \
-            --runtime-repo=https://flathub.org/repo/flathub.flatpakrepo \
+            --user --runtime-repo=https://flathub.org/repo/flathub.flatpakrepo \
             --arch=x86_64 dev.dergs.Tonearm master
 
       - if: github.event_name != 'pull_request'
