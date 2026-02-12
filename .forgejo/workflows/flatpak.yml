@@ -19,6 +19,14 @@ jobs:
       - name: Add Flathub repo
         run: flatpak remote-add --user --if-not-exists flathub https://flathub.org/repo/flathub.flatpakrepo
 
+      - name: Cache Flatpak builder
+        uses: https://code.forgejo.org/actions/cache@v4
+        with:
+          path: .flatpak-builder
+          key: flatpak-builder-${{ hashFiles('build/flatpak/dev.dergs.Tonearm.yaml', 'build/flatpak/go.mod.yml') }}
+          restore-keys: |
+            flatpak-builder-
+
       - name: Build Flatpak
         run: |
           flatpak-builder --user --repo=repo --disable-rofiles-fuse \
@@ -26,7 +34,8 @@ jobs:
             --force-clean --default-branch=master \
             flatpak_app build/flatpak/dev.dergs.Tonearm.yaml
 
-      - name: Create bundle
+      - if: github.event_name != 'pull_request'
+        name: Create bundle
         run: |
           flatpak build-bundle repo dev.dergs.Tonearm.flatpak \
             --runtime-repo=https://flathub.org/repo/flathub.flatpakrepo \
