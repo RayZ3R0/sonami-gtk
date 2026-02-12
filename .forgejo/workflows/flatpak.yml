@@ -17,9 +17,20 @@ jobs:
       - name: Checkout code
         uses: https://code.forgejo.org/actions/checkout@v4
 
+      - name: Add Flathub repo
+        run: flatpak remote-add --user --if-not-exists flathub https://flathub.org/repo/flathub.flatpakrepo
+
+      - name: Cache Flatpak builder
+        uses: https://code.forgejo.org/actions/cache@v4
+        with:
+          path: ~/.local/share/flatpak
+          key: flatpak-builder-${{ hashFiles('build/flatpak/dev.dergs.Tonearm.yaml', 'build/flatpak/go.mod.yml') }}
+          restore-keys: |
+            flatpak-builder-
+
       - name: Build Flatpak
         run: |
-          flatpak-builder --repo=repo --disable-rofiles-fuse \
+          flatpak-builder --user --repo=repo --disable-rofiles-fuse \
             --install-deps-from=flathub \
             --force-clean --default-branch=master \
             flatpak_app build/flatpak/dev.dergs.Tonearm.yaml
@@ -31,8 +42,8 @@ jobs:
             --arch=x86_64 dev.dergs.Tonearm master
 
       - name: Upload artifact
-        if: github.event_name != 'pull_request'
         uses: https://code.forgejo.org/forgejo/upload-artifact@v4
         with:
           name: dev.dergs.Tonearm-x86_64.flatpak
           path: dev.dergs.Tonearm.flatpak
+          retention-days: ${{ github.ref == 'refs/heads/main' && 7 || 3 }}
