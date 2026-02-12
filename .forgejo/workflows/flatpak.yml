@@ -29,7 +29,7 @@ jobs:
       - name: Create bundle
         run: |
           flatpak build-bundle repo dev.dergs.Tonearm.flatpak \
-            --user --runtime-repo=https://flathub.org/repo/flathub.flatpakrepo \
+            --runtime-repo=https://flathub.org/repo/flathub.flatpakrepo \
             --arch=x86_64 dev.dergs.Tonearm master
 
       - if: github.event_name != 'pull_request'
