@@ -22,7 +22,7 @@ jobs:
       - name: Cache Flatpak builder
         uses: https://code.forgejo.org/actions/cache@v4
         with:
-          path: .flatpak-builder
+          path: ~/.local/share/flatpak
           key: flatpak-builder-${{ hashFiles('build/flatpak/dev.dergs.Tonearm.yaml', 'build/flatpak/go.mod.yml') }}
           restore-keys: |
             flatpak-builder-
