@@ -50,25 +50,34 @@ func buildReplayGainFilterBin() (*gst.Bin, error) {
 func injectReplayGainTags(rgvolume *gst.Element, info *v1.PlaybackInfo) {
 	tagList := gst.NewEmptyTagList()
 
-	tagList.AddValue(gst.TagMergeReplaceAll, gst.TagTrackGain, info.TrackReplayGain)
-	tagList.AddValue(gst.TagMergeAppend, gst.TagTrackPeak, info.TrackPeakAmplitude)
-	tagList.AddValue(gst.TagMergeAppend, gst.TagAlbumGain, info.AlbumReplayGain)
-	tagList.AddValue(gst.TagMergeAppend, gst.TagAlbumPeak, info.AlbumPeakAmplitude)
+	log := slog.With()
+	if info.AlbumPeakAmplitude != nil {
+		tagList.AddValue(gst.TagMergeAppend, gst.TagAlbumPeak, *info.AlbumPeakAmplitude)
+		log = log.With("albumPeak", fmt.Sprintf("%.6f", *info.AlbumPeakAmplitude))
+	}
+
+	if info.AlbumReplayGain != nil {
+		tagList.AddValue(gst.TagMergeAppend, gst.TagAlbumGain, *info.AlbumReplayGain)
+		log = log.With("albumGain", fmt.Sprintf("%.2f dB", *info.AlbumReplayGain))
+	}
+
+	if info.TrackReplayGain != nil {
+		tagList.AddValue(gst.TagMergeAppend, gst.TagTrackGain, *info.TrackReplayGain)
+		log = log.With("trackGain", fmt.Sprintf("%.2f dB", *info.TrackReplayGain))
+	}
+
+	if info.TrackPeakAmplitude != nil {
+		tagList.AddValue(gst.TagMergeAppend, gst.TagTrackPeak, *info.TrackPeakAmplitude)
+		log = log.With("trackPeak", fmt.Sprintf("%.6f", *info.TrackPeakAmplitude))
+	}
 
 	tagEvent := gst.NewTagEvent(tagList)
 	albumMode := calculateAlbumMode()
 	rgvolume.Set("album-mode", albumMode)
-	sinkPad := rgvolume.GetStaticPad("sink")
-	if ok := sinkPad.SendEvent(tagEvent); !ok {
-		slog.Warn("failed to send ReplayGain tag event")
+	if ok := rgvolume.GetStaticPad("sink").SendEvent(tagEvent); !ok {
+		log.Warn("failed to send ReplayGain tag event")
 	} else {
-		slog.Info("injected ReplayGain tags",
-			"track", fmt.Sprintf("%.2f dB", info.TrackReplayGain),
-			"peak", fmt.Sprintf("%.6f", info.TrackPeakAmplitude),
-			"album", fmt.Sprintf("%.2f dB", info.AlbumReplayGain),
-			"albumPeak", fmt.Sprintf("%.6f", info.AlbumPeakAmplitude),
-			"albumMode", albumMode,
-		)
+		log.Info("injected ReplayGain tags", "albumMode", albumMode)
 	}
 }
 

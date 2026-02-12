@@ -1,8 +1,8 @@
 package v1
 
 type PlaybackInfo struct {
-	AlbumPeakAmplitude float64           `json:"albumPeakAmplitude"`
-	AlbumReplayGain    float64           `json:"albumReplayGain"`
+	AlbumPeakAmplitude *float64          `json:"albumPeakAmplitude"`
+	AlbumReplayGain    *float64          `json:"albumReplayGain"`
 	AssetPresentation  AssetPresentation `json:"assetPresentation"`
 	AudioMode          AudioMode         `json:"audioMode"`
 	AudioQuality       AudioQuality      `json:"audioQuality"`
@@ -12,6 +12,6 @@ type PlaybackInfo struct {
 	ManifestMimeType   ManifestMimeType  `json:"manifestMimeType"`
 	SampleRate         int               `json:"sampleRate"`
 	TrackID            int               `json:"trackId"`
-	TrackPeakAmplitude float64           `json:"trackPeakAmplitude"`
-	TrackReplayGain    float64           `json:"trackReplayGain"`
+	TrackPeakAmplitude *float64          `json:"trackPeakAmplitude"`
+	TrackReplayGain    *float64          `json:"trackReplayGain"`
 }
