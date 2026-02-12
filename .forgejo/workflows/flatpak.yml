@@ -14,7 +14,8 @@ jobs:
       options: --privileged
 
     steps:
-      - uses: https://code.forgejo.org/actions/checkout@v4
+      - name: Checkout code
+        uses: https://code.forgejo.org/actions/checkout@v4
 
       - name: Build Flatpak
         run: |
@@ -29,7 +30,8 @@ jobs:
             --runtime-repo=https://flathub.org/repo/flathub.flatpakrepo \
             --arch=x86_64 dev.dergs.Tonearm master
 
-      - if: github.event_name != 'pull_request'
+      - name: Upload artifact
+        if: github.event_name != 'pull_request'
         uses: https://code.forgejo.org/forgejo/upload-artifact@v4
         with:
           name: dev.dergs.Tonearm-x86_64.flatpak
