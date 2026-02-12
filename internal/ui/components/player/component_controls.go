@@ -1,7 +1,6 @@
 package player
 
 import (
-	"codeberg.org/dergs/tonearm/internal/g"
 	"codeberg.org/dergs/tonearm/internal/gettext"
 	"codeberg.org/dergs/tonearm/internal/player"
 	"codeberg.org/dergs/tonearm/internal/signals"
@@ -12,51 +11,49 @@ import (
 )
 
 const (
-	repeatListIcon  = "playlist-repeat-symbolic"
-	repeatTrackIcon = "playlist-repeat-song-symbolic"
+	repeatListIconName  = "playlist-repeat-symbolic"
+	repeatTrackIconName = "playlist-repeat-song-symbolic"
+	pauseIconName       = "pause-symbolic"
+	playIconName        = "play-symbolic"
 )
 
-var pauseIcon = g.Lazy(func() any {
-	return Image().FromIconName("pause-symbolic")()
-})
-var playIcon = g.Lazy(func() any {
-	return Image().FromIconName("play-symbolic")()
-})
-var playSpinner = g.Lazy(func() any {
-	return Spinner().SizeRequest(16, 16)()
-})
+func controls() schwifty.Box {
+	var (
+		pauseIcon   = Image().FromIconName(pauseIconName)()
+		playIcon    = Image().FromIconName(playIconName)()
+		playSpinner = Spinner().SizeRequest(16, 16)()
+	)
 
-var (
-	playPauseChildState       = state.NewStateful[any](nil)
-	actualPlayPauseChildState = state.NewStateful[any](nil)
+	var (
+		playPauseChildState       = state.NewStateful[any](nil)
+		actualPlayPauseChildState = state.NewStateful[any](nil)
 
-	repeatClassState = state.NewStateful("")
-	repeatIconState  = state.NewStateful(repeatListIcon)
+		repeatClassState = state.NewStateful("")
+		repeatIconState  = state.NewStateful(repeatListIconName)
 
-	shuffleClassState = state.NewStateful("")
-)
+		shuffleClassState = state.NewStateful("")
+	)
 
-var controlButton = Button().
-	BindSensitive(isControllableState).
-	MinHeight(34).MinWidth(34).
-	WithCSSClass("flat").
-	VAlign(gtk.AlignCenterValue)
+	var controlButton = Button().
+		BindSensitive(isControllableState).
+		MinHeight(34).MinWidth(34).
+		WithCSSClass("flat").
+		VAlign(gtk.AlignCenterValue)
 
-func init() {
 	player.PlaybackStateChanged.On(func(state *player.PlaybackState) bool {
 		schwifty.OnMainThreadOncePure(func() {
 			var val any
 			switch state.Status {
 			case player.PlaybackStatusPlaying:
-				val = pauseIcon()
+				val = pauseIcon
 			case player.PlaybackStatusPaused, player.PlaybackStatusStopped:
-				val = playIcon()
+				val = playIcon
 			}
 
 			if isControllableState.Value() {
 				actualPlayPauseChildState.SetValue(val)
 			} else {
-				actualPlayPauseChildState.SetValue(playSpinner())
+				actualPlayPauseChildState.SetValue(playSpinner)
 			}
 
 			playPauseChildState.SetValue(val)
@@ -70,7 +67,7 @@ func init() {
 			if newValue {
 				actualPlayPauseChildState.SetValue(playPauseChildState.Value())
 			} else {
-				actualPlayPauseChildState.SetValue(playSpinner())
+				actualPlayPauseChildState.SetValue(playSpinner)
 			}
 		})
 	})
@@ -79,13 +76,13 @@ func init() {
 		switch rm {
 		case player.RepeatModeNone:
 			repeatClassState.SetValue("")
-			repeatIconState.SetValue(repeatListIcon)
+			repeatIconState.SetValue(repeatListIconName)
 		case player.RepeatModeQueue:
 			repeatClassState.SetValue("accent")
-			repeatIconState.SetValue(repeatListIcon)
+			repeatIconState.SetValue(repeatListIconName)
 		case player.RepeatModeTrack:
 			repeatClassState.SetValue("accent")
-			repeatIconState.SetValue(repeatTrackIcon)
+			repeatIconState.SetValue(repeatTrackIconName)
 		}
 		return signals.Continue
 	})
@@ -98,9 +95,7 @@ func init() {
 		}
 		return signals.Continue
 	})
-}
 
-func controls() schwifty.Box {
 	return HStack(
 		controlButton.
 			TooltipText(gettext.Get("Toggle Shuffle")).
