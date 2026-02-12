@@ -34,6 +34,9 @@ func playNextTrack() {
 	if RepeatModeChanged.CurrentValue() == RepeatModeTrack {
 		logger.Debug("single repeat mode is enabled, replaying track")
 		playbin.SeekTime(0, gst.SeekFlagFlush|gst.SeekFlagKeyUnit)
+		if settings.Playback().NormalizeVolume() && currentlyEnqueuedTrack != nil {
+			applyReplayGain(currentlyEnqueuedTrack)
+		}
 		startUpdateRunner()
 		return
 	}
