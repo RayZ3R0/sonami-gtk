@@ -65,7 +65,7 @@
 
         packages.tonearm = pkgs.buildGoModule (finalAttrs: {
           pname = "tonearm";
-          version = "1.0.1";
+          version = "1.2.0";
           src = pkgs.lib.cleanSource ./.;
           vendorHash = "sha256-j+7cobxVGNuZFYeRn5ad7XT4um8WNWE1byFo7qo9zK0=";
 
