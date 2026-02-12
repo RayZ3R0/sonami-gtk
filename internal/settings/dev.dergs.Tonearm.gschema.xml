@@ -42,8 +42,8 @@
   		    <summary>Normalize volume</summary>
   		    <description>Set the same volume level for all tracks</description>
    	    </key>
-        <key name="replay-gain-mode" type="s">
-            <default>'Auto'</default>
+        <key name="replay-gain-mode" type="i">
+            <default>0</default>
             <summary>Replay Gain Mode</summary>
             <description>When to apply album or track replay gain</description>
         </key>

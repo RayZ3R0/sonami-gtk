@@ -1,32 +1,24 @@
 package settings
 
 import (
+	"codeberg.org/dergs/tonearm/internal/gettext"
 	"github.com/jwijenbergh/puregotk/v4/gio"
 	"github.com/jwijenbergh/puregotk/v4/gobject"
 )
 
-type ReplayGainMode string
+type ReplayGainMode int
 
 const (
-	ReplayGainModeAuto  ReplayGainMode = "Auto"
-	ReplayGainModeAlbum ReplayGainMode = "Album"
-	ReplayGainModeTrack ReplayGainMode = "Track"
+	ReplayGainModeAuto  ReplayGainMode = 0
+	ReplayGainModeAlbum ReplayGainMode = 1
+	ReplayGainModeTrack ReplayGainMode = 2
 )
 
-var ReplayGainModes = []ReplayGainMode{
-	ReplayGainModeAuto,
-	ReplayGainModeAlbum,
-	ReplayGainModeTrack,
-}
-
-var ReplayGainModeStrings = make([]string, len(ReplayGainModes))
-
-var ReplayGainModeIndex = make(map[ReplayGainMode]uint)
-
-func init() {
-	for index, mode := range ReplayGainModes {
-		ReplayGainModeIndex[mode] = uint(index)
-		ReplayGainModeStrings[index] = string(mode)
+func ReplayGainModeStrings() []string {
+	return []string{
+		gettext.Get("Auto"),
+		gettext.Get("Album"),
+		gettext.Get("Track"),
 	}
 }
 
@@ -51,17 +43,9 @@ func (p *PlaybackSettings) NormalizeVolume() bool {
 }
 
 func (p *PlaybackSettings) ReplayGainMode() ReplayGainMode {
-	return ReplayGainMode(p.settings.GetString("replay-gain-mode"))
-}
-
-func (p *PlaybackSettings) ReplayGainModeIndex() uint {
-	return ReplayGainModeIndex[p.ReplayGainMode()]
+	return ReplayGainMode(p.settings.GetInt("replay-gain-mode"))
 }
 
 func (p *PlaybackSettings) SetReplayGainMode(mode ReplayGainMode) {
-	p.settings.SetString("replay-gain-mode", string(mode))
-}
-
-func (p *PlaybackSettings) SetReplayGainModeIndex(index uint) {
-	p.SetReplayGainMode(ReplayGainModes[index])
+	p.settings.SetInt("replay-gain-mode", int(mode))
 }
