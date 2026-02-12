@@ -5,6 +5,7 @@ import (
 	"log/slog"
 
 	"codeberg.org/dergs/tonearm/internal/g"
+	"codeberg.org/dergs/tonearm/internal/settings"
 	v1 "codeberg.org/dergs/tonearm/pkg/tidalapi/models/v1"
 	"github.com/go-gst/go-gst/gst"
 )
@@ -15,7 +16,7 @@ var (
 		if err != nil {
 			panic(err)
 		}
-		rgvolume.Set("album-mode", false)
+		rgvolume.Set("album-mode", calculateAlbumMode())
 		rgvolume.Set("pre-amp", 0.0)
 		rgvolume.Set("fallback-gain", 0.0)
 		return rgvolume
@@ -51,12 +52,37 @@ func injectReplayGainTags(rgvolume *gst.Element, info *v1.PlaybackInfo) {
 
 	tagList.AddValue(gst.TagMergeReplaceAll, gst.TagTrackGain, info.TrackReplayGain)
 	tagList.AddValue(gst.TagMergeAppend, gst.TagTrackPeak, info.TrackPeakAmplitude)
+	tagList.AddValue(gst.TagMergeAppend, gst.TagAlbumGain, info.AlbumReplayGain)
+	tagList.AddValue(gst.TagMergeAppend, gst.TagAlbumPeak, info.AlbumPeakAmplitude)
 
 	tagEvent := gst.NewTagEvent(tagList)
+	albumMode := calculateAlbumMode()
+	rgvolume.Set("album-mode", albumMode)
 	sinkPad := rgvolume.GetStaticPad("sink")
 	if ok := sinkPad.SendEvent(tagEvent); !ok {
 		slog.Warn("failed to send ReplayGain tag event")
 	} else {
-		slog.Info("injected ReplayGain tags", "track", fmt.Sprintf("%.2f dB", info.TrackReplayGain), "peak", fmt.Sprintf("%.6f", info.TrackPeakAmplitude))
+		slog.Info("injected ReplayGain tags",
+			"track", fmt.Sprintf("%.2f dB", info.TrackReplayGain),
+			"peak", fmt.Sprintf("%.6f", info.TrackPeakAmplitude),
+			"album", fmt.Sprintf("%.2f dB", info.AlbumReplayGain),
+			"albumPeak", fmt.Sprintf("%.6f", info.AlbumPeakAmplitude),
+			"albumMode", albumMode,
+		)
+	}
+}
+
+func calculateAlbumMode() bool {
+	mode := settings.Playback().ReplayGainMode()
+
+	source := SourceChanged.CurrentValue()
+	if source == nil {
+		return mode == settings.ReplayGainModeAlbum
+	}
+
+	if source.IsAlbum {
+		return mode != settings.ReplayGainModeTrack
+	} else {
+		return mode == settings.ReplayGainModeAlbum
 	}
 }

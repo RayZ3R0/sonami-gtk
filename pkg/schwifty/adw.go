@@ -8,6 +8,8 @@ type Bin = adw.Bin
 
 type Clamp = adw.Clamp
 
+type ComboRow = adw.ComboRow
+
 type EntryRow = adw.EntryRow
 
 type HeaderBar = adw.HeaderBar

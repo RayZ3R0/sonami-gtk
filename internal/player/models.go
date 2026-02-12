@@ -43,6 +43,7 @@ type Source struct {
 	CoverURL string
 	Title    string
 	Route    string
+	IsAlbum  bool
 }
 
 type Track struct {

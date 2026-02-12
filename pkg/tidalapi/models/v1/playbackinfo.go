@@ -1,6 +1,8 @@
 package v1
 
 type PlaybackInfo struct {
+	AlbumPeakAmplitude float64           `json:"albumPeakAmplitude"`
+	AlbumReplayGain    float64           `json:"albumReplayGain"`
 	AssetPresentation  AssetPresentation `json:"assetPresentation"`
 	AudioMode          AudioMode         `json:"audioMode"`
 	AudioQuality       AudioQuality      `json:"audioQuality"`
