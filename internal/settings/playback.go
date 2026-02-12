@@ -9,6 +9,7 @@ import (
 type ReplayGainMode int
 
 const (
+	// NEVER change the values of existing modes
 	ReplayGainModeAuto  ReplayGainMode = 0
 	ReplayGainModeAlbum ReplayGainMode = 1
 	ReplayGainModeTrack ReplayGainMode = 2
