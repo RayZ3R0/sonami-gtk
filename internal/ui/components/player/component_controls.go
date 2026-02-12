@@ -17,6 +17,12 @@ const (
 	playIconName        = "play-symbolic"
 )
 
+var controlButton = Button().
+	BindSensitive(isControllableState).
+	MinHeight(34).MinWidth(34).
+	WithCSSClass("flat").
+	VAlign(gtk.AlignCenterValue)
+
 func controls() schwifty.Box {
 	var (
 		pauseIcon   = Image().FromIconName(pauseIconName)()
@@ -33,12 +39,6 @@ func controls() schwifty.Box {
 
 		shuffleClassState = state.NewStateful("")
 	)
-
-	var controlButton = Button().
-		BindSensitive(isControllableState).
-		MinHeight(34).MinWidth(34).
-		WithCSSClass("flat").
-		VAlign(gtk.AlignCenterValue)
 
 	player.PlaybackStateChanged.On(func(state *player.PlaybackState) bool {
 		schwifty.OnMainThreadOncePure(func() {
