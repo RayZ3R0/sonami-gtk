@@ -39,11 +39,21 @@ type PlaybackState struct {
 	Loading bool
 }
 
+type SourceType string
+
+const (
+	SourceTypeAlbum    SourceType = "album"
+	SourceTypeTrack    SourceType = "track"
+	SourceTypeArtist   SourceType = "artist"
+	SourceTypePlaylist SourceType = "playlist"
+	SourceTypeUnknown  SourceType = "unknown"
+)
+
 type Source struct {
-	CoverURL string
-	Title    string
-	Route    string
-	IsAlbum  bool
+	CoverURL   string
+	Title      string
+	Route      string
+	SourceType SourceType
 }
 
 type Track struct {

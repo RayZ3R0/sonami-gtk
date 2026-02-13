@@ -89,7 +89,7 @@ func calculateAlbumMode() bool {
 		return mode == settings.ReplayGainModeAlbum
 	}
 
-	if source.IsAlbum {
+	if source.SourceType == SourceTypeAlbum {
 		return mode != settings.ReplayGainModeTrack
 	} else {
 		return mode == settings.ReplayGainModeAlbum
