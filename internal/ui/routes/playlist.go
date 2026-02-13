@@ -80,7 +80,12 @@ func Playlist(playlistUUID string) *router.Response {
 				tracklist.GroupedColumn(2, gtk.AlignStartValue, tracklist.CoverColumn, tracklist.TitleAlbumColumn),
 				tracklist.ArtistsColumn,
 				tracklist.ExpandCustomButtonColumn(1, func(trackId string, position, _ int) {
-					go player.PlayPlaylist(playlistUUID, false, position)
+					go func() {
+						if err := player.PlayPlaylist(playlistUUID, false, position); err != nil {
+							notifications.OnToast.Notify(gettext.Get("An error occurred while playing the track"))
+							albumLogger.Error("An error occurred while playing the playlist", "error", err.Error())
+						}
+					}()
 				}),
 				tracklist.GroupedColumn(1, gtk.AlignEndValue, tracklist.DurationColumn, tracklist.ControlsColumn),
 			)
@@ -132,7 +137,12 @@ func Playlist(playlistUUID string) *router.Response {
 							Padding(9).
 							VAlign(gtk.AlignCenterValue).
 							ConnectClicked(func(b gtk.Button) {
-								go player.PlayPlaylist(playlistUUID, true, 0)
+								go func() {
+									if err := player.PlayPlaylist(playlistUUID, true, 0); err != nil {
+										notifications.OnToast.Notify(gettext.Get("An error occurred while playing the playlist"))
+										albumLogger.Error("An error occurred while playing the playlist", "error", err.Error())
+									}
+								}()
 							}).
 							BindSensitive(canPlayPlaylistState),
 						Button().
@@ -152,7 +162,12 @@ func Playlist(playlistUUID string) *router.Response {
 							`).
 							VAlign(gtk.AlignCenterValue).
 							ConnectClicked(func(b gtk.Button) {
-								go player.PlayPlaylist(playlistUUID, false, 0)
+								go func() {
+									if err := player.PlayPlaylist(playlistUUID, false, 0); err != nil {
+										notifications.OnToast.Notify(gettext.Get("An error occurred while playing the playlist"))
+										albumLogger.Error("An error occurred while playing the playlist", "error", err.Error())
+									}
+								}()
 							}).
 							BindSensitive(canPlayPlaylistState),
 					).

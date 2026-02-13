@@ -37,8 +37,10 @@ func init() {
 	playbin.Set("audio-filter", audioFilterBin)
 }
 
+var stateBeforeLoading gst.State
+
 func setLoadingState() {
-	playbin.SetState(gst.StateNull)
+	_, stateBeforeLoading = playbin.GetState(gst.StatePaused, gst.ClockTimeNone)
 	PlaybackStateChanged.Notify(func(oldValue *PlaybackState) *PlaybackState {
 		oldValue.Loading = true
 		return oldValue
@@ -46,6 +48,7 @@ func setLoadingState() {
 }
 
 func resetLoadingState() {
+	playbin.SetState(stateBeforeLoading)
 	PlaybackStateChanged.Notify(func(oldValue *PlaybackState) *PlaybackState {
 		oldValue.Loading = false
 		return oldValue
@@ -240,6 +243,10 @@ func PlayTrackRadio(trackId string, skipSelf bool) error {
 }
 
 func PlayTracklist(tracks []openapi.Track, shuffle bool, startAt int) error {
+	if len(tracks) == 0 {
+		return fmt.Errorf("tracklist is empty")
+	}
+
 	clearQueues()
 	TrackChanged.Notify(func(oldValue *Track) *Track {
 		return nil

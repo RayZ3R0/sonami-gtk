@@ -83,7 +83,12 @@ func Artist(artistId string) *router.Response {
 							Padding(9).
 							VAlign(gtk.AlignCenterValue).
 							ConnectClicked(func(b gtk.Button) {
-								go player.PlayArtistTopSongs(artistId, true, 0)
+								go func() {
+									if err := player.PlayArtistTopSongs(artistId, true, 0); err != nil {
+										notifications.OnToast.Notify(gettext.Get("An error occurred while playing the top tracks"))
+										albumLogger.Error("An error occurred while playing the top tracks", "error", err.Error())
+									}
+								}()
 							}),
 						Button().
 							TooltipText(gettext.Get("Play Top Tracks")).
@@ -102,7 +107,12 @@ func Artist(artistId string) *router.Response {
 							`).
 							VAlign(gtk.AlignCenterValue).
 							ConnectClicked(func(b gtk.Button) {
-								go player.PlayArtistTopSongs(artistId, false, 0)
+								go func() {
+									if err := player.PlayArtistTopSongs(artistId, false, 0); err != nil {
+										notifications.OnToast.Notify(gettext.Get("An error occurred while playing the top tracks"))
+										albumLogger.Error("An error occurred while playing the top tracks", "error", err.Error())
+									}
+								}()
 							}),
 					).
 						Spacing(5).
