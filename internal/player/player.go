@@ -87,9 +87,10 @@ func PlayTrack(trackId string) error {
 
 	SourceChanged.Notify(func(oldValue *Source) *Source {
 		return &Source{
-			CoverURL: TrackChanged.CurrentValue().CoverURL,
-			Title:    TrackChanged.CurrentValue().Title,
-			Route:    fmt.Sprintf("album/%s", TrackChanged.CurrentValue().ID),
+			CoverURL:   TrackChanged.CurrentValue().CoverURL,
+			Title:      TrackChanged.CurrentValue().Title,
+			Route:      fmt.Sprintf("album/%s", TrackChanged.CurrentValue().ID),
+			SourceType: SourceTypeTrack,
 		}
 	})
 
@@ -125,9 +126,10 @@ func PlayAlbum(albumId string, shuffle bool, position int) error {
 
 	SourceChanged.Notify(func(oldValue *Source) *Source {
 		return &Source{
-			CoverURL: TrackChanged.CurrentValue().CoverURL,
-			Title:    TrackChanged.CurrentValue().Albums[0].Data.Attributes.Title,
-			Route:    fmt.Sprintf("album/%s", albumId),
+			CoverURL:   TrackChanged.CurrentValue().CoverURL,
+			Title:      TrackChanged.CurrentValue().Albums[0].Data.Attributes.Title,
+			Route:      fmt.Sprintf("album/%s", albumId),
+			SourceType: SourceTypeAlbum,
 		}
 	})
 
@@ -203,9 +205,10 @@ func PlayPlaylist(playlistId string, shuffle bool, position int) error {
 
 	SourceChanged.Notify(func(oldValue *Source) *Source {
 		return &Source{
-			CoverURL: playlist.Included.PlainArtworks(playlist.Data.Relationships.CoverArt.Data...).AtLeast(80),
-			Title:    playlist.Data.Attributes.Name,
-			Route:    fmt.Sprintf("playlist/%s", playlistId),
+			CoverURL:   playlist.Included.PlainArtworks(playlist.Data.Relationships.CoverArt.Data...).AtLeast(80),
+			Title:      playlist.Data.Attributes.Name,
+			Route:      fmt.Sprintf("playlist/%s", playlistId),
+			SourceType: SourceTypePlaylist,
 		}
 	})
 
