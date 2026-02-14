@@ -5,6 +5,7 @@ import (
 	"slices"
 
 	"codeberg.org/dergs/tonearm/internal/gettext"
+	"codeberg.org/dergs/tonearm/internal/secrets"
 	"codeberg.org/dergs/tonearm/internal/signals"
 	"codeberg.org/dergs/tonearm/internal/state"
 	"codeberg.org/dergs/tonearm/pkg/schwifty"
@@ -29,6 +30,7 @@ func FavouriteButton(favouriteCache state.FavouriteCache, resourceID string) gtk
 		TooltipText(gettext.Get("Add to Collection")).
 		IconName("heart-outline-thick-symbolic").
 		WithCSSClass("flat").
+		BindSensitive(secrets.SignedInState).
 		ConnectConstruct(func(b *gtk.Button) {
 			weakRef := tracking.NewWeakRef(&b.Object)
 			isLoading.Set(true)
