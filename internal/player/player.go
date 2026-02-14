@@ -85,11 +85,12 @@ func PlayTrack(trackId string) error {
 		return err
 	}
 
+	album := track.Included.Albums(track.Data.Relationships.Albums.Data...)[0]
 	SourceChanged.Notify(func(oldValue *Source) *Source {
 		return &Source{
-			CoverURL:   TrackChanged.CurrentValue().CoverURL,
-			Title:      TrackChanged.CurrentValue().Title,
-			Route:      fmt.Sprintf("album/%s", TrackChanged.CurrentValue().ID),
+			CoverURL:   album.Included.PlainArtworks(album.Data.Relationships.CoverArt.Data...).AtLeast(80),
+			Title:      track.Data.Attributes.Title,
+			Route:      fmt.Sprintf("album/%s", album.Data.ID),
 			SourceType: SourceTypeTrack,
 		}
 	})
@@ -124,10 +125,11 @@ func PlayAlbum(albumId string, shuffle bool, position int) error {
 		return err
 	}
 
+	album := tracks[0].Included.Albums(tracks[0].Data.Relationships.Albums.Data...)[0]
 	SourceChanged.Notify(func(oldValue *Source) *Source {
 		return &Source{
-			CoverURL:   TrackChanged.CurrentValue().CoverURL,
-			Title:      TrackChanged.CurrentValue().Albums[0].Data.Attributes.Title,
+			CoverURL:   album.Included.PlainArtworks(album.Data.Relationships.CoverArt.Data...).AtLeast(80),
+			Title:      album.Data.Attributes.Title,
 			Route:      fmt.Sprintf("album/%s", albumId),
 			SourceType: SourceTypeAlbum,
 		}
