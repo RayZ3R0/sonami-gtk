@@ -45,6 +45,31 @@
   <url type="contact">https://matrix.to/#/%23tonearm:derg.social</url>
 
   <releases>
+    <release version="1.3.0" date="2026-02-14">
+        <url type="details">https://codeberg.org/dergs/Tonearm/releases/tag/v1.3.0</url>
+        <description>
+            <p>Bug Fixes:</p>
+            <ul>
+                <li>Fixed a bug where the player controls would flicker during track load</li>
+                <li>Fixed a lot of crashes related to accessing dead gobjects</li>
+                <li>Fixed a bug where opening an empty playlist would result in an error page</li>
+                <li>Fixed a segfault when starting Tonearm while another instance was already running</li>
+                <li>Fixed a bug where auto-scrolling lyrics would result in a segfault</li>
+                <li>Fixed a bug where playing empty albums and playlists resulted in a segfault</li>
+                <li>Fixed a crash when rapidly switching albums and/or tracks</li>
+                <li>Fixed an issue that resulted in Tonearm freezing when changing the volume via MPRIS</li>
+            </ul>
+            <p>Improvements:</p>
+            <ul>
+                <li>Added support for adding and removing albums, artists, mixes, playlists and tracks from your collection</li>
+                <li>Added translations for Chinese (Simplified Han script)</li>
+                <li>Added translations for Estonian</li>
+                <li>Implemented volume normalization</li>
+                <li>Improved accessibility by migrating to Adwaita style classes</li>
+                <li>Updated to Go 1.26 resulting in performance improvements</li>
+            </ul>
+        </description>
+    </release>
     <release version="1.2.0" date="2026-02-05">
         <url type="details">https://codeberg.org/dergs/Tonearm/releases/tag/v1.2.0</url>
         <description>
