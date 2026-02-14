@@ -2,6 +2,7 @@ package state
 
 import (
 	"context"
+	"log/slog"
 	"sync"
 	"time"
 
@@ -85,6 +86,12 @@ func deferredInit() {
 }
 
 func (cache *FavouriteCacheV1) Add(id string) error {
+	userId := secrets.UserID()
+	if userId == "" {
+		slog.Debug("not logged in, ignoring favourite addition")
+		return nil
+	}
+
 	deferredInit()
 	cache.mutex.Lock()
 	defer func() {
@@ -92,11 +99,16 @@ func (cache *FavouriteCacheV1) Add(id string) error {
 		cache.Bust()
 	}()
 
-	userId := secrets.UserID()
 	return cache.resource.Add(context.Background(), userId, id)
 }
 
 func (cache *FavouriteCacheV1) Get() (*[]string, error) {
+	userId := secrets.UserID()
+	if userId == "" {
+		slog.Debug("not logged in, ignoring favourite fetch")
+		return &[]string{}, nil
+	}
+
 	deferredInit()
 	cache.mutex.RLock()
 	if cache.items != nil && cache.lastFetched.Add(5*time.Minute).After(time.Now()) {
@@ -110,7 +122,6 @@ func (cache *FavouriteCacheV1) Get() (*[]string, error) {
 	defer cache.mutex.Unlock()
 
 	tidal, _ := injector.Inject[*tidalapi.TidalAPI]()
-	userId := secrets.UserID()
 	lists, etag, notModified, err := tidal.V1.Favourites.IDsWithCache(context.Background(), userId, cache.etag)
 	if err != nil {
 		return nil, err
@@ -137,6 +148,12 @@ func (cache *FavouriteCacheV1) Bust() {
 }
 
 func (cache *FavouriteCacheV1) Remove(id string) error {
+	userId := secrets.UserID()
+	if userId == "" {
+		slog.Debug("not logged in, ignoring favourite removal")
+		return nil
+	}
+
 	deferredInit()
 	cache.mutex.Lock()
 	defer func() {
@@ -144,11 +161,16 @@ func (cache *FavouriteCacheV1) Remove(id string) error {
 		cache.Bust()
 	}()
 
-	userId := secrets.UserID()
 	return cache.resource.Remove(context.Background(), userId, id)
 }
 
 func (cache *FavouriteCacheV2) Add(id string) error {
+	userId := secrets.UserID()
+	if userId == "" {
+		slog.Debug("not logged in, ignoring favourite addition")
+		return nil
+	}
+
 	deferredInit()
 	cache.mutex.Lock()
 	defer func() {
@@ -160,6 +182,12 @@ func (cache *FavouriteCacheV2) Add(id string) error {
 }
 
 func (cache *FavouriteCacheV2) Remove(id string) error {
+	userId := secrets.UserID()
+	if userId == "" {
+		slog.Debug("not logged in, ignoring favourite removal")
+		return nil
+	}
+
 	deferredInit()
 	cache.mutex.Lock()
 	defer func() {
@@ -171,6 +199,12 @@ func (cache *FavouriteCacheV2) Remove(id string) error {
 }
 
 func (cache *FavouriteCacheV2) Get() (*[]string, error) {
+	userId := secrets.UserID()
+	if userId == "" {
+		slog.Debug("not logged in, ignoring favourite fetch")
+		return &[]string{}, nil
+	}
+
 	deferredInit()
 	cache.mutex.RLock()
 	if cache.items != nil && cache.lastFetched.Add(5*time.Minute).After(time.Now()) {
