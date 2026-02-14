@@ -9,21 +9,22 @@ msgstr ""
 "Project-Id-Version: 1\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2026-02-05 18:41+0100\n"
-"PO-Revision-Date: 2026-02-05 18:55+0100\n"
-"Last-Translator: Nila The Dragon <nilathedragon@pm.me>\n"
-"Language-Team: German\n"
+"PO-Revision-Date: 2026-02-15 00:11+0000\n"
+"Last-Translator: NilaTheDragon <nilathedragon@noreply.codeberg.org>\n"
+"Language-Team: German <https://translate.codeberg.org/projects/tonearm/"
+"tonearm/de/>\n"
 "Language: de\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Generator: Gtranslator 49.0\n"
+"Plural-Forms: nplurals=2; plural=n != 1;\n"
+"X-Generator: Weblate 5.15.2\n"
 
 #: internal/ui/routes/artist.go:58
 msgid "%d Fan"
 msgid_plural "%d Fans"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "%d Fan"
+msgstr[1] "%d Fans"
 
 #: internal/ui/components/media_card/playlist.go:18
 msgid "%d Track"
@@ -55,7 +56,7 @@ msgstr "Zur Warteschlange hinzufügen"
 
 #: internal/ui/routes/album.go:44
 msgid "Album"
-msgstr ""
+msgstr "Album"
 
 #: internal/ui/routes/feed.go:167
 msgid "Album by %s"
@@ -266,7 +267,7 @@ msgstr "Externer Link"
 
 #: internal/ui/routes/feed.go:97
 msgid "Feed"
-msgstr ""
+msgstr "Feed"
 
 #: internal/ui/window_preferences.go:40
 msgid "General"
@@ -306,7 +307,7 @@ msgstr "Letzte Woche"
 
 #: internal/ui/window_preferences.go:101
 msgid "ListenBrainz"
-msgstr ""
+msgstr "ListenBrainz"
 
 #: internal/ui/window_preferences.go:91
 msgid "ListenBrainz API Token"
@@ -314,7 +315,7 @@ msgstr "ListenBrainz API Schlüssel"
 
 #: internal/ui/window_preferences.go:96
 msgid "ListenBrainz API URL"
-msgstr ""
+msgstr "ListenBrainz API URL"
 
 #: internal/ui/components/player/component_track_timeline.go:58
 msgid "Low (320 kbps)"
@@ -395,7 +396,7 @@ msgstr "Zum Titelradio navigieren"
 
 #: internal/ui/window_shortcuts.go:21
 msgid "Navigation"
-msgstr ""
+msgstr "Navigation"
 
 #: internal/ui/window_preferences.go:38
 msgid "Navigation Behaviour"
@@ -472,7 +473,7 @@ msgstr "Persönlicher Mix"
 
 #: internal/ui/components/player/component_controls.go:104
 msgid "Play / Pause"
-msgstr ""
+msgstr "Play / Pause"
 
 #: internal/ui/routes/album.go:123
 msgid "Play Album"
@@ -506,7 +507,7 @@ msgstr "Abgespielt aus"
 
 #: internal/ui/routes/playlist.go:43
 msgid "Playlist"
-msgstr ""
+msgstr "Playlist"
 
 #: internal/ui/routes/my-collection.go:56
 msgid "Playlists"
@@ -542,7 +543,7 @@ msgstr "Scanne diesen QR Code um dich bei TIDAL anzumelden."
 
 #: internal/ui/window_preferences.go:103
 msgid "Scrobbling"
-msgstr ""
+msgstr "Scrobbling"
 
 #: internal/ui/components/horizontal_list/horizontal_list.go:65
 msgid "Scroll to the left"
