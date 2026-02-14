@@ -16,7 +16,7 @@ func (f ActionRow) Title(title string) ActionRow {
 	}
 }
 
-func (f ActionRow) SubTitle(subtitle string) ActionRow {
+func (f ActionRow) Subtitle(subtitle string) ActionRow {
 	return func() *adw.ActionRow {
 		row := f()
 		row.SetSubtitle(subtitle)

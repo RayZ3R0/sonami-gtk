@@ -134,7 +134,7 @@ func buildPreferencesScrobbling(dialog *adw.PreferencesDialog) adwbindings.Prefe
 				}),
 			ActionRow().
 				Title(gettext.Get("Log in to Last.fm")).
-				SubTitle(gettext.Get("You are currently not logged in to Last.fm.")).
+				Subtitle(gettext.Get("You are currently not logged in to Last.fm.")).
 				ConnectConstruct(func(ar *adw.ActionRow) {
 					actionRowRef := tracking.NewWeakRef(ar)
 
