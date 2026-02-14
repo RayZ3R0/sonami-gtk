@@ -34,7 +34,7 @@ func init() {
 }
 
 func loadingDialog(self *tracking.WeakRef, pollingCancel context.CancelFunc, browserUri string) adwbindings.AlertDialog {
-	window, _ := injector.Inject[*gtk.Window]()
+	window := injector.MustInject[*gtk.Window]()
 
 	return AlertDialog(
 		gettext.Get("Logging in to Last.fm"),
