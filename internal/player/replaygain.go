@@ -19,6 +19,21 @@ var (
 		rgvolume.Set("album-mode", calculateAlbumMode())
 		rgvolume.Set("pre-amp", 0.0)
 		rgvolume.Set("fallback-gain", 0.0)
+
+		sinkPad := rgvolume.GetStaticPad("sink")
+		sinkPad.AddProbe(gst.PadProbeTypeEventDownstream, func(pad *gst.Pad, info *gst.PadProbeInfo) gst.PadProbeReturn {
+			event := info.GetEvent()
+			if event == nil {
+				return gst.PadProbeOK
+			}
+
+			if event.Type() == gst.EventTypeSegment && currentlyEnqueuedTrack != nil && settings.Playback().NormalizeVolume() {
+				injectReplayGainTags(rgvolume, currentlyEnqueuedTrack)
+				return gst.PadProbeOK
+			}
+
+			return gst.PadProbeOK
+		})
 		return rgvolume
 	})
 )

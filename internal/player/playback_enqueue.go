@@ -8,7 +8,6 @@ import (
 
 	"codeberg.org/dergs/tonearm/internal/settings"
 	v1 "codeberg.org/dergs/tonearm/pkg/tidalapi/models/v1"
-	"github.com/go-gst/go-gst/gst"
 )
 
 var (
@@ -81,25 +80,5 @@ func enqueue(playbackInfo *v1.PlaybackInfo) error {
 		return fmt.Errorf("unsupported manifest mime type: %s", playbackInfo.ManifestMimeType)
 	}
 	currentlyEnqueuedTrack = playbackInfo
-	if settings.Playback().NormalizeVolume() {
-		applyReplayGain(playbackInfo)
-	}
 	return nil
-}
-
-func applyReplayGain(playbackInfo *v1.PlaybackInfo) {
-	sinkPad := rgvolume().GetStaticPad("sink")
-	sinkPad.AddProbe(gst.PadProbeTypeEventDownstream, func(pad *gst.Pad, info *gst.PadProbeInfo) gst.PadProbeReturn {
-		event := info.GetEvent()
-		if event == nil {
-			return gst.PadProbeOK
-		}
-
-		if event.Type() == gst.EventTypeSegment {
-			injectReplayGainTags(rgvolume(), playbackInfo)
-			return gst.PadProbeRemove
-		}
-
-		return gst.PadProbeOK
-	})
 }
