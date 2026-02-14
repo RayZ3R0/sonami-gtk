@@ -16,6 +16,7 @@ type Scrobbler interface {
 	NowPlaying(*player.Track)
 	Scrobble(*ScrobbleEvent)
 	IsConfigured() bool
+	GetName() string
 }
 
 type ScrobbleEvent struct {
@@ -33,9 +34,11 @@ func init() {
 		logger.Debug("notifying scrobblers that a new track has started playing")
 		for _, scrobbler := range Scrobblers {
 			if !scrobbler.IsConfigured() {
+				logger.Debug("skipping now playing event to %s", scrobbler.GetName())
 				continue
 			}
 
+			logger.Debug("sending NowPlaying event to %s", scrobbler.GetName())
 			go scrobbler.NowPlaying(t)
 		}
 

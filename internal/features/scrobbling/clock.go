@@ -50,9 +50,11 @@ func (c *Clock) Start() {
 
 					for _, scrobbler := range Scrobblers {
 						if !scrobbler.IsConfigured() {
+							logger.Debug("skipping scrobbling to %s", scrobbler.GetName())
 							continue
 						}
 
+						logger.Debug("sending Scrobble event to %s", scrobbler.GetName())
 						go scrobbler.Scrobble(event)
 					}
 

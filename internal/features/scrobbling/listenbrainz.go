@@ -67,6 +67,10 @@ func (*ListenBrainzScrobblerType) makeRequest(reqBody listenBrainzRequest) {
 	}
 }
 
+func (scrobbler *ListenBrainzScrobblerType) GetName() string {
+	return "ListenBrainz"
+}
+
 func (scrobbler *ListenBrainzScrobblerType) IsConfigured() bool {
 	if !settings.Scrobbling().ShouldEnableListenBrainz() {
 		logger.Debug("skipping scrobbling to listenbrainz because it is disabled")

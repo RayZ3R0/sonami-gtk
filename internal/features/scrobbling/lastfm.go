@@ -144,6 +144,10 @@ func (scrobbler *LastFm) IsConfigured() bool {
 	return user != nil
 }
 
+func (scrobbler *LastFm) GetName() string {
+	return "Last.fm"
+}
+
 func (scrobbler *LastFm) NowPlaying(track *player.Track) {
 	if !scrobbler.IsConfigured() {
 		return
