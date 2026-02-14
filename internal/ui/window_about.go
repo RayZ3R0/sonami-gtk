@@ -145,7 +145,8 @@ func (w *Window) PresentAbout() {
 	about.AddLegalSection("JSON Merger (qjebbs/go-jsons)", "© 2022 Jebbs https://github.com/qjebbs/go-jsons", gtk.LicenseMitX11Value, "")
 	about.AddLegalSection("ISO8601 Duration Parser (osodev/duration)", "© 2023 Jeroen Wijenbergh https://github.com/sosodev/duration", gtk.LicenseMitX11Value, "")
 	about.AddLegalSection("QR Code Generator (yeqown/go-qrcode)", "© 2018 yeqown https://github.com/yeqown/go-qrcode", gtk.LicenseMitX11Value, "")
-	about.AddLegalSection("Gettext(leonelquinteros/gotext)", "© 2016 Leonel Quinteros https://github.com/leonelquinteros/gotext", gtk.LicenseMitX11Value, "")
+	about.AddLegalSection("Gettext (leonelquinteros/gotext)", "© 2016 Leonel Quinteros https://github.com/leonelquinteros/gotext", gtk.LicenseMitX11Value, "")
+	about.AddLegalSection("Gobble.fm (twoscott/gobble-fm)", "© 2025 twoscott https://github.com/twoscott/gobble-fm", gtk.LicenseMitX11Value, "")
 	about.Present(&w.Widget)
 	about.Unref()
 }
