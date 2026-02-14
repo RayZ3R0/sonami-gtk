@@ -65,6 +65,14 @@ func buildPreferencesPlayback(*adw.PreferencesDialog) adwbindings.PreferencesPag
 				ConnectConstruct(func(sr *adw.SwitchRow) {
 					settings.Playback().BindNormalizeVolume(&sr.Object, "active")
 				}),
+			ComboRow().
+				Title(gettext.Get("Preferred Replay Gain")).
+				Subtitle(gettext.Get("Choose whether Tonearm should prefer album replay gain, track replay gain or decide automatically")).
+				Model(gtk.NewStringList(settings.ReplayGainModeStrings())).
+				Selected(uint(settings.Playback().ReplayGainMode())).
+				ConnectSelectionChanged(func(a uint) {
+					settings.Playback().SetReplayGainMode(settings.ReplayGainMode(a))
+				}),
 		).Title(gettext.Get("Playback")).Description(gettext.Get("Configure the behaviour of Tonearm regarding playback.")),
 	).Title(gettext.Get("Playback")).IconName("media-playback-start-symbolic")
 }

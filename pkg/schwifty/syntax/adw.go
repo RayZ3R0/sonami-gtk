@@ -39,6 +39,14 @@ func Clamp() adwbindings.Clamp {
 	})
 }
 
+func ComboRow() adwbindings.ComboRow {
+	return managedWidget("ComboRow", func() *adw.ComboRow {
+		comboRow := adw.NewComboRow()
+		comboRow.ConnectNotify(&adwbindings.ComboRowSelectionChangedCallback)
+		return comboRow
+	})
+}
+
 func EntryRow() adwbindings.EntryRow {
 	return managedWidget("EntryRow", func() *adw.EntryRow {
 		return adw.NewEntryRow()

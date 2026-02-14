@@ -6,6 +6,6 @@ import (
 )
 
 var MissingAlbum = func() schwifty.Paintable {
-	image := gdk.NewTextureFromResource("/dev/dergs/Tonearm/icons/scalable/state/missing-album.svg")
+	image := gdk.NewTextureFromResource("/dev/dergs/Tonearm/icons/hicolor/512x512/state/missing-album.png")
 	return image
 }

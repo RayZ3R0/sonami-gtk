@@ -10,6 +10,7 @@ import (
 	"codeberg.org/dergs/tonearm/internal/notifications"
 	"codeberg.org/dergs/tonearm/internal/player"
 	"codeberg.org/dergs/tonearm/internal/router"
+	"codeberg.org/dergs/tonearm/internal/secrets"
 	"codeberg.org/dergs/tonearm/internal/signals"
 	appState "codeberg.org/dergs/tonearm/internal/state"
 	"codeberg.org/dergs/tonearm/pkg/schwifty"
@@ -71,9 +72,16 @@ func favouriteButton() schwifty.Button {
 	var (
 		isFavourited = signals.NewStatefulSignal(false)
 		isLoading    = signals.NewStatefulSignal(false)
+		isSensitive  = state.NewStateful(false)
 	)
 
+	secrets.SignedInChanged.On(func(signedIn bool) bool {
+		isSensitive.SetValue(player.TrackChanged.CurrentValue() != nil && signedIn)
+		return signals.Continue
+	})
+
 	player.TrackChanged.On(func(t *player.Track) bool {
+		isSensitive.SetValue(t != nil && secrets.SignedInChanged.CurrentValue())
 		isLoading.Set(true)
 		defer isLoading.Set(false)
 		if t == nil {
@@ -171,7 +179,7 @@ func favouriteButton() schwifty.Button {
 				})
 			}()
 		}).
-		BindSensitive(isTrackLoadedState)
+		BindSensitive(isSensitive)
 }
 
 func actionRow() schwifty.Box {

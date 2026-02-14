@@ -37,8 +37,10 @@ func init() {
 	playbin.Set("audio-filter", audioFilterBin)
 }
 
+var stateBeforeLoading gst.State
+
 func setLoadingState() {
-	playbin.SetState(gst.StateNull)
+	_, stateBeforeLoading = playbin.GetState(gst.StatePaused, gst.ClockTimeNone)
 	PlaybackStateChanged.Notify(func(oldValue *PlaybackState) *PlaybackState {
 		oldValue.Loading = true
 		return oldValue
@@ -46,6 +48,7 @@ func setLoadingState() {
 }
 
 func resetLoadingState() {
+	playbin.SetState(stateBeforeLoading)
 	PlaybackStateChanged.Notify(func(oldValue *PlaybackState) *PlaybackState {
 		oldValue.Loading = false
 		return oldValue
@@ -82,11 +85,13 @@ func PlayTrack(trackId string) error {
 		return err
 	}
 
+	album := track.Included.Albums(track.Data.Relationships.Albums.Data...)[0]
 	SourceChanged.Notify(func(oldValue *Source) *Source {
 		return &Source{
-			CoverURL: TrackChanged.CurrentValue().CoverURL,
-			Title:    TrackChanged.CurrentValue().Title,
-			Route:    fmt.Sprintf("album/%s", TrackChanged.CurrentValue().ID),
+			CoverURL:   album.Included.PlainArtworks(album.Data.Relationships.CoverArt.Data...).AtLeast(80),
+			Title:      track.Data.Attributes.Title,
+			Route:      fmt.Sprintf("album/%s", album.Data.ID),
+			SourceType: SourceTypeTrack,
 		}
 	})
 
@@ -120,11 +125,13 @@ func PlayAlbum(albumId string, shuffle bool, position int) error {
 		return err
 	}
 
+	album := tracks[0].Included.Albums(tracks[0].Data.Relationships.Albums.Data...)[0]
 	SourceChanged.Notify(func(oldValue *Source) *Source {
 		return &Source{
-			CoverURL: TrackChanged.CurrentValue().CoverURL,
-			Title:    TrackChanged.CurrentValue().Albums[0].Data.Attributes.Title,
-			Route:    fmt.Sprintf("album/%s", albumId),
+			CoverURL:   album.Included.PlainArtworks(album.Data.Relationships.CoverArt.Data...).AtLeast(80),
+			Title:      album.Data.Attributes.Title,
+			Route:      fmt.Sprintf("album/%s", albumId),
+			SourceType: SourceTypeAlbum,
 		}
 	})
 
@@ -200,9 +207,10 @@ func PlayPlaylist(playlistId string, shuffle bool, position int) error {
 
 	SourceChanged.Notify(func(oldValue *Source) *Source {
 		return &Source{
-			CoverURL: playlist.Included.PlainArtworks(playlist.Data.Relationships.CoverArt.Data...).AtLeast(80),
-			Title:    playlist.Data.Attributes.Name,
-			Route:    fmt.Sprintf("playlist/%s", playlistId),
+			CoverURL:   playlist.Included.PlainArtworks(playlist.Data.Relationships.CoverArt.Data...).AtLeast(80),
+			Title:      playlist.Data.Attributes.Name,
+			Route:      fmt.Sprintf("playlist/%s", playlistId),
+			SourceType: SourceTypePlaylist,
 		}
 	})
 
@@ -240,6 +248,10 @@ func PlayTrackRadio(trackId string, skipSelf bool) error {
 }
 
 func PlayTracklist(tracks []openapi.Track, shuffle bool, startAt int) error {
+	if len(tracks) == 0 {
+		return fmt.Errorf("tracklist is empty")
+	}
+
 	clearQueues()
 	TrackChanged.Notify(func(oldValue *Track) *Track {
 		return nil
