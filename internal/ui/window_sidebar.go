@@ -26,7 +26,6 @@ func (w *Window) buildSidebarHeader() *gtk.Widget {
 	windowTitle := WindowTitle("Tonearm", "")()
 	router.NavigationCompleted.On(func(entry router.HistoryEntry) bool {
 		schwifty.OnMainThreadOncePure(func() {
-			windowTitle.SetSubtitle(entry.PageTitle)
 			w.SetTitle("Tonearm - " + entry.PageTitle)
 		})
 		return signals.Continue
