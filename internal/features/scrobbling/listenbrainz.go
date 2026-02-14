@@ -25,11 +25,6 @@ func init() {
 	Scrobblers = append(Scrobblers, &ListenBrainzScrobbler)
 }
 
-func (scrobbler *ListenBrainzScrobblerType) Configure() (bool, error) {
-	// Noop since ListenBrainz is entirely configured through values
-	return true, nil
-}
-
 func (scrobbler *ListenBrainzScrobblerType) NowPlaying(track *player.Track) {
 	scrobbler.makeRequest(scrobbler.generateRequest(track, listenBrainzListenTypePlayingNow))
 }

@@ -15,7 +15,6 @@ var Scrobblers []Scrobbler
 type Scrobbler interface {
 	NowPlaying(*player.Track)
 	Scrobble(*ScrobbleEvent)
-	Configure() (bool, error)
 	IsConfigured() bool
 }
 
