@@ -21,18 +21,27 @@ var (
 		rgvolume.Set("fallback-gain", 0.0)
 
 		sinkPad := rgvolume.GetStaticPad("sink")
-		sinkPad.AddProbe(gst.PadProbeTypeEventDownstream, func(pad *gst.Pad, info *gst.PadProbeInfo) gst.PadProbeReturn {
+		sinkPad.AddProbe(gst.PadProbeTypeEventDownstream, func(pad *gst.Pad, info *gst.PadProbeInfo) (ret gst.PadProbeReturn) {
+			ret = gst.PadProbeOK
 			event := info.GetEvent()
 			if event == nil {
-				return gst.PadProbeOK
+				return
 			}
 
-			if event.Type() == gst.EventTypeSegment && currentlyEnqueuedTrack != nil && settings.Playback().NormalizeVolume() {
-				injectReplayGainTags(rgvolume, currentlyEnqueuedTrack)
-				return gst.PadProbeOK
+			if event.Type() != gst.EventTypeSegment {
+				return
 			}
 
-			return gst.PadProbeOK
+			if currentlyEnqueuedTrack == nil {
+				return
+			}
+
+			if !settings.Playback().NormalizeVolume() {
+				return
+			}
+
+			injectReplayGainTags(rgvolume, currentlyEnqueuedTrack)
+			return
 		})
 		return rgvolume
 	})
