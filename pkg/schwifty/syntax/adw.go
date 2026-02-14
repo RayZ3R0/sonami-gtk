@@ -11,7 +11,9 @@ import (
 
 func ActionRow() adwbindings.ActionRow {
 	return managedWidget("ActionRow", func() *adw.ActionRow {
-		return adw.NewActionRow()
+		actionRow := adw.NewActionRow()
+		actionRow.ConnectActivated(&callback.ActionRowActivated)
+		return actionRow
 	})
 }
 
