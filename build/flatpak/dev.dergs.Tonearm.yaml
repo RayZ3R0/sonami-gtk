@@ -16,8 +16,9 @@ finish-args:
 
 build-options:
   env:
-    - GOBIN=/app/bin
-    - GOROOT=/usr/lib/sdk/golang
+    GOBIN: /app/bin
+    GOROOT: /usr/lib/sdk/golang
+    PATH: /usr/lib/sdk/golang/bin:/app/bin:/usr/bin:/bin
 
 modules:
   - name: tonearm
