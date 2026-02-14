@@ -43,10 +43,19 @@ func (c *Clock) Start() {
 				c.counter++
 				if c.counter >= int(c.track.Duration.Seconds())/2 || c.counter >= int((time.Minute*4).Seconds()) {
 					logger.Debug("notifying scrobblers that a track should be scrobbled")
-					Scrobble.Notify(&ScrobbleEvent{
-						Track:      c.track,
-						ListenedAt: c.startedAt,
-					})
+
+					event := new(ScrobbleEvent)
+					event.Track = c.track
+					event.ListenedAt = c.startedAt
+
+					for _, scrobbler := range Scrobblers {
+						if !scrobbler.IsConfigured() {
+							continue
+						}
+
+						go scrobbler.Scrobble(event)
+					}
+
 					c.cancelFunc()
 					return
 				}

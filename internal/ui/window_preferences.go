@@ -1,118 +1,269 @@
 package ui
 
 import (
+	"fmt"
+	"log/slog"
+
+	"codeberg.org/dergs/tonearm/internal/features/scrobbling"
 	"codeberg.org/dergs/tonearm/internal/gettext"
 	"codeberg.org/dergs/tonearm/internal/settings"
+	"codeberg.org/dergs/tonearm/internal/signals"
+	"codeberg.org/dergs/tonearm/pkg/schwifty"
+	adwbindings "codeberg.org/dergs/tonearm/pkg/schwifty/bindings/adw"
 	. "codeberg.org/dergs/tonearm/pkg/schwifty/syntax"
+	"codeberg.org/dergs/tonearm/pkg/schwifty/tracking"
 	"github.com/jwijenbergh/puregotk/v4/adw"
+	"github.com/jwijenbergh/puregotk/v4/gobject"
 	"github.com/jwijenbergh/puregotk/v4/gtk"
 )
 
-var preferencesGeneral = PreferencesPage(
-	PreferencesGroup(
-		SwitchRow().
-			Title(gettext.Get("Allow Background Activity")).
-			Subtitle(gettext.Get("Allow Tonearm to run in the background by hiding the player window instead of quitting the application")).
-			ConnectConstruct(func(sr *adw.SwitchRow) {
-				settings.General().BindRunInBackground(&sr.Object, "active")
-			}),
-	).
-		Title(gettext.Get("Background Activity")).
-		Description(gettext.Get("Configure the behaviour of Tonearm when running in the background.")),
-	PreferencesGroup(
-		EntryRow().
-			Title(gettext.Get("Default Page")).
-			ConnectConstruct(func(sr *adw.EntryRow) {
-				settings.General().BindDefaultPage(&sr.Object, "text")
-			}),
-		SpinRow(
-			gtk.NewAdjustment(0, 1, 100, 1, 1, 1),
-			1,
-			0,
-		).Title(gettext.Get("History Length")).
-			Subtitle(gettext.Get("Maximum history length before dropping old entries.")).
-			ConnectConstruct(func(sr *adw.SpinRow) {
-				settings.Performance().BindMaxRouterHistorySize(&sr.Object, "value")
-			}),
-	).
-		Title(gettext.Get("Navigation Behaviour")).
-		Description(gettext.Get("Configure the behaviour of Tonearm when navigating between pages.")),
-).Title(gettext.Get("General")).IconName("settings-symbolic")
+func buildPreferencesGeneral(dialog *adw.PreferencesDialog) adwbindings.PreferencesPage {
+	return PreferencesPage(
+		PreferencesGroup(
+			SwitchRow().
+				Title(gettext.Get("Allow Background Activity")).
+				Subtitle(gettext.Get("Allow Tonearm to run in the background by hiding the player window instead of quitting the application")).
+				ConnectConstruct(func(sr *adw.SwitchRow) {
+					settings.General().BindRunInBackground(&sr.Object, "active")
+				}),
+		).
+			Title(gettext.Get("Background Activity")).
+			Description(gettext.Get("Configure the behaviour of Tonearm when running in the background.")),
+		PreferencesGroup(
+			EntryRow().
+				Title(gettext.Get("Default Page")).
+				ConnectConstruct(func(sr *adw.EntryRow) {
+					settings.General().BindDefaultPage(&sr.Object, "text")
+				}),
+			SpinRow(
+				gtk.NewAdjustment(0, 1, 100, 1, 1, 1),
+				1,
+				0,
+			).Title(gettext.Get("History Length")).
+				Subtitle(gettext.Get("Maximum history length before dropping old entries.")).
+				ConnectConstruct(func(sr *adw.SpinRow) {
+					settings.Performance().BindMaxRouterHistorySize(&sr.Object, "value")
+				}),
+		).
+			Title(gettext.Get("Navigation Behaviour")).
+			Description(gettext.Get("Configure the behaviour of Tonearm when navigating between pages.")),
+	).Title(gettext.Get("General")).IconName("settings-symbolic")
+}
 
-var preferencesPlayback = PreferencesPage(
-	PreferencesGroup(
-		SwitchRow().
-			Title(gettext.Get("Enable autoplay")).
-			Subtitle(gettext.Get("Allow Tonearm to start a mix with the current playing song when you're at the end of an album/queue")).
-			ConnectConstruct(func(sr *adw.SwitchRow) {
-				settings.Playback().BindAllowAutoplay(&sr.Object, "active")
-			}),
-		SwitchRow().
-			Title(gettext.Get("Normalize volume")).
-			Subtitle(gettext.Get("Set the same volume for all tracks.")).
-			ConnectConstruct(func(sr *adw.SwitchRow) {
-				settings.Playback().BindNormalizeVolume(&sr.Object, "active")
-			}),
-	).Title(gettext.Get("Playback")).Description(gettext.Get("Configure the behaviour of Tonearm regarding playback.")),
-).Title(gettext.Get("Playback")).IconName("media-playback-start-symbolic")
+func buildPreferencesPlayback(*adw.PreferencesDialog) adwbindings.PreferencesPage {
+	return PreferencesPage(
+		PreferencesGroup(
+			SwitchRow().
+				Title(gettext.Get("Enable autoplay")).
+				Subtitle(gettext.Get("Allow Tonearm to start a mix with the current playing song when you're at the end of an album/queue")).
+				ConnectConstruct(func(sr *adw.SwitchRow) {
+					settings.Playback().BindAllowAutoplay(&sr.Object, "active")
+				}),
+			SwitchRow().
+				Title(gettext.Get("Normalize volume")).
+				Subtitle(gettext.Get("Set the same volume for all tracks.")).
+				ConnectConstruct(func(sr *adw.SwitchRow) {
+					settings.Playback().BindNormalizeVolume(&sr.Object, "active")
+				}),
+		).Title(gettext.Get("Playback")).Description(gettext.Get("Configure the behaviour of Tonearm regarding playback.")),
+	).Title(gettext.Get("Playback")).IconName("media-playback-start-symbolic")
+}
 
-var preferencesPerformance = PreferencesPage(
-	PreferencesGroup(
-		SwitchRow().
-			Title(gettext.Get("Allow Media Card Images")).
-			Subtitle(gettext.Get("Allow Tonearm to load images for media card buttons.")).
-			ConnectConstruct(func(sr *adw.SwitchRow) {
-				settings.Performance().BindAllowMediaCardImages(&sr.Object, "active")
-			}),
-		SwitchRow().
-			Title(gettext.Get("Allow Shortcut Images")).
-			Subtitle(gettext.Get("Allow Tonearm to load images for shortcut buttons.")).
-			ConnectConstruct(func(sr *adw.SwitchRow) {
-				settings.Performance().BindAllowShortcutImages(&sr.Object, "active")
-			}),
-		SwitchRow().
-			Title(gettext.Get("Allow Tracklist Images")).
-			Subtitle(gettext.Get("Allow Tonearm to load images for tracklists with the cover column.")).
-			ConnectConstruct(func(sr *adw.SwitchRow) {
-				settings.Performance().BindAllowTracklistImages(&sr.Object, "active")
-			}),
-		SwitchRow().
-			Title(gettext.Get("Cache Images")).
-			Subtitle(gettext.Get("Allow Tonearm to temporarily store images on the file system to improve performance and reduce network traffic.")).
-			ConnectConstruct(func(sr *adw.SwitchRow) {
-				settings.Performance().BindCacheImages(&sr.Object, "active")
-			}),
-	).Title(gettext.Get("Images")).Description(gettext.Get("Configure the behaviour of Tonearm regarding images.")),
-).Title(gettext.Get("Performance")).IconName("speedometer5-symbolic")
+func buildPreferencesPerformance(*adw.PreferencesDialog) adwbindings.PreferencesPage {
+	return PreferencesPage(
+		PreferencesGroup(
+			SwitchRow().
+				Title(gettext.Get("Allow Media Card Images")).
+				Subtitle(gettext.Get("Allow Tonearm to load images for media card buttons.")).
+				ConnectConstruct(func(sr *adw.SwitchRow) {
+					settings.Performance().BindAllowMediaCardImages(&sr.Object, "active")
+				}),
+			SwitchRow().
+				Title(gettext.Get("Allow Shortcut Images")).
+				Subtitle(gettext.Get("Allow Tonearm to load images for shortcut buttons.")).
+				ConnectConstruct(func(sr *adw.SwitchRow) {
+					settings.Performance().BindAllowShortcutImages(&sr.Object, "active")
+				}),
+			SwitchRow().
+				Title(gettext.Get("Allow Tracklist Images")).
+				Subtitle(gettext.Get("Allow Tonearm to load images for tracklists with the cover column.")).
+				ConnectConstruct(func(sr *adw.SwitchRow) {
+					settings.Performance().BindAllowTracklistImages(&sr.Object, "active")
+				}),
+			SwitchRow().
+				Title(gettext.Get("Cache Images")).
+				Subtitle(gettext.Get("Allow Tonearm to temporarily store images on the file system to improve performance and reduce network traffic.")).
+				ConnectConstruct(func(sr *adw.SwitchRow) {
+					settings.Performance().BindCacheImages(&sr.Object, "active")
+				}),
+		).Title(gettext.Get("Images")).Description(gettext.Get("Configure the behaviour of Tonearm regarding images.")),
+	).Title(gettext.Get("Performance")).IconName("speedometer5-symbolic")
+}
 
-var preferencesScrobbling = PreferencesPage(
-	PreferencesGroup(
-		SwitchRow().
-			Title(gettext.Get("Enable ListenBrainz")).
-			Subtitle(gettext.Get("Allow Tonearm to send scrobbling data to ListenBrainz")).
-			ConnectConstruct(func(sr *adw.SwitchRow) {
-				settings.Scrobbling().BindEnableListenBrainz(&sr.Object, "active")
-			}),
-		PasswordEntryRow().
-			Title(gettext.Get("ListenBrainz API Token")).
-			ConnectConstruct(func(sr *adw.PasswordEntryRow) {
-				settings.Scrobbling().BindListenBrainzToken(&sr.Object, "text")
-			}),
-		EntryRow().
-			Title(gettext.Get("ListenBrainz API URL")).
-			ConnectConstruct(func(sr *adw.EntryRow) {
-				settings.Scrobbling().BindListenBrainzUrl(&sr.Object, "text")
-			}),
-	).
-		Title(gettext.Get("ListenBrainz")).
-		Description(gettext.Get("Configure Tonearm to send scrobbling data to ListenBrainz.")),
-).Title(gettext.Get("Scrobbling")).IconName("podcast-symbolic")
+func buildPreferencesScrobbling(dialog *adw.PreferencesDialog) adwbindings.PreferencesPage {
+	dialogRef := tracking.NewWeakRef(dialog)
+	isLastFmLoggedIn := signals.NewStatefulSignal(settings.Scrobbling().LastFMToken() != "")
+
+	return PreferencesPage(
+		PreferencesGroup(
+			SwitchRow().
+				Title(gettext.Get("Enable ListenBrainz")).
+				Subtitle(gettext.Get("Allow Tonearm to send scrobbling data to ListenBrainz")).
+				ConnectConstruct(func(sr *adw.SwitchRow) {
+					settings.Scrobbling().BindEnableListenBrainz(&sr.Object, "active")
+				}),
+			PasswordEntryRow().
+				Title(gettext.Get("ListenBrainz API Token")).
+				ConnectConstruct(func(sr *adw.PasswordEntryRow) {
+					settings.Scrobbling().BindListenBrainzToken(&sr.Object, "text")
+				}),
+			EntryRow().
+				Title(gettext.Get("ListenBrainz API URL")).
+				ConnectConstruct(func(sr *adw.EntryRow) {
+					settings.Scrobbling().BindListenBrainzUrl(&sr.Object, "text")
+				}),
+		).
+			Title(gettext.Get("ListenBrainz")).
+			Description(gettext.Get("Configure Tonearm to send scrobbling data to ListenBrainz.")),
+		PreferencesGroup(
+			SwitchRow().
+				Title(gettext.Get("Enable Last.fm")).
+				Subtitle(gettext.Get("Allow Tonearm to send scrobbling data to Last.fm")).
+				ConnectConstruct(func(sr *adw.SwitchRow) {
+					settings.Scrobbling().BindEnableLastFM(&sr.Object, "active")
+				}),
+			ActionRow().
+				Title(gettext.Get("Log in to Last.fm")).
+				SubTitle(gettext.Get("You are currently not logged in to Last.fm.")).
+				ConnectConstruct(func(ar *adw.ActionRow) {
+					actionRowRef := tracking.NewWeakRef(ar)
+
+					isLastFmLoggedIn.On(func(b bool) bool {
+						if b {
+							actionRowRef.Use(func(obj *gobject.Object) {
+								ar := adw.ActionRowNewFromInternalPtr(obj.Ptr)
+								ar.SetTitle(gettext.Get("Log out of Last.fm"))
+
+								if user, err := scrobbling.LastFmScrobbler.Client.User.SelfInfo(); err != nil {
+									slog.Error("error while fetching Last.fm user", "error", err, "component", "window_preferences")
+									ar.SetSubtitle(gettext.Get("You are logged in to Last.fm."))
+								} else {
+									ar.SetSubtitle(fmt.Sprintf(
+										gettext.Get("You are logged in to Last.fm as %s."),
+										user.Name,
+									))
+								}
+							})
+						} else {
+							actionRowRef.Use(func(obj *gobject.Object) {
+								ar := adw.ActionRowNewFromInternalPtr(obj.Ptr)
+								ar.SetTitle(gettext.Get("Log in to Last.fm"))
+								ar.SetSubtitle(gettext.Get("You are currently not logged in to Last.fm."))
+							})
+						}
+
+						return signals.Continue
+					})
+				}).
+				ActionSuffix(
+					Button().
+						IconName("key-login-symbolic").
+						ConnectConstruct(func(b *gtk.Button) {
+							buttonRef := tracking.NewWeakRef(b)
+
+							isLastFmLoggedIn.On(func(loggedIn bool) bool {
+								if loggedIn {
+									schwifty.OnMainThreadOncePure(func() {
+										buttonRef.Use(func(obj *gobject.Object) {
+											button := gtk.ButtonNewFromInternalPtr(obj.Ptr)
+											button.SetIconName("system-log-out-symbolic")
+										})
+									})
+								} else {
+									schwifty.OnMainThreadOncePure(func() {
+										buttonRef.Use(func(obj *gobject.Object) {
+											button := gtk.ButtonNewFromInternalPtr(obj.Ptr)
+											button.SetIconName("key-login-symbolic")
+										})
+									})
+								}
+
+								return signals.Continue
+							})
+						}).
+						ConnectClicked(func(gtk.Button) {
+							if isLastFmLoggedIn.CurrentValue() {
+								go func() {
+									if err := scrobbling.LastFmScrobbler.Unconfigure(); err != nil {
+										schwifty.OnMainThreadOncePure(func() {
+											dialogRef.Use(func(obj *gobject.Object) {
+												dialog := adw.PreferencesDialogNewFromInternalPtr(obj.Ptr)
+
+												toast := adw.NewToast(gettext.Get("An error occured while logging out of Last.fm."))
+												toast.SetTimeout(3)
+												dialog.AddToast(toast)
+											})
+										})
+									} else {
+										isLastFmLoggedIn.Set(false)
+										schwifty.OnMainThreadOncePure(func() {
+											dialogRef.Use(func(obj *gobject.Object) {
+												dialog := adw.PreferencesDialogNewFromInternalPtr(obj.Ptr)
+
+												toast := adw.NewToast(gettext.Get("Logged out of Last.fm."))
+												toast.SetTimeout(3)
+												dialog.AddToast(toast)
+											})
+										})
+									}
+								}()
+							} else {
+								go func() {
+									if completed, err := scrobbling.LastFmScrobbler.Configure(); err != nil {
+										schwifty.OnMainThreadOncePure(func() {
+											dialogRef.Use(func(obj *gobject.Object) {
+												dialog := adw.PreferencesDialogNewFromInternalPtr(obj.Ptr)
+
+												toast := adw.NewToast(gettext.Get("An error occured while logging in to Last.fm."))
+												toast.SetTimeout(3)
+												dialog.AddToast(toast)
+											})
+										})
+									} else if completed {
+										isLastFmLoggedIn.Set(true)
+										schwifty.OnMainThreadOncePure(func() {
+											dialogRef.Use(func(obj *gobject.Object) {
+												user, err := scrobbling.LastFmScrobbler.Client.User.SelfInfo()
+												if err != nil {
+													return
+												}
+
+												dialog := adw.PreferencesDialogNewFromInternalPtr(obj.Ptr)
+
+												toast := adw.NewToast(fmt.Sprintf(gettext.Get("Logged in to Last.fm as %s."), user.Name))
+												toast.SetTimeout(3)
+												dialog.AddToast(toast)
+											})
+										})
+									}
+								}()
+							}
+						}).
+						VAlign(gtk.AlignCenterValue),
+				),
+		).
+			Title("Last.FM").
+			Description(gettext.Get("Configure Tonearm to send scrobbling data to Last.fm.")),
+	).Title(gettext.Get("Scrobbling")).IconName("podcast-symbolic")
+}
 
 func (w *Window) PresentPreferences() {
-	PreferencesDialog(
-		preferencesGeneral,
-		preferencesPlayback,
-		preferencesPerformance,
-		preferencesScrobbling,
-	).Present(w)
+	dialog := PreferencesDialog()()
+
+	dialog.Add(buildPreferencesGeneral(dialog)())
+	dialog.Add(buildPreferencesPlayback(dialog)())
+	dialog.Add(buildPreferencesPerformance(dialog)())
+	dialog.Add(buildPreferencesScrobbling(dialog)())
+
+	dialog.Present(&w.Widget)
 }
