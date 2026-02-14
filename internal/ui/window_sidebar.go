@@ -33,7 +33,7 @@ func (w *Window) buildSidebarHeader() *gtk.Widget {
 	})
 
 	mainMenu := gio.NewMenu()
-	mainMenu.Append(gettext.Get("Sign In"), "win.sign-in")
+	mainMenu.Append(gettext.Get("Sign In…"), "win.sign-in")
 	mainMenu.Append(gettext.Get("Set as default page"), "win.set-as-default")
 	mainMenu.Append(gettext.Get("Keyboard Shortcuts"), "app.shortcuts")
 	mainMenu.Append(gettext.Get("Preferences"), "app.preferences")
@@ -45,7 +45,7 @@ func (w *Window) buildSidebarHeader() *gtk.Widget {
 		if signedIn {
 			mainMenu.Insert(0, gettext.Get("Sign Out"), "win.sign-out")
 		} else {
-			mainMenu.Insert(0, gettext.Get("Sign In"), "win.sign-in")
+			mainMenu.Insert(0, gettext.Get("Sign In…"), "win.sign-in")
 		}
 		return signals.Continue
 	})
