@@ -127,10 +127,12 @@ func (scrobbler *LastFm) Unconfigure() error {
 
 func (scrobbler *LastFm) IsConfigured() bool {
 	if !settings.Scrobbling().ShouldEnableLastFM() {
+		logger.Debug("skipping Last.fm because it is disabled")
 		return false
 	}
 
 	if scrobbler.Client.SessionKey == "" {
+		logger.Debug("skipping Last.fm because it doesn't have a session key")
 		return false
 	}
 	user, err := scrobbler.Client.User.SelfInfo()
