@@ -4,10 +4,10 @@ import (
 	"codeberg.org/dergs/tonearm/internal/gettext"
 	"codeberg.org/dergs/tonearm/internal/router"
 	"codeberg.org/dergs/tonearm/internal/secrets"
+	"codeberg.org/dergs/tonearm/internal/ui/components"
 	"codeberg.org/dergs/tonearm/internal/ui/components/media_card"
 	"codeberg.org/dergs/tonearm/internal/ui/pages"
 	"codeberg.org/dergs/tonearm/pkg/schwifty"
-	. "codeberg.org/dergs/tonearm/pkg/schwifty/syntax"
 	"codeberg.org/dergs/tonearm/pkg/tidalapi"
 	"codeberg.org/dergs/tonearm/pkg/tidalapi/models/openapi"
 	"codeberg.org/dergs/tonearm/pkg/tidalapi/pagination"
@@ -20,7 +20,7 @@ func Albums() *router.Response {
 	if userId == "" {
 		return &router.Response{
 			PageTitle: gettext.Get("My Collection"),
-			View:      Label(gettext.Get("Please log in to view your collection")),
+			View: components.AuthRequired(gettext.Get("Please sign in to view your collection")),
 		}
 	}
 

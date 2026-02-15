@@ -80,7 +80,6 @@ func NewLinking(window *gtk.Window, code string, link string, cancel context.Can
 						}),
 					Button().
 						Label(gettext.Get("Cancel Login")).
-						WithCSSClass("destructive-action").
 						HPadding(20).VPadding(10).
 						ConnectClicked(func(b gtk.Button) {
 							cancel()
