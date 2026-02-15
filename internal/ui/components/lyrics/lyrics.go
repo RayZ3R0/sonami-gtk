@@ -308,9 +308,9 @@ func parseLRCLyrics(lyrics string, trackInfo *player.Track) (lines []any) {
 
 func parseUntimedLyrics(lyrics string) (lines []any) {
 	// Handle lyrics without timings
-	splitLyrics := strings.Split(lyrics, "\n")
+	splitLyrics := strings.SplitSeq(lyrics, "\n")
 
-	for _, lyricText := range splitLyrics {
+	for lyricText := range splitLyrics {
 		if strings.TrimSpace(lyricText) == "" {
 			lines = append(lines, Box(gtk.OrientationVerticalValue))
 			continue

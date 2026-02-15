@@ -1,7 +1,6 @@
 package ui
 
 import (
-	"codeberg.org/dergs/tonearm/internal/g"
 	"codeberg.org/dergs/tonearm/internal/gettext"
 	"codeberg.org/dergs/tonearm/internal/router"
 	"codeberg.org/dergs/tonearm/internal/secrets"
@@ -55,7 +54,7 @@ func (w *Window) buildSidebarHeader() *gtk.Widget {
 				MenuModel(&mainMenu.MenuModel).
 				TooltipText(gettext.Get("Main Menu")).ConnectConstruct(func(mb *gtk.MenuButton) {
 				menuAction := gio.NewSimpleAction("main-menu", nil)
-				menuAction.ConnectActivate(g.Ptr(func(action gio.SimpleAction, parameter uintptr) {
+				menuAction.ConnectActivate(new(func(action gio.SimpleAction, parameter uintptr) {
 					mb.Popup()
 				}))
 				w.AddAction(menuAction)

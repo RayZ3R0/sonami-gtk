@@ -10,7 +10,6 @@ import (
 
 	_ "codeberg.org/dergs/tonearm/internal/features/scrobbling"
 
-	"codeberg.org/dergs/tonearm/internal/g"
 	"codeberg.org/dergs/tonearm/internal/player"
 	"codeberg.org/dergs/tonearm/internal/router"
 	"codeberg.org/dergs/tonearm/internal/secrets"
@@ -38,8 +37,8 @@ var app *adw.Application
 func main() {
 	app = adw.NewApplication("dev.dergs.Tonearm", gio.GApplicationHandlesCommandLineValue)
 	defer app.Unref()
-	app.ConnectActivate(g.Ptr(onActivate))
-	app.ConnectCommandLine(g.Ptr(onCommandLine))
+	app.ConnectActivate(new(onActivate))
+	app.ConnectCommandLine(new(onCommandLine))
 	injector.Singleton(func() *adw.Application {
 		return app
 	})
@@ -67,7 +66,7 @@ func main() {
 func onActivate(_ gio.Application) {
 	window := ui.NewWindow(app)
 	window.Present()
-	window.ConnectCloseRequest(g.Ptr(func(w gtk.Window) bool {
+	window.ConnectCloseRequest(new(func(w gtk.Window) bool {
 		// Only allow running in background if there is a track playing,
 		// so that the user can bring the app back up with MPRIS
 		if settings.General().ShouldRunInBackground() && player.TrackChanged.CurrentValue() != nil {
@@ -99,8 +98,8 @@ func onCommandLine(app gio.Application, ptr uintptr) int {
 
 	if len(args) == 2 {
 		url := args[1]
-		if strings.HasPrefix(url, "tidal://track/") {
-			player.PlayTrack(strings.TrimPrefix(url, "tidal://track/"))
+		if after, ok := strings.CutPrefix(url, "tidal://track/"); ok {
+			player.PlayTrack(after)
 		} else {
 			router.Navigate(url)
 		}

@@ -4,7 +4,6 @@ import (
 	"context"
 	"unsafe"
 
-	"codeberg.org/dergs/tonearm/internal/g"
 	"codeberg.org/dergs/tonearm/internal/gettext"
 	"codeberg.org/dergs/tonearm/internal/notifications"
 	"codeberg.org/dergs/tonearm/internal/player"
@@ -23,55 +22,55 @@ import (
 
 func (w *Window) installActions() {
 	aboutAction := gio.NewSimpleAction("about", nil)
-	aboutAction.ConnectActivate(g.Ptr(func(action gio.SimpleAction, parameter uintptr) {
+	aboutAction.ConnectActivate(new(func(action gio.SimpleAction, parameter uintptr) {
 		w.PresentAbout()
 	}))
 	w.GetApplication().Application.AddAction(aboutAction)
 
 	preferencesAction := gio.NewSimpleAction("preferences", nil)
-	preferencesAction.ConnectActivate(g.Ptr(func(action gio.SimpleAction, parameter uintptr) {
+	preferencesAction.ConnectActivate(new(func(action gio.SimpleAction, parameter uintptr) {
 		w.PresentPreferences()
 	}))
 	w.GetApplication().Application.AddAction(preferencesAction)
 	w.GetApplication().SetAccelsForAction("app.preferences", []string{"<Control>comma"})
 
 	shortcutsAction := gio.NewSimpleAction("shortcuts", nil)
-	shortcutsAction.ConnectActivate(g.Ptr(func(action gio.SimpleAction, parameter uintptr) {
+	shortcutsAction.ConnectActivate(new(func(action gio.SimpleAction, parameter uintptr) {
 		w.PresentShortcuts()
 	}))
 	w.GetApplication().Application.AddAction(shortcutsAction)
 	w.GetApplication().SetAccelsForAction("app.shortcuts", []string{"<Control>question"})
 
 	quitAction := gio.NewSimpleAction("quit", nil)
-	quitAction.ConnectActivate(g.Ptr(func(action gio.SimpleAction, parameter uintptr) {
+	quitAction.ConnectActivate(new(func(action gio.SimpleAction, parameter uintptr) {
 		w.GetApplication().Quit()
 	}))
 	w.GetApplication().Application.AddAction(quitAction)
 	w.GetApplication().SetAccelsForAction("app.quit", []string{"<Ctrl>q"})
 
 	closeAction := gio.NewSimpleAction("close", nil)
-	closeAction.ConnectActivate(g.Ptr(func(action gio.SimpleAction, parameter uintptr) {
+	closeAction.ConnectActivate(new(func(action gio.SimpleAction, parameter uintptr) {
 		w.Close()
 	}))
 	w.AddAction(closeAction)
 	w.GetApplication().SetAccelsForAction("win.close", []string{"<Ctrl>w"})
 
 	navigateBackAction := gio.NewSimpleAction("navigate-back", nil)
-	navigateBackAction.ConnectActivate(g.Ptr(func(action gio.SimpleAction, parameter uintptr) {
+	navigateBackAction.ConnectActivate(new(func(action gio.SimpleAction, parameter uintptr) {
 		router.Back()
 	}))
 	w.AddAction(navigateBackAction)
 	w.GetApplication().SetAccelsForAction("win.navigate-back", []string{"<Alt>Left"})
 
 	searchAction := gio.NewSimpleAction("search", nil)
-	searchAction.ConnectActivate(g.Ptr(func(action gio.SimpleAction, parameter uintptr) {
+	searchAction.ConnectActivate(new(func(action gio.SimpleAction, parameter uintptr) {
 		router.Navigate("search")
 	}))
 	w.AddAction(searchAction)
 	w.GetApplication().SetAccelsForAction("win.search", []string{"<Ctrl>f"})
 
 	playTrackAction := gio.NewSimpleAction("player.play-track", glib.NewVariantType("s"))
-	playTrackAction.ConnectActivate(g.Ptr(func(action gio.SimpleAction, parameter uintptr) {
+	playTrackAction.ConnectActivate(new(func(action gio.SimpleAction, parameter uintptr) {
 		variant := (*glib.Variant)(unsafe.Pointer(parameter))
 		id := variant.GetString(nil)
 		go player.PlayTrack(id)
@@ -79,7 +78,7 @@ func (w *Window) installActions() {
 	w.AddAction(playTrackAction)
 
 	playPlaylistAction := gio.NewSimpleAction("player.play-playlist", glib.NewVariantType("s"))
-	playPlaylistAction.ConnectActivate(g.Ptr(func(action gio.SimpleAction, parameter uintptr) {
+	playPlaylistAction.ConnectActivate(new(func(action gio.SimpleAction, parameter uintptr) {
 		variant := (*glib.Variant)(unsafe.Pointer(parameter))
 		id := variant.GetString(nil)
 		go player.PlayPlaylist(id, false, 0)
@@ -87,37 +86,37 @@ func (w *Window) installActions() {
 	w.AddAction(playPlaylistAction)
 
 	shuffleAction := gio.NewSimpleAction("player.shuffle", nil)
-	shuffleAction.ConnectActivate(g.Ptr(func(action gio.SimpleAction, parameter uintptr) {
+	shuffleAction.ConnectActivate(new(func(action gio.SimpleAction, parameter uintptr) {
 		go player.ToggleShuffle()
 	}))
 	w.AddAction(shuffleAction)
 
 	nextAction := gio.NewSimpleAction("player.next", nil)
-	nextAction.ConnectActivate(g.Ptr(func(action gio.SimpleAction, parameter uintptr) {
+	nextAction.ConnectActivate(new(func(action gio.SimpleAction, parameter uintptr) {
 		go player.Next()
 	}))
 	w.AddAction(nextAction)
 
 	playPauseAction := gio.NewSimpleAction("player.play-pause", nil)
-	playPauseAction.ConnectActivate(g.Ptr(func(action gio.SimpleAction, parameter uintptr) {
+	playPauseAction.ConnectActivate(new(func(action gio.SimpleAction, parameter uintptr) {
 		go player.PlayPause()
 	}))
 	w.AddAction(playPauseAction)
 
 	previousAction := gio.NewSimpleAction("player.previous", nil)
-	previousAction.ConnectActivate(g.Ptr(func(action gio.SimpleAction, parameter uintptr) {
+	previousAction.ConnectActivate(new(func(action gio.SimpleAction, parameter uintptr) {
 		go player.Previous()
 	}))
 	w.AddAction(previousAction)
 
 	repeatAction := gio.NewSimpleAction("player.repeat", nil)
-	repeatAction.ConnectActivate(g.Ptr(func(action gio.SimpleAction, parameter uintptr) {
+	repeatAction.ConnectActivate(new(func(action gio.SimpleAction, parameter uintptr) {
 		player.CycleRepeatMode()
 	}))
 	w.AddAction(repeatAction)
 
 	queueTrackAction := gio.NewSimpleAction("player.queue-track", glib.NewVariantType("s"))
-	queueTrackAction.ConnectActivate(g.Ptr(func(action gio.SimpleAction, parameter uintptr) {
+	queueTrackAction.ConnectActivate(new(func(action gio.SimpleAction, parameter uintptr) {
 		variant := (*glib.Variant)(unsafe.Pointer(parameter))
 		id := variant.GetString(nil)
 		player.AddTrackToUserQueue(id)
@@ -125,28 +124,28 @@ func (w *Window) installActions() {
 	w.AddAction(queueTrackAction)
 
 	routeAlbumAction := gio.NewSimpleAction("route.album", glib.NewVariantType("s"))
-	routeAlbumAction.ConnectActivate(g.Ptr(func(action gio.SimpleAction, parameter uintptr) {
+	routeAlbumAction.ConnectActivate(new(func(action gio.SimpleAction, parameter uintptr) {
 		variant := (*glib.Variant)(unsafe.Pointer(parameter))
 		router.Navigate("album/" + variant.GetString(nil))
 	}))
 	w.AddAction(routeAlbumAction)
 
 	routePlaylistAction := gio.NewSimpleAction("route.playlist", glib.NewVariantType("s"))
-	routePlaylistAction.ConnectActivate(g.Ptr(func(action gio.SimpleAction, parameter uintptr) {
+	routePlaylistAction.ConnectActivate(new(func(action gio.SimpleAction, parameter uintptr) {
 		variant := (*glib.Variant)(unsafe.Pointer(parameter))
 		router.Navigate("playlist/" + variant.GetString(nil))
 	}))
 	w.AddAction(routePlaylistAction)
 
 	routeArtistAction := gio.NewSimpleAction("route.artist", glib.NewVariantType("s"))
-	routeArtistAction.ConnectActivate(g.Ptr(func(action gio.SimpleAction, parameter uintptr) {
+	routeArtistAction.ConnectActivate(new(func(action gio.SimpleAction, parameter uintptr) {
 		variant := (*glib.Variant)(unsafe.Pointer(parameter))
 		router.Navigate("artist/" + variant.GetString(nil))
 	}))
 	w.AddAction(routeArtistAction)
 
 	signInAction := gio.NewSimpleAction("sign-in", nil)
-	signInAction.ConnectActivate(g.Ptr(func(action gio.SimpleAction, parameter uintptr) {
+	signInAction.ConnectActivate(new(func(action gio.SimpleAction, parameter uintptr) {
 		go func() {
 			var dialog *adw.AlertDialog
 			resp, err := tidalapi.StartDeviceLinking(func(dlc *auth.DeviceLinkingChallenge, cancel context.CancelFunc) {
@@ -168,7 +167,7 @@ func (w *Window) installActions() {
 	w.AddAction(signInAction)
 
 	signOutAction := gio.NewSimpleAction("sign-out", nil)
-	signOutAction.ConnectActivate(g.Ptr(func(action gio.SimpleAction, parameter uintptr) {
+	signOutAction.ConnectActivate(new(func(action gio.SimpleAction, parameter uintptr) {
 		go func() {
 			secrets.DeleteRefreshToken()
 			notifications.OnToast.Notify(gettext.Get("Signed out"))
@@ -178,7 +177,7 @@ func (w *Window) installActions() {
 	w.AddAction(signOutAction)
 
 	setAsDefaultAction := gio.NewSimpleAction("set-as-default", nil)
-	setAsDefaultAction.ConnectActivate(g.Ptr(func(action gio.SimpleAction, parameter uintptr) {
+	setAsDefaultAction.ConnectActivate(new(func(action gio.SimpleAction, parameter uintptr) {
 		settings.General().SetDefaultPage(router.Current().Path)
 		notifications.OnToast.Notify(gettext.Get("Set current page as default"))
 	}))
@@ -194,7 +193,7 @@ func (w *Window) installMouseClickHandler() {
 	gestureController := gtk.NewGestureClick()
 	gestureController.SetButton(0)
 	gestureController.SetPropagationPhase(gtk.PhaseCaptureValue)
-	gestureController.ConnectPressed(g.Ptr(func(controller gtk.GestureClick, nPress int, x float64, y float64) {
+	gestureController.ConnectPressed(new(func(controller gtk.GestureClick, nPress int, x float64, y float64) {
 		switch controller.GetCurrentButton() {
 		case MouseButtonBack:
 			// Back button

@@ -44,13 +44,12 @@ func Register(path string, handler any) {
 		return
 	}
 
-	if handlerType.NumOut() != 1 || handlerType.Out(0) != reflect.TypeOf((*Response)(nil)) {
+	if handlerType.NumOut() != 1 || handlerType.Out(0) != reflect.TypeFor[*Response]() {
 		logger.Error("failed to register route, handler return type was not *Response", "path", path)
 		return
 	}
 
-	for i := 0; i < handlerType.NumIn(); i++ {
-		argType := handlerType.In(i)
+	for argType := range handlerType.Ins() {
 		if argType.Kind() != reflect.String {
 			logger.Error("failed to register route, handler arg type was not string", "path", path)
 			return
