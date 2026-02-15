@@ -48,6 +48,9 @@ func (w *Window) buildSidebarHeader() *gtk.Widget {
 		ShowBackButton(false).
 		ShowEndTitleButtons(false).
 		CenteringPolicy(adw.CenteringPolicyStrictValue).
+		PackStart(
+			components.NewRouteButton("search", false).Icon("loupe-symbolic").TooltipText(gettext.Get("Search")),
+		).
 		PackEnd(
 			MenuButton().
 				IconName("menu-symbolic").
@@ -60,7 +63,6 @@ func (w *Window) buildSidebarHeader() *gtk.Widget {
 				w.AddAction(menuAction)
 				w.GetApplication().SetAccelsForAction("win.main-menu", []string{"F10"})
 			}),
-			components.NewRouteButton("search", false).Icon("loupe-symbolic").TooltipText(gettext.Get("Search")),
 			components.NewRouteButton("feed", false).Icon("bell-outline-symbolic").TooltipText(gettext.Get("Feed")),
 		).
 		ToGTK()
