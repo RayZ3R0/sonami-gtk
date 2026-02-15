@@ -18,6 +18,8 @@ import (
 	"codeberg.org/dergs/tonearm/pkg/utils/imgutil"
 	"github.com/infinytum/injector"
 	"github.com/jwijenbergh/puregotk/v4/gdk"
+	"github.com/jwijenbergh/puregotk/v4/gio"
+	"github.com/jwijenbergh/puregotk/v4/glib"
 	"github.com/jwijenbergh/puregotk/v4/gtk"
 	"github.com/jwijenbergh/puregotk/v4/pango"
 )
@@ -40,6 +42,12 @@ func Artist(artistId string) *router.Response {
 	for _, item := range artistPage.Items {
 		body = body.Append(components.ForPageItem(item))
 	}
+
+	playControlsMenu := gio.NewMenu()
+	queueAllItem := gio.NewMenuItem("Add top tracks to queue", "win.player.queue")
+	queueAllItem.SetActionAndTargetValue("win.player.queue", glib.NewVariantString(fmt.Sprintf("artist/%s", artistId)))
+	playControlsMenu.AppendItem(queueAllItem)
+	playControlsPopover := gtk.NewPopoverMenuFromModel(&playControlsMenu.MenuModel)
 
 	return &router.Response{
 		PageTitle: gettext.Get("Artist"),
@@ -78,9 +86,7 @@ func Artist(artistId string) *router.Response {
 						Button().
 							TooltipText(gettext.Get("Shuffle Top Tracks")).
 							IconName("playlist-shuffle-symbolic").
-							MinWidth(81).
-							CornerRadius(21).
-							Padding(9).
+							WithCSSClass("pill").
 							VAlign(gtk.AlignCenterValue).
 							ConnectClicked(func(b gtk.Button) {
 								go func() {
@@ -93,18 +99,8 @@ func Artist(artistId string) *router.Response {
 						Button().
 							TooltipText(gettext.Get("Play Top Tracks")).
 							IconName("play-symbolic").
-							MinWidth(81).
-							CornerRadius(21).
-							Padding(9).
-							CSS(`
-								button {
-									background-color: var(--accent-bg-color);
-								}
-
-								button:hover {
-									background-color: var(--accent-color);
-								}
-							`).
+							WithCSSClass("pill").
+							WithCSSClass("suggested-action").
 							VAlign(gtk.AlignCenterValue).
 							ConnectClicked(func(b gtk.Button) {
 								go func() {
@@ -114,8 +110,15 @@ func Artist(artistId string) *router.Response {
 									}
 								}()
 							}),
+						MenuButton().
+							TooltipText(gettext.Get("More…")).
+							WithCSSClass("circular").
+							WithCSSClass("flat").
+							VAlign(gtk.AlignCenterValue).
+							IconName("view-more-symbolic").
+							Popover(playControlsPopover),
 					).
-						Spacing(5).
+						Spacing(12).
 						HAlign(gtk.AlignEndValue),
 					HStack(
 						favouritebutton.FavouriteButton(state.ArtistsCache, artistId),
