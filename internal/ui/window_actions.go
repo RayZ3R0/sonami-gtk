@@ -149,62 +149,69 @@ func (w *Window) installActions() {
 		case "track":
 			player.AddTrackToUserQueue(id)
 		case "album":
-			paginator := pagination.NewPaginator(
-				tidal.OpenAPI.V2.Albums.Items,
-				id,
-				func(r *openapi.Response[[]openapi.Relationship]) []openapi.Track {
-					return r.Included.Tracks(r.Data...)
-				},
-				"items",
-			)
+			go func() {
+				paginator := pagination.NewPaginator(
+					tidal.OpenAPI.V2.Albums.Items,
+					id,
+					func(r *openapi.Response[[]openapi.Relationship]) []openapi.Track {
+						return r.Included.Tracks(r.Data...)
+					},
+					"items",
+					"items.albums.coverArt",
+				)
 
-			tracks, err := paginator.GetAll()
-			if err != nil {
-				logger.Error("failed to fetch album", "album_id", id, "error", err)
-				return
-			}
+				tracks, err := paginator.GetAll()
+				if err != nil {
+					logger.Error("failed to fetch album", "album_id", id, "error", err)
+					return
+				}
 
-			player.AddTracklistToUserQueue(tracks)
+				player.AddTracklistToUserQueue(tracks)
+			}()
 		case "playlist":
-			paginator := pagination.NewPaginator(tidal.OpenAPI.V2.Playlists.Items, id, func(r *openapi.Response[[]openapi.Relationship]) []openapi.Track {
-				return r.Included.Tracks(r.Data...)
-			}, "items")
-			tracks, err := paginator.GetAll()
-			if err != nil {
-				logger.Error("failed to fetch playlist", "playlist_id", id, "error", err)
-				return
-			}
+			go func() {
+				paginator := pagination.NewPaginator(tidal.OpenAPI.V2.Playlists.Items, id, func(r *openapi.Response[[]openapi.Relationship]) []openapi.Track {
+					return r.Included.Tracks(r.Data...)
+				}, "items", "items.albums.coverArt")
+				tracks, err := paginator.GetAll()
+				if err != nil {
+					logger.Error("failed to fetch playlist", "playlist_id", id, "error", err)
+					return
+				}
 
-			player.AddTracklistToUserQueue(tracks)
+				player.AddTracklistToUserQueue(tracks)
+			}()
 		case "artist":
-			artist, err := tidal.V2.Artist.Artist(context.Background(), id)
-			if err != nil {
-				logger.Error("failed to fetch artist", "artist_id", id, "error", err)
-				return
-			}
-
-			var module v2.PageItem
-			for _, item := range artist.Items {
-				if item.ModuleID == "ARTIST_TOP_TRACKS" {
-					module = item
-					break
+			go func() {
+				artist, err := tidal.V2.Artist.Artist(context.Background(), id)
+				if err != nil {
+					logger.Error("failed to fetch artist", "artist_id", id, "error", err)
+					return
 				}
-			}
 
-			var topTracks []openapi.Track
-			for _, legacyTopTrackItem := range module.Items {
-				if legacyTopTrackItem.Type == v2.ItemTypeTrack {
-					topTrack, err := tidal.OpenAPI.V2.Tracks.Track(context.Background(), strconv.Itoa(legacyTopTrackItem.Data.Track.ID))
-					if err != nil {
-						logger.Error("error while resolving Top Track item", "track_id", legacyTopTrackItem.Data.Track.ID, "message", err.Error())
-						continue
+				var module v2.PageItem
+				for _, item := range artist.Items {
+					if item.ModuleID == "ARTIST_TOP_TRACKS" {
+						module = item
+						break
 					}
-
-					topTracks = append(topTracks, *topTrack)
 				}
-			}
 
-			player.AddTracklistToUserQueue(topTracks)
+				var topTracks []openapi.Track
+				for _, legacyTopTrackItem := range module.Items {
+					if legacyTopTrackItem.Type == v2.ItemTypeTrack {
+						topTrack, err := tidal.OpenAPI.V2.Tracks.Track(context.Background(), strconv.Itoa(legacyTopTrackItem.Data.Track.ID), "albums.coverArt")
+						if err != nil {
+							logger.Error("error while resolving Top Track item", "track_id", legacyTopTrackItem.Data.Track.ID, "message", err.Error())
+							continue
+						}
+
+						topTracks = append(topTracks, *topTrack)
+					}
+				}
+
+				player.AddTracklistToUserQueue(topTracks)
+			}()
 		default:
 			logger.Error("unknown object type to add to queue", "type", parts[0])
 			return
