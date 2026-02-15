@@ -5,7 +5,6 @@ import (
 	"slices"
 	"time"
 
-	"codeberg.org/dergs/tonearm/internal/g"
 	"codeberg.org/dergs/tonearm/internal/gettext"
 	"codeberg.org/dergs/tonearm/internal/player"
 	"codeberg.org/dergs/tonearm/internal/resources"
@@ -228,7 +227,7 @@ func NewQueue() schwifty.Box {
 				action := 0.0
 				ptr := sw.GoPointer()
 				controller := gtk.NewDropControllerMotion()
-				controller.ConnectMotion(g.Ptr(func(controller gtk.DropControllerMotion, _, y float64) {
+				controller.ConnectMotion(new(func(controller gtk.DropControllerMotion, _, y float64) {
 					sw := gtk.ScrolledWindowNewFromInternalPtr(ptr)
 					sw.Ref()
 					defer sw.Unref()
@@ -244,7 +243,7 @@ func NewQueue() schwifty.Box {
 					}
 
 				}))
-				controller.ConnectLeave(g.Ptr(func(gtk.DropControllerMotion) {
+				controller.ConnectLeave(new(func(gtk.DropControllerMotion) {
 					action = 0
 				}))
 

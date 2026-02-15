@@ -54,7 +54,7 @@ func controlsColumn(trackId, albumId string, artistId []lightArtist, grid *gtk.G
 				VAlign(gtk.AlignCenterValue),
 			Button().
 				TooltipText(gettext.Get("Add to Queue")).
-				IconName("plus-symbolic").
+				IconName("queue-symbolic").
 				HAlign(gtk.AlignCenterValue).
 				VAlign(gtk.AlignCenterValue).
 				ActionName("win.player.queue-track").
