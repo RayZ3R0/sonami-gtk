@@ -71,6 +71,17 @@ func AddTrackToUserQueue(trackId string) error {
 	return nil
 }
 
+func AddTracklistToUserQueue(tracklist []openapi.Track) error {
+	for _, track := range tracklist {
+		err := AddTrackToUserQueue(track.GetID())
+		if err != nil {
+			return err
+		}
+	}
+
+	return nil
+}
+
 func PlayTrack(trackId string) error {
 	setLoadingState()
 	track, err := resolveTrack(trackId)

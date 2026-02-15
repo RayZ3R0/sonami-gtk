@@ -25,6 +25,8 @@ import (
 	"codeberg.org/dergs/tonearm/pkg/utils/imgutil"
 	"github.com/infinytum/injector"
 	"github.com/jwijenbergh/puregotk/v4/gdk"
+	"github.com/jwijenbergh/puregotk/v4/gio"
+	"github.com/jwijenbergh/puregotk/v4/glib"
 	"github.com/jwijenbergh/puregotk/v4/gtk"
 )
 
@@ -89,6 +91,12 @@ func Album(albumId string) *router.Response {
 		return router.FromError(album.Data.Attributes.Title, err)
 	}
 
+	playControlsMenu := gio.NewMenu()
+	queueAllItem := gio.NewMenuItem("Add album to queue", "win.player.queue")
+	queueAllItem.SetActionAndTargetValue("win.player.queue", glib.NewVariantString(fmt.Sprintf("album/%s", albumId)))
+	playControlsMenu.AppendItem(queueAllItem)
+	playControlsPopover := gtk.NewPopoverMenuFromModel(&playControlsMenu.MenuModel)
+
 	return &router.Response{
 		PageTitle: album.Data.Attributes.Title,
 		Error:     err,
@@ -126,9 +134,7 @@ func Album(albumId string) *router.Response {
 						Button().
 							TooltipText(gettext.Get("Shuffle Album")).
 							IconName("playlist-shuffle-symbolic").
-							MinWidth(81).
-							CornerRadius(21).
-							Padding(9).
+							WithCSSClass("pill").
 							ConnectClicked(func(b gtk.Button) {
 								go func() {
 									if err := player.PlayAlbum(albumId, true, 0); err != nil {
@@ -141,18 +147,8 @@ func Album(albumId string) *router.Response {
 						Button().
 							TooltipText(gettext.Get("Play Album")).
 							IconName("play-symbolic").
-							MinWidth(81).
-							CornerRadius(21).
-							Padding(9).
-							CSS(`
-								button {
-									background-color: var(--accent-bg-color);
-								}
-
-								button:hover {
-									background-color: var(--accent-color);
-								}
-							`).
+							WithCSSClass("pill").
+							WithCSSClass("suggested-action").
 							ConnectClicked(func(b gtk.Button) {
 								go func() {
 									if err := player.PlayAlbum(albumId, false, 0); err != nil {
@@ -162,9 +158,15 @@ func Album(albumId string) *router.Response {
 								}()
 							}).
 							BindSensitive(canPlayAlbumState),
+						MenuButton().
+							TooltipText(gettext.Get("More…")).
+							Popover(playControlsPopover).
+							WithCSSClass("flat").
+							WithCSSClass("circular").
+							IconName("view-more-symbolic"),
 					).
 						VAlign(gtk.AlignCenterValue).
-						Spacing(5),
+						Spacing(12),
 					HStack(
 						favouritebutton.FavouriteButton(appState.AlbumsCache, albumId),
 						Button().
