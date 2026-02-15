@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: v1.0.0-26-g6264155\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2026-02-15 00:57+0100\n"
-"PO-Revision-Date: 2026-02-09 11:43+0000\n"
+"PO-Revision-Date: 2026-02-15 17:03+0000\n"
 "Last-Translator: LukaszH77 <lukasz@horodecki.net>\n"
 "Language-Team: Polish <https://translate.codeberg.org/projects/tonearm/"
 "tonearm/pl/>\n"
@@ -104,7 +104,7 @@ msgstr ""
 
 #: internal/ui/window_preferences.go:139
 msgid "Allow Tonearm to send scrobbling data to Last.fm"
-msgstr ""
+msgstr "Pozwól Tonearm na wysyłanie danych scrobblowania do Last.fm"
 
 #: internal/ui/window_preferences.go:119
 msgid "Allow Tonearm to send scrobbling data to ListenBrainz"
@@ -132,27 +132,27 @@ msgstr "Pozwól na obrazy na listach utworów"
 
 #: internal/ui/window_preferences.go:235
 msgid "An error occured while logging in to Last.fm."
-msgstr ""
+msgstr "Wystąpił błąd podczas logowania do Last.fm."
 
 #: internal/ui/window_preferences.go:210
 msgid "An error occured while logging out of Last.fm."
-msgstr ""
+msgstr "Wystąpił błąd podczas wylogowania z Last.fm."
 
 #: internal/ui/routes/album.go:135
 msgid "An error occurred while playing the album"
-msgstr ""
+msgstr "Wystąpił błąd podczas odtwarzania albumu"
 
 #: internal/ui/routes/playlist.go:142
 msgid "An error occurred while playing the playlist"
-msgstr ""
+msgstr "Wystąpił błąd podczas odtwarzania playlisty"
 
 #: internal/ui/routes/artist.go:88
 msgid "An error occurred while playing the top tracks"
-msgstr ""
+msgstr "Wystąpił błąd podczas odtwarzania top utworów"
 
 #: internal/ui/routes/album.go:76
 msgid "An error occurred while playing the track"
-msgstr ""
+msgstr "Wystąpił błąd podczas odtwarzania utworu"
 
 #: internal/secrets/service_linux.go:55
 msgid ""
@@ -184,7 +184,7 @@ msgstr "Wymagane połączenie"
 
 #: internal/settings/playback.go:20
 msgid "Auto"
-msgstr ""
+msgstr "Auto"
 
 #: internal/ui/window_shortcuts.go:19
 msgid "Back"
@@ -204,7 +204,7 @@ msgstr "Pamięć podręczna obrazów"
 
 #: internal/features/scrobbling/lastfm.go:61
 msgid "Cancel"
-msgstr ""
+msgstr "Anuluj"
 
 #: internal/ui/components/linking/linking.go:82
 msgid "Cancel Login"
@@ -215,6 +215,8 @@ msgid ""
 "Choose whether Tonearm should prefer album replay gain, track replay gain or "
 "decide automatically"
 msgstr ""
+"Wybierz, czy Tonearm powinien stosować normalizację całych albumów, "
+"pojedynczych utworów, czy decydować automatycznie"
 
 #: internal/ui/window_shortcuts.go:11
 msgid "Close"
@@ -226,7 +228,7 @@ msgstr "Kolekcja"
 
 #: internal/ui/window_preferences.go:264
 msgid "Configure Tonearm to send scrobbling data to Last.fm."
-msgstr ""
+msgstr "Skonfiguruj Tonearm do wysyłania danych do Last.fm."
 
 #: internal/ui/window_preferences.go:135
 msgid "Configure Tonearm to send scrobbling data to ListenBrainz."
@@ -254,11 +256,11 @@ msgstr "Kontynuuj"
 
 #: internal/features/scrobbling/lastfm.go:41
 msgid "Continue the authentication process in your browser."
-msgstr ""
+msgstr "Dokończ proces uwierzytelniania w swojej przeglądarce."
 
 #: internal/ui/routes/album.go:187
 msgid "Copied album URL to clipboard."
-msgstr ""
+msgstr "Skopiowano adres URL albumu do schowka."
 
 #: internal/ui/routes/artist.go:133
 msgid "Copied artist URL to clipboard."
@@ -274,7 +276,7 @@ msgstr "Skopiowano do schowka adres URL utworu."
 
 #: internal/ui/routes/album.go:171
 msgid "Copy Album URL"
-msgstr ""
+msgstr "Skopiuj adres URL albumu"
 
 #: internal/ui/routes/artist.go:123
 msgid "Copy Artist URL"
@@ -306,7 +308,7 @@ msgstr "EP autorstwa %s"
 
 #: internal/ui/window_preferences.go:138
 msgid "Enable Last.fm"
-msgstr ""
+msgstr "Włącz Last.fm"
 
 #: internal/ui/window_preferences.go:118
 msgid "Enable ListenBrainz"
@@ -386,23 +388,23 @@ msgstr "Adres URL API ListenBrainz"
 
 #: internal/ui/window_preferences.go:144
 msgid "Log in to Last.fm"
-msgstr ""
+msgstr "Zaloguj do Last.fm"
 
 #: internal/ui/window_preferences.go:153
 msgid "Log out of Last.fm"
-msgstr ""
+msgstr "Wyloguj z Last.fm"
 
 #: internal/ui/window_preferences.go:251
 msgid "Logged in to Last.fm as %s."
-msgstr ""
+msgstr "Zalogowano do Last.fm jako %s."
 
 #: internal/ui/window_preferences.go:221
 msgid "Logged out of Last.fm."
-msgstr ""
+msgstr "Wylogowano z Last.fm."
 
 #: internal/features/scrobbling/lastfm.go:40
 msgid "Logging in to Last.fm"
-msgstr ""
+msgstr "Logowanie do Last.fm"
 
 #: internal/ui/components/player/component_track_timeline.go:58
 msgid "Low (320 kbps)"
@@ -502,7 +504,7 @@ msgstr "Brak utworu"
 
 #: internal/ui/routes/album.go:177
 msgid "No album could be shared."
-msgstr ""
+msgstr "Nie powiodło się udostępnianie albumu."
 
 #: internal/ui/components/lyrics/lyrics.go:416
 msgid "No lyrics available"
@@ -539,7 +541,7 @@ msgstr "Brak aktualnie odtwarzanej piosenki"
 
 #: internal/ui/window_preferences.go:63
 msgid "Normalize volume"
-msgstr ""
+msgstr "Normalizuj głośność"
 
 #: internal/router/handler_notfound.go:10
 msgid "Not Found"
@@ -617,7 +619,7 @@ msgstr "Preferencje"
 
 #: internal/ui/window_preferences.go:69
 msgid "Preferred Replay Gain"
-msgstr ""
+msgstr "Preferowana metoda ReplayGain"
 
 #: internal/ui/components/player/component_controls.go:107
 msgid "Previous"
@@ -637,7 +639,7 @@ msgstr "Usuń utwór z kolejki"
 
 #: internal/features/scrobbling/lastfm.go:51
 msgid "Reopen Browser"
-msgstr ""
+msgstr "Ponownie otwórz przeglądarkę"
 
 #: internal/ui/components/linking/linking.go:59
 msgid "Scan this QR code to sign into your TIDAL account."
@@ -681,7 +683,7 @@ msgstr "Ustaw aktualną stronę jako domyślną"
 
 #: internal/ui/window_preferences.go:64
 msgid "Set the same volume for all tracks."
-msgstr ""
+msgstr "Ustaw jednakową głośność wszystkich utworów"
 
 #: internal/ui/routes/album.go:127
 msgid "Shuffle Album"
@@ -765,7 +767,7 @@ msgstr "Przełącz panel boczny"
 
 #: internal/settings/playback.go:22
 msgid "Track"
-msgstr ""
+msgstr "Utwór"
 
 #: internal/player/playback.go:61
 msgid "Track not available for streaming, skipping to next track"
@@ -805,15 +807,15 @@ msgstr "Głośność"
 
 #: internal/ui/window_preferences.go:145
 msgid "You are currently not logged in to Last.fm."
-msgstr ""
+msgstr "Nie zalogowano do Last.fm."
 
 #: internal/ui/window_preferences.go:160
 msgid "You are logged in to Last.fm as %s."
-msgstr ""
+msgstr "Zalogowano do Last.fm jako %s."
 
 #: internal/ui/window_preferences.go:157
 msgid "You are logged in to Last.fm."
-msgstr ""
+msgstr "Zalogowano do Last.fm."
 
 #: internal/ui/components/linking/linking.go:29
 msgid "You can also open the linking page using the button below."
