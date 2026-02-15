@@ -58,7 +58,8 @@ func Artist(artistId string) *router.Response {
 				VStack(
 					Label(artistPage.Item.Data.Artist.Name).
 						WithCSSClass("title-2").
-						HAlign(gtk.AlignStartValue),
+						HAlign(gtk.AlignStartValue).
+						Ellipsis(pango.EllipsizeEndValue),
 					Label(gettext.GetN("%d Fan", "%d Fans", artistPage.Header.FollowersAmount, artistPage.Header.FollowersAmount)).
 						WithCSSClass("dimmed").
 						PaddingTop(5).

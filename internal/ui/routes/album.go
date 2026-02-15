@@ -26,6 +26,7 @@ import (
 	"github.com/infinytum/injector"
 	"github.com/jwijenbergh/puregotk/v4/gdk"
 	"github.com/jwijenbergh/puregotk/v4/gtk"
+	"github.com/jwijenbergh/puregotk/v4/pango"
 )
 
 var albumLogger = slog.With("module", "ui/routes", "route", "album")
@@ -107,8 +108,10 @@ func Album(albumId string) *router.Response {
 				VStack(
 					Label(album.Data.Attributes.Title).
 						WithCSSClass("title-2").
-						HAlign(gtk.AlignStartValue),
+						HAlign(gtk.AlignStartValue).
+						Ellipsis(pango.EllipsizeEndValue),
 					Label(strings.Join(artists, ", ")).
+						Ellipsis(pango.EllipsizeEndValue).
 						WithCSSClass("heading").WithCSSClass("dimmed").
 						PaddingTop(10).
 						HAlign(gtk.AlignStartValue),
@@ -119,7 +122,9 @@ func Album(albumId string) *router.Response {
 						WithCSSClass("heading").WithCSSClass("dimmed").
 						HAlign(gtk.AlignStartValue).
 						MarginTop(10),
-				).MarginStart(20).VAlign(gtk.AlignCenterValue),
+				).
+					MarginStart(20).
+					VAlign(gtk.AlignCenterValue),
 				Spacer().VExpand(false),
 				VStack(
 					HStack(
@@ -190,9 +195,11 @@ func Album(albumId string) *router.Response {
 						Spacing(10).
 						HAlign(gtk.AlignEndValue),
 				).
-					Spacing(20).
+					MarginStart(20).
+					HAlign(gtk.AlignEndValue).
 					VAlign(gtk.AlignCenterValue),
-			).HMargin(40),
+			).
+				HMargin(40),
 			page.VExpand(true).MarginTop(20),
 		).VMargin(20),
 	}
