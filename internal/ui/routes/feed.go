@@ -19,6 +19,7 @@ import (
 	"codeberg.org/dergs/tonearm/pkg/utils/imgutil"
 	"github.com/infinytum/injector"
 	"github.com/jwijenbergh/puregotk/v4/gtk"
+	"github.com/jwijenbergh/puregotk/v4/pango"
 )
 
 func init() {
@@ -96,7 +97,7 @@ func Feed() *router.Response {
 	if userId == "" {
 		return &router.Response{
 			PageTitle: gettext.Get("Feed"),
-			View: components.AuthRequired(gettext.Get("Please sign in to view your feed")),
+			View:      components.AuthRequired(gettext.Get("Please sign in to view your feed")),
 		}
 	}
 
@@ -171,8 +172,8 @@ func Feed() *router.Response {
 						Overflow(gtk.OverflowHiddenValue).
 						CornerRadius(6),
 					VStack(
-						Label(album.Title).HAlign(gtk.AlignStartValue).WithCSSClass("heading"),
-						Label(subtitle).HAlign(gtk.AlignStartValue).WithCSSClass("body"),
+						Label(album.Title).HAlign(gtk.AlignStartValue).WithCSSClass("heading").Ellipsis(pango.EllipsizeEndValue),
+						Label(subtitle).HAlign(gtk.AlignStartValue).WithCSSClass("body").Ellipsis(pango.EllipsizeEndValue),
 					).
 						VAlign(gtk.AlignCenterValue),
 				).
