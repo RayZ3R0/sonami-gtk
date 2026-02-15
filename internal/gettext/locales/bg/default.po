@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: v1.1.0-99-ga37b2fb\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2026-02-15 18:03+0100\n"
-"PO-Revision-Date: 2026-02-15 00:11+0000\n"
+"PO-Revision-Date: 2026-02-15 23:06+0000\n"
 "Last-Translator: presi300 <presi300@noreply.codeberg.org>\n"
 "Language-Team: Bulgarian <https://translate.codeberg.org/projects/tonearm/"
 "tonearm/bg/>\n"
@@ -109,7 +109,7 @@ msgstr ""
 
 #: internal/ui/window_preferences.go:139
 msgid "Allow Tonearm to send scrobbling data to Last.fm"
-msgstr ""
+msgstr "Позволи на Tonearm да изпраща скробълинг информация към Last.fm"
 
 #: internal/ui/window_preferences.go:119
 msgid "Allow Tonearm to send scrobbling data to ListenBrainz"
@@ -138,27 +138,27 @@ msgstr "Позволи изображения в траклиста"
 
 #: internal/ui/window_preferences.go:235
 msgid "An error occured while logging in to Last.fm."
-msgstr ""
+msgstr "Възникна грешка при влизането в Last.fm."
 
 #: internal/ui/window_preferences.go:210
 msgid "An error occured while logging out of Last.fm."
-msgstr ""
+msgstr "Възникна грешка при излизането от Last.fm."
 
 #: internal/ui/routes/album.go:135
 msgid "An error occurred while playing the album"
-msgstr ""
+msgstr "Възникна грешка при възпроизвеждането на албума"
 
 #: internal/ui/routes/playlist.go:142
 msgid "An error occurred while playing the playlist"
-msgstr ""
+msgstr "Възникна грешка при възпроизвеждането на плейлиста"
 
 #: internal/ui/routes/artist.go:88
 msgid "An error occurred while playing the top tracks"
-msgstr ""
+msgstr "Възникна грешка при възпроизвеждането на топ песните"
 
 #: internal/ui/routes/album.go:76
 msgid "An error occurred while playing the track"
-msgstr ""
+msgstr "Възникна грешка по време на песента"
 
 #: internal/secrets/service_linux.go:55
 #, fuzzy
@@ -185,11 +185,13 @@ msgstr "Артисти"
 
 #: internal/ui/components/auth_required.go:13
 msgid "Authentication Required"
-msgstr ""
+msgstr "Необходимо е удостоверение"
 
 #: internal/settings/playback.go:20
 msgid "Auto"
 msgstr ""
+"Използвано като стойност за \"Режим на усилване при повторно "
+"възпроизвеждане\" в настройките"
 
 #: internal/ui/window_shortcuts.go:19
 msgid "Back"
@@ -209,7 +211,7 @@ msgstr "Кеширай изображенията"
 
 #: internal/features/scrobbling/lastfm.go:61
 msgid "Cancel"
-msgstr ""
+msgstr "Откажи"
 
 #: internal/ui/components/linking/linking.go:82
 #, fuzzy
@@ -232,7 +234,7 @@ msgstr "Колекция"
 
 #: internal/ui/window_preferences.go:264
 msgid "Configure Tonearm to send scrobbling data to Last.fm."
-msgstr ""
+msgstr "Настрой Tonearm да изпраща скробълинг информация към Last.fm."
 
 #: internal/ui/window_preferences.go:135
 msgid "Configure Tonearm to send scrobbling data to ListenBrainz."
@@ -263,11 +265,11 @@ msgstr "Продължи"
 
 #: internal/features/scrobbling/lastfm.go:41
 msgid "Continue the authentication process in your browser."
-msgstr ""
+msgstr "Продължи удостоверяването в браузъра."
 
 #: internal/ui/routes/album.go:187
 msgid "Copied album URL to clipboard."
-msgstr ""
+msgstr "URL-ът на албума е копиран в клипборда."
 
 #: internal/ui/routes/artist.go:133
 msgid "Copied artist URL to clipboard."
