@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: v1.0.0-26-g6264155\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2026-02-15 00:57+0100\n"
-"PO-Revision-Date: 2026-02-15 17:03+0000\n"
+"PO-Revision-Date: 2026-02-15 23:06+0000\n"
 "Last-Translator: LukaszH77 <lukasz@horodecki.net>\n"
 "Language-Team: Polish <https://translate.codeberg.org/projects/tonearm/"
 "tonearm/pl/>\n"
@@ -851,27 +851,27 @@ msgstr "Łukasz Horodecki https://horodecki.net"
 
 #: internal/ui/components/auth_required.go:13
 msgid "Authentication Required"
-msgstr ""
+msgstr "Wymagane uwierzytelnienie"
 
 #: internal/ui/components/tracklist/column_controls.go:64
 msgid "More…"
-msgstr ""
+msgstr "Więcej…"
 
 #: internal/ui/components/tracklist/column_controls.go:37
 msgid "Navigate to %s"
-msgstr ""
+msgstr "Przejdź do %s"
 
 #: internal/ui/routes/my-collection.go:34
 msgid "Please sign in to view your collection"
-msgstr ""
+msgstr "Zaloguj się, by zobaczyć swoją kolekcję"
 
 #: internal/ui/routes/feed.go:99
 msgid "Please sign in to view your feed"
-msgstr ""
+msgstr "Zaloguj się, by zobaczyć swoje treści"
 
 #: internal/ui/components/auth_required.go:17
 msgid "Sign In…"
-msgstr ""
+msgstr "Zaloguj się…"
 
 #~ msgid "Connection required"
 #~ msgstr "Wymagane połączenie"
