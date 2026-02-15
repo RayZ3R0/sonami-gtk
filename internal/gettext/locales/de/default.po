@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: 1\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2026-02-05 18:41+0100\n"
-"PO-Revision-Date: 2026-02-15 00:11+0000\n"
+"PO-Revision-Date: 2026-02-15 01:00+0000\n"
 "Last-Translator: NilaTheDragon <nilathedragon@noreply.codeberg.org>\n"
 "Language-Team: German <https://translate.codeberg.org/projects/tonearm/"
 "tonearm/de/>\n"
@@ -477,7 +477,7 @@ msgstr "TIDAL Webseite öffnen"
 
 #: internal/ui/window_preferences.go:80 internal/ui/window_preferences.go:108
 msgid "Performance"
-msgstr ""
+msgstr "Leistung"
 
 #: internal/ui/routes/playlist.go:68 internal/ui/routes/playlist.go:72
 msgid "Personal Mix"
@@ -748,121 +748,123 @@ msgstr "Nila The Dragon https://github.com/NilaTheDragon"
 
 #: internal/ui/window_preferences.go:139
 msgid "Allow Tonearm to send scrobbling data to Last.fm"
-msgstr ""
+msgstr "Erlaube Tonearm Scrobbling Daten an Last.fm zu senden"
 
 #: internal/ui/window_preferences.go:235
 msgid "An error occured while logging in to Last.fm."
-msgstr ""
+msgstr "Während dem Anmeldevorgang bei Last.fm ist ein Fehler aufgetreten."
 
 #: internal/ui/window_preferences.go:210
 msgid "An error occured while logging out of Last.fm."
-msgstr ""
+msgstr "Während dem Abmeldevorgang bei Last.fm ist ein Fehler aufgetreten."
 
 #: internal/ui/routes/album.go:135
 msgid "An error occurred while playing the album"
-msgstr ""
+msgstr "Beim Abspielen des Albums ist ein Fehler aufgetreten"
 
 #: internal/ui/routes/playlist.go:142
 msgid "An error occurred while playing the playlist"
-msgstr ""
+msgstr "Beim Abspielen der Playlist in ein Fehler aufgetreten"
 
 #: internal/ui/routes/artist.go:88
 msgid "An error occurred while playing the top tracks"
-msgstr ""
+msgstr "Beim Abspielen der Top Titel ist ein Fehler aufgetreten"
 
 #: internal/ui/routes/album.go:76
 msgid "An error occurred while playing the track"
-msgstr ""
+msgstr "Beim Abspielen des Titels ist ein Fehler aufgetreten"
 
 #: internal/settings/playback.go:20
 msgid "Auto"
-msgstr ""
+msgstr "Automatisch"
 
 #: internal/features/scrobbling/lastfm.go:61
 msgid "Cancel"
-msgstr ""
+msgstr "Abbrechen"
 
 #: internal/ui/window_preferences.go:70
 msgid ""
 "Choose whether Tonearm should prefer album replay gain, track replay gain or "
 "decide automatically"
 msgstr ""
+"Wähle, ob Tonearm Album-ReplayGain, Track-ReplayGain bevorzugen oder "
+"automatisch entscheiden soll"
 
 #: internal/ui/window_preferences.go:264
 msgid "Configure Tonearm to send scrobbling data to Last.fm."
-msgstr ""
+msgstr "Tonearm konfigurieren, um Scrobbling-Daten an Last.fm zu senden."
 
 #: internal/features/scrobbling/lastfm.go:41
 msgid "Continue the authentication process in your browser."
-msgstr ""
+msgstr "Fahre mit dem Authentifizierungsprozess in deinem Browser fort."
 
 #: internal/ui/routes/album.go:187
 msgid "Copied album URL to clipboard."
-msgstr ""
+msgstr "Album-URL in die Zwischenablage kopiert."
 
 #: internal/ui/routes/album.go:171
 msgid "Copy Album URL"
-msgstr ""
+msgstr "Album-URL kopieren"
 
 #: internal/ui/window_preferences.go:138
 msgid "Enable Last.fm"
-msgstr ""
+msgstr "Last.fm aktivieren"
 
 #: internal/ui/window_preferences.go:144
 msgid "Log in to Last.fm"
-msgstr ""
+msgstr "Bei Last.fm anmelden"
 
 #: internal/ui/window_preferences.go:153
 msgid "Log out of Last.fm"
-msgstr ""
+msgstr "Bei Last.fm abmelden"
 
 #: internal/ui/window_preferences.go:251
 msgid "Logged in to Last.fm as %s."
-msgstr ""
+msgstr "Bei Last.fm als %s angemeldet."
 
 #: internal/ui/window_preferences.go:221
 msgid "Logged out of Last.fm."
-msgstr ""
+msgstr "Von Last.fm abgemeldet."
 
 #: internal/features/scrobbling/lastfm.go:40
 msgid "Logging in to Last.fm"
-msgstr ""
+msgstr "Anmeldung bei Last.fm"
 
 #: internal/ui/routes/album.go:177
 msgid "No album could be shared."
-msgstr ""
+msgstr "Es konnte kein Album geteilt werden."
 
 #: internal/ui/window_preferences.go:63
 msgid "Normalize volume"
-msgstr ""
+msgstr "Lautstärke normalisieren"
 
 #: internal/ui/window_preferences.go:69
 msgid "Preferred Replay Gain"
-msgstr ""
+msgstr "Bevorzugter ReplayGain"
 
 #: internal/features/scrobbling/lastfm.go:51
 msgid "Reopen Browser"
-msgstr ""
+msgstr "Browser erneut öffnen"
 
 #: internal/ui/window_preferences.go:64
 msgid "Set the same volume for all tracks."
-msgstr ""
+msgstr "Dieselbe Lautstärke für alle Titel festlegen."
 
 #: internal/settings/playback.go:22
 msgid "Track"
-msgstr ""
+msgstr "Titel"
 
 #: internal/ui/window_preferences.go:145
 msgid "You are currently not logged in to Last.fm."
-msgstr ""
+msgstr "Du bist derzeit nicht bei Last.fm angemeldet."
 
 #: internal/ui/window_preferences.go:160
 msgid "You are logged in to Last.fm as %s."
-msgstr ""
+msgstr "Du bist bei Last.fm als %s angemeldet."
 
 #: internal/ui/window_preferences.go:157
 msgid "You are logged in to Last.fm."
-msgstr ""
+msgstr "Du bist bei Last.fm angemeldet."
 
 #~ msgid "Connection required"
 #~ msgstr "Anmeldung erforderlich"
