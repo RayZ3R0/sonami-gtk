@@ -73,12 +73,15 @@ func AddTrackToUserQueue(trackId string) error {
 
 func AddTracklistToUserQueue(tracklist []openapi.Track) error {
 	for _, track := range tracklist {
-		err := AddTrackToUserQueue(track.GetID())
-		if err != nil {
-			return err
-		}
+		UserQueue.Append(new(track))
 	}
 
+	// If we added a song to the queue and nothing is playing, the user likely wants to start playing the queue
+	if PlaybackStateChanged.CurrentValue().Status == PlaybackStatusStopped && len(tracklist) > 0 {
+		logger.Info("no track is currently playing, immediately playing track", "track_id", tracklist[0].Data.ID)
+		Next()
+		return nil
+	}
 	return nil
 }
 
