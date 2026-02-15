@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: v1.0.0-12-g1ce38cd\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-02-15 00:57+0100\n"
+"POT-Creation-Date: 2026-02-15 18:03+0100\n"
 "PO-Revision-Date: 2026-02-15 01:00+0000\n"
 "Last-Translator: drafolin <drafolin@noreply.codeberg.org>\n"
 "Language-Team: French <https://translate.codeberg.org/projects/tonearm/"
@@ -39,11 +39,11 @@ msgid_plural "%d Tracks (%s)"
 msgstr[0] "%d Morceau (%s)"
 msgstr[1] "%d Morceaux (%s)"
 
-#: internal/ui/routes/feed.go:146
+#: internal/ui/routes/feed.go:144
 msgid "%s and %s"
 msgstr "%s, et %s"
 
-#: internal/ui/window_sidebar.go:40
+#: internal/ui/window_sidebar.go:34
 msgid "About Tonearm"
 msgstr "À propos de Tonearm"
 
@@ -51,7 +51,7 @@ msgstr "À propos de Tonearm"
 msgid "Add to Collection"
 msgstr "Ajouter à la collection"
 
-#: internal/ui/components/tracklist/column_controls.go:26
+#: internal/ui/components/tracklist/column_controls.go:56
 msgid "Add to Queue"
 msgstr "Ajouter à la file d'attente"
 
@@ -59,7 +59,7 @@ msgstr "Ajouter à la file d'attente"
 msgid "Album"
 msgstr "Album"
 
-#: internal/ui/routes/feed.go:154
+#: internal/ui/routes/feed.go:152
 msgid "Album by %s"
 msgstr "Album de %s"
 
@@ -179,9 +179,9 @@ msgstr "Artiste"
 msgid "Artists"
 msgstr "Artistes"
 
-#: internal/ui/routes/feed.go:100
-msgid "Authentication required"
-msgstr "Connexion requise"
+#: internal/ui/components/auth_required.go:13
+msgid "Authentication Required"
+msgstr ""
 
 #: internal/settings/playback.go:20
 msgid "Auto"
@@ -305,7 +305,7 @@ msgstr "Ne plus afficher"
 msgid "E.g. Fox Stevenson"
 msgstr "P.ex. Fox Stevenson"
 
-#: internal/ui/routes/feed.go:156
+#: internal/ui/routes/feed.go:154
 msgid "EP by %s"
 msgstr "EP de %s"
 
@@ -337,7 +337,7 @@ msgstr "Explorer"
 msgid "External Link"
 msgstr "Lien externe"
 
-#: internal/ui/routes/feed.go:97
+#: internal/ui/routes/feed.go:98
 msgid "Feed"
 msgstr "Fil d'actualité"
 
@@ -369,11 +369,11 @@ msgstr "Erreur interne"
 msgid "Keyboard Shortcuts"
 msgstr "Raccourcis claviers"
 
-#: internal/ui/routes/feed.go:83
+#: internal/ui/routes/feed.go:84
 msgid "Last Month"
 msgstr "Le mois dernier"
 
-#: internal/ui/routes/feed.go:79
+#: internal/ui/routes/feed.go:80
 msgid "Last Week"
 msgstr "La semaine dernière"
 
@@ -417,7 +417,7 @@ msgstr "Basse (320 kbps)"
 msgid "Low (96 kbps)"
 msgstr "Basse (96 kbps)"
 
-#: internal/ui/window_sidebar.go:89
+#: internal/ui/window_sidebar.go:73
 msgid "Lyrics"
 msgstr "Paroles"
 
@@ -437,6 +437,10 @@ msgstr ""
 #: internal/ui/components/dynamic_v1.go:134
 msgid "More"
 msgstr "Plus"
+
+#: internal/ui/components/tracklist/column_controls.go:64
+msgid "More…"
+msgstr ""
 
 #: internal/ui/routes/my_collection/albums.go:36
 msgid "My Albums"
@@ -458,9 +462,13 @@ msgstr "Mes Listes de lecture"
 msgid "My Tracks"
 msgstr "Mes Morceaux"
 
-#: internal/ui/window_content.go:50
+#: internal/ui/window_content.go:49
 msgid "Navigate Back"
 msgstr "Revenir en arrière"
+
+#: internal/ui/components/tracklist/column_controls.go:37
+msgid "Navigate to %s"
+msgstr ""
 
 #: internal/ui/components/player/component_action_row.go:194
 msgid "Navigate to Album"
@@ -555,7 +563,7 @@ msgstr "Non Trouvé"
 msgid "Not found"
 msgstr "Non trouvé"
 
-#: internal/ui/routes/feed.go:85
+#: internal/ui/routes/feed.go:86
 msgid "Older"
 msgstr "Plus vieux"
 
@@ -597,7 +605,7 @@ msgstr ""
 "Qualité de lecture sauvegardée. Les changements seront appliqués à partir du "
 "prochain morceau."
 
-#: internal/ui/window_sidebar.go:88
+#: internal/ui/window_sidebar.go:72
 msgid "Player"
 msgstr "Lecteur"
 
@@ -614,8 +622,12 @@ msgid "Playlists"
 msgstr "Listes de lecture"
 
 #: internal/ui/routes/my-collection.go:34
-msgid "Please log in to view your collection"
-msgstr "Veuillez vous connecter pour voir votre collection"
+msgid "Please sign in to view your collection"
+msgstr ""
+
+#: internal/ui/routes/feed.go:99
+msgid "Please sign in to view your feed"
+msgstr ""
 
 #: internal/ui/window_shortcuts.go:16
 msgid "Preferences"
@@ -629,7 +641,7 @@ msgstr "Préférence de gain de volume"
 msgid "Previous"
 msgstr "Précédent"
 
-#: internal/ui/window_sidebar.go:90
+#: internal/ui/window_sidebar.go:74
 msgid "Queue"
 msgstr "File d'attente"
 
@@ -677,7 +689,7 @@ msgstr "Problème du service de secret"
 msgid "Secret Service Unavailable"
 msgstr "Service de secret non disponible"
 
-#: internal/ui/window_sidebar.go:37
+#: internal/ui/window_sidebar.go:31
 msgid "Set as default page"
 msgstr "Définir comme page par défaut"
 
@@ -709,7 +721,11 @@ msgstr "Panneau latéral"
 msgid "Sign In"
 msgstr "Se connecter"
 
-#: internal/ui/window_sidebar.go:46
+#: internal/ui/components/auth_required.go:17
+msgid "Sign In…"
+msgstr ""
+
+#: internal/ui/window_sidebar.go:40
 msgid "Sign Out"
 msgstr "Se déconnecter"
 
@@ -725,7 +741,7 @@ msgstr "Connectée en tant que %s"
 msgid "Signed out"
 msgstr "Déconnecté"
 
-#: internal/ui/routes/feed.go:152
+#: internal/ui/routes/feed.go:150
 msgid "Single by %s"
 msgstr "Single de %s"
 
@@ -745,15 +761,15 @@ msgstr "Synchroniser avec le morceau"
 msgid "The requested deeplink did not have any available handlers."
 msgstr "Le raccourcis sélectionné n'a pas de gestionnaire défini."
 
-#: internal/ui/routes/feed.go:81
+#: internal/ui/routes/feed.go:82
 msgid "This Month"
 msgstr "Ce mois-ci"
 
-#: internal/ui/routes/feed.go:77
+#: internal/ui/routes/feed.go:78
 msgid "This Week"
 msgstr "Cette semaine"
 
-#: internal/ui/routes/feed.go:75
+#: internal/ui/routes/feed.go:76
 msgid "Today"
 msgstr "Aujourd'hui"
 
@@ -765,7 +781,7 @@ msgstr "Basculer le mode répétition"
 msgid "Toggle Shuffle"
 msgstr "Basculer le mode aléatoire"
 
-#: internal/ui/window_content.go:45
+#: internal/ui/window_content.go:44
 msgid "Toggle Sidebar"
 msgstr "Afficher/Masquer le panneau latéral"
 
@@ -794,11 +810,11 @@ msgstr ""
 "\n"
 "Message d'erreur : "
 
-#: internal/ui/routes/feed.go:158
+#: internal/ui/routes/feed.go:156
 msgid "Unknown album type"
 msgstr "Type d'album inconnu"
 
-#: internal/ui/routes/feed.go:222
+#: internal/ui/routes/feed.go:220
 msgid "Unsupported activity"
 msgstr "Activité non supportée"
 
@@ -827,10 +843,6 @@ msgid "You can also open the linking page using the button below."
 msgstr ""
 "Vous pouvez également ouvrir la page de connexion avec le boouton ci-dessous."
 
-#: internal/ui/routes/feed.go:101
-msgid "You need to sign in to your account to access this page"
-msgstr "Vous devez vous connecter à votre compte pour accéder à cette page"
-
 #: internal/secrets/service_linux.go:48
 msgid ""
 "Your secret service provider was found, but refused to interact with "
@@ -855,6 +867,15 @@ msgstr ""
 #: internal/ui/window_about.go:132
 msgid "translator-credits"
 msgstr "Dråfølin Nattfløyen https://github.com/drafolin"
+
+#~ msgid "Authentication required"
+#~ msgstr "Connexion requise"
+
+#~ msgid "Please log in to view your collection"
+#~ msgstr "Veuillez vous connecter pour voir votre collection"
+
+#~ msgid "You need to sign in to your account to access this page"
+#~ msgstr "Vous devez vous connecter à votre compte pour accéder à cette page"
 
 #~ msgid "Connection required"
 #~ msgstr "Connexion requise"

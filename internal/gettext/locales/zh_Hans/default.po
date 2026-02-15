@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: v1.1.0-99-ga37b2fb\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-02-15 00:57+0100\n"
+"POT-Creation-Date: 2026-02-15 18:03+0100\n"
 "PO-Revision-Date: 2026-02-12 16:42+0000\n"
 "Last-Translator: Poesty Li <poesty7450@gmail.com>\n"
 "Language-Team: Chinese (Simplified Han script) <https://"
@@ -34,11 +34,11 @@ msgid "%d Track (%s)"
 msgid_plural "%d Tracks (%s)"
 msgstr[0] "%d 首曲目 (%s)"
 
-#: internal/ui/routes/feed.go:146
+#: internal/ui/routes/feed.go:144
 msgid "%s and %s"
 msgstr "%s 和 %s"
 
-#: internal/ui/window_sidebar.go:40
+#: internal/ui/window_sidebar.go:34
 msgid "About Tonearm"
 msgstr "关于 Tonearm"
 
@@ -46,7 +46,7 @@ msgstr "关于 Tonearm"
 msgid "Add to Collection"
 msgstr "添加到收藏"
 
-#: internal/ui/components/tracklist/column_controls.go:26
+#: internal/ui/components/tracklist/column_controls.go:56
 msgid "Add to Queue"
 msgstr "添加到队列"
 
@@ -54,7 +54,7 @@ msgstr "添加到队列"
 msgid "Album"
 msgstr "专辑"
 
-#: internal/ui/routes/feed.go:154
+#: internal/ui/routes/feed.go:152
 msgid "Album by %s"
 msgstr "专辑作者：%s"
 
@@ -163,9 +163,9 @@ msgstr "艺术家"
 msgid "Artists"
 msgstr "艺术家"
 
-#: internal/ui/routes/feed.go:100
-msgid "Authentication required"
-msgstr "需要身份验证"
+#: internal/ui/components/auth_required.go:13
+msgid "Authentication Required"
+msgstr ""
 
 #: internal/settings/playback.go:20
 msgid "Auto"
@@ -285,7 +285,7 @@ msgstr "不再显示"
 msgid "E.g. Fox Stevenson"
 msgstr "例如：Fox Stevenson"
 
-#: internal/ui/routes/feed.go:156
+#: internal/ui/routes/feed.go:154
 msgid "EP by %s"
 msgstr "EP 作者：%s"
 
@@ -317,7 +317,7 @@ msgstr "探索"
 msgid "External Link"
 msgstr "外部链接"
 
-#: internal/ui/routes/feed.go:97
+#: internal/ui/routes/feed.go:98
 msgid "Feed"
 msgstr "动态"
 
@@ -349,11 +349,11 @@ msgstr "内部错误"
 msgid "Keyboard Shortcuts"
 msgstr "键盘快捷键"
 
-#: internal/ui/routes/feed.go:83
+#: internal/ui/routes/feed.go:84
 msgid "Last Month"
 msgstr "上个月"
 
-#: internal/ui/routes/feed.go:79
+#: internal/ui/routes/feed.go:80
 msgid "Last Week"
 msgstr "上周"
 
@@ -397,7 +397,7 @@ msgstr "低 (320 kbps)"
 msgid "Low (96 kbps)"
 msgstr "低 (96 kbps)"
 
-#: internal/ui/window_sidebar.go:89
+#: internal/ui/window_sidebar.go:73
 msgid "Lyrics"
 msgstr "歌词"
 
@@ -416,6 +416,10 @@ msgstr "在丢弃旧条目前的最大历史记录长度。"
 #: internal/ui/components/dynamic_v1.go:134
 msgid "More"
 msgstr "更多"
+
+#: internal/ui/components/tracklist/column_controls.go:64
+msgid "More…"
+msgstr ""
 
 #: internal/ui/routes/my_collection/albums.go:36
 msgid "My Albums"
@@ -437,9 +441,13 @@ msgstr "我的播放列表"
 msgid "My Tracks"
 msgstr "我的曲目"
 
-#: internal/ui/window_content.go:50
+#: internal/ui/window_content.go:49
 msgid "Navigate Back"
 msgstr "向后导航"
+
+#: internal/ui/components/tracklist/column_controls.go:37
+msgid "Navigate to %s"
+msgstr ""
 
 #: internal/ui/components/player/component_action_row.go:194
 msgid "Navigate to Album"
@@ -532,7 +540,7 @@ msgstr "未找到"
 msgid "Not found"
 msgstr "未找到"
 
-#: internal/ui/routes/feed.go:85
+#: internal/ui/routes/feed.go:86
 msgid "Older"
 msgstr "更早"
 
@@ -572,7 +580,7 @@ msgstr "播放"
 msgid "Playback quality saved. Changes will be applied on next track change."
 msgstr "播放质量已保存。更改将在下一曲目切换时生效。"
 
-#: internal/ui/window_sidebar.go:88
+#: internal/ui/window_sidebar.go:72
 msgid "Player"
 msgstr "播放器"
 
@@ -589,8 +597,12 @@ msgid "Playlists"
 msgstr "播放列表"
 
 #: internal/ui/routes/my-collection.go:34
-msgid "Please log in to view your collection"
-msgstr "请登录以查看您的收藏"
+msgid "Please sign in to view your collection"
+msgstr ""
+
+#: internal/ui/routes/feed.go:99
+msgid "Please sign in to view your feed"
+msgstr ""
 
 #: internal/ui/window_shortcuts.go:16
 msgid "Preferences"
@@ -604,7 +616,7 @@ msgstr ""
 msgid "Previous"
 msgstr "上一首"
 
-#: internal/ui/window_sidebar.go:90
+#: internal/ui/window_sidebar.go:74
 msgid "Queue"
 msgstr "队列"
 
@@ -652,7 +664,7 @@ msgstr "密钥服务问题"
 msgid "Secret Service Unavailable"
 msgstr "密钥服务不可用"
 
-#: internal/ui/window_sidebar.go:37
+#: internal/ui/window_sidebar.go:31
 msgid "Set as default page"
 msgstr "设为默认页面"
 
@@ -684,7 +696,11 @@ msgstr "侧边栏"
 msgid "Sign In"
 msgstr "登录"
 
-#: internal/ui/window_sidebar.go:46
+#: internal/ui/components/auth_required.go:17
+msgid "Sign In…"
+msgstr ""
+
+#: internal/ui/window_sidebar.go:40
 msgid "Sign Out"
 msgstr "登出"
 
@@ -700,7 +716,7 @@ msgstr "已登录为 %s"
 msgid "Signed out"
 msgstr "已登出"
 
-#: internal/ui/routes/feed.go:152
+#: internal/ui/routes/feed.go:150
 msgid "Single by %s"
 msgstr "单曲 - %s"
 
@@ -718,15 +734,15 @@ msgstr "与曲目同步"
 msgid "The requested deeplink did not have any available handlers."
 msgstr "请求的深度链接没有任何可用的处理程序。"
 
-#: internal/ui/routes/feed.go:81
+#: internal/ui/routes/feed.go:82
 msgid "This Month"
 msgstr "本月"
 
-#: internal/ui/routes/feed.go:77
+#: internal/ui/routes/feed.go:78
 msgid "This Week"
 msgstr "本周"
 
-#: internal/ui/routes/feed.go:75
+#: internal/ui/routes/feed.go:76
 msgid "Today"
 msgstr "今日"
 
@@ -738,7 +754,7 @@ msgstr "切换循环"
 msgid "Toggle Shuffle"
 msgstr "切换随机播放"
 
-#: internal/ui/window_content.go:45
+#: internal/ui/window_content.go:44
 msgid "Toggle Sidebar"
 msgstr "切换侧边栏"
 
@@ -765,11 +781,11 @@ msgstr ""
 "\n"
 "错误信息： "
 
-#: internal/ui/routes/feed.go:158
+#: internal/ui/routes/feed.go:156
 msgid "Unknown album type"
 msgstr "未知专辑类型"
 
-#: internal/ui/routes/feed.go:222
+#: internal/ui/routes/feed.go:220
 msgid "Unsupported activity"
 msgstr "不支持的活动"
 
@@ -797,10 +813,6 @@ msgstr ""
 msgid "You can also open the linking page using the button below."
 msgstr "您也可以使用下方的按钮打开链接页面。"
 
-#: internal/ui/routes/feed.go:101
-msgid "You need to sign in to your account to access this page"
-msgstr "您需要登录您的账号才能访问此页面"
-
 #: internal/secrets/service_linux.go:48
 msgid ""
 "Your secret service provider was found, but refused to interact with "
@@ -822,3 +834,12 @@ msgstr ""
 #: internal/ui/window_about.go:132
 msgid "translator-credits"
 msgstr "Poesty Li"
+
+#~ msgid "Authentication required"
+#~ msgstr "需要身份验证"
+
+#~ msgid "Please log in to view your collection"
+#~ msgstr "请登录以查看您的收藏"
+
+#~ msgid "You need to sign in to your account to access this page"
+#~ msgstr "您需要登录您的账号才能访问此页面"

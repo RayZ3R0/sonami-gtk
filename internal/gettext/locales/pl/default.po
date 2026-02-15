@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: v1.0.0-26-g6264155\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-02-15 00:57+0100\n"
+"POT-Creation-Date: 2026-02-15 18:03+0100\n"
 "PO-Revision-Date: 2026-02-09 11:43+0000\n"
 "Last-Translator: LukaszH77 <lukasz@horodecki.net>\n"
 "Language-Team: Polish <https://translate.codeberg.org/projects/tonearm/"
@@ -42,11 +42,11 @@ msgstr[0] "%d utwór (%s)"
 msgstr[1] "%d utwory (%s)"
 msgstr[2] "%d utworów (%s)"
 
-#: internal/ui/routes/feed.go:146
+#: internal/ui/routes/feed.go:144
 msgid "%s and %s"
 msgstr "%s i %s"
 
-#: internal/ui/window_sidebar.go:40
+#: internal/ui/window_sidebar.go:34
 msgid "About Tonearm"
 msgstr "O programie"
 
@@ -54,7 +54,7 @@ msgstr "O programie"
 msgid "Add to Collection"
 msgstr "Dodaj do kolekcji"
 
-#: internal/ui/components/tracklist/column_controls.go:26
+#: internal/ui/components/tracklist/column_controls.go:56
 msgid "Add to Queue"
 msgstr "Dodaj do kolejki"
 
@@ -62,7 +62,7 @@ msgstr "Dodaj do kolejki"
 msgid "Album"
 msgstr "Album"
 
-#: internal/ui/routes/feed.go:154
+#: internal/ui/routes/feed.go:152
 msgid "Album by %s"
 msgstr "Album autorstwa %s"
 
@@ -178,9 +178,9 @@ msgstr "Artysta"
 msgid "Artists"
 msgstr "Artyści"
 
-#: internal/ui/routes/feed.go:100
-msgid "Authentication required"
-msgstr "Wymagane połączenie"
+#: internal/ui/components/auth_required.go:13
+msgid "Authentication Required"
+msgstr ""
 
 #: internal/settings/playback.go:20
 msgid "Auto"
@@ -300,7 +300,7 @@ msgstr "Nie pokazuj ponownie"
 msgid "E.g. Fox Stevenson"
 msgstr "Np. Fox Stevenson"
 
-#: internal/ui/routes/feed.go:156
+#: internal/ui/routes/feed.go:154
 msgid "EP by %s"
 msgstr "EP autorstwa %s"
 
@@ -332,7 +332,7 @@ msgstr "Eksploruj"
 msgid "External Link"
 msgstr "Odnośnik zewnętrzny"
 
-#: internal/ui/routes/feed.go:97
+#: internal/ui/routes/feed.go:98
 msgid "Feed"
 msgstr "Treści dla ciebie"
 
@@ -364,11 +364,11 @@ msgstr "Błąd wewnętrzny"
 msgid "Keyboard Shortcuts"
 msgstr "Skróty klawiszowe"
 
-#: internal/ui/routes/feed.go:83
+#: internal/ui/routes/feed.go:84
 msgid "Last Month"
 msgstr "Ostatni miesiąc"
 
-#: internal/ui/routes/feed.go:79
+#: internal/ui/routes/feed.go:80
 msgid "Last Week"
 msgstr "Ostatni tydzień"
 
@@ -412,7 +412,7 @@ msgstr "Niska (320 kbps)"
 msgid "Low (96 kbps)"
 msgstr "Niska (96 kbps)"
 
-#: internal/ui/window_sidebar.go:89
+#: internal/ui/window_sidebar.go:73
 msgid "Lyrics"
 msgstr "Tekst"
 
@@ -431,6 +431,10 @@ msgstr "Maksymalna długość historii przed usuwaniem starych pozycji."
 #: internal/ui/components/dynamic_v1.go:134
 msgid "More"
 msgstr "Więcej"
+
+#: internal/ui/components/tracklist/column_controls.go:64
+msgid "More…"
+msgstr ""
 
 #: internal/ui/routes/my_collection/albums.go:36
 msgid "My Albums"
@@ -452,9 +456,13 @@ msgstr "Moje playlisty"
 msgid "My Tracks"
 msgstr "Moje utwory"
 
-#: internal/ui/window_content.go:50
+#: internal/ui/window_content.go:49
 msgid "Navigate Back"
 msgstr "Przejdź wstecz"
+
+#: internal/ui/components/tracklist/column_controls.go:37
+msgid "Navigate to %s"
+msgstr ""
 
 #: internal/ui/components/player/component_action_row.go:194
 msgid "Navigate to Album"
@@ -549,7 +557,7 @@ msgstr "Nie znaleziono"
 msgid "Not found"
 msgstr "Nie znaleziono"
 
-#: internal/ui/routes/feed.go:85
+#: internal/ui/routes/feed.go:86
 msgid "Older"
 msgstr "Starsze"
 
@@ -591,7 +599,7 @@ msgstr ""
 "Jakość dźwięku została zapisana. Zmiany zostaną zastosowane przy następnej "
 "zmianie utworu."
 
-#: internal/ui/window_sidebar.go:88
+#: internal/ui/window_sidebar.go:72
 msgid "Player"
 msgstr "Odtwarzacz"
 
@@ -608,8 +616,12 @@ msgid "Playlists"
 msgstr "Playlisty"
 
 #: internal/ui/routes/my-collection.go:34
-msgid "Please log in to view your collection"
-msgstr "Zaloguj się, by zobaczyć swoją kolekcję"
+msgid "Please sign in to view your collection"
+msgstr ""
+
+#: internal/ui/routes/feed.go:99
+msgid "Please sign in to view your feed"
+msgstr ""
 
 #: internal/ui/window_shortcuts.go:16
 msgid "Preferences"
@@ -623,7 +635,7 @@ msgstr ""
 msgid "Previous"
 msgstr "Poprzedni"
 
-#: internal/ui/window_sidebar.go:90
+#: internal/ui/window_sidebar.go:74
 msgid "Queue"
 msgstr "Kolejka"
 
@@ -671,7 +683,7 @@ msgstr "Problem z usługą sekretów"
 msgid "Secret Service Unavailable"
 msgstr "Usługa sekretów niedostępna"
 
-#: internal/ui/window_sidebar.go:37
+#: internal/ui/window_sidebar.go:31
 msgid "Set as default page"
 msgstr "Ustaw jako stronę domyślną"
 
@@ -703,7 +715,11 @@ msgstr "Panel boczny"
 msgid "Sign In"
 msgstr "Zaloguj"
 
-#: internal/ui/window_sidebar.go:46
+#: internal/ui/components/auth_required.go:17
+msgid "Sign In…"
+msgstr ""
+
+#: internal/ui/window_sidebar.go:40
 msgid "Sign Out"
 msgstr "Wyloguj"
 
@@ -719,7 +735,7 @@ msgstr "Zalogowano jako %s"
 msgid "Signed out"
 msgstr "Wylogowano"
 
-#: internal/ui/routes/feed.go:152
+#: internal/ui/routes/feed.go:150
 msgid "Single by %s"
 msgstr "Singel autorstwa %s"
 
@@ -739,15 +755,15 @@ msgstr "Synchronizuj z utworem"
 msgid "The requested deeplink did not have any available handlers."
 msgstr "Żądany deeplink nie miał żadnych dostępnych handlerów."
 
-#: internal/ui/routes/feed.go:81
+#: internal/ui/routes/feed.go:82
 msgid "This Month"
 msgstr "W tym miesiącu"
 
-#: internal/ui/routes/feed.go:77
+#: internal/ui/routes/feed.go:78
 msgid "This Week"
 msgstr "W tym tygodniu"
 
-#: internal/ui/routes/feed.go:75
+#: internal/ui/routes/feed.go:76
 msgid "Today"
 msgstr "Dzisiaj"
 
@@ -759,7 +775,7 @@ msgstr "Przełącz powtarzanie"
 msgid "Toggle Shuffle"
 msgstr "Przełącz losowanie"
 
-#: internal/ui/window_content.go:45
+#: internal/ui/window_content.go:44
 msgid "Toggle Sidebar"
 msgstr "Przełącz panel boczny"
 
@@ -787,11 +803,11 @@ msgstr ""
 "\n"
 "Komunikat błędu: "
 
-#: internal/ui/routes/feed.go:158
+#: internal/ui/routes/feed.go:156
 msgid "Unknown album type"
 msgstr "Niewspierany typ albumu"
 
-#: internal/ui/routes/feed.go:222
+#: internal/ui/routes/feed.go:220
 msgid "Unsupported activity"
 msgstr "Niewspierana aktywność"
 
@@ -819,10 +835,6 @@ msgstr ""
 msgid "You can also open the linking page using the button below."
 msgstr "Możesz również otworzyć stronę łączenia, klikając przycisk poniżej."
 
-#: internal/ui/routes/feed.go:101
-msgid "You need to sign in to your account to access this page"
-msgstr "Musisz się zalogować na swoje konto, by mieć dostęp do tej strony"
-
 #: internal/secrets/service_linux.go:48
 msgid ""
 "Your secret service provider was found, but refused to interact with "
@@ -845,6 +857,15 @@ msgstr ""
 #: internal/ui/window_about.go:132
 msgid "translator-credits"
 msgstr "Łukasz Horodecki https://horodecki.net"
+
+#~ msgid "Authentication required"
+#~ msgstr "Wymagane połączenie"
+
+#~ msgid "Please log in to view your collection"
+#~ msgstr "Zaloguj się, by zobaczyć swoją kolekcję"
+
+#~ msgid "You need to sign in to your account to access this page"
+#~ msgstr "Musisz się zalogować na swoje konto, by mieć dostęp do tej strony"
 
 #~ msgid "Connection required"
 #~ msgstr "Wymagane połączenie"

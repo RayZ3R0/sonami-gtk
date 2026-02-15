@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: v1.1.0-99-ga37b2fb\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-02-15 00:57+0100\n"
+"POT-Creation-Date: 2026-02-15 18:03+0100\n"
 "PO-Revision-Date: 2026-02-10 09:16+0000\n"
 "Last-Translator: Priit Jõerüüt <jrtcdbrg@noreply.codeberg.org>\n"
 "Language-Team: Estonian <https://translate.codeberg.org/projects/tonearm/"
@@ -37,11 +37,11 @@ msgid_plural "%d Tracks (%s)"
 msgstr[0] "%d lugu (%s)"
 msgstr[1] "%d lugu (%s)"
 
-#: internal/ui/routes/feed.go:146
+#: internal/ui/routes/feed.go:144
 msgid "%s and %s"
 msgstr "%s ja %s"
 
-#: internal/ui/window_sidebar.go:40
+#: internal/ui/window_sidebar.go:34
 msgid "About Tonearm"
 msgstr "Rakenduse teave: Tonearm"
 
@@ -49,7 +49,7 @@ msgstr "Rakenduse teave: Tonearm"
 msgid "Add to Collection"
 msgstr "Lisa kogusse"
 
-#: internal/ui/components/tracklist/column_controls.go:26
+#: internal/ui/components/tracklist/column_controls.go:56
 msgid "Add to Queue"
 msgstr "Lisa esitusjärjekorda"
 
@@ -57,7 +57,7 @@ msgstr "Lisa esitusjärjekorda"
 msgid "Album"
 msgstr "Album"
 
-#: internal/ui/routes/feed.go:154
+#: internal/ui/routes/feed.go:152
 msgid "Album by %s"
 msgstr "Album esitajalt %s"
 
@@ -161,9 +161,9 @@ msgstr "Esitaja"
 msgid "Artists"
 msgstr "Esitajad"
 
-#: internal/ui/routes/feed.go:100
-msgid "Authentication required"
-msgstr "Autentimine on vajalik"
+#: internal/ui/components/auth_required.go:13
+msgid "Authentication Required"
+msgstr ""
 
 #: internal/settings/playback.go:20
 msgid "Auto"
@@ -283,7 +283,7 @@ msgstr "Ära näita enam uuesti"
 msgid "E.g. Fox Stevenson"
 msgstr "Näiteks Gary Moore"
 
-#: internal/ui/routes/feed.go:156
+#: internal/ui/routes/feed.go:154
 msgid "EP by %s"
 msgstr "EP esitajalt %s"
 
@@ -315,7 +315,7 @@ msgstr "Uuri ja avasta"
 msgid "External Link"
 msgstr "Väline link"
 
-#: internal/ui/routes/feed.go:97
+#: internal/ui/routes/feed.go:98
 msgid "Feed"
 msgstr "Sisuvoog"
 
@@ -347,11 +347,11 @@ msgstr "Sisemine viga"
 msgid "Keyboard Shortcuts"
 msgstr "Klaviatuuri kiirvalikud"
 
-#: internal/ui/routes/feed.go:83
+#: internal/ui/routes/feed.go:84
 msgid "Last Month"
 msgstr "Eelmisel kuul"
 
-#: internal/ui/routes/feed.go:79
+#: internal/ui/routes/feed.go:80
 msgid "Last Week"
 msgstr "Eelmisel nädalal"
 
@@ -395,7 +395,7 @@ msgstr "Madal (320 kbps)"
 msgid "Low (96 kbps)"
 msgstr "Madal (96 kbps)"
 
-#: internal/ui/window_sidebar.go:89
+#: internal/ui/window_sidebar.go:73
 msgid "Lyrics"
 msgstr "Laulusõnad"
 
@@ -414,6 +414,10 @@ msgstr "Ajaloo pikkus, millest vanemad kirjed kustutatakse."
 #: internal/ui/components/dynamic_v1.go:134
 msgid "More"
 msgstr "Veel"
+
+#: internal/ui/components/tracklist/column_controls.go:64
+msgid "More…"
+msgstr ""
 
 #: internal/ui/routes/my_collection/albums.go:36
 msgid "My Albums"
@@ -435,9 +439,13 @@ msgstr "Minu esitusloendid"
 msgid "My Tracks"
 msgstr "Minu lood"
 
-#: internal/ui/window_content.go:50
+#: internal/ui/window_content.go:49
 msgid "Navigate Back"
 msgstr "Liigu tagasi"
+
+#: internal/ui/components/tracklist/column_controls.go:37
+msgid "Navigate to %s"
+msgstr ""
 
 #: internal/ui/components/player/component_action_row.go:194
 msgid "Navigate to Album"
@@ -525,7 +533,7 @@ msgstr "Ei leidu"
 msgid "Not found"
 msgstr "No ei leidu midagi"
 
-#: internal/ui/routes/feed.go:85
+#: internal/ui/routes/feed.go:86
 msgid "Older"
 msgstr "Vanemad"
 
@@ -567,7 +575,7 @@ msgstr ""
 "Taasesituse kvaliteet on salvestatud. Muutused jõustuvad järgmise loo "
 "vahetumisel."
 
-#: internal/ui/window_sidebar.go:88
+#: internal/ui/window_sidebar.go:72
 msgid "Player"
 msgstr "Meediaesitaja"
 
@@ -584,8 +592,12 @@ msgid "Playlists"
 msgstr "Esitusloendid"
 
 #: internal/ui/routes/my-collection.go:34
-msgid "Please log in to view your collection"
-msgstr "Oma kogu vaatamiseks palun logi sisse"
+msgid "Please sign in to view your collection"
+msgstr ""
+
+#: internal/ui/routes/feed.go:99
+msgid "Please sign in to view your feed"
+msgstr ""
 
 #: internal/ui/window_shortcuts.go:16
 msgid "Preferences"
@@ -599,7 +611,7 @@ msgstr ""
 msgid "Previous"
 msgstr "Eelmine"
 
-#: internal/ui/window_sidebar.go:90
+#: internal/ui/window_sidebar.go:74
 msgid "Queue"
 msgstr "Esitusjärjekord"
 
@@ -647,7 +659,7 @@ msgstr "Salajase teenuse probleem"
 msgid "Secret Service Unavailable"
 msgstr "Salajane teenus pole saadaval"
 
-#: internal/ui/window_sidebar.go:37
+#: internal/ui/window_sidebar.go:31
 msgid "Set as default page"
 msgstr "Määra vaikimisi leheks"
 
@@ -679,7 +691,11 @@ msgstr "Külgpaan"
 msgid "Sign In"
 msgstr "Logi sisse"
 
-#: internal/ui/window_sidebar.go:46
+#: internal/ui/components/auth_required.go:17
+msgid "Sign In…"
+msgstr ""
+
+#: internal/ui/window_sidebar.go:40
 msgid "Sign Out"
 msgstr "Logi välja"
 
@@ -695,7 +711,7 @@ msgstr "Sisseloginud kasutajana %s"
 msgid "Signed out"
 msgstr "Väljaloginud"
 
-#: internal/ui/routes/feed.go:152
+#: internal/ui/routes/feed.go:150
 msgid "Single by %s"
 msgstr "Singel esitajalt %s"
 
@@ -715,15 +731,15 @@ msgstr "Sünkrooni looga"
 msgid "The requested deeplink did not have any available handlers."
 msgstr ""
 
-#: internal/ui/routes/feed.go:81
+#: internal/ui/routes/feed.go:82
 msgid "This Month"
 msgstr "Sel kuul"
 
-#: internal/ui/routes/feed.go:77
+#: internal/ui/routes/feed.go:78
 msgid "This Week"
 msgstr "Sel nädalal"
 
-#: internal/ui/routes/feed.go:75
+#: internal/ui/routes/feed.go:76
 msgid "Today"
 msgstr "Täna"
 
@@ -735,7 +751,7 @@ msgstr "Lülita kordus sisse/välja"
 msgid "Toggle Shuffle"
 msgstr "Lülita segamine sisse/välja"
 
-#: internal/ui/window_content.go:45
+#: internal/ui/window_content.go:44
 msgid "Toggle Sidebar"
 msgstr "Lülita külgpaan sisse/välja"
 
@@ -759,11 +775,11 @@ msgid ""
 "Error Message: "
 msgstr ""
 
-#: internal/ui/routes/feed.go:158
+#: internal/ui/routes/feed.go:156
 msgid "Unknown album type"
 msgstr "Tundmatu albumi tüüp"
 
-#: internal/ui/routes/feed.go:222
+#: internal/ui/routes/feed.go:220
 msgid "Unsupported activity"
 msgstr "Mittetoetatud tegevus"
 
@@ -791,10 +807,6 @@ msgstr ""
 msgid "You can also open the linking page using the button below."
 msgstr "Võid ka järgnevast nupust avada linkimise lehe."
 
-#: internal/ui/routes/feed.go:101
-msgid "You need to sign in to your account to access this page"
-msgstr "Selle lehe kasutamiseks pead olema oma kasutajakontoga sisseloginud"
-
 #: internal/secrets/service_linux.go:48
 msgid ""
 "Your secret service provider was found, but refused to interact with "
@@ -810,3 +822,12 @@ msgstr ""
 #: internal/ui/window_about.go:132
 msgid "translator-credits"
 msgstr "Priit Jõerüüt 2026"
+
+#~ msgid "Authentication required"
+#~ msgstr "Autentimine on vajalik"
+
+#~ msgid "Please log in to view your collection"
+#~ msgstr "Oma kogu vaatamiseks palun logi sisse"
+
+#~ msgid "You need to sign in to your account to access this page"
+#~ msgstr "Selle lehe kasutamiseks pead olema oma kasutajakontoga sisseloginud"
