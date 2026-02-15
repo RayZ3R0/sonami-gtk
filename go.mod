@@ -13,6 +13,7 @@ require (
 	github.com/lescuer97/go-libsecret v0.0.0-20251130160347-067b741bcf5a
 	github.com/qjebbs/go-jsons v1.0.0-alpha.4
 	github.com/sosodev/duration v1.3.1
+	github.com/twoscott/gobble-fm v1.0.8
 	github.com/yeqown/go-qrcode/v2 v2.2.5
 	github.com/yeqown/go-qrcode/writer/standard v1.3.0
 )
@@ -21,6 +22,7 @@ require (
 	github.com/fogleman/gg v1.3.0 // indirect
 	github.com/go-gst/go-glib v1.4.0 // indirect
 	github.com/golang/freetype v0.0.0-20170609003504-e2365dfdc4a0 // indirect
+	github.com/google/go-querystring v1.1.0 // indirect
 	github.com/infinytum/structures v0.0.1 // indirect
 	github.com/jwijenbergh/purego v0.0.0-20251017112123-b71757b9ba42 // indirect
 	github.com/mattn/go-pointer v0.0.1 // indirect

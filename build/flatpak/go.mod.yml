@@ -52,6 +52,11 @@
   strip-components: 3
   type: archive
   url: https://proxy.golang.org/github.com/sosodev/duration/@v/v1.3.1.zip
+- dest: vendor/github.com/twoscott/gobble-fm
+  sha256: 6624345a87b517c86e77ae8323438a475576f774ef96adc1148166c373a06259
+  strip-components: 3
+  type: archive
+  url: https://proxy.golang.org/github.com/twoscott/gobble-fm/@v/v1.0.8.zip
 - dest: vendor/github.com/yeqown/go-qrcode/v2
   sha256: 6d6d8af4e03b8f69e76be64b793fb9715934eb215ca88feeaa79e20ae3b5c512
   strip-components: 4
@@ -77,6 +82,11 @@
   strip-components: 3
   type: archive
   url: https://proxy.golang.org/github.com/golang/freetype/@v/v0.0.0-20170609003504-e2365dfdc4a0.zip
+- dest: vendor/github.com/google/go-querystring
+  sha256: a6aafc01f5602e6177928751074e325792a654e1d92f0e238b8e8739656dd72b
+  strip-components: 3
+  type: archive
+  url: https://proxy.golang.org/github.com/google/go-querystring/@v/v1.1.0.zip
 - dest: vendor/github.com/infinytum/structures
   sha256: 6c90b843f464c3dd77240c9eeafddc35535a91826b0e1d348628dd2ae931cdbe
   strip-components: 3

@@ -8,7 +8,6 @@ import (
 
 	"codeberg.org/dergs/tonearm/internal/player"
 	"codeberg.org/dergs/tonearm/internal/settings"
-	"codeberg.org/dergs/tonearm/internal/signals"
 )
 
 type listenBrainzListenType string
@@ -18,36 +17,25 @@ const (
 	listenBrainzListenTypeSingle     listenBrainzListenType = "single"
 )
 
+type ListenBrainzScrobblerType struct{}
+
+var ListenBrainzScrobbler = ListenBrainzScrobblerType{}
+
 func init() {
-	TrackStarted.On(func(t *player.Track) bool {
-		if !isListenBrainzConfigured() {
-			return signals.Continue
-		}
-
-		listenbrainzNowPlaying(t)
-		return signals.Continue
-	})
-	Scrobble.On(func(t *ScrobbleEvent) bool {
-		if !isListenBrainzConfigured() {
-			return signals.Continue
-		}
-
-		listenbrainzScrobble(t)
-		return signals.Continue
-	})
+	Scrobblers = append(Scrobblers, &ListenBrainzScrobbler)
 }
 
-func listenbrainzNowPlaying(track *player.Track) {
-	makeListenBrainzRequest(generateListenBrainzRequest(track, listenBrainzListenTypePlayingNow))
+func (scrobbler *ListenBrainzScrobblerType) NowPlaying(track *player.Track) {
+	scrobbler.makeRequest(scrobbler.generateRequest(track, listenBrainzListenTypePlayingNow))
 }
 
-func listenbrainzScrobble(event *ScrobbleEvent) {
-	req := generateListenBrainzRequest(event.Track, listenBrainzListenTypeSingle)
+func (scrobbler *ListenBrainzScrobblerType) Scrobble(event *ScrobbleEvent) {
+	req := scrobbler.generateRequest(event.Track, listenBrainzListenTypeSingle)
 	req.Payload[0].ListenedAt = event.ListenedAt.Unix()
-	makeListenBrainzRequest(req)
+	scrobbler.makeRequest(req)
 }
 
-func makeListenBrainzRequest(reqBody listenBrainzRequest) {
+func (*ListenBrainzScrobblerType) makeRequest(reqBody listenBrainzRequest) {
 	encoded, err := json.Marshal(reqBody)
 	if err != nil {
 		logger.Error("failed to marshal request body", err)
@@ -79,7 +67,11 @@ func makeListenBrainzRequest(reqBody listenBrainzRequest) {
 	}
 }
 
-func isListenBrainzConfigured() bool {
+func (scrobbler *ListenBrainzScrobblerType) GetName() string {
+	return "ListenBrainz"
+}
+
+func (scrobbler *ListenBrainzScrobblerType) IsConfigured() bool {
 	if !settings.Scrobbling().ShouldEnableListenBrainz() {
 		logger.Debug("skipping scrobbling to listenbrainz because it is disabled")
 		return false
@@ -92,7 +84,7 @@ func isListenBrainzConfigured() bool {
 	return true
 }
 
-func generateListenBrainzRequest(track *player.Track, listenType listenBrainzListenType) listenBrainzRequest {
+func (scrobbler *ListenBrainzScrobblerType) generateRequest(track *player.Track, listenType listenBrainzListenType) listenBrainzRequest {
 	return listenBrainzRequest{
 		ListenType: listenType,
 		Payload: []listenBrainzPayload{

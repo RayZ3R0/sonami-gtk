@@ -109,5 +109,17 @@
             <summary>ListenBrainz API URL</summary>
             <description>ListenBrainz-compatible instance API URL</description>
         </key>
+
+        <key name="enable-lastfm" type="b">
+      		<default>false</default>
+      		<summary>Enable Last.fm</summary>
+      		<description>Whether the application will attempt to scrobble tracks to Last.fm</description>
+       	</key>
+		<key name="lastfm-token" type="s">
+            <default>''</default>
+            <summary>Last.fm Token</summary>
+            <description>The token used to authenticate with Last.fm</description>
+        </key>
+
     </schema>
 </schemalist>
