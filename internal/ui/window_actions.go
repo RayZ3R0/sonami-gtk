@@ -131,7 +131,7 @@ func (w *Window) installActions() {
 	w.AddAction(queueTrackAction)
 
 	queueAction := gio.NewSimpleAction("player.queue", glib.NewVariantType("s"))
-	queueAction.ConnectActivate(g.Ptr(func(action gio.SimpleAction, parameter uintptr) {
+	queueAction.ConnectActivate(new(func(action gio.SimpleAction, parameter uintptr) {
 		variant := (*glib.Variant)(unsafe.Pointer(parameter))
 		param := variant.GetString(nil)
 		logger := slog.With("module", "window_actions", "action", "win.player.queue", "parameter", param)
