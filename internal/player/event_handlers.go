@@ -29,7 +29,7 @@ func onAboutToFinish(_ *gst.Element) {
 	if nextTrack != nil {
 		playbackInfo, err := injector.MustInject[*tidalapi.TidalAPI]().V1.Tracks.PlaybackInfo(
 			context.Background(),
-			nextTrack.Data.ID,
+			nextTrack.ID(),
 			tracksv1.PlaybackInfoOptions{
 				AudioQuality: settings.Player().GetAudioQuality(),
 			},
@@ -42,7 +42,7 @@ func onAboutToFinish(_ *gst.Element) {
 			logger.Error("enqueueing for gapless playback", "error", err)
 			return
 		}
-		logger.Info("enqueued next song for gapless playback", "track_id", nextTrack.Data.ID)
+		logger.Info("enqueued next song for gapless playback", "track_id", nextTrack.ID())
 
 		// One-Shot Handler to update the track quality
 		TrackChanged.OnLazy(func(t tonearm.Track) bool {
@@ -123,7 +123,7 @@ var onUpdateTick = glib.SourceFunc(func(uintptr) bool {
 			newState.IsSeeking = false
 		}
 
-		logger.Debug("update", "position", newState.Position, "duration", newState.Duration)
+		// logger.Debug("update", "position", newState.Position, "duration", newState.Duration)
 		return &newState
 	})
 	return glib.SOURCE_CONTINUE

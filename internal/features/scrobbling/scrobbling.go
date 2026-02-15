@@ -6,22 +6,23 @@ import (
 
 	"codeberg.org/dergs/tonearm/internal/player"
 	"codeberg.org/dergs/tonearm/internal/signals"
+	"codeberg.org/dergs/tonearm/pkg/tonearm"
 )
 
 var logger = slog.With("module", "scrobbler")
 
-var TrackStarted = signals.NewStatelessSignal[*player.Track]()
+var TrackStarted = signals.NewStatelessSignal[tonearm.Track]()
 
 var Scrobble = signals.NewStatelessSignal[*ScrobbleEvent]()
 
 type ScrobbleEvent struct {
-	Track      *player.Track
+	Track      tonearm.Track
 	ListenedAt time.Time
 }
 
 func init() {
 	var scrobbleClock *Clock
-	player.TrackChanged.On(func(t *player.Track) bool {
+	player.TrackChanged.On(func(t tonearm.Track) bool {
 		if t == nil {
 			return signals.Continue
 		}

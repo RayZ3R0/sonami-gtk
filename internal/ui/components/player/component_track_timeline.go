@@ -11,6 +11,7 @@ import (
 	. "codeberg.org/dergs/tonearm/pkg/schwifty/syntax"
 	"codeberg.org/dergs/tonearm/pkg/tidalapi"
 	v1 "codeberg.org/dergs/tonearm/pkg/tidalapi/models/v1"
+	"codeberg.org/dergs/tonearm/pkg/tonearm"
 	"github.com/jwijenbergh/puregotk/v4/gtk"
 )
 
@@ -24,12 +25,12 @@ var (
 )
 
 func init() {
-	player.TrackChanged.On(func(trackInfo *player.Track) bool {
+	player.TrackChanged.On(func(trackInfo tonearm.Track) bool {
 		schwifty.OnMainThreadOncePure(func() {
 			if trackInfo == nil {
 				durationState.SetValue("00:00")
 			} else {
-				durationState.SetValue(tidalapi.FormatDuration(trackInfo.Duration))
+				durationState.SetValue(tidalapi.FormatDuration(trackInfo.Duration()))
 			}
 		})
 		return signals.Continue

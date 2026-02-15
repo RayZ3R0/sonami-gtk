@@ -11,6 +11,7 @@ import (
 	"codeberg.org/dergs/tonearm/pkg/schwifty"
 	"codeberg.org/dergs/tonearm/pkg/schwifty/state"
 	. "codeberg.org/dergs/tonearm/pkg/schwifty/syntax"
+	"codeberg.org/dergs/tonearm/pkg/tonearm"
 	"codeberg.org/dergs/tonearm/pkg/utils/imgutil"
 	"github.com/infinytum/injector"
 	"github.com/jwijenbergh/puregotk/v4/gtk"
@@ -23,27 +24,30 @@ var playingFromCanNavigateState = state.NewStateful[bool](false)
 var playingFromNavTargetState = state.NewStateful[string]("")
 
 func init() {
-	player.SourceChanged.OnLazy(func(s *player.Source) bool {
+	player.SourceChanged.OnLazy(func(s tonearm.PlaybackSource) bool {
 		if s != nil {
-			playingFromTitleState.SetValue(s.Title)
-			playingFromNavTargetState.SetValue(s.Route)
-			playingFromCanNavigateState.SetValue(s.Route != "")
+			playingFromTitleState.SetValue(s.Title())
+			playingFromNavTargetState.SetValue(s.Route())
+			playingFromCanNavigateState.SetValue(s.Route() != "")
 
-			if s.CoverURL != "" {
-				texture, err := injector.MustInject[*imgutil.ImgUtil]().LoadCropped(s.CoverURL)
-				if err != nil {
-					slog.Error("failed to load source cover", "error", err)
-					return signals.Continue
-				}
-				schwifty.OnMainThreadOncePure(func() {
-					playingFromCoverState.SetValue(texture)
-					texture.Unref()
-				})
-			} else {
+			coverUrl, err := s.Cover(80)
+			if coverUrl == "" || err != nil {
+				slog.Error("failed to load source cover", "error", err)
 				schwifty.OnMainThreadOncePure(func() {
 					playingFromCoverState.SetValue(resources.MissingAlbum())
 				})
+				return signals.Continue
 			}
+
+			texture, err := injector.MustInject[*imgutil.ImgUtil]().LoadCropped(coverUrl)
+			if err != nil {
+				slog.Error("failed to load source cover", "error", err)
+				return signals.Continue
+			}
+			schwifty.OnMainThreadOncePure(func() {
+				playingFromCoverState.SetValue(texture)
+				texture.Unref()
+			})
 		}
 		return signals.Continue
 	})

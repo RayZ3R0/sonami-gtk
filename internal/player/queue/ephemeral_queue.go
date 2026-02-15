@@ -6,20 +6,20 @@ import (
 	"sync"
 
 	"codeberg.org/dergs/tonearm/internal/signals"
-	"codeberg.org/dergs/tonearm/pkg/tidalapi/models/openapi"
+	"codeberg.org/dergs/tonearm/pkg/tonearm"
 )
 
 type queue struct {
 	sync.RWMutex
 
-	entries *signals.StatefulSignal[[]*openapi.Track]
+	entries *signals.StatefulSignal[[]tonearm.Track]
 }
 
-func (q *queue) Append(track *openapi.Track) {
+func (q *queue) Append(track tonearm.Track) {
 	q.Lock()
 	defer q.Unlock()
 
-	q.entries.Notify(func(oldValue []*openapi.Track) []*openapi.Track {
+	q.entries.Notify(func(oldValue []tonearm.Track) []tonearm.Track {
 		return append(oldValue, track)
 	})
 }
@@ -28,8 +28,8 @@ func (q *queue) Clear() {
 	q.Lock()
 	defer q.Unlock()
 
-	q.entries.Notify(func(oldValue []*openapi.Track) []*openapi.Track {
-		return []*openapi.Track{}
+	q.entries.Notify(func(oldValue []tonearm.Track) []tonearm.Track {
+		return []tonearm.Track{}
 	})
 }
 
@@ -38,18 +38,18 @@ func (q *queue) Contains(trackID string) bool {
 	defer q.RUnlock()
 
 	for _, track := range q.entries.CurrentValue() {
-		if track.Data.ID == trackID {
+		if track.ID() == trackID {
 			return true
 		}
 	}
 	return false
 }
 
-func (q *queue) Entries() *signals.StatefulSignal[[]*openapi.Track] {
+func (q *queue) Entries() *signals.StatefulSignal[[]tonearm.Track] {
 	return q.entries
 }
 
-func (q *queue) Get(index int) *openapi.Track {
+func (q *queue) Get(index int) tonearm.Track {
 	q.RLock()
 	defer q.RUnlock()
 
@@ -59,25 +59,25 @@ func (q *queue) Get(index int) *openapi.Track {
 	return q.entries.CurrentValue()[index]
 }
 
-func (q *queue) Insert(track *openapi.Track, index int) error {
+func (q *queue) Insert(track tonearm.Track, index int) error {
 	q.Lock()
 	defer q.Unlock()
 
 	errChan := make(chan error, 1)
 	defer close(errChan)
 
-	q.entries.Notify(func(oldValue []*openapi.Track) []*openapi.Track {
+	q.entries.Notify(func(oldValue []tonearm.Track) []tonearm.Track {
 		if index < 0 || index > len(oldValue) {
 			errChan <- fmt.Errorf("invalid index, must be between 0 and %d", len(oldValue))
 			return oldValue
 		}
 		errChan <- nil
-		return append(oldValue[:index], append([]*openapi.Track{track}, oldValue[index:]...)...)
+		return append(oldValue[:index], append([]tonearm.Track{track}, oldValue[index:]...)...)
 	})
 	return <-errChan
 }
 
-func (q *queue) Peek() *openapi.Track {
+func (q *queue) Peek() tonearm.Track {
 	q.RLock()
 	defer q.RUnlock()
 
@@ -88,14 +88,14 @@ func (q *queue) Peek() *openapi.Track {
 	return entries[0]
 }
 
-func (q *queue) Pop() *openapi.Track {
+func (q *queue) Pop() tonearm.Track {
 	q.Lock()
 	defer q.Unlock()
 
-	trackChan := make(chan *openapi.Track, 1)
+	trackChan := make(chan tonearm.Track, 1)
 	defer close(trackChan)
 
-	q.entries.Notify(func(oldValue []*openapi.Track) []*openapi.Track {
+	q.entries.Notify(func(oldValue []tonearm.Track) []tonearm.Track {
 		if len(oldValue) == 0 {
 			trackChan <- nil
 			return oldValue
@@ -109,12 +109,12 @@ func (q *queue) Pop() *openapi.Track {
 	return <-trackChan
 }
 
-func (q *queue) Prepend(track *openapi.Track) {
+func (q *queue) Prepend(track tonearm.Track) {
 	q.Lock()
 	defer q.Unlock()
 
-	q.entries.Notify(func(oldValue []*openapi.Track) []*openapi.Track {
-		return append([]*openapi.Track{track}, oldValue...)
+	q.entries.Notify(func(oldValue []tonearm.Track) []tonearm.Track {
+		return append([]tonearm.Track{track}, oldValue...)
 	})
 }
 
@@ -125,7 +125,7 @@ func (q *queue) RemoveAt(index int) error {
 	errChan := make(chan error, 1)
 	defer close(errChan)
 
-	q.entries.Notify(func(oldValue []*openapi.Track) []*openapi.Track {
+	q.entries.Notify(func(oldValue []tonearm.Track) []tonearm.Track {
 		if index < 0 || index >= len(oldValue) {
 			errChan <- fmt.Errorf("invalid index, must be between 0 and %d", len(oldValue))
 			return oldValue
@@ -136,16 +136,16 @@ func (q *queue) RemoveAt(index int) error {
 	return <-errChan
 }
 
-func (q *queue) Set(tracks []*openapi.Track) {
+func (q *queue) Set(tracks []tonearm.Track) {
 	q.Lock()
 	defer q.Unlock()
 
-	q.entries.Notify(func(oldValue []*openapi.Track) []*openapi.Track {
+	q.entries.Notify(func(oldValue []tonearm.Track) []tonearm.Track {
 		return slices.Clone(tracks)
 	})
 }
 
-func (q *queue) Skip(n int) ([]*openapi.Track, error) {
+func (q *queue) Skip(n int) ([]tonearm.Track, error) {
 	q.Lock()
 	defer q.Unlock()
 
@@ -156,10 +156,10 @@ func (q *queue) Skip(n int) ([]*openapi.Track, error) {
 	errChan := make(chan error, 1)
 	defer close(errChan)
 
-	skippedTracksChan := make(chan []*openapi.Track, 1)
+	skippedTracksChan := make(chan []tonearm.Track, 1)
 	defer close(skippedTracksChan)
 
-	q.entries.Notify(func(oldValue []*openapi.Track) []*openapi.Track {
+	q.entries.Notify(func(oldValue []tonearm.Track) []tonearm.Track {
 		if len(oldValue) < n {
 			errChan <- fmt.Errorf("not enough tracks in queue")
 			return oldValue
@@ -179,6 +179,6 @@ func (q *queue) Skip(n int) ([]*openapi.Track, error) {
 
 func NewQueue() Queue {
 	return &queue{
-		entries: signals.NewStatefulSignal([]*openapi.Track{}),
+		entries: signals.NewStatefulSignal([]tonearm.Track{}),
 	}
 }

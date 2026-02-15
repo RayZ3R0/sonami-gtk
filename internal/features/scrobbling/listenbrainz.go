@@ -6,9 +6,9 @@ import (
 	"io"
 	"net/http"
 
-	"codeberg.org/dergs/tonearm/internal/player"
 	"codeberg.org/dergs/tonearm/internal/settings"
 	"codeberg.org/dergs/tonearm/internal/signals"
+	"codeberg.org/dergs/tonearm/pkg/tonearm"
 )
 
 type listenBrainzListenType string
@@ -19,7 +19,7 @@ const (
 )
 
 func init() {
-	TrackStarted.On(func(t *player.Track) bool {
+	TrackStarted.On(func(t tonearm.Track) bool {
 		if !isListenBrainzConfigured() {
 			return signals.Continue
 		}
@@ -37,7 +37,7 @@ func init() {
 	})
 }
 
-func listenbrainzNowPlaying(track *player.Track) {
+func listenbrainzNowPlaying(track tonearm.Track) {
 	makeListenBrainzRequest(generateListenBrainzRequest(track, listenBrainzListenTypePlayingNow))
 }
 
@@ -92,21 +92,21 @@ func isListenBrainzConfigured() bool {
 	return true
 }
 
-func generateListenBrainzRequest(track *player.Track, listenType listenBrainzListenType) listenBrainzRequest {
+func generateListenBrainzRequest(track tonearm.Track, listenType listenBrainzListenType) listenBrainzRequest {
 	return listenBrainzRequest{
 		ListenType: listenType,
 		Payload: []listenBrainzPayload{
 			{
 				TrackMetadata: listenBrainzTrackMetadata{
-					TrackName:  track.Title,
+					TrackName:  track.Title(),
 					ArtistName: track.ArtistNames(),
 					AdditionalInfo: listenBrainzAdditionalInfo{
 						MediaPlayer:      "Tonearm",
 						MusicService:     "tidal.com",
-						OriginURL:        "https://tidal.com/track/" + track.ID,
+						OriginURL:        track.URL(),
 						SubmissionClient: "Tonearm",
-						DurationMs:       int(track.Duration.Milliseconds()),
-						ISRC:             track.ISRC,
+						DurationMs:       int(track.Duration().Milliseconds()),
+						// ISRC:             track.ISRC,
 					},
 				},
 			},

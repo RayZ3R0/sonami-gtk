@@ -5,10 +5,13 @@ import (
 	"os"
 	"strings"
 
+	_ "codeberg.org/dergs/tonearm/internal/log"
+
 	_ "codeberg.org/dergs/tonearm/internal/icons"
 	_ "codeberg.org/dergs/tonearm/internal/styles"
 
-	_ "codeberg.org/dergs/tonearm/internal/features/scrobbling"
+	// _ "codeberg.org/dergs/tonearm/internal/features/scrobbling"
+	_ "codeberg.org/dergs/tonearm/internal/services"
 
 	"codeberg.org/dergs/tonearm/internal/g"
 	"codeberg.org/dergs/tonearm/internal/player"
@@ -18,7 +21,6 @@ import (
 	"codeberg.org/dergs/tonearm/internal/ui"
 	"codeberg.org/dergs/tonearm/pkg/mpris"
 	"codeberg.org/dergs/tonearm/pkg/schwifty/tracking"
-	"codeberg.org/dergs/tonearm/pkg/tidalapi"
 	"codeberg.org/dergs/tonearm/pkg/utils/imgutil"
 	"github.com/infinytum/injector"
 	"github.com/jwijenbergh/puregotk/v4/adw"
@@ -29,7 +31,6 @@ import (
 func init() {
 	slog.SetLogLoggerLevel(slog.LevelInfo)
 	if os.Getenv("TONEARM_DEBUG") == "1" {
-		slog.SetLogLoggerLevel(slog.LevelDebug)
 		go tracking.LogAliveObjects()
 	}
 }
@@ -43,16 +44,6 @@ func main() {
 	app.ConnectCommandLine(g.Ptr(onCommandLine))
 	injector.Singleton(func() *adw.Application {
 		return app
-	})
-
-	injector.Singleton(func() *tidalapi.TidalAPI {
-		countryCode, err := tidalapi.FetchCountryCode()
-		if err != nil {
-			slog.Error("Failed to fetch country code, defaulting to WW", err)
-			countryCode = "WW"
-		}
-		slog.Info("Discovered country code", "countryCode", countryCode)
-		return tidalapi.NewClient(countryCode, secrets.NewTokenAuthStrategy())
 	})
 
 	injector.Singleton(func(app *adw.Application) *imgutil.ImgUtil {

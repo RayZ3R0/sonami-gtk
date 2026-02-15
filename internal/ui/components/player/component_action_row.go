@@ -3,6 +3,7 @@ package player
 import (
 	"context"
 	"fmt"
+	"log/slog"
 	"strconv"
 
 	"codeberg.org/dergs/tonearm/internal/gettext"
@@ -14,6 +15,7 @@ import (
 	"codeberg.org/dergs/tonearm/pkg/schwifty/state"
 	. "codeberg.org/dergs/tonearm/pkg/schwifty/syntax"
 	"codeberg.org/dergs/tonearm/pkg/tidalapi"
+	"codeberg.org/dergs/tonearm/pkg/tonearm"
 	"github.com/infinytum/injector"
 	"github.com/jwijenbergh/puregotk/v4/gdk"
 	"github.com/jwijenbergh/puregotk/v4/gio"
@@ -38,19 +40,32 @@ var (
 )
 
 func init() {
-	player.TrackChanged.OnLazy(func(t *player.Track) bool {
+	player.TrackChanged.OnLazy(func(t tonearm.Track) bool {
 		isTrackLoadedState.SetValue(t != nil)
 
 		if t != nil {
-			if len(t.Artists) > 1 {
+
+			artistPaginator, err := t.Artists()
+			if err != nil {
+				slog.Error("Failed to load artists", "error", err)
+				return signals.Continue
+			}
+
+			artists, err := artistPaginator.GetAll()
+			if err != nil {
+				slog.Error("Failed to load all artists", "error", err)
+				return signals.Continue
+			}
+
+			if len(artists) > 1 {
 				menu := gio.NewMenu()
 				defer menu.Unref()
-				for _, artist := range t.Artists {
-					menu.AppendItem(gio.NewMenuItem(artist.Attributes.Name, "win.route.artist::"+artist.ID))
+				for _, artist := range artists {
+					menu.AppendItem(gio.NewMenuItem(artist.Name(), "win.route.artist::"+artist.ID()))
 				}
 				artistButtonState.SetValue(artistButtonMultiple.MenuModel(&menu.MenuModel))
 			} else {
-				artistButtonState.SetValue(artistButtonSingle.ActionName("win.route.artist").ActionTargetValue(glib.NewVariantString(t.Artists[0].ID)))
+				artistButtonState.SetValue(artistButtonSingle.ActionName("win.route.artist").ActionTargetValue(glib.NewVariantString(artists[0].ID())))
 			}
 		}
 
@@ -82,20 +97,13 @@ func actionRow() schwifty.Box {
 					return
 				}
 
-				var albumID string
-
-				for _, album := range track.Albums {
-					if album.Data.ID != "" {
-						albumID = album.Data.ID
-						break
-					}
-				}
-
-				if albumID == "" {
+				album, err := track.Album()
+				if err != nil {
+					slog.Error("Failed to load album", "error", err)
 					return
 				}
 
-				router.Navigate("album/" + albumID)
+				router.Navigate("album/" + album.ID())
 			}),
 		Bin().BindChild(artistButtonState),
 		Button().
@@ -109,7 +117,7 @@ func actionRow() schwifty.Box {
 					return
 				}
 
-				id, _ := strconv.Atoi(track.ID)
+				id, _ := strconv.Atoi(track.ID())
 
 				tidalapi := injector.MustInject[*tidalapi.TidalAPI]()
 				mix, err := tidalapi.V1.Tracks.Mix(context.Background(), id)

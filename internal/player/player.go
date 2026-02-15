@@ -2,14 +2,11 @@ package player
 
 import (
 	"context"
-	"fmt"
 	"log/slog"
 	"strconv"
 
 	"codeberg.org/dergs/tonearm/pkg/tidalapi"
-	"codeberg.org/dergs/tonearm/pkg/tidalapi/models/openapi"
-	v2 "codeberg.org/dergs/tonearm/pkg/tidalapi/models/v2"
-	"codeberg.org/dergs/tonearm/pkg/tidalapi/pagination"
+	"codeberg.org/dergs/tonearm/pkg/tonearm"
 	"github.com/go-gst/go-gst/gst"
 	"github.com/infinytum/injector"
 )
@@ -53,158 +50,140 @@ func resetLoadingState() {
 }
 
 func AddTrackToUserQueue(trackId string) error {
-	track, err := resolveTrack(trackId)
-	if err != nil {
-		return err
-	}
-	UserQueue.Append(track)
+	// track, err := resolveTrack(trackId)
+	// if err != nil {
+	// 	return err
+	// }
+	// UserQueue.Append(track)
 
-	// If we added a song to the queue and nothing is playing, the user likely wants to start playing the queue
-	if PlaybackStateChanged.CurrentValue().Status == PlaybackStatusStopped {
-		logger.Info("no track is currently playing, immediately playing track", "track_id", trackId)
-		Next()
-		return nil
-	}
+	// // If we added a song to the queue and nothing is playing, the user likely wants to start playing the queue
+	// if PlaybackStateChanged.CurrentValue().Status == PlaybackStatusStopped {
+	// 	logger.Info("no track is currently playing, immediately playing track", "track_id", trackId)
+	// 	Next()
+	// 	return nil
+	// }
 	return nil
 }
 
 func PlayTrack(trackId string) error {
-	setLoadingState()
-	track, err := resolveTrack(trackId)
-	if err != nil {
-		resetLoadingState()
-		return err
-	}
+	// setLoadingState()
+	// track, err := resolveTrack(trackId)
+	// if err != nil {
+	// 	resetLoadingState()
+	// 	return err
+	// }
 
-	clearQueues()
-	err = playTrack(track)
-	if err != nil {
-		return err
-	}
+	// coverUrl, err := track.CoverURL()
+	// if err != nil {
+	// 	resetLoadingState()
+	// 	return err
+	// }
 
-	SourceChanged.Notify(func(oldValue *Source) *Source {
-		return &Source{
-			CoverURL: TrackChanged.CurrentValue().CoverURL,
-			Title:    TrackChanged.CurrentValue().Title,
-			Route:    fmt.Sprintf("album/%s", TrackChanged.CurrentValue().ID),
-		}
-	})
+	// clearQueues()
+	// err = playTrack(track)
+	// if err != nil {
+	// 	return err
+	// }
 
-	history.Push(&HistoryEntry{
-		TrackID: track.Data.ID,
-	})
+	// SourceChanged.Notify(func(oldValue *Source) *Source {
+	// 	return &Source{
+	// 		CoverURL: coverUrl,
+	// 		Title:    track.Title(),
+	// 		Route:    fmt.Sprintf("album/%s", track.AlbumID()),
+	// 	}
+	// })
+
+	// history.Push(&HistoryEntry{
+	// 	TrackID: track.ID(),
+	// })
 
 	return nil
 }
 
 func PlayAlbum(albumId string, shuffle bool, position int) error {
 	setLoadingState()
-	tidal, err := injector.Inject[*tidalapi.TidalAPI]()
-	if err != nil {
+	if err := playAlbum(albumId, shuffle, position); err != nil {
 		resetLoadingState()
 		return err
 	}
-
-	paginator := pagination.NewPaginator(tidal.OpenAPI.V2.Albums.Items, albumId, func(items *openapi.Response[[]openapi.Relationship]) []openapi.Track {
-		return items.Included.Tracks(items.Data...)
-	}, "items", "items.artists", "items.albums.coverArt")
-
-	tracks, err := paginator.GetAll()
-	if err != nil {
-		resetLoadingState()
-		return err
-	}
-
-	if err := PlayTracklist(tracks, shuffle, position); err != nil {
-		resetLoadingState()
-		return err
-	}
-
-	SourceChanged.Notify(func(oldValue *Source) *Source {
-		return &Source{
-			CoverURL: TrackChanged.CurrentValue().CoverURL,
-			Title:    TrackChanged.CurrentValue().Albums[0].Data.Attributes.Title,
-			Route:    fmt.Sprintf("album/%s", albumId),
-		}
-	})
-
 	return nil
 }
 
 func PlayArtistTopSongs(artistId string, shuffle bool, position int) error {
-	setLoadingState()
-	tidal, err := injector.Inject[*tidalapi.TidalAPI]()
-	if err != nil {
-		resetLoadingState()
-		return err
-	}
+	// setLoadingState()
+	// tidal, err := injector.Inject[*tidalapi.TidalAPI]()
+	// if err != nil {
+	// 	resetLoadingState()
+	// 	return err
+	// }
 
-	artist, err := tidal.V2.Artist.Artist(context.Background(), artistId)
-	if err != nil {
-		resetLoadingState()
-		return err
-	}
+	// artist, err := tidal.V2.Artist.Artist(context.Background(), artistId)
+	// if err != nil {
+	// 	resetLoadingState()
+	// 	return err
+	// }
 
-	var module v2.PageItem
-	for _, item := range artist.Items {
-		if item.ModuleID == "ARTIST_TOP_TRACKS" {
-			module = item
-			break
-		}
-	}
+	// var module v2.PageItem
+	// for _, item := range artist.Items {
+	// 	if item.ModuleID == "ARTIST_TOP_TRACKS" {
+	// 		module = item
+	// 		break
+	// 	}
+	// }
 
-	var topTracks []openapi.Track
+	// var topTracks []tonearm.Track
 
-	for _, legacyTopTrackItem := range module.Items {
-		if legacyTopTrackItem.Type == v2.ItemTypeTrack {
-			topTrack, err := resolveTrack(strconv.Itoa(legacyTopTrackItem.Data.Track.ID))
-			if err != nil {
-				logger.Error("error while resolving Top Track item", "track_id", legacyTopTrackItem.Data.Track.ID, "message", err.Error())
-				continue
-			}
+	// for _, legacyTopTrackItem := range module.Items {
+	// 	if legacyTopTrackItem.Type == v2.ItemTypeTrack {
+	// 		topTrack, err := resolveTrack(strconv.Itoa(legacyTopTrackItem.Data.Track.ID))
+	// 		if err != nil {
+	// 			logger.Error("error while resolving Top Track item", "track_id", legacyTopTrackItem.Data.Track.ID, "message", err.Error())
+	// 			continue
+	// 		}
 
-			topTracks = append(topTracks, *topTrack)
-		}
-	}
-	return PlayTracklist(topTracks, shuffle, position)
+	// 		topTracks = append(topTracks, topTrack)
+	// 	}
+	// }
+	// return PlayTracklist(topTracks, shuffle, position)
+	return nil
 }
 
 func PlayPlaylist(playlistId string, shuffle bool, position int) error {
-	setLoadingState()
-	tidal, err := injector.Inject[*tidalapi.TidalAPI]()
-	if err != nil {
-		resetLoadingState()
-		return err
-	}
+	// setLoadingState()
+	// tidal, err := injector.Inject[*tidalapi.TidalAPI]()
+	// if err != nil {
+	// 	resetLoadingState()
+	// 	return err
+	// }
 
-	paginator := pagination.NewPaginator(tidal.OpenAPI.V2.Playlists.Items, playlistId, func(items *openapi.Response[[]openapi.Relationship]) []openapi.Track {
-		return items.Included.Tracks(items.Data...)
-	}, "items", "items.artists", "items.albums.coverArt")
+	// paginator := pagination.NewPaginator(tidal.OpenAPI.V2.Playlists.Items, playlistId, func(items *openapi.Response[[]openapi.Relationship]) []openapi.Track {
+	// 	return items.Included.Tracks(items.Data...)
+	// }, "items", "items.artists", "items.albums.coverArt")
 
-	tracks, err := paginator.GetAll()
-	if err != nil {
-		resetLoadingState()
-		return err
-	}
+	// tracks, err := paginator.GetAll()
+	// if err != nil {
+	// 	resetLoadingState()
+	// 	return err
+	// }
 
-	if err := PlayTracklist(tracks, shuffle, position); err != nil {
-		resetLoadingState()
-		return err
-	}
+	// if err := PlayTracklist(tracks, shuffle, position); err != nil {
+	// 	resetLoadingState()
+	// 	return err
+	// }
 
-	playlist, err := tidal.OpenAPI.V2.Playlists.Playlist(context.Background(), playlistId, "coverArt")
-	if err != nil {
-		resetLoadingState()
-		return err
-	}
+	// playlist, err := tidal.OpenAPI.V2.Playlists.Playlist(context.Background(), playlistId, "coverArt")
+	// if err != nil {
+	// 	resetLoadingState()
+	// 	return err
+	// }
 
-	SourceChanged.Notify(func(oldValue *Source) *Source {
-		return &Source{
-			CoverURL: playlist.Included.PlainArtworks(playlist.Data.Relationships.CoverArt.Data...).AtLeast(80),
-			Title:    playlist.Data.Attributes.Name,
-			Route:    fmt.Sprintf("playlist/%s", playlistId),
-		}
-	})
+	// SourceChanged.Notify(func(oldValue *Source) *Source {
+	// 	return &Source{
+	// 		CoverURL: playlist.Included.PlainArtworks(playlist.Data.Relationships.CoverArt.Data...).AtLeast(80),
+	// 		Title:    playlist.Data.Attributes.Name,
+	// 		Route:    fmt.Sprintf("playlist/%s", playlistId),
+	// 	}
+	// })
 
 	return nil
 }
@@ -239,15 +218,15 @@ func PlayTrackRadio(trackId string, skipSelf bool) error {
 	return PlayPlaylist(mix.ID, false, position)
 }
 
-func PlayTracklist(tracks []openapi.Track, shuffle bool, startAt int) error {
+func PlayTracklist(tracks []tonearm.Track, shuffle bool, startAt int) (tonearm.Track, error) {
 	clearQueues()
-	TrackChanged.Notify(func(oldValue *Track) *Track {
+	TrackChanged.Notify(func(oldValue tonearm.Track) tonearm.Track {
 		return nil
 	})
 
-	trackPointers := make([]*openapi.Track, len(tracks))
+	trackPointers := make([]tonearm.Track, len(tracks))
 	for i, track := range tracks {
-		trackPointers[i] = &track
+		trackPointers[i] = track
 	}
 	BaseQueue.Set(trackPointers)
 
@@ -261,13 +240,13 @@ func PlayTracklist(tracks []openapi.Track, shuffle bool, startAt int) error {
 
 	nextTrack := getNextTrackFromQueue(false)
 	if nextTrack != nil {
-		logger.Info("playing next track", "track_id", nextTrack.Data.ID)
+		logger.Info("playing next track", "track_id", nextTrack.ID())
 		playTrack(nextTrack)
 		history.Push(&HistoryEntry{
-			TrackID: nextTrack.Data.ID,
+			TrackID: nextTrack.ID(),
 		})
 	} else {
 		resetLoadingState()
 	}
-	return nil
+	return nextTrack, nil
 }

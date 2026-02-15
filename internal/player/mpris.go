@@ -112,8 +112,8 @@ func init() {
 			"mpris:length":      trackInfo.Duration().Microseconds(),
 			"xesam:album":       album.Title(),
 			"xesam:albumArtist": albumArtistNames,
-			"xesam:artist":      artists,
-			"xesam:title":       trackInfo.Title,
+			"xesam:artist":      artistNames,
+			"xesam:title":       trackInfo.Title(),
 			"xesam:url":         fmt.Sprintf("https://tidal.com/track/%s", trackInfo.ID()),
 		})
 

@@ -2,36 +2,36 @@ package queue
 
 import (
 	"codeberg.org/dergs/tonearm/internal/signals"
-	"codeberg.org/dergs/tonearm/pkg/tidalapi/models/openapi"
+	"codeberg.org/dergs/tonearm/pkg/tonearm"
 )
 
 // Queue represents a queue that holds tracks temporarily.
 // Once the tracks are played, they are removed from the queue.
 type Queue interface {
 	// Add a track to the end of the queue
-	Append(track *openapi.Track)
+	Append(track tonearm.Track)
 	// Remove all tracks from the queue
 	Clear()
 	// Check if a track with the given ID is in the queue
 	Contains(trackID string) bool
 	// Entries returns a stateful signal that emits the current queue entries.
-	Entries() *signals.StatefulSignal[[]*openapi.Track]
+	Entries() *signals.StatefulSignal[[]tonearm.Track]
 	// Get track at the specified index
-	Get(index int) *openapi.Track
+	Get(index int) tonearm.Track
 	// Insert a track at a specific index in the queue
-	Insert(track *openapi.Track, index int) error
+	Insert(track tonearm.Track, index int) error
 	// Peek at the next track in the queue without removing it
-	Peek() *openapi.Track
+	Peek() tonearm.Track
 	// Pop the next track from the queue
-	Pop() *openapi.Track
+	Pop() tonearm.Track
 	// Prepend a track to the beginning of the queue
-	Prepend(track *openapi.Track)
+	Prepend(track tonearm.Track)
 	// Remove a track from the queue
 	RemoveAt(index int) error
 	// Replace the current queue with a new set of tracks
-	Set(tracks []*openapi.Track)
+	Set(tracks []tonearm.Track)
 	// Skip a specificed number of tracks in the queue
-	Skip(n int) ([]*openapi.Track, error)
+	Skip(n int) ([]tonearm.Track, error)
 }
 
 // DurableQueue represents a queue that holds tracks persistently.

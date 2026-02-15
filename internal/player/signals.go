@@ -35,7 +35,7 @@ var RepeatModeChanged = signals.NewStatefulSignal[RepeatMode](RepeatModeNone)
 // The value is 0 if shuffle mode is disabled.
 var ShuffleStateChanged = signals.NewStatefulSignal[bool](false)
 
-var SourceChanged = signals.NewStatefulSignal[*Source](nil)
+var SourceChanged = signals.NewStatefulSignal[tonearm.PlaybackSource](nil)
 
 // Holds the relevant information about the currently playing or last played track.
 // This can be nil if no track is currently playing. This is especially the case when

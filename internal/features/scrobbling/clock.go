@@ -4,12 +4,12 @@ import (
 	"context"
 	"time"
 
-	"codeberg.org/dergs/tonearm/internal/player"
+	"codeberg.org/dergs/tonearm/pkg/tonearm"
 )
 
 type Clock struct {
 	counter   int
-	track     *player.Track
+	track     tonearm.Track
 	isRunning bool
 	startedAt time.Time
 
@@ -21,7 +21,7 @@ func (c *Clock) Start() {
 	if c.isRunning {
 		return
 	}
-	if c.counter >= int(c.track.Duration.Seconds())/2 {
+	if c.counter >= int(c.track.Duration().Seconds())/2 {
 		return
 	}
 	c.isRunning = true
@@ -41,7 +41,7 @@ func (c *Clock) Start() {
 				return
 			case <-time.After(time.Second):
 				c.counter++
-				if c.counter >= int(c.track.Duration.Seconds())/2 || c.counter >= int((time.Minute*4).Seconds()) {
+				if c.counter >= int(c.track.Duration().Seconds())/2 || c.counter >= int((time.Minute*4).Seconds()) {
 					logger.Debug("notifying scrobblers that a track should be scrobbled")
 					Scrobble.Notify(&ScrobbleEvent{
 						Track:      c.track,
@@ -62,7 +62,7 @@ func (c *Clock) Stop() {
 	c.cancelFunc()
 }
 
-func newClock(track *player.Track) *Clock {
+func newClock(track tonearm.Track) *Clock {
 	return &Clock{
 		track:     track,
 		startedAt: time.Now(),
