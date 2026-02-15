@@ -45,7 +45,7 @@ func (r *RouteButton) TooltipText(tooltip string) *RouteButton {
 	return r
 }
 
-func NewRouteButton(path string) *RouteButton {
+func NewRouteButton(path string, clear bool) *RouteButton {
 	routeButton := &RouteButton{
 		icon:  Image().FromIconName("image-missing-symbolic")(),
 		label: Label("").PaddingStart(7).PaddingEnd(7).Visible(false)(),
@@ -56,6 +56,9 @@ func NewRouteButton(path string) *RouteButton {
 		MinHeight(24).
 		ConnectClicked(func(b gtk.Button) {
 			router.Navigate(path)
+			if clear {
+				router.Clear()
+			}
 		}).
 		Child(
 			HStack(

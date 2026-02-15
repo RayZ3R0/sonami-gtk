@@ -11,17 +11,17 @@ import (
 )
 
 func (w *Window) buildContentHeader() *gtk.Widget {
-	homeButton := components.NewRouteButton("home")
+	homeButton := components.NewRouteButton("home", true)
 	homeButton.Title(gettext.Get("Home"))
 	homeButton.Icon("go-home-symbolic")
 	homeButton.TooltipText(gettext.Get("Navigate to Home"))
 
-	exploreButton := components.NewRouteButton("explore")
+	exploreButton := components.NewRouteButton("explore", true)
 	exploreButton.Title(gettext.Get("Explore"))
 	exploreButton.Icon("compass2-symbolic")
 	exploreButton.TooltipText(gettext.Get("Navigate to Explore"))
 
-	collectionButton := components.NewRouteButton("my-collection")
+	collectionButton := components.NewRouteButton("my-collection", true)
 	collectionButton.Title(gettext.Get("Collection"))
 	collectionButton.Icon("library-symbolic")
 	collectionButton.TooltipText(gettext.Get("Navigate to Collection"))

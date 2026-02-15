@@ -75,3 +75,12 @@ func (h *History) Push(entry *HistoryEntry) {
 
 	h.Current = entry
 }
+
+func (h *History) Clear() {
+	h.Lock()
+	defer h.Unlock()
+	defer HistoryUpdated.Notify(h)
+
+	h.Current = nil
+	h.Entries = []*HistoryEntry{}
+}
