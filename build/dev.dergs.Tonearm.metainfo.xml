@@ -12,7 +12,7 @@
       <li>Background Playback</li>
       <li>Gapless playback</li>
       <li>MPRIS integration</li>
-      <li>Scrobbling to ListenBrainz</li>
+      <li>Scrobbling to ListenBrainz and Last.FM</li>
     </ul>
     <p>
     Don't have a TIDAL account? You can still try the app and enjoy song previews of up to 30 seconds to see if it's for you.
@@ -30,6 +30,7 @@
     <keyword translate="no">TIDAL</keyword>
     <keyword translate="no">MPRIS</keyword>
     <keyword translate="no">ListenBrainz</keyword>
+    <keyword translate="no">Last.FM</keyword>
     <keyword>music</keyword>
     <keyword>streaming</keyword>
   </keywords>
@@ -45,6 +46,26 @@
   <url type="contact">https://matrix.to/#/%23tonearm:derg.social</url>
 
   <releases>
+    <release version="1.3.1" date="2026-02-15">
+        <url type="details">https://codeberg.org/dergs/Tonearm/releases/tag/v1.3.1</url>
+        <description>
+            <p>Bug Fixes:</p>
+            <ul>
+                <li>Fixed a bug where the player would stop playback on its own between tracks</li>
+            </ul>
+            <p>Improvements:</p>
+            <ul>
+                <li>Added support for Last.FM scrobbling</li>
+                <li>Added partial translation for Bulgarian</li>
+                <li>Implemented more consistent "Sign in" prompts</li>
+                <li>Changed the main view switcher to reset the history when switching views</li>
+                <li>Updated french translations</li>
+                <li>Updated german translations</li>
+                <li>Removed custom window decoration</li>
+                <li>Removed subtitle in the sidebar window header</li>
+            </ul>
+        </description>
+    </release>
     <release version="1.3.0" date="2026-02-14">
         <url type="details">https://codeberg.org/dergs/Tonearm/releases/tag/v1.3.0</url>
         <description>
@@ -61,7 +82,8 @@
             </ul>
             <p>Improvements:</p>
             <ul>
-                <li>Added support for adding and removing albums, artists, mixes, playlists and tracks from your collection</li>
+                <li
+                    >Added support for adding and removing albums, artists, mixes, playlists and tracks from your collection</li>
                 <li>Added translations for Chinese (Simplified Han script)</li>
                 <li>Added translations for Estonian</li>
                 <li>Implemented volume normalization</li>
