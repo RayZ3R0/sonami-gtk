@@ -10,7 +10,7 @@ msgstr ""
 "Project-Id-Version: v1.0.0-12-g1ce38cd\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2026-02-15 18:03+0100\n"
-"PO-Revision-Date: 2026-02-15 01:00+0000\n"
+"PO-Revision-Date: 2026-02-15 23:06+0000\n"
 "Last-Translator: drafolin <drafolin@noreply.codeberg.org>\n"
 "Language-Team: French <https://translate.codeberg.org/projects/tonearm/"
 "tonearm/fr/>\n"
@@ -181,7 +181,7 @@ msgstr "Artistes"
 
 #: internal/ui/components/auth_required.go:13
 msgid "Authentication Required"
-msgstr ""
+msgstr "Authentification Requise"
 
 #: internal/settings/playback.go:20
 msgid "Auto"
@@ -440,7 +440,7 @@ msgstr "Plus"
 
 #: internal/ui/components/tracklist/column_controls.go:64
 msgid "More…"
-msgstr ""
+msgstr "Plus…"
 
 #: internal/ui/routes/my_collection/albums.go:36
 msgid "My Albums"
@@ -468,7 +468,7 @@ msgstr "Revenir en arrière"
 
 #: internal/ui/components/tracklist/column_controls.go:37
 msgid "Navigate to %s"
-msgstr ""
+msgstr "Naviguer vers %s"
 
 #: internal/ui/components/player/component_action_row.go:194
 msgid "Navigate to Album"
@@ -623,11 +623,11 @@ msgstr "Listes de lecture"
 
 #: internal/ui/routes/my-collection.go:34
 msgid "Please sign in to view your collection"
-msgstr ""
+msgstr "Veuillez vous connecter pour voir votre collection"
 
 #: internal/ui/routes/feed.go:99
 msgid "Please sign in to view your feed"
-msgstr ""
+msgstr "Veuillez vous connecter pour voir votre fil d'actualité"
 
 #: internal/ui/window_shortcuts.go:16
 msgid "Preferences"
@@ -723,7 +723,7 @@ msgstr "Se connecter"
 
 #: internal/ui/components/auth_required.go:17
 msgid "Sign In…"
-msgstr ""
+msgstr "Se Connecter…"
 
 #: internal/ui/window_sidebar.go:40
 msgid "Sign Out"
