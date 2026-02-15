@@ -47,7 +47,7 @@ func NewWindow(app *adw.Application) *Window {
 	window.SetIconName("logo-symbolic")
 	window.SetDefaultSize(settings.General().GetWindowWidth(), settings.General().GetWindowHeight())
 	// For some reason the bindings do not allow to specify which property
-	window.ConnectNotify(g.Ptr(func(gobject.Object, uintptr) {
+	window.ConnectNotify(new(func(gobject.Object, uintptr) {
 		if window.GetHeight() > 0 {
 			settings.General().SetWindowHeight(window.GetHeight())
 		}
@@ -74,7 +74,7 @@ func (w *Window) build() *gtk.Widget {
 	layout.SetMinSidebarWidth(320)
 
 	sidebarAction := gio.NewSimpleActionStateful("toggle-sidebar", nil, glib.NewVariantBoolean(true))
-	sidebarAction.ConnectActivate(g.Ptr(func(action gio.SimpleAction, _ uintptr) {
+	sidebarAction.ConnectActivate(new(func(action gio.SimpleAction, _ uintptr) {
 		newState := !action.GetState().GetBoolean()
 		action.SetState(glib.NewVariantBoolean(newState))
 		layout.SetShowSidebar(newState)
