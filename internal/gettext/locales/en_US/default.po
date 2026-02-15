@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: v1.1.0-99-ga37b2fb\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-02-15 00:57+0100\n"
+"POT-Creation-Date: 2026-02-15 18:03+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: Automatically generated\n"
 "Language-Team: none\n"
@@ -35,11 +35,11 @@ msgid_plural "%d Tracks (%s)"
 msgstr[0] ""
 msgstr[1] ""
 
-#: internal/ui/routes/feed.go:146
+#: internal/ui/routes/feed.go:144
 msgid "%s and %s"
 msgstr ""
 
-#: internal/ui/window_sidebar.go:40
+#: internal/ui/window_sidebar.go:34
 msgid "About Tonearm"
 msgstr ""
 
@@ -47,7 +47,7 @@ msgstr ""
 msgid "Add to Collection"
 msgstr ""
 
-#: internal/ui/components/tracklist/column_controls.go:26
+#: internal/ui/components/tracklist/column_controls.go:56
 msgid "Add to Queue"
 msgstr ""
 
@@ -55,7 +55,7 @@ msgstr ""
 msgid "Album"
 msgstr ""
 
-#: internal/ui/routes/feed.go:154
+#: internal/ui/routes/feed.go:152
 msgid "Album by %s"
 msgstr ""
 
@@ -159,8 +159,8 @@ msgstr ""
 msgid "Artists"
 msgstr ""
 
-#: internal/ui/routes/feed.go:100
-msgid "Authentication required"
+#: internal/ui/components/auth_required.go:13
+msgid "Authentication Required"
 msgstr ""
 
 #: internal/settings/playback.go:20
@@ -281,7 +281,7 @@ msgstr ""
 msgid "E.g. Fox Stevenson"
 msgstr ""
 
-#: internal/ui/routes/feed.go:156
+#: internal/ui/routes/feed.go:154
 msgid "EP by %s"
 msgstr ""
 
@@ -313,7 +313,7 @@ msgstr ""
 msgid "External Link"
 msgstr ""
 
-#: internal/ui/routes/feed.go:97
+#: internal/ui/routes/feed.go:98
 msgid "Feed"
 msgstr ""
 
@@ -345,11 +345,11 @@ msgstr ""
 msgid "Keyboard Shortcuts"
 msgstr ""
 
-#: internal/ui/routes/feed.go:83
+#: internal/ui/routes/feed.go:84
 msgid "Last Month"
 msgstr ""
 
-#: internal/ui/routes/feed.go:79
+#: internal/ui/routes/feed.go:80
 msgid "Last Week"
 msgstr ""
 
@@ -393,7 +393,7 @@ msgstr ""
 msgid "Low (96 kbps)"
 msgstr ""
 
-#: internal/ui/window_sidebar.go:89
+#: internal/ui/window_sidebar.go:73
 msgid "Lyrics"
 msgstr ""
 
@@ -411,6 +411,10 @@ msgstr ""
 
 #: internal/ui/components/dynamic_v1.go:134
 msgid "More"
+msgstr ""
+
+#: internal/ui/components/tracklist/column_controls.go:64
+msgid "More…"
 msgstr ""
 
 #: internal/ui/routes/my_collection/albums.go:36
@@ -433,8 +437,12 @@ msgstr ""
 msgid "My Tracks"
 msgstr ""
 
-#: internal/ui/window_content.go:50
+#: internal/ui/window_content.go:49
 msgid "Navigate Back"
+msgstr ""
+
+#: internal/ui/components/tracklist/column_controls.go:37
+msgid "Navigate to %s"
 msgstr ""
 
 #: internal/ui/components/player/component_action_row.go:194
@@ -523,7 +531,7 @@ msgstr ""
 msgid "Not found"
 msgstr ""
 
-#: internal/ui/routes/feed.go:85
+#: internal/ui/routes/feed.go:86
 msgid "Older"
 msgstr ""
 
@@ -563,7 +571,7 @@ msgstr ""
 msgid "Playback quality saved. Changes will be applied on next track change."
 msgstr ""
 
-#: internal/ui/window_sidebar.go:88
+#: internal/ui/window_sidebar.go:72
 msgid "Player"
 msgstr ""
 
@@ -580,7 +588,11 @@ msgid "Playlists"
 msgstr ""
 
 #: internal/ui/routes/my-collection.go:34
-msgid "Please log in to view your collection"
+msgid "Please sign in to view your collection"
+msgstr ""
+
+#: internal/ui/routes/feed.go:99
+msgid "Please sign in to view your feed"
 msgstr ""
 
 #: internal/ui/window_shortcuts.go:16
@@ -595,7 +607,7 @@ msgstr ""
 msgid "Previous"
 msgstr ""
 
-#: internal/ui/window_sidebar.go:90
+#: internal/ui/window_sidebar.go:74
 msgid "Queue"
 msgstr ""
 
@@ -643,7 +655,7 @@ msgstr ""
 msgid "Secret Service Unavailable"
 msgstr ""
 
-#: internal/ui/window_sidebar.go:37
+#: internal/ui/window_sidebar.go:31
 msgid "Set as default page"
 msgstr ""
 
@@ -675,7 +687,11 @@ msgstr ""
 msgid "Sign In"
 msgstr ""
 
-#: internal/ui/window_sidebar.go:46
+#: internal/ui/components/auth_required.go:17
+msgid "Sign In…"
+msgstr ""
+
+#: internal/ui/window_sidebar.go:40
 msgid "Sign Out"
 msgstr ""
 
@@ -691,7 +707,7 @@ msgstr ""
 msgid "Signed out"
 msgstr ""
 
-#: internal/ui/routes/feed.go:152
+#: internal/ui/routes/feed.go:150
 msgid "Single by %s"
 msgstr ""
 
@@ -709,15 +725,15 @@ msgstr ""
 msgid "The requested deeplink did not have any available handlers."
 msgstr ""
 
-#: internal/ui/routes/feed.go:81
+#: internal/ui/routes/feed.go:82
 msgid "This Month"
 msgstr ""
 
-#: internal/ui/routes/feed.go:77
+#: internal/ui/routes/feed.go:78
 msgid "This Week"
 msgstr ""
 
-#: internal/ui/routes/feed.go:75
+#: internal/ui/routes/feed.go:76
 msgid "Today"
 msgstr ""
 
@@ -729,7 +745,7 @@ msgstr ""
 msgid "Toggle Shuffle"
 msgstr ""
 
-#: internal/ui/window_content.go:45
+#: internal/ui/window_content.go:44
 msgid "Toggle Sidebar"
 msgstr ""
 
@@ -753,11 +769,11 @@ msgid ""
 "Error Message: "
 msgstr ""
 
-#: internal/ui/routes/feed.go:158
+#: internal/ui/routes/feed.go:156
 msgid "Unknown album type"
 msgstr ""
 
-#: internal/ui/routes/feed.go:222
+#: internal/ui/routes/feed.go:220
 msgid "Unsupported activity"
 msgstr ""
 
@@ -783,10 +799,6 @@ msgstr ""
 
 #: internal/ui/components/linking/linking.go:29
 msgid "You can also open the linking page using the button below."
-msgstr ""
-
-#: internal/ui/routes/feed.go:101
-msgid "You need to sign in to your account to access this page"
 msgstr ""
 
 #: internal/secrets/service_linux.go:48

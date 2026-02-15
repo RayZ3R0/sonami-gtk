@@ -86,3 +86,7 @@ func Refresh() {
 func Current() *HistoryEntry {
 	return history.Current
 }
+
+func Clear() {
+	history.Clear()
+}

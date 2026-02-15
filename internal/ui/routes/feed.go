@@ -11,6 +11,7 @@ import (
 	"codeberg.org/dergs/tonearm/internal/gettext"
 	"codeberg.org/dergs/tonearm/internal/router"
 	"codeberg.org/dergs/tonearm/internal/secrets"
+	"codeberg.org/dergs/tonearm/internal/ui/components"
 	"codeberg.org/dergs/tonearm/pkg/schwifty"
 	. "codeberg.org/dergs/tonearm/pkg/schwifty/syntax"
 	"codeberg.org/dergs/tonearm/pkg/tidalapi"
@@ -95,10 +96,7 @@ func Feed() *router.Response {
 	if userId == "" {
 		return &router.Response{
 			PageTitle: gettext.Get("Feed"),
-			View: StatusPage().
-				IconName("avatar-default-symbolic").
-				Title(gettext.Get("Authentication required")).
-				Description(gettext.Get("You need to sign in to your account to access this page")),
+			View: components.AuthRequired(gettext.Get("Please sign in to view your feed")),
 		}
 	}
 

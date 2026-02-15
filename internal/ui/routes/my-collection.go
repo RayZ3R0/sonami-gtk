@@ -31,7 +31,7 @@ func MyCollection() *router.Response {
 	if userId == "" {
 		return &router.Response{
 			PageTitle: gettext.Get("My Collection"),
-			View:      Label(gettext.Get("Please log in to view your collection")),
+			View: components.AuthRequired(gettext.Get("Please sign in to view your collection")),
 		}
 	}
 
