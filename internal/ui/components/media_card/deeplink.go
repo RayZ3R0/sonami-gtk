@@ -19,5 +19,10 @@ func newDeeplink(url string, name string, coverUrl string) schwifty.Button {
 }
 
 func NewLegacyDeeplink(deeplink *v2.DeepLinkItemData) schwifty.Button {
-	return newDeeplink(deeplink.URL, deeplink.Title, "")
+	var coverUrl string
+	if deeplink.Id == "tidal://my-collection/tracks" {
+		coverUrl = "https://tidal.com/assets/my-tracks-DTG3pLQW.png"
+	}
+
+	return newDeeplink(deeplink.URL, deeplink.Title, coverUrl)
 }
