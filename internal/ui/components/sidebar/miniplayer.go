@@ -19,7 +19,7 @@ import (
 	"github.com/jwijenbergh/puregotk/v4/pango"
 )
 
-func MiniPlayer() gtkbindings.Widgetable[gtkbindings.Box] {
+func MiniPlayer() gtkbindings.Box {
 	var miniPlayerLoadingIconSub *signals.Subscription
 	var miniPlayerCanControl = state.NewStateful(false)
 

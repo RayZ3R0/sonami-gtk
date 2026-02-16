@@ -42,6 +42,13 @@ func init() {
 }
 
 func NewQueue() schwifty.Box {
+	trackLoaded := state.NewStateful(false)
+
+	player.TrackChanged.On(func(t tonearm.Track) bool {
+		trackLoaded.SetValue(t != nil)
+		return signals.Continue
+	})
+
 	trackList := tracklist.NewTrackList(
 		tracklist.CoverColumn, tracklist.TitleAlbumColumn,
 		tracklist.CustomWidgetButtonColumn(func(_ string, position, _ int) *gtk.Widget {
@@ -97,7 +104,7 @@ func NewQueue() schwifty.Box {
 	})
 
 	return VStack(
-		sidebar.MiniPlayer(),
+		sidebar.MiniPlayer().BindVisible(trackLoaded),
 		ScrolledWindow().
 			HMargin(10).
 			VExpand(true).

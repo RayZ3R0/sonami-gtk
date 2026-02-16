@@ -438,10 +438,16 @@ func init() {
 
 		return signals.Continue
 	})
-
 }
 
 func NewLyricsPanel() schwifty.Box {
+	trackLoaded := state.NewStateful(false)
+
+	player.TrackChanged.On(func(t tonearm.Track) bool {
+		trackLoaded.SetValue(t != nil)
+		return signals.Continue
+	})
+
 	overlay := gtk.NewOverlay()
 	overlay.SetChild(&lyricsView().Widget)
 	overlay.AddOverlay(&Button().
@@ -463,7 +469,7 @@ func NewLyricsPanel() schwifty.Box {
 		)().
 		Widget)
 	return VStack(
-		sidebar.MiniPlayer(),
+		sidebar.MiniPlayer().BindVisible(trackLoaded),
 		overlay,
 	).
 		Spacing(7).
