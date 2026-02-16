@@ -95,7 +95,7 @@ func ControlsColumn(track tonearm.Track, grid *gtk.Grid, position int, column in
 			track.Artists(),
 			func(artist tonearm.ArtistInfo) lightArtist {
 				return lightArtist{
-					Name: artist.Name(),
+					Name: artist.Title(),
 					ID:   artist.ID(),
 				}
 			},

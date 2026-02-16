@@ -9,8 +9,8 @@ import (
 
 func NewArtist(artist tonearm.ArtistInfo) schwifty.Button {
 	return Card(
-		artist.Name(),
+		artist.Title(),
 		HStack(),
-		artist.ProfilePicture(192),
+		artist.Cover(192),
 	).ActionName("win.route.artist").ActionTargetValue(glib.NewVariantString(artist.ID()))
 }

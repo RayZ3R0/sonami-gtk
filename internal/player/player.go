@@ -125,6 +125,18 @@ func PlayArtistTopSongs(artistId string, shuffle bool, position int) error {
 		return err
 	}
 
+	service, err := injector.Inject[tonearm.Service]()
+	if err != nil {
+		resetLoadingState()
+		return err
+	}
+
+	artistInfo, err := service.GetArtist(artistId)
+	if err != nil {
+		resetLoadingState()
+		return err
+	}
+
 	artist, err := tidal.V2.Artist.Artist(context.Background(), artistId)
 	if err != nil {
 		resetLoadingState()
@@ -153,6 +165,13 @@ func PlayArtistTopSongs(artistId string, shuffle bool, position int) error {
 		}
 	}
 	_, err = playTracklist(topTracks, shuffle, position)
+
+	if err == nil {
+		SourceChanged.Notify(func(oldValue tonearm.PlaybackSource) tonearm.PlaybackSource {
+			return artistInfo
+		})
+	}
+
 	return err
 }
 

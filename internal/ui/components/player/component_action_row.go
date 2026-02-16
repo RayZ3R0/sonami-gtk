@@ -54,7 +54,7 @@ func init() {
 				menu := gio.NewMenu()
 				defer menu.Unref()
 				for _, artist := range artists {
-					menu.AppendItem(gio.NewMenuItem(artist.Name(), "win.route.artist::"+artist.ID()))
+					menu.AppendItem(gio.NewMenuItem(artist.Title(), "win.route.artist::"+artist.ID()))
 				}
 				artistButtonState.SetValue(artistButtonMultiple.MenuModel(&menu.MenuModel))
 			} else {

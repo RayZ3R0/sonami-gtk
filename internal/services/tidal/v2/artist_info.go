@@ -18,11 +18,7 @@ func (a ArtistInfo) ID() string {
 	return strconv.Itoa(a.Id)
 }
 
-func (a ArtistInfo) Name() string {
-	return a.ArtistItemData.Name
-}
-
-func (a ArtistInfo) ProfilePicture(preferredSize int) string {
+func (a ArtistInfo) Cover(preferredSize int) string {
 	logger := artistInfoLogger.With("method", "ProfilePicture").WithGroup("profile_picture").With("preferred_size", preferredSize)
 
 	if preferredSize > 0 {
@@ -34,6 +30,18 @@ func (a ArtistInfo) ProfilePicture(preferredSize int) string {
 	}
 
 	return tidalapi.ImageURL(a.ArtistItemData.Picture)
+}
+
+func (a ArtistInfo) Route() string {
+	return "artist/" + a.ID()
+}
+
+func (a ArtistInfo) SourceType() tonearm.SourceType {
+	return tonearm.SourceTypeArtist
+}
+
+func (a ArtistInfo) Title() string {
+	return a.ArtistItemData.Name
 }
 
 func (a ArtistInfo) URL() string {

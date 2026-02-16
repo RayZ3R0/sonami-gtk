@@ -2,7 +2,6 @@ package tidal
 
 import (
 	"context"
-	"errors"
 	"log/slog"
 
 	"codeberg.org/dergs/tonearm/internal/secrets"
@@ -74,7 +73,12 @@ func (t *Tidal) GetAlbumTracks(id string) (tonearm.Paginator[tonearm.Track], err
 }
 
 func (t *Tidal) GetArtist(id string) (tonearm.ArtistInfo, error) {
-	return nil, errors.New("not implemented")
+	artist, err := t.API.OpenAPI.V2.Artists.Artist(context.Background(), id, "profileArt")
+	if err != nil {
+		return nil, err
+	}
+
+	return openapi.NewArtistInfo(*artist), nil
 }
 
 func (t *Tidal) GetPlaylist(id string) (tonearm.Playlist, error) {

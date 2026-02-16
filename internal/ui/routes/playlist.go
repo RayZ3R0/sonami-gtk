@@ -52,7 +52,7 @@ func Playlist(playlistID string) *router.Response {
 	// If no creator is present, the playlist is curated by TIDAL
 	creatorName := "TIDAL"
 	if creator := playlist.Creator(); creator != nil {
-		creatorName = creator.Name()
+		creatorName = creator.Title()
 	}
 
 	var playlistMetadata schwifty.Label

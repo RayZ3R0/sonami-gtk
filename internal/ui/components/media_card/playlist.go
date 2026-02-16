@@ -11,7 +11,7 @@ import (
 func NewPlaylist(playlist tonearm.Playlist) schwifty.Button {
 	creatorName := "TIDAL"
 	if creator := playlist.Creator(); creator != nil {
-		creatorName = creator.Name()
+		creatorName = creator.Title()
 	}
 	return Card(
 		playlist.Title(),

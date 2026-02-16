@@ -15,11 +15,7 @@ func (a ArtistInfo) ID() string {
 	return a.Artist.Data.ID
 }
 
-func (a ArtistInfo) Name() string {
-	return a.Artist.Data.Attributes.Name
-}
-
-func (a ArtistInfo) ProfilePicture(preferredSize int) string {
+func (a ArtistInfo) Cover(preferredSize int) string {
 	logger := artistInfoLogger.With("method", "ProfilePicture").WithGroup("profile_picture").With("preferred_size", preferredSize)
 
 	if preferredSize < 0 {
@@ -31,6 +27,18 @@ func (a ArtistInfo) ProfilePicture(preferredSize int) string {
 	logger.Debug("resolved profile artworks", "count", len(artworks))
 
 	return artworks.AtLeast(preferredSize)
+}
+
+func (a ArtistInfo) Route() string {
+	return "artist/" + a.ID()
+}
+
+func (a ArtistInfo) SourceType() tonearm.SourceType {
+	return tonearm.SourceTypeArtist
+}
+
+func (a ArtistInfo) Title() string {
+	return a.Artist.Data.Attributes.Name
 }
 
 func (a ArtistInfo) URL() string {

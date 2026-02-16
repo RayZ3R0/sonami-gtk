@@ -95,7 +95,7 @@ func init() {
 
 		artistNames := []string{}
 		for _, artist := range trackInfo.Artists() {
-			artistNames = append(artistNames, artist.Name())
+			artistNames = append(artistNames, artist.Title())
 		}
 
 		mprisServer().SetTrackMetadata(map[string]any{
