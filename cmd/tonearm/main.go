@@ -10,7 +10,7 @@ import (
 	_ "codeberg.org/dergs/tonearm/internal/icons"
 	_ "codeberg.org/dergs/tonearm/internal/styles"
 
-	// _ "codeberg.org/dergs/tonearm/internal/features/scrobbling"
+	_ "codeberg.org/dergs/tonearm/internal/features/scrobbling"
 	_ "codeberg.org/dergs/tonearm/internal/services"
 
 	"codeberg.org/dergs/tonearm/internal/player"
