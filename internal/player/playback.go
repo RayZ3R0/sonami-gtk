@@ -2,8 +2,11 @@ package player
 
 import (
 	"context"
+	"errors"
 	"strconv"
 
+	"codeberg.org/dergs/tonearm/internal/gettext"
+	"codeberg.org/dergs/tonearm/internal/notifications"
 	"codeberg.org/dergs/tonearm/internal/settings"
 	"codeberg.org/dergs/tonearm/pkg/tidalapi"
 	v1 "codeberg.org/dergs/tonearm/pkg/tidalapi/models/v1"
@@ -29,11 +32,11 @@ func playTrack(track tonearm.Track) error {
 		return &newState
 	})
 
-	// if !slices.Contains(track.Data.Attributes.Availability, openapi.TrackAvailabilityStream) {
-	// 	notifications.OnToast.Notify(gettext.Get("Track not available for streaming, skipping to next track"))
-	// 	Next()
-	// 	return errors.New("track not available for streaming")
-	// }
+	if !track.IsStreamable() {
+		notifications.OnToast.Notify(gettext.Get("Track not available for streaming, skipping to next track"))
+		Next()
+		return errors.New("track not available for streaming")
+	}
 
 	if currentlyEnqueuedTrack == nil || strconv.Itoa(currentlyEnqueuedTrack.TrackID) != track.ID() {
 		logger.Debug("fetching playback info for track", "track_id", track.ID())

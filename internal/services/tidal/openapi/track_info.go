@@ -1,6 +1,7 @@
 package openapi
 
 import (
+	"slices"
 	"time"
 
 	"codeberg.org/dergs/tonearm/pkg/tidalapi/models/openapi"
@@ -17,6 +18,10 @@ func (t TrackInfo) Duration() time.Duration {
 
 func (t TrackInfo) ID() string {
 	return t.Data.ID
+}
+
+func (t TrackInfo) IsStreamable() bool {
+	return slices.Contains(t.Data.Attributes.Availability, openapi.TrackAvailabilityStream)
 }
 
 func (t TrackInfo) Title() string {

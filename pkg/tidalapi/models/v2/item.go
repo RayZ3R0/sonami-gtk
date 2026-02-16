@@ -172,9 +172,10 @@ type PlaylistItemData struct {
 }
 
 type TrackItemData struct {
-	Album    TrackItemDataAlbum
-	Artists  []ArtistItemData `json:"artists"`
-	Duration int              `json:"duration"`
+	Album          TrackItemDataAlbum
+	AllowStreaming bool             `json:"allowStreaming"`
+	Artists        []ArtistItemData `json:"artists"`
+	Duration       int              `json:"duration"`
 	// In UI terms: Indicates whether the track has been "heart"-ed
 	Following bool   `json:"following"`
 	ID        int    `json:"id"`

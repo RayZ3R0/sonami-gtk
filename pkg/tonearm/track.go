@@ -18,6 +18,9 @@ type TrackInfo interface {
 	// ID returns the unique identifier for the track
 	ID() string
 
+	// IsStreamable returns whether the track is streamable
+	IsStreamable() bool
+
 	// Title returns the title of the track without any additional information
 	Title() string
 

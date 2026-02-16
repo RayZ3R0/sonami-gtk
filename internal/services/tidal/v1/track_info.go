@@ -20,6 +20,10 @@ func (t TrackInfo) ID() string {
 	return strconv.Itoa(t.AlbumItem.ID)
 }
 
+func (t TrackInfo) IsStreamable() bool {
+	return t.AllowStreaming
+}
+
 func (t TrackInfo) Title() string {
 	return t.AlbumItem.Title
 }
