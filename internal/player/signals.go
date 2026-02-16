@@ -4,6 +4,7 @@ import (
 	"codeberg.org/dergs/tonearm/internal/settings"
 	"codeberg.org/dergs/tonearm/internal/signals"
 	v1 "codeberg.org/dergs/tonearm/pkg/tidalapi/models/v1"
+	"codeberg.org/dergs/tonearm/pkg/tonearm"
 )
 
 // Holds the current playback state including the expected duration and playing position of the
@@ -34,7 +35,7 @@ var RepeatModeChanged = signals.NewStatefulSignal[RepeatMode](RepeatModeNone)
 // The value is 0 if shuffle mode is disabled.
 var ShuffleStateChanged = signals.NewStatefulSignal[bool](false)
 
-var SourceChanged = signals.NewStatefulSignal[*Source](nil)
+var SourceChanged = signals.NewStatefulSignal[tonearm.PlaybackSource](nil)
 
 // Holds the relevant information about the currently playing or last played track.
 // This can be nil if no track is currently playing. This is especially the case when
@@ -42,7 +43,7 @@ var SourceChanged = signals.NewStatefulSignal[*Source](nil)
 //
 // The signal fires after the new track information has been retrieved from the TIDAL API
 // but always before the track starts playing.
-var TrackChanged = signals.NewStatefulSignal[*Track](nil)
+var TrackChanged = signals.NewStatefulSignal[tonearm.Track](nil)
 
 // Holds the current volume of the player as reported by playbin
 //

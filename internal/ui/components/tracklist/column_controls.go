@@ -3,15 +3,13 @@ package tracklist
 import (
 	"fmt"
 	"log/slog"
-	"strconv"
 
 	"codeberg.org/dergs/tonearm/internal/g"
 	"codeberg.org/dergs/tonearm/internal/gettext"
 	"codeberg.org/dergs/tonearm/internal/state"
 	favouritebutton "codeberg.org/dergs/tonearm/internal/ui/components/favourite_button"
 	. "codeberg.org/dergs/tonearm/pkg/schwifty/syntax"
-	"codeberg.org/dergs/tonearm/pkg/tidalapi/models/openapi"
-	v2 "codeberg.org/dergs/tonearm/pkg/tidalapi/models/v2"
+	"codeberg.org/dergs/tonearm/pkg/tonearm"
 	"github.com/jwijenbergh/puregotk/v4/gio"
 	"github.com/jwijenbergh/puregotk/v4/glib"
 	"github.com/jwijenbergh/puregotk/v4/gtk"
@@ -79,7 +77,7 @@ func controlsColumn(trackId, albumId string, artistId []lightArtist, grid *gtk.G
 	return 1
 }
 
-func ControlsColumn(track *openapi.Track, grid *gtk.Grid, position int, column int) int {
+func ControlsColumn(track tonearm.Track, grid *gtk.Grid, position int, column int) int {
 	if track == nil {
 		grid.Attach(
 			Box(gtk.OrientationHorizontalValue).ToGTK(),
@@ -91,43 +89,17 @@ func ControlsColumn(track *openapi.Track, grid *gtk.Grid, position int, column i
 		return 1
 	}
 	return controlsColumn(
-		track.Data.ID,
-		track.Included.Albums(track.Data.Relationships.Albums.Data...)[0].Data.ID,
+		track.ID(),
+		track.Album().ID(),
 		g.Map(
-			track.Included.Artists(track.Data.Relationships.Artists.Data...),
-			func(artist openapi.Artist) lightArtist {
+			track.Artists(),
+			func(artist tonearm.ArtistInfo) lightArtist {
 				return lightArtist{
-					Name: artist.Data.Attributes.Name,
-					ID:   artist.Data.ID,
+					Name: artist.Title(),
+					ID:   artist.ID(),
 				}
 			},
 		),
-		grid,
-		position,
-		column,
-	)
-}
-
-func LegacyControlsColumn(track *v2.TrackItemData, grid *gtk.Grid, position int, column int) int {
-	if track == nil {
-		grid.Attach(
-			Box(gtk.OrientationHorizontalValue).ToGTK(),
-			column,
-			0,
-			1,
-			1,
-		)
-		return 1
-	}
-	return controlsColumn(
-		strconv.Itoa(track.ID),
-		strconv.Itoa(track.Album.ID),
-		g.Map(track.Artists, func(artist v2.TrackItemDataArtist) lightArtist {
-			return lightArtist{
-				Name: artist.Name,
-				ID:   strconv.Itoa(artist.ID),
-			}
-		}),
 		grid,
 		position,
 		column,

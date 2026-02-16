@@ -20,6 +20,7 @@ import (
 	"codeberg.org/dergs/tonearm/pkg/schwifty/tracking"
 	"codeberg.org/dergs/tonearm/pkg/tidalapi"
 	"codeberg.org/dergs/tonearm/pkg/tidalapi/models/openapi"
+	"codeberg.org/dergs/tonearm/pkg/tonearm"
 	"codeberg.org/dergs/tonearm/pkg/utils/imgutil"
 	"github.com/infinytum/injector"
 	"github.com/jwijenbergh/puregotk/v4/gobject"
@@ -182,7 +183,7 @@ func setNewIndex(timing highlightTiming) {
 	}
 }
 
-func parseLRCLyrics(lyrics string, trackInfo *player.Track) (lines []any) {
+func parseLRCLyrics(lyrics string, trackInfo tonearm.Track) (lines []any) {
 	// Handle lyrics with timings
 	// Remove timing tags and split into lines
 	timingRegex := regexp.MustCompile(`\[(\d{2}:\d{2}\.\d{2})\](.*)`)
@@ -204,7 +205,7 @@ func parseLRCLyrics(lyrics string, trackInfo *player.Track) (lines []any) {
 		timestampStart := matches[1]
 		timeStart, _ := parseTimestamp(timestampStart)
 
-		var timeEnd time.Duration = trackInfo.Duration
+		var timeEnd time.Duration = trackInfo.Duration()
 
 		if i+1 < len(splitLyrics) {
 			offset := 1
@@ -328,9 +329,9 @@ func parseUntimedLyrics(lyrics string) (lines []any) {
 	return
 }
 
-func loadMiniplayerState(trackInfo *player.Track) {
+func loadMiniplayerState(trackInfo tonearm.Track) {
 	go func() {
-		if texture, err := injector.MustInject[*imgutil.ImgUtil]().Load(trackInfo.CoverURL); err == nil {
+		if texture, err := injector.MustInject[*imgutil.ImgUtil]().Load(trackInfo.Cover(80)); err == nil {
 			schwifty.OnMainThreadOncePure(func() {
 				coverState.SetValue(texture)
 				texture.Unref()
@@ -339,8 +340,8 @@ func loadMiniplayerState(trackInfo *player.Track) {
 	}()
 
 	schwifty.OnMainThreadOncePure(func() {
-		trackTitle.SetValue(trackInfo.Title)
-		trackArtists.SetValue(trackInfo.ArtistNames())
+		trackTitle.SetValue(tonearm.FormatTitle(trackInfo))
+		trackArtists.SetValue(strings.Join(trackInfo.Artists().Names(), ", "))
 	})
 }
 
@@ -382,7 +383,7 @@ func setLyricsEmptyState(msg string) {
 }
 
 func init() {
-	player.TrackChanged.On(func(trackInfo *player.Track) bool {
+	player.TrackChanged.On(func(trackInfo tonearm.Track) bool {
 		lyricsList.SetValue(nil)
 		defer runtime.GC()
 		activeLyricIndex.SetValue(0)
@@ -402,7 +403,7 @@ func init() {
 		}
 
 		loadMiniplayerState(trackInfo)
-		lyrics, isTimestamped, err := getLyrics(trackInfo.ID)
+		lyrics, isTimestamped, err := getLyrics(trackInfo.ID())
 		if err != nil {
 			logger.Error("Error while fetching lyrics", "error", err)
 			schwifty.OnMainThreadOncePure(func() {

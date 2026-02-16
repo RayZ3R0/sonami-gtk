@@ -4,12 +4,12 @@ import (
 	"context"
 	"time"
 
-	"codeberg.org/dergs/tonearm/internal/player"
+	"codeberg.org/dergs/tonearm/pkg/tonearm"
 )
 
 type Clock struct {
 	counter   int
-	track     *player.Track
+	track     tonearm.Track
 	isRunning bool
 	startedAt time.Time
 
@@ -21,7 +21,7 @@ func (c *Clock) Start() {
 	if c.isRunning {
 		return
 	}
-	if c.counter >= int(c.track.Duration.Seconds())/2 {
+	if c.counter >= int(c.track.Duration().Seconds())/2 {
 		return
 	}
 	c.isRunning = true
@@ -41,7 +41,7 @@ func (c *Clock) Start() {
 				return
 			case <-time.After(time.Second):
 				c.counter++
-				if c.counter >= int(c.track.Duration.Seconds())/2 || c.counter >= int((time.Minute*4).Seconds()) {
+				if c.counter >= int(c.track.Duration().Seconds())/2 || c.counter >= int((time.Minute*4).Seconds()) {
 					logger.Debug("notifying scrobblers that a track should be scrobbled")
 
 					event := new(ScrobbleEvent)
@@ -50,11 +50,11 @@ func (c *Clock) Start() {
 
 					for _, scrobbler := range Scrobblers {
 						if !scrobbler.IsConfigured() {
-							logger.Debug("skipping scrobbling to %s", scrobbler.GetName())
+							logger.Debug("skipping scrobbling", "service", scrobbler.GetName())
 							continue
 						}
 
-						logger.Debug("sending Scrobble event to %s", scrobbler.GetName())
+						logger.Debug("sending Scrobble event", "service", scrobbler.GetName())
 						go scrobbler.Scrobble(event)
 					}
 
@@ -73,7 +73,7 @@ func (c *Clock) Stop() {
 	c.cancelFunc()
 }
 
-func newClock(track *player.Track) *Clock {
+func newClock(track tonearm.Track) *Clock {
 	return &Clock{
 		track:     track,
 		startedAt: time.Now(),

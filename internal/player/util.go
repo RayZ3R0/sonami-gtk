@@ -1,11 +1,9 @@
 package player
 
 import (
-	"context"
 	"fmt"
 
-	"codeberg.org/dergs/tonearm/pkg/tidalapi"
-	"codeberg.org/dergs/tonearm/pkg/tidalapi/models/openapi"
+	"codeberg.org/dergs/tonearm/pkg/tonearm"
 	"github.com/infinytum/injector"
 )
 
@@ -14,20 +12,20 @@ func clearQueues() {
 	BaseQueue.Clear()
 }
 
-func getNextTrackFromQueue(peek bool) *openapi.Track {
+func getNextTrackFromQueue(peek bool) tonearm.Track {
 	verb := "pop"
 	if peek {
 		verb = "peek"
 	}
 	logger.Debug(fmt.Sprintf("attempting to %s next track from user queue", verb))
-	var nextTrack *openapi.Track
+	var nextTrack tonearm.Track
 	if peek {
 		nextTrack = UserQueue.Peek()
 	} else {
 		nextTrack = UserQueue.Pop()
 	}
 	if nextTrack != nil {
-		logger.Info(fmt.Sprintf("%sed next track from user queue", verb), "track_id", nextTrack.Data.ID)
+		logger.Info(fmt.Sprintf("%sed next track from user queue", verb), "track_id", nextTrack.ID())
 		return nextTrack
 	}
 
@@ -38,7 +36,7 @@ func getNextTrackFromQueue(peek bool) *openapi.Track {
 		nextTrack = BaseQueue.Pop()
 	}
 	if nextTrack != nil {
-		logger.Info(fmt.Sprintf("%sed next track from base queue", verb), "track_id", nextTrack.Data.ID)
+		logger.Info(fmt.Sprintf("%sed next track from base queue", verb), "track_id", nextTrack.ID())
 		return nextTrack
 	}
 
@@ -55,11 +53,11 @@ func getNextTrackFromQueue(peek bool) *openapi.Track {
 	return nil
 }
 
-func resolveTrack(trackId string) (*openapi.Track, error) {
-	tidal, err := injector.Inject[*tidalapi.TidalAPI]()
+func resolveTrack(trackId string) (tonearm.Track, error) {
+	service, err := injector.Inject[tonearm.Service]()
 	if err != nil {
 		return nil, err
 	}
 
-	return tidal.OpenAPI.V2.Tracks.Track(context.Background(), trackId, "albums.coverArt", "artists")
+	return service.GetTrack(trackId)
 }

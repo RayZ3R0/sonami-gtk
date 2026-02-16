@@ -3,6 +3,7 @@ package queue
 import (
 	"log/slog"
 	"slices"
+	"strings"
 	"time"
 
 	"codeberg.org/dergs/tonearm/internal/gettext"
@@ -13,7 +14,7 @@ import (
 	"codeberg.org/dergs/tonearm/pkg/schwifty"
 	"codeberg.org/dergs/tonearm/pkg/schwifty/state"
 	. "codeberg.org/dergs/tonearm/pkg/schwifty/syntax"
-	"codeberg.org/dergs/tonearm/pkg/tidalapi/models/openapi"
+	"codeberg.org/dergs/tonearm/pkg/tonearm"
 	"codeberg.org/dergs/tonearm/pkg/utils/imgutil"
 	"github.com/infinytum/injector"
 	"github.com/jwijenbergh/puregotk/v4/gtk"
@@ -24,8 +25,8 @@ const (
 	queueScrollMargin = 75
 )
 
-var baseQueueState = state.NewStateful([]*openapi.Track{})
-var userQueueState = state.NewStateful([]*openapi.Track{})
+var baseQueueState = state.NewStateful([]tonearm.Track{})
+var userQueueState = state.NewStateful([]tonearm.Track{})
 
 var (
 	coverState    = state.NewStateful[schwifty.Paintable](resources.MissingAlbum())
@@ -39,13 +40,13 @@ var miniPlayerCanControl = state.NewStateful(false)
 var log = slog.With("module", "queue")
 
 func init() {
-	player.BaseQueue.Entries().On(func(tracks []*openapi.Track) bool {
+	player.BaseQueue.Entries().On(func(tracks []tonearm.Track) bool {
 		schwifty.OnMainThreadOnce(func(u uintptr) {
 			baseQueueState.SetValue(tracks)
 		}, 0)
 		return signals.Continue
 	})
-	player.UserQueue.Entries().On(func(tracks []*openapi.Track) bool {
+	player.UserQueue.Entries().On(func(tracks []tonearm.Track) bool {
 		schwifty.OnMainThreadOnce(func(u uintptr) {
 			userQueueState.SetValue(tracks)
 		}, 0)
@@ -77,11 +78,11 @@ func NewQueue() schwifty.Box {
 		),
 	)
 	trackList.BindTracks(userQueueState)
-	trackList.SetReorderCallback(func(sourceIndex, targetIndex int, track *openapi.Track) {
-		player.UserQueue.Entries().Notify(func(oldValue []*openapi.Track) []*openapi.Track {
+	trackList.SetReorderCallback(func(sourceIndex, targetIndex int, track tonearm.Track) {
+		player.UserQueue.Entries().Notify(func(oldValue []tonearm.Track) []tonearm.Track {
 			q := slices.Clone(oldValue)
 			q = append(q[:sourceIndex], q[sourceIndex+1:]...)
-			q = append(q[:targetIndex], append([]*openapi.Track{track}, q[targetIndex:]...)...)
+			q = append(q[:targetIndex], append([]tonearm.Track{track}, q[targetIndex:]...)...)
 			return q
 		})
 	})
@@ -105,29 +106,33 @@ func NewQueue() schwifty.Box {
 		),
 	)
 	trackListBase.BindTracks(baseQueueState)
-	trackListBase.SetReorderCallback(func(sourceIndex, targetIndex int, track *openapi.Track) {
-		player.BaseQueue.Entries().Notify(func(oldValue []*openapi.Track) []*openapi.Track {
+	trackListBase.SetReorderCallback(func(sourceIndex, targetIndex int, track tonearm.Track) {
+		player.BaseQueue.Entries().Notify(func(oldValue []tonearm.Track) []tonearm.Track {
 			q := slices.Clone(oldValue)
 			q = append(q[:sourceIndex], q[sourceIndex+1:]...)
-			q = append(q[:targetIndex], append([]*openapi.Track{track}, q[targetIndex:]...)...)
+			q = append(q[:targetIndex], append([]tonearm.Track{track}, q[targetIndex:]...)...)
 			return q
 		})
 	})
 
-	player.TrackChanged.On(func(trackInfo *player.Track) bool {
+	player.TrackChanged.On(func(trackInfo tonearm.Track) bool {
 		if trackInfo != nil {
-			if trackInfo.CoverURL != "" {
-				if texture, err := injector.MustInject[*imgutil.ImgUtil]().Load(trackInfo.CoverURL); err == nil {
-					schwifty.OnMainThreadOncePure(func() {
-						coverState.SetValue(texture)
-						texture.Unref()
-					})
-				}
+			coverUrl := trackInfo.Cover(80)
+			if coverUrl == "" {
+				slog.Error("Failed to load cover URL")
+				return signals.Continue
+			}
+
+			if texture, err := injector.MustInject[*imgutil.ImgUtil]().Load(coverUrl); err == nil {
+				schwifty.OnMainThreadOncePure(func() {
+					coverState.SetValue(texture)
+					texture.Unref()
+				})
 			}
 
 			schwifty.OnMainThreadOncePure(func() {
-				trackTitle.SetValue(trackInfo.Title)
-				trackArtists.SetValue(trackInfo.ArtistNames())
+				trackTitle.SetValue(tonearm.FormatTitle(trackInfo))
+				trackArtists.SetValue(strings.Join(trackInfo.Artists().Names(), ", "))
 			})
 		}
 

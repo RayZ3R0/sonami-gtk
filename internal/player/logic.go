@@ -19,7 +19,7 @@ func init() {
 	ShuffleStateChanged.On(func(enabled bool) bool {
 		currentTrackId := ""
 		if TrackChanged.CurrentValue() != nil {
-			currentTrackId = TrackChanged.CurrentValue().ID
+			currentTrackId = TrackChanged.CurrentValue().ID()
 		}
 		if enabled {
 			BaseQueue.Shuffle(currentTrackId)
@@ -35,19 +35,20 @@ func playNextTrack() {
 		logger.Debug("single repeat mode is enabled, replaying track")
 		playbin.SeekTime(0, gst.SeekFlagFlush|gst.SeekFlagKeyUnit)
 		startUpdateRunner()
+		resetLoadingState()
 		return
 	}
 
 	nextTrack := getNextTrackFromQueue(false)
 	if nextTrack != nil {
-		logger.Info("playing next track", "track_id", nextTrack.Data.ID)
-		if currentlyEnqueuedTrack == nil || strconv.Itoa(currentlyEnqueuedTrack.TrackID) != nextTrack.Data.ID {
+		logger.Info("playing next track", "track_id", nextTrack.ID())
+		if currentlyEnqueuedTrack == nil || strconv.Itoa(currentlyEnqueuedTrack.TrackID) != nextTrack.ID() {
 			setLoadingState()
 		}
 		playTrack(nextTrack)
 
 		history.Push(&HistoryEntry{
-			TrackID: nextTrack.Data.ID,
+			TrackID: nextTrack.ID(),
 		})
 
 		return
@@ -56,7 +57,7 @@ func playNextTrack() {
 	if settings.Playback().AllowAutoplay() {
 		// Since no other songs are left in the queue, retrieve mix to play from API
 		logger.Info("starting track radio", "track_id", TrackChanged.CurrentValue().ID)
-		PlayTrackRadio(TrackChanged.CurrentValue().ID, true)
+		PlayTrackRadio(TrackChanged.CurrentValue().ID(), true)
 	} else {
 		resetLoadingState()
 	}
@@ -80,7 +81,7 @@ func playPreviousTrack() {
 
 	entry := history.Pop()
 	if entry != nil {
-		track, err := resolveTrack(TrackChanged.CurrentValue().ID)
+		track, err := resolveTrack(TrackChanged.CurrentValue().ID())
 		if err != nil {
 			logger.Error("failed to resolve track", "trackID", entry.TrackID, "error", err)
 			return
@@ -95,7 +96,7 @@ func playPreviousTrack() {
 			logger.Error("failed to resolve track", "trackID", entry.TrackID, "error", err)
 			return
 		}
-		logger.Debug("playing previous track", "track_id", track.Data.ID, "action", "previous")
+		logger.Debug("playing previous track", "track_id", track.ID(), "action", "previous")
 		playTrack(track)
 	}
 }
@@ -105,7 +106,7 @@ func SkipThroughQueue(queue queue.Queue, to int) {
 		setLoadingState()
 		if skipped, err := queue.Skip(to); err == nil {
 			for _, track := range skipped {
-				history.Push(&HistoryEntry{track.Data.ID})
+				history.Push(&HistoryEntry{track.ID()})
 			}
 
 			playTrack(queue.Pop())

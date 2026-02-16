@@ -1,7 +1,6 @@
 package routes
 
 import (
-	"context"
 	"fmt"
 	"log/slog"
 	"strings"
@@ -20,8 +19,7 @@ import (
 	"codeberg.org/dergs/tonearm/pkg/schwifty/state"
 	. "codeberg.org/dergs/tonearm/pkg/schwifty/syntax"
 	"codeberg.org/dergs/tonearm/pkg/tidalapi"
-	"codeberg.org/dergs/tonearm/pkg/tidalapi/models/openapi"
-	"codeberg.org/dergs/tonearm/pkg/tidalapi/pagination"
+	"codeberg.org/dergs/tonearm/pkg/tonearm"
 	"codeberg.org/dergs/tonearm/pkg/utils/imgutil"
 	"github.com/infinytum/injector"
 	"github.com/jwijenbergh/puregotk/v4/gdk"
@@ -43,33 +41,26 @@ func init() {
 }
 
 func Album(albumId string) *router.Response {
-	tidal := injector.MustInject[*tidalapi.TidalAPI]()
-
-	paginator := pagination.NewPaginator(tidal.OpenAPI.V2.Albums.Items, albumId, func(items *openapi.Response[[]openapi.Relationship]) []openapi.Track {
-		return items.Included.Tracks(items.Data...)
-	}, "items", "items.artists", "items.albums.coverArt")
-
-	album, err := tidal.OpenAPI.V2.Albums.Album(context.Background(), albumId, "coverArt", "artists", "coverArt")
+	service, err := injector.Inject[tonearm.Service]()
 	if err != nil {
 		return router.FromError(gettext.Get("Album"), err)
 	}
 
-	artists := []string{}
-	for _, artist := range album.Included.PlainArtists(album.Data.Relationships.Artists.Data...) {
-		artists = append(artists, artist.Attributes.Name)
+	album, err := service.GetAlbum(albumId)
+	if err != nil {
+		return router.FromError(gettext.Get("Album"), err)
 	}
 
-	coverUrl := ""
-	for _, artwork := range album.Included.PlainArtworks(album.Data.Relationships.CoverArt.Data...) {
-		if artwork.Attributes.IsPicture() {
-			coverUrl = artwork.Attributes.Files.AtLeast(160).Href
-			break
-		}
+	coverUrl := album.Cover(160)
+
+	trackPaginator, err := service.GetAlbumTracks(albumId)
+	if err != nil {
+		return router.FromError(gettext.Get("Album"), err)
 	}
 
 	page, err := pages.NewPaginatedTracklistPage(
-		paginator,
-		func() *tracklist.TrackList[*openapi.Track] {
+		trackPaginator,
+		func() *tracklist.TrackList {
 			return tracklist.NewTrackList(
 				tracklist.GroupedColumn(2, gtk.AlignStartValue, tracklist.PositionColumn, tracklist.TitleColumn),
 				tracklist.ArtistsColumn,
@@ -83,13 +74,13 @@ func Album(albumId string) *router.Response {
 				}),
 				tracklist.GroupedColumn(1, gtk.AlignEndValue, tracklist.DurationColumn, tracklist.ControlsColumn),
 			)
-		}, func(tl *tracklist.TrackList[*openapi.Track]) schwifty.BaseWidgetable {
+		}, func(tl *tracklist.TrackList) schwifty.BaseWidgetable {
 			return tl.HMargin(30).VAlign(gtk.AlignStartValue)
 		},
 	)
 
 	if err != nil {
-		return router.FromError(album.Data.Attributes.Title, err)
+		return router.FromError(album.Title(), err)
 	}
 
 	playControlsMenu := gio.NewMenu()
@@ -99,7 +90,7 @@ func Album(albumId string) *router.Response {
 	playControlsPopover := gtk.NewPopoverMenuFromModel(&playControlsMenu.MenuModel)
 
 	return &router.Response{
-		PageTitle: album.Data.Attributes.Title,
+		PageTitle: album.Title(),
 		Error:     err,
 		View: VStack(
 			HStack(
@@ -114,19 +105,19 @@ func Album(albumId string) *router.Response {
 						}),
 				).CornerRadius(10).Overflow(gtk.OverflowHiddenValue),
 				VStack(
-					Label(album.Data.Attributes.Title).
+					Label(album.Title()).
 						WithCSSClass("title-2").
-						HAlign(gtk.AlignStartValue).
-						Ellipsis(pango.EllipsizeEndValue),
-					Label(strings.Join(artists, ", ")).
+						Ellipsis(pango.EllipsizeEndValue).
+						HAlign(gtk.AlignStartValue),
+					Label(strings.Join(album.Artists().Names(), ", ")).
 						Ellipsis(pango.EllipsizeEndValue).
 						WithCSSClass("heading").WithCSSClass("dimmed").
 						PaddingTop(10).
 						HAlign(gtk.AlignStartValue),
-					Label(album.Data.Attributes.ReleaseDate.Format("2006")).
+					Label(album.ReleasedAt().Format("2006")).
 						WithCSSClass("heading").WithCSSClass("dimmed").
 						HAlign(gtk.AlignStartValue),
-					Label(gettext.GetN("%d Track (%s)", "%d Tracks (%s)", album.Data.Attributes.NumberOfItems, album.Data.Attributes.NumberOfItems, tidalapi.FormatDuration(album.Data.Attributes.Duration.Duration))).
+					Label(gettext.GetN("%d Track (%s)", "%d Tracks (%s)", album.Count(), album.Count(), tidalapi.FormatDuration(album.Duration()))).
 						WithCSSClass("heading").WithCSSClass("dimmed").
 						HAlign(gtk.AlignStartValue).
 						MarginTop(10),
@@ -179,26 +170,20 @@ func Album(albumId string) *router.Response {
 							IconName("share-alt-symbolic").
 							WithCSSClass("flat").
 							ConnectClicked(func(gtk.Button) {
-								id := album.Data.ID
-								if id == "" {
-									notifications.OnToast.Notify(gettext.Get("No album could be shared."))
-									return
-								}
-
 								display := gdk.DisplayGetDefault()
 								defer display.Unref()
 								clipboard := display.GetClipboard()
 								defer clipboard.Unref()
 
-								clipboard.SetText(fmt.Sprintf("https://tidal.com/album/%s?u", id))
+								clipboard.SetText(album.URL())
 								notifications.OnToast.Notify(gettext.Get("Copied album URL to clipboard."))
 							}),
 					).
 						Spacing(10).
 						HAlign(gtk.AlignEndValue),
 				).
+					Spacing(20).
 					MarginStart(20).
-					HAlign(gtk.AlignEndValue).
 					VAlign(gtk.AlignCenterValue),
 			).
 				HMargin(40),

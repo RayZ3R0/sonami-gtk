@@ -1,6 +1,7 @@
 package v2
 
 type PageItem struct {
+	Header        *Item    `json:"header"`
 	Icons         []any    `json:"icons"`
 	Items         []Item   `json:"items"`
 	ModuleID      string   `json:"moduleId"`

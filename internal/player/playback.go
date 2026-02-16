@@ -3,71 +3,46 @@ package player
 import (
 	"context"
 	"errors"
-	"slices"
 	"strconv"
 
 	"codeberg.org/dergs/tonearm/internal/gettext"
 	"codeberg.org/dergs/tonearm/internal/notifications"
 	"codeberg.org/dergs/tonearm/internal/settings"
 	"codeberg.org/dergs/tonearm/pkg/tidalapi"
-	"codeberg.org/dergs/tonearm/pkg/tidalapi/models/openapi"
 	v1 "codeberg.org/dergs/tonearm/pkg/tidalapi/models/v1"
 	tracksv1 "codeberg.org/dergs/tonearm/pkg/tidalapi/v1/tracks"
+	"codeberg.org/dergs/tonearm/pkg/tonearm"
 	"github.com/go-gst/go-gst/gst"
 	"github.com/infinytum/injector"
 )
 
-func playTrack(track *openapi.Track) error {
+func playTrack(track tonearm.Track) error {
 	tidal, err := injector.Inject[*tidalapi.TidalAPI]()
 	if err != nil {
 		return err
 	}
 
-	TrackChanged.Notify(func(oldState *Track) *Track {
-		trackInfo := &Track{
-			Albums:   []openapi.Album{},
-			Artists:  []openapi.ArtistData{},
-			CoverURL: "",
-			Duration: track.Data.Attributes.Duration.Duration,
-			ID:       track.Data.ID,
-			Title:    track.Data.Attributes.Title,
-			ISRC:     track.Data.Attributes.ISRC,
-		}
-
-		for _, album := range track.Included.Albums(track.Data.Relationships.Albums.Data...) {
-			trackInfo.Albums = append(trackInfo.Albums, album)
-			for _, artwork := range album.Included.PlainArtworks(album.Data.Relationships.CoverArt.Data...) {
-				if artwork.Attributes.IsPicture() {
-					trackInfo.CoverURL = artwork.Attributes.Files.AtLeast(320).Href
-					break
-				}
-			}
-		}
-
-		for _, artist := range track.Included.PlainArtists(track.Data.Relationships.Artists.Data...) {
-			trackInfo.Artists = append(trackInfo.Artists, artist)
-		}
-
-		return trackInfo
+	TrackChanged.Notify(func(oldState tonearm.Track) tonearm.Track {
+		return track
 	})
 
 	PlaybackStateChanged.Notify(func(oldValue *PlaybackState) *PlaybackState {
 		newState := *oldValue
-		newState.Duration = track.Data.Attributes.Duration.Duration
+		newState.Duration = track.Duration()
 		return &newState
 	})
 
-	if !slices.Contains(track.Data.Attributes.Availability, openapi.TrackAvailabilityStream) {
+	if !track.IsStreamable() {
 		notifications.OnToast.Notify(gettext.Get("Track not available for streaming, skipping to next track"))
 		Next()
 		return errors.New("track not available for streaming")
 	}
 
-	if currentlyEnqueuedTrack == nil || strconv.Itoa(currentlyEnqueuedTrack.TrackID) != track.Data.ID {
-		logger.Debug("fetching playback info for track", "track_id", track.Data.ID)
+	if currentlyEnqueuedTrack == nil || strconv.Itoa(currentlyEnqueuedTrack.TrackID) != track.ID() {
+		logger.Debug("fetching playback info for track", "track_id", track.ID())
 		playbackInfo, err := tidal.V1.Tracks.PlaybackInfo(
 			context.Background(),
-			track.Data.ID,
+			track.ID(),
 			tracksv1.PlaybackInfoOptions{
 				AudioQuality: settings.Player().GetAudioQuality(),
 			},

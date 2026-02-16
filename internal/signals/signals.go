@@ -42,9 +42,14 @@ func (b *Signal[T]) Notify(args ...any) {
 	wg := sync.WaitGroup{}
 	for sub, handler := range handlers {
 		wg.Go(func() {
+			handlerType := reflect.TypeOf(handler)
 			reflectArgs := make([]reflect.Value, len(args))
 			for i, arg := range args {
-				reflectArgs[i] = reflect.ValueOf(arg)
+				if arg == nil {
+					reflectArgs[i] = reflect.Zero(handlerType.In(i))
+				} else {
+					reflectArgs[i] = reflect.ValueOf(arg)
+				}
 			}
 			result := reflect.ValueOf(handler).Call(reflectArgs)
 			if len(result) > 0 && result[0].CanConvert(reflect.TypeFor[bool]()) && result[0].Bool() {

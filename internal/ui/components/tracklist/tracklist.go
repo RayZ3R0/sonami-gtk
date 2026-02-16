@@ -13,6 +13,7 @@ import (
 	"codeberg.org/dergs/tonearm/pkg/schwifty/state"
 	. "codeberg.org/dergs/tonearm/pkg/schwifty/syntax"
 	"codeberg.org/dergs/tonearm/pkg/schwifty/tracking"
+	"codeberg.org/dergs/tonearm/pkg/tonearm"
 	"github.com/jwijenbergh/puregotk/v4/adw"
 	"github.com/jwijenbergh/puregotk/v4/gdk"
 	"github.com/jwijenbergh/puregotk/v4/gio"
@@ -21,35 +22,30 @@ import (
 	"github.com/jwijenbergh/puregotk/v4/gtk"
 )
 
-type TrackWithID interface {
-	comparable
-	GetID() string
-}
+type ColumnFunc func(track tonearm.Track, grid *gtk.Grid, position int, column int) int
 
-type ColumnFunc[TrackType TrackWithID] func(track TrackType, grid *gtk.Grid, position int, column int) int
-
-type TrackList[TrackType TrackWithID] struct {
+type TrackList struct {
 	schwifty.Widget
 
-	columnFuncs []ColumnFunc[TrackType]
+	columnFuncs []ColumnFunc
 	lock        sync.Mutex
 	store       *gio.ListStore
-	trackList   []TrackType
+	trackList   []tonearm.Track
 
-	trackBeingMoved   *TrackType
+	trackBeingMoved   *tonearm.Track
 	movingSourceIndex int
 	movingTargetIndex int
 	reorderable       *state.State[bool]
-	reorderCallback   func(sourceIndex, targetIndex int, track TrackType)
+	reorderCallback   func(sourceIndex, targetIndex int, track tonearm.Track)
 }
 
-func (t *TrackList[TrackType]) AddTrack(track TrackType) {
+func (t *TrackList) AddTrack(track tonearm.Track) {
 	t.trackList = append(t.trackList, track)
 	t.store.Append(&gtk.NewStringObject("").Object)
 }
 
-func (t *TrackList[TrackType]) BindTracks(state *state.State[[]TrackType]) {
-	state.AddCallback(func(newValue []TrackType) {
+func (t *TrackList) BindTracks(state *state.State[[]tonearm.Track]) {
+	state.AddCallback(func(newValue []tonearm.Track) {
 		t.lock.Lock()
 		defer t.lock.Unlock()
 
@@ -69,28 +65,28 @@ func (t *TrackList[TrackType]) BindTracks(state *state.State[[]TrackType]) {
 	})
 }
 
-func (t *TrackList[TrackType]) Clear() {
+func (t *TrackList) Clear() {
 	t.store.RemoveAll()
-	t.trackList = make([]TrackType, 0)
+	t.trackList = make([]tonearm.Track, 0)
 }
 
-func (t *TrackList[TrackType]) SetReorderCallback(cb func(sourceIndex, targetIndex int, track TrackType)) {
+func (t *TrackList) SetReorderCallback(cb func(sourceIndex, targetIndex int, track tonearm.Track)) {
 	t.reorderCallback = cb
 	t.reorderable.SetValue(cb != nil)
 }
 
-func (t *TrackList[TrackType]) onBind(_ gtk.SignalListItemFactory, listItem *gtk.ListItem) {
+func (t *TrackList) onBind(_ gtk.SignalListItemFactory, listItem *gtk.ListItem) {
 	track := t.trackList[listItem.GetPosition()]
 	container := adw.BinNewFromInternalPtr(listItem.GetChild().GoPointer())
 	defer container.Unref()
 
 	grid := Grid().ConnectConstruct(func(g *gtk.Grid) {
 		var ref = tracking.NewWeakRef(g)
-		player.TrackChanged.On(func(t *player.Track) bool {
+		player.TrackChanged.On(func(t tonearm.Track) bool {
 			return signals.ContinueIf(
 				ref.Use(func(obj *gobject.Object) {
 					grid := gtk.GridNewFromInternalPtr(obj.Ptr)
-					if t != nil && track.GetID() == t.ID {
+					if t != nil && track.ID() == t.ID() {
 						grid.AddCssClass("playing")
 					} else {
 						grid.RemoveCssClass("playing")
@@ -109,13 +105,13 @@ func (t *TrackList[TrackType]) onBind(_ gtk.SignalListItemFactory, listItem *gtk
 	container.SetChild(&grid.Widget)
 }
 
-func (t *TrackList[TrackType]) onUnbind(_ gtk.SignalListItemFactory, listItem *gtk.ListItem) {
+func (t *TrackList) onUnbind(_ gtk.SignalListItemFactory, listItem *gtk.ListItem) {
 	container := adw.BinNewFromInternalPtr(listItem.GetChild().GoPointer())
 	defer container.Unref()
 	container.SetChild(nil)
 }
 
-func (t *TrackList[TrackType]) onSetup(_ gtk.SignalListItemFactory, listItem *gtk.ListItem) {
+func (t *TrackList) onSetup(_ gtk.SignalListItemFactory, listItem *gtk.ListItem) {
 	container := Bin()()
 	defer container.Unref()
 
@@ -159,7 +155,7 @@ func (t *TrackList[TrackType]) onSetup(_ gtk.SignalListItemFactory, listItem *gt
 					t.trackList = append(t.trackList[:t.movingTargetIndex], t.trackList[t.movingTargetIndex+1:]...)
 					t.store.Remove(uint(t.movingTargetIndex))
 
-					t.trackList = append(t.trackList[:t.movingSourceIndex], append([]TrackType{*t.trackBeingMoved}, t.trackList[t.movingSourceIndex:]...)...)
+					t.trackList = append(t.trackList[:t.movingSourceIndex], append([]tonearm.Track{*t.trackBeingMoved}, t.trackList[t.movingSourceIndex:]...)...)
 					t.store.Insert(uint(t.movingSourceIndex), &gtk.NewStringObject("").Object)
 
 					t.movingSourceIndex = -1
@@ -179,10 +175,10 @@ func (t *TrackList[TrackType]) onSetup(_ gtk.SignalListItemFactory, listItem *gt
 	listItem.SetActivatable(false)
 }
 
-func NewTrackList[TrackType TrackWithID](columnFuncs ...ColumnFunc[TrackType]) *TrackList[TrackType] {
-	t := &TrackList[TrackType]{
+func NewTrackList(columnFuncs ...ColumnFunc) *TrackList {
+	t := &TrackList{
 		columnFuncs: columnFuncs,
-		trackList:   make([]TrackType, 0),
+		trackList:   make([]tonearm.Track, 0),
 		store:       gio.NewListStore(gtk.StringObjectGLibType()),
 
 		movingSourceIndex: -1,
@@ -226,7 +222,7 @@ func NewTrackList[TrackType TrackWithID](columnFuncs ...ColumnFunc[TrackType]) *
 							trackList = append(t.trackList[:t.movingTargetIndex], t.trackList[t.movingTargetIndex+1:]...)
 						}
 
-						t.trackList = append(trackList[:i], append([]TrackType{*t.trackBeingMoved}, trackList[i:]...)...)
+						t.trackList = append(trackList[:i], append([]tonearm.Track{*t.trackBeingMoved}, trackList[i:]...)...)
 						t.store.Insert(uint(i), &gtk.NewStringObject("").Object)
 
 						t.movingTargetIndex = i

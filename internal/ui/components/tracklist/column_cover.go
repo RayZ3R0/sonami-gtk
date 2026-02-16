@@ -4,15 +4,13 @@ import (
 	"codeberg.org/dergs/tonearm/internal/resources"
 	"codeberg.org/dergs/tonearm/internal/settings"
 	. "codeberg.org/dergs/tonearm/pkg/schwifty/syntax"
-	"codeberg.org/dergs/tonearm/pkg/tidalapi"
-	"codeberg.org/dergs/tonearm/pkg/tidalapi/models/openapi"
-	v2 "codeberg.org/dergs/tonearm/pkg/tidalapi/models/v2"
+	"codeberg.org/dergs/tonearm/pkg/tonearm"
 	"codeberg.org/dergs/tonearm/pkg/utils/imgutil"
 	"github.com/infinytum/injector"
 	"github.com/jwijenbergh/puregotk/v4/gtk"
 )
 
-func coverColumn(url string, grid *gtk.Grid, position int, column int) int {
+func CoverColumn(track tonearm.Track, grid *gtk.Grid, position int, column int) int {
 	grid.Attach(
 		Image().
 			FromPaintable(resources.MissingAlbum()).
@@ -24,8 +22,9 @@ func coverColumn(url string, grid *gtk.Grid, position int, column int) int {
 			HAlign(gtk.AlignStartValue).
 			Overflow(gtk.OverflowHiddenValue).
 			ConnectConstruct(func(i *gtk.Image) {
-				if settings.Performance().AllowTracklistImages() {
-					injector.MustInject[*imgutil.ImgUtil]().LoadIntoImage(url, i)
+				coverURL := track.Cover(80)
+				if settings.Performance().AllowTracklistImages() && coverURL != "" {
+					injector.MustInject[*imgutil.ImgUtil]().LoadIntoImage(coverURL, i)
 				}
 			}).ToGTK(),
 		column,
@@ -34,41 +33,4 @@ func coverColumn(url string, grid *gtk.Grid, position int, column int) int {
 		1,
 	)
 	return 1
-}
-
-func CoverColumn(track *openapi.Track, grid *gtk.Grid, position int, column int) int {
-	url := ""
-	if track == nil {
-		grid.Attach(
-			Box(gtk.OrientationHorizontalValue).MinHeight(54).Margin(10).ToGTK(),
-			column,
-			0,
-			1,
-			1,
-		)
-		return 1
-	}
-	for _, album := range track.Included.Albums(track.Data.Relationships.Albums.Data...) {
-		for _, artwork := range album.Included.PlainArtworks(album.Data.Relationships.CoverArt.Data...) {
-			if artwork.Attributes.IsPicture() {
-				url = artwork.Attributes.Files.AtLeast(80).Href
-				break
-			}
-		}
-	}
-	return coverColumn(url, grid, position, column)
-}
-
-func LegacyCoverColumn(track *v2.TrackItemData, grid *gtk.Grid, position int, column int) int {
-	if track == nil {
-		grid.Attach(
-			Box(gtk.OrientationHorizontalValue).MinHeight(54).Margin(10).ToGTK(),
-			column,
-			0,
-			1,
-			1,
-		)
-		return 1
-	}
-	return coverColumn(tidalapi.ImageURL(track.Album.Cover), grid, position, column)
 }

@@ -1,50 +1,21 @@
 package media_card
 
 import (
-	"strconv"
 	"strings"
-	"time"
 
 	"codeberg.org/dergs/tonearm/pkg/schwifty"
 	. "codeberg.org/dergs/tonearm/pkg/schwifty/syntax"
-	"codeberg.org/dergs/tonearm/pkg/tidalapi"
-	"codeberg.org/dergs/tonearm/pkg/tidalapi/models/openapi"
-	v2 "codeberg.org/dergs/tonearm/pkg/tidalapi/models/v2"
+	"codeberg.org/dergs/tonearm/pkg/tonearm"
 	"github.com/jwijenbergh/puregotk/v4/glib"
 )
 
-func NewAlbumGeneric(id string, title string, artists string, year string, coverUrl string) schwifty.Button {
+func NewAlbum(album tonearm.Album) schwifty.Button {
 	return Card(
-		title,
+		album.Title(),
 		VStack(
-			SubTitle(artists),
-			SubTitle(year),
+			SubTitle(strings.Join(album.Artists().Names(), ", ")),
+			SubTitle(album.ReleasedAt().Format("2006")),
 		),
-		coverUrl,
-	).ActionName("win.route.album").ActionTargetValue(glib.NewVariantString(id))
-}
-
-func NewLegacyAlbum(album *v2.AlbumItemData) schwifty.Button {
-	artists := make([]string, 0)
-	for _, artist := range album.Artists {
-		artists = append(artists, artist.Name)
-	}
-	releaseDate, _ := time.Parse(time.DateOnly, album.ReleaseDate)
-
-	return NewAlbumGeneric(strconv.Itoa(album.Id), album.Title, strings.Join(artists, ", "), releaseDate.Format("2006"), tidalapi.ImageURL(album.Cover))
-}
-
-func NewAlbum(album *openapi.Album) schwifty.Button {
-	coverUrl := ""
-	for _, artwork := range album.Included.PlainArtworks(album.Data.Relationships.CoverArt.Data...) {
-		if artwork.Attributes.IsPicture() {
-			coverUrl = artwork.Attributes.Files.AtLeast(160).Href
-			break
-		}
-	}
-	artists := make([]string, 0)
-	for _, artist := range album.Included.PlainArtists(album.Data.Relationships.Artists.Data...) {
-		artists = append(artists, artist.Attributes.Name)
-	}
-	return NewAlbumGeneric(album.Data.ID, album.Data.Attributes.Title, strings.Join(artists, ", "), album.Data.Attributes.ReleaseDate.Format("2006"), coverUrl)
+		album.Cover(172),
+	).ActionName("win.route.album").ActionTargetValue(glib.NewVariantString(album.ID()))
 }

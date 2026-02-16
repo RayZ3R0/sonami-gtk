@@ -4,13 +4,14 @@ import (
 	"codeberg.org/dergs/tonearm/internal/gettext"
 	"codeberg.org/dergs/tonearm/internal/router"
 	"codeberg.org/dergs/tonearm/internal/secrets"
+	"codeberg.org/dergs/tonearm/internal/services/tidal/openapi"
 	"codeberg.org/dergs/tonearm/internal/ui/components"
 	"codeberg.org/dergs/tonearm/internal/ui/components/tracklist"
 	"codeberg.org/dergs/tonearm/internal/ui/pages"
 	"codeberg.org/dergs/tonearm/pkg/schwifty"
 	"codeberg.org/dergs/tonearm/pkg/tidalapi"
-	"codeberg.org/dergs/tonearm/pkg/tidalapi/models/openapi"
-	"codeberg.org/dergs/tonearm/pkg/tidalapi/pagination"
+	modelopenapi "codeberg.org/dergs/tonearm/pkg/tidalapi/models/openapi"
+	"codeberg.org/dergs/tonearm/pkg/tonearm"
 	"github.com/infinytum/injector"
 	"github.com/jwijenbergh/puregotk/v4/gtk"
 )
@@ -21,22 +22,27 @@ func Tracks() *router.Response {
 	if userId == "" {
 		return &router.Response{
 			PageTitle: gettext.Get("My Collection"),
-			View: components.AuthRequired(gettext.Get("Please sign in to view your collection")),
+			View:      components.AuthRequired(gettext.Get("Please sign in to view your collection")),
 		}
 	}
 
-	paginator := pagination.NewPaginator(tidal.OpenAPI.V2.UserCollections.Tracks, userId, func(r *openapi.Response[[]openapi.Relationship]) []openapi.Track {
-		return r.Included.Tracks(r.Data...)
+	paginator := openapi.NewPaginator(tidal.OpenAPI.V2.UserCollections.Tracks, userId, func(r *modelopenapi.Response[[]modelopenapi.Relationship]) []tonearm.Track {
+		results := r.Included.Tracks(r.Data...)
+		tracks := make([]tonearm.Track, len(results))
+		for i, track := range results {
+			tracks[i] = openapi.NewTrack(track)
+		}
+		return tracks
 	}, "tracks.artists", "tracks.albums.coverArt")
 
-	page, err := pages.NewPaginatedTracklistPage(paginator, func() *tracklist.TrackList[*openapi.Track] {
+	page, err := pages.NewPaginatedTracklistPage(paginator, func() *tracklist.TrackList {
 		return tracklist.NewTrackList(
 			tracklist.GroupedColumn(2, gtk.AlignStartValue, tracklist.CoverColumn, tracklist.TitleAlbumColumn),
 			tracklist.ArtistsColumn,
 			tracklist.ExpandButtonColumn(1),
 			tracklist.GroupedColumn(1, gtk.AlignEndValue, tracklist.DurationColumn, tracklist.ControlsColumn),
 		)
-	}, func(tl *tracklist.TrackList[*openapi.Track]) schwifty.BaseWidgetable {
+	}, func(tl *tracklist.TrackList) schwifty.BaseWidgetable {
 		return tl.VPadding(20).HMargin(40).VAlign(gtk.AlignStartValue)
 	})
 

@@ -3,6 +3,7 @@ module codeberg.org/dergs/tonearm
 go 1.26.0
 
 require (
+	github.com/Marlliton/slogpretty v0.1.3
 	github.com/go-gst/go-gst v1.4.0
 	github.com/godbus/dbus/v5 v5.2.2
 	github.com/google/uuid v1.6.0

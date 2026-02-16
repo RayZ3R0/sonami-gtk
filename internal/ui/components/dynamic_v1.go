@@ -1,12 +1,12 @@
 package components
 
 import (
-	"strconv"
 	"strings"
 	"time"
 
 	"codeberg.org/dergs/tonearm/internal/gettext"
 	"codeberg.org/dergs/tonearm/internal/router"
+	v2 "codeberg.org/dergs/tonearm/internal/services/tidal/v2"
 	"codeberg.org/dergs/tonearm/internal/ui/components/horizontal_list"
 	"codeberg.org/dergs/tonearm/internal/ui/components/media_card"
 	"codeberg.org/dergs/tonearm/internal/ui/components/shortcut_list"
@@ -14,8 +14,9 @@ import (
 	"codeberg.org/dergs/tonearm/pkg/schwifty"
 	. "codeberg.org/dergs/tonearm/pkg/schwifty/syntax"
 	"codeberg.org/dergs/tonearm/pkg/tidalapi"
+	"codeberg.org/dergs/tonearm/pkg/tidalapi/helper"
 	v1 "codeberg.org/dergs/tonearm/pkg/tidalapi/models/v1"
-	v2 "codeberg.org/dergs/tonearm/pkg/tidalapi/models/v2"
+	modelv2 "codeberg.org/dergs/tonearm/pkg/tidalapi/models/v2"
 	"github.com/jwijenbergh/puregotk/v4/gtk"
 )
 
@@ -44,22 +45,35 @@ func ForModule(module v1.Module) schwifty.BaseWidgetable {
 	case v1.ModuleTypePlaylistList:
 		list := horizontal_list.NewHorizontalList(module.Title)
 		for _, item := range module.PagedList.Items {
-			creator := "TIDAL"
-			if len(item.Creators) > 0 {
-				names := make([]string, len(item.Creators))
-				for i, creator := range item.Creators {
-					names[i] = creator.Name
-				}
-				creator = strings.Join(names, ", ")
+			fakePlaylist := modelv2.PlaylistItemData{
+				Creator: struct {
+					ID      int    "json:\"id\""
+					Name    string "json:\"name,omitempty\""
+					Picture string "json:\"picture,omitempty\""
+					Type    string "json:\"type\""
+				}{
+					ID:   item.Creator.ID,
+					Name: item.Creator.Name,
+				},
+				Duration:       item.Duration,
+				NumberOfTracks: item.NumberOfTracks,
+				SquareImage:    item.SquareImage,
+				Title:          item.Title,
+				UUID:           item.UUID,
 			}
-			list.Append(media_card.NewPlaylistGeneric(item.UUID, item.Title, creator, item.NumberOfTracks, tidalapi.ImageURL(item.SquareImage)))
+			list.Append(media_card.NewPlaylist(v2.NewPlaylist(fakePlaylist)))
 			continue
 		}
 		return list.SetPageMargin(40)
 	case v1.ModuleTypeArtistList:
 		list := horizontal_list.NewHorizontalList(module.Title)
 		for _, item := range module.PagedList.Items {
-			list.Append(media_card.NewArtistGeneric(strconv.Itoa(item.ID), item.Name, tidalapi.ImageURL(item.Picture)))
+			fakeArtist := modelv2.ArtistItemData{
+				Id:      item.ID.Int,
+				Name:    item.Name,
+				Picture: item.Picture,
+			}
+			list.Append(media_card.NewArtist(v2.NewArtistInfo(fakeArtist)))
 			continue
 		}
 		return list.SetPageMargin(40)
@@ -67,35 +81,45 @@ func ForModule(module v1.Module) schwifty.BaseWidgetable {
 		list := horizontal_list.NewHorizontalList(module.Title)
 		for _, item := range module.PagedList.Items {
 			releaseDate, _ := time.Parse(time.DateOnly, item.ReleaseDate)
-			artists := ""
-			if len(item.Artists) > 0 {
-				names := make([]string, len(item.Artists))
-				for i, artist := range item.Artists {
-					names[i] = artist.Name
-				}
-				artists = strings.Join(names, ", ")
+			artists := make([]modelv2.ArtistItemData, 0)
+			for _, artist := range item.Artists {
+				artists = append(artists, modelv2.ArtistItemData{
+					Id:   artist.ID,
+					Name: artist.Name,
+				})
 			}
-			list.Append(media_card.NewAlbumGeneric(strconv.Itoa(item.ID), item.Title, artists, releaseDate.Format("2006"), tidalapi.ImageURL(item.Cover)))
+			fakeAlbum := modelv2.AlbumItemData{
+				Artists:  artists,
+				Cover:    item.Cover,
+				Id:       item.ID.Int,
+				Duration: item.Duration,
+				ReleaseDate: helper.TimeDateOnly{
+					Time: releaseDate,
+				},
+				Title: item.Title,
+				Type:  "ALBUM",
+			}
+			list.Append(media_card.NewAlbum(v2.NewAlbum(fakeAlbum)))
 			continue
 		}
 		return list.SetPageMargin(40)
 	case v1.ModuleTypeTrackList:
-		list := tracklist.NewTrackList[*v2.TrackItemData](
-			tracklist.GroupedColumn(2, gtk.AlignStartValue, tracklist.LegacyCoverColumn, tracklist.LegacyTitleAlbumColumn),
-			tracklist.LegacyArtistsColumn,
-			tracklist.LegacyExpandButtonColumn(1),
-			tracklist.GroupedColumn(1, gtk.AlignEndValue, tracklist.LegacyDurationColumn, tracklist.LegacyControlsColumn),
+		list := tracklist.NewTrackList(
+			tracklist.GroupedColumn(2, gtk.AlignStartValue, tracklist.CoverColumn, tracklist.TitleAlbumColumn),
+			tracklist.ArtistsColumn,
+			tracklist.ExpandButtonColumn(1),
+			tracklist.GroupedColumn(1, gtk.AlignEndValue, tracklist.DurationColumn, tracklist.ControlsColumn),
 		)
 		for _, item := range module.PagedList.Items {
-			artists := make([]v2.TrackItemDataArtist, 0)
+			artists := make([]modelv2.ArtistItemData, 0)
 			for _, artist := range item.Artists {
-				artists = append(artists, v2.TrackItemDataArtist{
-					ID:   artist.ID,
+				artists = append(artists, modelv2.ArtistItemData{
+					Id:   artist.ID,
 					Name: artist.Name,
 				})
 			}
-			fakeTrack := &v2.TrackItemData{
-				Album: v2.TrackItemDataAlbum{
+			fakeTrack := &modelv2.TrackItemData{
+				Album: modelv2.TrackItemDataAlbum{
 					Cover: item.Album.Cover,
 					ID:    item.Album.ID,
 					Title: item.Album.Title,
@@ -103,10 +127,10 @@ func ForModule(module v1.Module) schwifty.BaseWidgetable {
 				Artists:   artists,
 				Duration:  item.Duration,
 				Following: false,
-				ID:        item.ID,
+				ID:        item.ID.Int,
 				Title:     item.Title,
 			}
-			list.AddTrack(fakeTrack)
+			list.AddTrack(v2.NewTrack(*fakeTrack))
 		}
 		return VStack(
 			NewRowTitle().SetTitle(module.Title),

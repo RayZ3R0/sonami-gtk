@@ -6,6 +6,7 @@ import (
 
 	"codeberg.org/dergs/tonearm/internal/player"
 	"codeberg.org/dergs/tonearm/internal/signals"
+	"codeberg.org/dergs/tonearm/pkg/tonearm"
 )
 
 var logger = slog.With("module", "scrobbler")
@@ -13,20 +14,20 @@ var logger = slog.With("module", "scrobbler")
 var Scrobblers []Scrobbler
 
 type Scrobbler interface {
-	NowPlaying(*player.Track)
+	NowPlaying(tonearm.Track)
 	Scrobble(*ScrobbleEvent)
 	IsConfigured() bool
 	GetName() string
 }
 
 type ScrobbleEvent struct {
-	Track      *player.Track
+	Track      tonearm.Track
 	ListenedAt time.Time
 }
 
 func init() {
 	var scrobbleClock *Clock
-	player.TrackChanged.On(func(t *player.Track) bool {
+	player.TrackChanged.On(func(t tonearm.Track) bool {
 		if t == nil {
 			return signals.Continue
 		}
@@ -34,11 +35,11 @@ func init() {
 		logger.Debug("notifying scrobblers that a new track has started playing")
 		for _, scrobbler := range Scrobblers {
 			if !scrobbler.IsConfigured() {
-				logger.Debug("skipping now playing event to %s", scrobbler.GetName())
+				logger.Debug("skipping now playing event", "service", scrobbler.GetName())
 				continue
 			}
 
-			logger.Debug("sending NowPlaying event to %s", scrobbler.GetName())
+			logger.Debug("sending NowPlaying event", "service", scrobbler.GetName())
 			go scrobbler.NowPlaying(t)
 		}
 

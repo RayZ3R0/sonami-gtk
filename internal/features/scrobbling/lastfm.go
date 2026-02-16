@@ -2,13 +2,14 @@ package scrobbling
 
 import (
 	"context"
+	"strings"
 	"time"
 
 	"codeberg.org/dergs/tonearm/internal/features/scrobbling/lastfm"
 	"codeberg.org/dergs/tonearm/internal/gettext"
-	"codeberg.org/dergs/tonearm/internal/player"
 	"codeberg.org/dergs/tonearm/internal/settings"
 	"codeberg.org/dergs/tonearm/pkg/schwifty"
+	"codeberg.org/dergs/tonearm/pkg/tonearm"
 
 	adwbindings "codeberg.org/dergs/tonearm/pkg/schwifty/bindings/adw"
 	. "codeberg.org/dergs/tonearm/pkg/schwifty/syntax"
@@ -148,16 +149,16 @@ func (scrobbler *LastFm) GetName() string {
 	return "Last.fm"
 }
 
-func (scrobbler *LastFm) NowPlaying(track *player.Track) {
+func (scrobbler *LastFm) NowPlaying(track tonearm.Track) {
 	if !scrobbler.IsConfigured() {
 		return
 	}
 
 	_, err := scrobbler.Client.Track.UpdateNowPlaying(lastfmlib.UpdateNowPlayingParams{
-		Artist:   track.ArtistNames(),
-		Track:    track.Title,
-		Album:    track.Albums[0].Data.Attributes.Title,
-		Duration: lastfmlib.Duration(track.Duration),
+		Artist:   strings.Join(track.Artists().Names(), ", "),
+		Track:    track.Title(),
+		Album:    track.Album().Title(),
+		Duration: lastfmlib.Duration(track.Duration()),
 	})
 
 	if err == nil {
@@ -173,10 +174,10 @@ func (scrobbler *LastFm) Scrobble(event *ScrobbleEvent) {
 	}
 
 	_, err := scrobbler.Client.Track.Scrobble(lastfmlib.ScrobbleParams{
-		Artist:   event.Track.ArtistNames(),
-		Track:    event.Track.Title,
-		Album:    event.Track.Albums[0].Data.Attributes.Title,
-		Duration: lastfmlib.Duration(event.Track.Duration),
+		Artist:   strings.Join(event.Track.Artists().Names(), ", "),
+		Track:    event.Track.Title(),
+		Album:    event.Track.Album().Title(),
+		Duration: lastfmlib.Duration(event.Track.Duration()),
 
 		Time: time.Now(),
 	})

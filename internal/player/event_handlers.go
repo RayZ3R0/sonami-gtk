@@ -2,7 +2,6 @@ package player
 
 import (
 	"context"
-	"strconv"
 	"time"
 
 	"codeberg.org/dergs/tonearm/internal/settings"
@@ -10,6 +9,7 @@ import (
 	"codeberg.org/dergs/tonearm/pkg/tidalapi"
 	v1 "codeberg.org/dergs/tonearm/pkg/tidalapi/models/v1"
 	tracksv1 "codeberg.org/dergs/tonearm/pkg/tidalapi/v1/tracks"
+	"codeberg.org/dergs/tonearm/pkg/tonearm"
 	"github.com/go-gst/go-gst/gst"
 	"github.com/infinytum/injector"
 	"github.com/jwijenbergh/puregotk/v4/glib"
@@ -18,6 +18,7 @@ import (
 const UpdateInterval = 250 * time.Millisecond
 
 var updateRunnerSourceHandle uint
+var didQueueGaplessPlayback bool
 
 func onAboutToFinish(_ *gst.Element) {
 	if RepeatModeChanged.CurrentValue() == RepeatModeTrack {
@@ -28,7 +29,7 @@ func onAboutToFinish(_ *gst.Element) {
 	if nextTrack != nil {
 		playbackInfo, err := injector.MustInject[*tidalapi.TidalAPI]().V1.Tracks.PlaybackInfo(
 			context.Background(),
-			nextTrack.Data.ID,
+			nextTrack.ID(),
 			tracksv1.PlaybackInfoOptions{
 				AudioQuality: settings.Player().GetAudioQuality(),
 			},
@@ -41,10 +42,11 @@ func onAboutToFinish(_ *gst.Element) {
 			logger.Error("enqueueing for gapless playback", "error", err)
 			return
 		}
-		logger.Info("enqueued next song for gapless playback", "track_id", nextTrack.Data.ID)
+		logger.Info("enqueued next song for gapless playback", "track_id", nextTrack.ID())
+		didQueueGaplessPlayback = true
 
 		// One-Shot Handler to update the track quality
-		TrackChanged.OnLazy(func(t *Track) bool {
+		TrackChanged.OnLazy(func(t tonearm.Track) bool {
 			logger.Debug("triggered one-shot handler to propagate gapless playback quality")
 			PlaybackQualityChanged.Notify(func(oldValue v1.AudioQuality) v1.AudioQuality {
 				return playbackInfo.AudioQuality
@@ -63,7 +65,8 @@ func onBusMessage(msg *gst.Message) bool {
 		startUpdateRunner()
 		playbin.Set("volume", settings.Player().GetVolume())
 		// A hack to trigger the correct track updates with gapless playback
-		if currentlyEnqueuedTrack == nil || TrackChanged.CurrentValue().ID != strconv.Itoa(currentlyEnqueuedTrack.TrackID) {
+		if didQueueGaplessPlayback {
+			didQueueGaplessPlayback = false
 			stateBeforeLoading = gst.StatePlaying
 			go playNextTrack()
 		}
@@ -123,7 +126,6 @@ var onUpdateTick = glib.SourceFunc(func(uintptr) bool {
 			newState.IsSeeking = false
 		}
 
-		logger.Debug("update", "position", newState.Position, "duration", newState.Duration)
 		return &newState
 	})
 	return glib.SOURCE_CONTINUE

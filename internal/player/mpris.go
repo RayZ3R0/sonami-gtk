@@ -7,6 +7,7 @@ import (
 	"codeberg.org/dergs/tonearm/internal/g"
 	"codeberg.org/dergs/tonearm/internal/signals"
 	"codeberg.org/dergs/tonearm/pkg/mpris"
+	"codeberg.org/dergs/tonearm/pkg/tonearm"
 	"github.com/godbus/dbus/v5"
 	"github.com/infinytum/injector"
 	"github.com/jwijenbergh/puregotk/v4/adw"
@@ -82,7 +83,7 @@ func init() {
 		return signals.Continue
 	})
 
-	TrackChanged.Signal.On(func(trackInfo *Track) bool {
+	TrackChanged.Signal.On(func(trackInfo tonearm.Track) bool {
 		if trackInfo == nil {
 			mprisServer().SetTrackMetadata(map[string]any{})
 			mprisServer().Disconnect()
@@ -92,26 +93,19 @@ func init() {
 
 		mprisServer().Connect()
 
-		artists := []string{}
-		for _, artist := range trackInfo.Artists {
-			artists = append(artists, artist.Attributes.Name)
-		}
-
-		album := trackInfo.Albums[0]
-		albumArtists := []string{}
-		for _, artist := range album.Included.Artists(album.Data.Relationships.Artists.Data...) {
-			albumArtists = append(albumArtists, artist.Data.Attributes.Name)
+		artistNames := []string{}
+		for _, artist := range trackInfo.Artists() {
+			artistNames = append(artistNames, artist.Title())
 		}
 
 		mprisServer().SetTrackMetadata(map[string]any{
-			"mpris:trackid":     dbus.ObjectPath("/org/mpris/MediaPlayer2/TrackList/Track" + trackInfo.ID),
-			"mpris:artUrl":      trackInfo.CoverURL,
-			"mpris:length":      trackInfo.Duration.Microseconds(),
-			"xesam:album":       album.Data.Attributes.Title,
-			"xesam:albumArtist": albumArtists,
-			"xesam:artist":      artists,
-			"xesam:title":       trackInfo.Title,
-			"xesam:url":         fmt.Sprintf("https://tidal.com/track/%s", trackInfo.ID),
+			"mpris:trackid": dbus.ObjectPath("/org/mpris/MediaPlayer2/TrackList/Track" + trackInfo.ID()),
+			"mpris:artUrl":  trackInfo.Album().Cover(-1),
+			"mpris:length":  trackInfo.Duration().Microseconds(),
+			"xesam:album":   trackInfo.Album().Title(),
+			"xesam:artist":  artistNames,
+			"xesam:title":   trackInfo.Title(),
+			"xesam:url":     fmt.Sprintf("https://tidal.com/track/%s", trackInfo.ID()),
 		})
 
 		return signals.Continue

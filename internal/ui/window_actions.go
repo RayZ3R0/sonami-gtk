@@ -3,7 +3,6 @@ package ui
 import (
 	"context"
 	"log/slog"
-	"strconv"
 	"strings"
 	"unsafe"
 
@@ -12,14 +11,14 @@ import (
 	"codeberg.org/dergs/tonearm/internal/player"
 	"codeberg.org/dergs/tonearm/internal/router"
 	"codeberg.org/dergs/tonearm/internal/secrets"
+	v2 "codeberg.org/dergs/tonearm/internal/services/tidal/v2"
 	"codeberg.org/dergs/tonearm/internal/settings"
 	"codeberg.org/dergs/tonearm/internal/ui/components/linking"
 	"codeberg.org/dergs/tonearm/pkg/schwifty"
 	"codeberg.org/dergs/tonearm/pkg/tidalapi"
 	"codeberg.org/dergs/tonearm/pkg/tidalapi/auth"
-	"codeberg.org/dergs/tonearm/pkg/tidalapi/models/openapi"
-	v2 "codeberg.org/dergs/tonearm/pkg/tidalapi/models/v2"
-	"codeberg.org/dergs/tonearm/pkg/tidalapi/pagination"
+	modelv2 "codeberg.org/dergs/tonearm/pkg/tidalapi/models/v2"
+	"codeberg.org/dergs/tonearm/pkg/tonearm"
 	"github.com/infinytum/injector"
 	"github.com/jwijenbergh/puregotk/v4/adw"
 	"github.com/jwijenbergh/puregotk/v4/gio"
@@ -144,21 +143,17 @@ func (w *Window) installActions() {
 
 		id := parts[1]
 
-		tidal := injector.MustInject[*tidalapi.TidalAPI]()
 		switch parts[0] {
 		case "track":
 			player.AddTrackToUserQueue(id)
 		case "album":
+			service := injector.MustInject[tonearm.Service]()
 			go func() {
-				paginator := pagination.NewPaginator(
-					tidal.OpenAPI.V2.Albums.Items,
-					id,
-					func(r *openapi.Response[[]openapi.Relationship]) []openapi.Track {
-						return r.Included.Tracks(r.Data...)
-					},
-					"items",
-					"items.albums.coverArt",
-				)
+				paginator, err := service.GetAlbumTracks(id)
+				if err != nil {
+					logger.Error("failed to fetch album", "album_id", id, "error", err)
+					return
+				}
 
 				tracks, err := paginator.GetAll()
 				if err != nil {
@@ -169,10 +164,14 @@ func (w *Window) installActions() {
 				player.AddTracklistToUserQueue(tracks)
 			}()
 		case "playlist":
+			service := injector.MustInject[tonearm.Service]()
 			go func() {
-				paginator := pagination.NewPaginator(tidal.OpenAPI.V2.Playlists.Items, id, func(r *openapi.Response[[]openapi.Relationship]) []openapi.Track {
-					return r.Included.Tracks(r.Data...)
-				}, "items", "items.albums.coverArt")
+				paginator, err := service.GetPlaylistTracks(id)
+				if err != nil {
+					logger.Error("failed to fetch playlist", "playlist_id", id, "error", err)
+					return
+				}
+
 				tracks, err := paginator.GetAll()
 				if err != nil {
 					logger.Error("failed to fetch playlist", "playlist_id", id, "error", err)
@@ -182,6 +181,7 @@ func (w *Window) installActions() {
 				player.AddTracklistToUserQueue(tracks)
 			}()
 		case "artist":
+			tidal := injector.MustInject[*tidalapi.TidalAPI]()
 			go func() {
 				artist, err := tidal.V2.Artist.Artist(context.Background(), id)
 				if err != nil {
@@ -189,7 +189,7 @@ func (w *Window) installActions() {
 					return
 				}
 
-				var module v2.PageItem
+				var module modelv2.PageItem
 				for _, item := range artist.Items {
 					if item.ModuleID == "ARTIST_TOP_TRACKS" {
 						module = item
@@ -197,16 +197,10 @@ func (w *Window) installActions() {
 					}
 				}
 
-				var topTracks []openapi.Track
+				var topTracks []tonearm.Track
 				for _, legacyTopTrackItem := range module.Items {
-					if legacyTopTrackItem.Type == v2.ItemTypeTrack {
-						topTrack, err := tidal.OpenAPI.V2.Tracks.Track(context.Background(), strconv.Itoa(legacyTopTrackItem.Data.Track.ID), "albums.coverArt")
-						if err != nil {
-							logger.Error("error while resolving Top Track item", "track_id", legacyTopTrackItem.Data.Track.ID, "message", err.Error())
-							continue
-						}
-
-						topTracks = append(topTracks, *topTrack)
+					if legacyTopTrackItem.Type == modelv2.ItemTypeTrack {
+						topTracks = append(topTracks, v2.NewTrack(*legacyTopTrackItem.Data.Track))
 					}
 				}
 

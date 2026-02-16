@@ -5,9 +5,10 @@ import (
 	"encoding/json"
 	"io"
 	"net/http"
+	"strings"
 
-	"codeberg.org/dergs/tonearm/internal/player"
 	"codeberg.org/dergs/tonearm/internal/settings"
+	"codeberg.org/dergs/tonearm/pkg/tonearm"
 )
 
 type listenBrainzListenType string
@@ -25,7 +26,7 @@ func init() {
 	Scrobblers = append(Scrobblers, &ListenBrainzScrobbler)
 }
 
-func (scrobbler *ListenBrainzScrobblerType) NowPlaying(track *player.Track) {
+func (scrobbler *ListenBrainzScrobblerType) NowPlaying(track tonearm.Track) {
 	scrobbler.makeRequest(scrobbler.generateRequest(track, listenBrainzListenTypePlayingNow))
 }
 
@@ -84,21 +85,20 @@ func (scrobbler *ListenBrainzScrobblerType) IsConfigured() bool {
 	return true
 }
 
-func (scrobbler *ListenBrainzScrobblerType) generateRequest(track *player.Track, listenType listenBrainzListenType) listenBrainzRequest {
+func (scrobbler *ListenBrainzScrobblerType) generateRequest(track tonearm.Track, listenType listenBrainzListenType) listenBrainzRequest {
 	return listenBrainzRequest{
 		ListenType: listenType,
 		Payload: []listenBrainzPayload{
 			{
 				TrackMetadata: listenBrainzTrackMetadata{
-					TrackName:  track.Title,
-					ArtistName: track.ArtistNames(),
+					TrackName:  track.Title(),
+					ArtistName: strings.Join(track.Artists().Names(), ", "),
 					AdditionalInfo: listenBrainzAdditionalInfo{
 						MediaPlayer:      "Tonearm",
 						MusicService:     "tidal.com",
-						OriginURL:        "https://tidal.com/track/" + track.ID,
+						OriginURL:        track.URL(),
 						SubmissionClient: "Tonearm",
-						DurationMs:       int(track.Duration.Milliseconds()),
-						ISRC:             track.ISRC,
+						DurationMs:       int(track.Duration().Milliseconds()),
 					},
 				},
 			},

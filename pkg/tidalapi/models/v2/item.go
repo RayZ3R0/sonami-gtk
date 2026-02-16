@@ -5,6 +5,8 @@ import (
 	"fmt"
 	"log/slog"
 	"strconv"
+
+	"codeberg.org/dergs/tonearm/pkg/tidalapi/helper"
 )
 
 type baseItem struct {
@@ -119,16 +121,13 @@ type ArtistItemData struct {
 }
 
 type AlbumItemData struct {
-	Artists []struct {
-		ID   int    `json:"id"`
-		Name string `json:"name,omitempty"`
-	} `json:"artists"`
-	Cover       string `json:"cover"`
-	Id          int    `json:"id"`
-	Duration    int    `json:"duration"`
-	ReleaseDate string `json:"releaseDate"`
-	Title       string `json:"title"`
-	Type        string `json:"type"`
+	Artists     []ArtistItemData    `json:"artists"`
+	Cover       string              `json:"cover"`
+	Id          int                 `json:"id"`
+	Duration    int                 `json:"duration"`
+	ReleaseDate helper.TimeDateOnly `json:"releaseDate"`
+	Title       string              `json:"title"`
+	Type        string              `json:"type"`
 }
 
 type DeepLinkItemData struct {
@@ -162,7 +161,9 @@ type PlaylistItemData struct {
 		Picture string `json:"picture,omitempty"`
 		Type    string `json:"type"`
 	}
+	CreatedAt      string `json:"created"`
 	Description    string `json:"description,omitempty"`
+	Duration       int    `json:"duration"`
 	NumberOfTracks int    `json:"numberOfTracks"`
 	SquareImage    string `json:"squareImage"`
 	Title          string `json:"title"`
@@ -171,13 +172,15 @@ type PlaylistItemData struct {
 }
 
 type TrackItemData struct {
-	Album    TrackItemDataAlbum
-	Artists  []TrackItemDataArtist `json:"artists"`
-	Duration int                   `json:"duration"`
+	Album          TrackItemDataAlbum
+	AllowStreaming bool             `json:"allowStreaming"`
+	Artists        []ArtistItemData `json:"artists"`
+	Duration       int              `json:"duration"`
 	// In UI terms: Indicates whether the track has been "heart"-ed
 	Following bool   `json:"following"`
 	ID        int    `json:"id"`
 	Title     string `json:"title"`
+	Version   string `json:"version"`
 }
 
 func (t TrackItemData) GetID() string {
@@ -185,12 +188,8 @@ func (t TrackItemData) GetID() string {
 }
 
 type TrackItemDataAlbum struct {
-	Cover string `json:"cover"`
-	ID    int    `json:"id"`
-	Title string `json:"title"`
-}
-
-type TrackItemDataArtist struct {
-	ID   int    `json:"id"`
-	Name string `json:"name,omitempty"`
+	Cover       string              `json:"cover"`
+	ID          int                 `json:"id"`
+	ReleaseDate helper.TimeDateOnly `json:"releaseDate"`
+	Title       string              `json:"title"`
 }

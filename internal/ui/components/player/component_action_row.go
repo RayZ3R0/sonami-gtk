@@ -18,6 +18,7 @@ import (
 	. "codeberg.org/dergs/tonearm/pkg/schwifty/syntax"
 	"codeberg.org/dergs/tonearm/pkg/schwifty/tracking"
 	"codeberg.org/dergs/tonearm/pkg/tidalapi"
+	"codeberg.org/dergs/tonearm/pkg/tonearm"
 	"github.com/infinytum/injector"
 	"github.com/jwijenbergh/puregotk/v4/adw"
 	"github.com/jwijenbergh/puregotk/v4/gdk"
@@ -44,19 +45,20 @@ var (
 )
 
 func init() {
-	player.TrackChanged.OnLazy(func(t *player.Track) bool {
+	player.TrackChanged.OnLazy(func(t tonearm.Track) bool {
 		isTrackLoadedState.SetValue(t != nil)
 
 		if t != nil {
-			if len(t.Artists) > 1 {
+			artists := t.Artists()
+			if len(artists) > 1 {
 				menu := gio.NewMenu()
 				defer menu.Unref()
-				for _, artist := range t.Artists {
-					menu.AppendItem(gio.NewMenuItem(artist.Attributes.Name, "win.route.artist::"+artist.ID))
+				for _, artist := range artists {
+					menu.AppendItem(gio.NewMenuItem(artist.Title(), "win.route.artist::"+artist.ID()))
 				}
 				artistButtonState.SetValue(artistButtonMultiple.MenuModel(&menu.MenuModel))
 			} else {
-				artistButtonState.SetValue(artistButtonSingle.ActionName("win.route.artist").ActionTargetValue(glib.NewVariantString(t.Artists[0].ID)))
+				artistButtonState.SetValue(artistButtonSingle.ActionName("win.route.artist").ActionTargetValue(glib.NewVariantString(artists[0].ID())))
 			}
 		}
 
@@ -80,7 +82,7 @@ func favouriteButton() schwifty.Button {
 		return signals.Continue
 	})
 
-	player.TrackChanged.On(func(t *player.Track) bool {
+	player.TrackChanged.On(func(t tonearm.Track) bool {
 		isSensitive.SetValue(t != nil && secrets.SignedInChanged.CurrentValue())
 		isLoading.Set(true)
 		defer isLoading.Set(false)
@@ -95,7 +97,7 @@ func favouriteButton() schwifty.Button {
 		}
 
 		isFavourited.Notify(func(oldValue bool) bool {
-			return slices.Contains(*favourites, t.ID)
+			return slices.Contains(*favourites, t.ID())
 		})
 
 		return signals.Continue
@@ -160,13 +162,13 @@ func favouriteButton() schwifty.Button {
 
 				isFavourited.Notify(func(oldValue bool) bool {
 					if oldValue {
-						err := appState.TracksCache.Remove(player.TrackChanged.CurrentValue().ID)
+						err := appState.TracksCache.Remove(player.TrackChanged.CurrentValue().ID())
 						if err != nil {
 							logger.Error("error while removing track from favourites", "error", err)
 							return oldValue
 						}
 					} else {
-						err := appState.TracksCache.Add(player.TrackChanged.CurrentValue().ID)
+						err := appState.TracksCache.Add(player.TrackChanged.CurrentValue().ID())
 						if err != nil {
 							logger.Error("error while adding track to favourites", "error", err)
 							return oldValue
@@ -201,20 +203,7 @@ func actionRow() schwifty.Box {
 					return
 				}
 
-				var albumID string
-
-				for _, album := range track.Albums {
-					if album.Data.ID != "" {
-						albumID = album.Data.ID
-						break
-					}
-				}
-
-				if albumID == "" {
-					return
-				}
-
-				router.Navigate("album/" + albumID)
+				router.Navigate("album/" + track.Album().ID())
 			}),
 		Bin().BindChild(artistButtonState),
 		Button().
@@ -228,7 +217,7 @@ func actionRow() schwifty.Box {
 					return
 				}
 
-				id, _ := strconv.Atoi(track.ID)
+				id, _ := strconv.Atoi(track.ID())
 
 				tidalapi := injector.MustInject[*tidalapi.TidalAPI]()
 				mix, err := tidalapi.V1.Tracks.Mix(context.Background(), id)
