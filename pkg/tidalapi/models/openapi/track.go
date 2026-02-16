@@ -53,7 +53,7 @@ type TrackAttributes struct {
 	Spotlighted   bool                   `json:"spotlighted"`
 	Title         string                 `json:"title"`
 	ToneTags      []string               `json:"toneTags"`
-	Version       any                    `json:"version"`
+	Version       string                 `json:"version"`
 }
 
 type TrackRelationships struct {

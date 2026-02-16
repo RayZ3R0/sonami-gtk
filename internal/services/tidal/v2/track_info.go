@@ -32,6 +32,10 @@ func (t TrackInfo) URL() string {
 	return "https://tidal.com/track/" + t.ID()
 }
 
+func (t TrackInfo) Version() string {
+	return t.TrackItemData.Version
+}
+
 func NewTrackInfo(item v2.TrackItemData) tonearm.TrackInfo {
 	return &TrackInfo{TrackItemData: item}
 }

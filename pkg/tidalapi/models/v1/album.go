@@ -14,4 +14,5 @@ type AlbumItem struct {
 	ID             int      `json:"id"`
 	Title          string   `json:"title"`
 	TrackNumber    int      `json:"trackNumber"`
+	Version        string   `json:"version"`
 }

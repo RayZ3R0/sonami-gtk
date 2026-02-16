@@ -26,6 +26,9 @@ type TrackInfo interface {
 
 	// URL returns the shareable URL for the track
 	URL() string
+
+	// Version returns the version of the track (e.g. "Acoustic")
+	Version() string
 }
 
 type Track interface {
@@ -37,4 +40,11 @@ type Track interface {
 
 	// Album returns the album associated with the track
 	Album() AlbumInfo
+}
+
+func FormatTitle(track TrackInfo) string {
+	if track.Version() == "" {
+		return track.Title()
+	}
+	return track.Title() + " (" + track.Version() + ")"
 }

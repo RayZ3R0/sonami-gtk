@@ -24,7 +24,7 @@ func init() {
 				titleState.SetValue(gettext.Get("No Track"))
 				artistState.SetValue(gettext.Get("No Artist"))
 			} else {
-				titleState.SetValue(trackInfo.Title())
+				titleState.SetValue(tonearm.FormatTitle(trackInfo))
 				artistState.SetValue(strings.Join(trackInfo.Artists().Names(), ", "))
 			}
 		})

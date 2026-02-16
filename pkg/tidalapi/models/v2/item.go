@@ -180,6 +180,7 @@ type TrackItemData struct {
 	Following bool   `json:"following"`
 	ID        int    `json:"id"`
 	Title     string `json:"title"`
+	Version   string `json:"version"`
 }
 
 func (t TrackItemData) GetID() string {

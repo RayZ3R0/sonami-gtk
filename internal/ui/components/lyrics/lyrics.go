@@ -340,7 +340,7 @@ func loadMiniplayerState(trackInfo tonearm.Track) {
 	}()
 
 	schwifty.OnMainThreadOncePure(func() {
-		trackTitle.SetValue(trackInfo.Title())
+		trackTitle.SetValue(tonearm.FormatTitle(trackInfo))
 		trackArtists.SetValue(strings.Join(trackInfo.Artists().Names(), ", "))
 	})
 }
