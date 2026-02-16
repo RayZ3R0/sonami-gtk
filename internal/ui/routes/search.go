@@ -23,27 +23,31 @@ func init() {
 
 		return &router.Response{
 			PageTitle: gettext.Get("Search"),
-			Toolbar: SearchEntry().
-				HExpand(true).
-				MarginEnd(40).
-				PlaceholderText(gettext.Get("E.g. Fox Stevenson")).
-				SearchDelay(1000).
-				ConnectActivate(func(se gtk.SearchEntry) {
-					searchState.SetValue(true)
-					time.AfterFunc(time.Second, func() {
-						searchState.SetValue(false)
-					})
-					searchHandler(se)
-				}).
-				ConnectMap(func(w gtk.Widget) {
-					w.GrabFocus()
-				}).
-				ConnectSearchChanged(func(se gtk.SearchEntry) {
-					if searchState.Value() && se.GetText() != "" {
-						return
-					}
-					searchHandler(se)
-				}),
+			Toolbar: Clamp().
+				Orientation(gtk.OrientationHorizontalValue).
+				MaximumSize(865).
+				Child(
+					SearchEntry().
+						HExpand(true).
+						PlaceholderText(gettext.Get("E.g. Fox Stevenson")).
+						SearchDelay(1000).
+						ConnectActivate(func(se gtk.SearchEntry) {
+							searchState.SetValue(true)
+							time.AfterFunc(time.Second, func() {
+								searchState.SetValue(false)
+							})
+							searchHandler(se)
+						}).
+						ConnectMap(func(w gtk.Widget) {
+							w.GrabFocus()
+						}).
+						ConnectSearchChanged(func(se gtk.SearchEntry) {
+							if searchState.Value() && se.GetText() != "" {
+								return
+							}
+							searchHandler(se)
+						}),
+				),
 			View: ScrolledWindow().
 				BindChild(scrollChildState).
 				Policy(gtk.PolicyNeverValue, gtk.PolicyAutomaticValue),
