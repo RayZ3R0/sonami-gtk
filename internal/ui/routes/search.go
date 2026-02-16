@@ -25,7 +25,7 @@ func init() {
 			PageTitle: gettext.Get("Search"),
 			Toolbar: Clamp().
 				Orientation(gtk.OrientationHorizontalValue).
-				MaximumSize(865).
+				MaximumSize(500).
 				Child(
 					SearchEntry().
 						HExpand(true).
