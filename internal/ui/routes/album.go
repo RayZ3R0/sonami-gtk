@@ -58,6 +58,29 @@ func Album(albumId string) *router.Response {
 		return router.FromError(gettext.Get("Album"), err)
 	}
 
+	var artistButton any
+	if artists := album.Artists(); len(artists) > 1 {
+		menu := gio.NewMenu()
+		defer menu.Unref()
+		for _, artist := range artists {
+			menu.AppendItem(gio.NewMenuItem(artist.Title(), "win.route.artist::"+artist.ID()))
+		}
+
+		artistButton = MenuButton().
+			TooltipText(gettext.Get("Navigate to Artist")).
+			IconName("music-artist2-symbolic").
+			WithCSSClass("flat").
+			MenuModel(&menu.MenuModel)()
+	} else if len(artists) == 1 {
+		artist := artists[0]
+		artistButton = Button().
+			TooltipText(gettext.Get("Navigate to Artist")).
+			IconName("music-artist2-symbolic").
+			WithCSSClass("flat").
+			ActionName("win.route.artist").
+			ActionTargetValue(glib.NewVariantString(artist.ID()))()
+	}
+
 	page, err := pages.NewPaginatedTracklistPage(
 		trackPaginator,
 		func() *tracklist.TrackList {
@@ -178,6 +201,7 @@ func Album(albumId string) *router.Response {
 								clipboard.SetText(album.URL())
 								notifications.OnToast.Notify(gettext.Get("Copied album URL to clipboard."))
 							}),
+						artistButton,
 					).
 						Spacing(10).
 						HAlign(gtk.AlignEndValue),
