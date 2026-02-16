@@ -11,8 +11,6 @@ func playAlbum(albumId string, shuffle bool, startingPosition int) error {
 		return err
 	}
 
-	// We request the album from the service, hinting that we will query the tracks, to start playback
-	// and the cover art for the SourceChanged signal.
 	album, err := service.GetAlbumInfo(albumId)
 	if err != nil {
 		return err
@@ -49,8 +47,6 @@ func playPlaylist(playlistId string, shuffle bool, startingPosition int) error {
 		return err
 	}
 
-	// We request the playlist from the service, hinting that we will query the tracks, to start playback
-	// and the cover art for the SourceChanged signal.
 	playlist, err := service.GetPlaylistInfo(playlistId)
 	if err != nil {
 		return err
