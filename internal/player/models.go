@@ -1,11 +1,7 @@
 package player
 
 import (
-	"fmt"
-	"strings"
 	"time"
-
-	"codeberg.org/dergs/tonearm/pkg/tidalapi/models/openapi"
 )
 
 type RepeatMode int
@@ -37,32 +33,4 @@ type PlaybackState struct {
 	Status PlaybackStatus
 
 	Loading bool
-}
-
-type Source struct {
-	CoverURL string
-	Title    string
-	Route    string
-}
-
-type Track struct {
-	Artists  []openapi.ArtistData
-	Albums   []openapi.Album
-	CoverURL string
-	Duration time.Duration
-	ID       string
-	ISRC     string
-	Title    string
-}
-
-func (t Track) ArtistNames() string {
-	names := make([]string, len(t.Artists))
-	for i, artist := range t.Artists {
-		names[i] = artist.Attributes.Name
-	}
-	return strings.Join(names, ", ")
-}
-
-func (t Track) String() string {
-	return fmt.Sprintf("%s by %s - %s", t.Title, t.ArtistNames(), t.Duration)
 }

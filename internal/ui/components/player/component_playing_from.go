@@ -30,9 +30,8 @@ func init() {
 			playingFromNavTargetState.SetValue(s.Route())
 			playingFromCanNavigateState.SetValue(s.Route() != "")
 
-			coverUrl, err := s.Cover(80)
-			if coverUrl == "" || err != nil {
-				slog.Error("failed to load source cover", "error", err)
+			coverUrl := s.Cover(80)
+			if coverUrl == "" {
 				schwifty.OnMainThreadOncePure(func() {
 					playingFromCoverState.SetValue(resources.MissingAlbum())
 				})

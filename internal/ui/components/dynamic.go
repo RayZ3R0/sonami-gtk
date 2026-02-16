@@ -3,6 +3,7 @@ package components
 import (
 	"log/slog"
 
+	v2 "codeberg.org/dergs/tonearm/internal/services/tidal/v2"
 	"codeberg.org/dergs/tonearm/internal/ui/components/horizontal_list"
 	"codeberg.org/dergs/tonearm/internal/ui/components/media_card"
 	"codeberg.org/dergs/tonearm/internal/ui/components/shortcut_list"
@@ -10,28 +11,28 @@ import (
 	"codeberg.org/dergs/tonearm/pkg/schwifty"
 	"codeberg.org/dergs/tonearm/pkg/schwifty/syntax"
 	. "codeberg.org/dergs/tonearm/pkg/schwifty/syntax"
-	v2 "codeberg.org/dergs/tonearm/pkg/tidalapi/models/v2"
+	modelv2 "codeberg.org/dergs/tonearm/pkg/tidalapi/models/v2"
 	"github.com/jwijenbergh/puregotk/v4/gtk"
 )
 
 var logger = slog.With("module", "components")
 
-func ForPageItem(pageItem v2.PageItem) schwifty.BaseWidgetable {
+func ForPageItem(pageItem modelv2.PageItem) schwifty.BaseWidgetable {
 	switch pageItem.Type {
-	case v2.ItemTypeHorizontalList:
+	case modelv2.ItemTypeHorizontalList:
 		list := horizontal_list.NewHorizontalList(pageItem.Title)
 		for _, item := range pageItem.Items {
-			if item.Type == v2.ItemTypeAlbum {
-				list.Append(media_card.NewLegacyAlbum(item.Data.Album))
-			} else if item.Type == v2.ItemTypePlaylist {
-				list.Append(media_card.NewLegacyPlaylist(item.Data.Playlist))
-			} else if item.Type == v2.ItemTypeArtist {
-				list.Append(media_card.NewLegacyArtist(item.Data.Artist))
-			} else if item.Type == v2.ItemTypeMix {
+			if item.Type == modelv2.ItemTypeAlbum {
+				list.Append(media_card.NewAlbum(v2.NewAlbum(*item.Data.Album)))
+			} else if item.Type == modelv2.ItemTypePlaylist {
+				list.Append(media_card.NewPlaylist(v2.NewPlaylist(*item.Data.Playlist)))
+			} else if item.Type == modelv2.ItemTypeArtist {
+				list.Append(media_card.NewArtist(v2.NewArtistInfo(*item.Data.Artist)))
+			} else if item.Type == modelv2.ItemTypeMix {
 				list.Append(media_card.NewLegacyMix(item.Data.Mix))
-			} else if item.Type == v2.ItemTypeTrack {
-				list.Append(media_card.NewLegacyTrack(item.Data.Track))
-			} else if item.Type == v2.ItemTypeDeepLink {
+			} else if item.Type == modelv2.ItemTypeTrack {
+				list.Append(media_card.NewTrack(v2.NewTrack(*item.Data.Track)))
+			} else if item.Type == modelv2.ItemTypeDeepLink {
 				list.Append(media_card.NewLegacyDeeplink(item.Data.DeepLink))
 			} else {
 				list.Append(HStack(
@@ -42,32 +43,32 @@ func ForPageItem(pageItem v2.PageItem) schwifty.BaseWidgetable {
 			}
 		}
 		return list.SetPageMargin(40)
-	case v2.ItemTypeTrackList:
-		list := tracklist.NewTrackList[*v2.TrackItemData](
-			tracklist.GroupedColumn(2, gtk.AlignStartValue, tracklist.LegacyCoverColumn, tracklist.LegacyTitleAlbumColumn),
-			tracklist.LegacyArtistsColumn,
-			tracklist.LegacyExpandButtonColumn(1),
-			tracklist.GroupedColumn(1, gtk.AlignEndValue, tracklist.LegacyDurationColumn, tracklist.LegacyControlsColumn),
+	case modelv2.ItemTypeTrackList:
+		list := tracklist.NewTrackList(
+			tracklist.GroupedColumn(2, gtk.AlignStartValue, tracklist.CoverColumn, tracklist.TitleAlbumColumn),
+			tracklist.ArtistsColumn,
+			tracklist.ExpandButtonColumn(1),
+			tracklist.GroupedColumn(1, gtk.AlignEndValue, tracklist.DurationColumn, tracklist.ControlsColumn),
 		)
 		for _, track := range pageItem.Items {
-			list.AddTrack(track.Data.Track)
+			list.AddTrack(v2.NewTrack(*track.Data.Track))
 		}
 		return VStack(
 			NewRowTitle().SetTitle(pageItem.Title),
 			list,
 		).HMargin(40)
-	case v2.ItemTypeShortcutList:
+	case modelv2.ItemTypeShortcutList:
 		list := shortcut_list.NewShortcutList()
 		for _, item := range pageItem.Items {
-			if item.Type == v2.ItemTypeDeepLink {
+			if item.Type == modelv2.ItemTypeDeepLink {
 				list.Append(shortcut_list.NewLegacyDeepLink(item.Data.DeepLink))
-			} else if item.Type == v2.ItemTypeAlbum {
+			} else if item.Type == modelv2.ItemTypeAlbum {
 				list.Append(shortcut_list.NewLegacyAlbum(item.Data.Album))
-			} else if item.Type == v2.ItemTypeArtist {
+			} else if item.Type == modelv2.ItemTypeArtist {
 				list.Append(shortcut_list.NewLegacyArtist(item.Data.Artist))
-			} else if item.Type == v2.ItemTypePlaylist {
+			} else if item.Type == modelv2.ItemTypePlaylist {
 				list.Append(shortcut_list.NewLegacyPlaylist(item.Data.Playlist))
-			} else if item.Type == v2.ItemTypeMix {
+			} else if item.Type == modelv2.ItemTypeMix {
 				list.Append(shortcut_list.NewLegacyMix(item.Data.Mix))
 			} else {
 				list.Append(syntax.Label("Unsupported: " + string(item.Type)).HMargin(10))

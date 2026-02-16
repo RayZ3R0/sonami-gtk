@@ -2,6 +2,7 @@ package queue
 
 import (
 	"log/slog"
+	"slices"
 	"strings"
 	"time"
 
@@ -77,15 +78,15 @@ func NewQueue() schwifty.Box {
 			}),
 		),
 	)
-	// trackList.BindTracks(userQueueState)
-	// trackList.SetReorderCallback(func(sourceIndex, targetIndex int, track tonearm.Track) {
-	// 	player.UserQueue.Entries().Notify(func(oldValue []tonearm.Track) []tonearm.Track {
-	// 		q := slices.Clone(oldValue)
-	// 		q = append(q[:sourceIndex], q[sourceIndex+1:]...)
-	// 		q = append(q[:targetIndex], append([]tonearm.Track{track}, q[targetIndex:]...)...)
-	// 		return q
-	// 	})
-	// })
+	trackList.BindTracks(userQueueState)
+	trackList.SetReorderCallback(func(sourceIndex, targetIndex int, track tonearm.Track) {
+		player.UserQueue.Entries().Notify(func(oldValue []tonearm.Track) []tonearm.Track {
+			q := slices.Clone(oldValue)
+			q = append(q[:sourceIndex], q[sourceIndex+1:]...)
+			q = append(q[:targetIndex], append([]tonearm.Track{track}, q[targetIndex:]...)...)
+			return q
+		})
+	})
 
 	trackListBase := tracklist.NewTrackList(
 		tracklist.GroupedColumn(3, gtk.AlignStartValue, tracklist.CoverColumn, tracklist.TitleAlbumColumn),
@@ -105,21 +106,21 @@ func NewQueue() schwifty.Box {
 			}),
 		),
 	)
-	// trackListBase.BindTracks(baseQueueState)
-	// trackListBase.SetReorderCallback(func(sourceIndex, targetIndex int, track tonearm.Track) {
-	// 	player.BaseQueue.Entries().Notify(func(oldValue []tonearm.Track) []tonearm.Track {
-	// 		q := slices.Clone(oldValue)
-	// 		q = append(q[:sourceIndex], q[sourceIndex+1:]...)
-	// 		q = append(q[:targetIndex], append([]tonearm.Track{track}, q[targetIndex:]...)...)
-	// 		return q
-	// 	})
-	// })
+	trackListBase.BindTracks(baseQueueState)
+	trackListBase.SetReorderCallback(func(sourceIndex, targetIndex int, track tonearm.Track) {
+		player.BaseQueue.Entries().Notify(func(oldValue []tonearm.Track) []tonearm.Track {
+			q := slices.Clone(oldValue)
+			q = append(q[:sourceIndex], q[sourceIndex+1:]...)
+			q = append(q[:targetIndex], append([]tonearm.Track{track}, q[targetIndex:]...)...)
+			return q
+		})
+	})
 
 	player.TrackChanged.On(func(trackInfo tonearm.Track) bool {
 		if trackInfo != nil {
-			coverUrl, err := trackInfo.Cover(80)
-			if err != nil {
-				slog.Error("Failed to load cover URL", "error", err)
+			coverUrl := trackInfo.Cover(80)
+			if coverUrl == "" {
+				slog.Error("Failed to load cover URL")
 				return signals.Continue
 			}
 
@@ -132,12 +133,7 @@ func NewQueue() schwifty.Box {
 
 			schwifty.OnMainThreadOncePure(func() {
 				trackTitle.SetValue(trackInfo.Title())
-				artistNames, err := trackInfo.ArtistNames()
-				if err != nil {
-					trackArtists.SetValue(gettext.Get("Failed to load artists"))
-				} else {
-					trackArtists.SetValue(strings.Join(artistNames, ", "))
-				}
+				trackArtists.SetValue(strings.Join(trackInfo.Artists().Names(), ", "))
 			})
 		}
 

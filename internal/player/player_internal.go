@@ -13,14 +13,12 @@ func playAlbum(albumId string, shuffle bool, startingPosition int) error {
 
 	// We request the album from the service, hinting that we will query the tracks, to start playback
 	// and the cover art for the SourceChanged signal.
-	album, err := service.GetAlbum(albumId, tonearm.AlbumHintTracks, tonearm.AlbumHintCover)
+	album, err := service.GetAlbumInfo(albumId)
 	if err != nil {
 		return err
 	}
 
-	// We request the tracks from the album, hinting that we will query the album, artists and cover art for each track.
-	// Ideally the track implementation already cached the album from the call before.
-	trackPaginator, err := album.Tracks(tonearm.TrackHintAlbum, tonearm.TrackHintArtists, tonearm.AlbumHintCover)
+	trackPaginator, err := service.GetAlbumTracks(albumId)
 	if err != nil {
 		return err
 	}
@@ -40,6 +38,44 @@ func playAlbum(albumId string, shuffle bool, startingPosition int) error {
 	// where the playback originated from.
 	SourceChanged.Notify(func(oldValue tonearm.PlaybackSource) tonearm.PlaybackSource {
 		return album
+	})
+
+	return nil
+}
+
+func playPlaylist(playlistId string, shuffle bool, startingPosition int) error {
+	service, err := injector.Inject[tonearm.Service]()
+	if err != nil {
+		return err
+	}
+
+	// We request the playlist from the service, hinting that we will query the tracks, to start playback
+	// and the cover art for the SourceChanged signal.
+	playlist, err := service.GetPlaylistInfo(playlistId)
+	if err != nil {
+		return err
+	}
+
+	trackPaginator, err := service.GetPlaylistTracks(playlistId)
+	if err != nil {
+		return err
+	}
+
+	// We need to get all tracks in the playlist to be able to properly display them in a queue
+	// and in case the user wants to shuffle-play we need them anyways so they can be shuffled.
+	tracks, err := trackPaginator.GetAll()
+	if err != nil {
+		return err
+	}
+
+	if _, err := playTracklist(tracks, shuffle, startingPosition); err != nil {
+		return err
+	}
+
+	// The tracklist has successfully started playing, we can now notify subscribers
+	// where the playback originated from.
+	SourceChanged.Notify(func(oldValue tonearm.PlaybackSource) tonearm.PlaybackSource {
+		return playlist
 	})
 
 	return nil

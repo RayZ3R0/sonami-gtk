@@ -13,7 +13,7 @@ func init() {
 			Level:      slog.LevelDebug,
 			Colorful:   true,                         // Enable colors. Default is true
 			AddSource:  true,                         // Show file location
-			Multiline:  false,                        // Pretty print for complex data
+			Multiline:  true,                         // Pretty print for complex data
 			TimeFormat: slogpretty.DefaultTimeFormat, // Custom format (e.g., time.Kitchen)
 		})
 		slog.SetDefault(slog.New(handler))

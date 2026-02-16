@@ -21,9 +21,9 @@ var coverState = state.New[schwifty.Paintable](nil)
 func init() {
 	player.TrackChanged.On(func(trackInfo tonearm.Track) bool {
 		if trackInfo != nil {
-			coverUrl, err := trackInfo.Cover(320)
-			if err != nil {
-				slog.Error("Failed to load cover URL", "error", err)
+			coverUrl := trackInfo.Cover(320)
+			if coverUrl == "" {
+				slog.Error("Failed to load cover URL")
 				return signals.Continue
 			}
 

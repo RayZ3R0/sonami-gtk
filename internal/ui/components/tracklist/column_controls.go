@@ -1,17 +1,14 @@
 package tracklist
 
 import (
-	"strconv"
-
 	"codeberg.org/dergs/tonearm/internal/gettext"
 	. "codeberg.org/dergs/tonearm/pkg/schwifty/syntax"
-	"codeberg.org/dergs/tonearm/pkg/tidalapi/models/openapi"
-	v2 "codeberg.org/dergs/tonearm/pkg/tidalapi/models/v2"
+	"codeberg.org/dergs/tonearm/pkg/tonearm"
 	"github.com/jwijenbergh/puregotk/v4/glib"
 	"github.com/jwijenbergh/puregotk/v4/gtk"
 )
 
-func controlsColumn(trackId string, grid *gtk.Grid, position int, column int) int {
+func ControlsColumn(track tonearm.Track, grid *gtk.Grid, position int, column int) int {
 	grid.Attach(
 		HStack(
 			Button().
@@ -26,7 +23,7 @@ func controlsColumn(trackId string, grid *gtk.Grid, position int, column int) in
 				HAlign(gtk.AlignCenterValue).
 				VAlign(gtk.AlignCenterValue).
 				ActionName("win.player.queue-track").
-				ActionTargetValue(glib.NewVariantString(trackId)).
+				ActionTargetValue(glib.NewVariantString(track.ID())).
 				WithCSSClass("flat"),
 		).
 			Margin(10).
@@ -38,32 +35,4 @@ func controlsColumn(trackId string, grid *gtk.Grid, position int, column int) in
 		1,
 	)
 	return 1
-}
-
-func ControlsColumn(track *openapi.Track, grid *gtk.Grid, position int, column int) int {
-	if track == nil {
-		grid.Attach(
-			Box(gtk.OrientationHorizontalValue).ToGTK(),
-			column,
-			0,
-			1,
-			1,
-		)
-		return 1
-	}
-	return controlsColumn(track.Data.ID, grid, position, column)
-}
-
-func LegacyControlsColumn(track *v2.TrackItemData, grid *gtk.Grid, position int, column int) int {
-	if track == nil {
-		grid.Attach(
-			Box(gtk.OrientationHorizontalValue).ToGTK(),
-			column,
-			0,
-			1,
-			1,
-		)
-		return 1
-	}
-	return controlsColumn(strconv.Itoa(track.ID), grid, position, column)
 }

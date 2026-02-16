@@ -1,17 +1,28 @@
 package tonearm
 
-type Album interface {
+import "time"
+
+type AlbumInfo interface {
 	PlaybackSource
 
-	// Artists returns (and possibly resolves) the artists featured on the album
-	Artists(hints ...FetchHint) (Paginator[Artist], error)
+	// Duration returns the duration of the album
+	Duration() time.Duration
 
 	// ID returns the unique identifier for the album
 	ID() string
 
-	// Tracks returns (and possibly resolves) the tracks on the album
-	Tracks(hints ...FetchHint) (Paginator[Track], error)
+	// ReleasedAt returns the release date of the album
+	ReleasedAt() time.Time
 
 	// URL returns the shareable URL for the album
 	URL() string
+}
+
+type Album interface {
+	AlbumInfo
+
+	Artists() ArtistInfos
+
+	// Count returns the number of tracks in the album
+	Count() int
 }

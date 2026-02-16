@@ -8,8 +8,12 @@ import (
 	"codeberg.org/dergs/tonearm/internal/resources"
 	"codeberg.org/dergs/tonearm/internal/router"
 	"codeberg.org/dergs/tonearm/internal/signals"
+	"codeberg.org/dergs/tonearm/internal/ui/components/tracklist"
+	"codeberg.org/dergs/tonearm/internal/ui/pages"
+	"codeberg.org/dergs/tonearm/pkg/schwifty"
 	"codeberg.org/dergs/tonearm/pkg/schwifty/state"
 	. "codeberg.org/dergs/tonearm/pkg/schwifty/syntax"
+	"codeberg.org/dergs/tonearm/pkg/tidalapi"
 	"codeberg.org/dergs/tonearm/pkg/tonearm"
 	"codeberg.org/dergs/tonearm/pkg/utils/imgutil"
 	"github.com/infinytum/injector"
@@ -32,68 +36,33 @@ func Album(albumId string) *router.Response {
 		return router.FromError(gettext.Get("Album"), err)
 	}
 
-	album, err := service.GetAlbum(albumId, tonearm.AlbumHintArtists, tonearm.AlbumHintCover, tonearm.AlbumHintTracks)
+	album, err := service.GetAlbum(albumId)
 	if err != nil {
 		return router.FromError(gettext.Get("Album"), err)
 	}
 
-	coverUrl, err := album.Cover(160)
+	coverUrl := album.Cover(160)
+
+	trackPaginator, err := service.GetAlbumTracks(albumId)
 	if err != nil {
 		return router.FromError(gettext.Get("Album"), err)
 	}
 
-	artistPaginator, err := album.Artists()
-	if err != nil {
-		return router.FromError(gettext.Get("Album"), err)
-	}
-
-	artists, err := artistPaginator.GetAll()
-	if err != nil {
-		return router.FromError(gettext.Get("Album"), err)
-	}
-
-	artistNames := []string{}
-	for _, artist := range artists {
-		artistNames = append(artistNames, artist.Name())
-	}
-
-	// paginator := pagination.NewPaginator(tidal.OpenAPI.V2.Albums.Items, albumId, func(items *openapi.Response[[]openapi.Relationship]) []openapi.Track {
-	// 	return items.Included.Tracks(items.Data...)
-	// }, "items", "items.artists", "items.albums.coverArt")
-
-	// album, err := tidal.OpenAPI.V2.Albums.Album(context.Background(), albumId, "coverArt", "artists", "coverArt")
-	// if err != nil {
-	// 	return router.FromError(gettext.Get("Album"), err)
-	// }
-
-	// artists := []string{}
-	// for _, artist := range album.Included.PlainArtists(album.Data.Relationships.Artists.Data...) {
-	// 	artists = append(artists, artist.Attributes.Name)
-	// }
-
-	// coverUrl := ""
-	// for _, artwork := range album.Included.PlainArtworks(album.Data.Relationships.CoverArt.Data...) {
-	// 	if artwork.Attributes.IsPicture() {
-	// 		coverUrl = artwork.Attributes.Files.AtLeast(160).Href
-	// 		break
-	// 	}
-	// }
-
-	// page, err := pages.NewPaginatedTracklistPage(
-	// 	paginator,
-	// 	func() *tracklist.TrackList[*openapi.Track] {
-	// 		return tracklist.NewTrackList(
-	// 			tracklist.GroupedColumn(2, gtk.AlignStartValue, tracklist.PositionColumn, tracklist.TitleColumn),
-	// 			tracklist.ArtistsColumn,
-	// 			tracklist.ExpandCustomButtonColumn(1, func(trackId string, position, _ int) {
-	// 				go player.PlayAlbum(albumId, false, position)
-	// 			}),
-	// 			tracklist.GroupedColumn(1, gtk.AlignEndValue, tracklist.DurationColumn, tracklist.ControlsColumn),
-	// 		)
-	// 	}, func(tl *tracklist.TrackList[*openapi.Track]) schwifty.BaseWidgetable {
-	// 		return tl.HMargin(30).VAlign(gtk.AlignStartValue)
-	// 	},
-	// )
+	page, err := pages.NewPaginatedTracklistPage(
+		trackPaginator,
+		func() *tracklist.TrackList {
+			return tracklist.NewTrackList(
+				tracklist.GroupedColumn(2, gtk.AlignStartValue, tracklist.PositionColumn, tracklist.TitleColumn),
+				tracklist.ArtistsColumn,
+				tracklist.ExpandCustomButtonColumn(1, func(trackId string, position, _ int) {
+					go player.PlayAlbum(albumId, false, position)
+				}),
+				tracklist.GroupedColumn(1, gtk.AlignEndValue, tracklist.DurationColumn, tracklist.ControlsColumn),
+			)
+		}, func(tl *tracklist.TrackList) schwifty.BaseWidgetable {
+			return tl.HMargin(30).VAlign(gtk.AlignStartValue)
+		},
+	)
 
 	return &router.Response{
 		PageTitle: album.Title(),
@@ -114,17 +83,17 @@ func Album(albumId string) *router.Response {
 					Label(album.Title()).
 						WithCSSClass("title-2").
 						HAlign(gtk.AlignStartValue),
-					Label(strings.Join(artistNames, ", ")).
+					Label(strings.Join(album.Artists().Names(), ", ")).
 						WithCSSClass("heading").WithCSSClass("dimmed").
 						PaddingTop(10).
 						HAlign(gtk.AlignStartValue),
-					// Label(album.Data.Attributes.ReleaseDate.Format("2006")).
-					// 	WithCSSClass("heading").WithCSSClass("dimmed").
-					// 	HAlign(gtk.AlignStartValue),
-					// Label(gettext.GetN("%d Track (%s)", "%d Tracks (%s)", album.Data.Attributes.NumberOfItems, album.Data.Attributes.NumberOfItems, tidalapi.FormatDuration(album.Data.Attributes.Duration.Duration))).
-					// 	WithCSSClass("heading").WithCSSClass("dimmed").
-					// 	HAlign(gtk.AlignStartValue).
-					// 	MarginTop(10),
+					Label(album.ReleasedAt().Format("2006")).
+						WithCSSClass("heading").WithCSSClass("dimmed").
+						HAlign(gtk.AlignStartValue),
+					Label(gettext.GetN("%d Track (%s)", "%d Tracks (%s)", album.Count(), album.Count(), tidalapi.FormatDuration(album.Duration()))).
+						WithCSSClass("heading").WithCSSClass("dimmed").
+						HAlign(gtk.AlignStartValue).
+						MarginTop(10),
 				).MarginStart(20).VAlign(gtk.AlignCenterValue),
 				Spacer().VExpand(false),
 				HStack(
@@ -161,7 +130,7 @@ func Album(albumId string) *router.Response {
 					VAlign(gtk.AlignCenterValue).
 					Spacing(5),
 			).HMargin(40),
-			// page.VExpand(true).MarginTop(20),
+			page.VExpand(true).MarginTop(20),
 		).VMargin(20),
 	}
 }

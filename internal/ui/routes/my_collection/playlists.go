@@ -4,12 +4,13 @@ import (
 	"codeberg.org/dergs/tonearm/internal/gettext"
 	"codeberg.org/dergs/tonearm/internal/router"
 	"codeberg.org/dergs/tonearm/internal/secrets"
+	"codeberg.org/dergs/tonearm/internal/services/tidal/openapi"
 	"codeberg.org/dergs/tonearm/internal/ui/components/media_card"
 	"codeberg.org/dergs/tonearm/internal/ui/pages"
 	"codeberg.org/dergs/tonearm/pkg/schwifty"
 	. "codeberg.org/dergs/tonearm/pkg/schwifty/syntax"
 	"codeberg.org/dergs/tonearm/pkg/tidalapi"
-	"codeberg.org/dergs/tonearm/pkg/tidalapi/models/openapi"
+	modelopenapi "codeberg.org/dergs/tonearm/pkg/tidalapi/models/openapi"
 	"codeberg.org/dergs/tonearm/pkg/tidalapi/pagination"
 	"github.com/infinytum/injector"
 )
@@ -24,12 +25,12 @@ func Playlists() *router.Response {
 		}
 	}
 
-	paginator := pagination.NewPaginator(tidal.OpenAPI.V2.UserCollections.Playlists, userId, func(r *openapi.Response[[]openapi.Relationship]) []openapi.Playlist {
+	paginator := pagination.NewPaginator(tidal.OpenAPI.V2.UserCollections.Playlists, userId, func(r *modelopenapi.Response[[]modelopenapi.Relationship]) []modelopenapi.Playlist {
 		return r.Included.Playlists(r.Data...)
 	}, "playlists.coverArt", "playlists.ownerProfiles")
 
-	page, err := pages.NewPaginatedMediaCardPage(paginator, func(playlist openapi.Playlist) schwifty.BaseWidgetable {
-		return media_card.NewPlaylist(&playlist)
+	page, err := pages.NewPaginatedMediaCardPage(paginator, func(playlist modelopenapi.Playlist) schwifty.BaseWidgetable {
+		return media_card.NewPlaylist(openapi.NewPlaylist(playlist))
 	})
 
 	return &router.Response{

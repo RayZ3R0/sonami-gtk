@@ -25,12 +25,7 @@ func init() {
 				artistState.SetValue(gettext.Get("No Artist"))
 			} else {
 				titleState.SetValue(trackInfo.Title())
-				artistNames, err := trackInfo.ArtistNames()
-				if err != nil {
-					artistState.SetValue(gettext.Get("Failed to load artists"))
-				} else {
-					artistState.SetValue(strings.Join(artistNames, ", "))
-				}
+				artistState.SetValue(strings.Join(trackInfo.Artists().Names(), ", "))
 			}
 		})
 		return signals.Continue

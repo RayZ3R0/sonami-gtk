@@ -8,24 +8,23 @@ import (
 	"codeberg.org/dergs/tonearm/internal/ui/components/tracklist"
 	"codeberg.org/dergs/tonearm/pkg/schwifty"
 	. "codeberg.org/dergs/tonearm/pkg/schwifty/syntax"
-	"codeberg.org/dergs/tonearm/pkg/tidalapi/models/openapi"
-	"codeberg.org/dergs/tonearm/pkg/tidalapi/pagination"
+	"codeberg.org/dergs/tonearm/pkg/tonearm"
 	"github.com/jwijenbergh/puregotk/v4/gtk"
 )
 
 func NewPaginatedTracklistPage(
-	paginator *pagination.Paginator[openapi.Track],
-	factory func() *tracklist.TrackList[*openapi.Track],
-	styleFactory func(*tracklist.TrackList[*openapi.Track]) schwifty.BaseWidgetable,
+	paginator tonearm.Paginator[tonearm.Track],
+	factory func() *tracklist.TrackList,
+	styleFactory func(*tracklist.TrackList) schwifty.BaseWidgetable,
 ) (schwifty.ScrolledWindow, error) {
-	firstPage, err := paginator.GetFirstPage()
+	firstPage, err := paginator.NextPage()
 	if err != nil {
 		return nil, err
 	}
 
 	list := factory()
 	for _, track := range firstPage {
-		list.AddTrack(&track)
+		list.AddTrack(track)
 	}
 
 	return ScrolledWindow().
@@ -33,16 +32,16 @@ func NewPaginatedTracklistPage(
 		Policy(gtk.PolicyNeverValue, gtk.PolicyAutomaticValue).
 		ConnectReachEdgeSoon(gtk.PosBottomValue, func() bool {
 			if !paginator.IsConsumed() {
-				items, err := paginator.Next()
+				items, err := paginator.NextPage()
 				if err != nil {
 					return signals.Continue
 				}
 
 				schwifty.OnMainThreadOnce(func(u uintptr) {
-					var list *tracklist.TrackList[*openapi.Track]
-					list = (*tracklist.TrackList[*openapi.Track])(unsafe.Pointer(u))
+					var list *tracklist.TrackList
+					list = (*tracklist.TrackList)(unsafe.Pointer(u))
 					for _, track := range items {
-						list.AddTrack(&track)
+						list.AddTrack(track)
 					}
 				}, uintptr(unsafe.Pointer(list)))
 			} else {

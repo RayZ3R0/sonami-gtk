@@ -5,6 +5,7 @@ import (
 	"encoding/json"
 	"io"
 	"net/http"
+	"strings"
 
 	"codeberg.org/dergs/tonearm/internal/settings"
 	"codeberg.org/dergs/tonearm/internal/signals"
@@ -99,14 +100,13 @@ func generateListenBrainzRequest(track tonearm.Track, listenType listenBrainzLis
 			{
 				TrackMetadata: listenBrainzTrackMetadata{
 					TrackName:  track.Title(),
-					ArtistName: track.ArtistNames(),
+					ArtistName: strings.Join(track.Artists().Names(), ", "),
 					AdditionalInfo: listenBrainzAdditionalInfo{
 						MediaPlayer:      "Tonearm",
 						MusicService:     "tidal.com",
 						OriginURL:        track.URL(),
 						SubmissionClient: "Tonearm",
 						DurationMs:       int(track.Duration().Milliseconds()),
-						// ISRC:             track.ISRC,
 					},
 				},
 			},

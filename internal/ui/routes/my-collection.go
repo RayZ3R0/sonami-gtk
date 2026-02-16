@@ -6,6 +6,7 @@ import (
 	"codeberg.org/dergs/tonearm/internal/gettext"
 	"codeberg.org/dergs/tonearm/internal/router"
 	"codeberg.org/dergs/tonearm/internal/secrets"
+	"codeberg.org/dergs/tonearm/internal/services/tidal/openapi"
 	"codeberg.org/dergs/tonearm/internal/ui/components"
 	"codeberg.org/dergs/tonearm/internal/ui/components/horizontal_list"
 	"codeberg.org/dergs/tonearm/internal/ui/components/media_card"
@@ -45,17 +46,17 @@ func MyCollection() *router.Response {
 
 	artistList := horizontal_list.NewHorizontalList(gettext.Get("Artists")).SetPageMargin(40).SetViewAllRoute("my-collection/artists")
 	for _, artist := range userCollection.Included.Artists(userCollection.Data.Relationships.Artists.Data...) {
-		artistList.Append(media_card.NewArtist(&artist))
+		artistList.Append(media_card.NewArtist(openapi.NewArtistInfo(artist)))
 	}
 
 	albumList := horizontal_list.NewHorizontalList(gettext.Get("Albums")).SetPageMargin(40).SetViewAllRoute("my-collection/albums")
 	for _, album := range userCollection.Included.Albums(userCollection.Data.Relationships.Albums.Data...) {
-		albumList.Append(media_card.NewAlbum(&album))
+		albumList.Append(media_card.NewAlbum(openapi.NewAlbum(album)))
 	}
 
 	playlistList := horizontal_list.NewHorizontalList(gettext.Get("Playlists")).SetPageMargin(40).SetViewAllRoute("my-collection/playlists")
 	for _, playlist := range userCollection.Included.Playlists(userCollection.Data.Relationships.Playlists.Data...) {
-		playlistList.Append(media_card.NewPlaylist(&playlist))
+		playlistList.Append(media_card.NewPlaylist(openapi.NewPlaylist(playlist)))
 	}
 
 	trackList := tracklist.NewTrackList(
@@ -65,7 +66,7 @@ func MyCollection() *router.Response {
 		tracklist.GroupedColumn(1, gtk.AlignEndValue, tracklist.DurationColumn, tracklist.ControlsColumn),
 	)
 	for _, track := range userCollection.Included.Tracks(userCollection.Data.Relationships.Tracks.Data...) {
-		trackList.AddTrack(&track)
+		trackList.AddTrack(openapi.NewTrack(track))
 	}
 
 	return &router.Response{

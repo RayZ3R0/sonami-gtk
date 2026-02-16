@@ -2,20 +2,21 @@ package search
 
 import (
 	"codeberg.org/dergs/tonearm/internal/gettext"
+	"codeberg.org/dergs/tonearm/internal/services/tidal/openapi"
 	"codeberg.org/dergs/tonearm/internal/ui/components"
 	"codeberg.org/dergs/tonearm/internal/ui/components/horizontal_list"
 	"codeberg.org/dergs/tonearm/internal/ui/components/media_card"
 	"codeberg.org/dergs/tonearm/internal/ui/components/tracklist"
 	"codeberg.org/dergs/tonearm/pkg/schwifty"
 	. "codeberg.org/dergs/tonearm/pkg/schwifty/syntax"
-	"codeberg.org/dergs/tonearm/pkg/tidalapi/models/openapi"
+	modelopenapi "codeberg.org/dergs/tonearm/pkg/tidalapi/models/openapi"
 	"github.com/jwijenbergh/puregotk/v4/gtk"
 )
 
-func TopHits(searchResults *openapi.SearchResult) schwifty.Box {
+func TopHits(searchResults *modelopenapi.SearchResult) schwifty.Box {
 	artistList := horizontal_list.NewHorizontalList("Artists").SetPageMargin(40).SetViewAllRoute("search/" + searchResults.Data.ID + "/artists")
 	for _, artist := range searchResults.Included.Artists(searchResults.Data.Relationships.TopHits.Data...) {
-		artistList.Append(media_card.NewArtist(&artist))
+		artistList.Append(media_card.NewArtist(openapi.NewArtistInfo(artist)))
 	}
 
 	trackList := tracklist.NewTrackList(
@@ -25,17 +26,17 @@ func TopHits(searchResults *openapi.SearchResult) schwifty.Box {
 		tracklist.GroupedColumn(1, gtk.AlignEndValue, tracklist.DurationColumn, tracklist.ControlsColumn),
 	)
 	for _, track := range searchResults.Included.Tracks(searchResults.Data.Relationships.TopHits.Data...) {
-		trackList.AddTrack(&track)
+		trackList.AddTrack(openapi.NewTrack(track))
 	}
 
 	albumList := horizontal_list.NewHorizontalList(gettext.Get("Albums")).SetPageMargin(40).SetViewAllRoute("search/" + searchResults.Data.ID + "/albums")
 	for _, album := range searchResults.Included.Albums(searchResults.Data.Relationships.TopHits.Data...) {
-		albumList.Append(media_card.NewAlbum(&album))
+		albumList.Append(media_card.NewAlbum(openapi.NewAlbum(album)))
 	}
 
 	playlistList := horizontal_list.NewHorizontalList(gettext.Get("Playlists")).SetPageMargin(40).SetViewAllRoute("search/" + searchResults.Data.ID + "/playlists")
 	for _, playlist := range searchResults.Included.Playlists(searchResults.Data.Relationships.TopHits.Data...) {
-		playlistList.Append(media_card.NewPlaylist(&playlist))
+		playlistList.Append(media_card.NewPlaylist(openapi.NewPlaylist(playlist)))
 	}
 
 	return VStack(

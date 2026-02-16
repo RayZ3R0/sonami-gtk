@@ -316,20 +316,8 @@ func parseUntimedLyrics(lyrics string) (lines []any) {
 }
 
 func loadMiniplayerState(trackInfo tonearm.Track) {
-	artistNames, err := trackInfo.ArtistNames()
-	if err != nil {
-		slog.Error("Failed to load artist names", "error", err)
-		return
-	}
-
-	coverURL, err := trackInfo.Cover(80)
-	if err != nil {
-		slog.Error("Failed to load cover URL", "error", err)
-		return
-	}
-
 	go func() {
-		if texture, err := injector.MustInject[*imgutil.ImgUtil]().Load(coverURL); err == nil {
+		if texture, err := injector.MustInject[*imgutil.ImgUtil]().Load(trackInfo.Cover(80)); err == nil {
 			schwifty.OnMainThreadOncePure(func() {
 				coverState.SetValue(texture)
 				texture.Unref()
@@ -339,7 +327,7 @@ func loadMiniplayerState(trackInfo tonearm.Track) {
 
 	schwifty.OnMainThreadOncePure(func() {
 		trackTitle.SetValue(trackInfo.Title())
-		trackArtists.SetValue(strings.Join(artistNames, ", "))
+		trackArtists.SetValue(strings.Join(trackInfo.Artists().Names(), ", "))
 	})
 }
 

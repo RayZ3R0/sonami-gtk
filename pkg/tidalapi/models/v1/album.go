@@ -5,3 +5,12 @@ type Album struct {
 	ID    int    `json:"id"`
 	Title string `json:"title"`
 }
+
+type AlbumItem struct {
+	Album       Album    `json:"album"`
+	Artists     []Artist `json:"artists"`
+	Duration    int      `json:"duration"`
+	ID          int      `json:"id"`
+	Title       string   `json:"title"`
+	TrackNumber int      `json:"trackNumber"`
+}

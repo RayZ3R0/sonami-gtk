@@ -66,55 +66,40 @@ func init() {
 
 		mprisServer.Connect()
 
-		artistsPaginator, err := trackInfo.Artists()
-		if err != nil {
-			return signals.Continue
-		}
-
-		artists, err := artistsPaginator.GetAll()
-		if err != nil {
-			return signals.Continue
-		}
-
 		artistNames := []string{}
-		for _, artist := range artists {
+		for _, artist := range trackInfo.Artists() {
 			artistNames = append(artistNames, artist.Name())
 		}
 
-		album, err := trackInfo.Album()
-		if err != nil {
-			return signals.Continue
-		}
+		// albumArtistsPaginator, err := album.Artists()
+		// if err != nil {
+		// 	return signals.Continue
+		// }
 
-		albumArtistsPaginator, err := album.Artists()
-		if err != nil {
-			return signals.Continue
-		}
+		// albumArtists, err := albumArtistsPaginator.GetAll()
+		// if err != nil {
+		// 	return signals.Continue
+		// }
 
-		albumArtists, err := albumArtistsPaginator.GetAll()
-		if err != nil {
-			return signals.Continue
-		}
+		// albumArtistNames := []string{}
+		// for _, artist := range albumArtists {
+		// 	albumArtistNames = append(albumArtistNames, artist.Name())
+		// }
 
-		albumArtistNames := []string{}
-		for _, artist := range albumArtists {
-			albumArtistNames = append(albumArtistNames, artist.Name())
-		}
-
-		cover, err := album.Cover(-1)
+		cover := trackInfo.Album().Cover(-1)
 		if err != nil {
 			return signals.Continue
 		}
 
 		mprisServer.SetTrackMetadata(map[string]any{
-			"mpris:trackid":     dbus.ObjectPath("/org/mpris/MediaPlayer2/TrackList/Track" + trackInfo.ID()),
-			"mpris:artUrl":      cover,
-			"mpris:length":      trackInfo.Duration().Microseconds(),
-			"xesam:album":       album.Title(),
-			"xesam:albumArtist": albumArtistNames,
-			"xesam:artist":      artistNames,
-			"xesam:title":       trackInfo.Title(),
-			"xesam:url":         fmt.Sprintf("https://tidal.com/track/%s", trackInfo.ID()),
+			"mpris:trackid": dbus.ObjectPath("/org/mpris/MediaPlayer2/TrackList/Track" + trackInfo.ID()),
+			"mpris:artUrl":  cover,
+			"mpris:length":  trackInfo.Duration().Microseconds(),
+			"xesam:album":   trackInfo.Album().Title(),
+			// "xesam:albumArtist": albumArtistNames,
+			"xesam:artist": artistNames,
+			"xesam:title":  trackInfo.Title(),
+			"xesam:url":    fmt.Sprintf("https://tidal.com/track/%s", trackInfo.ID()),
 		})
 
 		return signals.Continue

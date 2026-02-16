@@ -4,6 +4,7 @@ import (
 	"fmt"
 
 	"codeberg.org/dergs/tonearm/pkg/tonearm"
+	"github.com/infinytum/injector"
 )
 
 func clearQueues() {
@@ -52,11 +53,11 @@ func getNextTrackFromQueue(peek bool) tonearm.Track {
 	return nil
 }
 
-// func resolveTrack(trackId string) (tonearm.Track, error) {
-// 	tidal, err := injector.Inject[*tidalapi.TidalAPI]()
-// 	if err != nil {
-// 		return nil, err
-// 	}
+func resolveTrack(trackId string) (tonearm.Track, error) {
+	service, err := injector.Inject[tonearm.Service]()
+	if err != nil {
+		return nil, err
+	}
 
-// 	return tidal.OpenAPI.V2.Tracks.Track(context.Background(), trackId, "albums.coverArt", "artists")
-// }
+	return service.GetTrack(trackId)
+}

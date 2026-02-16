@@ -2,6 +2,7 @@ package player
 
 import (
 	"strconv"
+	"time"
 
 	"codeberg.org/dergs/tonearm/internal/player/queue"
 	"codeberg.org/dergs/tonearm/internal/settings"
@@ -62,41 +63,41 @@ func playNextTrack() {
 }
 
 func playPreviousTrack() {
-	// ok, position := playbin.QueryPosition(gst.FormatTime)
-	// if ok && time.Duration(position) > 5*time.Second {
-	// 	logger.Debug("above the 5 second mark, replaying song", "action", "previous")
-	// 	SeekToPosition(0)
-	// 	return
-	// }
+	ok, position := playbin.QueryPosition(gst.FormatTime)
+	if ok && time.Duration(position) > 5*time.Second {
+		logger.Debug("above the 5 second mark, replaying song", "action", "previous")
+		SeekToPosition(0)
+		return
+	}
 
-	// if len(history.Entries.CurrentValue()) < 1 {
-	// 	logger.Debug("no history entries, replaying song", "action", "previous")
-	// 	SeekToPosition(0)
-	// 	return
-	// }
+	if len(history.Entries.CurrentValue()) < 1 {
+		logger.Debug("no history entries, replaying song", "action", "previous")
+		SeekToPosition(0)
+		return
+	}
 
-	// setLoadingState()
+	setLoadingState()
 
-	// entry := history.Pop()
-	// if entry != nil {
-	// 	track, err := resolveTrack(TrackChanged.CurrentValue().ID())
-	// 	if err != nil {
-	// 		logger.Error("failed to resolve track", "trackID", entry.TrackID, "error", err)
-	// 		return
-	// 	}
+	entry := history.Pop()
+	if entry != nil {
+		track, err := resolveTrack(TrackChanged.CurrentValue().ID())
+		if err != nil {
+			logger.Error("failed to resolve track", "trackID", entry.TrackID, "error", err)
+			return
+		}
 
-	// 	// Re-Queue current song to front of user-queue
-	// 	UserQueue.Prepend(track)
+		// Re-Queue current song to front of user-queue
+		UserQueue.Prepend(track)
 
-	// 	// Switch to previous track without clearing base queue
-	// 	track, err = resolveTrack(entry.TrackID)
-	// 	if err != nil {
-	// 		logger.Error("failed to resolve track", "trackID", entry.TrackID, "error", err)
-	// 		return
-	// 	}
-	// 	logger.Debug("playing previous track", "track_id", track.ID(), "action", "previous")
-	// 	playTrack(track)
-	// }
+		// Switch to previous track without clearing base queue
+		track, err = resolveTrack(entry.TrackID)
+		if err != nil {
+			logger.Error("failed to resolve track", "trackID", entry.TrackID, "error", err)
+			return
+		}
+		logger.Debug("playing previous track", "track_id", track.ID(), "action", "previous")
+		playTrack(track)
+	}
 }
 
 func SkipThroughQueue(queue queue.Queue, to int) {

@@ -3,7 +3,6 @@ package player
 import (
 	"context"
 	"fmt"
-	"log/slog"
 	"strconv"
 
 	"codeberg.org/dergs/tonearm/internal/gettext"
@@ -44,19 +43,7 @@ func init() {
 		isTrackLoadedState.SetValue(t != nil)
 
 		if t != nil {
-
-			artistPaginator, err := t.Artists()
-			if err != nil {
-				slog.Error("Failed to load artists", "error", err)
-				return signals.Continue
-			}
-
-			artists, err := artistPaginator.GetAll()
-			if err != nil {
-				slog.Error("Failed to load all artists", "error", err)
-				return signals.Continue
-			}
-
+			artists := t.Artists()
 			if len(artists) > 1 {
 				menu := gio.NewMenu()
 				defer menu.Unref()
@@ -97,13 +84,7 @@ func actionRow() schwifty.Box {
 					return
 				}
 
-				album, err := track.Album()
-				if err != nil {
-					slog.Error("Failed to load album", "error", err)
-					return
-				}
-
-				router.Navigate("album/" + album.ID())
+				router.Navigate("album/" + track.Album().ID())
 			}),
 		Bin().BindChild(artistButtonState),
 		Button().
