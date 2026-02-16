@@ -2,7 +2,6 @@ package player
 
 import (
 	"context"
-	"strconv"
 	"time"
 
 	"codeberg.org/dergs/tonearm/internal/settings"
@@ -19,6 +18,7 @@ import (
 const UpdateInterval = 250 * time.Millisecond
 
 var updateRunnerSourceHandle uint
+var didQueueGaplessPlayback bool
 
 func onAboutToFinish(_ *gst.Element) {
 	if RepeatModeChanged.CurrentValue() == RepeatModeTrack {
@@ -43,6 +43,7 @@ func onAboutToFinish(_ *gst.Element) {
 			return
 		}
 		logger.Info("enqueued next song for gapless playback", "track_id", nextTrack.ID())
+		didQueueGaplessPlayback = true
 
 		// One-Shot Handler to update the track quality
 		TrackChanged.OnLazy(func(t tonearm.Track) bool {
@@ -64,7 +65,8 @@ func onBusMessage(msg *gst.Message) bool {
 		startUpdateRunner()
 		playbin.Set("volume", settings.Player().GetVolume())
 		// A hack to trigger the correct track updates with gapless playback
-		if currentlyEnqueuedTrack == nil || TrackChanged.CurrentValue().ID() != strconv.Itoa(currentlyEnqueuedTrack.TrackID) {
+		if didQueueGaplessPlayback {
+			didQueueGaplessPlayback = false
 			stateBeforeLoading = gst.StatePlaying
 			go playNextTrack()
 		}
