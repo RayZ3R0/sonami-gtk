@@ -32,7 +32,7 @@ func MyCollection() *router.Response {
 	if userId == "" {
 		return &router.Response{
 			PageTitle: gettext.Get("My Collection"),
-			View: components.AuthRequired(gettext.Get("Please sign in to view your collection")),
+			View:      components.AuthRequired(gettext.Get("Please sign in to view your collection")),
 		}
 	}
 
@@ -73,16 +73,18 @@ func MyCollection() *router.Response {
 		PageTitle: gettext.Get("My Collection"),
 		View: ScrolledWindow().
 			Child(
-				VStack(
-					artistList,
-					albumList,
-					playlistList,
+				components.MainContent(
 					VStack(
-						components.NewRowTitle().SetTitle(gettext.Get("Tracks")).SetViewAllRoute("my-collection/tracks"),
-						trackList,
-					).HMargin(40),
-					Spacer(),
-				).Spacing(25).VMargin(20).VAlign(gtk.AlignStartValue),
+						artistList,
+						albumList,
+						playlistList,
+						VStack(
+							components.NewRowTitle().SetTitle(gettext.Get("Tracks")).SetViewAllRoute("my-collection/tracks"),
+							trackList,
+						).HMargin(40),
+						Spacer(),
+					).Spacing(25).VMargin(20).VAlign(gtk.AlignStartValue),
+				),
 			).
 			Policy(gtk.PolicyNeverValue, gtk.PolicyAutomaticValue),
 	}

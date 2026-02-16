@@ -4,6 +4,7 @@ import (
 	"log/slog"
 
 	"codeberg.org/dergs/tonearm/internal/signals"
+	"codeberg.org/dergs/tonearm/internal/ui/components"
 	"codeberg.org/dergs/tonearm/pkg/schwifty"
 	. "codeberg.org/dergs/tonearm/pkg/schwifty/syntax"
 	"codeberg.org/dergs/tonearm/pkg/tidalapi/pagination"
@@ -27,7 +28,9 @@ func NewPaginatedMediaCardPage[T any](
 	}
 
 	return ScrolledWindow().
-		Child(list).
+		Child(
+			components.MainContent(Widget(&list.Widget)),
+		).
 		Policy(gtk.PolicyNeverValue, gtk.PolicyAutomaticValue).
 		ConnectReachEdgeSoon(gtk.PosBottomValue, func() bool {
 			if !paginator.IsConsumed() {

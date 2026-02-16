@@ -10,6 +10,7 @@ import (
 	"codeberg.org/dergs/tonearm/internal/router"
 	"codeberg.org/dergs/tonearm/internal/signals"
 	appState "codeberg.org/dergs/tonearm/internal/state"
+	"codeberg.org/dergs/tonearm/internal/ui/components"
 	favouritebutton "codeberg.org/dergs/tonearm/internal/ui/components/favourite_button"
 	"codeberg.org/dergs/tonearm/internal/ui/components/tracklist"
 	"codeberg.org/dergs/tonearm/internal/ui/pages"
@@ -101,101 +102,103 @@ func Playlist(playlistID string) *router.Response {
 		PageTitle: playlist.Title(),
 		Error:     err,
 		View: VStack(
-			HStack(
-				AspectFrame(
-					Image().
-						PixelSize(146).
-						FromPaintable(resources.MissingAlbum()).
-						ConnectConstruct(func(i *gtk.Image) {
-							if playlist.Cover(146) != "" {
-								injector.MustInject[*imgutil.ImgUtil]().LoadIntoImage(playlist.Cover(146), i)
-							}
-						}),
-				).CornerRadius(10).Overflow(gtk.OverflowHiddenValue),
-				VStack(
-					Label(playlist.Title()).
-						WithCSSClass("title-2").
-						Ellipsis(pango.EllipsizeEndValue).
-						HAlign(gtk.AlignStartValue),
-					Label(creatorName).
-						Ellipsis(pango.EllipsizeEndValue).
-						WithCSSClass("heading").WithCSSClass("dimmed").
-						PaddingTop(10).
-						HAlign(gtk.AlignStartValue),
-					Label(playlist.CreatedAt().Format("2006")).
-						WithCSSClass("heading").WithCSSClass("dimmed").
-						HAlign(gtk.AlignStartValue),
-					playlistMetadata.
-						WithCSSClass("heading").WithCSSClass("dimmed").
-						HAlign(gtk.AlignStartValue).
-						MarginTop(10),
-				).MarginStart(20).VAlign(gtk.AlignCenterValue),
-				Spacer().
-					VExpand(false),
-				VStack(
-					HStack(
-						Button().
-							TooltipText(gettext.Get("Shuffle Playlist")).
-							IconName("playlist-shuffle-symbolic").
-							WithCSSClass("pill").
-							VAlign(gtk.AlignCenterValue).
-							ConnectClicked(func(b gtk.Button) {
-								go func() {
-									if err := player.PlayPlaylist(playlistID, true, 0); err != nil {
-										notifications.OnToast.Notify(gettext.Get("An error occurred while playing the playlist"))
-										albumLogger.Error("An error occurred while playing the playlist", "error", err.Error())
-									}
-								}()
-							}).
-							BindSensitive(canPlayPlaylistState),
-						Button().
-							TooltipText(gettext.Get("Play Playlist")).
-							IconName("play-symbolic").
-							WithCSSClass("pill").
-							WithCSSClass("suggested-action").
-							VAlign(gtk.AlignCenterValue).
-							ConnectClicked(func(b gtk.Button) {
-								go func() {
-									if err := player.PlayPlaylist(playlistID, false, 0); err != nil {
-										notifications.OnToast.Notify(gettext.Get("An error occurred while playing the playlist"))
-										albumLogger.Error("An error occurred while playing the playlist", "error", err.Error())
-									}
-								}()
-							}).
-							BindSensitive(canPlayPlaylistState),
-						MenuButton().
-							TooltipText(gettext.Get("More…")).
-							WithCSSClass("circular").
-							WithCSSClass("flat").
-							VAlign(gtk.AlignCenterValue).
-							IconName("view-more-symbolic").
-							Popover(playControlsPopover),
-					).
-						Spacing(12).
-						HAlign(gtk.AlignEndValue),
-					HStack(
-						favouritebutton.FavouriteButton(appCache, playlistID),
-						Button().
-							TooltipText(gettext.Get("Copy Playlist URL")).
-							IconName("share-alt-symbolic").
-							WithCSSClass("flat").
-							ConnectClicked(func(gtk.Button) {
-								display := gdk.DisplayGetDefault()
-								defer display.Unref()
-								clipboard := display.GetClipboard()
-								defer clipboard.Unref()
-
-								clipboard.SetText(playlist.URL())
-								notifications.OnToast.Notify(gettext.Get("Copied playlist URL to clipboard."))
+			components.MainContent(
+				HStack(
+					AspectFrame(
+						Image().
+							PixelSize(146).
+							FromPaintable(resources.MissingAlbum()).
+							ConnectConstruct(func(i *gtk.Image) {
+								if playlist.Cover(146) != "" {
+									injector.MustInject[*imgutil.ImgUtil]().LoadIntoImage(playlist.Cover(146), i)
+								}
 							}),
+					).CornerRadius(10).Overflow(gtk.OverflowHiddenValue),
+					VStack(
+						Label(playlist.Title()).
+							WithCSSClass("title-2").
+							Ellipsis(pango.EllipsizeEndValue).
+							HAlign(gtk.AlignStartValue),
+						Label(creatorName).
+							Ellipsis(pango.EllipsizeEndValue).
+							WithCSSClass("heading").WithCSSClass("dimmed").
+							PaddingTop(10).
+							HAlign(gtk.AlignStartValue),
+						Label(playlist.CreatedAt().Format("2006")).
+							WithCSSClass("heading").WithCSSClass("dimmed").
+							HAlign(gtk.AlignStartValue),
+						playlistMetadata.
+							WithCSSClass("heading").WithCSSClass("dimmed").
+							HAlign(gtk.AlignStartValue).
+							MarginTop(10),
+					).MarginStart(20).VAlign(gtk.AlignCenterValue),
+					Spacer().
+						VExpand(false),
+					VStack(
+						HStack(
+							Button().
+								TooltipText(gettext.Get("Shuffle Playlist")).
+								IconName("playlist-shuffle-symbolic").
+								WithCSSClass("pill").
+								VAlign(gtk.AlignCenterValue).
+								ConnectClicked(func(b gtk.Button) {
+									go func() {
+										if err := player.PlayPlaylist(playlistID, true, 0); err != nil {
+											notifications.OnToast.Notify(gettext.Get("An error occurred while playing the playlist"))
+											albumLogger.Error("An error occurred while playing the playlist", "error", err.Error())
+										}
+									}()
+								}).
+								BindSensitive(canPlayPlaylistState),
+							Button().
+								TooltipText(gettext.Get("Play Playlist")).
+								IconName("play-symbolic").
+								WithCSSClass("pill").
+								WithCSSClass("suggested-action").
+								VAlign(gtk.AlignCenterValue).
+								ConnectClicked(func(b gtk.Button) {
+									go func() {
+										if err := player.PlayPlaylist(playlistID, false, 0); err != nil {
+											notifications.OnToast.Notify(gettext.Get("An error occurred while playing the playlist"))
+											albumLogger.Error("An error occurred while playing the playlist", "error", err.Error())
+										}
+									}()
+								}).
+								BindSensitive(canPlayPlaylistState),
+							MenuButton().
+								TooltipText(gettext.Get("More…")).
+								WithCSSClass("circular").
+								WithCSSClass("flat").
+								VAlign(gtk.AlignCenterValue).
+								IconName("view-more-symbolic").
+								Popover(playControlsPopover),
+						).
+							Spacing(12).
+							HAlign(gtk.AlignEndValue),
+						HStack(
+							favouritebutton.FavouriteButton(appCache, playlistID),
+							Button().
+								TooltipText(gettext.Get("Copy Playlist URL")).
+								IconName("share-alt-symbolic").
+								WithCSSClass("flat").
+								ConnectClicked(func(gtk.Button) {
+									display := gdk.DisplayGetDefault()
+									defer display.Unref()
+									clipboard := display.GetClipboard()
+									defer clipboard.Unref()
+
+									clipboard.SetText(playlist.URL())
+									notifications.OnToast.Notify(gettext.Get("Copied playlist URL to clipboard."))
+								}),
+						).
+							Spacing(10).
+							HAlign(gtk.AlignEndValue),
 					).
-						Spacing(10).
-						HAlign(gtk.AlignEndValue),
-				).
-					Spacing(20).
-					MarginStart(20).
-					VAlign(gtk.AlignCenterValue),
-			).HMargin(40),
+						Spacing(20).
+						MarginStart(20).
+						VAlign(gtk.AlignCenterValue),
+				).HMargin(40),
+			),
 			page.VExpand(true).MarginTop(20),
 		).VMargin(20),
 	}
