@@ -69,7 +69,6 @@ func loadingDialog(pollingCancel context.CancelFunc, browserUri string) adwbindi
 							adw.AlertDialogNewFromInternalPtr(obj.Ptr).Close()
 						})
 					}).
-					WithCSSClass("destructive-action").
 					CornerRadius(12).
 					VPadding(10).
 					HPadding(20).
