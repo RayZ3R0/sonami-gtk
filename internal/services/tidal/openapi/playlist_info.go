@@ -60,6 +60,9 @@ func (p PlaylistInfo) Title() string {
 }
 
 func (p PlaylistInfo) URL() string {
+	if p.IsMix() {
+		return "https://tidal.com/mix/" + p.ID()
+	}
 	return "https://tidal.com/playlist/" + p.ID()
 }
 
