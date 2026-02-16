@@ -108,6 +108,19 @@ func PlayTrack(trackId string) error {
 	return nil
 }
 
+func PlayTracklist(source tonearm.PlaybackSource, tracklist []tonearm.Track, shuffle bool, position int) error {
+	setLoadingState()
+	if _, err := playTracklist(tracklist, shuffle, position); err != nil {
+		resetLoadingState()
+		return err
+	}
+
+	SourceChanged.Notify(func(oldValue tonearm.PlaybackSource) tonearm.PlaybackSource {
+		return source
+	})
+	return nil
+}
+
 func PlayAlbum(albumId string, shuffle bool, position int) error {
 	setLoadingState()
 	if err := playAlbum(albumId, shuffle, position); err != nil {
