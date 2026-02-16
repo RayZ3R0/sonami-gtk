@@ -6,6 +6,7 @@ import (
 	"codeberg.org/dergs/tonearm/internal/gettext"
 	"codeberg.org/dergs/tonearm/internal/notifications"
 	"codeberg.org/dergs/tonearm/internal/player"
+	"codeberg.org/dergs/tonearm/internal/resources"
 	"codeberg.org/dergs/tonearm/internal/router"
 	"codeberg.org/dergs/tonearm/internal/secrets"
 	"codeberg.org/dergs/tonearm/internal/services/tidal/openapi"
@@ -17,6 +18,7 @@ import (
 	"codeberg.org/dergs/tonearm/pkg/tidalapi"
 	modelopenapi "codeberg.org/dergs/tonearm/pkg/tidalapi/models/openapi"
 	"codeberg.org/dergs/tonearm/pkg/tonearm"
+	"codeberg.org/dergs/tonearm/pkg/utils/imgutil"
 	"github.com/infinytum/injector"
 	"github.com/jwijenbergh/puregotk/v4/gtk"
 	"github.com/jwijenbergh/puregotk/v4/pango"
@@ -50,7 +52,7 @@ func Tracks() *router.Response {
 			tracklist.GroupedColumn(1, gtk.AlignEndValue, tracklist.DurationColumn, tracklist.ControlsColumn),
 		)
 	}, func(tl *tracklist.TrackList) schwifty.BaseWidgetable {
-		return tl.VPadding(20).HMargin(40).VAlign(gtk.AlignStartValue)
+		return tl.HMargin(40).VAlign(gtk.AlignStartValue)
 	})
 
 	return &router.Response{
@@ -58,6 +60,16 @@ func Tracks() *router.Response {
 		Error:     err,
 		View: VStack(
 			HStack(
+				AspectFrame(
+					Image().
+						PixelSize(146).
+						FromPaintable(resources.MissingAlbum()).
+						ConnectConstruct(func(i *gtk.Image) {
+							injector.MustInject[*imgutil.ImgUtil]().LoadIntoImage(new(openapi.MyTracksInfo).Cover(146), i)
+						}),
+				).
+					CornerRadius(10).
+					Overflow(gtk.OverflowHiddenValue),
 				Label(gettext.Get("My Tracks")).WithCSSClass("title-1").Ellipsis(pango.EllipsizeEndValue),
 				Spacer().VExpand(false).MinWidth(20),
 				HStack(
@@ -104,6 +116,7 @@ func Tracks() *router.Response {
 					Spacing(12).
 					VAlign(gtk.AlignCenterValue),
 			).
+				Spacing(20).
 				HMargin(40),
 			page.
 				VExpand(true),
