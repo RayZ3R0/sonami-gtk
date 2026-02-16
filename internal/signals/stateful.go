@@ -41,6 +41,12 @@ func (s *StatefulSignal[T]) OnLazy(handler func(T) bool) *Subscription {
 	return s.Signal.On(handler)
 }
 
+func (s *StatefulSignal[T]) Set(value T) {
+	s.Notify(func(T) T {
+		return value
+	})
+}
+
 func NewStatefulSignal[T any](initialValue T) *StatefulSignal[T] {
 	return &StatefulSignal[T]{
 		currentValue: initialValue,

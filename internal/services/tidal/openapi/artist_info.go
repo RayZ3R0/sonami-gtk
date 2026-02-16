@@ -38,5 +38,5 @@ func (a ArtistInfo) URL() string {
 }
 
 func NewArtistInfo(artist openapi.Artist) tonearm.ArtistInfo {
-	return ArtistInfo{artist}
+	return &ArtistInfo{artist}
 }

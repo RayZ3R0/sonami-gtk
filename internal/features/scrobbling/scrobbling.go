@@ -11,9 +11,14 @@ import (
 
 var logger = slog.With("module", "scrobbler")
 
-var TrackStarted = signals.NewStatelessSignal[tonearm.Track]()
+var Scrobblers []Scrobbler
 
-var Scrobble = signals.NewStatelessSignal[*ScrobbleEvent]()
+type Scrobbler interface {
+	NowPlaying(tonearm.Track)
+	Scrobble(*ScrobbleEvent)
+	IsConfigured() bool
+	GetName() string
+}
 
 type ScrobbleEvent struct {
 	Track      tonearm.Track
@@ -28,7 +33,15 @@ func init() {
 		}
 
 		logger.Debug("notifying scrobblers that a new track has started playing")
-		go TrackStarted.Notify(t)
+		for _, scrobbler := range Scrobblers {
+			if !scrobbler.IsConfigured() {
+				logger.Debug("skipping now playing event", "service", scrobbler.GetName())
+				continue
+			}
+
+			logger.Debug("sending NowPlaying event", "service", scrobbler.GetName())
+			go scrobbler.NowPlaying(t)
+		}
 
 		if scrobbleClock != nil {
 			scrobbleClock.Stop()

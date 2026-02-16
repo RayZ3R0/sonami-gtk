@@ -35,8 +35,10 @@ func init() {
 	playbin.Set("audio-filter", audioFilterBin)
 }
 
+var stateBeforeLoading gst.State
+
 func setLoadingState() {
-	playbin.SetState(gst.StateNull)
+	_, stateBeforeLoading = playbin.GetState(gst.StatePaused, gst.ClockTimeNone)
 	PlaybackStateChanged.Notify(func(oldValue *PlaybackState) *PlaybackState {
 		oldValue.Loading = true
 		return oldValue
@@ -44,6 +46,7 @@ func setLoadingState() {
 }
 
 func resetLoadingState() {
+	playbin.SetState(stateBeforeLoading)
 	PlaybackStateChanged.Notify(func(oldValue *PlaybackState) *PlaybackState {
 		oldValue.Loading = false
 		return oldValue
@@ -60,6 +63,20 @@ func AddTrackToUserQueue(trackId string) error {
 	// If we added a song to the queue and nothing is playing, the user likely wants to start playing the queue
 	if PlaybackStateChanged.CurrentValue().Status == PlaybackStatusStopped {
 		logger.Info("no track is currently playing, immediately playing track", "track_id", trackId)
+		Next()
+		return nil
+	}
+	return nil
+}
+
+func AddTracklistToUserQueue(tracklist []tonearm.Track) error {
+	for _, track := range tracklist {
+		UserQueue.Append(track)
+	}
+
+	// If we added a song to the queue and nothing is playing, the user likely wants to start playing the queue
+	if PlaybackStateChanged.CurrentValue().Status == PlaybackStatusStopped && len(tracklist) > 0 {
+		logger.Info("no track is currently playing, immediately playing track", "track_id", tracklist[0].ID())
 		Next()
 		return nil
 	}

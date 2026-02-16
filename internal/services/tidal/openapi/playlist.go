@@ -28,5 +28,5 @@ func (p Playlist) Creator() tonearm.ArtistInfo {
 }
 
 func NewPlaylist(playlist openapi.Playlist) tonearm.Playlist {
-	return Playlist{PlaylistInfo{playlist}}
+	return &Playlist{PlaylistInfo{playlist}}
 }

@@ -35,6 +35,7 @@ func playNextTrack() {
 		logger.Debug("single repeat mode is enabled, replaying track")
 		playbin.SeekTime(0, gst.SeekFlagFlush|gst.SeekFlagKeyUnit)
 		startUpdateRunner()
+		resetLoadingState()
 		return
 	}
 

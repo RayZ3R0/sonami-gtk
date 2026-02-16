@@ -1,5 +1,11 @@
 package v1
 
+import (
+	"encoding/json"
+	"fmt"
+	"strconv"
+)
+
 type ModuleType string
 
 const (
@@ -72,14 +78,42 @@ type PagedItem struct {
 		ID   int    `json:"id"`
 		Name string `json:"name"`
 	} `json:"creators"`
-	Duration       int    `json:"duration"`
-	Title          string `json:"title"`
-	ID             int    `json:"id"`
-	Icon           string `json:"icon"`
-	Name           string `json:"name"`
-	NumberOfTracks int    `json:"numberOfTracks"`
-	Picture        string `json:"picture"`
-	ReleaseDate    string `json:"releaseDate"`
-	UUID           string `json:"uuid"`
-	SquareImage    string `json:"squareImage"`
+	Creator struct {
+		ID   int    `json:"id"`
+		Name string `json:"name"`
+	} `json:"creator"`
+	Duration       int     `json:"duration"`
+	Title          string  `json:"title"`
+	ID             MagicID `json:"id"`
+	Icon           string  `json:"icon"`
+	Name           string  `json:"name"`
+	NumberOfTracks int     `json:"numberOfTracks"`
+	Picture        string  `json:"picture"`
+	ReleaseDate    string  `json:"releaseDate"`
+	UUID           string  `json:"uuid"`
+	SquareImage    string  `json:"squareImage"`
+}
+
+type MagicID struct {
+	String string
+	Int    int
+}
+
+func (m *MagicID) UnmarshalJSON(data []byte) error {
+	var s string
+	if err := json.Unmarshal(data, &s); err == nil {
+		m.String = s
+		n, _ := strconv.Atoi(s)
+		m.Int = n
+		return nil
+	}
+
+	var n float64
+	if err := json.Unmarshal(data, &n); err == nil {
+		m.Int = int(n)
+		m.String = strconv.Itoa(m.Int)
+		return nil
+	}
+
+	return fmt.Errorf("MagicID: cannot unmarshal %s", string(data))
 }

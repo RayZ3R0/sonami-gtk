@@ -58,7 +58,14 @@ func (f MenuButton) MenuModel(model *gio.MenuModel) MenuButton {
 func (f MenuButton) Popover(widget any) MenuButton {
 	return func() *gtk.MenuButton {
 		button := f()
-		button.SetPopover(bindings.ResolveTo[*gtk.Popover, Popover](widget))
+
+		popover := bindings.ResolveTo[*gtk.Popover, Popover](widget)
+
+		if popover == nil {
+			popover = &bindings.ResolveTo[*gtk.PopoverMenu, *gtk.PopoverMenu](widget).Popover
+		}
+
+		button.SetPopover(popover)
 		return button
 	}
 }

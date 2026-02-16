@@ -38,5 +38,5 @@ func (t Track) Cover(perferredSize int) string {
 }
 
 func NewTrack(item v2.TrackItemData) tonearm.Track {
-	return Track{TrackInfo{item}}
+	return &Track{TrackInfo{item}}
 }

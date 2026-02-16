@@ -4,8 +4,6 @@ import (
 	"log/slog"
 	"strings"
 	"time"
-
-	"codeberg.org/dergs/tonearm/internal/g"
 )
 
 var logger = slog.With("module", "router")
@@ -44,7 +42,7 @@ func navigate(path string, offRecord bool) {
 			entry.View = response.View.ToGTK()
 		}
 		if !shouldCache {
-			entry.ExpiresAt = g.Ptr(time.Now())
+			entry.ExpiresAt = new(time.Now())
 		}
 		if !offRecord {
 			history.Push(entry)
@@ -85,4 +83,8 @@ func Refresh() {
 
 func Current() *HistoryEntry {
 	return history.Current
+}
+
+func Clear() {
+	history.Clear()
 }

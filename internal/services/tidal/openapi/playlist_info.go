@@ -51,6 +51,10 @@ func (p PlaylistInfo) Route() string {
 	return "playlist/" + p.ID()
 }
 
+func (p PlaylistInfo) SourceType() tonearm.SourceType {
+	return tonearm.SourceTypePlaylist
+}
+
 func (p PlaylistInfo) Title() string {
 	return p.Playlist.Data.Attributes.Name
 }
@@ -60,5 +64,5 @@ func (p PlaylistInfo) URL() string {
 }
 
 func NewPlaylistInfo(playlist openapi.Playlist) tonearm.PlaylistInfo {
-	return PlaylistInfo{playlist}
+	return &PlaylistInfo{playlist}
 }

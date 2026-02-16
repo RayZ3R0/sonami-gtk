@@ -1,12 +1,16 @@
 package routes
 
 import (
+	"fmt"
+
 	"codeberg.org/dergs/tonearm/internal/gettext"
 	"codeberg.org/dergs/tonearm/internal/notifications"
 	"codeberg.org/dergs/tonearm/internal/player"
 	"codeberg.org/dergs/tonearm/internal/resources"
 	"codeberg.org/dergs/tonearm/internal/router"
 	"codeberg.org/dergs/tonearm/internal/signals"
+	appState "codeberg.org/dergs/tonearm/internal/state"
+	favouritebutton "codeberg.org/dergs/tonearm/internal/ui/components/favourite_button"
 	"codeberg.org/dergs/tonearm/internal/ui/components/tracklist"
 	"codeberg.org/dergs/tonearm/internal/ui/pages"
 	"codeberg.org/dergs/tonearm/pkg/schwifty"
@@ -17,6 +21,8 @@ import (
 	"codeberg.org/dergs/tonearm/pkg/utils/imgutil"
 	"github.com/infinytum/injector"
 	"github.com/jwijenbergh/puregotk/v4/gdk"
+	"github.com/jwijenbergh/puregotk/v4/gio"
+	"github.com/jwijenbergh/puregotk/v4/glib"
 	"github.com/jwijenbergh/puregotk/v4/gtk"
 )
 
@@ -49,10 +55,13 @@ func Playlist(playlistID string) *router.Response {
 	}
 
 	var playlistMetadata schwifty.Label
+	var appCache appState.FavouriteCache
 	if playlist.IsMix() {
 		playlistMetadata = Label(gettext.Get("Personal Mix"))
+		appCache = appState.MixesCache
 	} else {
 		playlistMetadata = Label(gettext.GetN("%d Track (%s)", "%d Tracks (%s)", playlist.Count(), playlist.Count(), tidalapi.FormatDuration(playlist.Duration())))
+		appCache = appState.PlaylistsCache
 	}
 
 	trackPaginator, err := service.GetPlaylistTracks(playlistID)
@@ -67,7 +76,12 @@ func Playlist(playlistID string) *router.Response {
 				tracklist.GroupedColumn(2, gtk.AlignStartValue, tracklist.CoverColumn, tracklist.TitleAlbumColumn),
 				tracklist.ArtistsColumn,
 				tracklist.ExpandCustomButtonColumn(1, func(trackId string, position, _ int) {
-					go player.PlayPlaylist(playlistID, false, position)
+					go func() {
+						if err := player.PlayPlaylist(playlistID, false, position); err != nil {
+							notifications.OnToast.Notify(gettext.Get("An error occurred while playing the track"))
+							albumLogger.Error("An error occurred while playing the playlist", "error", err.Error())
+						}
+					}()
 				}),
 				tracklist.GroupedColumn(1, gtk.AlignEndValue, tracklist.DurationColumn, tracklist.ControlsColumn),
 			)
@@ -75,6 +89,12 @@ func Playlist(playlistID string) *router.Response {
 			return tl.HMargin(30).VAlign(gtk.AlignStartValue)
 		},
 	)
+
+	playControlsMenu := gio.NewMenu()
+	queueAllItem := gio.NewMenuItem("Add playlist to queue", "win.player.queue")
+	queueAllItem.SetActionAndTargetValue("win.player.queue", glib.NewVariantString(fmt.Sprintf("playlist/%s", playlistID)))
+	playControlsMenu.AppendItem(queueAllItem)
+	playControlsPopover := gtk.NewPopoverMenuFromModel(&playControlsMenu.MenuModel)
 
 	return &router.Response{
 		PageTitle: playlist.Title(),
@@ -114,42 +134,44 @@ func Playlist(playlistID string) *router.Response {
 						Button().
 							TooltipText(gettext.Get("Shuffle Playlist")).
 							IconName("playlist-shuffle-symbolic").
-							MinWidth(81).
-							CornerRadius(21).
-							Padding(9).
+							WithCSSClass("pill").
 							VAlign(gtk.AlignCenterValue).
 							ConnectClicked(func(b gtk.Button) {
-								go player.PlayPlaylist(playlistID, true, 0)
+								go func() {
+									if err := player.PlayPlaylist(playlistID, true, 0); err != nil {
+										notifications.OnToast.Notify(gettext.Get("An error occurred while playing the playlist"))
+										albumLogger.Error("An error occurred while playing the playlist", "error", err.Error())
+									}
+								}()
 							}).
 							BindSensitive(canPlayPlaylistState),
 						Button().
 							TooltipText(gettext.Get("Play Playlist")).
 							IconName("play-symbolic").
-							MinWidth(81).
-							CornerRadius(21).
-							Padding(9).
-							CSS(`
-								button {
-									background-color: var(--accent-bg-color);
-								}
-
-								button:hover {
-									background-color: var(--accent-color);
-								}
-							`).
+							WithCSSClass("pill").
+							WithCSSClass("suggested-action").
 							VAlign(gtk.AlignCenterValue).
 							ConnectClicked(func(b gtk.Button) {
-								go player.PlayPlaylist(playlistID, false, 0)
+								go func() {
+									if err := player.PlayPlaylist(playlistID, false, 0); err != nil {
+										notifications.OnToast.Notify(gettext.Get("An error occurred while playing the playlist"))
+										albumLogger.Error("An error occurred while playing the playlist", "error", err.Error())
+									}
+								}()
 							}).
 							BindSensitive(canPlayPlaylistState),
+						MenuButton().
+							TooltipText(gettext.Get("More…")).
+							WithCSSClass("circular").
+							WithCSSClass("flat").
+							VAlign(gtk.AlignCenterValue).
+							IconName("view-more-symbolic").
+							Popover(playControlsPopover),
 					).
-						Spacing(5).
+						Spacing(12).
 						HAlign(gtk.AlignEndValue),
 					HStack(
-						Button().
-							TooltipText(gettext.Get("Add to Collection")).
-							IconName("heart-outline-thick-symbolic").
-							WithCSSClass("flat").Sensitive(false),
+						favouritebutton.FavouriteButton(appCache, playlistID),
 						Button().
 							TooltipText(gettext.Get("Copy Playlist URL")).
 							IconName("share-alt-symbolic").

@@ -47,7 +47,7 @@
             appstream
             delve
             flatpak-builder
-            go
+            go_1_26
             gopls
             gtk4
             librsvg
@@ -63,11 +63,11 @@
           ];
         };
 
-        packages.tonearm = pkgs.buildGoModule (finalAttrs: {
+        packages.tonearm = pkgs.buildGoModule.override { go = pkgs.go_1_26; } (finalAttrs: {
           pname = "tonearm";
-          version = "1.0.1";
+          version = "1.3.1";
           src = pkgs.lib.cleanSource ./.;
-          vendorHash = "sha256-j+7cobxVGNuZFYeRn5ad7XT4um8WNWE1byFo7qo9zK0=";
+          vendorHash = "sha256-yhrtOjFr6FGktfcHBR+O9hTYWnmkdMJnCe16+o29F6Y=";
 
           ldflags = [
             "-X \"codeberg.org/dergs/tonearm/internal/ui.Commit=${(if (self ? rev) then self.rev else "")}\""

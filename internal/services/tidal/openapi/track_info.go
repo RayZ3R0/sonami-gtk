@@ -28,5 +28,5 @@ func (t TrackInfo) URL() string {
 }
 
 func NewTrackInfo(item openapi.Track) tonearm.TrackInfo {
-	return TrackInfo{item}
+	return &TrackInfo{item}
 }

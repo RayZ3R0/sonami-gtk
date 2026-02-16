@@ -13,13 +13,11 @@ import (
 	// _ "codeberg.org/dergs/tonearm/internal/features/scrobbling"
 	_ "codeberg.org/dergs/tonearm/internal/services"
 
-	"codeberg.org/dergs/tonearm/internal/g"
 	"codeberg.org/dergs/tonearm/internal/player"
 	"codeberg.org/dergs/tonearm/internal/router"
 	"codeberg.org/dergs/tonearm/internal/secrets"
 	"codeberg.org/dergs/tonearm/internal/settings"
 	"codeberg.org/dergs/tonearm/internal/ui"
-	"codeberg.org/dergs/tonearm/pkg/mpris"
 	"codeberg.org/dergs/tonearm/pkg/schwifty/tracking"
 	"codeberg.org/dergs/tonearm/pkg/utils/imgutil"
 	"github.com/infinytum/injector"
@@ -40,8 +38,8 @@ var app *adw.Application
 func main() {
 	app = adw.NewApplication("dev.dergs.Tonearm", gio.GApplicationHandlesCommandLineValue)
 	defer app.Unref()
-	app.ConnectActivate(g.Ptr(onActivate))
-	app.ConnectCommandLine(g.Ptr(onCommandLine))
+	app.ConnectActivate(new(onActivate))
+	app.ConnectCommandLine(new(onCommandLine))
 	injector.Singleton(func() *adw.Application {
 		return app
 	})
@@ -50,55 +48,16 @@ func main() {
 		return imgutil.NewImgUtil(app.GetApplicationId())
 	})
 
-	injector.DeferredSingleton(func() *mpris.Server {
-		mprisServer := mpris.NewMprisServer("org.mpris.MediaPlayer2."+app.GetApplicationId(), app.GetApplicationId(), "Tonearm")
-		mprisServer.OnPause(player.Pause)
-		mprisServer.OnPlayPause(player.PlayPause)
-		mprisServer.OnPlay(player.Play)
-		mprisServer.OnTrackNext(player.Next)
-		mprisServer.OnTrackPrevious(player.Previous)
-		mprisServer.OnQuit(func() { quit(0) })
-		mprisServer.OnRaise(func() {
-			window := injector.MustInject[*adw.ApplicationWindow]()
-			window.Show()
-			window.Present()
-		})
-		mprisServer.OnLoopStatusChanged(func(loopStatus mpris.LoopStatus) {
-			switch loopStatus {
-			case mpris.LoopNone:
-				go player.SetRepeatMode(player.RepeatModeNone)
-			case mpris.LoopTrack:
-				go player.SetRepeatMode(player.RepeatModeTrack)
-			case mpris.LoopPlaylist:
-				go player.SetRepeatMode(player.RepeatModeQueue)
-			}
-		})
-		mprisServer.OnSeek(player.SeekToPositionRelative)
-		mprisServer.OnSetPosition(player.SeekToPosition)
-		mprisServer.OnVolumeChanged(func(newVal float64) {
-			player.SetVolume(newVal)
-		})
-		mprisServer.OnShuffleChanged(func(shuffle bool) {
-			player.SetShuffle(shuffle)
-		})
-		mprisServer.Export()
-		return mprisServer
-	})
-
 	if code := app.Run(len(os.Args), os.Args); code > 0 {
-		quit(code)
+		app.Quit()
+		os.Exit(code)
 	}
-}
-
-func quit(code int) {
-	app.Quit()
-	os.Exit(code)
 }
 
 func onActivate(_ gio.Application) {
 	window := ui.NewWindow(app)
 	window.Present()
-	window.ConnectCloseRequest(g.Ptr(func(w gtk.Window) bool {
+	window.ConnectCloseRequest(new(func(w gtk.Window) bool {
 		// Only allow running in background if there is a track playing,
 		// so that the user can bring the app back up with MPRIS
 		if settings.General().ShouldRunInBackground() && player.TrackChanged.CurrentValue() != nil {
@@ -130,8 +89,8 @@ func onCommandLine(app gio.Application, ptr uintptr) int {
 
 	if len(args) == 2 {
 		url := args[1]
-		if strings.HasPrefix(url, "tidal://track/") {
-			player.PlayTrack(strings.TrimPrefix(url, "tidal://track/"))
+		if after, ok := strings.CutPrefix(url, "tidal://track/"); ok {
+			player.PlayTrack(after)
 		} else {
 			router.Navigate(url)
 		}

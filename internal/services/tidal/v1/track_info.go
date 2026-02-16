@@ -29,5 +29,5 @@ func (t TrackInfo) URL() string {
 }
 
 func NewTrackInfo(item v1.AlbumItem) tonearm.TrackInfo {
-	return TrackInfo{AlbumItem: item}
+	return &TrackInfo{AlbumItem: item}
 }

@@ -41,6 +41,10 @@ func (a AlbumInfo) Route() string {
 	return "album/" + a.ID()
 }
 
+func (a AlbumInfo) SourceType() tonearm.SourceType {
+	return tonearm.SourceTypeAlbum
+}
+
 func (a AlbumInfo) Title() string {
 	return a.AlbumItemData.Title
 }
@@ -50,5 +54,5 @@ func (a AlbumInfo) URL() string {
 }
 
 func NewAlbumInfo(album v2.AlbumItemData) tonearm.AlbumInfo {
-	return AlbumInfo{album}
+	return &AlbumInfo{album}
 }

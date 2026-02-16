@@ -17,11 +17,13 @@ import (
 	"codeberg.org/dergs/tonearm/pkg/schwifty"
 	"codeberg.org/dergs/tonearm/pkg/schwifty/state"
 	. "codeberg.org/dergs/tonearm/pkg/schwifty/syntax"
+	"codeberg.org/dergs/tonearm/pkg/schwifty/tracking"
 	"codeberg.org/dergs/tonearm/pkg/tidalapi"
 	"codeberg.org/dergs/tonearm/pkg/tidalapi/models/openapi"
 	"codeberg.org/dergs/tonearm/pkg/tonearm"
 	"codeberg.org/dergs/tonearm/pkg/utils/imgutil"
 	"github.com/infinytum/injector"
+	"github.com/jwijenbergh/puregotk/v4/gobject"
 	"github.com/jwijenbergh/puregotk/v4/graphene"
 	"github.com/jwijenbergh/puregotk/v4/gtk"
 	"github.com/jwijenbergh/puregotk/v4/pango"
@@ -124,7 +126,7 @@ var activeIndexChangeOnPlayerUpdate *signals.Subscription
 
 type highlightTiming struct {
 	Start, End time.Duration
-	Address    uintptr
+	Ref        *tracking.WeakRef
 }
 
 func scrollToLyric(w *gtk.Button) {
@@ -159,17 +161,25 @@ func scrollToLyric(w *gtk.Button) {
 }
 
 func setNewIndex(timing highlightTiming) {
-	ptr := timing.Address
+	object := timing.Ref.Get()
+	if object == nil {
+		return
+	}
+
+	ptr := object.GoPointer()
 
 	if activeLyricIndex.Value() != ptr {
 		activeLyricIndex.SetValue(ptr)
 	}
 
-	if !userManuallyScrolled.Value() && ptr != 0 {
+	if !userManuallyScrolled.Value() {
 		schwifty.OnMainThreadOnce(func(uintptr) {
 			w := gtk.ButtonNewFromInternalPtr(ptr)
 			scrollToLyric(w)
+			object.Unref()
 		}, 0)
+	} else {
+		object.Unref()
 	}
 }
 
@@ -214,9 +224,9 @@ func parseLRCLyrics(lyrics string, trackInfo tonearm.Track) (lines []any) {
 
 		if matches[2] == "" {
 			timings = append(timings, highlightTiming{
-				Start:   timeStart,
-				End:     timeEnd,
-				Address: 0,
+				Start: timeStart,
+				End:   timeEnd,
+				Ref:   new(tracking.WeakRef),
 			})
 
 			continue
@@ -236,9 +246,9 @@ func parseLRCLyrics(lyrics string, trackInfo tonearm.Track) (lines []any) {
 		lines = append(lines, boxWidget)
 
 		timings = append(timings, highlightTiming{
-			Start:   timeStart,
-			End:     timeEnd,
-			Address: boxWidget.GoPointer(),
+			Start: timeStart,
+			End:   timeEnd,
+			Ref:   tracking.NewWeakRef(boxWidget),
 		})
 	}
 
@@ -256,9 +266,11 @@ func parseLRCLyrics(lyrics string, trackInfo tonearm.Track) (lines []any) {
 			}
 
 			if timing.Start <= state.Position {
-				if activeLyricIndex.Value() != timing.Address {
-					setNewIndex(timing)
-				}
+				timing.Ref.Use(func(obj *gobject.Object) {
+					if activeLyricIndex.Value() != obj.Ptr {
+						setNewIndex(timing)
+					}
+				})
 
 				hasActive = true
 				continue
@@ -266,10 +278,12 @@ func parseLRCLyrics(lyrics string, trackInfo tonearm.Track) (lines []any) {
 
 			if timing.Start <= state.Position+player.UpdateInterval {
 				logger.Debug("next lyric line scheduled", "timing", timing.Start-state.Position)
-				time.AfterFunc(timing.Start-state.Position, func() {
-					if activeLyricIndex.Value() != timing.Address {
-						setNewIndex(timing)
-					}
+				timing.Ref.Use(func(obj *gobject.Object) {
+					time.AfterFunc(timing.Start-state.Position, func() {
+						if activeLyricIndex.Value() != obj.Ptr {
+							setNewIndex(timing)
+						}
+					})
 				})
 
 				continue
@@ -295,9 +309,9 @@ func parseLRCLyrics(lyrics string, trackInfo tonearm.Track) (lines []any) {
 
 func parseUntimedLyrics(lyrics string) (lines []any) {
 	// Handle lyrics without timings
-	splitLyrics := strings.Split(lyrics, "\n")
+	splitLyrics := strings.SplitSeq(lyrics, "\n")
 
-	for _, lyricText := range splitLyrics {
+	for lyricText := range splitLyrics {
 		if strings.TrimSpace(lyricText) == "" {
 			lines = append(lines, Box(gtk.OrientationVerticalValue))
 			continue

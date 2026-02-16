@@ -52,8 +52,8 @@ func ForModule(module v1.Module) schwifty.BaseWidgetable {
 					Picture string "json:\"picture,omitempty\""
 					Type    string "json:\"type\""
 				}{
-					ID:   item.Creators[0].ID,
-					Name: item.Creators[0].Name,
+					ID:   item.Creator.ID,
+					Name: item.Creator.Name,
 				},
 				Duration:       item.Duration,
 				NumberOfTracks: item.NumberOfTracks,
@@ -69,7 +69,7 @@ func ForModule(module v1.Module) schwifty.BaseWidgetable {
 		list := horizontal_list.NewHorizontalList(module.Title)
 		for _, item := range module.PagedList.Items {
 			fakeArtist := modelv2.ArtistItemData{
-				Id:      item.ID,
+				Id:      item.ID.Int,
 				Name:    item.Name,
 				Picture: item.Picture,
 			}
@@ -91,7 +91,7 @@ func ForModule(module v1.Module) schwifty.BaseWidgetable {
 			fakeAlbum := modelv2.AlbumItemData{
 				Artists:  artists,
 				Cover:    item.Cover,
-				Id:       item.ID,
+				Id:       item.ID.Int,
 				Duration: item.Duration,
 				ReleaseDate: helper.TimeDateOnly{
 					Time: releaseDate,
@@ -127,7 +127,7 @@ func ForModule(module v1.Module) schwifty.BaseWidgetable {
 				Artists:   artists,
 				Duration:  item.Duration,
 				Following: false,
-				ID:        item.ID,
+				ID:        item.ID.Int,
 				Title:     item.Title,
 			}
 			list.AddTrack(v2.NewTrack(*fakeTrack))

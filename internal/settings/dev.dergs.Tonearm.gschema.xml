@@ -38,10 +38,15 @@
             >Whether the application should keep feeding the user with mixes when reaching the end of a track list</description>
     	</key>
         <key name="normalize-volume" type="b">
-    		<default>true</default>
-    		<summary>Normalize volume</summary>
-    		<description>Set the same volume level for all tracks</description>
-    	</key>
+      		<default>true</default>
+  		    <summary>Normalize volume</summary>
+  		    <description>Set the same volume level for all tracks</description>
+   	    </key>
+        <key name="replay-gain-mode" type="i">
+            <default>0</default>
+            <summary>Replay Gain Mode</summary>
+            <description>When to apply album or track replay gain</description>
+        </key>
      </schema>
 
 	<!-- Performance Settings -->
@@ -104,5 +109,17 @@
             <summary>ListenBrainz API URL</summary>
             <description>ListenBrainz-compatible instance API URL</description>
         </key>
+
+        <key name="enable-lastfm" type="b">
+      		<default>false</default>
+      		<summary>Enable Last.fm</summary>
+      		<description>Whether the application will attempt to scrobble tracks to Last.fm</description>
+       	</key>
+		<key name="lastfm-token" type="s">
+            <default>''</default>
+            <summary>Last.fm Token</summary>
+            <description>The token used to authenticate with Last.fm</description>
+        </key>
+
     </schema>
 </schemalist>

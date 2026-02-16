@@ -1,29 +1,69 @@
 package tracklist
 
 import (
+	"fmt"
+	"log/slog"
+
+	"codeberg.org/dergs/tonearm/internal/g"
 	"codeberg.org/dergs/tonearm/internal/gettext"
+	"codeberg.org/dergs/tonearm/internal/state"
+	favouritebutton "codeberg.org/dergs/tonearm/internal/ui/components/favourite_button"
 	. "codeberg.org/dergs/tonearm/pkg/schwifty/syntax"
 	"codeberg.org/dergs/tonearm/pkg/tonearm"
+	"github.com/jwijenbergh/puregotk/v4/gio"
 	"github.com/jwijenbergh/puregotk/v4/glib"
 	"github.com/jwijenbergh/puregotk/v4/gtk"
 )
 
-func ControlsColumn(track tonearm.Track, grid *gtk.Grid, position int, column int) int {
+var logger = slog.With("module", "components/tracklist")
+
+type lightArtist struct {
+	Name string
+	ID   string
+}
+
+func controlsColumn(trackId, albumId string, artistId []lightArtist, grid *gtk.Grid, position int, column int) int {
+	model := gio.NewMenu()
+
+	item := gio.NewMenuItem(gettext.Get("Navigate to Album"), "win.route.album")
+	item.SetActionAndTargetValue("win.route.album", glib.NewVariantString(albumId))
+	model.AppendItem(item)
+
+	if len(artistId) > 1 {
+		submenu := gio.NewMenu()
+		for _, artist := range artistId {
+			item := gio.NewMenuItem(fmt.Sprintf(gettext.Get("Navigate to %s"), artist.Name), "win.route.artist")
+			item.SetActionAndTargetValue("win.route.artist", glib.NewVariantString(artist.ID))
+			submenu.AppendItem(item)
+		}
+		model.AppendSubmenu(gettext.Get("Navigate to Artist"), &submenu.MenuModel)
+	} else if len(artistId) == 1 {
+		item := gio.NewMenuItem(gettext.Get("Navigate to Artist"), "win.route.artist")
+		item.SetActionAndTargetValue("win.route.artist", glib.NewVariantString(artistId[0].ID))
+		model.AppendItem(item)
+	}
+
+	popover := gtk.NewPopoverMenuFromModel(&model.MenuModel)
+
 	grid.Attach(
 		HStack(
-			Button().
-				TooltipText(gettext.Get("Add to Collection")).
-				IconName("heart-outline-thick-symbolic").
+			favouritebutton.FavouriteButton(state.TracksCache, trackId).
 				HAlign(gtk.AlignCenterValue).
-				VAlign(gtk.AlignCenterValue).
-				WithCSSClass("flat").Sensitive(false),
+				VAlign(gtk.AlignCenterValue),
 			Button().
 				TooltipText(gettext.Get("Add to Queue")).
-				IconName("plus-symbolic").
+				IconName("queue-symbolic").
 				HAlign(gtk.AlignCenterValue).
 				VAlign(gtk.AlignCenterValue).
 				ActionName("win.player.queue-track").
-				ActionTargetValue(glib.NewVariantString(track.ID())).
+				ActionTargetValue(glib.NewVariantString(trackId)).
+				WithCSSClass("flat"),
+			MenuButton().
+				TooltipText(gettext.Get("More…")).
+				IconName("view-more-symbolic").
+				HAlign(gtk.AlignCenterValue).
+				VAlign(gtk.AlignCenterValue).
+				Popover(popover).
 				WithCSSClass("flat"),
 		).
 			Margin(10).
@@ -35,4 +75,33 @@ func ControlsColumn(track tonearm.Track, grid *gtk.Grid, position int, column in
 		1,
 	)
 	return 1
+}
+
+func ControlsColumn(track tonearm.Track, grid *gtk.Grid, position int, column int) int {
+	if track == nil {
+		grid.Attach(
+			Box(gtk.OrientationHorizontalValue).ToGTK(),
+			column,
+			0,
+			1,
+			1,
+		)
+		return 1
+	}
+	return controlsColumn(
+		track.ID(),
+		track.Album().ID(),
+		g.Map(
+			track.Artists(),
+			func(artist tonearm.ArtistInfo) lightArtist {
+				return lightArtist{
+					Name: artist.Name(),
+					ID:   artist.ID(),
+				}
+			},
+		),
+		grid,
+		position,
+		column,
+	)
 }

@@ -9,10 +9,20 @@ import (
 	"github.com/jwijenbergh/puregotk/v4/gtk"
 )
 
+func ActionRow() adwbindings.ActionRow {
+	return managedWidget("ActionRow", func() *adw.ActionRow {
+		actionRow := adw.NewActionRow()
+		actionRow.ConnectActivated(&callback.ActionRowActivated)
+		return actionRow
+	})
+}
+
 func AlertDialog(heading string, body string) adwbindings.AlertDialog {
 	return managedWidget("AlertDialog", func() *adw.AlertDialog {
 		dialog := adw.NewAlertDialog(heading, body)
+		dialog.ConnectClosed(&callback.AlertDialogClosed)
 		dialog.ConnectCloseAttempt(&callback.AlertDialogCloseAttempt)
+		dialog.ConnectResponse(&callback.AlertDialogResponse)
 		return dialog
 	})
 }
@@ -26,6 +36,14 @@ func Bin() adwbindings.Bin {
 func Clamp() adwbindings.Clamp {
 	return managedWidget("Clamp", func() *adw.Clamp {
 		return adw.NewClamp()
+	})
+}
+
+func ComboRow() adwbindings.ComboRow {
+	return managedWidget("ComboRow", func() *adw.ComboRow {
+		comboRow := adw.NewComboRow()
+		comboRow.ConnectNotify(&adwbindings.ComboRowSelectionChangedCallback)
+		return comboRow
 	})
 }
 

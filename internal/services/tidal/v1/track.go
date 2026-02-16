@@ -27,5 +27,5 @@ func (t Track) Cover(perferredSize int) string {
 }
 
 func NewTrack(item v1.AlbumItem, album tonearm.AlbumInfo) tonearm.Track {
-	return Track{TrackInfo{AlbumItem: item}, album}
+	return &Track{TrackInfo{AlbumItem: item}, album}
 }

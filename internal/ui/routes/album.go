@@ -1,13 +1,18 @@
 package routes
 
 import (
+	"fmt"
+	"log/slog"
 	"strings"
 
 	"codeberg.org/dergs/tonearm/internal/gettext"
+	"codeberg.org/dergs/tonearm/internal/notifications"
 	"codeberg.org/dergs/tonearm/internal/player"
 	"codeberg.org/dergs/tonearm/internal/resources"
 	"codeberg.org/dergs/tonearm/internal/router"
 	"codeberg.org/dergs/tonearm/internal/signals"
+	appState "codeberg.org/dergs/tonearm/internal/state"
+	favouritebutton "codeberg.org/dergs/tonearm/internal/ui/components/favourite_button"
 	"codeberg.org/dergs/tonearm/internal/ui/components/tracklist"
 	"codeberg.org/dergs/tonearm/internal/ui/pages"
 	"codeberg.org/dergs/tonearm/pkg/schwifty"
@@ -17,9 +22,13 @@ import (
 	"codeberg.org/dergs/tonearm/pkg/tonearm"
 	"codeberg.org/dergs/tonearm/pkg/utils/imgutil"
 	"github.com/infinytum/injector"
+	"github.com/jwijenbergh/puregotk/v4/gdk"
+	"github.com/jwijenbergh/puregotk/v4/gio"
+	"github.com/jwijenbergh/puregotk/v4/glib"
 	"github.com/jwijenbergh/puregotk/v4/gtk"
 )
 
+var albumLogger = slog.With("module", "ui/routes", "route", "album")
 var canPlayAlbumState = state.NewStateful(false)
 
 func init() {
@@ -55,7 +64,12 @@ func Album(albumId string) *router.Response {
 				tracklist.GroupedColumn(2, gtk.AlignStartValue, tracklist.PositionColumn, tracklist.TitleColumn),
 				tracklist.ArtistsColumn,
 				tracklist.ExpandCustomButtonColumn(1, func(trackId string, position, _ int) {
-					go player.PlayAlbum(albumId, false, position)
+					go func() {
+						if err := player.PlayAlbum(albumId, false, position); err != nil {
+							notifications.OnToast.Notify(gettext.Get("An error occurred while playing the track"))
+							albumLogger.Error("An error occurred while playing the album", "error", err.Error())
+						}
+					}()
 				}),
 				tracklist.GroupedColumn(1, gtk.AlignEndValue, tracklist.DurationColumn, tracklist.ControlsColumn),
 			)
@@ -63,6 +77,16 @@ func Album(albumId string) *router.Response {
 			return tl.HMargin(30).VAlign(gtk.AlignStartValue)
 		},
 	)
+
+	if err != nil {
+		return router.FromError(album.Title(), err)
+	}
+
+	playControlsMenu := gio.NewMenu()
+	queueAllItem := gio.NewMenuItem("Add album to queue", "win.player.queue")
+	queueAllItem.SetActionAndTargetValue("win.player.queue", glib.NewVariantString(fmt.Sprintf("album/%s", albumId)))
+	playControlsMenu.AppendItem(queueAllItem)
+	playControlsPopover := gtk.NewPopoverMenuFromModel(&playControlsMenu.MenuModel)
 
 	return &router.Response{
 		PageTitle: album.Title(),
@@ -96,39 +120,65 @@ func Album(albumId string) *router.Response {
 						MarginTop(10),
 				).MarginStart(20).VAlign(gtk.AlignCenterValue),
 				Spacer().VExpand(false),
-				HStack(
-					Button().
-						TooltipText(gettext.Get("Shuffle Album")).
-						IconName("playlist-shuffle-symbolic").
-						MinWidth(81).
-						CornerRadius(21).
-						Padding(9).
-						ConnectClicked(func(b gtk.Button) {
-							go player.PlayAlbum(albumId, true, 0)
-						}).
-						BindSensitive(canPlayAlbumState),
-					Button().
-						TooltipText(gettext.Get("Play Album")).
-						IconName("play-symbolic").
-						MinWidth(81).
-						CornerRadius(21).
-						Padding(9).
-						CSS(`
-							button {
-								background-color: var(--accent-bg-color);
-							}
+				VStack(
+					HStack(
+						Button().
+							TooltipText(gettext.Get("Shuffle Album")).
+							IconName("playlist-shuffle-symbolic").
+							WithCSSClass("pill").
+							ConnectClicked(func(b gtk.Button) {
+								go func() {
+									if err := player.PlayAlbum(albumId, true, 0); err != nil {
+										notifications.OnToast.Notify(gettext.Get("An error occurred while playing the album"))
+										albumLogger.Error("An error occurred while playing the album", "error", err.Error())
+									}
+								}()
+							}).
+							BindSensitive(canPlayAlbumState),
+						Button().
+							TooltipText(gettext.Get("Play Album")).
+							IconName("play-symbolic").
+							WithCSSClass("pill").
+							WithCSSClass("suggested-action").
+							ConnectClicked(func(b gtk.Button) {
+								go func() {
+									if err := player.PlayAlbum(albumId, false, 0); err != nil {
+										notifications.OnToast.Notify(gettext.Get("An error occurred while playing the album"))
+										albumLogger.Error("An error occurred while playing the album", "error", err.Error())
+									}
+								}()
+							}).
+							BindSensitive(canPlayAlbumState),
+						MenuButton().
+							TooltipText(gettext.Get("More…")).
+							Popover(playControlsPopover).
+							WithCSSClass("flat").
+							WithCSSClass("circular").
+							IconName("view-more-symbolic"),
+					).
+						VAlign(gtk.AlignCenterValue).
+						Spacing(12),
+					HStack(
+						favouritebutton.FavouriteButton(appState.AlbumsCache, albumId),
+						Button().
+							TooltipText(gettext.Get("Copy Album URL")).
+							IconName("share-alt-symbolic").
+							WithCSSClass("flat").
+							ConnectClicked(func(gtk.Button) {
+								display := gdk.DisplayGetDefault()
+								defer display.Unref()
+								clipboard := display.GetClipboard()
+								defer clipboard.Unref()
 
-							button:hover {
-								background-color: var(--accent-color);
-							}
-						`).
-						ConnectClicked(func(b gtk.Button) {
-							go player.PlayAlbum(albumId, false, 0)
-						}).
-						BindSensitive(canPlayAlbumState),
+								clipboard.SetText(album.URL())
+								notifications.OnToast.Notify(gettext.Get("Copied album URL to clipboard."))
+							}),
+					).
+						Spacing(10).
+						HAlign(gtk.AlignEndValue),
 				).
-					VAlign(gtk.AlignCenterValue).
-					Spacing(5),
+					Spacing(20).
+					VAlign(gtk.AlignCenterValue),
 			).HMargin(40),
 			page.VExpand(true).MarginTop(20),
 		).VMargin(20),
