@@ -1,6 +1,8 @@
 package openapi
 
 import (
+	"fmt"
+
 	"codeberg.org/dergs/tonearm/pkg/tidalapi/models/openapi"
 	"codeberg.org/dergs/tonearm/pkg/tonearm"
 )
@@ -38,6 +40,14 @@ func (t Track) Artists() tonearm.ArtistInfos {
 
 func (t Track) Cover(perferredSize int) string {
 	return t.Album().Cover(perferredSize)
+}
+
+func (t Track) Route() string {
+	return fmt.Sprintf("album/%s", t.Album().ID())
+}
+
+func (t Track) SourceType() tonearm.SourceType {
+	return tonearm.SourceTypeTrack
 }
 
 func NewTrack(item openapi.Track) tonearm.Track {

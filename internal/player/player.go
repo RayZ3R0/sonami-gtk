@@ -98,7 +98,7 @@ func PlayTrack(trackId string) error {
 	}
 
 	SourceChanged.Notify(func(oldValue tonearm.PlaybackSource) tonearm.PlaybackSource {
-		return track.Album()
+		return track
 	})
 
 	history.Push(&HistoryEntry{

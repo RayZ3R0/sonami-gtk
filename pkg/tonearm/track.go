@@ -30,14 +30,11 @@ type TrackInfo interface {
 
 type Track interface {
 	TrackInfo
+	PlaybackSource
 
 	// Artists returns the artists associated with the track
 	Artists() ArtistInfos
 
 	// Album returns the album associated with the track
 	Album() AlbumInfo
-
-	// Cover returns the URL of the album cover for the track
-	// If the album has multiple covers, the preferredSize parameter is used to determine which cover to return.
-	Cover(preferredSize int) string
 }
