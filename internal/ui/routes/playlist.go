@@ -24,6 +24,7 @@ import (
 	"github.com/jwijenbergh/puregotk/v4/gio"
 	"github.com/jwijenbergh/puregotk/v4/glib"
 	"github.com/jwijenbergh/puregotk/v4/gtk"
+	"github.com/jwijenbergh/puregotk/v4/pango"
 )
 
 var canPlayPlaylistState = state.NewStateful(false)
@@ -114,8 +115,10 @@ func Playlist(playlistID string) *router.Response {
 				VStack(
 					Label(playlist.Title()).
 						WithCSSClass("title-2").
+						Ellipsis(pango.EllipsizeEndValue).
 						HAlign(gtk.AlignStartValue),
 					Label(creatorName).
+						Ellipsis(pango.EllipsizeEndValue).
 						WithCSSClass("heading").WithCSSClass("dimmed").
 						PaddingTop(10).
 						HAlign(gtk.AlignStartValue),

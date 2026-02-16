@@ -3,6 +3,7 @@ module codeberg.org/dergs/tonearm
 go 1.26.0
 
 require (
+	github.com/Marlliton/slogpretty v0.1.3
 	github.com/go-gst/go-gst v1.4.0
 	github.com/godbus/dbus/v5 v5.2.2
 	github.com/google/uuid v1.6.0
@@ -19,7 +20,6 @@ require (
 )
 
 require (
-	github.com/Marlliton/slogpretty v0.1.3 // indirect
 	github.com/fogleman/gg v1.3.0 // indirect
 	github.com/go-gst/go-glib v1.4.0 // indirect
 	github.com/golang/freetype v0.0.0-20170609003504-e2365dfdc4a0 // indirect
