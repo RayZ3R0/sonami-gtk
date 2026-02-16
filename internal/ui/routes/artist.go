@@ -141,6 +141,7 @@ func Artist(artistId string) *router.Response {
 						HAlign(gtk.AlignEndValue),
 				).
 					Spacing(20).
+					MarginStart(20).
 					VAlign(gtk.AlignCenterValue),
 			).HMargin(40),
 			ScrolledWindow().

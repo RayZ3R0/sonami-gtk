@@ -182,8 +182,8 @@ func Album(albumId string) *router.Response {
 						Spacing(10).
 						HAlign(gtk.AlignEndValue),
 				).
+					Spacing(20).
 					MarginStart(20).
-					HAlign(gtk.AlignEndValue).
 					VAlign(gtk.AlignCenterValue),
 			).
 				HMargin(40),
