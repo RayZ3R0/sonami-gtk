@@ -124,7 +124,6 @@ var onUpdateTick = glib.SourceFunc(func(uintptr) bool {
 			newState.IsSeeking = false
 		}
 
-		// logger.Debug("update", "position", newState.Position, "duration", newState.Duration)
 		return &newState
 	})
 	return glib.SOURCE_CONTINUE
