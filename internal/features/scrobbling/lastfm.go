@@ -34,13 +34,17 @@ func init() {
 	Scrobblers = append(Scrobblers, &LastFmScrobbler)
 }
 
-func loadingDialog(self *tracking.WeakRef, pollingCancel context.CancelFunc, browserUri string) adwbindings.AlertDialog {
+func loadingDialog(pollingCancel context.CancelFunc, browserUri string) adwbindings.AlertDialog {
 	window := injector.MustInject[*gtk.Window]()
+	var self *tracking.WeakRef
 
 	return AlertDialog(
 		gettext.Get("Logging in to Last.fm"),
 		gettext.Get("Continue the authentication process in your browser."),
 	).
+		ConnectConstruct(func(ad *adw.AlertDialog) {
+			self = tracking.NewWeakRef(ad)
+		}).
 		WithCSSClass("no-response").
 		ConnectClosed(func(d adw.Dialog) {
 			pollingCancel()
@@ -65,7 +69,6 @@ func loadingDialog(self *tracking.WeakRef, pollingCancel context.CancelFunc, bro
 							adw.AlertDialogNewFromInternalPtr(obj.Ptr).Close()
 						})
 					}).
-					WithCSSClass("destructive-action").
 					CornerRadius(12).
 					VPadding(10).
 					HPadding(20).
@@ -87,10 +90,8 @@ func (scrobbler *LastFm) Configure() (completed bool, err error) {
 	uri := scrobbler.Client.AuthTokenURL(token)
 
 	pollingCtx, pollingCancel := context.WithCancel(context.Background())
-	var ref *tracking.WeakRef
-	dialog := loadingDialog(ref, pollingCancel, uri)()
-
-	ref = tracking.NewWeakRef(dialog)
+	dialog := loadingDialog(pollingCancel, uri)()
+	ref := tracking.NewWeakRef(dialog)
 
 	dialog.Ref()
 	schwifty.OnMainThreadOncePure(func() {
