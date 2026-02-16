@@ -47,15 +47,25 @@ type ArtworkFile struct {
 type ArtworkFiles []ArtworkFile
 
 func (files ArtworkFiles) AtLeast(size int) ArtworkFile {
-	sort.Slice(files, func(i, j int) bool {
-		return files[i].Meta.Height < files[j].Meta.Height || files[i].Meta.Width < files[j].Meta.Width
-	})
+	squareFiles := make(ArtworkFiles, 0, len(files))
 	for _, file := range files {
+		if file.Meta.Height == file.Meta.Width {
+			squareFiles = append(squareFiles, file)
+		}
+	}
+	if len(squareFiles) == 0 {
+		squareFiles = files
+	}
+
+	sort.Slice(squareFiles, func(i, j int) bool {
+		return squareFiles[i].Meta.Height < squareFiles[j].Meta.Height || squareFiles[i].Meta.Width < squareFiles[j].Meta.Width
+	})
+	for _, file := range squareFiles {
 		if min(file.Meta.Height, file.Meta.Width) >= size {
 			return file
 		}
 	}
-	return files[0]
+	return squareFiles[0]
 }
 
 type Artworks []ArtworkData
