@@ -14,6 +14,7 @@ import (
 	"codeberg.org/dergs/tonearm/internal/player"
 	"codeberg.org/dergs/tonearm/internal/resources"
 	"codeberg.org/dergs/tonearm/internal/signals"
+	"codeberg.org/dergs/tonearm/internal/ui/components/sidebar"
 	"codeberg.org/dergs/tonearm/pkg/schwifty"
 	"codeberg.org/dergs/tonearm/pkg/schwifty/state"
 	. "codeberg.org/dergs/tonearm/pkg/schwifty/syntax"
@@ -26,7 +27,6 @@ import (
 	"github.com/jwijenbergh/puregotk/v4/gobject"
 	"github.com/jwijenbergh/puregotk/v4/graphene"
 	"github.com/jwijenbergh/puregotk/v4/gtk"
-	"github.com/jwijenbergh/puregotk/v4/pango"
 )
 
 var (
@@ -85,6 +85,7 @@ var (
 
 var lyricsView = g.Lazy(func() (w *gtk.ScrolledWindow) {
 	w = ScrolledWindow().
+		HPadding(16).
 		BindChild(lyricsList.State).
 		Policy(gtk.PolicyNeverValue, gtk.PolicyExternalValue)()
 
@@ -462,39 +463,9 @@ func NewLyricsPanel() schwifty.Box {
 		)().
 		Widget)
 	return VStack(
-		HStack(
-			AspectFrame(
-				Image().
-					PixelSize(54).
-					BindPaintable(coverState),
-			).
-				Overflow(gtk.OverflowHiddenValue).
-				Background("alpha(var(--view-fg-color), 0.1)").
-				CornerRadius(6),
-			VStack(
-				Label("").
-					BindText(trackTitle).
-					FontWeight(600).
-					Ellipsis(pango.EllipsizeEndValue).
-					HAlign(gtk.AlignStartValue),
-				Label("").
-					BindText(trackArtists).
-					Ellipsis(pango.EllipsizeEndValue).
-					HAlign(gtk.AlignStartValue),
-			).
-				VAlign(gtk.AlignCenterValue),
-		).
-			Spacing(16).
-			Padding(12).
-			MarginBottom(12).
-			Background("alpha(var(--view-fg-color), 0.1)").
-			CornerRadius(12),
+		sidebar.MiniPlayer(),
 		overlay,
 	).
 		Spacing(7).
-		PaddingStart(16).
-		PaddingEnd(16).
-		PaddingTop(12).
-		PaddingBottom(12).
 		WithCSSClass("lyrics-panel")
 }
