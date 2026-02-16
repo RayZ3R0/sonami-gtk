@@ -34,20 +34,6 @@ func NewPaginator[T any](resource PaginatedOpenAPIFunc, resourceID string, resol
 	}
 }
 
-func NewPaginatorWithFirstPage[T any](resource PaginatedOpenAPIFunc, resourceID string, resolver PaginatedOpenAPIResolver[T], cursor *string, items []T, included ...string) tonearm.Paginator[T] {
-	if cursor == nil {
-		cursor = &openapiCursorEnd
-	}
-	return &paginatorOpenAPI[T]{
-		resolver:   resolver,
-		resource:   resource,
-		resourceID: resourceID,
-		included:   included,
-		cursor:     *cursor,
-		items:      items,
-	}
-}
-
 func (p *paginatorOpenAPI[T]) IsConsumed() bool {
 	return p.cursor == openapiCursorEnd
 }
