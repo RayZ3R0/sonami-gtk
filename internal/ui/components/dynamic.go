@@ -19,8 +19,25 @@ var logger = slog.With("module", "components")
 
 func ForPageItem(pageItem modelv2.PageItem) schwifty.BaseWidgetable {
 	switch pageItem.Type {
-	case modelv2.ItemTypeHorizontalList:
-		list := horizontal_list.NewHorizontalList(pageItem.Title)
+	case modelv2.ItemTypeHorizontalList, modelv2.ItemTypeHorizontalListWithContext:
+		title := pageItem.Title
+		if pageItem.Header != nil {
+			switch pageItem.Header.Type {
+			case modelv2.ItemTypeAlbum:
+				title = pageItem.Header.Data.Album.Title
+			case modelv2.ItemTypeArtist:
+				title = pageItem.Header.Data.Artist.Name
+			case modelv2.ItemTypeDeepLink:
+				title = pageItem.Header.Data.DeepLink.Title
+			case modelv2.ItemTypeMix:
+				title = pageItem.Header.Data.Mix.TitleTextInfo.Text
+			case modelv2.ItemTypePlaylist:
+				title = pageItem.Header.Data.Playlist.Title
+			case modelv2.ItemTypeTrack:
+				title = pageItem.Header.Data.Track.Title
+			}
+		}
+		list := horizontal_list.NewHorizontalList(title)
 		for _, item := range pageItem.Items {
 			if item.Type == modelv2.ItemTypeAlbum {
 				list.Append(media_card.NewAlbum(v2.NewAlbum(*item.Data.Album)))
@@ -42,6 +59,14 @@ func ForPageItem(pageItem modelv2.PageItem) schwifty.BaseWidgetable {
 				).SizeRequest(192, -1).CSS("box:hover { background: alpha(var(--view-fg-color), 0.1); }").CornerRadius(10))
 			}
 		}
+
+		if pageItem.Header != nil {
+			return VStack(
+				Label(pageItem.Title).HAlign(gtk.AlignStartValue).WithCSSClass("dimmed").HMargin(50),
+				list.SetPageMargin(40),
+			)
+		}
+
 		return list.SetPageMargin(40)
 	case modelv2.ItemTypeTrackList:
 		list := tracklist.NewTrackList(
