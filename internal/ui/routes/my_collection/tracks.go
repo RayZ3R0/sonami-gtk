@@ -87,7 +87,7 @@ func Tracks() *router.Response {
 								}
 
 								if err := player.PlayTracklist(new(openapi.MyTracksInfo), tracks, true, 0); err != nil {
-									notifications.OnToast.Notify(gettext.Get("An error occurred while playing the tracks"))
+									notifications.OnToast.Notify(gettext.Get("An error occurred while shuffling the tracks"))
 									logger.Error("An error occurred while playing the tracks", "error", err.Error())
 								}
 							}()
