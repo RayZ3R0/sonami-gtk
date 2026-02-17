@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: v1.1.0-99-ga37b2fb\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-02-17 14:21+0100\n"
+"POT-Creation-Date: 2026-02-17 14:24+0100\n"
 "PO-Revision-Date: 2026-02-12 16:42+0000\n"
 "Last-Translator: Poesty Li <poesty7450@gmail.com>\n"
 "Language-Team: Chinese (Simplified Han script) <https://"
@@ -44,6 +44,10 @@ msgstr "关于 Tonearm"
 
 #: internal/ui/routes/album.go:111
 msgid "Add Album to Queue"
+msgstr ""
+
+#: internal/ui/routes/my_collection/tracks.go:61
+msgid "Add My Tracks to Queue"
 msgstr ""
 
 #: internal/ui/routes/playlist.go:96
@@ -152,11 +156,11 @@ msgstr ""
 msgid "An error occurred while playing the track"
 msgstr ""
 
-#: internal/ui/routes/my_collection/tracks.go:105
+#: internal/ui/routes/my_collection/tracks.go:112
 msgid "An error occurred while playing the tracks"
 msgstr ""
 
-#: internal/ui/routes/my_collection/tracks.go:85
+#: internal/ui/routes/my_collection/tracks.go:92
 msgid "An error occurred while shuffling the tracks"
 msgstr ""
 
@@ -576,6 +580,10 @@ msgstr "播放 / 暂停"
 msgid "Play Album"
 msgstr "播放专辑"
 
+#: internal/ui/routes/my_collection/tracks.go:104
+msgid "Play My Tracks"
+msgstr ""
+
 #: internal/ui/routes/playlist.go:154
 msgid "Play Playlist"
 msgstr "播放播放列表"
@@ -680,7 +688,7 @@ msgstr "密钥服务不可用"
 msgid "Set as default page"
 msgstr "设为默认页面"
 
-#: internal/ui/window_actions.go:291
+#: internal/ui/window_actions.go:333
 msgid "Set current page as default"
 msgstr "将当前页面设为默认"
 
@@ -691,6 +699,10 @@ msgstr ""
 #: internal/ui/routes/album.go:156
 msgid "Shuffle Album"
 msgstr "随机播放专辑"
+
+#: internal/ui/routes/my_collection/tracks.go:85
+msgid "Shuffle My Tracks"
+msgstr ""
 
 #: internal/ui/routes/playlist.go:140
 msgid "Shuffle Playlist"
@@ -716,15 +728,15 @@ msgstr ""
 msgid "Sign Out"
 msgstr "登出"
 
-#: internal/ui/window_actions.go:266
+#: internal/ui/window_actions.go:308
 msgid "Sign in failed or aborted"
 msgstr "登录失败或已取消"
 
-#: internal/ui/window_actions.go:270
+#: internal/ui/window_actions.go:312
 msgid "Signed in as %s"
 msgstr "已登录为 %s"
 
-#: internal/ui/window_actions.go:280
+#: internal/ui/window_actions.go:322
 msgid "Signed out"
 msgstr "已登出"
 

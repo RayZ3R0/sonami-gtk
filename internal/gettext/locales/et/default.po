@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: v1.1.0-99-ga37b2fb\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-02-17 14:21+0100\n"
+"POT-Creation-Date: 2026-02-17 14:24+0100\n"
 "PO-Revision-Date: 2026-02-10 09:16+0000\n"
 "Last-Translator: Priit Jõerüüt <jrtcdbrg@noreply.codeberg.org>\n"
 "Language-Team: Estonian <https://translate.codeberg.org/projects/tonearm/"
@@ -47,6 +47,10 @@ msgstr "Rakenduse teave: Tonearm"
 
 #: internal/ui/routes/album.go:111
 msgid "Add Album to Queue"
+msgstr ""
+
+#: internal/ui/routes/my_collection/tracks.go:61
+msgid "Add My Tracks to Queue"
 msgstr ""
 
 #: internal/ui/routes/playlist.go:96
@@ -165,11 +169,11 @@ msgstr "Populaarsete lugude esitamisel tekkis viga"
 msgid "An error occurred while playing the track"
 msgstr "Loo esitamisel tekkis viga"
 
-#: internal/ui/routes/my_collection/tracks.go:105
+#: internal/ui/routes/my_collection/tracks.go:112
 msgid "An error occurred while playing the tracks"
 msgstr ""
 
-#: internal/ui/routes/my_collection/tracks.go:85
+#: internal/ui/routes/my_collection/tracks.go:92
 msgid "An error occurred while shuffling the tracks"
 msgstr ""
 
@@ -594,6 +598,10 @@ msgstr "Esita / peata"
 msgid "Play Album"
 msgstr "Kuula albumit"
 
+#: internal/ui/routes/my_collection/tracks.go:104
+msgid "Play My Tracks"
+msgstr ""
+
 #: internal/ui/routes/playlist.go:154
 msgid "Play Playlist"
 msgstr "Kuula esitusloendit"
@@ -700,7 +708,7 @@ msgstr "Salajane teenus pole saadaval"
 msgid "Set as default page"
 msgstr "Määra vaikimisi leheks"
 
-#: internal/ui/window_actions.go:291
+#: internal/ui/window_actions.go:333
 msgid "Set current page as default"
 msgstr "Määra see leht vaikimisi leheks"
 
@@ -711,6 +719,10 @@ msgstr "Määra kõikidele lugudele sama helivaljus."
 #: internal/ui/routes/album.go:156
 msgid "Shuffle Album"
 msgstr "Sega album"
+
+#: internal/ui/routes/my_collection/tracks.go:85
+msgid "Shuffle My Tracks"
+msgstr ""
 
 #: internal/ui/routes/playlist.go:140
 msgid "Shuffle Playlist"
@@ -736,15 +748,15 @@ msgstr "Logi sisse…"
 msgid "Sign Out"
 msgstr "Logi välja"
 
-#: internal/ui/window_actions.go:266
+#: internal/ui/window_actions.go:308
 msgid "Sign in failed or aborted"
 msgstr "Sisselogimine ei õnnestunud või on katkestatud"
 
-#: internal/ui/window_actions.go:270
+#: internal/ui/window_actions.go:312
 msgid "Signed in as %s"
 msgstr "Sisseloginud kasutajana %s"
 
-#: internal/ui/window_actions.go:280
+#: internal/ui/window_actions.go:322
 msgid "Signed out"
 msgstr "Väljaloginud"
 

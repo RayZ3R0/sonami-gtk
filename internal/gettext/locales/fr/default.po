@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: v1.0.0-12-g1ce38cd\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-02-17 14:21+0100\n"
+"POT-Creation-Date: 2026-02-17 14:24+0100\n"
 "PO-Revision-Date: 2026-02-15 23:06+0000\n"
 "Last-Translator: drafolin <drafolin@noreply.codeberg.org>\n"
 "Language-Team: French <https://translate.codeberg.org/projects/tonearm/"
@@ -49,6 +49,10 @@ msgstr "À propos de Tonearm"
 
 #: internal/ui/routes/album.go:111
 msgid "Add Album to Queue"
+msgstr ""
+
+#: internal/ui/routes/my_collection/tracks.go:61
+msgid "Add My Tracks to Queue"
 msgstr ""
 
 #: internal/ui/routes/playlist.go:96
@@ -166,11 +170,11 @@ msgstr ""
 msgid "An error occurred while playing the track"
 msgstr "Une erreur s'est produite lors de la lecture du morceau"
 
-#: internal/ui/routes/my_collection/tracks.go:105
+#: internal/ui/routes/my_collection/tracks.go:112
 msgid "An error occurred while playing the tracks"
 msgstr ""
 
-#: internal/ui/routes/my_collection/tracks.go:85
+#: internal/ui/routes/my_collection/tracks.go:92
 msgid "An error occurred while shuffling the tracks"
 msgstr ""
 
@@ -599,6 +603,10 @@ msgstr "Play / Pause"
 msgid "Play Album"
 msgstr "Jouer l'album"
 
+#: internal/ui/routes/my_collection/tracks.go:104
+msgid "Play My Tracks"
+msgstr ""
+
 #: internal/ui/routes/playlist.go:154
 msgid "Play Playlist"
 msgstr "Jouer la Liste de lecture"
@@ -705,7 +713,7 @@ msgstr "Service de secret non disponible"
 msgid "Set as default page"
 msgstr "Définir comme page par défaut"
 
-#: internal/ui/window_actions.go:291
+#: internal/ui/window_actions.go:333
 msgid "Set current page as default"
 msgstr "Définir la page actuelle comme page par défaut"
 
@@ -716,6 +724,10 @@ msgstr "Jouer tous les morceaux avec le même volume."
 #: internal/ui/routes/album.go:156
 msgid "Shuffle Album"
 msgstr "Jouer l'album en mode aléatoire"
+
+#: internal/ui/routes/my_collection/tracks.go:85
+msgid "Shuffle My Tracks"
+msgstr ""
 
 #: internal/ui/routes/playlist.go:140
 msgid "Shuffle Playlist"
@@ -741,15 +753,15 @@ msgstr "Se Connecter…"
 msgid "Sign Out"
 msgstr "Se déconnecter"
 
-#: internal/ui/window_actions.go:266
+#: internal/ui/window_actions.go:308
 msgid "Sign in failed or aborted"
 msgstr "Connexion échouée ou annulée"
 
-#: internal/ui/window_actions.go:270
+#: internal/ui/window_actions.go:312
 msgid "Signed in as %s"
 msgstr "Connectée en tant que %s"
 
-#: internal/ui/window_actions.go:280
+#: internal/ui/window_actions.go:322
 msgid "Signed out"
 msgstr "Déconnecté"
 

@@ -58,7 +58,7 @@ func Tracks() *router.Response {
 	})
 
 	playControlsMenu := gio.NewMenu()
-	queueAllItem := gio.NewMenuItem(gettext.Get("Add playlist to queue"), "win.player.queue")
+	queueAllItem := gio.NewMenuItem(gettext.Get("Add My Tracks to Queue"), "win.player.queue")
 	queueAllItem.SetActionAndTargetValue("win.player.queue", glib.NewVariantString("my_collection/tracks"))
 	playControlsMenu.AppendItem(queueAllItem)
 
