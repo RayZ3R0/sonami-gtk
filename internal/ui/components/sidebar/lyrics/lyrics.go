@@ -38,45 +38,7 @@ var (
 	logger = slog.With("module", "lyrics")
 )
 
-type loadingWidget struct {
-	*state.State[any]
-}
-
-func NewLoadingWidget(defaultState any) *loadingWidget {
-	lw := &loadingWidget{
-		State: state.NewStateful[any](defaultState),
-	}
-
-	return lw
-}
-
-func (lw *loadingWidget) SetValue(v any) {
-	if v == nil {
-		lw.State.SetValue(
-			HStack(
-				Clamp().
-					MaximumSize(50).
-					Child(Spinner()).
-					HExpand(true).
-					VExpand(true),
-			).
-				HExpand(true).
-				VExpand(true),
-		)
-	} else {
-		lw.State.SetValue(v)
-	}
-}
-
-var lyricsList = NewLoadingWidget(
-	HStack(
-		Label("No lyrics available").
-			HAlign(gtk.AlignCenterValue).
-			VAlign(gtk.AlignCenterValue).
-			HExpand(true).
-			VExpand(true),
-	),
-)
+var lyricsList = state.NewStateful[any](StatusPage().Title(gettext.Get("No lyrics available")).VExpand(true))
 
 var (
 	userManuallyScrolled = state.NewStateful(false)
@@ -86,7 +48,7 @@ var (
 var lyricsView = g.Lazy(func() (w *gtk.ScrolledWindow) {
 	w = ScrolledWindow().
 		HPadding(16).
-		BindChild(lyricsList.State).
+		BindChild(lyricsList).
 		Policy(gtk.PolicyNeverValue, gtk.PolicyExternalValue)()
 
 	cb := func(adj gtk.Adjustment) {
@@ -368,21 +330,6 @@ func getLyrics(ID string) (lyrics string, isTimestamped bool, err error) {
 	return
 }
 
-func setLyricsEmptyState(msg string) {
-	schwifty.OnMainThreadOncePure(func() {
-		lyricsList.SetValue(
-			HStack(
-				Label(msg).
-					HAlign(gtk.AlignCenterValue).
-					VAlign(gtk.AlignCenterValue).
-					HExpand(true).
-					VExpand(true),
-			).
-				VExpand(true),
-		)
-	})
-}
-
 func init() {
 	player.TrackChanged.On(func(trackInfo tonearm.Track) bool {
 		lyricsList.SetValue(nil)
@@ -397,7 +344,12 @@ func init() {
 				trackTitle.SetValue("")
 				trackArtists.SetValue("")
 
-				setLyricsEmptyState(gettext.Get("No song currently playing"))
+				lyricsList.SetValue(
+					StatusPage().
+						Title(gettext.Get("No Song Currently Playing")).
+						VExpand(true).
+						IconName("no-track-symbolic"),
+				)
 			})
 
 			return signals.Continue
@@ -407,15 +359,23 @@ func init() {
 		lyrics, isTimestamped, err := getLyrics(trackInfo.ID())
 		if err != nil {
 			logger.Error("Error while fetching lyrics", "error", err)
-			schwifty.OnMainThreadOncePure(func() {
-				setLyricsEmptyState(gettext.Get("Error fetching lyrics"))
-			})
+			lyricsList.SetValue(
+				StatusPage().
+					Title(gettext.Get("Error Fetching Lyrics")).
+					VExpand(true).
+					IconName("dialog-error-symbolic"),
+			)
 
 			return signals.Continue
 		}
 
 		if lyrics == "" {
-			setLyricsEmptyState(gettext.Get("No lyrics available"))
+			lyricsList.SetValue(
+				StatusPage().
+					Title(gettext.Get("No Lyrics Available")).
+					VExpand(true).
+					IconName("no-lyrics-symbolic"),
+			)
 
 			return signals.Continue
 		}
@@ -427,14 +387,12 @@ func init() {
 			lines = parseUntimedLyrics(lyrics)
 		}
 
-		schwifty.OnMainThreadOncePure(func() {
-			lyricsList.SetValue(
-				VStack(lines...).
-					Spacing(12).
-					HExpand(true).
-					VExpand(true),
-			)
-		})
+		lyricsList.SetValue(
+			VStack(lines...).
+				Spacing(12).
+				HExpand(true).
+				VExpand(true),
+		)
 
 		return signals.Continue
 	})
