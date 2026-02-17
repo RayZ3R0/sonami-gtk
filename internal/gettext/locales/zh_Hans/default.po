@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: v1.1.0-99-ga37b2fb\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-02-17 15:41+0100\n"
+"POT-Creation-Date: 2026-02-17 15:42+0100\n"
 "PO-Revision-Date: 2026-02-12 16:42+0000\n"
 "Last-Translator: Poesty Li <poesty7450@gmail.com>\n"
 "Language-Team: Chinese (Simplified Han script) <https://"
@@ -537,6 +537,10 @@ msgstr ""
 msgid "No Track"
 msgstr "无曲目"
 
+#: internal/ui/components/sidebar/queue/queue.go:40
+msgid "No Tracks in Queue"
+msgstr ""
+
 #: internal/ui/components/sidebar/lyrics/lyrics.go:41
 msgid "No lyrics available"
 msgstr "暂无歌词"
@@ -668,7 +672,7 @@ msgstr "队列"
 msgid "Quit"
 msgstr "退出"
 
-#: internal/ui/components/sidebar/queue/queue.go:60
+#: internal/ui/components/sidebar/queue/queue.go:83
 msgid "Remove Track from Queue"
 msgstr "从队列中移除曲目"
 

@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: v1.1.0-99-ga37b2fb\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-02-17 15:41+0100\n"
+"POT-Creation-Date: 2026-02-17 15:42+0100\n"
 "PO-Revision-Date: 2026-02-15 23:06+0000\n"
 "Last-Translator: presi300 <presi300@noreply.codeberg.org>\n"
 "Language-Team: Bulgarian <https://translate.codeberg.org/projects/tonearm/"
@@ -567,6 +567,10 @@ msgstr ""
 msgid "No Track"
 msgstr ""
 
+#: internal/ui/components/sidebar/queue/queue.go:40
+msgid "No Tracks in Queue"
+msgstr ""
+
 #: internal/ui/components/sidebar/lyrics/lyrics.go:41
 msgid "No lyrics available"
 msgstr ""
@@ -693,7 +697,7 @@ msgstr ""
 msgid "Quit"
 msgstr ""
 
-#: internal/ui/components/sidebar/queue/queue.go:60
+#: internal/ui/components/sidebar/queue/queue.go:83
 msgid "Remove Track from Queue"
 msgstr ""
 

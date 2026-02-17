@@ -21,6 +21,7 @@
   <file alias="menu-symbolic.svg">scalable/actions/menu-symbolic.svg</file>
   <file alias="music-artist2-symbolic.svg">scalable/actions/music-artist2-symbolic.svg</file>
   <file alias="music-note-outline-symbolic.svg">scalable/actions/music-note-outline-symbolic.svg</file>
+  <file alias="music-queue-empty-symbolic.svg">scalable/actions/music-queue-empty-symbolic.svg</file>
   <file alias="music-queue-symbolic.svg">scalable/actions/music-queue-symbolic.svg</file>
   <file alias="no-lyrics-symbolic.svg">scalable/actions/no-lyrics-symbolic.svg</file>
   <file alias="no-track-symbolic.svg">scalable/actions/no-track-symbolic.svg</file>
