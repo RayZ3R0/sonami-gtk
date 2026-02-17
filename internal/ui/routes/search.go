@@ -7,6 +7,7 @@ import (
 
 	"codeberg.org/dergs/tonearm/internal/gettext"
 	"codeberg.org/dergs/tonearm/internal/router"
+	"codeberg.org/dergs/tonearm/internal/ui/components"
 	"codeberg.org/dergs/tonearm/internal/ui/routes/search"
 	"codeberg.org/dergs/tonearm/pkg/schwifty/state"
 	. "codeberg.org/dergs/tonearm/pkg/schwifty/syntax"
@@ -76,7 +77,11 @@ func OnSearch(scrollChildState *state.State[any]) func(gtk.SearchEntry) {
 				scrollChildState.SetValue(search.PromptView())
 				return
 			}
-			scrollChildState.SetValue(search.TopHits(searchResults))
+			scrollChildState.SetValue(
+				components.MainContent(
+					search.TopHits(searchResults),
+				),
+			)
 		}()
 	}
 }

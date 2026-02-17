@@ -40,7 +40,11 @@ func Explore(pageName string) *router.Response {
 	return &router.Response{
 		PageTitle: page.Title,
 		View: ScrolledWindow().
-			Child(body).
+			Child(
+				components.MainContent(
+					body,
+				),
+			).
 			Policy(gtk.PolicyNeverValue, gtk.PolicyAutomaticValue),
 	}
 }

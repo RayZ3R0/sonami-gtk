@@ -31,3 +31,11 @@ func (f Clamp) Orientation(orientation gtk.Orientation) Clamp {
 		return widget
 	}
 }
+
+func (f Clamp) TighteningThreshold(threshold int) Clamp {
+	return func() *adw.Clamp {
+		widget := f()
+		widget.SetTighteningThreshold(threshold)
+		return widget
+	}
+}

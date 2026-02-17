@@ -5,6 +5,7 @@ import (
 	"unsafe"
 
 	"codeberg.org/dergs/tonearm/internal/signals"
+	"codeberg.org/dergs/tonearm/internal/ui/components"
 	"codeberg.org/dergs/tonearm/internal/ui/components/tracklist"
 	"codeberg.org/dergs/tonearm/pkg/schwifty"
 	. "codeberg.org/dergs/tonearm/pkg/schwifty/syntax"
@@ -28,7 +29,11 @@ func NewPaginatedTracklistPage(
 	}
 
 	return ScrolledWindow().
-		Child(styleFactory(list)).
+		Child(
+			components.MainContent(
+				styleFactory(list),
+			),
+		).
 		Policy(gtk.PolicyNeverValue, gtk.PolicyAutomaticValue).
 		ConnectReachEdgeSoon(gtk.PosBottomValue, func() bool {
 			if !paginator.IsConsumed() {

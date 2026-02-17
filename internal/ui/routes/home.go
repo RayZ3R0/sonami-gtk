@@ -31,7 +31,11 @@ func Home() *router.Response {
 	return &router.Response{
 		PageTitle: gettext.Get("Home"),
 		View: ScrolledWindow().
-			Child(body).
+			Child(
+				components.MainContent(
+					body,
+				),
+			).
 			Policy(gtk.PolicyNeverValue, gtk.PolicyAutomaticValue),
 	}
 }

@@ -59,65 +59,65 @@ func Tracks() *router.Response {
 		PageTitle: gettext.Get("My Tracks"),
 		Error:     err,
 		View: VStack(
-			HStack(
-				AspectFrame(
-					Image().
-						PixelSize(146).
-						FromPaintable(resources.MissingAlbum()).
-						ConnectConstruct(func(i *gtk.Image) {
-							injector.MustInject[*imgutil.ImgUtil]().LoadIntoImage(new(openapi.MyTracksInfo).Cover(146), i)
-						}),
-				).
-					CornerRadius(10).
-					Overflow(gtk.OverflowHiddenValue),
-				Label(gettext.Get("My Tracks")).WithCSSClass("title-1").Ellipsis(pango.EllipsizeEndValue),
-				Spacer().VExpand(false).MinWidth(20),
+			components.MainContent(
 				HStack(
-					Button().
-						TooltipText(gettext.Get("Shuffle Album")).
-						IconName("playlist-shuffle-symbolic").
-						WithCSSClass("pill").
-						ConnectClicked(func(b gtk.Button) {
-							go func() {
-								tracks, err := paginator.GetAll()
-								if err != nil {
-									notifications.OnToast.Notify(gettext.Get("An error occurred while shuffling the tracks"))
-									logger.Error("An error occurred while fetching the tracks", "error", err.Error())
-									return
-								}
+					AspectFrame(
+						Image().
+							PixelSize(146).
+							FromPaintable(resources.MissingAlbum()).
+							ConnectConstruct(func(i *gtk.Image) {
+								injector.MustInject[*imgutil.ImgUtil]().LoadIntoImage(new(openapi.MyTracksInfo).Cover(146), i)
+							}),
+					).
+						CornerRadius(10).
+						Overflow(gtk.OverflowHiddenValue),
+					Label(gettext.Get("My Tracks")).WithCSSClass("title-1").Ellipsis(pango.EllipsizeEndValue),
+					Spacer().VExpand(false).MinWidth(20),
+					HStack(
+						Button().
+							TooltipText(gettext.Get("Shuffle Album")).
+							IconName("playlist-shuffle-symbolic").
+							WithCSSClass("pill").
+							ConnectClicked(func(b gtk.Button) {
+								go func() {
+									tracks, err := paginator.GetAll()
+									if err != nil {
+										notifications.OnToast.Notify(gettext.Get("An error occurred while shuffling the tracks"))
+										logger.Error("An error occurred while fetching the tracks", "error", err.Error())
+										return
+									}
 
-								if err := player.PlayTracklist(new(openapi.MyTracksInfo), tracks, true, 0); err != nil {
-									notifications.OnToast.Notify(gettext.Get("An error occurred while shuffling the tracks"))
-									logger.Error("An error occurred while playing the tracks", "error", err.Error())
-								}
-							}()
-						}),
-					Button().
-						TooltipText(gettext.Get("Play Album")).
-						IconName("play-symbolic").
-						WithCSSClass("pill").
-						WithCSSClass("suggested-action").
-						ConnectClicked(func(b gtk.Button) {
-							go func() {
-								tracks, err := paginator.GetAll()
-								if err != nil {
-									notifications.OnToast.Notify(gettext.Get("An error occurred while playing the tracks"))
-									logger.Error("An error occurred while fetching the tracks", "error", err.Error())
-									return
-								}
+									if err := player.PlayTracklist(new(openapi.MyTracksInfo), tracks, true, 0); err != nil {
+										notifications.OnToast.Notify(gettext.Get("An error occurred while shuffling the tracks"))
+										logger.Error("An error occurred while playing the tracks", "error", err.Error())
+									}
+								}()
+							}),
+						Button().
+							TooltipText(gettext.Get("Play Album")).
+							IconName("play-symbolic").
+							WithCSSClass("pill").
+							WithCSSClass("suggested-action").
+							ConnectClicked(func(b gtk.Button) {
+								go func() {
+									tracks, err := paginator.GetAll()
+									if err != nil {
+										notifications.OnToast.Notify(gettext.Get("An error occurred while playing the tracks"))
+										logger.Error("An error occurred while fetching the tracks", "error", err.Error())
+										return
+									}
 
-								if err := player.PlayTracklist(new(openapi.MyTracksInfo), tracks, false, 0); err != nil {
-									notifications.OnToast.Notify(gettext.Get("An error occurred while playing the tracks"))
-									logger.Error("An error occurred while playing the tracks", "error", err.Error())
-								}
-							}()
-						}),
-				).
-					Spacing(12).
-					VAlign(gtk.AlignCenterValue),
-			).
-				Spacing(20).
-				HMargin(40),
+									if err := player.PlayTracklist(new(openapi.MyTracksInfo), tracks, false, 0); err != nil {
+										notifications.OnToast.Notify(gettext.Get("An error occurred while playing the tracks"))
+										logger.Error("An error occurred while playing the tracks", "error", err.Error())
+									}
+								}()
+							}),
+					).
+						Spacing(12).
+						VAlign(gtk.AlignCenterValue),
+				).Spacing(20).HMargin(40),
+			),
 			page.
 				VExpand(true),
 		).

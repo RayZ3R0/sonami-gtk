@@ -94,6 +94,7 @@ func NewHorizontalList(title string) *HorizontalList {
 				PropagateNaturalWidth(true).
 				PropagateNaturalWidth(true).
 				ConnectConstruct(func(sw *gtk.ScrolledWindow) {
+					sw.GetChild().SetOverflow(gtk.OverflowVisibleValue)
 					hAdjust = sw.GetHadjustment()
 				}),
 		),
