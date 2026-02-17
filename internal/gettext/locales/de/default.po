@@ -9,8 +9,8 @@ msgstr ""
 "Project-Id-Version: 1\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2026-02-17 19:04+0100\n"
-"PO-Revision-Date: 2026-02-15 01:00+0000\n"
-"Last-Translator: drafolin <drafolin@noreply.codeberg.org>\n"
+"PO-Revision-Date: 2026-02-17 20:13+0000\n"
+"Last-Translator: NilaTheDragon <nilathedragon@noreply.codeberg.org>\n"
 "Language-Team: German <https://translate.codeberg.org/projects/tonearm/"
 "tonearm/de/>\n"
 "Language: de\n"
@@ -48,19 +48,19 @@ msgstr "Über Tonearm"
 
 #: internal/ui/routes/album.go:102
 msgid "Add Album to Queue"
-msgstr ""
+msgstr "Album zur Warteschlange Hinzufügen"
 
 #: internal/ui/routes/my_collection/tracks.go:54
 msgid "Add My Tracks to Queue"
-msgstr ""
+msgstr "Meine Titel zur Warteschlange Hinzufügen"
 
 #: internal/ui/routes/playlist.go:87
 msgid "Add Playlist to Queue"
-msgstr ""
+msgstr "Playlist zur Warteschlange Hinzufügen"
 
 #: internal/ui/routes/artist.go:47
 msgid "Add Top Tracks to Queue"
-msgstr ""
+msgstr "Top Titel zur Warteschlange Hinzufügen"
 
 #: internal/ui/components/favourite_button/favourite_button.go:54
 msgid "Add to Collection"
@@ -166,11 +166,11 @@ msgstr "Beim Abspielen des Titels ist ein Fehler aufgetreten"
 
 #: internal/ui/routes/my_collection/tracks.go:105
 msgid "An error occurred while playing the tracks"
-msgstr ""
+msgstr "Während dem Abspielen der Titel ist ein Fehler aufgetreten"
 
 #: internal/ui/routes/my_collection/tracks.go:85
 msgid "An error occurred while shuffling the tracks"
-msgstr ""
+msgstr "Während der Zufallswiedergabe der Titel ist ein Fehler aufgetreten"
 
 #: internal/secrets/service_linux.go:55
 msgid ""
@@ -199,7 +199,7 @@ msgstr "Künstler"
 
 #: internal/ui/components/auth_required.go:13
 msgid "Authentication Required"
-msgstr ""
+msgstr "Anmeldung Erforderlich"
 
 #: internal/settings/playback.go:20
 msgid "Auto"
@@ -310,9 +310,8 @@ msgid "Copy Track URL"
 msgstr "Titellink kopieren"
 
 #: internal/ui/window_preferences.go:34
-#, fuzzy
 msgid "Default Page"
-msgstr "Hauptseite"
+msgstr "Startseite"
 
 #: internal/ui/components/sidebar/player/component_controls.go:89
 msgid "Disable Repeat"
@@ -324,11 +323,11 @@ msgstr ""
 
 #: internal/ui/components/sidebar/player/component_controls.go:89
 msgid "Disable Repeat"
-msgstr ""
+msgstr "Wiederholungsmodus Deaktivieren"
 
 #: internal/ui/components/sidebar/player/component_controls.go:99
 msgid "Disable Shuffle"
-msgstr ""
+msgstr "Zufallswiedergabe Deaktivieren"
 
 #: internal/ui/window_popups.go:21
 msgid "Don't show again"
@@ -352,11 +351,11 @@ msgstr "ListenBrainz aktivieren"
 
 #: internal/ui/components/sidebar/player/component_controls.go:102
 msgid "Enable Shuffle"
-msgstr ""
+msgstr "Zufallswiedergabe Aktivieren"
 
 #: internal/ui/components/sidebar/lyrics/lyrics.go:51
 msgid "Error Fetching Lyrics"
-msgstr ""
+msgstr "Fehler beim Abrufen des Songtextes"
 
 #: internal/ui/routes/my-collection.go:43
 msgid "Error loading collection"
@@ -391,9 +390,8 @@ msgid "History Length"
 msgstr "Maximale Verlaufslänge"
 
 #: internal/ui/routes/home.go:23
-#, fuzzy
 msgid "Home"
-msgstr "Hauptseite"
+msgstr "Startseite"
 
 #: internal/ui/window_preferences.go:107
 msgid "Images"
@@ -417,7 +415,7 @@ msgstr "Letzte Woche"
 
 #: internal/ui/window_preferences.go:263
 msgid "Last.fm"
-msgstr ""
+msgstr "Last.fm"
 
 #: internal/ui/window_preferences.go:134
 msgid "ListenBrainz"
@@ -433,7 +431,7 @@ msgstr "ListenBrainz API URL"
 
 #: internal/ui/components/sidebar/lyrics/lyrics.go:53
 msgid "Loading Lyrics"
-msgstr ""
+msgstr "Songtext Wird Geladen"
 
 #: internal/ui/window_preferences.go:144
 msgid "Log In to Last.fm…"
@@ -486,7 +484,7 @@ msgstr "Mehr"
 
 #: internal/ui/components/tracklist/column_controls.go:62
 msgid "More…"
-msgstr ""
+msgstr "Mehr…"
 
 #: internal/ui/routes/my_collection/albums.go:37
 msgid "My Albums"
@@ -514,7 +512,7 @@ msgstr "Zurück navigieren"
 
 #: internal/ui/components/tracklist/column_controls.go:35
 msgid "Navigate to %s"
-msgstr ""
+msgstr "Navigiere zu %s"
 
 #: internal/ui/components/sidebar/player/component_action_row.go:198
 msgid "Navigate to Album"
@@ -545,7 +543,6 @@ msgid "Navigation"
 msgstr "Navigation"
 
 #: internal/ui/window_preferences.go:48
-#, fuzzy
 msgid "Navigation Behaviour"
 msgstr "Navigation"
 
@@ -559,11 +556,11 @@ msgstr "Kein Künstler"
 
 #: internal/ui/components/sidebar/lyrics/lyrics.go:55
 msgid "No Lyrics Available"
-msgstr ""
+msgstr "Kein Songtext Verfügbar"
 
 #: internal/ui/components/sidebar/lyrics/lyrics.go:49
 msgid "No Song Currently Playing"
-msgstr ""
+msgstr "Kein Titel wird Abgespielt"
 
 #: internal/ui/components/sidebar/player/component_track_info.go:24
 msgid "No Track"
@@ -571,7 +568,7 @@ msgstr "Kein Titel"
 
 #: internal/ui/components/sidebar/queue/queue.go:40
 msgid "No Tracks in Queue"
-msgstr ""
+msgstr "Keine Titel in der Warteschlange"
 
 #: internal/ui/components/sidebar/player/component_action_row.go:229
 msgid "No mix found for the current track"
@@ -616,7 +613,7 @@ msgstr "TIDAL Webseite öffnen"
 
 #: internal/ui/components/sidebar/player/component_controls.go:45
 msgid "Pause"
-msgstr ""
+msgstr "Pausieren"
 
 #: internal/ui/window_preferences.go:108
 msgid "Performance"
@@ -628,7 +625,7 @@ msgstr "Persönlicher Mix"
 
 #: internal/ui/components/sidebar/player/component_controls.go:48
 msgid "Play"
-msgstr ""
+msgstr "Abspielen"
 
 #: internal/ui/components/sidebar/miniplayer.go:98
 msgid "Play / Pause"
@@ -640,7 +637,7 @@ msgstr "Album abspielen"
 
 #: internal/ui/routes/my_collection/tracks.go:97
 msgid "Play My Tracks"
-msgstr ""
+msgstr "Meine Titel Abspielen"
 
 #: internal/ui/routes/playlist.go:145
 msgid "Play Playlist"
@@ -658,7 +655,7 @@ msgstr "Wiedergabe"
 msgid "Playback quality saved. Changes will be applied on next track change"
 msgstr ""
 "Wiedergabe Qualität gespeichert. Die Änderungen werden beim nächsten Titel "
-"wirksam."
+"wirksam"
 
 #: internal/ui/window_sidebar.go:73
 msgid "Player"
@@ -678,11 +675,11 @@ msgstr "Playlisten"
 
 #: internal/ui/routes/my-collection.go:35
 msgid "Please sign in to view your collection"
-msgstr ""
+msgstr "Bitte melde dich an um deine Sammlung zu betrachten"
 
 #: internal/ui/routes/feed.go:100
 msgid "Please sign in to view your feed"
-msgstr ""
+msgstr "Bitte melde dich an um deinen Feed zu betrachten"
 
 #: internal/ui/window_shortcuts.go:16
 msgid "Preferences"
@@ -710,7 +707,7 @@ msgstr "Titel von der Warteschlange entfernen"
 
 #: internal/ui/components/favourite_button/favourite_button.go:50
 msgid "Remove from Collection"
-msgstr ""
+msgstr "Von Deiner Sammlung Entfernen"
 
 #: internal/features/scrobbling/lastfm.go:56
 msgid "Reopen Browser"
@@ -718,11 +715,11 @@ msgstr "Browser erneut öffnen"
 
 #: internal/ui/components/sidebar/player/component_controls.go:81
 msgid "Repeat Queue"
-msgstr ""
+msgstr "Warteschlange Wiederholen"
 
 #: internal/ui/components/sidebar/player/component_controls.go:85
 msgid "Repeat Track"
-msgstr ""
+msgstr "Titel Wiederholen"
 
 #: internal/ui/components/linking/linking.go:59
 msgid "Scan this QR code to sign into your TIDAL account"
@@ -774,7 +771,7 @@ msgstr "Album im Zufallsmodus abspielen"
 
 #: internal/ui/routes/my_collection/tracks.go:78
 msgid "Shuffle My Tracks"
-msgstr ""
+msgstr "Meine Titel im Zufallsmodus Wiedergeben"
 
 #: internal/ui/routes/playlist.go:131
 msgid "Shuffle Playlist"
@@ -794,7 +791,7 @@ msgstr "Anmelden"
 
 #: internal/ui/components/auth_required.go:17
 msgid "Sign In…"
-msgstr ""
+msgstr "Anmelden…"
 
 #: internal/ui/window_sidebar.go:39
 msgid "Sign Out"
