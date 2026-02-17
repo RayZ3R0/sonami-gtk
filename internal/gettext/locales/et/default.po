@@ -643,7 +643,7 @@ msgid "Playback"
 msgstr "Taasesitus"
 
 #: internal/ui/components/sidebar/player/component_track_timeline.go:73
-msgid "Playback quality saved. Changes will be applied on next track change."
+msgid "Playback quality saved. Changes will be applied on next track change"
 msgstr ""
 "Taasesituse kvaliteet on salvestatud. Muutused jõustuvad järgmise loo "
 "vahetumisel."

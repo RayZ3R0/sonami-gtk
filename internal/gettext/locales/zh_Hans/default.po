@@ -625,8 +625,8 @@ msgid "Playback"
 msgstr "播放"
 
 #: internal/ui/components/sidebar/player/component_track_timeline.go:73
-msgid "Playback quality saved. Changes will be applied on next track change."
-msgstr "播放质量已保存。更改将在下一曲目切换时生效。"
+msgid "Playback quality saved. Changes will be applied on next track change"
+msgstr "播放质量已保存。更改将在下一曲目切换时生效"
 
 #: internal/ui/window_sidebar.go:73
 msgid "Player"

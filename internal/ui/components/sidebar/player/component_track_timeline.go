@@ -70,7 +70,7 @@ func init() {
 	})
 
 	settings.Player().ConnectAudioQualityChanged(func(aq v1.AudioQuality) bool {
-		notifications.OnToast.Notify(gettext.Get("Playback quality saved. Changes will be applied on next track change."))
+		notifications.OnToast.Notify(gettext.Get("Playback quality saved. Changes will be applied on next track change"))
 
 		return signals.Continue
 	})

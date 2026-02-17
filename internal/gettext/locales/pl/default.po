@@ -644,7 +644,7 @@ msgid "Playback"
 msgstr "Odtwarzanie"
 
 #: internal/ui/components/sidebar/player/component_track_timeline.go:73
-msgid "Playback quality saved. Changes will be applied on next track change."
+msgid "Playback quality saved. Changes will be applied on next track change"
 msgstr ""
 "Jakość dźwięku została zapisana. Zmiany zostaną zastosowane przy następnej "
 "zmianie utworu."
