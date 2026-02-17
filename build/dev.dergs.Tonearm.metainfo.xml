@@ -12,7 +12,7 @@
       <li>Background Playback</li>
       <li>Gapless playback</li>
       <li>MPRIS integration</li>
-      <li>Scrobbling to ListenBrainz and Last.FM</li>
+      <li>Scrobbling to ListenBrainz and Last.fm</li>
     </ul>
     <p>
     Don't have a TIDAL account? You can still try the app and enjoy song previews of up to 30 seconds to see if it's for you.
@@ -30,7 +30,7 @@
     <keyword translate="no">TIDAL</keyword>
     <keyword translate="no">MPRIS</keyword>
     <keyword translate="no">ListenBrainz</keyword>
-    <keyword translate="no">Last.FM</keyword>
+    <keyword translate="no">Last.fm</keyword>
     <keyword>music</keyword>
     <keyword>streaming</keyword>
   </keywords>
@@ -55,7 +55,7 @@
             </ul>
             <p>Improvements:</p>
             <ul>
-                <li>Added support for Last.FM scrobbling</li>
+                <li>Added support for Last.fm scrobbling</li>
                 <li>Added partial translation for Bulgarian</li>
                 <li>Implemented more consistent "Sign in" prompts</li>
                 <li>Changed the main view switcher to reset the history when switching views</li>

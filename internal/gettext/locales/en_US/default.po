@@ -230,7 +230,7 @@ msgid "Collection"
 msgstr ""
 
 #: internal/ui/window_preferences.go:264
-msgid "Configure Tonearm to send scrobbling data to Last.FM."
+msgid "Configure Tonearm to send scrobbling data to Last.fm."
 msgstr ""
 
 #: internal/ui/window_preferences.go:135
