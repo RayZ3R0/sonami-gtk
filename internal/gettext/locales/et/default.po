@@ -138,6 +138,8 @@ msgid ""
 "Allow Tonearm to temporarily store images on the file system to improve "
 "performance and reduce network traffic"
 msgstr ""
+"Tagamaks paremat jõudlust ja vähendamaks võrguliiklust luba Tonearmil "
+"ajutiselt salvestada pilte sinu seadme andmekandhjale."
 
 #: internal/ui/window_preferences.go:96
 msgid "Allow Tracklist Images"
