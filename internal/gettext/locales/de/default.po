@@ -199,7 +199,7 @@ msgstr "Künstler"
 
 #: internal/ui/components/auth_required.go:13
 msgid "Authentication Required"
-msgstr ""
+msgstr "Anmeldung Erforderlich"
 
 #: internal/settings/playback.go:20
 msgid "Auto"
@@ -310,9 +310,8 @@ msgid "Copy Track URL"
 msgstr "Titellink kopieren"
 
 #: internal/ui/window_preferences.go:34
-#, fuzzy
 msgid "Default Page"
-msgstr "Hauptseite"
+msgstr "Startseite"
 
 #: internal/ui/components/sidebar/player/component_controls.go:89
 msgid "Disable Repeat"
@@ -383,9 +382,8 @@ msgid "History Length"
 msgstr "Maximale Verlaufslänge"
 
 #: internal/ui/routes/home.go:23
-#, fuzzy
 msgid "Home"
-msgstr "Hauptseite"
+msgstr "Startseite"
 
 #: internal/ui/window_preferences.go:107
 msgid "Images"
@@ -478,7 +476,7 @@ msgstr "Mehr"
 
 #: internal/ui/components/tracklist/column_controls.go:62
 msgid "More…"
-msgstr ""
+msgstr "Mehr…"
 
 #: internal/ui/routes/my_collection/albums.go:37
 msgid "My Albums"
@@ -506,7 +504,7 @@ msgstr "Zurück navigieren"
 
 #: internal/ui/components/tracklist/column_controls.go:35
 msgid "Navigate to %s"
-msgstr ""
+msgstr "Navigiere zu %s"
 
 #: internal/ui/components/sidebar/player/component_action_row.go:198
 msgid "Navigate to Album"
@@ -537,7 +535,6 @@ msgid "Navigation"
 msgstr "Navigation"
 
 #: internal/ui/window_preferences.go:48
-#, fuzzy
 msgid "Navigation Behaviour"
 msgstr "Navigation"
 
@@ -670,11 +667,11 @@ msgstr "Playlisten"
 
 #: internal/ui/routes/my-collection.go:35
 msgid "Please sign in to view your collection"
-msgstr ""
+msgstr "Bitte melde dich an um deine Sammlung zu betrachten"
 
 #: internal/ui/routes/feed.go:100
 msgid "Please sign in to view your feed"
-msgstr ""
+msgstr "Bitte melde dich an um deinen Feed zu betrachten"
 
 #: internal/ui/window_shortcuts.go:16
 msgid "Preferences"
@@ -786,7 +783,7 @@ msgstr "Anmelden"
 
 #: internal/ui/components/auth_required.go:17
 msgid "Sign In…"
-msgstr ""
+msgstr "Anmelden…"
 
 #: internal/ui/window_sidebar.go:39
 msgid "Sign Out"
