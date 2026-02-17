@@ -56,7 +56,7 @@ func playNextTrack() {
 
 	if settings.Playback().AllowAutoplay() && TrackChanged.CurrentValue() != nil {
 		// Since no other songs are left in the queue, retrieve mix to play from API
-		logger.Info("starting track radio", "track_id", TrackChanged.CurrentValue().ID)
+		logger.Info("starting track radio", "track_id", TrackChanged.CurrentValue().ID())
 		PlayTrackRadio(TrackChanged.CurrentValue().ID(), true)
 	} else {
 		resetLoadingState()
