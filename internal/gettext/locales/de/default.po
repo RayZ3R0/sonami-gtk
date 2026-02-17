@@ -350,7 +350,7 @@ msgstr ""
 msgid "Enable autoplay"
 msgstr "Autoplay aktivieren"
 
-#: internal/ui/components/sidebar/lyrics/lyrics.go:364
+#: internal/ui/components/sidebar/lyrics/lyrics.go:53
 msgid "Error Fetching Lyrics"
 msgstr ""
 
@@ -418,6 +418,10 @@ msgstr "ListenBrainz API Schlüssel"
 #: internal/ui/window_preferences.go:129
 msgid "ListenBrainz API URL"
 msgstr "ListenBrainz API URL"
+
+#: internal/ui/components/sidebar/lyrics/lyrics.go:55
+msgid "Loading Lyrics"
+msgstr ""
 
 #: internal/ui/window_preferences.go:144
 msgid "Log in to Last.fm"
@@ -541,11 +545,11 @@ msgstr "Nächster Titel"
 msgid "No Artist"
 msgstr "Kein Künstler"
 
-#: internal/ui/components/sidebar/lyrics/lyrics.go:375
+#: internal/ui/components/sidebar/lyrics/lyrics.go:57
 msgid "No Lyrics Available"
 msgstr ""
 
-#: internal/ui/components/sidebar/lyrics/lyrics.go:349
+#: internal/ui/components/sidebar/lyrics/lyrics.go:51
 msgid "No Song Currently Playing"
 msgstr ""
 
@@ -556,10 +560,6 @@ msgstr "Kein Titel"
 #: internal/ui/components/sidebar/queue/queue.go:40
 msgid "No Tracks in Queue"
 msgstr ""
-
-#: internal/ui/components/sidebar/lyrics/lyrics.go:41
-msgid "No lyrics available"
-msgstr "Songtext nicht verfügbar"
 
 #: internal/ui/components/sidebar/player/component_action_row.go:230
 msgid "No mix found for the current track"
@@ -812,9 +812,9 @@ msgstr ""
 "Tippe in der Suchleiste um nach Songs, Künstlern, Alben oder Playlists zu "
 "suchen."
 
-#: internal/ui/components/sidebar/lyrics/lyrics.go:415
-msgid "Sync with track"
-msgstr "Mit Titel synchronisieren"
+#: internal/ui/components/sidebar/lyrics/lyrics_view.go:42
+msgid "Sync with Track"
+msgstr ""
 
 #: internal/router/handler_notfound.go:13
 msgid "The requested deeplink did not have any available handlers."
@@ -919,6 +919,12 @@ msgstr ""
 #: internal/ui/window_about.go:132
 msgid "translator-credits"
 msgstr "Nila The Dragon https://github.com/NilaTheDragon"
+
+#~ msgid "No lyrics available"
+#~ msgstr "Songtext nicht verfügbar"
+
+#~ msgid "Sync with track"
+#~ msgstr "Mit Titel synchronisieren"
 
 #~ msgid "Error fetching lyrics"
 #~ msgstr "Während dem Abruf des Songtextes ist ein Fehler aufgetreten"

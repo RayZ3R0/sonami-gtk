@@ -354,7 +354,7 @@ msgstr ""
 msgid "Enable autoplay"
 msgstr "Włącz autoodtwarzanie"
 
-#: internal/ui/components/sidebar/lyrics/lyrics.go:364
+#: internal/ui/components/sidebar/lyrics/lyrics.go:53
 msgid "Error Fetching Lyrics"
 msgstr ""
 
@@ -421,6 +421,10 @@ msgstr "Token API ListenBrainz"
 #: internal/ui/window_preferences.go:129
 msgid "ListenBrainz API URL"
 msgstr "Adres URL API ListenBrainz"
+
+#: internal/ui/components/sidebar/lyrics/lyrics.go:55
+msgid "Loading Lyrics"
+msgstr ""
 
 #: internal/ui/window_preferences.go:144
 msgid "Log in to Last.fm"
@@ -542,11 +546,11 @@ msgstr "Następny"
 msgid "No Artist"
 msgstr "Brak artysty"
 
-#: internal/ui/components/sidebar/lyrics/lyrics.go:375
+#: internal/ui/components/sidebar/lyrics/lyrics.go:57
 msgid "No Lyrics Available"
 msgstr ""
 
-#: internal/ui/components/sidebar/lyrics/lyrics.go:349
+#: internal/ui/components/sidebar/lyrics/lyrics.go:51
 msgid "No Song Currently Playing"
 msgstr ""
 
@@ -557,10 +561,6 @@ msgstr "Brak utworu"
 #: internal/ui/components/sidebar/queue/queue.go:40
 msgid "No Tracks in Queue"
 msgstr ""
-
-#: internal/ui/components/sidebar/lyrics/lyrics.go:41
-msgid "No lyrics available"
-msgstr "Brak dostępnego tekstu utworu"
 
 #: internal/ui/components/sidebar/player/component_action_row.go:230
 msgid "No mix found for the current track"
@@ -813,9 +813,9 @@ msgstr ""
 "Zacznij wpisywać w pasku wyszukiwania by szukać piosenek, artystów lub "
 "playlist."
 
-#: internal/ui/components/sidebar/lyrics/lyrics.go:415
-msgid "Sync with track"
-msgstr "Synchronizuj z utworem"
+#: internal/ui/components/sidebar/lyrics/lyrics_view.go:42
+msgid "Sync with Track"
+msgstr ""
 
 #: internal/router/handler_notfound.go:13
 msgid "The requested deeplink did not have any available handlers."
@@ -915,6 +915,12 @@ msgstr ""
 #: internal/ui/window_about.go:132
 msgid "translator-credits"
 msgstr "Łukasz Horodecki https://horodecki.net"
+
+#~ msgid "No lyrics available"
+#~ msgstr "Brak dostępnego tekstu utworu"
+
+#~ msgid "Sync with track"
+#~ msgstr "Synchronizuj z utworem"
 
 #~ msgid "Error fetching lyrics"
 #~ msgstr "Błąd pobierania tekstu utworu"

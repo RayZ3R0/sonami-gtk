@@ -353,7 +353,7 @@ msgstr ""
 msgid "Enable autoplay"
 msgstr "Lülita automaatne esitus sisse"
 
-#: internal/ui/components/sidebar/lyrics/lyrics.go:364
+#: internal/ui/components/sidebar/lyrics/lyrics.go:53
 msgid "Error Fetching Lyrics"
 msgstr ""
 
@@ -420,6 +420,10 @@ msgstr "ListenBrainzi API tunnusluba"
 #: internal/ui/window_preferences.go:129
 msgid "ListenBrainz API URL"
 msgstr "ListenBrainzi API võrguaadress"
+
+#: internal/ui/components/sidebar/lyrics/lyrics.go:55
+msgid "Loading Lyrics"
+msgstr ""
 
 #: internal/ui/window_preferences.go:144
 msgid "Log in to Last.fm"
@@ -541,11 +545,11 @@ msgstr "Järgmine"
 msgid "No Artist"
 msgstr "Esitajat pole"
 
-#: internal/ui/components/sidebar/lyrics/lyrics.go:375
+#: internal/ui/components/sidebar/lyrics/lyrics.go:57
 msgid "No Lyrics Available"
 msgstr ""
 
-#: internal/ui/components/sidebar/lyrics/lyrics.go:349
+#: internal/ui/components/sidebar/lyrics/lyrics.go:51
 msgid "No Song Currently Playing"
 msgstr ""
 
@@ -556,10 +560,6 @@ msgstr "Lugu pole"
 #: internal/ui/components/sidebar/queue/queue.go:40
 msgid "No Tracks in Queue"
 msgstr ""
-
-#: internal/ui/components/sidebar/lyrics/lyrics.go:41
-msgid "No lyrics available"
-msgstr "Laulusõnu pole saadaval"
 
 #: internal/ui/components/sidebar/player/component_action_row.go:230
 msgid "No mix found for the current track"
@@ -812,9 +812,9 @@ msgstr ""
 "Lugude, esitajate, albumite ja esitusloendite otsimiseks kirjuta midagi "
 "otsinguribale."
 
-#: internal/ui/components/sidebar/lyrics/lyrics.go:415
-msgid "Sync with track"
-msgstr "Sünkrooni looga"
+#: internal/ui/components/sidebar/lyrics/lyrics_view.go:42
+msgid "Sync with Track"
+msgstr ""
 
 #: internal/router/handler_notfound.go:13
 msgid "The requested deeplink did not have any available handlers."
@@ -916,6 +916,12 @@ msgstr ""
 #: internal/ui/window_about.go:132
 msgid "translator-credits"
 msgstr "Priit Jõerüüt 2026"
+
+#~ msgid "No lyrics available"
+#~ msgstr "Laulusõnu pole saadaval"
+
+#~ msgid "Sync with track"
+#~ msgstr "Sünkrooni looga"
 
 #~ msgid "Error fetching lyrics"
 #~ msgstr "Viga laulusõnade laadimisel"

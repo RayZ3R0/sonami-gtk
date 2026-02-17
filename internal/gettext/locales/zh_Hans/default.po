@@ -337,7 +337,7 @@ msgstr ""
 msgid "Enable autoplay"
 msgstr "启用自动播放"
 
-#: internal/ui/components/sidebar/lyrics/lyrics.go:364
+#: internal/ui/components/sidebar/lyrics/lyrics.go:53
 msgid "Error Fetching Lyrics"
 msgstr ""
 
@@ -404,6 +404,10 @@ msgstr "ListenBrainz API 令牌"
 #: internal/ui/window_preferences.go:129
 msgid "ListenBrainz API URL"
 msgstr "ListenBrainz API URL"
+
+#: internal/ui/components/sidebar/lyrics/lyrics.go:55
+msgid "Loading Lyrics"
+msgstr ""
 
 #: internal/ui/window_preferences.go:144
 msgid "Log in to Last.fm"
@@ -525,11 +529,11 @@ msgstr "下一首"
 msgid "No Artist"
 msgstr "无艺术家"
 
-#: internal/ui/components/sidebar/lyrics/lyrics.go:375
+#: internal/ui/components/sidebar/lyrics/lyrics.go:57
 msgid "No Lyrics Available"
 msgstr ""
 
-#: internal/ui/components/sidebar/lyrics/lyrics.go:349
+#: internal/ui/components/sidebar/lyrics/lyrics.go:51
 msgid "No Song Currently Playing"
 msgstr ""
 
@@ -540,10 +544,6 @@ msgstr "无曲目"
 #: internal/ui/components/sidebar/queue/queue.go:40
 msgid "No Tracks in Queue"
 msgstr ""
-
-#: internal/ui/components/sidebar/lyrics/lyrics.go:41
-msgid "No lyrics available"
-msgstr "暂无歌词"
 
 #: internal/ui/components/sidebar/player/component_action_row.go:230
 msgid "No mix found for the current track"
@@ -790,9 +790,9 @@ msgid ""
 "playlists."
 msgstr "在搜索栏中输入以搜索歌曲、艺术家、专辑或播放列表。"
 
-#: internal/ui/components/sidebar/lyrics/lyrics.go:415
-msgid "Sync with track"
-msgstr "与曲目同步"
+#: internal/ui/components/sidebar/lyrics/lyrics_view.go:42
+msgid "Sync with Track"
+msgstr ""
 
 #: internal/router/handler_notfound.go:13
 msgid "The requested deeplink did not have any available handlers."
@@ -890,6 +890,12 @@ msgstr ""
 #: internal/ui/window_about.go:132
 msgid "translator-credits"
 msgstr "Poesty Li"
+
+#~ msgid "No lyrics available"
+#~ msgstr "暂无歌词"
+
+#~ msgid "Sync with track"
+#~ msgstr "与曲目同步"
 
 #~ msgid "Error fetching lyrics"
 #~ msgstr "获取歌词时出错"

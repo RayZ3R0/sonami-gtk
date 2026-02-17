@@ -333,7 +333,7 @@ msgstr ""
 msgid "Enable autoplay"
 msgstr ""
 
-#: internal/ui/components/sidebar/lyrics/lyrics.go:364
+#: internal/ui/components/sidebar/lyrics/lyrics.go:53
 msgid "Error Fetching Lyrics"
 msgstr ""
 
@@ -399,6 +399,10 @@ msgstr ""
 
 #: internal/ui/window_preferences.go:129
 msgid "ListenBrainz API URL"
+msgstr ""
+
+#: internal/ui/components/sidebar/lyrics/lyrics.go:55
+msgid "Loading Lyrics"
 msgstr ""
 
 #: internal/ui/window_preferences.go:144
@@ -521,11 +525,11 @@ msgstr ""
 msgid "No Artist"
 msgstr ""
 
-#: internal/ui/components/sidebar/lyrics/lyrics.go:375
+#: internal/ui/components/sidebar/lyrics/lyrics.go:57
 msgid "No Lyrics Available"
 msgstr ""
 
-#: internal/ui/components/sidebar/lyrics/lyrics.go:349
+#: internal/ui/components/sidebar/lyrics/lyrics.go:51
 msgid "No Song Currently Playing"
 msgstr ""
 
@@ -535,10 +539,6 @@ msgstr ""
 
 #: internal/ui/components/sidebar/queue/queue.go:40
 msgid "No Tracks in Queue"
-msgstr ""
-
-#: internal/ui/components/sidebar/lyrics/lyrics.go:41
-msgid "No lyrics available"
 msgstr ""
 
 #: internal/ui/components/sidebar/player/component_action_row.go:230
@@ -781,8 +781,8 @@ msgid ""
 "playlists."
 msgstr ""
 
-#: internal/ui/components/sidebar/lyrics/lyrics.go:415
-msgid "Sync with track"
+#: internal/ui/components/sidebar/lyrics/lyrics_view.go:42
+msgid "Sync with Track"
 msgstr ""
 
 #: internal/router/handler_notfound.go:13

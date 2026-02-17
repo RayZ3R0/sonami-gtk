@@ -357,7 +357,7 @@ msgstr ""
 msgid "Enable autoplay"
 msgstr "Activer la lecture automatique"
 
-#: internal/ui/components/sidebar/lyrics/lyrics.go:364
+#: internal/ui/components/sidebar/lyrics/lyrics.go:53
 msgid "Error Fetching Lyrics"
 msgstr ""
 
@@ -424,6 +424,10 @@ msgstr "Clé d'API ListenBrainz"
 #: internal/ui/window_preferences.go:129
 msgid "ListenBrainz API URL"
 msgstr "URL d'API ListenBrainz"
+
+#: internal/ui/components/sidebar/lyrics/lyrics.go:55
+msgid "Loading Lyrics"
+msgstr ""
 
 #: internal/ui/window_preferences.go:144
 msgid "Log in to Last.fm"
@@ -546,11 +550,11 @@ msgstr "Suivant"
 msgid "No Artist"
 msgstr "Pas d'Artiste"
 
-#: internal/ui/components/sidebar/lyrics/lyrics.go:375
+#: internal/ui/components/sidebar/lyrics/lyrics.go:57
 msgid "No Lyrics Available"
 msgstr ""
 
-#: internal/ui/components/sidebar/lyrics/lyrics.go:349
+#: internal/ui/components/sidebar/lyrics/lyrics.go:51
 msgid "No Song Currently Playing"
 msgstr ""
 
@@ -561,10 +565,6 @@ msgstr "Pas de Morceau"
 #: internal/ui/components/sidebar/queue/queue.go:40
 msgid "No Tracks in Queue"
 msgstr ""
-
-#: internal/ui/components/sidebar/lyrics/lyrics.go:41
-msgid "No lyrics available"
-msgstr "Pas de paroles disponibles"
 
 #: internal/ui/components/sidebar/player/component_action_row.go:230
 msgid "No mix found for the current track"
@@ -817,9 +817,9 @@ msgstr ""
 "Commencer à écrire dans la barre de recherche pour chercher des musiques, "
 "artistes, albums ou listes de lecture."
 
-#: internal/ui/components/sidebar/lyrics/lyrics.go:415
-msgid "Sync with track"
-msgstr "Synchroniser avec le morceau"
+#: internal/ui/components/sidebar/lyrics/lyrics_view.go:42
+msgid "Sync with Track"
+msgstr ""
 
 #: internal/router/handler_notfound.go:13
 msgid "The requested deeplink did not have any available handlers."
@@ -923,6 +923,12 @@ msgstr ""
 #: internal/ui/window_about.go:132
 msgid "translator-credits"
 msgstr "Dråfølin Nattfløyen https://github.com/drafolin"
+
+#~ msgid "No lyrics available"
+#~ msgstr "Pas de paroles disponibles"
+
+#~ msgid "Sync with track"
+#~ msgstr "Synchroniser avec le morceau"
 
 #~ msgid "Error fetching lyrics"
 #~ msgstr "Erreur pendant la récupération des paroles"
