@@ -67,13 +67,13 @@ func playPreviousTrack() {
 	ok, position := playbin.QueryPosition(gst.FormatTime)
 	if ok && time.Duration(position) > 5*time.Second {
 		logger.Debug("above the 5 second mark, replaying song", "action", "previous")
-		SeekToPosition(0)
+		SeekToPosition(0, false)
 		return
 	}
 
 	if len(history.Entries.CurrentValue()) < 1 {
 		logger.Debug("no history entries, replaying song", "action", "previous")
-		SeekToPosition(0)
+		SeekToPosition(0, false)
 		return
 	}
 

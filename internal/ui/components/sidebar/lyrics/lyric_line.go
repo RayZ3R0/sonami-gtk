@@ -51,7 +51,7 @@ func lyricLine(text string, timing *lyricTiming) schwifty.Button {
 			}).
 			ConnectClicked(func(gtk.Button) {
 				userManuallyScrolled.SetValue(false)
-				player.SeekToPosition(timing.timeStart)
+				player.SeekToPosition(timing.timeStart, true)
 			})
 	}
 

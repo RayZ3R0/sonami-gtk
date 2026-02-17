@@ -3,6 +3,7 @@ package player
 import (
 	"fmt"
 	"os"
+	"time"
 
 	"codeberg.org/dergs/tonearm/internal/g"
 	"codeberg.org/dergs/tonearm/internal/signals"
@@ -41,7 +42,7 @@ var mprisServer = g.Lazy(func() *mpris.Server {
 		}
 	})
 	mprisServer.OnSeek(SeekToPositionRelative)
-	mprisServer.OnSetPosition(SeekToPosition)
+	mprisServer.OnSetPosition(func(position time.Duration) { SeekToPosition(position, false) })
 	mprisServer.OnVolumeChanged(func(newVal float64) {
 		SetVolume(newVal)
 	})
