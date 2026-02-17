@@ -8,6 +8,7 @@ import (
 	"codeberg.org/dergs/tonearm/pkg/utils/imgutil"
 	"github.com/infinytum/injector"
 	"github.com/jwijenbergh/puregotk/v4/gtk"
+	"github.com/jwijenbergh/puregotk/v4/pango"
 )
 
 func NewShortcut(title string, subtitle string, coverUrl string) schwifty.Button {
@@ -15,8 +16,8 @@ func NewShortcut(title string, subtitle string, coverUrl string) schwifty.Button
 		Child(
 			HStack(
 				VStack(
-					Label(title).HAlign(gtk.AlignStartValue).WithCSSClass("heading"),
-					Label(subtitle).HAlign(gtk.AlignStartValue).Visible(subtitle != "").FontWeight(500).WithCSSClass("dimmed"),
+					Label(title).HAlign(gtk.AlignStartValue).WithCSSClass("heading").Ellipsis(pango.EllipsizeEndValue),
+					Label(subtitle).HAlign(gtk.AlignStartValue).Visible(subtitle != "").FontWeight(500).WithCSSClass("dimmed").Ellipsis(pango.EllipsizeEndValue),
 				).HAlign(gtk.AlignStartValue).VAlign(gtk.AlignCenterValue).HExpand(true),
 				AspectFrame(
 					Image().
@@ -40,8 +41,8 @@ func NewTextShortcut(title string, subtitle string) schwifty.Button {
 		Child(
 			HStack(
 				VStack(
-					Label(title).HAlign(gtk.AlignCenterValue).WithCSSClass("heading"),
-					Label(subtitle).HAlign(gtk.AlignCenterValue).Visible(subtitle != "").FontWeight(500).WithCSSClass("dimmed"),
+					Label(title).HAlign(gtk.AlignCenterValue).WithCSSClass("heading").Ellipsis(pango.EllipsizeEndValue),
+					Label(subtitle).HAlign(gtk.AlignCenterValue).Visible(subtitle != "").FontWeight(500).WithCSSClass("dimmed").Ellipsis(pango.EllipsizeEndValue),
 				).HAlign(gtk.AlignCenterValue).VAlign(gtk.AlignCenterValue).HExpand(true),
 			),
 		).
