@@ -121,7 +121,11 @@ menubutton.transparent button:not(:hover):not(.active) {
 .tracklist {
     background-color: transparent;
 
-    grid.playing {
+    row {
+        border-radius: 10px;
+    }
+
+    box.playing {
         color: var(--accent-color);
         background-color: gtk-alpha(var(--accent-color), 0.1);
         border-radius: 10px;

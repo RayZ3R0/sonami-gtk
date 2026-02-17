@@ -15,15 +15,15 @@ import (
 
 func NewPaginatedTracklistPage(
 	paginator tonearm.Paginator[tonearm.Track],
-	factory func() *tracklist.TrackList,
 	styleFactory func(*tracklist.TrackList) schwifty.BaseWidgetable,
+	columns ...tracklist.ColumnFunc,
 ) (schwifty.ScrolledWindow, error) {
 	firstPage, err := paginator.NextPage()
 	if err != nil {
 		return nil, err
 	}
 
-	list := factory()
+	list := tracklist.NewTrackList(columns...)
 	for _, track := range firstPage {
 		list.AddTrack(track)
 	}

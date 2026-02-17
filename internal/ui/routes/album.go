@@ -82,26 +82,17 @@ func Album(albumId string) *router.Response {
 			ActionTargetValue(glib.NewVariantString(artist.ID()))()
 	}
 
-	page, err := pages.NewPaginatedTracklistPage(
-		trackPaginator,
-		func() *tracklist.TrackList {
-			return tracklist.NewTrackList(
-				tracklist.GroupedColumn(2, gtk.AlignStartValue, tracklist.PositionColumn, tracklist.TitleColumn),
-				tracklist.ArtistsColumn,
-				tracklist.ExpandCustomButtonColumn(1, func(trackId string, position, _ int) {
-					go func() {
-						if err := player.PlayAlbum(albumId, false, position); err != nil {
-							notifications.OnToast.Notify(gettext.Get("An error occurred while playing the track"))
-							albumLogger.Error("An error occurred while playing the album", "error", err.Error())
-						}
-					}()
-				}),
-				tracklist.GroupedColumn(1, gtk.AlignEndValue, tracklist.DurationColumn, tracklist.ControlsColumn),
-			)
-		}, func(tl *tracklist.TrackList) schwifty.BaseWidgetable {
-			return tl.HMargin(30).VAlign(gtk.AlignStartValue)
-		},
-	)
+	page, err := pages.NewPaginatedTracklistPage(trackPaginator, func(tl *tracklist.TrackList) schwifty.BaseWidgetable {
+		tl.SetClickHandler(func(track tonearm.Track, position int) {
+			go func() {
+				if err := player.PlayAlbum(albumId, false, position); err != nil {
+					notifications.OnToast.Notify(gettext.Get("An error occurred while playing the track"))
+					albumLogger.Error("An error occurred while playing the album", "error", err.Error())
+				}
+			}()
+		})
+		return tl.HMargin(30).VAlign(gtk.AlignStartValue)
+	}, tracklist.PositionColumn, tracklist.TitleColumn, tracklist.ArtistsColumn, tracklist.DurationColumn, tracklist.ControlsColumn)
 
 	if err != nil {
 		return router.FromError(album.Title(), err)

@@ -9,6 +9,7 @@ import (
 	"codeberg.org/dergs/tonearm/pkg/schwifty/state"
 	. "codeberg.org/dergs/tonearm/pkg/schwifty/syntax"
 	"github.com/jwijenbergh/puregotk/v4/gtk"
+	"github.com/jwijenbergh/puregotk/v4/pango"
 )
 
 type HorizontalList struct {
@@ -78,7 +79,8 @@ func NewHorizontalList(title string) *HorizontalList {
 				HStack(
 					Label(title).
 						WithCSSClass("title-2").
-						VAlign(gtk.AlignCenterValue),
+						VAlign(gtk.AlignCenterValue).
+						Ellipsis(pango.EllipsizeEndValue),
 					Spacer().VExpand(false),
 					HStack(
 						CenterBox().BindCenterWidget(routeButtonState).HExpand(false).VExpand(false),

@@ -90,7 +90,7 @@ func onCommandLine(app gio.Application, ptr uintptr) int {
 	if len(args) == 2 {
 		url := args[1]
 		if after, ok := strings.CutPrefix(url, "tidal://track/"); ok {
-			player.PlayTrack(after)
+			player.PlayTrackID(after)
 		} else {
 			router.Navigate(url)
 		}

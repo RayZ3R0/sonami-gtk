@@ -82,7 +82,7 @@ func (w *Window) installActions() {
 	playTrackAction.ConnectActivate(new(func(action gio.SimpleAction, parameter uintptr) {
 		variant := (*glib.Variant)(unsafe.Pointer(parameter))
 		id := variant.GetString(nil)
-		go player.PlayTrack(id)
+		go player.PlayTrackID(id)
 	}))
 	w.AddAction(playTrackAction)
 

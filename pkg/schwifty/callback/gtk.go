@@ -77,4 +77,8 @@ var (
 		}
 		return false
 	}
+
+	ListViewActivate = func(listView gtk.ListView, index uint) {
+		CallbackHandler[any](listView.Object, "activate", listView, index)
+	}
 )
