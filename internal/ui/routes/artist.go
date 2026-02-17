@@ -44,7 +44,7 @@ func Artist(artistId string) *router.Response {
 	}
 
 	playControlsMenu := gio.NewMenu()
-	queueAllItem := gio.NewMenuItem(gettext.Get("Add top tracks to queue"), "win.player.queue")
+	queueAllItem := gio.NewMenuItem(gettext.Get("Add Top Tracks to Queue"), "win.player.queue")
 	queueAllItem.SetActionAndTargetValue("win.player.queue", glib.NewVariantString(fmt.Sprintf("artist/%s", artistId)))
 	playControlsMenu.AppendItem(queueAllItem)
 	playControlsPopover := gtk.NewPopoverMenuFromModel(&playControlsMenu.MenuModel)
@@ -135,7 +135,7 @@ func Artist(artistId string) *router.Response {
 									defer clipboard.Unref()
 
 									clipboard.SetText(fmt.Sprintf("https://tidal.com/artist/%s", artistId))
-									notifications.OnToast.Notify(gettext.Get("Copied artist URL to clipboard."))
+									notifications.OnToast.Notify(gettext.Get("Copied artist URL to clipboard"))
 								}),
 						).
 							Spacing(10).

@@ -84,7 +84,7 @@ func Playlist(playlistID string) *router.Response {
 	}, tracklist.CoverColumn, tracklist.TitleAlbumColumn, tracklist.ArtistsColumn, tracklist.DurationColumn, tracklist.ControlsColumn)
 
 	playControlsMenu := gio.NewMenu()
-	queueAllItem := gio.NewMenuItem(gettext.Get("Add playlist to queue"), "win.player.queue")
+	queueAllItem := gio.NewMenuItem(gettext.Get("Add Playlist to Queue"), "win.player.queue")
 	queueAllItem.SetActionAndTargetValue("win.player.queue", glib.NewVariantString(fmt.Sprintf("playlist/%s", playlistID)))
 	playControlsMenu.AppendItem(queueAllItem)
 	playControlsPopover := gtk.NewPopoverMenuFromModel(&playControlsMenu.MenuModel)
@@ -179,7 +179,7 @@ func Playlist(playlistID string) *router.Response {
 									defer clipboard.Unref()
 
 									clipboard.SetText(playlist.URL())
-									notifications.OnToast.Notify(gettext.Get("Copied playlist URL to clipboard."))
+									notifications.OnToast.Notify(gettext.Get("Copied playlist URL to clipboard"))
 								}),
 						).
 							Spacing(10).

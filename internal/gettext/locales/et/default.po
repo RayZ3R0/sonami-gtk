@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: v1.1.0-99-ga37b2fb\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-02-17 15:42+0100\n"
+"POT-Creation-Date: 2026-02-17 19:04+0100\n"
 "PO-Revision-Date: 2026-02-10 09:16+0000\n"
 "Last-Translator: Priit Jõerüüt <jrtcdbrg@noreply.codeberg.org>\n"
 "Language-Team: Estonian <https://translate.codeberg.org/projects/tonearm/"
@@ -31,7 +31,7 @@ msgid_plural "%d Tracks"
 msgstr[0] "%d lugu"
 msgstr[1] "%d lugu"
 
-#: internal/ui/routes/album.go:145
+#: internal/ui/routes/album.go:136
 msgid "%d Track (%s)"
 msgid_plural "%d Tracks (%s)"
 msgstr[0] "%d lugu (%s)"
@@ -45,16 +45,20 @@ msgstr "%s ja %s"
 msgid "About Tonearm"
 msgstr "Rakenduse teave: Tonearm"
 
-#: internal/ui/routes/album.go:111
+#: internal/ui/routes/album.go:102
 msgid "Add Album to Queue"
 msgstr ""
 
-#: internal/ui/routes/my_collection/tracks.go:61
+#: internal/ui/routes/my_collection/tracks.go:54
 msgid "Add My Tracks to Queue"
 msgstr ""
 
-#: internal/ui/routes/playlist.go:96
-msgid "Add playlist to queue"
+#: internal/ui/routes/playlist.go:87
+msgid "Add Playlist to Queue"
+msgstr ""
+
+#: internal/ui/routes/artist.go:47
+msgid "Add Top Tracks to Queue"
 msgstr ""
 
 #: internal/ui/components/favourite_button/favourite_button.go:54
@@ -64,10 +68,6 @@ msgstr "Lisa kogusse"
 #: internal/ui/components/tracklist/column_controls.go:54
 msgid "Add to Queue"
 msgstr "Lisa esitusjärjekorda"
-
-#: internal/ui/routes/artist.go:47
-msgid "Add top tracks to queue"
-msgstr ""
 
 #: internal/settings/playback.go:21
 msgid "Album"
@@ -94,16 +94,16 @@ msgid "Allow Shortcut Images"
 msgstr "Näita pilte otseviidetel"
 
 #: internal/ui/window_preferences.go:85
-msgid "Allow Tonearm to load images for media card buttons."
-msgstr "Luba Tonearmil laadida pilte infovaadete nuppudel."
+msgid "Allow Tonearm to load images for media card buttons"
+msgstr "Luba Tonearmil laadida pilte infovaadete nuppudel"
 
 #: internal/ui/window_preferences.go:91
-msgid "Allow Tonearm to load images for shortcut buttons."
-msgstr "Luba Tonearmil laadida pilte otseviidete nuppudel."
+msgid "Allow Tonearm to load images for shortcut buttons"
+msgstr "Luba Tonearmil laadida pilte otseviidete nuppudel"
 
 #: internal/ui/window_preferences.go:97
-msgid "Allow Tonearm to load images for tracklists with the cover column."
-msgstr "Luba Tonearmil laadida kaanepilte loendivaadete esimeses veerus."
+msgid "Allow Tonearm to load images for tracklists with the cover column"
+msgstr "Luba Tonearmil laadida kaanepilte loendivaadete esimeses veerus"
 
 #: internal/ui/window_preferences.go:25
 msgid ""
@@ -136,28 +136,26 @@ msgstr ""
 #: internal/ui/window_preferences.go:103
 msgid ""
 "Allow Tonearm to temporarily store images on the file system to improve "
-"performance and reduce network traffic."
+"performance and reduce network traffic"
 msgstr ""
-"Tagamaks paremat jõudlust ja vähendamaks võrguliiklust luba Tonearmil "
-"ajutiselt salvestada pilte sinu seadme andmekandhjale."
 
 #: internal/ui/window_preferences.go:96
 msgid "Allow Tracklist Images"
 msgstr "Näita pilte loendivaadetes"
 
 #: internal/ui/window_preferences.go:235
-msgid "An error occured while logging in to Last.fm."
-msgstr "Last.fm-i teenusesse sisselogimisel tekkis viga."
+msgid "An error occurred while logging in to Last.fm"
+msgstr "Last.fm-i teenusesse sisselogimisel tekkis viga"
 
 #: internal/ui/window_preferences.go:210
-msgid "An error occured while logging out of Last.fm."
-msgstr "Last.fm-i teenusest väljalogimisel tekkis viga."
+msgid "An error occurred while logging out of Last.fm"
+msgstr "Last.fm-i teenusest väljalogimisel tekkis viga"
 
-#: internal/ui/routes/album.go:162
+#: internal/ui/routes/album.go:153
 msgid "An error occurred while playing the album"
 msgstr "Albumi esitamisel tekkis viga"
 
-#: internal/ui/routes/playlist.go:147
+#: internal/ui/routes/playlist.go:138
 msgid "An error occurred while playing the playlist"
 msgstr "Esitusloendi esitamisel tekkis viga"
 
@@ -165,15 +163,15 @@ msgstr "Esitusloendi esitamisel tekkis viga"
 msgid "An error occurred while playing the top tracks"
 msgstr "Populaarsete lugude esitamisel tekkis viga"
 
-#: internal/ui/routes/album.go:94
+#: internal/ui/routes/album.go:89
 msgid "An error occurred while playing the track"
 msgstr "Loo esitamisel tekkis viga"
 
-#: internal/ui/routes/my_collection/tracks.go:112
+#: internal/ui/routes/my_collection/tracks.go:105
 msgid "An error occurred while playing the tracks"
 msgstr ""
 
-#: internal/ui/routes/my_collection/tracks.go:92
+#: internal/ui/routes/my_collection/tracks.go:85
 msgid "An error occurred while shuffling the tracks"
 msgstr ""
 
@@ -250,28 +248,28 @@ msgid "Collection"
 msgstr "Kogu"
 
 #: internal/ui/window_preferences.go:264
-msgid "Configure Tonearm to send scrobbling data to Last.fm."
-msgstr "Seadista Tonearm saatma kraasimisandmed Last.fm-i."
+msgid "Configure Tonearm to send scrobbling data to Last.fm"
+msgstr "Seadista Tonearm saatma kraasimisandmed Last.fm-i"
 
 #: internal/ui/window_preferences.go:135
-msgid "Configure Tonearm to send scrobbling data to ListenBrainz."
-msgstr "Seadista Tonearm saatma kraasimisandmed ListenBrainzi."
+msgid "Configure Tonearm to send scrobbling data to ListenBrainz"
+msgstr "Seadista Tonearm saatma kraasimisandmed ListenBrainzi"
 
 #: internal/ui/window_preferences.go:107
-msgid "Configure the behaviour of Tonearm regarding images."
-msgstr "Seadista viis, kuidas Tonearm käsitleb pilte."
+msgid "Configure the behaviour of Tonearm regarding images"
+msgstr "Seadista viis, kuidas Tonearm käsitleb pilte"
 
 #: internal/ui/window_preferences.go:76
-msgid "Configure the behaviour of Tonearm regarding playback."
-msgstr "Käsitle taasesituse toimimist Tonearmis."
+msgid "Configure the behaviour of Tonearm regarding playback"
+msgstr "Käsitle taasesituse toimimist Tonearmis"
 
 #: internal/ui/window_preferences.go:49
-msgid "Configure the behaviour of Tonearm when navigating between pages."
-msgstr "Tonearmi toimimine lehtede vahel liikudes."
+msgid "Configure the behaviour of Tonearm when navigating between pages"
+msgstr "Tonearmi toimimine lehtede vahel liikudes"
 
 #: internal/ui/window_preferences.go:31
-msgid "Configure the behaviour of Tonearm when running in the background."
-msgstr "Tonearmi toimimine töötades taustal."
+msgid "Configure the behaviour of Tonearm when running in the background"
+msgstr "Tonearmi toimimine töötades taustal"
 
 #: internal/ui/window_popups.go:28
 msgid "Continue"
@@ -281,23 +279,23 @@ msgstr "Jätka"
 msgid "Continue the authentication process in your browser."
 msgstr "Jätka autentimist oma veebibrauseris."
 
-#: internal/ui/routes/album.go:204
-msgid "Copied album URL to clipboard."
-msgstr "Albumi võrguaadress on kopeeritud lõikelauale."
+#: internal/ui/routes/album.go:195
+msgid "Copied album URL to clipboard"
+msgstr "Albumi võrguaadress on kopeeritud lõikelauale"
 
 #: internal/ui/routes/artist.go:138
-msgid "Copied artist URL to clipboard."
-msgstr "Esitaja võrguaadress on kopeeritud lõikelauale."
+msgid "Copied artist URL to clipboard"
+msgstr "Esitaja võrguaadress on kopeeritud lõikelauale"
 
-#: internal/ui/routes/playlist.go:191
-msgid "Copied playlist URL to clipboard."
-msgstr "Esitusloendi võrguaadress on kopeeritud lõikelauale."
+#: internal/ui/routes/playlist.go:182
+msgid "Copied playlist URL to clipboard"
+msgstr "Esitusloendi võrguaadress on kopeeritud lõikelauale"
 
-#: internal/ui/components/sidebar/player/component_action_row.go:251
-msgid "Copied track URL to clipboard."
-msgstr "Loo võrguaadress on kopeeritud lõikelauale."
+#: internal/ui/components/sidebar/player/component_action_row.go:250
+msgid "Copied track URL to clipboard"
+msgstr "Loo võrguaadress on kopeeritud lõikelauale"
 
-#: internal/ui/routes/album.go:194
+#: internal/ui/routes/album.go:185
 msgid "Copy Album URL"
 msgstr "Kopeeri albmi võrguaadress"
 
@@ -305,11 +303,11 @@ msgstr "Kopeeri albmi võrguaadress"
 msgid "Copy Artist URL"
 msgstr "Kopeeri esitaja võrguaadress"
 
-#: internal/ui/routes/playlist.go:181
+#: internal/ui/routes/playlist.go:172
 msgid "Copy Playlist URL"
 msgstr "Kopeeri esitusloendi võrguaadress"
 
-#: internal/ui/components/sidebar/player/component_action_row.go:240
+#: internal/ui/components/sidebar/player/component_action_row.go:239
 msgid "Copy Track URL"
 msgstr "Kopeeri loo võrguaadress"
 
@@ -329,13 +327,13 @@ msgstr ""
 msgid "Don't show again"
 msgstr "Ära näita enam uuesti"
 
-#: internal/ui/routes/search.go:33
-msgid "E.g. Fox Stevenson"
-msgstr "Näiteks Gary Moore"
-
 #: internal/ui/routes/feed.go:155
 msgid "EP by %s"
 msgstr "EP esitajalt %s"
+
+#: internal/ui/window_preferences.go:57
+msgid "Enable Autoplay"
+msgstr ""
 
 #: internal/ui/window_preferences.go:138
 msgid "Enable Last.fm"
@@ -349,11 +347,7 @@ msgstr "Kasuta ListenBrainzi"
 msgid "Enable Shuffle"
 msgstr ""
 
-#: internal/ui/window_preferences.go:57
-msgid "Enable autoplay"
-msgstr "Lülita automaatne esitus sisse"
-
-#: internal/ui/components/sidebar/lyrics/lyrics.go:53
+#: internal/ui/components/sidebar/lyrics/lyrics.go:51
 msgid "Error Fetching Lyrics"
 msgstr ""
 
@@ -372,6 +366,10 @@ msgstr "Väline link"
 #: internal/ui/routes/feed.go:99
 msgid "Feed"
 msgstr "Meediavoog"
+
+#: internal/ui/routes/search.go:33
+msgid "For example, Fox Stevenson"
+msgstr "Näiteks Gary Moore"
 
 #: internal/ui/window_preferences.go:50
 msgid "General"
@@ -409,6 +407,10 @@ msgstr "Eelmisel kuul"
 msgid "Last Week"
 msgstr "Eelmisel nädalal"
 
+#: internal/ui/window_preferences.go:263
+msgid "Last.fm"
+msgstr ""
+
 #: internal/ui/window_preferences.go:134
 msgid "ListenBrainz"
 msgstr "ListenBrainz"
@@ -421,25 +423,25 @@ msgstr "ListenBrainzi API tunnusluba"
 msgid "ListenBrainz API URL"
 msgstr "ListenBrainzi API võrguaadress"
 
-#: internal/ui/components/sidebar/lyrics/lyrics.go:55
+#: internal/ui/components/sidebar/lyrics/lyrics.go:53
 msgid "Loading Lyrics"
 msgstr ""
 
 #: internal/ui/window_preferences.go:144
-msgid "Log in to Last.fm"
-msgstr "Logi Last.fm-i sisse"
+msgid "Log In to Last.fm…"
+msgstr "Logi Last.fm-i sisse…"
 
 #: internal/ui/window_preferences.go:153
-msgid "Log out of Last.fm"
+msgid "Log Out of Last.fm"
 msgstr "Logi Last.fm-ist välja"
 
 #: internal/ui/window_preferences.go:251
-msgid "Logged in to Last.fm as %s."
-msgstr "Oled Last.fm-i loginud sisse kasutajana %s."
+msgid "Logged in to Last.fm as %s"
+msgstr "Oled Last.fm-i loginud sisse kasutajana %s"
 
 #: internal/ui/window_preferences.go:221
-msgid "Logged out of Last.fm."
-msgstr "Oled Last.fm-ist välja loginud."
+msgid "Logged out of Last.fm"
+msgstr "Oled Last.fm-ist välja loginud"
 
 #: internal/features/scrobbling/lastfm.go:42
 msgid "Logging in to Last.fm"
@@ -466,10 +468,10 @@ msgid "Max"
 msgstr "Maksimaalne"
 
 #: internal/ui/window_preferences.go:43
-msgid "Maximum history length before dropping old entries."
-msgstr "Ajaloo pikkus, millest vanemad kirjed kustutatakse."
+msgid "Maximum history length before dropping old entries"
+msgstr "Ajaloo pikkus, millest vanemad kirjed kustutatakse"
 
-#: internal/ui/components/dynamic_v1.go:158
+#: internal/ui/components/dynamic_v1.go:157
 msgid "More"
 msgstr "Veel"
 
@@ -505,11 +507,11 @@ msgstr "Liigu tagasi"
 msgid "Navigate to %s"
 msgstr "Ava %s"
 
-#: internal/ui/components/sidebar/player/component_action_row.go:199
+#: internal/ui/components/sidebar/player/component_action_row.go:198
 msgid "Navigate to Album"
 msgstr "Vaata albumi teavet"
 
-#: internal/ui/components/sidebar/player/component_action_row.go:33
+#: internal/ui/components/sidebar/player/component_action_row.go:32
 msgid "Navigate to Artist"
 msgstr "Vaata esitaja teavet"
 
@@ -525,7 +527,7 @@ msgstr "Mine uurimisvaatesse"
 msgid "Navigate to Home"
 msgstr "Mine avalehele"
 
-#: internal/ui/components/sidebar/player/component_action_row.go:213
+#: internal/ui/components/sidebar/player/component_action_row.go:212
 msgid "Navigate to Track Mix"
 msgstr "Mine lugude juhuslikku loendisse"
 
@@ -545,11 +547,11 @@ msgstr "Järgmine"
 msgid "No Artist"
 msgstr "Esitajat pole"
 
-#: internal/ui/components/sidebar/lyrics/lyrics.go:57
+#: internal/ui/components/sidebar/lyrics/lyrics.go:55
 msgid "No Lyrics Available"
 msgstr ""
 
-#: internal/ui/components/sidebar/lyrics/lyrics.go:51
+#: internal/ui/components/sidebar/lyrics/lyrics.go:49
 msgid "No Song Currently Playing"
 msgstr ""
 
@@ -561,7 +563,7 @@ msgstr "Lugu pole"
 msgid "No Tracks in Queue"
 msgstr ""
 
-#: internal/ui/components/sidebar/player/component_action_row.go:230
+#: internal/ui/components/sidebar/player/component_action_row.go:229
 msgid "No mix found for the current track"
 msgstr "Antud loo jaoks pole lugude juhuslikku loendit saadaval"
 
@@ -583,8 +585,8 @@ msgstr ""
 "KDE Wallet."
 
 #: internal/ui/window_preferences.go:63
-msgid "Normalize volume"
-msgstr "Normaliseeri helivaljust"
+msgid "Normalize Volume"
+msgstr ""
 
 #: internal/router/handler_notfound.go:10
 msgid "Not Found"
@@ -622,15 +624,15 @@ msgstr ""
 msgid "Play / Pause"
 msgstr "Esita / peata"
 
-#: internal/ui/routes/album.go:169
+#: internal/ui/routes/album.go:160
 msgid "Play Album"
 msgstr "Kuula albumit"
 
-#: internal/ui/routes/my_collection/tracks.go:104
+#: internal/ui/routes/my_collection/tracks.go:97
 msgid "Play My Tracks"
 msgstr ""
 
-#: internal/ui/routes/playlist.go:154
+#: internal/ui/routes/playlist.go:145
 msgid "Play Playlist"
 msgstr "Kuula esitusloendit"
 
@@ -643,7 +645,7 @@ msgid "Playback"
 msgstr "Taasesitus"
 
 #: internal/ui/components/sidebar/player/component_track_timeline.go:73
-msgid "Playback quality saved. Changes will be applied on next track change."
+msgid "Playback quality saved. Changes will be applied on next track change"
 msgstr ""
 "Taasesituse kvaliteet on salvestatud. Muutused jõustuvad järgmise loo "
 "vahetumisel."
@@ -692,7 +694,7 @@ msgstr "Esitusjärjekord"
 msgid "Quit"
 msgstr "Välju"
 
-#: internal/ui/components/sidebar/queue/queue.go:83
+#: internal/ui/components/sidebar/queue/queue.go:79
 msgid "Remove Track from Queue"
 msgstr "Eemalda lugu esitusjärjekorrast"
 
@@ -713,19 +715,19 @@ msgid "Repeat Track"
 msgstr ""
 
 #: internal/ui/components/linking/linking.go:59
-msgid "Scan this QR code to sign into your TIDAL account."
-msgstr "Oma TIDAL-i kontoga sisselogimiseks skaneeri seda QR-koodi."
+msgid "Scan this QR code to sign into your TIDAL account"
+msgstr "Oma TIDAL-i kontoga sisselogimiseks skaneeri seda QR-koodi"
 
 #: internal/ui/window_preferences.go:265
 msgid "Scrobbling"
 msgstr "Kraasimine"
 
-#: internal/ui/components/horizontal_list/horizontal_list.go:65
-msgid "Scroll to the left"
+#: internal/ui/components/horizontal_list/horizontal_list.go:66
+msgid "Scroll to the Left"
 msgstr "Keri vasakule"
 
-#: internal/ui/components/horizontal_list/horizontal_list.go:54
-msgid "Scroll to the right"
+#: internal/ui/components/horizontal_list/horizontal_list.go:55
+msgid "Scroll to the Right"
 msgstr "Keri paremale"
 
 #: internal/ui/routes/search/albums.go:32
@@ -745,26 +747,26 @@ msgid "Secret Service Unavailable"
 msgstr "Salajane teenus pole saadaval"
 
 #: internal/ui/window_sidebar.go:30
-msgid "Set as default page"
-msgstr "Määra vaikimisi leheks"
+msgid "Set as Default Page"
+msgstr ""
 
 #: internal/ui/window_actions.go:333
 msgid "Set current page as default"
 msgstr "Määra see leht vaikimisi leheks"
 
 #: internal/ui/window_preferences.go:64
-msgid "Set the same volume for all tracks."
-msgstr "Määra kõikidele lugudele sama helivaljus."
+msgid "Set the same volume for all tracks"
+msgstr "Määra kõikidele lugudele sama helivaljus"
 
-#: internal/ui/routes/album.go:156
+#: internal/ui/routes/album.go:147
 msgid "Shuffle Album"
 msgstr "Sega album"
 
-#: internal/ui/routes/my_collection/tracks.go:85
+#: internal/ui/routes/my_collection/tracks.go:78
 msgid "Shuffle My Tracks"
 msgstr ""
 
-#: internal/ui/routes/playlist.go:140
+#: internal/ui/routes/playlist.go:131
 msgid "Shuffle Playlist"
 msgstr "Sega esitusloend"
 
@@ -807,12 +809,10 @@ msgstr "Singel esitajalt %s"
 #: internal/ui/routes/search/search.go:13
 msgid ""
 "Start typing in the search bar to search for songs, artists, albums or "
-"playlists."
+"playlists"
 msgstr ""
-"Lugude, esitajate, albumite ja esitusloendite otsimiseks kirjuta midagi "
-"otsinguribale."
 
-#: internal/ui/components/sidebar/lyrics/lyrics_view.go:42
+#: internal/ui/components/sidebar/lyrics/lyrics_view.go:63
 msgid "Sync with Track"
 msgstr ""
 
@@ -844,7 +844,7 @@ msgstr "Lugu"
 msgid "Track not available for streaming, skipping to next track"
 msgstr "Lugu pole voogedastuseks saadaval, lähen järgmise loo juurde"
 
-#: internal/ui/routes/my-collection.go:82
+#: internal/ui/routes/my-collection.go:81
 msgid "Tracks"
 msgstr "Lood"
 
@@ -868,29 +868,29 @@ msgstr "Tundmatu albumi tüüp"
 msgid "Unsupported activity"
 msgstr "Mittetoetatud tegevus"
 
-#: internal/ui/components/horizontal_list/horizontal_list.go:34
+#: internal/ui/components/horizontal_list/horizontal_list.go:35
 msgid "View All"
 msgstr "Vaata kõiki"
 
-#: internal/ui/components/sidebar/player/component_action_row.go:193
+#: internal/ui/components/sidebar/player/component_action_row.go:192
 msgid "Volume"
 msgstr "Helivaljus"
 
 #: internal/ui/window_preferences.go:145
-msgid "You are currently not logged in to Last.fm."
-msgstr "Sa hetkel pole Last.fm-i sisse loginud."
-
-#: internal/ui/window_preferences.go:160
-msgid "You are logged in to Last.fm as %s."
-msgstr "Sa oled Last.fm-i loginud sisse kasutajana %s."
+msgid "You are currently not logged in to Last.fm"
+msgstr "Sa hetkel pole Last.fm-i sisse loginud"
 
 #: internal/ui/window_preferences.go:157
-msgid "You are logged in to Last.fm."
-msgstr "Sa oled loginud sisse Last.fm-i."
+msgid "You are logged in to Last.fm"
+msgstr "Sa oled loginud sisse Last.fm-i"
+
+#: internal/ui/window_preferences.go:160
+msgid "You are logged in to Last.fm as %s"
+msgstr "Sa oled Last.fm-i loginud sisse kasutajana %s"
 
 #: internal/ui/components/linking/linking.go:29
-msgid "You can also open the linking page using the button below."
-msgstr "Võid ka järgnevast nupust avada linkimise lehe."
+msgid "You can also open the linking page using the button below"
+msgstr "Võid ka järgnevast nupust avada linkimise lehe"
 
 #: internal/secrets/service_linux.go:48
 msgid ""
@@ -916,6 +916,32 @@ msgstr ""
 #: internal/ui/window_about.go:132
 msgid "translator-credits"
 msgstr "Priit Jõerüüt 2026"
+
+#~ msgid ""
+#~ "Allow Tonearm to temporarily store images on the file system to improve "
+#~ "performance and reduce network traffic."
+#~ msgstr ""
+#~ "Tagamaks paremat jõudlust ja vähendamaks võrguliiklust luba Tonearmil "
+#~ "ajutiselt salvestada pilte sinu seadme andmekandhjale."
+
+#~ msgid "Enable autoplay"
+#~ msgstr "Lülita automaatne esitus sisse"
+
+#~ msgid "Normalize volume"
+#~ msgstr "Normaliseeri helivaljust"
+
+#~ msgid "Set as default page"
+#~ msgstr "Määra vaikimisi leheks"
+
+#~ msgid ""
+#~ "Start typing in the search bar to search for songs, artists, albums or "
+#~ "playlists."
+#~ msgstr ""
+#~ "Lugude, esitajate, albumite ja esitusloendite otsimiseks kirjuta midagi "
+#~ "otsinguribale."
+
+#~ msgid "Sync With Track"
+#~ msgstr "Sünkrooni looga"
 
 #~ msgid "No lyrics available"
 #~ msgstr "Laulusõnu pole saadaval"

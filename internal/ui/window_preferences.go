@@ -28,7 +28,7 @@ func buildPreferencesGeneral(dialog *adw.PreferencesDialog) adwbindings.Preferen
 				}),
 		).
 			Title(gettext.Get("Background Activity")).
-			Description(gettext.Get("Configure the behaviour of Tonearm when running in the background.")),
+			Description(gettext.Get("Configure the behaviour of Tonearm when running in the background")),
 		PreferencesGroup(
 			EntryRow().
 				Title(gettext.Get("Default Page")).
@@ -40,13 +40,13 @@ func buildPreferencesGeneral(dialog *adw.PreferencesDialog) adwbindings.Preferen
 				1,
 				0,
 			).Title(gettext.Get("History Length")).
-				Subtitle(gettext.Get("Maximum history length before dropping old entries.")).
+				Subtitle(gettext.Get("Maximum history length before dropping old entries")).
 				ConnectConstruct(func(sr *adw.SpinRow) {
 					settings.Performance().BindMaxRouterHistorySize(&sr.Object, "value")
 				}),
 		).
 			Title(gettext.Get("Navigation Behaviour")).
-			Description(gettext.Get("Configure the behaviour of Tonearm when navigating between pages.")),
+			Description(gettext.Get("Configure the behaviour of Tonearm when navigating between pages")),
 	).Title(gettext.Get("General")).IconName("settings-symbolic")
 }
 
@@ -54,14 +54,14 @@ func buildPreferencesPlayback(*adw.PreferencesDialog) adwbindings.PreferencesPag
 	return PreferencesPage(
 		PreferencesGroup(
 			SwitchRow().
-				Title(gettext.Get("Enable autoplay")).
+				Title(gettext.Get("Enable Autoplay")).
 				Subtitle(gettext.Get("Allow Tonearm to start a mix with the current playing song when you're at the end of an album/queue")).
 				ConnectConstruct(func(sr *adw.SwitchRow) {
 					settings.Playback().BindAllowAutoplay(&sr.Object, "active")
 				}),
 			SwitchRow().
-				Title(gettext.Get("Normalize volume")).
-				Subtitle(gettext.Get("Set the same volume for all tracks.")).
+				Title(gettext.Get("Normalize Volume")).
+				Subtitle(gettext.Get("Set the same volume for all tracks")).
 				ConnectConstruct(func(sr *adw.SwitchRow) {
 					settings.Playback().BindNormalizeVolume(&sr.Object, "active")
 				}),
@@ -73,7 +73,7 @@ func buildPreferencesPlayback(*adw.PreferencesDialog) adwbindings.PreferencesPag
 				ConnectSelectionChanged(func(a uint) {
 					settings.Playback().SetReplayGainMode(settings.ReplayGainMode(a))
 				}),
-		).Title(gettext.Get("Playback")).Description(gettext.Get("Configure the behaviour of Tonearm regarding playback.")),
+		).Title(gettext.Get("Playback")).Description(gettext.Get("Configure the behaviour of Tonearm regarding playback")),
 	).Title(gettext.Get("Playback")).IconName("media-playback-start-symbolic")
 }
 
@@ -82,29 +82,29 @@ func buildPreferencesPerformance(*adw.PreferencesDialog) adwbindings.Preferences
 		PreferencesGroup(
 			SwitchRow().
 				Title(gettext.Get("Allow Media Card Images")).
-				Subtitle(gettext.Get("Allow Tonearm to load images for media card buttons.")).
+				Subtitle(gettext.Get("Allow Tonearm to load images for media card buttons")).
 				ConnectConstruct(func(sr *adw.SwitchRow) {
 					settings.Performance().BindAllowMediaCardImages(&sr.Object, "active")
 				}),
 			SwitchRow().
 				Title(gettext.Get("Allow Shortcut Images")).
-				Subtitle(gettext.Get("Allow Tonearm to load images for shortcut buttons.")).
+				Subtitle(gettext.Get("Allow Tonearm to load images for shortcut buttons")).
 				ConnectConstruct(func(sr *adw.SwitchRow) {
 					settings.Performance().BindAllowShortcutImages(&sr.Object, "active")
 				}),
 			SwitchRow().
 				Title(gettext.Get("Allow Tracklist Images")).
-				Subtitle(gettext.Get("Allow Tonearm to load images for tracklists with the cover column.")).
+				Subtitle(gettext.Get("Allow Tonearm to load images for tracklists with the cover column")).
 				ConnectConstruct(func(sr *adw.SwitchRow) {
 					settings.Performance().BindAllowTracklistImages(&sr.Object, "active")
 				}),
 			SwitchRow().
 				Title(gettext.Get("Cache Images")).
-				Subtitle(gettext.Get("Allow Tonearm to temporarily store images on the file system to improve performance and reduce network traffic.")).
+				Subtitle(gettext.Get("Allow Tonearm to temporarily store images on the file system to improve performance and reduce network traffic")).
 				ConnectConstruct(func(sr *adw.SwitchRow) {
 					settings.Performance().BindCacheImages(&sr.Object, "active")
 				}),
-		).Title(gettext.Get("Images")).Description(gettext.Get("Configure the behaviour of Tonearm regarding images.")),
+		).Title(gettext.Get("Images")).Description(gettext.Get("Configure the behaviour of Tonearm regarding images")),
 	).Title(gettext.Get("Performance")).IconName("speedometer5-symbolic")
 }
 
@@ -132,7 +132,7 @@ func buildPreferencesScrobbling(dialog *adw.PreferencesDialog) adwbindings.Prefe
 				}),
 		).
 			Title(gettext.Get("ListenBrainz")).
-			Description(gettext.Get("Configure Tonearm to send scrobbling data to ListenBrainz.")),
+			Description(gettext.Get("Configure Tonearm to send scrobbling data to ListenBrainz")),
 		PreferencesGroup(
 			SwitchRow().
 				Title(gettext.Get("Enable Last.fm")).
@@ -141,8 +141,8 @@ func buildPreferencesScrobbling(dialog *adw.PreferencesDialog) adwbindings.Prefe
 					settings.Scrobbling().BindEnableLastFM(&sr.Object, "active")
 				}),
 			ActionRow().
-				Title(gettext.Get("Log in to Last.fm")).
-				Subtitle(gettext.Get("You are currently not logged in to Last.fm.")).
+				Title(gettext.Get("Log In to Last.fm…")).
+				Subtitle(gettext.Get("You are currently not logged in to Last.fm")).
 				ConnectConstruct(func(ar *adw.ActionRow) {
 					actionRowRef := tracking.NewWeakRef(ar)
 
@@ -150,14 +150,14 @@ func buildPreferencesScrobbling(dialog *adw.PreferencesDialog) adwbindings.Prefe
 						if b {
 							actionRowRef.Use(func(obj *gobject.Object) {
 								ar := adw.ActionRowNewFromInternalPtr(obj.Ptr)
-								ar.SetTitle(gettext.Get("Log out of Last.fm"))
+								ar.SetTitle(gettext.Get("Log Out of Last.fm"))
 
 								if user, err := scrobbling.LastFmScrobbler.Client.User.SelfInfo(); err != nil {
 									slog.Error("error while fetching Last.fm user", "error", err, "component", "window_preferences")
-									ar.SetSubtitle(gettext.Get("You are logged in to Last.fm."))
+									ar.SetSubtitle(gettext.Get("You are logged in to Last.fm"))
 								} else {
 									ar.SetSubtitle(fmt.Sprintf(
-										gettext.Get("You are logged in to Last.fm as %s."),
+										gettext.Get("You are logged in to Last.fm as %s"),
 										user.Name,
 									))
 								}
@@ -165,8 +165,8 @@ func buildPreferencesScrobbling(dialog *adw.PreferencesDialog) adwbindings.Prefe
 						} else {
 							actionRowRef.Use(func(obj *gobject.Object) {
 								ar := adw.ActionRowNewFromInternalPtr(obj.Ptr)
-								ar.SetTitle(gettext.Get("Log in to Last.fm"))
-								ar.SetSubtitle(gettext.Get("You are currently not logged in to Last.fm."))
+								ar.SetTitle(gettext.Get("Log In to Last.fm…"))
+								ar.SetSubtitle(gettext.Get("You are currently not logged in to Last.fm"))
 							})
 						}
 
@@ -207,7 +207,7 @@ func buildPreferencesScrobbling(dialog *adw.PreferencesDialog) adwbindings.Prefe
 											dialogRef.Use(func(obj *gobject.Object) {
 												dialog := adw.PreferencesDialogNewFromInternalPtr(obj.Ptr)
 
-												toast := adw.NewToast(gettext.Get("An error occured while logging out of Last.fm."))
+												toast := adw.NewToast(gettext.Get("An error occurred while logging out of Last.fm"))
 												toast.SetTimeout(3)
 												dialog.AddToast(toast)
 											})
@@ -218,7 +218,7 @@ func buildPreferencesScrobbling(dialog *adw.PreferencesDialog) adwbindings.Prefe
 											dialogRef.Use(func(obj *gobject.Object) {
 												dialog := adw.PreferencesDialogNewFromInternalPtr(obj.Ptr)
 
-												toast := adw.NewToast(gettext.Get("Logged out of Last.fm."))
+												toast := adw.NewToast(gettext.Get("Logged out of Last.fm"))
 												toast.SetTimeout(3)
 												dialog.AddToast(toast)
 											})
@@ -232,7 +232,7 @@ func buildPreferencesScrobbling(dialog *adw.PreferencesDialog) adwbindings.Prefe
 											dialogRef.Use(func(obj *gobject.Object) {
 												dialog := adw.PreferencesDialogNewFromInternalPtr(obj.Ptr)
 
-												toast := adw.NewToast(gettext.Get("An error occured while logging in to Last.fm."))
+												toast := adw.NewToast(gettext.Get("An error occurred while logging in to Last.fm"))
 												toast.SetTimeout(3)
 												dialog.AddToast(toast)
 											})
@@ -248,7 +248,7 @@ func buildPreferencesScrobbling(dialog *adw.PreferencesDialog) adwbindings.Prefe
 
 												dialog := adw.PreferencesDialogNewFromInternalPtr(obj.Ptr)
 
-												toast := adw.NewToast(fmt.Sprintf(gettext.Get("Logged in to Last.fm as %s."), user.Name))
+												toast := adw.NewToast(fmt.Sprintf(gettext.Get("Logged in to Last.fm as %s"), user.Name))
 												toast.SetTimeout(3)
 												dialog.AddToast(toast)
 											})
@@ -260,8 +260,8 @@ func buildPreferencesScrobbling(dialog *adw.PreferencesDialog) adwbindings.Prefe
 						VAlign(gtk.AlignCenterValue),
 				),
 		).
-			Title("Last.FM").
-			Description(gettext.Get("Configure Tonearm to send scrobbling data to Last.fm.")),
+			Title(gettext.Get("Last.fm")).
+			Description(gettext.Get("Configure Tonearm to send scrobbling data to Last.fm")),
 	).Title(gettext.Get("Scrobbling")).IconName("podcast-symbolic")
 }
 

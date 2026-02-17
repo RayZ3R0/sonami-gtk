@@ -26,7 +26,7 @@ var QRCode = Image().
 
 var Code = Label("D  E  R  G  S").WithCSSClass("title-1")
 
-var Helper = Label(gettext.Get("You can also open the linking page using the button below."))
+var Helper = Label(gettext.Get("You can also open the linking page using the button below"))
 
 type QRBuffer struct {
 	bytes.Buffer
@@ -56,7 +56,7 @@ func NewLinking(window *gtk.Window, code string, link string, cancel context.Can
 		slog.Error("could not create texture from bytes")
 	}
 
-	return AlertDialog(gettext.Get("Sign In"), gettext.Get("Scan this QR code to sign into your TIDAL account.")).
+	return AlertDialog(gettext.Get("Sign In"), gettext.Get("Scan this QR code to sign into your TIDAL account")).
 		WithCSSClass("no-response").
 		CanClose(false).
 		ConnectCloseAttempt(func(d adw.Dialog) {

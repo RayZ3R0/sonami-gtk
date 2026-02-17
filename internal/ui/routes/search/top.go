@@ -14,7 +14,7 @@ import (
 )
 
 func TopHits(searchResults *modelopenapi.SearchResult) schwifty.Box {
-	artistList := horizontal_list.NewHorizontalList("Artists").SetPageMargin(40).SetViewAllRoute("search/" + searchResults.Data.ID + "/artists")
+	artistList := horizontal_list.NewHorizontalList(gettext.Get("Artists")).SetPageMargin(40).SetViewAllRoute("search/" + searchResults.Data.ID + "/artists")
 	for _, artist := range searchResults.Included.Artists(searchResults.Data.Relationships.TopHits.Data...) {
 		artistList.Append(media_card.NewArtist(openapi.NewArtistInfo(artist)))
 	}

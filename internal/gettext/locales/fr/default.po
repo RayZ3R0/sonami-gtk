@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: v1.0.0-12-g1ce38cd\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-02-17 15:42+0100\n"
+"POT-Creation-Date: 2026-02-17 19:04+0100\n"
 "PO-Revision-Date: 2026-02-15 23:06+0000\n"
 "Last-Translator: drafolin <drafolin@noreply.codeberg.org>\n"
 "Language-Team: French <https://translate.codeberg.org/projects/tonearm/"
@@ -33,7 +33,7 @@ msgid_plural "%d Tracks"
 msgstr[0] "%d Morceau"
 msgstr[1] "%d Morceaux"
 
-#: internal/ui/routes/album.go:145
+#: internal/ui/routes/album.go:136
 msgid "%d Track (%s)"
 msgid_plural "%d Tracks (%s)"
 msgstr[0] "%d Morceau (%s)"
@@ -47,16 +47,20 @@ msgstr "%s, et %s"
 msgid "About Tonearm"
 msgstr "À propos de Tonearm"
 
-#: internal/ui/routes/album.go:111
+#: internal/ui/routes/album.go:102
 msgid "Add Album to Queue"
 msgstr ""
 
-#: internal/ui/routes/my_collection/tracks.go:61
+#: internal/ui/routes/my_collection/tracks.go:54
 msgid "Add My Tracks to Queue"
 msgstr ""
 
-#: internal/ui/routes/playlist.go:96
-msgid "Add playlist to queue"
+#: internal/ui/routes/playlist.go:87
+msgid "Add Playlist to Queue"
+msgstr ""
+
+#: internal/ui/routes/artist.go:47
+msgid "Add Top Tracks to Queue"
 msgstr ""
 
 #: internal/ui/components/favourite_button/favourite_button.go:54
@@ -66,10 +70,6 @@ msgstr "Ajouter à la collection"
 #: internal/ui/components/tracklist/column_controls.go:54
 msgid "Add to Queue"
 msgstr "Ajouter à la file d'attente"
-
-#: internal/ui/routes/artist.go:47
-msgid "Add top tracks to queue"
-msgstr ""
 
 #: internal/settings/playback.go:21
 msgid "Album"
@@ -96,15 +96,15 @@ msgid "Allow Shortcut Images"
 msgstr "Autoriser les images des raccourcis"
 
 #: internal/ui/window_preferences.go:85
-msgid "Allow Tonearm to load images for media card buttons."
-msgstr "Autoriser Tonearm à charger des images pour les boutons cartes média."
+msgid "Allow Tonearm to load images for media card buttons"
+msgstr "Autoriser Tonearm à charger des images pour les boutons cartes média"
 
 #: internal/ui/window_preferences.go:91
-msgid "Allow Tonearm to load images for shortcut buttons."
-msgstr "Autoriser Tonearm à charger des images pour les boutons de raccourcis."
+msgid "Allow Tonearm to load images for shortcut buttons"
+msgstr "Autoriser Tonearm à charger des images pour les boutons de raccourcis"
 
 #: internal/ui/window_preferences.go:97
-msgid "Allow Tonearm to load images for tracklists with the cover column."
+msgid "Allow Tonearm to load images for tracklists with the cover column"
 msgstr ""
 "Autoriser Tonearm à charger des images pour les listes de morceaux avec une "
 "colonne album."
@@ -136,28 +136,26 @@ msgstr ""
 #: internal/ui/window_preferences.go:103
 msgid ""
 "Allow Tonearm to temporarily store images on the file system to improve "
-"performance and reduce network traffic."
+"performance and reduce network traffic"
 msgstr ""
-"Autoriser Tonearm à temporairement enregistrer des images sur le système "
-"pour améliorer la performance et réduire le traffic."
 
 #: internal/ui/window_preferences.go:96
 msgid "Allow Tracklist Images"
 msgstr "Autoriser les images des listes de morceaux"
 
 #: internal/ui/window_preferences.go:235
-msgid "An error occured while logging in to Last.fm."
-msgstr "Une erreur s'est produite pendant la connexion à Last.fm."
+msgid "An error occurred while logging in to Last.fm"
+msgstr "Une erreur s'est produite pendant la connexion à Last.fm"
 
 #: internal/ui/window_preferences.go:210
-msgid "An error occured while logging out of Last.fm."
-msgstr "Une erreur s'est produite pendant la déconnexion de Last.fm."
+msgid "An error occurred while logging out of Last.fm"
+msgstr "Une erreur s'est produite pendant la déconnexion de Last.fm"
 
-#: internal/ui/routes/album.go:162
+#: internal/ui/routes/album.go:153
 msgid "An error occurred while playing the album"
 msgstr "Une erreur s'est produite lors de la lecture de l'album"
 
-#: internal/ui/routes/playlist.go:147
+#: internal/ui/routes/playlist.go:138
 msgid "An error occurred while playing the playlist"
 msgstr "Une erreur s'est produite lors de la lecture de la playlist"
 
@@ -166,15 +164,15 @@ msgid "An error occurred while playing the top tracks"
 msgstr ""
 "Une erreur s'est produite lors de la lecture des titres les plus écoutés"
 
-#: internal/ui/routes/album.go:94
+#: internal/ui/routes/album.go:89
 msgid "An error occurred while playing the track"
 msgstr "Une erreur s'est produite lors de la lecture du morceau"
 
-#: internal/ui/routes/my_collection/tracks.go:112
+#: internal/ui/routes/my_collection/tracks.go:105
 msgid "An error occurred while playing the tracks"
 msgstr ""
 
-#: internal/ui/routes/my_collection/tracks.go:92
+#: internal/ui/routes/my_collection/tracks.go:85
 msgid "An error occurred while shuffling the tracks"
 msgstr ""
 
@@ -252,30 +250,30 @@ msgid "Collection"
 msgstr "Collection"
 
 #: internal/ui/window_preferences.go:264
-msgid "Configure Tonearm to send scrobbling data to Last.fm."
-msgstr "Configurer Tonearm pour l'envoi de données de scrobbling à Last.fm."
+msgid "Configure Tonearm to send scrobbling data to Last.fm"
+msgstr "Configurer Tonearm pour l'envoi de données de scrobbling à Last.fm"
 
 #: internal/ui/window_preferences.go:135
-msgid "Configure Tonearm to send scrobbling data to ListenBrainz."
+msgid "Configure Tonearm to send scrobbling data to ListenBrainz"
 msgstr ""
-"Configurer Tonearm pour l'envoi de données de scrobbling à ListenBrainz."
+"Configurer Tonearm pour l'envoi de données de scrobbling à ListenBrainz"
 
 #: internal/ui/window_preferences.go:107
-msgid "Configure the behaviour of Tonearm regarding images."
-msgstr "Configurer le comportement de Tonearm envers les images."
+msgid "Configure the behaviour of Tonearm regarding images"
+msgstr "Configurer le comportement de Tonearm envers les images"
 
 #: internal/ui/window_preferences.go:76
-msgid "Configure the behaviour of Tonearm regarding playback."
-msgstr "Configurer le comportement de Tonearm envers la lecture."
+msgid "Configure the behaviour of Tonearm regarding playback"
+msgstr "Configurer le comportement de Tonearm envers la lecture"
 
 #: internal/ui/window_preferences.go:49
-msgid "Configure the behaviour of Tonearm when navigating between pages."
-msgstr "Configurer le comportement de Tonearm à la navigation entre les pages."
+msgid "Configure the behaviour of Tonearm when navigating between pages"
+msgstr "Configurer le comportement de Tonearm à la navigation entre les pages"
 
 #: internal/ui/window_preferences.go:31
-msgid "Configure the behaviour of Tonearm when running in the background."
+msgid "Configure the behaviour of Tonearm when running in the background"
 msgstr ""
-"Configurer le comportement de Tonearm lors de l'execution en arrière-plan."
+"Configurer le comportement de Tonearm lors de l'execution en arrière-plan"
 
 #: internal/ui/window_popups.go:28
 msgid "Continue"
@@ -285,23 +283,23 @@ msgstr "Continuer"
 msgid "Continue the authentication process in your browser."
 msgstr "Continuez le processus d'authentification dans votre navigateur."
 
-#: internal/ui/routes/album.go:204
-msgid "Copied album URL to clipboard."
-msgstr "URL de l'album copié dans le presse-papier."
+#: internal/ui/routes/album.go:195
+msgid "Copied album URL to clipboard"
+msgstr "URL de l'album copié dans le presse-papier"
 
 #: internal/ui/routes/artist.go:138
-msgid "Copied artist URL to clipboard."
-msgstr "URL de l'artiste copiée."
+msgid "Copied artist URL to clipboard"
+msgstr "URL de l'artiste copiée"
 
-#: internal/ui/routes/playlist.go:191
-msgid "Copied playlist URL to clipboard."
-msgstr "URL de la liste de lecture copiée."
+#: internal/ui/routes/playlist.go:182
+msgid "Copied playlist URL to clipboard"
+msgstr "URL de la liste de lecture copiée"
 
-#: internal/ui/components/sidebar/player/component_action_row.go:251
-msgid "Copied track URL to clipboard."
-msgstr "URL du morceau copiée."
+#: internal/ui/components/sidebar/player/component_action_row.go:250
+msgid "Copied track URL to clipboard"
+msgstr "URL du morceau copiée"
 
-#: internal/ui/routes/album.go:194
+#: internal/ui/routes/album.go:185
 msgid "Copy Album URL"
 msgstr "Copier l'URL de l'album"
 
@@ -309,11 +307,11 @@ msgstr "Copier l'URL de l'album"
 msgid "Copy Artist URL"
 msgstr "Copier l'URL de l'artiste"
 
-#: internal/ui/routes/playlist.go:181
+#: internal/ui/routes/playlist.go:172
 msgid "Copy Playlist URL"
 msgstr "Copier l'URL de la liste de lecture"
 
-#: internal/ui/components/sidebar/player/component_action_row.go:240
+#: internal/ui/components/sidebar/player/component_action_row.go:239
 msgid "Copy Track URL"
 msgstr "Copier l'URL du morceau"
 
@@ -333,13 +331,13 @@ msgstr ""
 msgid "Don't show again"
 msgstr "Ne plus afficher"
 
-#: internal/ui/routes/search.go:33
-msgid "E.g. Fox Stevenson"
-msgstr "P.ex. Fox Stevenson"
-
 #: internal/ui/routes/feed.go:155
 msgid "EP by %s"
 msgstr "EP de %s"
+
+#: internal/ui/window_preferences.go:57
+msgid "Enable Autoplay"
+msgstr ""
 
 #: internal/ui/window_preferences.go:138
 msgid "Enable Last.fm"
@@ -353,11 +351,7 @@ msgstr "Activer ListenBrainz"
 msgid "Enable Shuffle"
 msgstr ""
 
-#: internal/ui/window_preferences.go:57
-msgid "Enable autoplay"
-msgstr "Activer la lecture automatique"
-
-#: internal/ui/components/sidebar/lyrics/lyrics.go:53
+#: internal/ui/components/sidebar/lyrics/lyrics.go:51
 msgid "Error Fetching Lyrics"
 msgstr ""
 
@@ -376,6 +370,10 @@ msgstr "Lien externe"
 #: internal/ui/routes/feed.go:99
 msgid "Feed"
 msgstr "Fil d'actualité"
+
+#: internal/ui/routes/search.go:33
+msgid "For example, Fox Stevenson"
+msgstr "P.ex. Fox Stevenson"
 
 #: internal/ui/window_preferences.go:50
 msgid "General"
@@ -413,6 +411,10 @@ msgstr "Le mois dernier"
 msgid "Last Week"
 msgstr "La semaine dernière"
 
+#: internal/ui/window_preferences.go:263
+msgid "Last.fm"
+msgstr ""
+
 #: internal/ui/window_preferences.go:134
 msgid "ListenBrainz"
 msgstr "ListenBrainz"
@@ -425,25 +427,25 @@ msgstr "Clé d'API ListenBrainz"
 msgid "ListenBrainz API URL"
 msgstr "URL d'API ListenBrainz"
 
-#: internal/ui/components/sidebar/lyrics/lyrics.go:55
+#: internal/ui/components/sidebar/lyrics/lyrics.go:53
 msgid "Loading Lyrics"
 msgstr ""
 
 #: internal/ui/window_preferences.go:144
-msgid "Log in to Last.fm"
-msgstr "Se connecter à Last.fm"
+msgid "Log In to Last.fm…"
+msgstr "Se connecter à Last.fm…"
 
 #: internal/ui/window_preferences.go:153
-msgid "Log out of Last.fm"
+msgid "Log Out of Last.fm"
 msgstr "Se déconnecter de Last.fm"
 
 #: internal/ui/window_preferences.go:251
-msgid "Logged in to Last.fm as %s."
-msgstr "Connecté à Last.fm en tant que %s."
+msgid "Logged in to Last.fm as %s"
+msgstr "Connecté à Last.fm en tant que %s"
 
 #: internal/ui/window_preferences.go:221
-msgid "Logged out of Last.fm."
-msgstr "Déconnecté de Last.fm."
+msgid "Logged out of Last.fm"
+msgstr "Déconnecté de Last.fm"
 
 #: internal/features/scrobbling/lastfm.go:42
 msgid "Logging in to Last.fm"
@@ -470,11 +472,11 @@ msgid "Max"
 msgstr "Max"
 
 #: internal/ui/window_preferences.go:43
-msgid "Maximum history length before dropping old entries."
+msgid "Maximum history length before dropping old entries"
 msgstr ""
-"Taille de l'historique maximale avant d'oublier les entrées plus vieilles."
+"Taille de l'historique maximale avant d'oublier les entrées plus vieilles"
 
-#: internal/ui/components/dynamic_v1.go:158
+#: internal/ui/components/dynamic_v1.go:157
 msgid "More"
 msgstr "Plus"
 
@@ -510,11 +512,11 @@ msgstr "Revenir en arrière"
 msgid "Navigate to %s"
 msgstr "Naviguer vers %s"
 
-#: internal/ui/components/sidebar/player/component_action_row.go:199
+#: internal/ui/components/sidebar/player/component_action_row.go:198
 msgid "Navigate to Album"
 msgstr "Naviguer vers l'album"
 
-#: internal/ui/components/sidebar/player/component_action_row.go:33
+#: internal/ui/components/sidebar/player/component_action_row.go:32
 msgid "Navigate to Artist"
 msgstr "Naviguer vers l'artiste"
 
@@ -530,7 +532,7 @@ msgstr "Aller vers l'exploration"
 msgid "Navigate to Home"
 msgstr "Retourner à l'accueil"
 
-#: internal/ui/components/sidebar/player/component_action_row.go:213
+#: internal/ui/components/sidebar/player/component_action_row.go:212
 msgid "Navigate to Track Mix"
 msgstr "Ouvrir le Mix du Titre"
 
@@ -550,11 +552,11 @@ msgstr "Suivant"
 msgid "No Artist"
 msgstr "Pas d'Artiste"
 
-#: internal/ui/components/sidebar/lyrics/lyrics.go:57
+#: internal/ui/components/sidebar/lyrics/lyrics.go:55
 msgid "No Lyrics Available"
 msgstr ""
 
-#: internal/ui/components/sidebar/lyrics/lyrics.go:51
+#: internal/ui/components/sidebar/lyrics/lyrics.go:49
 msgid "No Song Currently Playing"
 msgstr ""
 
@@ -566,7 +568,7 @@ msgstr "Pas de Morceau"
 msgid "No Tracks in Queue"
 msgstr ""
 
-#: internal/ui/components/sidebar/player/component_action_row.go:230
+#: internal/ui/components/sidebar/player/component_action_row.go:229
 msgid "No mix found for the current track"
 msgstr "Aucun mix trouvé pour le morceau actuel"
 
@@ -588,8 +590,8 @@ msgstr ""
 "ou KDE Wallet."
 
 #: internal/ui/window_preferences.go:63
-msgid "Normalize volume"
-msgstr "Normaliser le volume"
+msgid "Normalize Volume"
+msgstr ""
 
 #: internal/router/handler_notfound.go:10
 msgid "Not Found"
@@ -627,15 +629,15 @@ msgstr ""
 msgid "Play / Pause"
 msgstr "Play / Pause"
 
-#: internal/ui/routes/album.go:169
+#: internal/ui/routes/album.go:160
 msgid "Play Album"
 msgstr "Jouer l'album"
 
-#: internal/ui/routes/my_collection/tracks.go:104
+#: internal/ui/routes/my_collection/tracks.go:97
 msgid "Play My Tracks"
 msgstr ""
 
-#: internal/ui/routes/playlist.go:154
+#: internal/ui/routes/playlist.go:145
 msgid "Play Playlist"
 msgstr "Jouer la Liste de lecture"
 
@@ -648,7 +650,7 @@ msgid "Playback"
 msgstr "Lecture"
 
 #: internal/ui/components/sidebar/player/component_track_timeline.go:73
-msgid "Playback quality saved. Changes will be applied on next track change."
+msgid "Playback quality saved. Changes will be applied on next track change"
 msgstr ""
 "Qualité de lecture sauvegardée. Les changements seront appliqués à partir du "
 "prochain morceau."
@@ -697,7 +699,7 @@ msgstr "File d'attente"
 msgid "Quit"
 msgstr "Quitter"
 
-#: internal/ui/components/sidebar/queue/queue.go:83
+#: internal/ui/components/sidebar/queue/queue.go:79
 msgid "Remove Track from Queue"
 msgstr "Retirer de la file d'attente"
 
@@ -718,19 +720,19 @@ msgid "Repeat Track"
 msgstr ""
 
 #: internal/ui/components/linking/linking.go:59
-msgid "Scan this QR code to sign into your TIDAL account."
-msgstr "Scannez ce code QR pour vous connecter à votre compte TIDAL."
+msgid "Scan this QR code to sign into your TIDAL account"
+msgstr "Scannez ce code QR pour vous connecter à votre compte TIDAL"
 
 #: internal/ui/window_preferences.go:265
 msgid "Scrobbling"
 msgstr "Scrobbling"
 
-#: internal/ui/components/horizontal_list/horizontal_list.go:65
-msgid "Scroll to the left"
+#: internal/ui/components/horizontal_list/horizontal_list.go:66
+msgid "Scroll to the Left"
 msgstr "Défiler vers la gauche"
 
-#: internal/ui/components/horizontal_list/horizontal_list.go:54
-msgid "Scroll to the right"
+#: internal/ui/components/horizontal_list/horizontal_list.go:55
+msgid "Scroll to the Right"
 msgstr "Défiler vers la droite"
 
 #: internal/ui/routes/search/albums.go:32
@@ -750,26 +752,26 @@ msgid "Secret Service Unavailable"
 msgstr "Service de secret non disponible"
 
 #: internal/ui/window_sidebar.go:30
-msgid "Set as default page"
-msgstr "Définir comme page par défaut"
+msgid "Set as Default Page"
+msgstr ""
 
 #: internal/ui/window_actions.go:333
 msgid "Set current page as default"
 msgstr "Définir la page actuelle comme page par défaut"
 
 #: internal/ui/window_preferences.go:64
-msgid "Set the same volume for all tracks."
-msgstr "Jouer tous les morceaux avec le même volume."
+msgid "Set the same volume for all tracks"
+msgstr "Jouer tous les morceaux avec le même volume"
 
-#: internal/ui/routes/album.go:156
+#: internal/ui/routes/album.go:147
 msgid "Shuffle Album"
 msgstr "Jouer l'album en mode aléatoire"
 
-#: internal/ui/routes/my_collection/tracks.go:85
+#: internal/ui/routes/my_collection/tracks.go:78
 msgid "Shuffle My Tracks"
 msgstr ""
 
-#: internal/ui/routes/playlist.go:140
+#: internal/ui/routes/playlist.go:131
 msgid "Shuffle Playlist"
 msgstr "Jouer la liste de lecture en mode aléatoire"
 
@@ -812,12 +814,10 @@ msgstr "Single de %s"
 #: internal/ui/routes/search/search.go:13
 msgid ""
 "Start typing in the search bar to search for songs, artists, albums or "
-"playlists."
+"playlists"
 msgstr ""
-"Commencer à écrire dans la barre de recherche pour chercher des musiques, "
-"artistes, albums ou listes de lecture."
 
-#: internal/ui/components/sidebar/lyrics/lyrics_view.go:42
+#: internal/ui/components/sidebar/lyrics/lyrics_view.go:63
 msgid "Sync with Track"
 msgstr ""
 
@@ -849,7 +849,7 @@ msgstr "Morceau"
 msgid "Track not available for streaming, skipping to next track"
 msgstr "Morceau non disponible au streaming, passage au suivant"
 
-#: internal/ui/routes/my-collection.go:82
+#: internal/ui/routes/my-collection.go:81
 msgid "Tracks"
 msgstr "Morceaux"
 
@@ -874,30 +874,30 @@ msgstr "Type d'album inconnu"
 msgid "Unsupported activity"
 msgstr "Activité non supportée"
 
-#: internal/ui/components/horizontal_list/horizontal_list.go:34
+#: internal/ui/components/horizontal_list/horizontal_list.go:35
 msgid "View All"
 msgstr "Voir tout"
 
-#: internal/ui/components/sidebar/player/component_action_row.go:193
+#: internal/ui/components/sidebar/player/component_action_row.go:192
 msgid "Volume"
 msgstr "Volume"
 
 #: internal/ui/window_preferences.go:145
-msgid "You are currently not logged in to Last.fm."
-msgstr "Vous n'êtes actuellement pas connecté à Last.fm."
-
-#: internal/ui/window_preferences.go:160
-msgid "You are logged in to Last.fm as %s."
-msgstr "Vous êtes connecté à Last.fm en tant que %s."
+msgid "You are currently not logged in to Last.fm"
+msgstr "Vous n'êtes actuellement pas connecté à Last.fm"
 
 #: internal/ui/window_preferences.go:157
-msgid "You are logged in to Last.fm."
-msgstr "Vous êtes connecté à Last.fm."
+msgid "You are logged in to Last.fm"
+msgstr "Vous êtes connecté à Last.fm"
+
+#: internal/ui/window_preferences.go:160
+msgid "You are logged in to Last.fm as %s"
+msgstr "Vous êtes connecté à Last.fm en tant que %s"
 
 #: internal/ui/components/linking/linking.go:29
-msgid "You can also open the linking page using the button below."
+msgid "You can also open the linking page using the button below"
 msgstr ""
-"Vous pouvez également ouvrir la page de connexion avec le boouton ci-dessous."
+"Vous pouvez également ouvrir la page de connexion avec le boouton ci-dessous"
 
 #: internal/secrets/service_linux.go:48
 msgid ""
@@ -923,6 +923,32 @@ msgstr ""
 #: internal/ui/window_about.go:132
 msgid "translator-credits"
 msgstr "Dråfølin Nattfløyen https://github.com/drafolin"
+
+#~ msgid ""
+#~ "Allow Tonearm to temporarily store images on the file system to improve "
+#~ "performance and reduce network traffic."
+#~ msgstr ""
+#~ "Autoriser Tonearm à temporairement enregistrer des images sur le système "
+#~ "pour améliorer la performance et réduire le traffic."
+
+#~ msgid "Enable autoplay"
+#~ msgstr "Activer la lecture automatique"
+
+#~ msgid "Normalize volume"
+#~ msgstr "Normaliser le volume"
+
+#~ msgid "Set as default page"
+#~ msgstr "Définir comme page par défaut"
+
+#~ msgid ""
+#~ "Start typing in the search bar to search for songs, artists, albums or "
+#~ "playlists."
+#~ msgstr ""
+#~ "Commencer à écrire dans la barre de recherche pour chercher des musiques, "
+#~ "artistes, albums ou listes de lecture."
+
+#~ msgid "Sync With Track"
+#~ msgstr "Synchroniser avec le morceau"
 
 #~ msgid "No lyrics available"
 #~ msgstr "Pas de paroles disponibles"
