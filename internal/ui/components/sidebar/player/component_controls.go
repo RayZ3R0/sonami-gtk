@@ -34,6 +34,7 @@ func controls() schwifty.Box {
 		playPauseChildState       = state.NewStateful[any](nil)
 		actualPlayPauseChildState = state.NewStateful[any](nil)
 		playPauseTooltipState     = state.NewStateful("")
+		playPauseSensitiveState   = state.NewStateful(false)
 	)
 
 	player.PlaybackStateChanged.On(func(state *player.PlaybackState) bool {
@@ -49,8 +50,10 @@ func controls() schwifty.Box {
 			}
 
 			if isControllableState.Value() {
+				playPauseSensitiveState.SetValue(isTrackLoadedState.Value())
 				actualPlayPauseChildState.SetValue(val)
 			} else {
+				playPauseSensitiveState.SetValue(false)
 				actualPlayPauseChildState.SetValue(playSpinner)
 			}
 
@@ -108,29 +111,33 @@ func controls() schwifty.Box {
 		controlButton.
 			IconName("playlist-shuffle-symbolic").
 			ActionName("win.player.shuffle").
+			BindSensitive(isTrackLoadedState).
 			BindTooltipText(shuffleTooltipState).
 			BindCSSClass(shuffleClassState),
 		Spacer().VExpand(false),
 		controlButton.
 			TooltipText(gettext.Get("Previous")).
 			IconName("skip-backward-large-symbolic").
+			BindSensitive(isTrackLoadedState).
 			ActionName("win.player.previous"),
 		Spacer().VExpand(false),
 		Button().
 			BindTooltipText(playPauseTooltipState).
 			ActionName("win.player.play-pause").
 			BindChild(actualPlayPauseChildState).
-			BindSensitive(isControllableState).
+			BindSensitive(playPauseSensitiveState).
 			WithCSSClass("suggested-action").CornerRadius(21).
 			HPadding(32).VPadding(9),
 		Spacer().VExpand(false),
 		controlButton.
 			TooltipText(gettext.Get("Next")).
+			BindSensitive(isTrackLoadedState).
 			IconName("skip-forward-large-symbolic").
 			ActionName("win.player.next"),
 		Spacer().VExpand(false),
 		controlButton.
 			BindTooltipText(repeatTooltipState).
+			BindSensitive(isTrackLoadedState).
 			BindIconName(repeatIconState).BindCSSClass(repeatClassState).
 			ActionName("win.player.repeat"),
 	).HExpand(true)
