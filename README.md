@@ -23,7 +23,7 @@
     <a href="https://matrix.to/#/%23tonearm:derg.social">Join the Matrix Room</a>
   </p>
 
-  <img width="700" src=".codeberg/images/home.png" alt="Screenshot of the home page of Tonearm">
+  <img width="700" src=".forgejo/images/home.png" alt="Screenshot of the home page of Tonearm">
 
 </div>
 
@@ -104,12 +104,12 @@ You can bring Tonearm to even more people by helping us translate it into their 
 ## Screenshots
 <details>
   <summary>Explore Page</summary>
-  <img src=".codeberg/images/explore.png" alt="Screenshot of the explore page">
+  <img src=".forgejo/images/explore.png" alt="Screenshot of the explore page">
 </details>
 
 <details>
   <summary>Search + Lyrics</summary>
-  <img src=".codeberg/images/search_lyrics.png" alt="Screenshot of the search page and lyrics">
+  <img src=".forgejo/images/search_lyrics.png" alt="Screenshot of the search page and lyrics">
 </details>
 
 ## Acknowledgements
