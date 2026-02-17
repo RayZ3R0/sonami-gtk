@@ -846,7 +846,7 @@ msgid "You are logged in to Last.fm"
 msgstr ""
 
 #: internal/ui/components/linking/linking.go:29
-msgid "You can also open the linking page using the button below."
+msgid "You can also open the linking page using the button below"
 msgstr ""
 
 #: internal/secrets/service_linux.go:48

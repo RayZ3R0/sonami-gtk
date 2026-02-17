@@ -858,8 +858,8 @@ msgid "You are logged in to Last.fm"
 msgstr ""
 
 #: internal/ui/components/linking/linking.go:29
-msgid "You can also open the linking page using the button below."
-msgstr "您也可以使用下方的按钮打开链接页面。"
+msgid "You can also open the linking page using the button below"
+msgstr "您也可以使用下方的按钮打开链接页面"
 
 #: internal/secrets/service_linux.go:48
 msgid ""

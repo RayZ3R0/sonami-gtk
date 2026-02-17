@@ -26,7 +26,7 @@ var QRCode = Image().
 
 var Code = Label("D  E  R  G  S").WithCSSClass("title-1")
 
-var Helper = Label(gettext.Get("You can also open the linking page using the button below."))
+var Helper = Label(gettext.Get("You can also open the linking page using the button below"))
 
 type QRBuffer struct {
 	bytes.Buffer

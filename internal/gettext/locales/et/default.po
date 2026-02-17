@@ -881,8 +881,8 @@ msgid "You are logged in to Last.fm"
 msgstr "Sa oled loginud sisse Last.fm-i"
 
 #: internal/ui/components/linking/linking.go:29
-msgid "You can also open the linking page using the button below."
-msgstr "Võid ka järgnevast nupust avada linkimise lehe."
+msgid "You can also open the linking page using the button below"
+msgstr "Võid ka järgnevast nupust avada linkimise lehe"
 
 #: internal/secrets/service_linux.go:48
 msgid ""
