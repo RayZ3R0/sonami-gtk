@@ -8,7 +8,7 @@ import (
 	"codeberg.org/dergs/tonearm/internal/resources"
 	"codeberg.org/dergs/tonearm/internal/signals"
 	"codeberg.org/dergs/tonearm/pkg/schwifty"
-	gtkbindings "codeberg.org/dergs/tonearm/pkg/schwifty/bindings/gtk"
+	adwbindings "codeberg.org/dergs/tonearm/pkg/schwifty/bindings/adw"
 	"codeberg.org/dergs/tonearm/pkg/schwifty/state"
 	. "codeberg.org/dergs/tonearm/pkg/schwifty/syntax"
 	"codeberg.org/dergs/tonearm/pkg/tonearm"
@@ -18,7 +18,7 @@ import (
 	"github.com/jwijenbergh/puregotk/v4/pango"
 )
 
-func MiniPlayer() gtkbindings.Box {
+func MiniPlayer() adwbindings.Bin {
 	var miniPlayerLoadingIconSub *signals.Subscription
 	var miniPlayerCanControl = state.NewStateful(false)
 
@@ -70,73 +70,73 @@ func MiniPlayer() gtkbindings.Box {
 		return signals.Continue
 	})
 
-	return HStack(
-		AspectFrame(
-			Image().
-				PixelSize(54).
-				BindPaintable(coverState),
-		).
-			Overflow(gtk.OverflowHiddenValue).
-			Background("alpha(var(--view-fg-color), 0.1)").
-			CornerRadius(6),
-		VStack(
-			Label("").
-				BindText(trackTitle).
-				FontWeight(600).
-				Ellipsis(pango.EllipsizeEndValue).
-				HAlign(gtk.AlignStartValue),
-			Label("").
-				WithCSSClass("dimmed").
-				Ellipsis(pango.EllipsizeEndValue).
-				HAlign(gtk.AlignStartValue).
-				BindText(trackAlbum),
-		).
-			Spacing(3).
-			VAlign(gtk.AlignCenterValue).
-			HAlign(gtk.AlignStartValue).
-			HExpand(true),
-		Spacer().VExpand(false),
+	return Bin().Child(
 		HStack(
-			Button().
-				TooltipText(gettext.Get("Play / Pause")).
-				WithCSSClass("flat").
-				BindIconName(playPauseIcon).
-				ConnectClicked(func(b gtk.Button) {
-					player.PlayPause()
-				}).
-				BindSensitive(miniPlayerCanControl).
-				ConnectConstruct(func(b *gtk.Button) {
-					ptr := b.GoPointer()
-					miniPlayerLoadingIconSub = player.PlaybackStateChanged.On(func(ps *player.PlaybackState) bool {
-						if ps.Loading {
-							schwifty.OnMainThreadOncePure(func() {
-								b := gtk.ButtonNewFromInternalPtr(ptr)
-								child := Spinner().ToGTK()
-								b.SetChild(child)
-							})
-						}
-						return signals.Continue
-					})
-				}).
-				ConnectDestroy(func(w gtk.Widget) {
-					player.PlaybackStateChanged.Unsubscribe(miniPlayerLoadingIconSub)
-				}),
-			Button().
-				TooltipText(gettext.Get("Next")).
-				WithCSSClass("flat").
-				IconName("skip-forward-large-symbolic").
-				ActionName("win.player.next").
-				BindSensitive(miniPlayerCanControl),
+			AspectFrame(
+				Image().
+					PixelSize(54).
+					BindPaintable(coverState),
+			).
+				Overflow(gtk.OverflowHiddenValue).
+				Background("alpha(var(--view-fg-color), 0.1)").
+				CornerRadius(6),
+			VStack(
+				Label("").
+					BindText(trackTitle).
+					FontWeight(600).
+					Ellipsis(pango.EllipsizeEndValue).
+					HAlign(gtk.AlignStartValue),
+				Label("").
+					WithCSSClass("dimmed").
+					Ellipsis(pango.EllipsizeEndValue).
+					HAlign(gtk.AlignStartValue).
+					BindText(trackAlbum),
+			).
+				Spacing(3).
+				VAlign(gtk.AlignCenterValue).
+				HAlign(gtk.AlignStartValue).
+				HExpand(true),
+			Spacer().VExpand(false),
+			HStack(
+				Button().
+					TooltipText(gettext.Get("Play / Pause")).
+					WithCSSClass("flat").
+					BindIconName(playPauseIcon).
+					ConnectClicked(func(b gtk.Button) {
+						player.PlayPause()
+					}).
+					BindSensitive(miniPlayerCanControl).
+					ConnectConstruct(func(b *gtk.Button) {
+						ptr := b.GoPointer()
+						miniPlayerLoadingIconSub = player.PlaybackStateChanged.On(func(ps *player.PlaybackState) bool {
+							if ps.Loading {
+								schwifty.OnMainThreadOncePure(func() {
+									b := gtk.ButtonNewFromInternalPtr(ptr)
+									child := Spinner().ToGTK()
+									b.SetChild(child)
+								})
+							}
+							return signals.Continue
+						})
+					}).
+					ConnectDestroy(func(w gtk.Widget) {
+						player.PlaybackStateChanged.Unsubscribe(miniPlayerLoadingIconSub)
+					}),
+				Button().
+					TooltipText(gettext.Get("Next")).
+					WithCSSClass("flat").
+					IconName("skip-forward-large-symbolic").
+					ActionName("win.player.next").
+					BindSensitive(miniPlayerCanControl),
+			).
+				Spacing(7).
+				HAlign(gtk.AlignEndValue).
+				VAlign(gtk.AlignCenterValue),
 		).
-			Spacing(7).
-			HAlign(gtk.AlignEndValue).
-			VAlign(gtk.AlignCenterValue),
-	).
-		Spacing(16).
-		Padding(12).
-		MarginBottom(12).
-		MarginTop(12).
-		HMargin(16).
-		Background("alpha(var(--view-fg-color), 0.1)").
-		CornerRadius(12)
+			Spacing(16).
+			Padding(10).
+			Margin(2).
+			Background("alpha(var(--view-fg-color), 0.1)").
+			CornerRadius(12),
+	).Margin(12)
 }
