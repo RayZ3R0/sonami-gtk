@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: v1.0.0-26-g6264155\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2026-02-17 19:04+0100\n"
-"PO-Revision-Date: 2026-02-15 23:06+0000\n"
+"PO-Revision-Date: 2026-02-17 18:34+0000\n"
 "Last-Translator: LukaszH77 <lukasz@horodecki.net>\n"
 "Language-Team: Polish <https://translate.codeberg.org/projects/tonearm/"
 "tonearm/pl/>\n"
@@ -52,11 +52,11 @@ msgstr "O programie"
 
 #: internal/ui/routes/album.go:102
 msgid "Add Album to Queue"
-msgstr ""
+msgstr "Dodaj album do kolejki"
 
 #: internal/ui/routes/my_collection/tracks.go:54
 msgid "Add My Tracks to Queue"
-msgstr ""
+msgstr "Dodaj moje utwory do kolejki"
 
 #: internal/ui/routes/playlist.go:87
 msgid "Add Playlist to Queue"
