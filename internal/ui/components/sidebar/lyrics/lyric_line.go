@@ -1,19 +1,13 @@
 package lyrics
 
 import (
-	"time"
-
 	"codeberg.org/dergs/tonearm/internal/player"
 	"codeberg.org/dergs/tonearm/pkg/schwifty"
 	. "codeberg.org/dergs/tonearm/pkg/schwifty/syntax"
 	"github.com/jwijenbergh/puregotk/v4/gtk"
 )
 
-type lyricTiming struct {
-	timeStart, timeEnd time.Duration
-}
-
-func lyricLine(text string, timing *lyricTiming) schwifty.Button {
+func lyricLine(text string, timing *highlightTiming) schwifty.Button {
 	var classListener string
 
 	b := Button().
@@ -50,8 +44,9 @@ func lyricLine(text string, timing *lyricTiming) schwifty.Button {
 				activeLyricIndex.RemoveCallback(classListener)
 			}).
 			ConnectClicked(func(gtk.Button) {
+				setNewIndex(timing)
 				userManuallyScrolled.SetValue(false)
-				player.SeekToPosition(timing.timeStart)
+				player.SeekToPosition(timing.Start, true)
 			})
 	}
 

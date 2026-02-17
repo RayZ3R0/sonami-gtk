@@ -23,6 +23,16 @@ func (f StatusPage) IconName(icon string) StatusPage {
 	}
 }
 
+func (f StatusPage) Loading() StatusPage {
+	return func() *adw.StatusPage {
+		statusPage := f()
+		paintable := adw.NewSpinnerPaintable(&statusPage.Widget)
+		defer paintable.Unref()
+		statusPage.SetPaintable(paintable)
+		return statusPage
+	}
+}
+
 func (f StatusPage) Title(title string) StatusPage {
 	return func() *adw.StatusPage {
 		statusPage := f()

@@ -56,7 +56,7 @@ func playNextTrack() {
 
 	if settings.Playback().AllowAutoplay() && TrackChanged.CurrentValue() != nil {
 		// Since no other songs are left in the queue, retrieve mix to play from API
-		logger.Info("starting track radio", "track_id", TrackChanged.CurrentValue().ID)
+		logger.Info("starting track radio", "track_id", TrackChanged.CurrentValue().ID())
 		PlayTrackRadio(TrackChanged.CurrentValue().ID(), true)
 	} else {
 		resetLoadingState()
@@ -67,13 +67,13 @@ func playPreviousTrack() {
 	ok, position := playbin.QueryPosition(gst.FormatTime)
 	if ok && time.Duration(position) > 5*time.Second {
 		logger.Debug("above the 5 second mark, replaying song", "action", "previous")
-		SeekToPosition(0)
+		SeekToPosition(0, false)
 		return
 	}
 
 	if len(history.Entries.CurrentValue()) < 1 {
 		logger.Debug("no history entries, replaying song", "action", "previous")
-		SeekToPosition(0)
+		SeekToPosition(0, false)
 		return
 	}
 

@@ -79,7 +79,7 @@ func SeekToPercent(percent float64) {
 	}
 
 	position := float64(PlaybackStateChanged.CurrentValue().Duration) * (percent / 100.0)
-	SeekToPosition(time.Duration(int64(position)))
+	SeekToPosition(time.Duration(int64(position)), false)
 }
 
 var (
@@ -91,7 +91,11 @@ func seekToPosition(position time.Duration) {
 	playbin.SeekTime(position, gst.SeekFlagFlush|gst.SeekFlagKeyUnit)
 }
 
-func SeekToPosition(position time.Duration) {
+func seekToPositionPrecise(position time.Duration) {
+	playbin.SeekTime(position, gst.SeekFlagFlush|gst.SeekFlagAccurate)
+}
+
+func SeekToPosition(position time.Duration, precise bool) {
 	logger.Debug("player controls requested to seek to position", "position", position)
 	go func() {
 		seekMutex.Lock()
@@ -117,7 +121,11 @@ func SeekToPosition(position time.Duration) {
 				return &newState
 			})
 
-			seekToPosition(position)
+			if precise {
+				seekToPositionPrecise(position)
+			} else {
+				seekToPosition(position)
+			}
 			if PlaybackStateChanged.CurrentValue().Status == PlaybackStatusPlaying {
 				playbin.SetState(gst.StatePlaying)
 				startUpdateRunner()
@@ -129,7 +137,7 @@ func SeekToPosition(position time.Duration) {
 }
 
 func SeekToPositionRelative(delta time.Duration) {
-	SeekToPosition(PlaybackStateChanged.CurrentValue().Position + delta)
+	SeekToPosition(PlaybackStateChanged.CurrentValue().Position+delta, false)
 }
 
 func SetRepeatMode(m RepeatMode) {
