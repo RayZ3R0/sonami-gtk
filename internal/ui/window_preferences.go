@@ -54,13 +54,13 @@ func buildPreferencesPlayback(*adw.PreferencesDialog) adwbindings.PreferencesPag
 	return PreferencesPage(
 		PreferencesGroup(
 			SwitchRow().
-				Title(gettext.Get("Enable autoplay")).
+				Title(gettext.Get("Enable Autoplay")).
 				Subtitle(gettext.Get("Allow Tonearm to start a mix with the current playing song when you're at the end of an album/queue")).
 				ConnectConstruct(func(sr *adw.SwitchRow) {
 					settings.Playback().BindAllowAutoplay(&sr.Object, "active")
 				}),
 			SwitchRow().
-				Title(gettext.Get("Normalize volume")).
+				Title(gettext.Get("Normalize Volume")).
 				Subtitle(gettext.Get("Set the same volume for all tracks.")).
 				ConnectConstruct(func(sr *adw.SwitchRow) {
 					settings.Playback().BindNormalizeVolume(&sr.Object, "active")
