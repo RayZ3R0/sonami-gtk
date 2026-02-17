@@ -58,7 +58,7 @@ func init() {
 
 var searchIncludes = []string{
 	"topHits", "topHits.profileArt", "topHits.coverArt", "topHits.albums.coverArt",
-	"topHits.albums.artists",
+	"topHits.albums.artists", "topHits.artists",
 }
 
 func OnSearch(scrollChildState *state.State[any]) func(gtk.SearchEntry) {

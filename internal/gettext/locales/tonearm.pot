@@ -6,9 +6,9 @@
 #, fuzzy
 msgid ""
 msgstr ""
-"Project-Id-Version: v1.3.1-22-g13d0f09\n"
+"Project-Id-Version: v1.3.1-28-gf90538c\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-02-17 15:39+0100\n"
+"POT-Creation-Date: 2026-02-17 15:42+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -280,7 +280,7 @@ msgstr ""
 msgid "Copy Playlist URL"
 msgstr ""
 
-#: internal/ui/components/player/component_action_row.go:240
+#: internal/ui/components/sidebar/player/component_action_row.go:240
 msgid "Copy Track URL"
 msgstr ""
 
@@ -288,11 +288,11 @@ msgstr ""
 msgid "Default Page"
 msgstr ""
 
-#: internal/ui/components/player/component_controls.go:89
+#: internal/ui/components/sidebar/player/component_controls.go:89
 msgid "Disable Repeat"
 msgstr ""
 
-#: internal/ui/components/player/component_controls.go:99
+#: internal/ui/components/sidebar/player/component_controls.go:99
 msgid "Disable Shuffle"
 msgstr ""
 
@@ -316,7 +316,7 @@ msgstr ""
 msgid "Enable ListenBrainz"
 msgstr ""
 
-#: internal/ui/components/player/component_controls.go:102
+#: internal/ui/components/sidebar/player/component_controls.go:102
 msgid "Enable Shuffle"
 msgstr ""
 
@@ -324,8 +324,8 @@ msgstr ""
 msgid "Enable autoplay"
 msgstr ""
 
-#: internal/ui/components/lyrics/lyrics.go:410
-msgid "Error fetching lyrics"
+#: internal/ui/components/sidebar/lyrics/lyrics.go:53
+msgid "Error Fetching Lyrics"
 msgstr ""
 
 #: internal/ui/routes/my-collection.go:43
@@ -348,7 +348,7 @@ msgstr ""
 msgid "General"
 msgstr ""
 
-#: internal/ui/components/player/component_track_timeline.go:62
+#: internal/ui/components/sidebar/player/component_track_timeline.go:62
 msgid "High"
 msgstr ""
 
@@ -392,6 +392,10 @@ msgstr ""
 msgid "ListenBrainz API URL"
 msgstr ""
 
+#: internal/ui/components/sidebar/lyrics/lyrics.go:55
+msgid "Loading Lyrics"
+msgstr ""
+
 #: internal/ui/window_preferences.go:144
 msgid "Log In to Last.fm…"
 msgstr ""
@@ -412,11 +416,11 @@ msgstr ""
 msgid "Logging in to Last.fm"
 msgstr ""
 
-#: internal/ui/components/player/component_track_timeline.go:59
+#: internal/ui/components/sidebar/player/component_track_timeline.go:59
 msgid "Low (320 kbps)"
 msgstr ""
 
-#: internal/ui/components/player/component_track_timeline.go:56
+#: internal/ui/components/sidebar/player/component_track_timeline.go:56
 msgid "Low (96 kbps)"
 msgstr ""
 
@@ -428,7 +432,7 @@ msgstr ""
 msgid "Main Menu"
 msgstr ""
 
-#: internal/ui/components/player/component_track_timeline.go:65
+#: internal/ui/components/sidebar/player/component_track_timeline.go:65
 msgid "Max"
 msgstr ""
 
@@ -472,11 +476,11 @@ msgstr ""
 msgid "Navigate to %s"
 msgstr ""
 
-#: internal/ui/components/player/component_action_row.go:199
+#: internal/ui/components/sidebar/player/component_action_row.go:199
 msgid "Navigate to Album"
 msgstr ""
 
-#: internal/ui/components/player/component_action_row.go:33
+#: internal/ui/components/sidebar/player/component_action_row.go:33
 msgid "Navigate to Artist"
 msgstr ""
 
@@ -492,7 +496,7 @@ msgstr ""
 msgid "Navigate to Home"
 msgstr ""
 
-#: internal/ui/components/player/component_action_row.go:213
+#: internal/ui/components/sidebar/player/component_action_row.go:213
 msgid "Navigate to Track Mix"
 msgstr ""
 
@@ -504,23 +508,31 @@ msgstr ""
 msgid "Navigation Behaviour"
 msgstr ""
 
-#: internal/ui/components/player/component_controls.go:128
+#: internal/ui/components/sidebar/miniplayer.go:122
 msgid "Next"
 msgstr ""
 
-#: internal/ui/components/player/component_track_info.go:25
+#: internal/ui/components/sidebar/player/component_track_info.go:25
 msgid "No Artist"
 msgstr ""
 
-#: internal/ui/components/player/component_track_info.go:24
+#: internal/ui/components/sidebar/lyrics/lyrics.go:57
+msgid "No Lyrics Available"
+msgstr ""
+
+#: internal/ui/components/sidebar/lyrics/lyrics.go:51
+msgid "No Song Currently Playing"
+msgstr ""
+
+#: internal/ui/components/sidebar/player/component_track_info.go:24
 msgid "No Track"
 msgstr ""
 
-#: internal/ui/components/lyrics/lyrics.go:417
-msgid "No lyrics available"
+#: internal/ui/components/sidebar/queue/queue.go:40
+msgid "No Tracks in Queue"
 msgstr ""
 
-#: internal/ui/components/player/component_action_row.go:230
+#: internal/ui/components/sidebar/player/component_action_row.go:230
 msgid "No mix found for the current track"
 msgstr ""
 
@@ -531,10 +543,6 @@ msgid ""
 "Tonearm will not be able to store any authentication-related data and you will not be able to sign in.\n"
 "\n"
 "Please install a secret service provider such as GNOME Keyring or KDE Wallet."
-msgstr ""
-
-#: internal/ui/components/lyrics/lyrics.go:399
-msgid "No song currently playing"
 msgstr ""
 
 #: internal/ui/window_preferences.go:63
@@ -557,7 +565,7 @@ msgstr ""
 msgid "Open TIDAL Page"
 msgstr ""
 
-#: internal/ui/components/player/component_controls.go:45
+#: internal/ui/components/sidebar/player/component_controls.go:45
 msgid "Pause"
 msgstr ""
 
@@ -569,11 +577,11 @@ msgstr ""
 msgid "Personal Mix"
 msgstr ""
 
-#: internal/ui/components/player/component_controls.go:48
+#: internal/ui/components/sidebar/player/component_controls.go:48
 msgid "Play"
 msgstr ""
 
-#: internal/ui/components/queue/queue.go:181
+#: internal/ui/components/sidebar/miniplayer.go:98
 msgid "Play / Pause"
 msgstr ""
 
@@ -597,7 +605,7 @@ msgstr ""
 msgid "Playback"
 msgstr ""
 
-#: internal/ui/components/player/component_track_timeline.go:73
+#: internal/ui/components/sidebar/player/component_track_timeline.go:73
 msgid "Playback quality saved. Changes will be applied on next track change."
 msgstr ""
 
@@ -605,7 +613,7 @@ msgstr ""
 msgid "Player"
 msgstr ""
 
-#: internal/ui/components/player/component_playing_from.go:64
+#: internal/ui/components/sidebar/player/component_playing_from.go:64
 msgid "Playing From"
 msgstr ""
 
@@ -633,7 +641,7 @@ msgstr ""
 msgid "Preferred Replay Gain"
 msgstr ""
 
-#: internal/ui/components/player/component_controls.go:115
+#: internal/ui/components/sidebar/player/component_controls.go:115
 msgid "Previous"
 msgstr ""
 
@@ -645,7 +653,7 @@ msgstr ""
 msgid "Quit"
 msgstr ""
 
-#: internal/ui/components/queue/queue.go:70
+#: internal/ui/components/sidebar/queue/queue.go:83
 msgid "Remove Track from Queue"
 msgstr ""
 
@@ -657,11 +665,11 @@ msgstr ""
 msgid "Reopen Browser"
 msgstr ""
 
-#: internal/ui/components/player/component_controls.go:81
+#: internal/ui/components/sidebar/player/component_controls.go:81
 msgid "Repeat Queue"
 msgstr ""
 
-#: internal/ui/components/player/component_controls.go:85
+#: internal/ui/components/sidebar/player/component_controls.go:85
 msgid "Repeat Track"
 msgstr ""
 
@@ -816,7 +824,7 @@ msgstr ""
 msgid "View All"
 msgstr ""
 
-#: internal/ui/components/player/component_action_row.go:193
+#: internal/ui/components/sidebar/player/component_action_row.go:193
 msgid "Volume"
 msgstr ""
 

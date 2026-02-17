@@ -2,7 +2,6 @@ package player
 
 import (
 	"context"
-	"fmt"
 	"slices"
 	"strconv"
 
@@ -247,7 +246,7 @@ func actionRow() schwifty.Box {
 				clipboard := display.GetClipboard()
 				defer clipboard.Unref()
 
-				clipboard.SetText(fmt.Sprintf("https://tidal.com/track/%s?u", player.TrackChanged.CurrentValue().ID))
+				clipboard.SetText(player.TrackChanged.CurrentValue().URL() + "?u")
 				notifications.OnToast.Notify(gettext.Get("Copied track URL to clipboard"))
 			}),
 	).HAlign(gtk.AlignCenterValue).Spacing(15).CSS("box { margin-top: -8px; margin-bottom: -8px; }")
