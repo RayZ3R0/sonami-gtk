@@ -104,7 +104,6 @@ func favouriteButton() schwifty.Button {
 	})
 
 	return Button().
-		TooltipText(gettext.Get("Add to Collection")).
 		IconName("heart-outline-thick-symbolic").
 		WithCSSClass("flat").
 		ConnectConstruct(func(b *gtk.Button) {
@@ -122,9 +121,11 @@ func favouriteButton() schwifty.Button {
 							if isFavourited.CurrentValue() {
 								b.SetIconName("heart-filled-symbolic")
 								b.AddCssClass("accent")
+								b.SetTooltipText(gettext.Get("Remove from Collection"))
 							} else {
 								b.SetIconName("heart-outline-thick-symbolic")
 								b.RemoveCssClass("accent")
+								b.SetTooltipText(gettext.Get("Add to Collection"))
 							}
 						}
 					})
@@ -141,9 +142,11 @@ func favouriteButton() schwifty.Button {
 						if value {
 							b.SetIconName("heart-filled-symbolic")
 							b.AddCssClass("accent")
+							b.SetTooltipText(gettext.Get("Remove from Collection"))
 						} else {
 							b.SetIconName("heart-outline-thick-symbolic")
 							b.RemoveCssClass("accent")
+							b.SetTooltipText(gettext.Get("Add to Collection"))
 						}
 					})
 				})

@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: v1.0.0-26-g6264155\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-02-17 15:12+0100\n"
+"POT-Creation-Date: 2026-02-17 15:39+0100\n"
 "PO-Revision-Date: 2026-02-15 23:06+0000\n"
 "Last-Translator: LukaszH77 <lukasz@horodecki.net>\n"
 "Language-Team: Polish <https://translate.codeberg.org/projects/tonearm/"
@@ -62,7 +62,7 @@ msgstr ""
 msgid "Add playlist to queue"
 msgstr ""
 
-#: internal/ui/components/favourite_button/favourite_button.go:30
+#: internal/ui/components/favourite_button/favourite_button.go:54
 msgid "Add to Collection"
 msgstr "Dodaj do kolekcji"
 
@@ -294,7 +294,7 @@ msgstr "Skopiowano do schowka adres URL artysty."
 msgid "Copied playlist URL to clipboard."
 msgstr "Skopiowano do schowka adres URL playlisty."
 
-#: internal/ui/components/player/component_action_row.go:248
+#: internal/ui/components/player/component_action_row.go:251
 msgid "Copied track URL to clipboard."
 msgstr "Skopiowano do schowka adres URL utworu."
 
@@ -310,7 +310,7 @@ msgstr "Skopiuj adres URL artysty"
 msgid "Copy Playlist URL"
 msgstr "Skopiuj adres URL playlisty"
 
-#: internal/ui/components/player/component_action_row.go:237
+#: internal/ui/components/player/component_action_row.go:240
 msgid "Copy Track URL"
 msgstr "Skopiuj adres URL utworu"
 
@@ -502,7 +502,7 @@ msgstr "Przejdź wstecz"
 msgid "Navigate to %s"
 msgstr "Przejdź do %s"
 
-#: internal/ui/components/player/component_action_row.go:196
+#: internal/ui/components/player/component_action_row.go:199
 msgid "Navigate to Album"
 msgstr "Przejdź do albumu"
 
@@ -522,7 +522,7 @@ msgstr "Przejdź do eksplorowania"
 msgid "Navigate to Home"
 msgstr "Przejdź do strony głównej"
 
-#: internal/ui/components/player/component_action_row.go:210
+#: internal/ui/components/player/component_action_row.go:213
 msgid "Navigate to Track Mix"
 msgstr "Przejdź do radia utworu"
 
@@ -550,7 +550,7 @@ msgstr "Brak utworu"
 msgid "No lyrics available"
 msgstr "Brak dostępnego tekstu utworu"
 
-#: internal/ui/components/player/component_action_row.go:227
+#: internal/ui/components/player/component_action_row.go:230
 msgid "No mix found for the current track"
 msgstr "Brak radia dla aktualnego utworu"
 
@@ -688,6 +688,10 @@ msgstr "Wyjdź"
 #: internal/ui/components/queue/queue.go:70
 msgid "Remove Track from Queue"
 msgstr "Usuń utwór z kolejki"
+
+#: internal/ui/components/favourite_button/favourite_button.go:50
+msgid "Remove from Collection"
+msgstr ""
 
 #: internal/features/scrobbling/lastfm.go:56
 msgid "Reopen Browser"
@@ -861,7 +865,7 @@ msgstr "Niewspierana aktywność"
 msgid "View All"
 msgstr "Wszystkie"
 
-#: internal/ui/components/player/component_action_row.go:190
+#: internal/ui/components/player/component_action_row.go:193
 msgid "Volume"
 msgstr "Głośność"
 

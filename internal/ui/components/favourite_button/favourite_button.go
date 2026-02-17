@@ -27,7 +27,6 @@ func FavouriteButton(favouriteCache state.FavouriteCache, resourceID string) gtk
 	isLoading := signals.NewStatefulSignal(false)
 
 	return Button().
-		TooltipText(gettext.Get("Add to Collection")).
 		IconName("heart-outline-thick-symbolic").
 		WithCSSClass("flat").
 		BindSensitive(secrets.SignedInState).
@@ -48,9 +47,11 @@ func FavouriteButton(favouriteCache state.FavouriteCache, resourceID string) gtk
 							if isFavourited.CurrentValue() {
 								b.SetIconName("heart-filled-symbolic")
 								b.AddCssClass("accent")
+								b.SetTooltipText(gettext.Get("Remove from Collection"))
 							} else {
 								b.SetIconName("heart-outline-thick-symbolic")
 								b.RemoveCssClass("accent")
+								b.SetTooltipText(gettext.Get("Add to Collection"))
 							}
 						}
 					})
@@ -81,9 +82,11 @@ func FavouriteButton(favouriteCache state.FavouriteCache, resourceID string) gtk
 						if value {
 							b.SetIconName("heart-filled-symbolic")
 							b.AddCssClass("accent")
+							b.SetTooltipText(gettext.Get("Remove from Collection"))
 						} else {
 							b.SetIconName("heart-outline-thick-symbolic")
 							b.RemoveCssClass("accent")
+							b.SetTooltipText(gettext.Get("Add to Collection"))
 						}
 					})
 				})
