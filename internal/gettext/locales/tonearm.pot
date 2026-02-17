@@ -6,9 +6,9 @@
 #, fuzzy
 msgid ""
 msgstr ""
-"Project-Id-Version: v1.3.1-22-g20894df\n"
+"Project-Id-Version: v1.3.1-21-g178ac0e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-02-17 14:24+0100\n"
+"POT-Creation-Date: 2026-02-17 15:09+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -288,6 +288,14 @@ msgstr ""
 msgid "Default Page"
 msgstr ""
 
+#: internal/ui/components/player/component_controls.go:86
+msgid "Disable Repeat"
+msgstr ""
+
+#: internal/ui/components/player/component_controls.go:96
+msgid "Disable Shuffle"
+msgstr ""
+
 #: internal/ui/window_popups.go:21
 msgid "Don't show again"
 msgstr ""
@@ -306,6 +314,10 @@ msgstr ""
 
 #: internal/ui/window_preferences.go:118
 msgid "Enable ListenBrainz"
+msgstr ""
+
+#: internal/ui/components/player/component_controls.go:99
+msgid "Enable Shuffle"
 msgstr ""
 
 #: internal/ui/window_preferences.go:57
@@ -492,7 +504,7 @@ msgstr ""
 msgid "Navigation Behaviour"
 msgstr ""
 
-#: internal/ui/components/player/component_controls.go:120
+#: internal/ui/components/player/component_controls.go:125
 msgid "Next"
 msgstr ""
 
@@ -553,7 +565,7 @@ msgstr ""
 msgid "Personal Mix"
 msgstr ""
 
-#: internal/ui/components/player/component_controls.go:112
+#: internal/ui/components/player/component_controls.go:117
 msgid "Play / Pause"
 msgstr ""
 
@@ -613,7 +625,7 @@ msgstr ""
 msgid "Preferred Replay Gain"
 msgstr ""
 
-#: internal/ui/components/player/component_controls.go:107
+#: internal/ui/components/player/component_controls.go:112
 msgid "Previous"
 msgstr ""
 
@@ -631,6 +643,14 @@ msgstr ""
 
 #: internal/features/scrobbling/lastfm.go:56
 msgid "Reopen Browser"
+msgstr ""
+
+#: internal/ui/components/player/component_controls.go:78
+msgid "Repeat Queue"
+msgstr ""
+
+#: internal/ui/components/player/component_controls.go:82
+msgid "Repeat Track"
 msgstr ""
 
 #: internal/ui/components/linking/linking.go:59
@@ -747,14 +767,6 @@ msgstr ""
 
 #: internal/ui/routes/feed.go:77
 msgid "Today"
-msgstr ""
-
-#: internal/ui/components/player/component_controls.go:125
-msgid "Toggle Repeat"
-msgstr ""
-
-#: internal/ui/components/player/component_controls.go:101
-msgid "Toggle Shuffle"
 msgstr ""
 
 #: internal/ui/window_content.go:44

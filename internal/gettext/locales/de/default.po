@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: 1\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-02-17 14:24+0100\n"
+"POT-Creation-Date: 2026-02-17 15:09+0100\n"
 "PO-Revision-Date: 2026-02-15 01:00+0000\n"
 "Last-Translator: drafolin <drafolin@noreply.codeberg.org>\n"
 "Language-Team: German <https://translate.codeberg.org/projects/tonearm/"
@@ -314,6 +314,14 @@ msgstr "Titellink kopieren"
 msgid "Default Page"
 msgstr "Hauptseite"
 
+#: internal/ui/components/player/component_controls.go:86
+msgid "Disable Repeat"
+msgstr ""
+
+#: internal/ui/components/player/component_controls.go:96
+msgid "Disable Shuffle"
+msgstr ""
+
 #: internal/ui/window_popups.go:21
 msgid "Don't show again"
 msgstr "Nicht erneut anzeigen"
@@ -333,6 +341,10 @@ msgstr "Last.fm aktivieren"
 #: internal/ui/window_preferences.go:118
 msgid "Enable ListenBrainz"
 msgstr "ListenBrainz aktivieren"
+
+#: internal/ui/components/player/component_controls.go:99
+msgid "Enable Shuffle"
+msgstr ""
 
 #: internal/ui/window_preferences.go:57
 msgid "Enable autoplay"
@@ -521,7 +533,7 @@ msgstr "Navigation"
 msgid "Navigation Behaviour"
 msgstr "Navigation"
 
-#: internal/ui/components/player/component_controls.go:120
+#: internal/ui/components/player/component_controls.go:125
 msgid "Next"
 msgstr "Nächster Titel"
 
@@ -590,7 +602,7 @@ msgstr "Leistung"
 msgid "Personal Mix"
 msgstr "Persönlicher Mix"
 
-#: internal/ui/components/player/component_controls.go:112
+#: internal/ui/components/player/component_controls.go:117
 msgid "Play / Pause"
 msgstr "Play / Pause"
 
@@ -652,7 +664,7 @@ msgstr "Einstellungen"
 msgid "Preferred Replay Gain"
 msgstr "Bevorzugter ReplayGain"
 
-#: internal/ui/components/player/component_controls.go:107
+#: internal/ui/components/player/component_controls.go:112
 msgid "Previous"
 msgstr "Vorheriger Titel"
 
@@ -671,6 +683,14 @@ msgstr "Titel von der Warteschlange entfernen"
 #: internal/features/scrobbling/lastfm.go:56
 msgid "Reopen Browser"
 msgstr "Browser erneut öffnen"
+
+#: internal/ui/components/player/component_controls.go:78
+msgid "Repeat Queue"
+msgstr ""
+
+#: internal/ui/components/player/component_controls.go:82
+msgid "Repeat Track"
+msgstr ""
 
 #: internal/ui/components/linking/linking.go:59
 msgid "Scan this QR code to sign into your TIDAL account."
@@ -792,14 +812,6 @@ msgstr "Diese Woche"
 msgid "Today"
 msgstr "Heute"
 
-#: internal/ui/components/player/component_controls.go:125
-msgid "Toggle Repeat"
-msgstr "Wiederholungsmodus ein-/ausschalten"
-
-#: internal/ui/components/player/component_controls.go:101
-msgid "Toggle Shuffle"
-msgstr "Zufallsmodus ein-/ausschalten"
-
 #: internal/ui/window_content.go:44
 msgid "Toggle Sidebar"
 msgstr "Seitenleiste ein/ausklappen"
@@ -887,6 +899,12 @@ msgstr ""
 #: internal/ui/window_about.go:132
 msgid "translator-credits"
 msgstr "Nila The Dragon https://github.com/NilaTheDragon"
+
+#~ msgid "Toggle Repeat"
+#~ msgstr "Wiederholungsmodus ein-/ausschalten"
+
+#~ msgid "Toggle Shuffle"
+#~ msgstr "Zufallsmodus ein-/ausschalten"
 
 #~ msgid "No album could be shared."
 #~ msgstr "Es konnte kein Album geteilt werden."
