@@ -118,5 +118,9 @@ func playTracklist(tracks []tonearm.Track, shuffle bool, startingPosition int) (
 		})
 	}
 
+	if !shuffle {
+		SetShuffle(false)
+	}
+
 	return nextTrack, nil
 }
