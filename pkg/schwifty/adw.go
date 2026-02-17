@@ -6,6 +6,8 @@ type AlertDialog = adw.AlertDialog
 
 type Bin = adw.Bin
 
+type ButtonRow = adw.ButtonRow
+
 type Clamp = adw.Clamp
 
 type ComboRow = adw.ComboRow
