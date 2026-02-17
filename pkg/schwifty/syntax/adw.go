@@ -33,6 +33,12 @@ func Bin() adwbindings.Bin {
 	})
 }
 
+func ButtonRow() adwbindings.ButtonRow {
+	return managedWidget("ButtonRow", func() *adw.ButtonRow {
+		return adw.NewButtonRow()
+	})
+}
+
 func Clamp() adwbindings.Clamp {
 	return managedWidget("Clamp", func() *adw.Clamp {
 		return adw.NewClamp()
