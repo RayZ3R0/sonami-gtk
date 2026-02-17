@@ -179,7 +179,7 @@ func Playlist(playlistID string) *router.Response {
 									defer clipboard.Unref()
 
 									clipboard.SetText(playlist.URL())
-									notifications.OnToast.Notify(gettext.Get("Copied playlist URL to clipboard."))
+									notifications.OnToast.Notify(gettext.Get("Copied playlist URL to clipboard"))
 								}),
 						).
 							Spacing(10).

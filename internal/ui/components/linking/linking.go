@@ -56,7 +56,7 @@ func NewLinking(window *gtk.Window, code string, link string, cancel context.Can
 		slog.Error("could not create texture from bytes")
 	}
 
-	return AlertDialog(gettext.Get("Sign In"), gettext.Get("Scan this QR code to sign into your TIDAL account.")).
+	return AlertDialog(gettext.Get("Sign In"), gettext.Get("Scan this QR code to sign into your TIDAL account")).
 		WithCSSClass("no-response").
 		CanClose(false).
 		ConnectCloseAttempt(func(d adw.Dialog) {

@@ -146,11 +146,11 @@ msgid "Allow Tracklist Images"
 msgstr "Näita pilte loendivaadetes"
 
 #: internal/ui/window_preferences.go:235
-msgid "An error occured while logging in to Last.fm"
+msgid "An error occurred while logging in to Last.fm"
 msgstr "Last.fm-i teenusesse sisselogimisel tekkis viga"
 
 #: internal/ui/window_preferences.go:210
-msgid "An error occured while logging out of Last.fm"
+msgid "An error occurred while logging out of Last.fm"
 msgstr "Last.fm-i teenusest väljalogimisel tekkis viga"
 
 #: internal/ui/routes/album.go:162
@@ -282,20 +282,20 @@ msgid "Continue the authentication process in your browser."
 msgstr "Jätka autentimist oma veebibrauseris."
 
 #: internal/ui/routes/album.go:204
-msgid "Copied album URL to clipboard."
-msgstr "Albumi võrguaadress on kopeeritud lõikelauale."
+msgid "Copied album URL to clipboard"
+msgstr "Albumi võrguaadress on kopeeritud lõikelauale"
 
 #: internal/ui/routes/artist.go:138
-msgid "Copied artist URL to clipboard."
-msgstr "Esitaja võrguaadress on kopeeritud lõikelauale."
+msgid "Copied artist URL to clipboard"
+msgstr "Esitaja võrguaadress on kopeeritud lõikelauale"
 
 #: internal/ui/routes/playlist.go:191
-msgid "Copied playlist URL to clipboard."
-msgstr "Esitusloendi võrguaadress on kopeeritud lõikelauale."
+msgid "Copied playlist URL to clipboard"
+msgstr "Esitusloendi võrguaadress on kopeeritud lõikelauale"
 
 #: internal/ui/components/player/component_action_row.go:251
-msgid "Copied track URL to clipboard."
-msgstr "Loo võrguaadress on kopeeritud lõikelauale."
+msgid "Copied track URL to clipboard"
+msgstr "Loo võrguaadress on kopeeritud lõikelauale"
 
 #: internal/ui/routes/album.go:194
 msgid "Copy Album URL"
@@ -330,7 +330,7 @@ msgid "Don't show again"
 msgstr "Ära näita enam uuesti"
 
 #: internal/ui/routes/search.go:33
-msgid "E.g. Fox Stevenson"
+msgid "For example, Fox Stevenson"
 msgstr "Näiteks Gary Moore"
 
 #: internal/ui/routes/feed.go:155
@@ -422,11 +422,11 @@ msgid "ListenBrainz API URL"
 msgstr "ListenBrainzi API võrguaadress"
 
 #: internal/ui/window_preferences.go:144
-msgid "Log in to Last.fm"
-msgstr "Logi Last.fm-i sisse"
+msgid "Log In to Last.fm…"
+msgstr "Logi Last.fm-i sisse…"
 
 #: internal/ui/window_preferences.go:153
-msgid "Log out of Last.fm"
+msgid "Log Out of Last.fm"
 msgstr "Logi Last.fm-ist välja"
 
 #: internal/ui/window_preferences.go:251
@@ -705,19 +705,19 @@ msgid "Repeat Track"
 msgstr ""
 
 #: internal/ui/components/linking/linking.go:59
-msgid "Scan this QR code to sign into your TIDAL account."
-msgstr "Oma TIDAL-i kontoga sisselogimiseks skaneeri seda QR-koodi."
+msgid "Scan this QR code to sign into your TIDAL account"
+msgstr "Oma TIDAL-i kontoga sisselogimiseks skaneeri seda QR-koodi"
 
 #: internal/ui/window_preferences.go:265
 msgid "Scrobbling"
 msgstr "Kraasimine"
 
 #: internal/ui/components/horizontal_list/horizontal_list.go:65
-msgid "Scroll to the left"
+msgid "Scroll to the Left"
 msgstr "Keri vasakule"
 
 #: internal/ui/components/horizontal_list/horizontal_list.go:54
-msgid "Scroll to the right"
+msgid "Scroll to the Right"
 msgstr "Keri paremale"
 
 #: internal/ui/routes/search/albums.go:32
@@ -805,7 +805,7 @@ msgstr ""
 "otsinguribale."
 
 #: internal/ui/components/lyrics/lyrics.go:450
-msgid "Sync with track"
+msgid "Sync With Track"
 msgstr "Sünkrooni looga"
 
 #: internal/router/handler_notfound.go:13

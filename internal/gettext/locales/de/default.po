@@ -141,11 +141,11 @@ msgid "Allow Tracklist Images"
 msgstr "Bilder bei Titellisten"
 
 #: internal/ui/window_preferences.go:235
-msgid "An error occured while logging in to Last.fm"
+msgid "An error occurred while logging in to Last.fm"
 msgstr "Während dem Anmeldevorgang bei Last.fm ist ein Fehler aufgetreten"
 
 #: internal/ui/window_preferences.go:210
-msgid "An error occured while logging out of Last.fm"
+msgid "An error occurred while logging out of Last.fm"
 msgstr "Während dem Abmeldevorgang bei Last.fm ist ein Fehler aufgetreten"
 
 #: internal/ui/routes/album.go:162
@@ -278,20 +278,20 @@ msgid "Continue the authentication process in your browser."
 msgstr "Fahre mit dem Authentifizierungsprozess in deinem Browser fort."
 
 #: internal/ui/routes/album.go:204
-msgid "Copied album URL to clipboard."
-msgstr "Album-URL in die Zwischenablage kopiert."
+msgid "Copied album URL to clipboard"
+msgstr "Album-URL in die Zwischenablage kopiert"
 
 #: internal/ui/routes/artist.go:138
-msgid "Copied artist URL to clipboard."
-msgstr "Profillink kopiert."
+msgid "Copied artist URL to clipboard"
+msgstr "Profillink kopiert"
 
 #: internal/ui/routes/playlist.go:191
-msgid "Copied playlist URL to clipboard."
-msgstr "Playlistlink kopiert."
+msgid "Copied playlist URL to clipboard"
+msgstr "Playlistlink kopiert"
 
 #: internal/ui/components/player/component_action_row.go:251
-msgid "Copied track URL to clipboard."
-msgstr "Titellink kopiert."
+msgid "Copied track URL to clipboard"
+msgstr "Titellink kopiert"
 
 #: internal/ui/routes/album.go:194
 msgid "Copy Album URL"
@@ -327,8 +327,8 @@ msgid "Don't show again"
 msgstr "Nicht erneut anzeigen"
 
 #: internal/ui/routes/search.go:33
-msgid "E.g. Fox Stevenson"
-msgstr "z.B. Fox Stevenson"
+msgid "For example, Fox Stevenson"
+msgstr "Zum Beispiel, Fox Stevenson"
 
 #: internal/ui/routes/feed.go:155
 msgid "EP by %s"
@@ -420,11 +420,11 @@ msgid "ListenBrainz API URL"
 msgstr "ListenBrainz API URL"
 
 #: internal/ui/window_preferences.go:144
-msgid "Log in to Last.fm"
-msgstr "Bei Last.fm anmelden"
+msgid "Log In to Last.fm…"
+msgstr "Bei Last.fm anmelden…"
 
 #: internal/ui/window_preferences.go:153
-msgid "Log out of Last.fm"
+msgid "Log Out of Last.fm"
 msgstr "Bei Last.fm abmelden"
 
 #: internal/ui/window_preferences.go:251
@@ -705,19 +705,19 @@ msgid "Repeat Track"
 msgstr ""
 
 #: internal/ui/components/linking/linking.go:59
-msgid "Scan this QR code to sign into your TIDAL account."
-msgstr "Scanne diesen QR Code um dich bei TIDAL anzumelden."
+msgid "Scan this QR code to sign into your TIDAL account"
+msgstr "Scanne diesen QR Code um dich bei TIDAL anzumelden"
 
 #: internal/ui/window_preferences.go:265
 msgid "Scrobbling"
 msgstr "Scrobbling"
 
 #: internal/ui/components/horizontal_list/horizontal_list.go:65
-msgid "Scroll to the left"
+msgid "Scroll to the Left"
 msgstr "Nach links scrollen"
 
 #: internal/ui/components/horizontal_list/horizontal_list.go:54
-msgid "Scroll to the right"
+msgid "Scroll to the Right"
 msgstr "Nach rechts scrollen"
 
 #: internal/ui/routes/search/albums.go:32
@@ -805,7 +805,7 @@ msgstr ""
 "suchen."
 
 #: internal/ui/components/lyrics/lyrics.go:450
-msgid "Sync with track"
+msgid "Sync With Track"
 msgstr "Mit Titel synchronisieren"
 
 #: internal/router/handler_notfound.go:13

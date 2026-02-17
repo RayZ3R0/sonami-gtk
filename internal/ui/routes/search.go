@@ -30,7 +30,7 @@ func init() {
 				Child(
 					SearchEntry().
 						HExpand(true).
-						PlaceholderText(gettext.Get("E.g. Fox Stevenson")).
+						PlaceholderText(gettext.Get("For example, Fox Stevenson")).
 						SearchDelay(1000).
 						ConnectActivate(func(se gtk.SearchEntry) {
 							searchState.SetValue(true)

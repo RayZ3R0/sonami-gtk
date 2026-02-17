@@ -192,7 +192,7 @@ func Album(albumId string) *router.Response {
 									defer clipboard.Unref()
 
 									clipboard.SetText(album.URL())
-									notifications.OnToast.Notify(gettext.Get("Copied album URL to clipboard."))
+									notifications.OnToast.Notify(gettext.Get("Copied album URL to clipboard"))
 								}),
 							artistButton,
 						).

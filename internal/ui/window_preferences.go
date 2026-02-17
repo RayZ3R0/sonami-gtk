@@ -141,7 +141,7 @@ func buildPreferencesScrobbling(dialog *adw.PreferencesDialog) adwbindings.Prefe
 					settings.Scrobbling().BindEnableLastFM(&sr.Object, "active")
 				}),
 			ActionRow().
-				Title(gettext.Get("Log in to Last.fm")).
+				Title(gettext.Get("Log In to Last.fm…")).
 				Subtitle(gettext.Get("You are currently not logged in to Last.fm")).
 				ConnectConstruct(func(ar *adw.ActionRow) {
 					actionRowRef := tracking.NewWeakRef(ar)
@@ -150,7 +150,7 @@ func buildPreferencesScrobbling(dialog *adw.PreferencesDialog) adwbindings.Prefe
 						if b {
 							actionRowRef.Use(func(obj *gobject.Object) {
 								ar := adw.ActionRowNewFromInternalPtr(obj.Ptr)
-								ar.SetTitle(gettext.Get("Log out of Last.fm"))
+								ar.SetTitle(gettext.Get("Log Out of Last.fm"))
 
 								if user, err := scrobbling.LastFmScrobbler.Client.User.SelfInfo(); err != nil {
 									slog.Error("error while fetching Last.fm user", "error", err, "component", "window_preferences")
@@ -165,7 +165,7 @@ func buildPreferencesScrobbling(dialog *adw.PreferencesDialog) adwbindings.Prefe
 						} else {
 							actionRowRef.Use(func(obj *gobject.Object) {
 								ar := adw.ActionRowNewFromInternalPtr(obj.Ptr)
-								ar.SetTitle(gettext.Get("Log in to Last.fm"))
+								ar.SetTitle(gettext.Get("Log In to Last.fm…"))
 								ar.SetSubtitle(gettext.Get("You are currently not logged in to Last.fm"))
 							})
 						}
@@ -207,7 +207,7 @@ func buildPreferencesScrobbling(dialog *adw.PreferencesDialog) adwbindings.Prefe
 											dialogRef.Use(func(obj *gobject.Object) {
 												dialog := adw.PreferencesDialogNewFromInternalPtr(obj.Ptr)
 
-												toast := adw.NewToast(gettext.Get("An error occured while logging out of Last.fm"))
+												toast := adw.NewToast(gettext.Get("An error occurred while logging out of Last.fm"))
 												toast.SetTimeout(3)
 												dialog.AddToast(toast)
 											})
@@ -232,7 +232,7 @@ func buildPreferencesScrobbling(dialog *adw.PreferencesDialog) adwbindings.Prefe
 											dialogRef.Use(func(obj *gobject.Object) {
 												dialog := adw.PreferencesDialogNewFromInternalPtr(obj.Ptr)
 
-												toast := adw.NewToast(gettext.Get("An error occured while logging in to Last.fm"))
+												toast := adw.NewToast(gettext.Get("An error occurred while logging in to Last.fm"))
 												toast.SetTimeout(3)
 												dialog.AddToast(toast)
 											})

@@ -70,7 +70,7 @@ func (lw *loadingWidget) SetValue(v any) {
 
 var lyricsList = NewLoadingWidget(
 	HStack(
-		Label("No lyrics available").
+		Label(gettext.Get("No lyrics available")).
 			HAlign(gtk.AlignCenterValue).
 			VAlign(gtk.AlignCenterValue).
 			HExpand(true).
@@ -447,7 +447,7 @@ func NewLyricsPanel() schwifty.Box {
 		HAlign(gtk.AlignEndValue).
 		VAlign(gtk.AlignEndValue).
 		Margin(7).
-		TooltipText(gettext.Get("Sync with track")).
+		TooltipText(gettext.Get("Sync With Track")).
 		BindVisible(userManuallyScrolled).
 		ConnectClicked(func(b gtk.Button) {
 			if activeLyricButtonPtr := activeLyricIndex.Value(); activeLyricButtonPtr != 0 {

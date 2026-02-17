@@ -135,7 +135,7 @@ func Artist(artistId string) *router.Response {
 									defer clipboard.Unref()
 
 									clipboard.SetText(fmt.Sprintf("https://tidal.com/artist/%s", artistId))
-									notifications.OnToast.Notify(gettext.Get("Copied artist URL to clipboard."))
+									notifications.OnToast.Notify(gettext.Get("Copied artist URL to clipboard"))
 								}),
 						).
 							Spacing(10).
