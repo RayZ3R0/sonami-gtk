@@ -9,6 +9,7 @@ import (
 	"codeberg.org/dergs/tonearm/internal/player"
 	"codeberg.org/dergs/tonearm/internal/signals"
 	"codeberg.org/dergs/tonearm/pkg/schwifty"
+	"codeberg.org/dergs/tonearm/pkg/schwifty/callback"
 	"codeberg.org/dergs/tonearm/pkg/schwifty/factory"
 	"codeberg.org/dergs/tonearm/pkg/schwifty/state"
 	. "codeberg.org/dergs/tonearm/pkg/schwifty/syntax"
@@ -29,10 +30,13 @@ type TrackList struct {
 
 	columnFuncs []ColumnFunc
 	lock        sync.Mutex
+	sizeGroups  []*gtk.SizeGroup
 	store       *gio.ListStore
 	trackList   []tonearm.Track
 
-	trackBeingMoved   *tonearm.Track
+	clickHandler func(track tonearm.Track, position int)
+
+	trackBeingMoved   tonearm.Track
 	movingSourceIndex int
 	movingTargetIndex int
 	reorderable       *state.State[bool]
@@ -70,6 +74,10 @@ func (t *TrackList) Clear() {
 	t.trackList = make([]tonearm.Track, 0)
 }
 
+func (t *TrackList) SetClickHandler(cb func(track tonearm.Track, position int)) {
+	t.clickHandler = cb
+}
+
 func (t *TrackList) SetReorderCallback(cb func(sourceIndex, targetIndex int, track tonearm.Track)) {
 	t.reorderCallback = cb
 	t.reorderable.SetValue(cb != nil)
@@ -80,12 +88,12 @@ func (t *TrackList) onBind(_ gtk.SignalListItemFactory, listItem *gtk.ListItem) 
 	container := adw.BinNewFromInternalPtr(listItem.GetChild().GoPointer())
 	defer container.Unref()
 
-	grid := Grid().ConnectConstruct(func(g *gtk.Grid) {
-		var ref = tracking.NewWeakRef(g)
+	body := HStack().ConnectConstruct(func(b *gtk.Box) {
+		var ref = tracking.NewWeakRef(b)
 		player.TrackChanged.On(func(t tonearm.Track) bool {
 			return signals.ContinueIf(
 				ref.Use(func(obj *gobject.Object) {
-					grid := gtk.GridNewFromInternalPtr(obj.Ptr)
+					grid := gtk.BoxNewFromInternalPtr(obj.Ptr)
 					if t != nil && track.ID() == t.ID() {
 						grid.AddCssClass("playing")
 					} else {
@@ -94,15 +102,18 @@ func (t *TrackList) onBind(_ gtk.SignalListItemFactory, listItem *gtk.ListItem) 
 				}),
 			)
 		})
-	})()
-	grid.SetColumnHomogeneous(true)
+	})
+	for i, columnFunc := range t.columnFuncs {
+		grid := gtk.NewGrid()
+		grid.SetValign(gtk.AlignCenterValue)
+		defer grid.Unref()
+		columnFunc(track, grid, int(listItem.GetPosition()), 0)
 
-	width := 0
-	for _, columnFunc := range t.columnFuncs {
-		width += columnFunc(track, grid, int(listItem.GetPosition()), width)
+		t.sizeGroups[i].AddWidget(&grid.Widget)
+		body = body.Append(grid)
 	}
 
-	container.SetChild(&grid.Widget)
+	container.SetChild(body.ToGTK())
 }
 
 func (t *TrackList) onUnbind(_ gtk.SignalListItemFactory, listItem *gtk.ListItem) {
@@ -112,7 +123,7 @@ func (t *TrackList) onUnbind(_ gtk.SignalListItemFactory, listItem *gtk.ListItem
 }
 
 func (t *TrackList) onSetup(_ gtk.SignalListItemFactory, listItem *gtk.ListItem) {
-	container := Bin()()
+	container := adw.NewBin()
 	defer container.Unref()
 
 	var dragSource *gtk.DragSource
@@ -125,7 +136,7 @@ func (t *TrackList) onSetup(_ gtk.SignalListItemFactory, listItem *gtk.ListItem)
 					t.movingTargetIndex = int(listItem.GetPosition())
 
 					track := t.trackList[t.movingSourceIndex]
-					t.trackBeingMoved = &track
+					t.trackBeingMoved = track
 					return *gdk.NewContentProviderTyped(gobject.TypePointerVal, &track)
 				}).
 				ConnectDragBegin(func(dragSource gtk.DragSource, drag gdk.Drag) {
@@ -155,7 +166,7 @@ func (t *TrackList) onSetup(_ gtk.SignalListItemFactory, listItem *gtk.ListItem)
 					t.trackList = append(t.trackList[:t.movingTargetIndex], t.trackList[t.movingTargetIndex+1:]...)
 					t.store.Remove(uint(t.movingTargetIndex))
 
-					t.trackList = append(t.trackList[:t.movingSourceIndex], append([]tonearm.Track{*t.trackBeingMoved}, t.trackList[t.movingSourceIndex:]...)...)
+					t.trackList = append(t.trackList[:t.movingSourceIndex], append([]tonearm.Track{t.trackBeingMoved}, t.trackList[t.movingSourceIndex:]...)...)
 					t.store.Insert(uint(t.movingSourceIndex), &gtk.NewStringObject("").Object)
 
 					t.movingSourceIndex = -1
@@ -172,37 +183,51 @@ func (t *TrackList) onSetup(_ gtk.SignalListItemFactory, listItem *gtk.ListItem)
 	})
 
 	listItem.SetChild(&container.Widget)
-	listItem.SetActivatable(false)
 }
 
 func NewTrackList(columnFuncs ...ColumnFunc) *TrackList {
-	t := &TrackList{
+	tracklist := &TrackList{
 		columnFuncs: columnFuncs,
-		trackList:   make([]tonearm.Track, 0),
+		sizeGroups:  []*gtk.SizeGroup{},
 		store:       gio.NewListStore(gtk.StringObjectGLibType()),
+		trackList:   make([]tonearm.Track, 0),
+		clickHandler: func(track tonearm.Track, position int) {
+			player.PlayTrack(track)
+		},
 
 		movingSourceIndex: -1,
 		movingTargetIndex: -1,
 		reorderable:       state.NewStateful(false),
 	}
 
-	factory := factory.NewSignalListItemFactory().
-		ConnectSetup(t.onSetup).
-		ConnectBind(t.onBind).
-		ConnectUnbind(t.onUnbind)()
+	for range columnFuncs {
+		sizeGroup := gtk.NewSizeGroup(gtk.SizeGroupHorizontalValue)
+		tracklist.sizeGroups = append(tracklist.sizeGroups, sizeGroup)
+	}
 
-	listView := gtk.NewListView(gtk.NewNoSelection(t.store), &factory.ListItemFactory)
-	listView.SetSingleClickActivate(false)
+	factory := factory.NewSignalListItemFactory().
+		ConnectSetup(tracklist.onSetup).
+		ConnectBind(tracklist.onBind).
+		ConnectUnbind(tracklist.onUnbind)()
+
+	listView := gtk.NewListView(gtk.NewNoSelection(tracklist.store), &factory.ListItemFactory)
+	listView.SetSingleClickActivate(true)
 	listView.SetOrientation(gtk.OrientationVerticalValue)
 
+	listView.ConnectActivate(&callback.ListViewActivate)
+	callback.HandleCallback(listView.Object, "activate", func(_ gtk.ListView, index uint) {
+		track := tracklist.trackList[index]
+		tracklist.clickHandler(track, int(index))
+	})
+
 	var dropTarget *gtk.DropTargetAsync
-	t.reorderable.AddCallback(func(newValue bool) {
+	tracklist.reorderable.AddCallback(func(newValue bool) {
 		if newValue && dropTarget == nil {
 			dropTarget = DropTargetAsync(gdk.NewContentFormatsForGtype(gobject.TypePointerVal), gdk.ActionMoveValue).
 				ConnectAccept(func(dropTarget gtk.DropTargetAsync, drop gdk.Drop) bool {
 					drag := drop.GetDrag()
 					defer drag.Unref()
-					if drag.GetData("t") != uintptr(unsafe.Pointer(t)) {
+					if drag.GetData("t") != uintptr(unsafe.Pointer(tracklist)) {
 						return false
 					}
 
@@ -212,20 +237,20 @@ func NewTrackList(columnFuncs ...ColumnFunc) *TrackList {
 					height := listView.GetFirstChild().GetAllocatedHeight()
 					i := int(math.Floor(y / float64(height)))
 
-					if i != t.movingTargetIndex {
-						if i > len(t.trackList) {
+					if i != tracklist.movingTargetIndex {
+						if i > len(tracklist.trackList) {
 							return gdk.ActionNoneValue
 						}
-						trackList := slices.Clone(t.trackList)
-						if t.movingTargetIndex != -1 {
-							t.store.Remove(uint(t.movingTargetIndex))
-							trackList = append(t.trackList[:t.movingTargetIndex], t.trackList[t.movingTargetIndex+1:]...)
+						trackList := slices.Clone(tracklist.trackList)
+						if tracklist.movingTargetIndex != -1 {
+							tracklist.store.Remove(uint(tracklist.movingTargetIndex))
+							trackList = append(tracklist.trackList[:tracklist.movingTargetIndex], tracklist.trackList[tracklist.movingTargetIndex+1:]...)
 						}
 
-						t.trackList = append(trackList[:i], append([]tonearm.Track{*t.trackBeingMoved}, trackList[i:]...)...)
-						t.store.Insert(uint(i), &gtk.NewStringObject("").Object)
+						tracklist.trackList = append(trackList[:i], append([]tonearm.Track{tracklist.trackBeingMoved}, trackList[i:]...)...)
+						tracklist.store.Insert(uint(i), &gtk.NewStringObject("").Object)
 
-						t.movingTargetIndex = i
+						tracklist.movingTargetIndex = i
 					}
 
 					return gdk.ActionMoveValue
@@ -233,10 +258,10 @@ func NewTrackList(columnFuncs ...ColumnFunc) *TrackList {
 				ConnectDrop(func(dropTarget gtk.DropTargetAsync, drop gdk.Drop, x, y float64) bool {
 					drop.Finish(gdk.ActionMoveValue)
 
-					t.reorderCallback(t.movingSourceIndex, t.movingTargetIndex, *t.trackBeingMoved)
+					tracklist.reorderCallback(tracklist.movingSourceIndex, tracklist.movingTargetIndex, tracklist.trackBeingMoved)
 
-					t.movingSourceIndex = -1
-					t.movingTargetIndex = -1
+					tracklist.movingSourceIndex = -1
+					tracklist.movingTargetIndex = -1
 
 					return true
 				})()
@@ -247,6 +272,6 @@ func NewTrackList(columnFuncs ...ColumnFunc) *TrackList {
 		}
 	})
 
-	t.Widget = ManagedWidget(&listView.Widget).WithCSSClass("tracklist")
-	return t
+	tracklist.Widget = ManagedWidget(&listView.Widget).WithCSSClass("tracklist")
+	return tracklist
 }

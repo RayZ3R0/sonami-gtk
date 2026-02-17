@@ -83,7 +83,7 @@ func AddTracklistToUserQueue(tracklist []tonearm.Track) error {
 	return nil
 }
 
-func PlayTrack(trackId string) error {
+func PlayTrackID(trackId string) error {
 	setLoadingState()
 	track, err := resolveTrack(trackId)
 	if err != nil {
@@ -93,6 +93,26 @@ func PlayTrack(trackId string) error {
 
 	clearQueues()
 	err = playTrack(track)
+	if err != nil {
+		return err
+	}
+
+	SourceChanged.Notify(func(oldValue tonearm.PlaybackSource) tonearm.PlaybackSource {
+		return track
+	})
+
+	history.Push(&HistoryEntry{
+		TrackID: track.ID(),
+	})
+
+	return nil
+}
+
+func PlayTrack(track tonearm.Track) error {
+	setLoadingState()
+
+	clearQueues()
+	err := playTrack(track)
 	if err != nil {
 		return err
 	}

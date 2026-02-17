@@ -30,16 +30,9 @@ func tracks(query string) *router.Response {
 		return tracks
 	}, "tracks.albums.coverArt", "tracks.albums.artists")
 
-	page, err := pages.NewPaginatedTracklistPage(paginator, func() *tracklist.TrackList {
-		return tracklist.NewTrackList(
-			tracklist.GroupedColumn(2, gtk.AlignStartValue, tracklist.CoverColumn, tracklist.TitleAlbumColumn),
-			tracklist.ArtistsColumn,
-			tracklist.ExpandButtonColumn(1),
-			tracklist.GroupedColumn(1, gtk.AlignEndValue, tracklist.DurationColumn, tracklist.ControlsColumn),
-		)
-	}, func(tl *tracklist.TrackList) schwifty.BaseWidgetable {
-		return tl.VPadding(20).HMargin(40).VAlign(gtk.AlignStartValue)
-	})
+	page, err := pages.NewPaginatedTracklistPage(paginator, func(tl *tracklist.TrackList) schwifty.BaseWidgetable {
+		return tl.HMargin(40).VAlign(gtk.AlignStartValue)
+	}, tracklist.CoverColumn, tracklist.TitleAlbumColumn, tracklist.ArtistsColumn, tracklist.DurationColumn, tracklist.ControlsColumn)
 
 	return &router.Response{
 		PageTitle: gettext.Get("Search"),

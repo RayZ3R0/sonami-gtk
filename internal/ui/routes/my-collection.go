@@ -60,10 +60,9 @@ func MyCollection() *router.Response {
 	}
 
 	trackList := tracklist.NewTrackList(
-		tracklist.GroupedColumn(2, gtk.AlignStartValue, tracklist.CoverColumn, tracklist.TitleAlbumColumn),
+		tracklist.CoverColumn, tracklist.TitleAlbumColumn,
 		tracklist.ArtistsColumn,
-		tracklist.ExpandButtonColumn(1),
-		tracklist.GroupedColumn(1, gtk.AlignEndValue, tracklist.DurationColumn, tracklist.ControlsColumn),
+		tracklist.DurationColumn, tracklist.ControlsColumn,
 	)
 	for _, track := range userCollection.Included.Tracks(userCollection.Data.Relationships.Tracks.Data...) {
 		trackList.AddTrack(openapi.NewTrack(track))

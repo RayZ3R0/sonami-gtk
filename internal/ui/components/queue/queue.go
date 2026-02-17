@@ -60,23 +60,22 @@ func init() {
 
 func NewQueue() schwifty.Box {
 	trackList := tracklist.NewTrackList(
-		tracklist.GroupedColumn(3, gtk.AlignStartValue, tracklist.CoverColumn, tracklist.TitleAlbumColumn),
-		tracklist.ExpandCustomButtonColumn(1, func(_ string, position, _ int) {
-			go player.SkipThroughQueue(player.UserQueue, position)
+		tracklist.CoverColumn, tracklist.TitleAlbumColumn,
+		tracklist.CustomWidgetButtonColumn(func(_ string, position, _ int) *gtk.Widget {
+			return Button().
+				TooltipText(gettext.Get("Remove Track from Queue")).
+				IconName("user-trash-symbolic").
+				WithCSSClass("flat").
+				MarginEnd(15).
+				ConnectClicked(func(b gtk.Button) {
+					go player.UserQueue.RemoveAt(position)
+				}).
+				ToGTK()
 		}),
-		tracklist.GroupedColumn(1, gtk.AlignCenterValue,
-			tracklist.CustomWidgetButtonColumn(func(_ string, position, _ int) *gtk.Widget {
-				return Button().
-					TooltipText(gettext.Get("Remove Track from Queue")).
-					IconName("user-trash-symbolic").
-					WithCSSClass("flat").
-					ConnectClicked(func(b gtk.Button) {
-						go player.UserQueue.RemoveAt(position)
-					}).
-					ToGTK()
-			}),
-		),
 	)
+	trackList.SetClickHandler(func(track tonearm.Track, position int) {
+		go player.SkipThroughQueue(player.UserQueue, position)
+	})
 	trackList.BindTracks(userQueueState)
 	trackList.SetReorderCallback(func(sourceIndex, targetIndex int, track tonearm.Track) {
 		player.UserQueue.Entries().Notify(func(oldValue []tonearm.Track) []tonearm.Track {
@@ -88,23 +87,22 @@ func NewQueue() schwifty.Box {
 	})
 
 	trackListBase := tracklist.NewTrackList(
-		tracklist.GroupedColumn(3, gtk.AlignStartValue, tracklist.CoverColumn, tracklist.TitleAlbumColumn),
-		tracklist.ExpandCustomButtonColumn(1, func(_ string, position, _ int) {
-			go player.SkipThroughQueue(player.BaseQueue, position)
+		tracklist.CoverColumn, tracklist.TitleAlbumColumn,
+		tracklist.CustomWidgetButtonColumn(func(_ string, position, _ int) *gtk.Widget {
+			return Button().
+				TooltipText(gettext.Get("Remove Track from Queue")).
+				IconName("user-trash-symbolic").
+				WithCSSClass("flat").
+				MarginEnd(15).
+				ConnectClicked(func(b gtk.Button) {
+					go player.BaseQueue.RemoveAt(position)
+				}).
+				ToGTK()
 		}),
-		tracklist.GroupedColumn(1, gtk.AlignCenterValue,
-			tracklist.CustomWidgetButtonColumn(func(_ string, position, _ int) *gtk.Widget {
-				return Button().
-					TooltipText(gettext.Get("Remove Track from Queue")).
-					IconName("user-trash-symbolic").
-					WithCSSClass("flat").
-					ConnectClicked(func(b gtk.Button) {
-						go player.BaseQueue.RemoveAt(position)
-					}).
-					ToGTK()
-			}),
-		),
 	)
+	trackListBase.SetClickHandler(func(track tonearm.Track, position int) {
+		go player.SkipThroughQueue(player.BaseQueue, position)
+	})
 	trackListBase.BindTracks(baseQueueState)
 	trackListBase.SetReorderCallback(func(sourceIndex, targetIndex int, track tonearm.Track) {
 		player.BaseQueue.Entries().Notify(func(oldValue []tonearm.Track) []tonearm.Track {
