@@ -96,15 +96,15 @@ msgid "Allow Shortcut Images"
 msgstr "Autoriser les images des raccourcis"
 
 #: internal/ui/window_preferences.go:85
-msgid "Allow Tonearm to load images for media card buttons."
-msgstr "Autoriser Tonearm à charger des images pour les boutons cartes média."
+msgid "Allow Tonearm to load images for media card buttons"
+msgstr "Autoriser Tonearm à charger des images pour les boutons cartes média"
 
 #: internal/ui/window_preferences.go:91
-msgid "Allow Tonearm to load images for shortcut buttons."
-msgstr "Autoriser Tonearm à charger des images pour les boutons de raccourcis."
+msgid "Allow Tonearm to load images for shortcut buttons"
+msgstr "Autoriser Tonearm à charger des images pour les boutons de raccourcis"
 
 #: internal/ui/window_preferences.go:97
-msgid "Allow Tonearm to load images for tracklists with the cover column."
+msgid "Allow Tonearm to load images for tracklists with the cover column"
 msgstr ""
 "Autoriser Tonearm à charger des images pour les listes de morceaux avec une "
 "colonne album."
@@ -146,12 +146,12 @@ msgid "Allow Tracklist Images"
 msgstr "Autoriser les images des listes de morceaux"
 
 #: internal/ui/window_preferences.go:235
-msgid "An error occured while logging in to Last.fm."
-msgstr "Une erreur s'est produite pendant la connexion à Last.fm."
+msgid "An error occured while logging in to Last.fm"
+msgstr "Une erreur s'est produite pendant la connexion à Last.fm"
 
 #: internal/ui/window_preferences.go:210
-msgid "An error occured while logging out of Last.fm."
-msgstr "Une erreur s'est produite pendant la déconnexion de Last.fm."
+msgid "An error occured while logging out of Last.fm"
+msgstr "Une erreur s'est produite pendant la déconnexion de Last.fm"
 
 #: internal/ui/routes/album.go:162
 msgid "An error occurred while playing the album"
@@ -252,30 +252,30 @@ msgid "Collection"
 msgstr "Collection"
 
 #: internal/ui/window_preferences.go:264
-msgid "Configure Tonearm to send scrobbling data to Last.fm."
-msgstr "Configurer Tonearm pour l'envoi de données de scrobbling à Last.fm."
+msgid "Configure Tonearm to send scrobbling data to Last.fm"
+msgstr "Configurer Tonearm pour l'envoi de données de scrobbling à Last.fm"
 
 #: internal/ui/window_preferences.go:135
-msgid "Configure Tonearm to send scrobbling data to ListenBrainz."
+msgid "Configure Tonearm to send scrobbling data to ListenBrainz"
 msgstr ""
-"Configurer Tonearm pour l'envoi de données de scrobbling à ListenBrainz."
+"Configurer Tonearm pour l'envoi de données de scrobbling à ListenBrainz"
 
 #: internal/ui/window_preferences.go:107
-msgid "Configure the behaviour of Tonearm regarding images."
-msgstr "Configurer le comportement de Tonearm envers les images."
+msgid "Configure the behaviour of Tonearm regarding images"
+msgstr "Configurer le comportement de Tonearm envers les images"
 
 #: internal/ui/window_preferences.go:76
-msgid "Configure the behaviour of Tonearm regarding playback."
-msgstr "Configurer le comportement de Tonearm envers la lecture."
+msgid "Configure the behaviour of Tonearm regarding playback"
+msgstr "Configurer le comportement de Tonearm envers la lecture"
 
 #: internal/ui/window_preferences.go:49
-msgid "Configure the behaviour of Tonearm when navigating between pages."
-msgstr "Configurer le comportement de Tonearm à la navigation entre les pages."
+msgid "Configure the behaviour of Tonearm when navigating between pages"
+msgstr "Configurer le comportement de Tonearm à la navigation entre les pages"
 
 #: internal/ui/window_preferences.go:31
-msgid "Configure the behaviour of Tonearm when running in the background."
+msgid "Configure the behaviour of Tonearm when running in the background"
 msgstr ""
-"Configurer le comportement de Tonearm lors de l'execution en arrière-plan."
+"Configurer le comportement de Tonearm lors de l'execution en arrière-plan"
 
 #: internal/ui/window_popups.go:28
 msgid "Continue"
@@ -434,12 +434,12 @@ msgid "Log out of Last.fm"
 msgstr "Se déconnecter de Last.fm"
 
 #: internal/ui/window_preferences.go:251
-msgid "Logged in to Last.fm as %s."
-msgstr "Connecté à Last.fm en tant que %s."
+msgid "Logged in to Last.fm as %s"
+msgstr "Connecté à Last.fm en tant que %s"
 
 #: internal/ui/window_preferences.go:221
-msgid "Logged out of Last.fm."
-msgstr "Déconnecté de Last.fm."
+msgid "Logged out of Last.fm"
+msgstr "Déconnecté de Last.fm"
 
 #: internal/features/scrobbling/lastfm.go:42
 msgid "Logging in to Last.fm"
@@ -466,9 +466,9 @@ msgid "Max"
 msgstr "Max"
 
 #: internal/ui/window_preferences.go:43
-msgid "Maximum history length before dropping old entries."
+msgid "Maximum history length before dropping old entries"
 msgstr ""
-"Taille de l'historique maximale avant d'oublier les entrées plus vieilles."
+"Taille de l'historique maximale avant d'oublier les entrées plus vieilles"
 
 #: internal/ui/components/dynamic_v1.go:158
 msgid "More"
@@ -750,8 +750,8 @@ msgid "Set current page as default"
 msgstr "Définir la page actuelle comme page par défaut"
 
 #: internal/ui/window_preferences.go:64
-msgid "Set the same volume for all tracks."
-msgstr "Jouer tous les morceaux avec le même volume."
+msgid "Set the same volume for all tracks"
+msgstr "Jouer tous les morceaux avec le même volume"
 
 #: internal/ui/routes/album.go:156
 msgid "Shuffle Album"
@@ -875,16 +875,16 @@ msgid "Volume"
 msgstr "Volume"
 
 #: internal/ui/window_preferences.go:145
-msgid "You are currently not logged in to Last.fm."
-msgstr "Vous n'êtes actuellement pas connecté à Last.fm."
+msgid "You are currently not logged in to Last.fm"
+msgstr "Vous n'êtes actuellement pas connecté à Last.fm"
 
 #: internal/ui/window_preferences.go:160
-msgid "You are logged in to Last.fm as %s."
-msgstr "Vous êtes connecté à Last.fm en tant que %s."
+msgid "You are logged in to Last.fm as %s"
+msgstr "Vous êtes connecté à Last.fm en tant que %s"
 
 #: internal/ui/window_preferences.go:157
-msgid "You are logged in to Last.fm."
-msgstr "Vous êtes connecté à Last.fm."
+msgid "You are logged in to Last.fm"
+msgstr "Vous êtes connecté à Last.fm"
 
 #: internal/ui/components/linking/linking.go:29
 msgid "You can also open the linking page using the button below."

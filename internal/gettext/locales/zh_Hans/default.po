@@ -91,16 +91,16 @@ msgid "Allow Shortcut Images"
 msgstr "允许快捷方式图像"
 
 #: internal/ui/window_preferences.go:85
-msgid "Allow Tonearm to load images for media card buttons."
-msgstr "允许 Tonearm 为媒体卡片按钮加载图像。"
+msgid "Allow Tonearm to load images for media card buttons"
+msgstr "允许 Tonearm 为媒体卡片按钮加载图像"
 
 #: internal/ui/window_preferences.go:91
-msgid "Allow Tonearm to load images for shortcut buttons."
-msgstr "允许 Tonearm 为快捷方式按钮加载图像。"
+msgid "Allow Tonearm to load images for shortcut buttons"
+msgstr "允许 Tonearm 为快捷方式按钮加载图像"
 
 #: internal/ui/window_preferences.go:97
-msgid "Allow Tonearm to load images for tracklists with the cover column."
-msgstr "允许 Tonearm 为带有封面列的曲目列表加载图像。"
+msgid "Allow Tonearm to load images for tracklists with the cover column"
+msgstr "允许 Tonearm 为带有封面列的曲目列表加载图像"
 
 #: internal/ui/window_preferences.go:25
 msgid ""
@@ -133,11 +133,11 @@ msgid "Allow Tracklist Images"
 msgstr "允许曲目列表图像"
 
 #: internal/ui/window_preferences.go:235
-msgid "An error occured while logging in to Last.fm."
+msgid "An error occured while logging in to Last.fm"
 msgstr ""
 
 #: internal/ui/window_preferences.go:210
-msgid "An error occured while logging out of Last.fm."
+msgid "An error occured while logging out of Last.fm"
 msgstr ""
 
 #: internal/ui/routes/album.go:162
@@ -234,28 +234,28 @@ msgid "Collection"
 msgstr "收藏"
 
 #: internal/ui/window_preferences.go:264
-msgid "Configure Tonearm to send scrobbling data to Last.fm."
+msgid "Configure Tonearm to send scrobbling data to Last.fm"
 msgstr ""
 
 #: internal/ui/window_preferences.go:135
-msgid "Configure Tonearm to send scrobbling data to ListenBrainz."
-msgstr "配置 Tonearm 以向 ListenBrainz 发送数据记录。"
+msgid "Configure Tonearm to send scrobbling data to ListenBrainz"
+msgstr "配置 Tonearm 以向 ListenBrainz 发送数据记录"
 
 #: internal/ui/window_preferences.go:107
-msgid "Configure the behaviour of Tonearm regarding images."
-msgstr "配置 Tonearm 关于图像的行为。"
+msgid "Configure the behaviour of Tonearm regarding images"
+msgstr "配置 Tonearm 关于图像的行为"
 
 #: internal/ui/window_preferences.go:76
-msgid "Configure the behaviour of Tonearm regarding playback."
-msgstr "配置 Tonearm 关于播放的行为。"
+msgid "Configure the behaviour of Tonearm regarding playback"
+msgstr "配置 Tonearm 关于播放的行为"
 
 #: internal/ui/window_preferences.go:49
-msgid "Configure the behaviour of Tonearm when navigating between pages."
-msgstr "配置 Tonearm 在页面间导航时的行为。"
+msgid "Configure the behaviour of Tonearm when navigating between pages"
+msgstr "配置 Tonearm 在页面间导航时的行为"
 
 #: internal/ui/window_preferences.go:31
-msgid "Configure the behaviour of Tonearm when running in the background."
-msgstr "配置 Tonearm 在后台运行时的行为。"
+msgid "Configure the behaviour of Tonearm when running in the background"
+msgstr "配置 Tonearm 在后台运行时的行为"
 
 #: internal/ui/window_popups.go:28
 msgid "Continue"
@@ -414,11 +414,11 @@ msgid "Log out of Last.fm"
 msgstr ""
 
 #: internal/ui/window_preferences.go:251
-msgid "Logged in to Last.fm as %s."
+msgid "Logged in to Last.fm as %s"
 msgstr ""
 
 #: internal/ui/window_preferences.go:221
-msgid "Logged out of Last.fm."
+msgid "Logged out of Last.fm"
 msgstr ""
 
 #: internal/features/scrobbling/lastfm.go:42
@@ -446,8 +446,8 @@ msgid "Max"
 msgstr "最大"
 
 #: internal/ui/window_preferences.go:43
-msgid "Maximum history length before dropping old entries."
-msgstr "在丢弃旧条目前的最大历史记录长度。"
+msgid "Maximum history length before dropping old entries"
+msgstr "在丢弃旧条目前的最大历史记录长度"
 
 #: internal/ui/components/dynamic_v1.go:158
 msgid "More"
@@ -725,7 +725,7 @@ msgid "Set current page as default"
 msgstr "将当前页面设为默认"
 
 #: internal/ui/window_preferences.go:64
-msgid "Set the same volume for all tracks."
+msgid "Set the same volume for all tracks"
 msgstr ""
 
 #: internal/ui/routes/album.go:156
@@ -846,15 +846,15 @@ msgid "Volume"
 msgstr "音量"
 
 #: internal/ui/window_preferences.go:145
-msgid "You are currently not logged in to Last.fm."
+msgid "You are currently not logged in to Last.fm"
 msgstr ""
 
 #: internal/ui/window_preferences.go:160
-msgid "You are logged in to Last.fm as %s."
+msgid "You are logged in to Last.fm as %s"
 msgstr ""
 
 #: internal/ui/window_preferences.go:157
-msgid "You are logged in to Last.fm."
+msgid "You are logged in to Last.fm"
 msgstr ""
 
 #: internal/ui/components/linking/linking.go:29

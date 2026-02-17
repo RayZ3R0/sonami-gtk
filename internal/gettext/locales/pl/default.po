@@ -99,16 +99,16 @@ msgid "Allow Shortcut Images"
 msgstr "Pozwól na obrazy na skrótach"
 
 #: internal/ui/window_preferences.go:85
-msgid "Allow Tonearm to load images for media card buttons."
-msgstr "Pozwól Tonearm na wczytywanie obrazów na listach albumów."
+msgid "Allow Tonearm to load images for media card buttons"
+msgstr "Pozwól Tonearm na wczytywanie obrazów na listach albumów"
 
 #: internal/ui/window_preferences.go:91
-msgid "Allow Tonearm to load images for shortcut buttons."
-msgstr "Pozwól Tonearm na wczytywanie obrazów na przyciskach skrótów."
+msgid "Allow Tonearm to load images for shortcut buttons"
+msgstr "Pozwól Tonearm na wczytywanie obrazów na przyciskach skrótów"
 
 #: internal/ui/window_preferences.go:97
 msgid "Allow Tonearm to load images for tracklists with the cover column."
-msgstr "Pozwól Tonearm na wczytywanie obrazów na listach utworów z okładkami."
+msgstr "Pozwól Tonearm na wczytywanie obrazów na listach utworów z okładkami"
 
 #: internal/ui/window_preferences.go:25
 msgid ""
@@ -147,12 +147,12 @@ msgid "Allow Tracklist Images"
 msgstr "Pozwól na obrazy na listach utworów"
 
 #: internal/ui/window_preferences.go:235
-msgid "An error occured while logging in to Last.fm."
-msgstr "Wystąpił błąd podczas logowania do Last.fm."
+msgid "An error occured while logging in to Last.fm"
+msgstr "Wystąpił błąd podczas logowania do Last.fm"
 
 #: internal/ui/window_preferences.go:210
-msgid "An error occured while logging out of Last.fm."
-msgstr "Wystąpił błąd podczas wylogowania z Last.fm."
+msgid "An error occured while logging out of Last.fm"
+msgstr "Wystąpił błąd podczas wylogowania z Last.fm"
 
 #: internal/ui/routes/album.go:162
 msgid "An error occurred while playing the album"
@@ -251,28 +251,28 @@ msgid "Collection"
 msgstr "Kolekcja"
 
 #: internal/ui/window_preferences.go:264
-msgid "Configure Tonearm to send scrobbling data to Last.fm."
-msgstr "Skonfiguruj Tonearm do wysyłania danych do Last.fm."
+msgid "Configure Tonearm to send scrobbling data to Last.fm"
+msgstr "Skonfiguruj Tonearm do wysyłania danych do Last.fm"
 
 #: internal/ui/window_preferences.go:135
-msgid "Configure Tonearm to send scrobbling data to ListenBrainz."
-msgstr "Skonfiguruj Tonearm do wysyłania danych scrobblowania do ListenBrainz."
+msgid "Configure Tonearm to send scrobbling data to ListenBrainz"
+msgstr "Skonfiguruj Tonearm do wysyłania danych scrobblowania do ListenBrainz"
 
 #: internal/ui/window_preferences.go:107
-msgid "Configure the behaviour of Tonearm regarding images."
-msgstr "Skonfiguruj zachowanie Tonearm dotyczące obrazów."
+msgid "Configure the behaviour of Tonearm regarding images"
+msgstr "Skonfiguruj zachowanie Tonearm dotyczące obrazów"
 
 #: internal/ui/window_preferences.go:76
-msgid "Configure the behaviour of Tonearm regarding playback."
-msgstr "Skonfiguruj zachowanie Tonearm dotyczące odtwarzania."
+msgid "Configure the behaviour of Tonearm regarding playback"
+msgstr "Skonfiguruj zachowanie Tonearm dotyczące odtwarzania"
 
 #: internal/ui/window_preferences.go:49
-msgid "Configure the behaviour of Tonearm when navigating between pages."
-msgstr "Skonfiguruj zachowanie Tonearm podczas nawigowania między stronami."
+msgid "Configure the behaviour of Tonearm when navigating between pages"
+msgstr "Skonfiguruj zachowanie Tonearm podczas nawigowania między stronami"
 
 #: internal/ui/window_preferences.go:31
-msgid "Configure the behaviour of Tonearm when running in the background."
-msgstr "Skonfiguruj zachowanie Tonearm w czasie pracy w tle."
+msgid "Configure the behaviour of Tonearm when running in the background"
+msgstr "Skonfiguruj zachowanie Tonearm w czasie pracy w tle"
 
 #: internal/ui/window_popups.go:28
 msgid "Continue"
@@ -431,12 +431,12 @@ msgid "Log out of Last.fm"
 msgstr "Wyloguj z Last.fm"
 
 #: internal/ui/window_preferences.go:251
-msgid "Logged in to Last.fm as %s."
-msgstr "Zalogowano do Last.fm jako %s."
+msgid "Logged in to Last.fm as %s"
+msgstr "Zalogowano do Last.fm jako %s"
 
 #: internal/ui/window_preferences.go:221
-msgid "Logged out of Last.fm."
-msgstr "Wylogowano z Last.fm."
+msgid "Logged out of Last.fm"
+msgstr "Wylogowano z Last.fm"
 
 #: internal/features/scrobbling/lastfm.go:42
 msgid "Logging in to Last.fm"
@@ -463,8 +463,8 @@ msgid "Max"
 msgstr "Najwyższa"
 
 #: internal/ui/window_preferences.go:43
-msgid "Maximum history length before dropping old entries."
-msgstr "Maksymalna długość historii przed usuwaniem starych pozycji."
+msgid "Maximum history length before dropping old entries"
+msgstr "Maksymalna długość historii przed usuwaniem starych pozycji"
 
 #: internal/ui/components/dynamic_v1.go:158
 msgid "More"
@@ -746,7 +746,7 @@ msgid "Set current page as default"
 msgstr "Ustaw aktualną stronę jako domyślną"
 
 #: internal/ui/window_preferences.go:64
-msgid "Set the same volume for all tracks."
+msgid "Set the same volume for all tracks"
 msgstr "Ustaw jednakową głośność wszystkich utworów"
 
 #: internal/ui/routes/album.go:156
@@ -870,16 +870,16 @@ msgid "Volume"
 msgstr "Głośność"
 
 #: internal/ui/window_preferences.go:145
-msgid "You are currently not logged in to Last.fm."
-msgstr "Nie zalogowano do Last.fm."
+msgid "You are currently not logged in to Last.fm"
+msgstr "Nie zalogowano do Last.fm"
 
 #: internal/ui/window_preferences.go:160
-msgid "You are logged in to Last.fm as %s."
-msgstr "Zalogowano do Last.fm jako %s."
+msgid "You are logged in to Last.fm as %s"
+msgstr "Zalogowano do Last.fm jako %s"
 
 #: internal/ui/window_preferences.go:157
-msgid "You are logged in to Last.fm."
-msgstr "Zalogowano do Last.fm."
+msgid "You are logged in to Last.fm"
+msgstr "Zalogowano do Last.fm"
 
 #: internal/ui/components/linking/linking.go:29
 msgid "You can also open the linking page using the button below."

@@ -94,16 +94,16 @@ msgid "Allow Shortcut Images"
 msgstr "Näita pilte otseviidetel"
 
 #: internal/ui/window_preferences.go:85
-msgid "Allow Tonearm to load images for media card buttons."
-msgstr "Luba Tonearmil laadida pilte infovaadete nuppudel."
+msgid "Allow Tonearm to load images for media card buttons"
+msgstr "Luba Tonearmil laadida pilte infovaadete nuppudel"
 
 #: internal/ui/window_preferences.go:91
-msgid "Allow Tonearm to load images for shortcut buttons."
-msgstr "Luba Tonearmil laadida pilte otseviidete nuppudel."
+msgid "Allow Tonearm to load images for shortcut buttons"
+msgstr "Luba Tonearmil laadida pilte otseviidete nuppudel"
 
 #: internal/ui/window_preferences.go:97
-msgid "Allow Tonearm to load images for tracklists with the cover column."
-msgstr "Luba Tonearmil laadida kaanepilte loendivaadete esimeses veerus."
+msgid "Allow Tonearm to load images for tracklists with the cover column"
+msgstr "Luba Tonearmil laadida kaanepilte loendivaadete esimeses veerus"
 
 #: internal/ui/window_preferences.go:25
 msgid ""
@@ -146,12 +146,12 @@ msgid "Allow Tracklist Images"
 msgstr "Näita pilte loendivaadetes"
 
 #: internal/ui/window_preferences.go:235
-msgid "An error occured while logging in to Last.fm."
-msgstr "Last.fm-i teenusesse sisselogimisel tekkis viga."
+msgid "An error occured while logging in to Last.fm"
+msgstr "Last.fm-i teenusesse sisselogimisel tekkis viga"
 
 #: internal/ui/window_preferences.go:210
-msgid "An error occured while logging out of Last.fm."
-msgstr "Last.fm-i teenusest väljalogimisel tekkis viga."
+msgid "An error occured while logging out of Last.fm"
+msgstr "Last.fm-i teenusest väljalogimisel tekkis viga"
 
 #: internal/ui/routes/album.go:162
 msgid "An error occurred while playing the album"
@@ -250,28 +250,28 @@ msgid "Collection"
 msgstr "Kogu"
 
 #: internal/ui/window_preferences.go:264
-msgid "Configure Tonearm to send scrobbling data to Last.fm."
-msgstr "Seadista Tonearm saatma kraasimisandmed Last.fm-i."
+msgid "Configure Tonearm to send scrobbling data to Last.fm"
+msgstr "Seadista Tonearm saatma kraasimisandmed Last.fm-i"
 
 #: internal/ui/window_preferences.go:135
-msgid "Configure Tonearm to send scrobbling data to ListenBrainz."
-msgstr "Seadista Tonearm saatma kraasimisandmed ListenBrainzi."
+msgid "Configure Tonearm to send scrobbling data to ListenBrainz"
+msgstr "Seadista Tonearm saatma kraasimisandmed ListenBrainzi"
 
 #: internal/ui/window_preferences.go:107
-msgid "Configure the behaviour of Tonearm regarding images."
-msgstr "Seadista viis, kuidas Tonearm käsitleb pilte."
+msgid "Configure the behaviour of Tonearm regarding images"
+msgstr "Seadista viis, kuidas Tonearm käsitleb pilte"
 
 #: internal/ui/window_preferences.go:76
-msgid "Configure the behaviour of Tonearm regarding playback."
-msgstr "Käsitle taasesituse toimimist Tonearmis."
+msgid "Configure the behaviour of Tonearm regarding playback"
+msgstr "Käsitle taasesituse toimimist Tonearmis"
 
 #: internal/ui/window_preferences.go:49
-msgid "Configure the behaviour of Tonearm when navigating between pages."
-msgstr "Tonearmi toimimine lehtede vahel liikudes."
+msgid "Configure the behaviour of Tonearm when navigating between pages"
+msgstr "Tonearmi toimimine lehtede vahel liikudes"
 
 #: internal/ui/window_preferences.go:31
-msgid "Configure the behaviour of Tonearm when running in the background."
-msgstr "Tonearmi toimimine töötades taustal."
+msgid "Configure the behaviour of Tonearm when running in the background"
+msgstr "Tonearmi toimimine töötades taustal"
 
 #: internal/ui/window_popups.go:28
 msgid "Continue"
@@ -430,12 +430,12 @@ msgid "Log out of Last.fm"
 msgstr "Logi Last.fm-ist välja"
 
 #: internal/ui/window_preferences.go:251
-msgid "Logged in to Last.fm as %s."
-msgstr "Oled Last.fm-i loginud sisse kasutajana %s."
+msgid "Logged in to Last.fm as %s"
+msgstr "Oled Last.fm-i loginud sisse kasutajana %s"
 
 #: internal/ui/window_preferences.go:221
-msgid "Logged out of Last.fm."
-msgstr "Oled Last.fm-ist välja loginud."
+msgid "Logged out of Last.fm"
+msgstr "Oled Last.fm-ist välja loginud"
 
 #: internal/features/scrobbling/lastfm.go:42
 msgid "Logging in to Last.fm"
@@ -462,8 +462,8 @@ msgid "Max"
 msgstr "Maksimaalne"
 
 #: internal/ui/window_preferences.go:43
-msgid "Maximum history length before dropping old entries."
-msgstr "Ajaloo pikkus, millest vanemad kirjed kustutatakse."
+msgid "Maximum history length before dropping old entries"
+msgstr "Ajaloo pikkus, millest vanemad kirjed kustutatakse"
 
 #: internal/ui/components/dynamic_v1.go:158
 msgid "More"
@@ -745,8 +745,8 @@ msgid "Set current page as default"
 msgstr "Määra see leht vaikimisi leheks"
 
 #: internal/ui/window_preferences.go:64
-msgid "Set the same volume for all tracks."
-msgstr "Määra kõikidele lugudele sama helivaljus."
+msgid "Set the same volume for all tracks"
+msgstr "Määra kõikidele lugudele sama helivaljus"
 
 #: internal/ui/routes/album.go:156
 msgid "Shuffle Album"
@@ -869,16 +869,16 @@ msgid "Volume"
 msgstr "Helivaljus"
 
 #: internal/ui/window_preferences.go:145
-msgid "You are currently not logged in to Last.fm."
-msgstr "Sa hetkel pole Last.fm-i sisse loginud."
+msgid "You are currently not logged in to Last.fm"
+msgstr "Sa hetkel pole Last.fm-i sisse loginud"
 
 #: internal/ui/window_preferences.go:160
-msgid "You are logged in to Last.fm as %s."
-msgstr "Sa oled Last.fm-i loginud sisse kasutajana %s."
+msgid "You are logged in to Last.fm as %s"
+msgstr "Sa oled Last.fm-i loginud sisse kasutajana %s"
 
 #: internal/ui/window_preferences.go:157
-msgid "You are logged in to Last.fm."
-msgstr "Sa oled loginud sisse Last.fm-i."
+msgid "You are logged in to Last.fm"
+msgstr "Sa oled loginud sisse Last.fm-i"
 
 #: internal/ui/components/linking/linking.go:29
 msgid "You can also open the linking page using the button below."
