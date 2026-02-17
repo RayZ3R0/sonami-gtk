@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: v1.0.0-26-g6264155\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2026-02-17 19:04+0100\n"
-"PO-Revision-Date: 2026-02-17 18:45+0000\n"
+"PO-Revision-Date: 2026-02-17 18:52+0000\n"
 "Last-Translator: LukaszH77 <lukasz@horodecki.net>\n"
 "Language-Team: Polish <https://translate.codeberg.org/projects/tonearm/"
 "tonearm/pl/>\n"
@@ -609,7 +609,7 @@ msgstr "Otwórz stronę TIDAL"
 
 #: internal/ui/components/sidebar/player/component_controls.go:45
 msgid "Pause"
-msgstr ""
+msgstr "Wstrzymaj"
 
 #: internal/ui/window_preferences.go:108
 msgid "Performance"
@@ -621,7 +621,7 @@ msgstr "Spersonalizowany miks"
 
 #: internal/ui/components/sidebar/player/component_controls.go:48
 msgid "Play"
-msgstr ""
+msgstr "Odtwarzaj"
 
 #: internal/ui/components/sidebar/miniplayer.go:98
 msgid "Play / Pause"
@@ -633,7 +633,7 @@ msgstr "Odtwórz album"
 
 #: internal/ui/routes/my_collection/tracks.go:97
 msgid "Play My Tracks"
-msgstr ""
+msgstr "Odtwarzaj moje utwory"
 
 #: internal/ui/routes/playlist.go:145
 msgid "Play Playlist"
@@ -651,7 +651,7 @@ msgstr "Odtwarzanie"
 msgid "Playback quality saved. Changes will be applied on next track change"
 msgstr ""
 "Jakość dźwięku została zapisana. Zmiany zostaną zastosowane przy następnej "
-"zmianie utworu."
+"zmianie utworu"
 
 #: internal/ui/window_sidebar.go:73
 msgid "Player"
@@ -703,7 +703,7 @@ msgstr "Usuń utwór z kolejki"
 
 #: internal/ui/components/favourite_button/favourite_button.go:50
 msgid "Remove from Collection"
-msgstr ""
+msgstr "Usuń z kolekcji"
 
 #: internal/features/scrobbling/lastfm.go:56
 msgid "Reopen Browser"
@@ -711,11 +711,11 @@ msgstr "Ponownie otwórz przeglądarkę"
 
 #: internal/ui/components/sidebar/player/component_controls.go:81
 msgid "Repeat Queue"
-msgstr ""
+msgstr "Powtarzaj kolejkę"
 
 #: internal/ui/components/sidebar/player/component_controls.go:85
 msgid "Repeat Track"
-msgstr ""
+msgstr "Powtarzaj utwór"
 
 #: internal/ui/components/linking/linking.go:59
 msgid "Scan this QR code to sign into your TIDAL account"
@@ -751,7 +751,7 @@ msgstr "Usługa sekretów niedostępna"
 
 #: internal/ui/window_sidebar.go:30
 msgid "Set as Default Page"
-msgstr ""
+msgstr "Ustaw jako stronę domyślną"
 
 #: internal/ui/window_actions.go:333
 msgid "Set current page as default"
@@ -767,7 +767,7 @@ msgstr "Odtwarzaj losowo album"
 
 #: internal/ui/routes/my_collection/tracks.go:78
 msgid "Shuffle My Tracks"
-msgstr ""
+msgstr "Losuj moje utwory"
 
 #: internal/ui/routes/playlist.go:131
 msgid "Shuffle Playlist"
@@ -814,10 +814,12 @@ msgid ""
 "Start typing in the search bar to search for songs, artists, albums or "
 "playlists"
 msgstr ""
+"Zacznij wpisywać w pasku wyszukiwania, by szukać piosenek, artystów, albumów "
+"lub playlist"
 
 #: internal/ui/components/sidebar/lyrics/lyrics_view.go:63
 msgid "Sync with Track"
-msgstr ""
+msgstr "Synchronizuj z utworem"
 
 #: internal/router/handler_notfound.go:13
 msgid "The requested deeplink did not have any available handlers."
