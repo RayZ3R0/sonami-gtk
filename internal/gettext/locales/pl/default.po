@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: v1.0.0-26-g6264155\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-02-15 00:57+0100\n"
+"POT-Creation-Date: 2026-02-17 14:21+0100\n"
 "PO-Revision-Date: 2026-02-15 23:06+0000\n"
 "Last-Translator: LukaszH77 <lukasz@horodecki.net>\n"
 "Language-Team: Polish <https://translate.codeberg.org/projects/tonearm/"
@@ -21,53 +21,64 @@ msgstr ""
 "|| n%100>=20) ? 1 : 2;\n"
 "X-Generator: Weblate 5.15.2\n"
 
-#: internal/ui/routes/artist.go:62
+#: internal/ui/routes/artist.go:72
 msgid "%d Fan"
 msgid_plural "%d Fans"
 msgstr[0] "%d fan"
 msgstr[1] "%d fanów"
 msgstr[2] "%d fanów"
 
-#: internal/ui/components/media_card/playlist.go:18
+#: internal/ui/components/media_card/playlist.go:20
 msgid "%d Track"
 msgid_plural "%d Tracks"
 msgstr[0] "%d utwór"
 msgstr[1] "%d utwory"
 msgstr[2] "%d utworów"
 
-#: internal/ui/routes/album.go:118
+#: internal/ui/routes/album.go:145
 msgid "%d Track (%s)"
 msgid_plural "%d Tracks (%s)"
 msgstr[0] "%d utwór (%s)"
 msgstr[1] "%d utwory (%s)"
 msgstr[2] "%d utworów (%s)"
 
-#: internal/ui/routes/feed.go:146 internal/ui/routes/feed.go:144
+#: internal/ui/routes/feed.go:145
 msgid "%s and %s"
 msgstr "%s i %s"
 
-#: internal/ui/window_sidebar.go:40 internal/ui/window_sidebar.go:34
+#: internal/ui/window_sidebar.go:33
 msgid "About Tonearm"
 msgstr "O programie"
+
+#: internal/ui/routes/album.go:111
+msgid "Add Album to Queue"
+msgstr ""
+
+#: internal/ui/routes/playlist.go:96
+msgid "Add playlist to queue"
+msgstr ""
 
 #: internal/ui/components/favourite_button/favourite_button.go:30
 msgid "Add to Collection"
 msgstr "Dodaj do kolekcji"
 
-#: internal/ui/components/tracklist/column_controls.go:26
-#: internal/ui/components/tracklist/column_controls.go:56
+#: internal/ui/components/tracklist/column_controls.go:54
 msgid "Add to Queue"
 msgstr "Dodaj do kolejki"
+
+#: internal/ui/routes/artist.go:47
+msgid "Add top tracks to queue"
+msgstr ""
 
 #: internal/settings/playback.go:21
 msgid "Album"
 msgstr "Album"
 
-#: internal/ui/routes/feed.go:154 internal/ui/routes/feed.go:152
+#: internal/ui/routes/feed.go:153
 msgid "Album by %s"
 msgstr "Album autorstwa %s"
 
-#: internal/ui/routes/my-collection.go:51
+#: internal/ui/routes/my-collection.go:52
 msgid "Albums"
 msgstr "Albumy"
 
@@ -139,21 +150,29 @@ msgstr "Wystąpił błąd podczas logowania do Last.fm."
 msgid "An error occured while logging out of Last.fm."
 msgstr "Wystąpił błąd podczas wylogowania z Last.fm."
 
-#: internal/ui/routes/album.go:135
+#: internal/ui/routes/album.go:162
 msgid "An error occurred while playing the album"
 msgstr "Wystąpił błąd podczas odtwarzania albumu"
 
-#: internal/ui/routes/playlist.go:142
+#: internal/ui/routes/playlist.go:147
 msgid "An error occurred while playing the playlist"
 msgstr "Wystąpił błąd podczas odtwarzania playlisty"
 
-#: internal/ui/routes/artist.go:88
+#: internal/ui/routes/artist.go:96
 msgid "An error occurred while playing the top tracks"
 msgstr "Wystąpił błąd podczas odtwarzania top utworów"
 
-#: internal/ui/routes/album.go:76
+#: internal/ui/routes/album.go:94
 msgid "An error occurred while playing the track"
 msgstr "Wystąpił błąd podczas odtwarzania utworu"
+
+#: internal/ui/routes/my_collection/tracks.go:105
+msgid "An error occurred while playing the tracks"
+msgstr ""
+
+#: internal/ui/routes/my_collection/tracks.go:85
+msgid "An error occurred while shuffling the tracks"
+msgstr ""
 
 #: internal/secrets/service_linux.go:55
 msgid ""
@@ -171,17 +190,17 @@ msgstr ""
 "\n"
 "%s"
 
-#: internal/ui/routes/artist.go:36
+#: internal/ui/routes/artist.go:38
 msgid "Artist"
 msgstr "Artysta"
 
-#: internal/ui/routes/my-collection.go:46
+#: internal/ui/routes/my-collection.go:47
 msgid "Artists"
 msgstr "Artyści"
 
-#: internal/ui/routes/feed.go:100
-msgid "Authentication required"
-msgstr "Wymagane połączenie"
+#: internal/ui/components/auth_required.go:13
+msgid "Authentication Required"
+msgstr "Wymagane uwierzytelnienie"
 
 #: internal/settings/playback.go:20
 msgid "Auto"
@@ -203,7 +222,7 @@ msgstr "Ogólne"
 msgid "Cache Images"
 msgstr "Pamięć podręczna obrazów"
 
-#: internal/features/scrobbling/lastfm.go:61
+#: internal/features/scrobbling/lastfm.go:66
 msgid "Cancel"
 msgstr "Anuluj"
 
@@ -255,39 +274,39 @@ msgstr "Skonfiguruj zachowanie Tonearm w czasie pracy w tle."
 msgid "Continue"
 msgstr "Kontynuuj"
 
-#: internal/features/scrobbling/lastfm.go:41
+#: internal/features/scrobbling/lastfm.go:43
 msgid "Continue the authentication process in your browser."
 msgstr "Dokończ proces uwierzytelniania w swojej przeglądarce."
 
-#: internal/ui/routes/album.go:187
+#: internal/ui/routes/album.go:204
 msgid "Copied album URL to clipboard."
 msgstr "Skopiowano adres URL albumu do schowka."
 
-#: internal/ui/routes/artist.go:133
+#: internal/ui/routes/artist.go:138
 msgid "Copied artist URL to clipboard."
 msgstr "Skopiowano do schowka adres URL artysty."
 
-#: internal/ui/routes/playlist.go:195
+#: internal/ui/routes/playlist.go:191
 msgid "Copied playlist URL to clipboard."
 msgstr "Skopiowano do schowka adres URL playlisty."
 
-#: internal/ui/components/player/component_action_row.go:259
+#: internal/ui/components/player/component_action_row.go:248
 msgid "Copied track URL to clipboard."
 msgstr "Skopiowano do schowka adres URL utworu."
 
-#: internal/ui/routes/album.go:171
+#: internal/ui/routes/album.go:194
 msgid "Copy Album URL"
 msgstr "Skopiuj adres URL albumu"
 
-#: internal/ui/routes/artist.go:123
+#: internal/ui/routes/artist.go:128
 msgid "Copy Artist URL"
 msgstr "Skopiuj adres URL artysty"
 
-#: internal/ui/routes/playlist.go:179
+#: internal/ui/routes/playlist.go:181
 msgid "Copy Playlist URL"
 msgstr "Skopiuj adres URL playlisty"
 
-#: internal/ui/components/player/component_action_row.go:248
+#: internal/ui/components/player/component_action_row.go:237
 msgid "Copy Track URL"
 msgstr "Skopiuj adres URL utworu"
 
@@ -299,11 +318,11 @@ msgstr "Strona domyślna"
 msgid "Don't show again"
 msgstr "Nie pokazuj ponownie"
 
-#: internal/ui/routes/search.go:29
+#: internal/ui/routes/search.go:33
 msgid "E.g. Fox Stevenson"
 msgstr "Np. Fox Stevenson"
 
-#: internal/ui/routes/feed.go:156 internal/ui/routes/feed.go:154
+#: internal/ui/routes/feed.go:155
 msgid "EP by %s"
 msgstr "EP autorstwa %s"
 
@@ -319,11 +338,11 @@ msgstr "Włącz ListenBrainz"
 msgid "Enable autoplay"
 msgstr "Włącz autoodtwarzanie"
 
-#: internal/ui/components/lyrics/lyrics.go:409
+#: internal/ui/components/lyrics/lyrics.go:410
 msgid "Error fetching lyrics"
 msgstr "Błąd pobierania tekstu utworu"
 
-#: internal/ui/routes/my-collection.go:42
+#: internal/ui/routes/my-collection.go:43
 msgid "Error loading collection"
 msgstr "Błąd wczytywania kolekcji"
 
@@ -335,7 +354,7 @@ msgstr "Eksploruj"
 msgid "External Link"
 msgstr "Odnośnik zewnętrzny"
 
-#: internal/ui/routes/feed.go:97 internal/ui/routes/feed.go:98
+#: internal/ui/routes/feed.go:99
 msgid "Feed"
 msgstr "Treści dla ciebie"
 
@@ -343,7 +362,7 @@ msgstr "Treści dla ciebie"
 msgid "General"
 msgstr "Ogólne"
 
-#: internal/ui/components/player/component_track_timeline.go:61
+#: internal/ui/components/player/component_track_timeline.go:62
 msgid "High"
 msgstr "Wysoka"
 
@@ -367,11 +386,11 @@ msgstr "Błąd wewnętrzny"
 msgid "Keyboard Shortcuts"
 msgstr "Skróty klawiszowe"
 
-#: internal/ui/routes/feed.go:83 internal/ui/routes/feed.go:84
+#: internal/ui/routes/feed.go:85
 msgid "Last Month"
 msgstr "Ostatni miesiąc"
 
-#: internal/ui/routes/feed.go:79 internal/ui/routes/feed.go:80
+#: internal/ui/routes/feed.go:81
 msgid "Last Week"
 msgstr "Ostatni tydzień"
 
@@ -403,19 +422,19 @@ msgstr "Zalogowano do Last.fm jako %s."
 msgid "Logged out of Last.fm."
 msgstr "Wylogowano z Last.fm."
 
-#: internal/features/scrobbling/lastfm.go:40
+#: internal/features/scrobbling/lastfm.go:42
 msgid "Logging in to Last.fm"
 msgstr "Logowanie do Last.fm"
 
-#: internal/ui/components/player/component_track_timeline.go:58
+#: internal/ui/components/player/component_track_timeline.go:59
 msgid "Low (320 kbps)"
 msgstr "Niska (320 kbps)"
 
-#: internal/ui/components/player/component_track_timeline.go:55
+#: internal/ui/components/player/component_track_timeline.go:56
 msgid "Low (96 kbps)"
 msgstr "Niska (96 kbps)"
 
-#: internal/ui/window_sidebar.go:89 internal/ui/window_sidebar.go:73
+#: internal/ui/window_sidebar.go:74
 msgid "Lyrics"
 msgstr "Tekst"
 
@@ -423,7 +442,7 @@ msgstr "Tekst"
 msgid "Main Menu"
 msgstr "Menu główne"
 
-#: internal/ui/components/player/component_track_timeline.go:64
+#: internal/ui/components/player/component_track_timeline.go:65
 msgid "Max"
 msgstr "Najwyższa"
 
@@ -431,39 +450,47 @@ msgstr "Najwyższa"
 msgid "Maximum history length before dropping old entries."
 msgstr "Maksymalna długość historii przed usuwaniem starych pozycji."
 
-#: internal/ui/components/dynamic_v1.go:134
+#: internal/ui/components/dynamic_v1.go:158
 msgid "More"
 msgstr "Więcej"
 
-#: internal/ui/routes/my_collection/albums.go:36
+#: internal/ui/components/tracklist/column_controls.go:62
+msgid "More…"
+msgstr "Więcej…"
+
+#: internal/ui/routes/my_collection/albums.go:37
 msgid "My Albums"
 msgstr "Moje albumy"
 
-#: internal/ui/routes/my_collection/artists.go:36
+#: internal/ui/routes/my_collection/artists.go:37
 msgid "My Artists"
 msgstr "Moi artyści"
 
-#: internal/ui/routes/my-collection.go:33
+#: internal/ui/routes/my-collection.go:34
 msgid "My Collection"
 msgstr "Moja kolekcja"
 
-#: internal/ui/routes/my_collection/playlists.go:36
+#: internal/ui/routes/my_collection/playlists.go:37
 msgid "My Playlists"
 msgstr "Moje playlisty"
 
-#: internal/ui/routes/my_collection/tracks.go:44
+#: internal/services/tidal/openapi/collection.go:19
 msgid "My Tracks"
 msgstr "Moje utwory"
 
-#: internal/ui/window_content.go:50 internal/ui/window_content.go:49
+#: internal/ui/window_content.go:49
 msgid "Navigate Back"
 msgstr "Przejdź wstecz"
 
-#: internal/ui/components/player/component_action_row.go:194
+#: internal/ui/components/tracklist/column_controls.go:35
+msgid "Navigate to %s"
+msgstr "Przejdź do %s"
+
+#: internal/ui/components/player/component_action_row.go:196
 msgid "Navigate to Album"
 msgstr "Przejdź do albumu"
 
-#: internal/ui/components/player/component_action_row.go:32
+#: internal/ui/components/player/component_action_row.go:33
 msgid "Navigate to Artist"
 msgstr "Przejdź do artysty"
 
@@ -479,7 +506,7 @@ msgstr "Przejdź do eksplorowania"
 msgid "Navigate to Home"
 msgstr "Przejdź do strony głównej"
 
-#: internal/ui/components/player/component_action_row.go:221
+#: internal/ui/components/player/component_action_row.go:210
 msgid "Navigate to Track Mix"
 msgstr "Przejdź do radia utworu"
 
@@ -495,29 +522,21 @@ msgstr "Zachowanie nawigacji"
 msgid "Next"
 msgstr "Następny"
 
-#: internal/ui/components/player/component_track_info.go:22
+#: internal/ui/components/player/component_track_info.go:25
 msgid "No Artist"
 msgstr "Brak artysty"
 
-#: internal/ui/components/player/component_track_info.go:21
+#: internal/ui/components/player/component_track_info.go:24
 msgid "No Track"
 msgstr "Brak utworu"
 
-#: internal/ui/routes/album.go:177
-msgid "No album could be shared."
-msgstr "Nie powiodło się udostępnianie albumu."
-
-#: internal/ui/components/lyrics/lyrics.go:416
+#: internal/ui/components/lyrics/lyrics.go:417
 msgid "No lyrics available"
 msgstr "Brak dostępnego tekstu utworu"
 
-#: internal/ui/components/player/component_action_row.go:238
+#: internal/ui/components/player/component_action_row.go:227
 msgid "No mix found for the current track"
 msgstr "Brak radia dla aktualnego utworu"
-
-#: internal/ui/routes/playlist.go:185
-msgid "No playlist could be shared."
-msgstr "Brak playlisty do udostępnienia."
 
 #: internal/secrets/service_linux.go:40
 msgid ""
@@ -536,7 +555,7 @@ msgstr ""
 "Proszę zainstalować dostawcę sekretów takiego jak GNOME Keyring lub KDE "
 "Wallet."
 
-#: internal/ui/components/lyrics/lyrics.go:398
+#: internal/ui/components/lyrics/lyrics.go:399
 msgid "No song currently playing"
 msgstr "Brak aktualnie odtwarzanej piosenki"
 
@@ -552,7 +571,7 @@ msgstr "Nie znaleziono"
 msgid "Not found"
 msgstr "Nie znaleziono"
 
-#: internal/ui/routes/feed.go:85 internal/ui/routes/feed.go:86
+#: internal/ui/routes/feed.go:87
 msgid "Older"
 msgstr "Starsze"
 
@@ -564,7 +583,7 @@ msgstr "Otwórz stronę TIDAL"
 msgid "Performance"
 msgstr "Wydajność"
 
-#: internal/ui/routes/playlist.go:72
+#: internal/ui/routes/playlist.go:62
 msgid "Personal Mix"
 msgstr "Spersonalizowany miks"
 
@@ -572,15 +591,15 @@ msgstr "Spersonalizowany miks"
 msgid "Play / Pause"
 msgstr "Odtwarzaj / wstrzymaj"
 
-#: internal/ui/routes/album.go:142
+#: internal/ui/routes/album.go:169
 msgid "Play Album"
 msgstr "Odtwórz album"
 
-#: internal/ui/routes/playlist.go:149
+#: internal/ui/routes/playlist.go:154
 msgid "Play Playlist"
 msgstr "Odtwórz playlistę"
 
-#: internal/ui/routes/artist.go:94
+#: internal/ui/routes/artist.go:102
 msgid "Play Top Tracks"
 msgstr "Odtwarzaj top utwory"
 
@@ -588,17 +607,17 @@ msgstr "Odtwarzaj top utwory"
 msgid "Playback"
 msgstr "Odtwarzanie"
 
-#: internal/ui/components/player/component_track_timeline.go:72
+#: internal/ui/components/player/component_track_timeline.go:73
 msgid "Playback quality saved. Changes will be applied on next track change."
 msgstr ""
 "Jakość dźwięku została zapisana. Zmiany zostaną zastosowane przy następnej "
 "zmianie utworu."
 
-#: internal/ui/window_sidebar.go:88 internal/ui/window_sidebar.go:72
+#: internal/ui/window_sidebar.go:73
 msgid "Player"
 msgstr "Odtwarzacz"
 
-#: internal/ui/components/player/component_playing_from.go:61
+#: internal/ui/components/player/component_playing_from.go:64
 msgid "Playing From"
 msgstr "Odtwarzane z"
 
@@ -606,13 +625,17 @@ msgstr "Odtwarzane z"
 msgid "Playlist"
 msgstr "Playlista"
 
-#: internal/ui/routes/my-collection.go:56
+#: internal/ui/routes/my-collection.go:57
 msgid "Playlists"
 msgstr "Playlisty"
 
-#: internal/ui/routes/my-collection.go:34
-msgid "Please log in to view your collection"
+#: internal/ui/routes/my-collection.go:35
+msgid "Please sign in to view your collection"
 msgstr "Zaloguj się, by zobaczyć swoją kolekcję"
+
+#: internal/ui/routes/feed.go:100
+msgid "Please sign in to view your feed"
+msgstr "Zaloguj się, by zobaczyć swoje treści"
 
 #: internal/ui/window_shortcuts.go:16
 msgid "Preferences"
@@ -626,7 +649,7 @@ msgstr "Preferowana metoda ReplayGain"
 msgid "Previous"
 msgstr "Poprzedni"
 
-#: internal/ui/window_sidebar.go:90 internal/ui/window_sidebar.go:74
+#: internal/ui/window_sidebar.go:75
 msgid "Queue"
 msgstr "Kolejka"
 
@@ -638,7 +661,7 @@ msgstr "Wyjdź"
 msgid "Remove Track from Queue"
 msgstr "Usuń utwór z kolejki"
 
-#: internal/features/scrobbling/lastfm.go:51
+#: internal/features/scrobbling/lastfm.go:56
 msgid "Reopen Browser"
 msgstr "Ponownie otwórz przeglądarkę"
 
@@ -658,7 +681,7 @@ msgstr "Przewiń w lewo"
 msgid "Scroll to the right"
 msgstr "Przewiń w prawo"
 
-#: internal/ui/routes/search/albums.go:31
+#: internal/ui/routes/search/albums.go:32
 msgid "Search"
 msgstr "Wyszukiwanie"
 
@@ -674,11 +697,11 @@ msgstr "Problem z usługą sekretów"
 msgid "Secret Service Unavailable"
 msgstr "Usługa sekretów niedostępna"
 
-#: internal/ui/window_sidebar.go:37 internal/ui/window_sidebar.go:31
+#: internal/ui/window_sidebar.go:30
 msgid "Set as default page"
 msgstr "Ustaw jako stronę domyślną"
 
-#: internal/ui/window_actions.go:183
+#: internal/ui/window_actions.go:291
 msgid "Set current page as default"
 msgstr "Ustaw aktualną stronę jako domyślną"
 
@@ -686,15 +709,15 @@ msgstr "Ustaw aktualną stronę jako domyślną"
 msgid "Set the same volume for all tracks."
 msgstr "Ustaw jednakową głośność wszystkich utworów"
 
-#: internal/ui/routes/album.go:127
+#: internal/ui/routes/album.go:156
 msgid "Shuffle Album"
 msgstr "Odtwarzaj losowo album"
 
-#: internal/ui/routes/playlist.go:133
+#: internal/ui/routes/playlist.go:140
 msgid "Shuffle Playlist"
 msgstr "Odtwarzaj losowo playlistę"
 
-#: internal/ui/routes/artist.go:79
+#: internal/ui/routes/artist.go:89
 msgid "Shuffle Top Tracks"
 msgstr "Odtwarzaj losowo topowe utwory"
 
@@ -706,23 +729,27 @@ msgstr "Panel boczny"
 msgid "Sign In"
 msgstr "Zaloguj"
 
-#: internal/ui/window_sidebar.go:46 internal/ui/window_sidebar.go:40
+#: internal/ui/components/auth_required.go:17
+msgid "Sign In…"
+msgstr "Zaloguj się…"
+
+#: internal/ui/window_sidebar.go:39
 msgid "Sign Out"
 msgstr "Wyloguj"
 
-#: internal/ui/window_actions.go:160
+#: internal/ui/window_actions.go:266
 msgid "Sign in failed or aborted"
 msgstr "Logowanie nieudane lub przerwane"
 
-#: internal/ui/window_actions.go:164
+#: internal/ui/window_actions.go:270
 msgid "Signed in as %s"
 msgstr "Zalogowano jako %s"
 
-#: internal/ui/window_actions.go:174
+#: internal/ui/window_actions.go:280
 msgid "Signed out"
 msgstr "Wylogowano"
 
-#: internal/ui/routes/feed.go:152 internal/ui/routes/feed.go:150
+#: internal/ui/routes/feed.go:151
 msgid "Single by %s"
 msgstr "Singel autorstwa %s"
 
@@ -734,7 +761,7 @@ msgstr ""
 "Zacznij wpisywać w pasku wyszukiwania by szukać piosenek, artystów lub "
 "playlist."
 
-#: internal/ui/components/lyrics/lyrics.go:449
+#: internal/ui/components/lyrics/lyrics.go:450
 msgid "Sync with track"
 msgstr "Synchronizuj z utworem"
 
@@ -742,15 +769,15 @@ msgstr "Synchronizuj z utworem"
 msgid "The requested deeplink did not have any available handlers."
 msgstr "Żądany deeplink nie miał żadnych dostępnych handlerów."
 
-#: internal/ui/routes/feed.go:81 internal/ui/routes/feed.go:82
+#: internal/ui/routes/feed.go:83
 msgid "This Month"
 msgstr "W tym miesiącu"
 
-#: internal/ui/routes/feed.go:77 internal/ui/routes/feed.go:78
+#: internal/ui/routes/feed.go:79
 msgid "This Week"
 msgstr "W tym tygodniu"
 
-#: internal/ui/routes/feed.go:75 internal/ui/routes/feed.go:76
+#: internal/ui/routes/feed.go:77
 msgid "Today"
 msgstr "Dzisiaj"
 
@@ -762,7 +789,7 @@ msgstr "Przełącz powtarzanie"
 msgid "Toggle Shuffle"
 msgstr "Przełącz losowanie"
 
-#: internal/ui/window_content.go:45 internal/ui/window_content.go:44
+#: internal/ui/window_content.go:44
 msgid "Toggle Sidebar"
 msgstr "Przełącz panel boczny"
 
@@ -770,11 +797,11 @@ msgstr "Przełącz panel boczny"
 msgid "Track"
 msgstr "Utwór"
 
-#: internal/player/playback.go:61
+#: internal/player/playback.go:36
 msgid "Track not available for streaming, skipping to next track"
 msgstr "Utwór niedostępny w streamingu, przeskakuję do następnego utworu"
 
-#: internal/ui/routes/my-collection.go:80
+#: internal/ui/routes/my-collection.go:82
 msgid "Tracks"
 msgstr "Utwory"
 
@@ -790,11 +817,11 @@ msgstr ""
 "\n"
 "Komunikat błędu: "
 
-#: internal/ui/routes/feed.go:158 internal/ui/routes/feed.go:156
+#: internal/ui/routes/feed.go:157
 msgid "Unknown album type"
 msgstr "Niewspierany typ albumu"
 
-#: internal/ui/routes/feed.go:222 internal/ui/routes/feed.go:220
+#: internal/ui/routes/feed.go:221
 msgid "Unsupported activity"
 msgstr "Niewspierana aktywność"
 
@@ -802,7 +829,7 @@ msgstr "Niewspierana aktywność"
 msgid "View All"
 msgstr "Wszystkie"
 
-#: internal/ui/components/player/component_action_row.go:188
+#: internal/ui/components/player/component_action_row.go:190
 msgid "Volume"
 msgstr "Głośność"
 
@@ -821,10 +848,6 @@ msgstr "Zalogowano do Last.fm."
 #: internal/ui/components/linking/linking.go:29
 msgid "You can also open the linking page using the button below."
 msgstr "Możesz również otworzyć stronę łączenia, klikając przycisk poniżej."
-
-#: internal/ui/routes/feed.go:101
-msgid "You need to sign in to your account to access this page"
-msgstr "Musisz się zalogować na swoje konto, by mieć dostęp do tej strony"
 
 #: internal/secrets/service_linux.go:48
 msgid ""
@@ -849,29 +872,20 @@ msgstr ""
 msgid "translator-credits"
 msgstr "Łukasz Horodecki https://horodecki.net"
 
-#: internal/ui/components/auth_required.go:13
-msgid "Authentication Required"
-msgstr "Wymagane uwierzytelnienie"
+#~ msgid "Authentication required"
+#~ msgstr "Wymagane połączenie"
 
-#: internal/ui/components/tracklist/column_controls.go:64
-msgid "More…"
-msgstr "Więcej…"
+#~ msgid "No album could be shared."
+#~ msgstr "Nie powiodło się udostępnianie albumu."
 
-#: internal/ui/components/tracklist/column_controls.go:37
-msgid "Navigate to %s"
-msgstr "Przejdź do %s"
+#~ msgid "No playlist could be shared."
+#~ msgstr "Brak playlisty do udostępnienia."
 
-#: internal/ui/routes/my-collection.go:34
-msgid "Please sign in to view your collection"
-msgstr "Zaloguj się, by zobaczyć swoją kolekcję"
+#~ msgid "Please log in to view your collection"
+#~ msgstr "Zaloguj się, by zobaczyć swoją kolekcję"
 
-#: internal/ui/routes/feed.go:99
-msgid "Please sign in to view your feed"
-msgstr "Zaloguj się, by zobaczyć swoje treści"
-
-#: internal/ui/components/auth_required.go:17
-msgid "Sign In…"
-msgstr "Zaloguj się…"
+#~ msgid "You need to sign in to your account to access this page"
+#~ msgstr "Musisz się zalogować na swoje konto, by mieć dostęp do tej strony"
 
 #~ msgid "Connection required"
 #~ msgstr "Wymagane połączenie"

@@ -108,7 +108,7 @@ func Album(albumId string) *router.Response {
 	}
 
 	playControlsMenu := gio.NewMenu()
-	queueAllItem := gio.NewMenuItem("Add album to queue", "win.player.queue")
+	queueAllItem := gio.NewMenuItem(gettext.Get("Add Album to Queue"), "win.player.queue")
 	queueAllItem.SetActionAndTargetValue("win.player.queue", glib.NewVariantString(fmt.Sprintf("album/%s", albumId)))
 	playControlsMenu.AppendItem(queueAllItem)
 	playControlsPopover := gtk.NewPopoverMenuFromModel(&playControlsMenu.MenuModel)

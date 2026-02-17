@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: v1.1.0-99-ga37b2fb\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-02-15 18:03+0100\n"
-"PO-Revision-Date: 2026-02-17 08:29+0000\n"
+"POT-Creation-Date: 2026-02-17 14:21+0100\n"
+"PO-Revision-Date: 2026-02-10 09:16+0000\n"
 "Last-Translator: Priit Jõerüüt <jrtcdbrg@noreply.codeberg.org>\n"
 "Language-Team: Estonian <https://translate.codeberg.org/projects/tonearm/"
 "tonearm/et/>\n"
@@ -19,49 +19,61 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
 "X-Generator: Weblate 5.15.2\n"
 
-#: internal/ui/routes/artist.go:62
+#: internal/ui/routes/artist.go:72
 msgid "%d Fan"
 msgid_plural "%d Fans"
 msgstr[0] "%d fänn"
 msgstr[1] "%d fänni"
 
-#: internal/ui/components/media_card/playlist.go:18
+#: internal/ui/components/media_card/playlist.go:20
 msgid "%d Track"
 msgid_plural "%d Tracks"
 msgstr[0] "%d lugu"
 msgstr[1] "%d lugu"
 
-#: internal/ui/routes/album.go:118
+#: internal/ui/routes/album.go:145
 msgid "%d Track (%s)"
 msgid_plural "%d Tracks (%s)"
 msgstr[0] "%d lugu (%s)"
 msgstr[1] "%d lugu (%s)"
 
-#: internal/ui/routes/feed.go:144
+#: internal/ui/routes/feed.go:145
 msgid "%s and %s"
 msgstr "%s ja %s"
 
-#: internal/ui/window_sidebar.go:34
+#: internal/ui/window_sidebar.go:33
 msgid "About Tonearm"
 msgstr "Rakenduse teave: Tonearm"
+
+#: internal/ui/routes/album.go:111
+msgid "Add Album to Queue"
+msgstr ""
+
+#: internal/ui/routes/playlist.go:96
+msgid "Add playlist to queue"
+msgstr ""
 
 #: internal/ui/components/favourite_button/favourite_button.go:30
 msgid "Add to Collection"
 msgstr "Lisa kogusse"
 
-#: internal/ui/components/tracklist/column_controls.go:56
+#: internal/ui/components/tracklist/column_controls.go:54
 msgid "Add to Queue"
 msgstr "Lisa esitusjärjekorda"
+
+#: internal/ui/routes/artist.go:47
+msgid "Add top tracks to queue"
+msgstr ""
 
 #: internal/settings/playback.go:21
 msgid "Album"
 msgstr "Album"
 
-#: internal/ui/routes/feed.go:152
+#: internal/ui/routes/feed.go:153
 msgid "Album by %s"
 msgstr "Album esitajalt %s"
 
-#: internal/ui/routes/my-collection.go:51
+#: internal/ui/routes/my-collection.go:52
 msgid "Albums"
 msgstr "Albumid"
 
@@ -137,21 +149,29 @@ msgstr "Last.fm-i teenusesse sisselogimisel tekkis viga."
 msgid "An error occured while logging out of Last.fm."
 msgstr "Last.fm-i teenusest väljalogimisel tekkis viga."
 
-#: internal/ui/routes/album.go:135
+#: internal/ui/routes/album.go:162
 msgid "An error occurred while playing the album"
 msgstr "Albumi esitamisel tekkis viga"
 
-#: internal/ui/routes/playlist.go:142
+#: internal/ui/routes/playlist.go:147
 msgid "An error occurred while playing the playlist"
 msgstr "Esitusloendi esitamisel tekkis viga"
 
-#: internal/ui/routes/artist.go:88
+#: internal/ui/routes/artist.go:96
 msgid "An error occurred while playing the top tracks"
 msgstr "Populaarsete lugude esitamisel tekkis viga"
 
-#: internal/ui/routes/album.go:76
+#: internal/ui/routes/album.go:94
 msgid "An error occurred while playing the track"
 msgstr "Loo esitamisel tekkis viga"
+
+#: internal/ui/routes/my_collection/tracks.go:105
+msgid "An error occurred while playing the tracks"
+msgstr ""
+
+#: internal/ui/routes/my_collection/tracks.go:85
+msgid "An error occurred while shuffling the tracks"
+msgstr ""
 
 #: internal/secrets/service_linux.go:55
 msgid ""
@@ -169,11 +189,11 @@ msgstr ""
 "\n"
 "%s"
 
-#: internal/ui/routes/artist.go:36
+#: internal/ui/routes/artist.go:38
 msgid "Artist"
 msgstr "Esitaja"
 
-#: internal/ui/routes/my-collection.go:46
+#: internal/ui/routes/my-collection.go:47
 msgid "Artists"
 msgstr "Esitajad"
 
@@ -201,7 +221,7 @@ msgstr "Põhilised kiirklahvid"
 msgid "Cache Images"
 msgstr "Puhverda pilte"
 
-#: internal/features/scrobbling/lastfm.go:61
+#: internal/features/scrobbling/lastfm.go:66
 msgid "Cancel"
 msgstr "Katkesta"
 
@@ -253,39 +273,39 @@ msgstr "Tonearmi toimimine töötades taustal."
 msgid "Continue"
 msgstr "Jätka"
 
-#: internal/features/scrobbling/lastfm.go:41
+#: internal/features/scrobbling/lastfm.go:43
 msgid "Continue the authentication process in your browser."
 msgstr "Jätka autentimist oma veebibrauseris."
 
-#: internal/ui/routes/album.go:187
+#: internal/ui/routes/album.go:204
 msgid "Copied album URL to clipboard."
 msgstr "Albumi võrguaadress on kopeeritud lõikelauale."
 
-#: internal/ui/routes/artist.go:133
+#: internal/ui/routes/artist.go:138
 msgid "Copied artist URL to clipboard."
 msgstr "Esitaja võrguaadress on kopeeritud lõikelauale."
 
-#: internal/ui/routes/playlist.go:195
+#: internal/ui/routes/playlist.go:191
 msgid "Copied playlist URL to clipboard."
 msgstr "Esitusloendi võrguaadress on kopeeritud lõikelauale."
 
-#: internal/ui/components/player/component_action_row.go:259
+#: internal/ui/components/player/component_action_row.go:248
 msgid "Copied track URL to clipboard."
 msgstr "Loo võrguaadress on kopeeritud lõikelauale."
 
-#: internal/ui/routes/album.go:171
+#: internal/ui/routes/album.go:194
 msgid "Copy Album URL"
 msgstr "Kopeeri albmi võrguaadress"
 
-#: internal/ui/routes/artist.go:123
+#: internal/ui/routes/artist.go:128
 msgid "Copy Artist URL"
 msgstr "Kopeeri esitaja võrguaadress"
 
-#: internal/ui/routes/playlist.go:179
+#: internal/ui/routes/playlist.go:181
 msgid "Copy Playlist URL"
 msgstr "Kopeeri esitusloendi võrguaadress"
 
-#: internal/ui/components/player/component_action_row.go:248
+#: internal/ui/components/player/component_action_row.go:237
 msgid "Copy Track URL"
 msgstr "Kopeeri loo võrguaadress"
 
@@ -297,11 +317,11 @@ msgstr "Vaikimisi leht"
 msgid "Don't show again"
 msgstr "Ära näita enam uuesti"
 
-#: internal/ui/routes/search.go:29
+#: internal/ui/routes/search.go:33
 msgid "E.g. Fox Stevenson"
 msgstr "Näiteks Gary Moore"
 
-#: internal/ui/routes/feed.go:154
+#: internal/ui/routes/feed.go:155
 msgid "EP by %s"
 msgstr "EP esitajalt %s"
 
@@ -317,11 +337,11 @@ msgstr "Kasuta ListenBrainzi"
 msgid "Enable autoplay"
 msgstr "Lülita automaatne esitus sisse"
 
-#: internal/ui/components/lyrics/lyrics.go:409
+#: internal/ui/components/lyrics/lyrics.go:410
 msgid "Error fetching lyrics"
 msgstr "Viga laulusõnade laadimisel"
 
-#: internal/ui/routes/my-collection.go:42
+#: internal/ui/routes/my-collection.go:43
 msgid "Error loading collection"
 msgstr "Viga kogu laadimisel"
 
@@ -333,7 +353,7 @@ msgstr "Uuri ja avasta"
 msgid "External Link"
 msgstr "Väline link"
 
-#: internal/ui/routes/feed.go:98
+#: internal/ui/routes/feed.go:99
 msgid "Feed"
 msgstr "Meediavoog"
 
@@ -341,7 +361,7 @@ msgstr "Meediavoog"
 msgid "General"
 msgstr "Üldist"
 
-#: internal/ui/components/player/component_track_timeline.go:61
+#: internal/ui/components/player/component_track_timeline.go:62
 msgid "High"
 msgstr "Kõrge"
 
@@ -365,11 +385,11 @@ msgstr "Sisemine viga"
 msgid "Keyboard Shortcuts"
 msgstr "Klaviatuuri kiirvalikud"
 
-#: internal/ui/routes/feed.go:84
+#: internal/ui/routes/feed.go:85
 msgid "Last Month"
 msgstr "Eelmisel kuul"
 
-#: internal/ui/routes/feed.go:80
+#: internal/ui/routes/feed.go:81
 msgid "Last Week"
 msgstr "Eelmisel nädalal"
 
@@ -401,19 +421,19 @@ msgstr "Oled Last.fm-i loginud sisse kasutajana %s."
 msgid "Logged out of Last.fm."
 msgstr "Oled Last.fm-ist välja loginud."
 
-#: internal/features/scrobbling/lastfm.go:40
+#: internal/features/scrobbling/lastfm.go:42
 msgid "Logging in to Last.fm"
 msgstr "Oled Last.fm-i sisse logimas"
 
-#: internal/ui/components/player/component_track_timeline.go:58
+#: internal/ui/components/player/component_track_timeline.go:59
 msgid "Low (320 kbps)"
 msgstr "Madal (320 kbps)"
 
-#: internal/ui/components/player/component_track_timeline.go:55
+#: internal/ui/components/player/component_track_timeline.go:56
 msgid "Low (96 kbps)"
 msgstr "Madal (96 kbps)"
 
-#: internal/ui/window_sidebar.go:73
+#: internal/ui/window_sidebar.go:74
 msgid "Lyrics"
 msgstr "Laulusõnad"
 
@@ -421,7 +441,7 @@ msgstr "Laulusõnad"
 msgid "Main Menu"
 msgstr "Põhimenüü"
 
-#: internal/ui/components/player/component_track_timeline.go:64
+#: internal/ui/components/player/component_track_timeline.go:65
 msgid "Max"
 msgstr "Maksimaalne"
 
@@ -429,31 +449,31 @@ msgstr "Maksimaalne"
 msgid "Maximum history length before dropping old entries."
 msgstr "Ajaloo pikkus, millest vanemad kirjed kustutatakse."
 
-#: internal/ui/components/dynamic_v1.go:134
+#: internal/ui/components/dynamic_v1.go:158
 msgid "More"
 msgstr "Veel"
 
-#: internal/ui/components/tracklist/column_controls.go:64
+#: internal/ui/components/tracklist/column_controls.go:62
 msgid "More…"
 msgstr "Veel…"
 
-#: internal/ui/routes/my_collection/albums.go:36
+#: internal/ui/routes/my_collection/albums.go:37
 msgid "My Albums"
 msgstr "Minu albumid"
 
-#: internal/ui/routes/my_collection/artists.go:36
+#: internal/ui/routes/my_collection/artists.go:37
 msgid "My Artists"
 msgstr "Minu esitajad"
 
-#: internal/ui/routes/my-collection.go:33
+#: internal/ui/routes/my-collection.go:34
 msgid "My Collection"
 msgstr "Minu kogu"
 
-#: internal/ui/routes/my_collection/playlists.go:36
+#: internal/ui/routes/my_collection/playlists.go:37
 msgid "My Playlists"
 msgstr "Minu esitusloendid"
 
-#: internal/ui/routes/my_collection/tracks.go:44
+#: internal/services/tidal/openapi/collection.go:19
 msgid "My Tracks"
 msgstr "Minu lood"
 
@@ -461,15 +481,15 @@ msgstr "Minu lood"
 msgid "Navigate Back"
 msgstr "Liigu tagasi"
 
-#: internal/ui/components/tracklist/column_controls.go:37
+#: internal/ui/components/tracklist/column_controls.go:35
 msgid "Navigate to %s"
 msgstr "Ava %s"
 
-#: internal/ui/components/player/component_action_row.go:194
+#: internal/ui/components/player/component_action_row.go:196
 msgid "Navigate to Album"
 msgstr "Vaata albumi teavet"
 
-#: internal/ui/components/player/component_action_row.go:32
+#: internal/ui/components/player/component_action_row.go:33
 msgid "Navigate to Artist"
 msgstr "Vaata esitaja teavet"
 
@@ -485,7 +505,7 @@ msgstr "Mine uurimisvaatesse"
 msgid "Navigate to Home"
 msgstr "Mine avalehele"
 
-#: internal/ui/components/player/component_action_row.go:221
+#: internal/ui/components/player/component_action_row.go:210
 msgid "Navigate to Track Mix"
 msgstr "Mine lugude juhuslikku loendisse"
 
@@ -501,29 +521,21 @@ msgstr "Liikumine rakenduses"
 msgid "Next"
 msgstr "Järgmine"
 
-#: internal/ui/components/player/component_track_info.go:22
+#: internal/ui/components/player/component_track_info.go:25
 msgid "No Artist"
 msgstr "Esitajat pole"
 
-#: internal/ui/components/player/component_track_info.go:21
+#: internal/ui/components/player/component_track_info.go:24
 msgid "No Track"
 msgstr "Lugu pole"
 
-#: internal/ui/routes/album.go:177
-msgid "No album could be shared."
-msgstr "Ühtegi albumit polnud võimalik jagada."
-
-#: internal/ui/components/lyrics/lyrics.go:416
+#: internal/ui/components/lyrics/lyrics.go:417
 msgid "No lyrics available"
 msgstr "Laulusõnu pole saadaval"
 
-#: internal/ui/components/player/component_action_row.go:238
+#: internal/ui/components/player/component_action_row.go:227
 msgid "No mix found for the current track"
 msgstr "Antud loo jaoks pole lugude juhuslikku loendit saadaval"
-
-#: internal/ui/routes/playlist.go:185
-msgid "No playlist could be shared."
-msgstr "Pole esitusloendit, mida jagada."
 
 #: internal/secrets/service_linux.go:40
 msgid ""
@@ -542,7 +554,7 @@ msgstr ""
 "Palun paigalda mõni salajase teenuse teenusepakkuja, nagu GNOME Keyring või "
 "KDE Wallet."
 
-#: internal/ui/components/lyrics/lyrics.go:398
+#: internal/ui/components/lyrics/lyrics.go:399
 msgid "No song currently playing"
 msgstr "Ühtegi lugu pole hetkel esitamisel"
 
@@ -558,7 +570,7 @@ msgstr "Ei leidu"
 msgid "Not found"
 msgstr "No ei leidu midagi"
 
-#: internal/ui/routes/feed.go:86
+#: internal/ui/routes/feed.go:87
 msgid "Older"
 msgstr "Vanemad"
 
@@ -570,7 +582,7 @@ msgstr "Ava TIDAL-i leht"
 msgid "Performance"
 msgstr "Jõudlus"
 
-#: internal/ui/routes/playlist.go:72
+#: internal/ui/routes/playlist.go:62
 msgid "Personal Mix"
 msgstr "Sinu isiklik lugude miks"
 
@@ -578,15 +590,15 @@ msgstr "Sinu isiklik lugude miks"
 msgid "Play / Pause"
 msgstr "Esita / peata"
 
-#: internal/ui/routes/album.go:142
+#: internal/ui/routes/album.go:169
 msgid "Play Album"
 msgstr "Kuula albumit"
 
-#: internal/ui/routes/playlist.go:149
+#: internal/ui/routes/playlist.go:154
 msgid "Play Playlist"
 msgstr "Kuula esitusloendit"
 
-#: internal/ui/routes/artist.go:94
+#: internal/ui/routes/artist.go:102
 msgid "Play Top Tracks"
 msgstr "Kuula populaarsemaid lugusid"
 
@@ -594,17 +606,17 @@ msgstr "Kuula populaarsemaid lugusid"
 msgid "Playback"
 msgstr "Taasesitus"
 
-#: internal/ui/components/player/component_track_timeline.go:72
+#: internal/ui/components/player/component_track_timeline.go:73
 msgid "Playback quality saved. Changes will be applied on next track change."
 msgstr ""
 "Taasesituse kvaliteet on salvestatud. Muutused jõustuvad järgmise loo "
 "vahetumisel."
 
-#: internal/ui/window_sidebar.go:72
+#: internal/ui/window_sidebar.go:73
 msgid "Player"
 msgstr "Meediaesitaja"
 
-#: internal/ui/components/player/component_playing_from.go:61
+#: internal/ui/components/player/component_playing_from.go:64
 msgid "Playing From"
 msgstr "Esitamisel allikast"
 
@@ -612,15 +624,15 @@ msgstr "Esitamisel allikast"
 msgid "Playlist"
 msgstr "Esitusloend"
 
-#: internal/ui/routes/my-collection.go:56
+#: internal/ui/routes/my-collection.go:57
 msgid "Playlists"
 msgstr "Esitusloendid"
 
-#: internal/ui/routes/my-collection.go:34
+#: internal/ui/routes/my-collection.go:35
 msgid "Please sign in to view your collection"
 msgstr "Oma kogu vaatamiseks palun logi sisse"
 
-#: internal/ui/routes/feed.go:99
+#: internal/ui/routes/feed.go:100
 msgid "Please sign in to view your feed"
 msgstr "Oma meediavoo vaatamiseks palun logi sisse"
 
@@ -636,7 +648,7 @@ msgstr "Eelistatud esitusvaljuse tundlikkus"
 msgid "Previous"
 msgstr "Eelmine"
 
-#: internal/ui/window_sidebar.go:74
+#: internal/ui/window_sidebar.go:75
 msgid "Queue"
 msgstr "Esitusjärjekord"
 
@@ -648,7 +660,7 @@ msgstr "Välju"
 msgid "Remove Track from Queue"
 msgstr "Eemalda lugu esitusjärjekorrast"
 
-#: internal/features/scrobbling/lastfm.go:51
+#: internal/features/scrobbling/lastfm.go:56
 msgid "Reopen Browser"
 msgstr "Ava veebibrauser uuesti"
 
@@ -668,7 +680,7 @@ msgstr "Keri vasakule"
 msgid "Scroll to the right"
 msgstr "Keri paremale"
 
-#: internal/ui/routes/search/albums.go:31
+#: internal/ui/routes/search/albums.go:32
 msgid "Search"
 msgstr "Otsi"
 
@@ -684,11 +696,11 @@ msgstr "Salajase teenuse probleem"
 msgid "Secret Service Unavailable"
 msgstr "Salajane teenus pole saadaval"
 
-#: internal/ui/window_sidebar.go:31
+#: internal/ui/window_sidebar.go:30
 msgid "Set as default page"
 msgstr "Määra vaikimisi leheks"
 
-#: internal/ui/window_actions.go:183
+#: internal/ui/window_actions.go:291
 msgid "Set current page as default"
 msgstr "Määra see leht vaikimisi leheks"
 
@@ -696,15 +708,15 @@ msgstr "Määra see leht vaikimisi leheks"
 msgid "Set the same volume for all tracks."
 msgstr "Määra kõikidele lugudele sama helivaljus."
 
-#: internal/ui/routes/album.go:127
+#: internal/ui/routes/album.go:156
 msgid "Shuffle Album"
 msgstr "Sega album"
 
-#: internal/ui/routes/playlist.go:133
+#: internal/ui/routes/playlist.go:140
 msgid "Shuffle Playlist"
 msgstr "Sega esitusloend"
 
-#: internal/ui/routes/artist.go:79
+#: internal/ui/routes/artist.go:89
 msgid "Shuffle Top Tracks"
 msgstr "Sega populaarsemad lood"
 
@@ -720,23 +732,23 @@ msgstr "Logi sisse"
 msgid "Sign In…"
 msgstr "Logi sisse…"
 
-#: internal/ui/window_sidebar.go:40
+#: internal/ui/window_sidebar.go:39
 msgid "Sign Out"
 msgstr "Logi välja"
 
-#: internal/ui/window_actions.go:160
+#: internal/ui/window_actions.go:266
 msgid "Sign in failed or aborted"
 msgstr "Sisselogimine ei õnnestunud või on katkestatud"
 
-#: internal/ui/window_actions.go:164
+#: internal/ui/window_actions.go:270
 msgid "Signed in as %s"
 msgstr "Sisseloginud kasutajana %s"
 
-#: internal/ui/window_actions.go:174
+#: internal/ui/window_actions.go:280
 msgid "Signed out"
 msgstr "Väljaloginud"
 
-#: internal/ui/routes/feed.go:150
+#: internal/ui/routes/feed.go:151
 msgid "Single by %s"
 msgstr "Singel esitajalt %s"
 
@@ -748,7 +760,7 @@ msgstr ""
 "Lugude, esitajate, albumite ja esitusloendite otsimiseks kirjuta midagi "
 "otsinguribale."
 
-#: internal/ui/components/lyrics/lyrics.go:449
+#: internal/ui/components/lyrics/lyrics.go:450
 msgid "Sync with track"
 msgstr "Sünkrooni looga"
 
@@ -756,15 +768,15 @@ msgstr "Sünkrooni looga"
 msgid "The requested deeplink did not have any available handlers."
 msgstr "Soovitud süvalinki polnud võimalik ühegi rakendusega avada."
 
-#: internal/ui/routes/feed.go:82
+#: internal/ui/routes/feed.go:83
 msgid "This Month"
 msgstr "Sel kuul"
 
-#: internal/ui/routes/feed.go:78
+#: internal/ui/routes/feed.go:79
 msgid "This Week"
 msgstr "Sel nädalal"
 
-#: internal/ui/routes/feed.go:76
+#: internal/ui/routes/feed.go:77
 msgid "Today"
 msgstr "Täna"
 
@@ -784,11 +796,11 @@ msgstr "Lülita külgpaan sisse/välja"
 msgid "Track"
 msgstr "Lugu"
 
-#: internal/player/playback.go:61
+#: internal/player/playback.go:36
 msgid "Track not available for streaming, skipping to next track"
 msgstr "Lugu pole voogedastuseks saadaval, lähen järgmise loo juurde"
 
-#: internal/ui/routes/my-collection.go:80
+#: internal/ui/routes/my-collection.go:82
 msgid "Tracks"
 msgstr "Lood"
 
@@ -804,11 +816,11 @@ msgstr ""
 "\n"
 "Vea sisu: "
 
-#: internal/ui/routes/feed.go:156
+#: internal/ui/routes/feed.go:157
 msgid "Unknown album type"
 msgstr "Tundmatu albumi tüüp"
 
-#: internal/ui/routes/feed.go:220
+#: internal/ui/routes/feed.go:221
 msgid "Unsupported activity"
 msgstr "Mittetoetatud tegevus"
 
@@ -816,7 +828,7 @@ msgstr "Mittetoetatud tegevus"
 msgid "View All"
 msgstr "Vaata kõiki"
 
-#: internal/ui/components/player/component_action_row.go:188
+#: internal/ui/components/player/component_action_row.go:190
 msgid "Volume"
 msgstr "Helivaljus"
 
@@ -860,6 +872,12 @@ msgstr ""
 #: internal/ui/window_about.go:132
 msgid "translator-credits"
 msgstr "Priit Jõerüüt 2026"
+
+#~ msgid "No album could be shared."
+#~ msgstr "Ühtegi albumit polnud võimalik jagada."
+
+#~ msgid "No playlist could be shared."
+#~ msgstr "Pole esitusloendit, mida jagada."
 
 #~ msgid "Authentication required"
 #~ msgstr "Autentimine on vajalik"
