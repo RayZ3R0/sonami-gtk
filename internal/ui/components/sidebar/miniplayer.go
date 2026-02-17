@@ -2,7 +2,6 @@ package sidebar
 
 import (
 	"log/slog"
-	"strings"
 
 	"codeberg.org/dergs/tonearm/internal/gettext"
 	"codeberg.org/dergs/tonearm/internal/player"
@@ -26,7 +25,7 @@ func MiniPlayer() gtkbindings.Box {
 	var (
 		coverState    = state.NewStateful[schwifty.Paintable](resources.MissingAlbum())
 		trackTitle    = state.NewStateful[string]("")
-		trackArtists  = state.NewStateful[string]("")
+		trackAlbum    = state.NewStateful[string]("")
 		playPauseIcon = state.NewStateful("play-symbolic")
 	)
 
@@ -52,7 +51,7 @@ func MiniPlayer() gtkbindings.Box {
 
 			schwifty.OnMainThreadOncePure(func() {
 				trackTitle.SetValue(tonearm.FormatTitle(trackInfo))
-				trackArtists.SetValue(strings.Join(trackInfo.Artists().Names(), ", "))
+				trackAlbum.SetValue(trackInfo.Album().Title())
 			})
 		}
 
@@ -87,11 +86,15 @@ func MiniPlayer() gtkbindings.Box {
 				Ellipsis(pango.EllipsizeEndValue).
 				HAlign(gtk.AlignStartValue),
 			Label("").
-				BindText(trackArtists).
+				WithCSSClass("dimmed").
 				Ellipsis(pango.EllipsizeEndValue).
-				HAlign(gtk.AlignStartValue),
+				HAlign(gtk.AlignStartValue).
+				BindText(trackAlbum),
 		).
-			VAlign(gtk.AlignCenterValue),
+			Spacing(3).
+			VAlign(gtk.AlignCenterValue).
+			HAlign(gtk.AlignStartValue).
+			HExpand(true),
 		Spacer().VExpand(false),
 		HStack(
 			Button().
