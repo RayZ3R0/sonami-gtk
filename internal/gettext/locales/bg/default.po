@@ -277,7 +277,7 @@ msgstr "Настрой поведението на Tonearm относно въз
 #: internal/ui/window_preferences.go:49
 msgid "Configure the behaviour of Tonearm when navigating between pages"
 msgstr ""
-"Настрой поведението на Tonearm, по време на навигацията между страници
+"Настрой поведението на Tonearm, по време на навигацията между страници"
 
 #: internal/ui/window_preferences.go:31
 msgid "Configure the behaviour of Tonearm when running in the background"
