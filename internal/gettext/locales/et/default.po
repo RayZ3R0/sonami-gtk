@@ -538,7 +538,7 @@ msgid "Older"
 msgstr "Vanemad"
 
 #: internal/ui/components/linking/linking.go:75
-msgid "Open TIDAL page"
+msgid "Open TIDAL Page"
 msgstr "Ava TIDAL-i leht"
 
 #: internal/ui/window_preferences.go:108

@@ -72,7 +72,7 @@ func NewLinking(window *gtk.Window, code string, link string, cancel context.Can
 				Helper,
 				VStack(
 					Button().
-						Label(gettext.Get("Open TIDAL page")).
+						Label(gettext.Get("Open TIDAL Page")).
 						WithCSSClass("suggested-action").
 						HPadding(20).VPadding(10).
 						ConnectClicked(func(b gtk.Button) {

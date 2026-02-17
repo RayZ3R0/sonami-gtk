@@ -526,7 +526,7 @@ msgid "Older"
 msgstr ""
 
 #: internal/ui/components/linking/linking.go:75
-msgid "Open TIDAL page"
+msgid "Open TIDAL Page"
 msgstr ""
 
 #: internal/ui/window_preferences.go:108
@@ -800,4 +800,3 @@ msgstr ""
 #: internal/ui/window_about.go:132
 msgid "translator-credits"
 msgstr ""
-

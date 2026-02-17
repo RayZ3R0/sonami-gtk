@@ -557,7 +557,7 @@ msgid "Older"
 msgstr "Starsze"
 
 #: internal/ui/components/linking/linking.go:75
-msgid "Open TIDAL page"
+msgid "Open TIDAL Page"
 msgstr "Otwórz stronę TIDAL"
 
 #: internal/ui/window_preferences.go:108
