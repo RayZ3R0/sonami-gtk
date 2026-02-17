@@ -962,18 +962,6 @@ msgstr "Dråfølin Nattfløyen https://github.com/drafolin"
 #~ msgid "No song currently playing"
 #~ msgstr "Pas de morceaux en lecture"
 
-#~ msgid "Toggle Repeat"
-#~ msgstr "Basculer le mode répétition"
-
-#~ msgid "Toggle Shuffle"
-#~ msgstr "Basculer le mode aléatoire"
-
-#~ msgid "No album could be shared."
-#~ msgstr "L'album n'a pas pu être partagé."
-
-#~ msgid "No playlist could be shared."
-#~ msgstr "La Liste de lecture n'a pas pu être partagée."
-
 #~ msgid "Authentication required"
 #~ msgstr "Connexion requise"
 

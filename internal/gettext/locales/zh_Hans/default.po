@@ -926,15 +926,6 @@ msgstr "Poesty Li"
 #~ msgid "No song currently playing"
 #~ msgstr "当前无歌曲播放"
 
-#~ msgid "Toggle Repeat"
-#~ msgstr "切换循环"
-
-#~ msgid "Toggle Shuffle"
-#~ msgstr "切换随机播放"
-
-#~ msgid "No playlist could be shared."
-#~ msgstr "无法分享播放列表。"
-
 #~ msgid "Authentication required"
 #~ msgstr "需要身份验证"
 

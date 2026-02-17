@@ -335,7 +335,7 @@ msgstr "EP esitajalt %s"
 
 #: internal/ui/window_preferences.go:57
 msgid "Enable Autoplay"
-msgstr ""
+msgstr "Lülita automaatne esitus sisse"
 
 #: internal/ui/window_preferences.go:138
 msgid "Enable Last.fm"
@@ -351,7 +351,7 @@ msgstr ""
 
 #: internal/ui/components/sidebar/lyrics/lyrics.go:51
 msgid "Error Fetching Lyrics"
-msgstr ""
+msgstr "Viga laulusõnade laadimisel"
 
 #: internal/ui/routes/my-collection.go:43
 msgid "Error loading collection"
@@ -551,11 +551,11 @@ msgstr "Esitajat pole"
 
 #: internal/ui/components/sidebar/lyrics/lyrics.go:55
 msgid "No Lyrics Available"
-msgstr ""
+msgstr "Laulusõnu pole saadaval"
 
 #: internal/ui/components/sidebar/lyrics/lyrics.go:49
 msgid "No Song Currently Playing"
-msgstr ""
+msgstr "Ühtegi lugu pole hetkel esitamisel"
 
 #: internal/ui/components/sidebar/player/component_track_info.go:24
 msgid "No Track"
@@ -588,7 +588,7 @@ msgstr ""
 
 #: internal/ui/window_preferences.go:63
 msgid "Normalize Volume"
-msgstr ""
+msgstr "Normaliseeri helivaljust"
 
 #: internal/router/handler_notfound.go:10
 msgid "Not Found"
@@ -650,7 +650,7 @@ msgstr "Taasesitus"
 msgid "Playback quality saved. Changes will be applied on next track change"
 msgstr ""
 "Taasesituse kvaliteet on salvestatud. Muutused jõustuvad järgmise loo "
-"vahetumisel."
+"vahetumisel"
 
 #: internal/ui/window_sidebar.go:73
 msgid "Player"
@@ -750,7 +750,7 @@ msgstr "Salajane teenus pole saadaval"
 
 #: internal/ui/window_sidebar.go:30
 msgid "Set as Default Page"
-msgstr ""
+msgstr "Määra vaikimisi leheks"
 
 #: internal/ui/window_actions.go:333
 msgid "Set current page as default"
@@ -813,10 +813,12 @@ msgid ""
 "Start typing in the search bar to search for songs, artists, albums or "
 "playlists"
 msgstr ""
+"Lugude, esitajate, albumite ja esitusloendite otsimiseks kirjuta midagi "
+"otsinguribale"
 
 #: internal/ui/components/sidebar/lyrics/lyrics_view.go:63
 msgid "Sync with Track"
-msgstr ""
+msgstr "Sünkrooni looga"
 
 #: internal/router/handler_notfound.go:13
 msgid "The requested deeplink did not have any available handlers."
@@ -918,62 +920,3 @@ msgstr ""
 #: internal/ui/window_about.go:132
 msgid "translator-credits"
 msgstr "Priit Jõerüüt 2026"
-
-#~ msgid ""
-#~ "Allow Tonearm to temporarily store images on the file system to improve "
-#~ "performance and reduce network traffic."
-#~ msgstr ""
-#~ "Tagamaks paremat jõudlust ja vähendamaks võrguliiklust luba Tonearmil "
-#~ "ajutiselt salvestada pilte sinu seadme andmekandhjale."
-
-#~ msgid "Enable autoplay"
-#~ msgstr "Lülita automaatne esitus sisse"
-
-#~ msgid "Normalize volume"
-#~ msgstr "Normaliseeri helivaljust"
-
-#~ msgid "Set as default page"
-#~ msgstr "Määra vaikimisi leheks"
-
-#~ msgid ""
-#~ "Start typing in the search bar to search for songs, artists, albums or "
-#~ "playlists."
-#~ msgstr ""
-#~ "Lugude, esitajate, albumite ja esitusloendite otsimiseks kirjuta midagi "
-#~ "otsinguribale."
-
-#~ msgid "Sync With Track"
-#~ msgstr "Sünkrooni looga"
-
-#~ msgid "No lyrics available"
-#~ msgstr "Laulusõnu pole saadaval"
-
-#~ msgid "Sync with track"
-#~ msgstr "Sünkrooni looga"
-
-#~ msgid "Error fetching lyrics"
-#~ msgstr "Viga laulusõnade laadimisel"
-
-#~ msgid "No song currently playing"
-#~ msgstr "Ühtegi lugu pole hetkel esitamisel"
-
-#~ msgid "Toggle Repeat"
-#~ msgstr "Lülita kordus sisse/välja"
-
-#~ msgid "Toggle Shuffle"
-#~ msgstr "Lülita segamine sisse/välja"
-
-#~ msgid "No album could be shared."
-#~ msgstr "Ühtegi albumit polnud võimalik jagada."
-
-#~ msgid "No playlist could be shared."
-#~ msgstr "Pole esitusloendit, mida jagada."
-
-#~ msgid "Authentication required"
-#~ msgstr "Autentimine on vajalik"
-
-#~ msgid "Please log in to view your collection"
-#~ msgstr "Oma kogu vaatamiseks palun logi sisse"
-
-#~ msgid "You need to sign in to your account to access this page"
-#~ msgstr "Selle lehe kasutamiseks pead olema oma kasutajakontoga sisseloginud"

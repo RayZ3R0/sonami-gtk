@@ -962,20 +962,8 @@ msgstr "Łukasz Horodecki https://horodecki.net"
 #~ msgid "No song currently playing"
 #~ msgstr "Brak aktualnie odtwarzanej piosenki"
 
-#~ msgid "Toggle Repeat"
-#~ msgstr "Przełącz powtarzanie"
-
-#~ msgid "Toggle Shuffle"
-#~ msgstr "Przełącz losowanie"
-
 #~ msgid "Authentication required"
 #~ msgstr "Wymagane połączenie"
-
-#~ msgid "No album could be shared."
-#~ msgstr "Nie powiodło się udostępnianie albumu."
-
-#~ msgid "No playlist could be shared."
-#~ msgstr "Brak playlisty do udostępnienia."
 
 #~ msgid "Please log in to view your collection"
 #~ msgstr "Zaloguj się, by zobaczyć swoją kolekcję"
