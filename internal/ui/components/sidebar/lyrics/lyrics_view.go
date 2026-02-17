@@ -115,7 +115,7 @@ func scrollToLyric(w *gtk.Button) {
 	vadj.SetValue(targetPosition)
 }
 
-func setNewIndex(timing highlightTiming) {
+func setNewIndex(timing *highlightTiming) {
 	object := timing.Ref.Get()
 	if object == nil {
 		return

@@ -46,7 +46,7 @@ func parseLRCLyrics(lyrics string, trackDuration time.Duration) (lines []any) {
 	// Remove timing tags and split into lines
 	timingRegex := regexp.MustCompile(`\[(\d{2}:\d{2}\.\d{2})\](.*)`)
 	splitLyrics := strings.Split(lyrics, "\n")
-	timings := []highlightTiming{}
+	timings := []*highlightTiming{}
 
 	for i, line := range splitLyrics {
 		// Skip empty lines
@@ -81,7 +81,7 @@ func parseLRCLyrics(lyrics string, trackDuration time.Duration) (lines []any) {
 		}
 
 		if matches[2] == "" {
-			timings = append(timings, highlightTiming{
+			timings = append(timings, &highlightTiming{
 				Start: timeStart,
 				End:   timeEnd,
 				Ref:   new(tracking.WeakRef),
@@ -96,18 +96,20 @@ func parseLRCLyrics(lyrics string, trackDuration time.Duration) (lines []any) {
 			lyricText = strings.TrimSpace(matches[2])
 		}
 
-		boxWidget := lyricLine(lyricText, &lyricTiming{
-			timeStart: timeStart,
-			timeEnd:   timeEnd,
-		})()
+		timing := &highlightTiming{
+			Start: timeStart,
+			End:   timeEnd,
+		}
+		boxWidget := lyricLine(
+			lyricText,
+			timing,
+		)()
 
 		lines = append(lines, boxWidget)
 
-		timings = append(timings, highlightTiming{
-			Start: timeStart,
-			End:   timeEnd,
-			Ref:   tracking.NewWeakRef(boxWidget),
-		})
+		timing.Ref = tracking.NewWeakRef(boxWidget)
+
+		timings = append(timings, timing)
 	}
 
 	activeIndexChangeOnPlayerUpdate = player.PlaybackStateChanged.On(func(state *player.PlaybackState) (next bool) {
