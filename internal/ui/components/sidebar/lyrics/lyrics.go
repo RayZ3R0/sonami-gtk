@@ -61,7 +61,12 @@ func (s lyricsStatus) ToGTK() *gtk.Widget {
 }
 
 func init() {
-	player.TrackChanged.On(func(trackInfo tonearm.Track) bool {
+	player.TrackChanged.OnLazy(func(trackInfo tonearm.Track) bool {
+		adj := lyricsView().GetVadjustment()
+		defer adj.Unref()
+		adj.SetValue(0)
+		userManuallyScrolled.SetValue(false)
+
 		lyricsPanel.SetValue(lyricsStatusLoading)
 		lyricsList.SetValue(nil)
 		defer runtime.GC()
