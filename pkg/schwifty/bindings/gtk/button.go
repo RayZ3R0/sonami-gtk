@@ -117,3 +117,23 @@ func (f Button) TooltipText(tooltip string) Button {
 		return button
 	}
 }
+
+func (f Button) BindTooltipText(state *state.State[string]) Button {
+	return func() *gtk.Button {
+		var callbackId string
+		var ref *tracking.WeakRef
+		return f.ConnectConstruct(func(w *gtk.Button) {
+			ref = tracking.NewWeakRef(w)
+			callbackId = state.AddCallback(func(newValue string) {
+				callback.OnMainThreadOncePure(func() {
+					if obj := ref.Get(); obj != nil {
+						defer obj.Unref()
+						gtk.ButtonNewFromInternalPtr(obj.Ptr).SetTooltipText(newValue)
+					}
+				})
+			})
+		}).ConnectDestroy(func(w gtk.Widget) {
+			state.RemoveCallback(callbackId)
+		})()
+	}
+}

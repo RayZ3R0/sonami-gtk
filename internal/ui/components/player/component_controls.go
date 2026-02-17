@@ -33,11 +33,7 @@ func controls() schwifty.Box {
 	var (
 		playPauseChildState       = state.NewStateful[any](nil)
 		actualPlayPauseChildState = state.NewStateful[any](nil)
-
-		repeatClassState = state.NewStateful("")
-		repeatIconState  = state.NewStateful(repeatListIconName)
-
-		shuffleClassState = state.NewStateful("")
+		playPauseTooltipState     = state.NewStateful("")
 	)
 
 	player.PlaybackStateChanged.On(func(state *player.PlaybackState) bool {
@@ -46,8 +42,10 @@ func controls() schwifty.Box {
 			switch state.Status {
 			case player.PlaybackStatusPlaying:
 				val = pauseIcon
+				playPauseTooltipState.SetValue(gettext.Get("Pause"))
 			case player.PlaybackStatusPaused, player.PlaybackStatusStopped:
 				val = playIcon
+				playPauseTooltipState.SetValue(gettext.Get("Play"))
 			}
 
 			if isControllableState.Value() {
@@ -72,35 +70,45 @@ func controls() schwifty.Box {
 		})
 	})
 
-	player.RepeatModeChanged.OnLazy(func(rm player.RepeatMode) bool {
+	repeatClassState := state.NewStateful("")
+	repeatIconState := state.NewStateful(repeatListIconName)
+	repeatTooltipState := state.NewStateful("")
+	player.RepeatModeChanged.On(func(rm player.RepeatMode) bool {
 		switch rm {
 		case player.RepeatModeNone:
 			repeatClassState.SetValue("")
 			repeatIconState.SetValue(repeatListIconName)
+			repeatTooltipState.SetValue(gettext.Get("Repeat Queue"))
 		case player.RepeatModeQueue:
 			repeatClassState.SetValue("accent")
 			repeatIconState.SetValue(repeatListIconName)
+			repeatTooltipState.SetValue(gettext.Get("Repeat Track"))
 		case player.RepeatModeTrack:
 			repeatClassState.SetValue("accent")
 			repeatIconState.SetValue(repeatTrackIconName)
+			repeatTooltipState.SetValue(gettext.Get("Disable Repeat"))
 		}
 		return signals.Continue
 	})
 
-	player.ShuffleStateChanged.OnLazy(func(b bool) bool {
-		if b {
+	shuffleClassState := state.NewStateful("")
+	shuffleTooltipState := state.NewStateful("")
+	player.ShuffleStateChanged.On(func(isShuffleEnabled bool) bool {
+		if isShuffleEnabled {
 			shuffleClassState.SetValue("accent")
+			shuffleTooltipState.SetValue(gettext.Get("Disable Shuffle"))
 		} else {
 			shuffleClassState.SetValue("")
+			shuffleTooltipState.SetValue(gettext.Get("Enable Shuffle"))
 		}
 		return signals.Continue
 	})
 
 	return HStack(
 		controlButton.
-			TooltipText(gettext.Get("Toggle Shuffle")).
 			IconName("playlist-shuffle-symbolic").
 			ActionName("win.player.shuffle").
+			BindTooltipText(shuffleTooltipState).
 			BindCSSClass(shuffleClassState),
 		Spacer().VExpand(false),
 		controlButton.
@@ -109,7 +117,7 @@ func controls() schwifty.Box {
 			ActionName("win.player.previous"),
 		Spacer().VExpand(false),
 		Button().
-			TooltipText(gettext.Get("Play / Pause")).
+			BindTooltipText(playPauseTooltipState).
 			ActionName("win.player.play-pause").
 			BindChild(actualPlayPauseChildState).
 			BindSensitive(isControllableState).
@@ -122,7 +130,7 @@ func controls() schwifty.Box {
 			ActionName("win.player.next"),
 		Spacer().VExpand(false),
 		controlButton.
-			TooltipText(gettext.Get("Toggle Repeat")).
+			BindTooltipText(repeatTooltipState).
 			BindIconName(repeatIconState).BindCSSClass(repeatClassState).
 			ActionName("win.player.repeat"),
 	).HExpand(true)
