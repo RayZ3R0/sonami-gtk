@@ -33,6 +33,7 @@ func controls() schwifty.Box {
 	var (
 		playPauseChildState       = state.NewStateful[any](nil)
 		actualPlayPauseChildState = state.NewStateful[any](nil)
+		playPauseTooltipState     = state.NewStateful("")
 	)
 
 	player.PlaybackStateChanged.On(func(state *player.PlaybackState) bool {
@@ -41,8 +42,10 @@ func controls() schwifty.Box {
 			switch state.Status {
 			case player.PlaybackStatusPlaying:
 				val = pauseIcon
+				playPauseTooltipState.SetValue(gettext.Get("Pause"))
 			case player.PlaybackStatusPaused, player.PlaybackStatusStopped:
 				val = playIcon
+				playPauseTooltipState.SetValue(gettext.Get("Play"))
 			}
 
 			if isControllableState.Value() {
@@ -114,7 +117,7 @@ func controls() schwifty.Box {
 			ActionName("win.player.previous"),
 		Spacer().VExpand(false),
 		Button().
-			TooltipText(gettext.Get("Play / Pause")).
+			BindTooltipText(playPauseTooltipState).
 			ActionName("win.player.play-pause").
 			BindChild(actualPlayPauseChildState).
 			BindSensitive(isControllableState).
