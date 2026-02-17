@@ -2,7 +2,6 @@ package queue
 
 import (
 	"log/slog"
-	"slices"
 	"time"
 
 	"codeberg.org/dergs/tonearm/internal/g"
@@ -10,7 +9,6 @@ import (
 	"codeberg.org/dergs/tonearm/internal/player"
 	"codeberg.org/dergs/tonearm/internal/signals"
 	"codeberg.org/dergs/tonearm/internal/ui/components/sidebar"
-	"codeberg.org/dergs/tonearm/internal/ui/components/tracklist"
 	"codeberg.org/dergs/tonearm/pkg/schwifty"
 	"codeberg.org/dergs/tonearm/pkg/schwifty/state"
 	. "codeberg.org/dergs/tonearm/pkg/schwifty/syntax"
@@ -33,35 +31,13 @@ func (q queueFilledType) IsFilled() bool {
 }
 
 var (
-	baseQueueState   = state.NewStateful([]tonearm.Track{})
-	userQueueState   = state.NewStateful([]tonearm.Track{})
 	queueFilledState = state.NewStateful[queueFilledType](queueFilledType{})
-
-	queueDisplay = state.NewStateful[any](StatusPage().Title(gettext.Get("No Tracks in Queue")).IconName("music-queue-empty-symbolic").VExpand(true))
+	queueDisplay     = state.NewStateful[any](StatusPage().Title(gettext.Get("No Tracks in Queue")).IconName("music-queue-empty-symbolic").VExpand(true))
 )
 
 var log = slog.With("module", "queue")
 
 func init() {
-	player.BaseQueue.Entries().On(func(tracks []tonearm.Track) bool {
-		schwifty.OnMainThreadOnce(func(u uintptr) {
-			baseQueueState.SetValue(tracks)
-			filledState := queueFilledState.Value()
-			filledState.Base = len(tracks) > 0
-			queueFilledState.SetValue(filledState)
-		}, 0)
-		return signals.Continue
-	})
-	player.UserQueue.Entries().On(func(tracks []tonearm.Track) bool {
-		schwifty.OnMainThreadOnce(func(u uintptr) {
-			userQueueState.SetValue(tracks)
-			filledState := queueFilledState.Value()
-			filledState.User = len(tracks) > 0
-			queueFilledState.SetValue(filledState)
-		}, 0)
-		return signals.Continue
-	})
-
 	queueFilledState.AddCallback(func(newValue queueFilledType) {
 		if newValue.IsFilled() {
 			queueDisplay.SetValue(queueList())
@@ -72,70 +48,21 @@ func init() {
 }
 
 var queueList = g.Lazy(func() *gtk.ScrolledWindow {
-	trackList := tracklist.NewTrackList(
-		tracklist.CoverColumn, tracklist.TitleAlbumColumn,
-		tracklist.CustomWidgetButtonColumn(func(_ string, position, _ int) *gtk.Widget {
-			return Button().
-				TooltipText(gettext.Get("Remove Track from Queue")).
-				IconName("user-trash-symbolic").
-				WithCSSClass("flat").
-				MarginEnd(15).
-				ConnectClicked(func(b gtk.Button) {
-					go player.UserQueue.RemoveAt(position)
-				}).
-				ToGTK()
-		}),
+	var (
+		trackList     = makeQueueTracklist(player.UserQueue, userQueueState)
+		trackListBase = makeQueueTracklist(player.BaseQueue, baseQueueState)
 	)
-	trackList.SetClickHandler(func(track tonearm.Track, position int) {
-		go player.SkipThroughQueue(player.UserQueue, position)
-	})
-	trackList.BindTracks(userQueueState)
-	trackList.SetReorderCallback(func(sourceIndex, targetIndex int, track tonearm.Track) {
-		player.UserQueue.Entries().Notify(func(oldValue []tonearm.Track) []tonearm.Track {
-			q := slices.Clone(oldValue)
-			q = append(q[:sourceIndex], q[sourceIndex+1:]...)
-			q = append(q[:targetIndex], append([]tonearm.Track{track}, q[targetIndex:]...)...)
-			return q
-		})
-	})
-
-	trackListBase := tracklist.NewTrackList(
-		tracklist.CoverColumn, tracklist.TitleAlbumColumn,
-		tracklist.CustomWidgetButtonColumn(func(_ string, position, _ int) *gtk.Widget {
-			return Button().
-				TooltipText(gettext.Get("Remove Track from Queue")).
-				IconName("user-trash-symbolic").
-				WithCSSClass("flat").
-				MarginEnd(15).
-				ConnectClicked(func(b gtk.Button) {
-					go player.BaseQueue.RemoveAt(position)
-				}).
-				ToGTK()
-		}),
-	)
-	trackListBase.SetClickHandler(func(track tonearm.Track, position int) {
-		go player.SkipThroughQueue(player.BaseQueue, position)
-	})
-	trackListBase.BindTracks(baseQueueState)
-	trackListBase.SetReorderCallback(func(sourceIndex, targetIndex int, track tonearm.Track) {
-		player.BaseQueue.Entries().Notify(func(oldValue []tonearm.Track) []tonearm.Track {
-			q := slices.Clone(oldValue)
-			q = append(q[:sourceIndex], q[sourceIndex+1:]...)
-			q = append(q[:targetIndex], append([]tonearm.Track{track}, q[targetIndex:]...)...)
-			return q
-		})
-	})
 
 	motionTicker := time.NewTicker(10 * time.Millisecond)
 
 	return ScrolledWindow().
-		HMargin(10).
+		HMargin(12).
 		VExpand(true).
 		Child(
 			VStack(
-				trackList.Background("alpha(var(--view-bg-color), 0.9)").CornerRadius(10),
+				trackList.Background("alpha(var(--view-bg-color), 0.9)").CornerRadius(10).MarginBottom(10),
 				trackListBase,
-			).Spacing(10).VAlign(gtk.AlignStartValue),
+			).VAlign(gtk.AlignStartValue),
 		).
 		ConnectRealize(func(sw gtk.Widget) {
 			ref := tracking.NewWeakRef(&sw)

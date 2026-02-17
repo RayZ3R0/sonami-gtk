@@ -21,7 +21,7 @@ var (
 
 var lyricsView = g.Lazy(func() (w *gtk.ScrolledWindow) {
 	w = ScrolledWindow().
-		HPadding(16).
+		HPadding(14).
 		BindChild(lyricsList).
 		Policy(gtk.PolicyNeverValue, gtk.PolicyExternalValue)()
 
