@@ -261,7 +261,7 @@ func buildPreferencesScrobbling(dialog *adw.PreferencesDialog) adwbindings.Prefe
 				),
 		).
 			Title(gettext.Get("Last.FM")).
-			Description(gettext.Get("Configure Tonearm to send scrobbling data to Last.fm.")),
+			Description(gettext.Get("Configure Tonearm to send scrobbling data to Last.FM.")),
 	).Title(gettext.Get("Scrobbling")).IconName("podcast-symbolic")
 }
 

@@ -250,8 +250,8 @@ msgid "Collection"
 msgstr "Kogu"
 
 #: internal/ui/window_preferences.go:264
-msgid "Configure Tonearm to send scrobbling data to Last.fm."
-msgstr "Seadista Tonearm saatma kraasimisandmed Last.fm-i."
+msgid "Configure Tonearm to send scrobbling data to Last.FM."
+msgstr "Seadista Tonearm saatma kraasimisandmed Last.FM-i."
 
 #: internal/ui/window_preferences.go:135
 msgid "Configure Tonearm to send scrobbling data to ListenBrainz."

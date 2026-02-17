@@ -221,7 +221,7 @@ msgid "Collection"
 msgstr ""
 
 #: internal/ui/window_preferences.go:264
-msgid "Configure Tonearm to send scrobbling data to Last.fm."
+msgid "Configure Tonearm to send scrobbling data to Last.FM."
 msgstr ""
 
 #: internal/ui/window_preferences.go:135
@@ -848,4 +848,3 @@ msgstr ""
 #: internal/ui/window_about.go:132
 msgid "translator-credits"
 msgstr ""
-

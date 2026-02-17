@@ -252,8 +252,8 @@ msgid "Collection"
 msgstr "Collection"
 
 #: internal/ui/window_preferences.go:264
-msgid "Configure Tonearm to send scrobbling data to Last.fm."
-msgstr "Configurer Tonearm pour l'envoi de données de scrobbling à Last.fm."
+msgid "Configure Tonearm to send scrobbling data to Last.FM."
+msgstr "Configurer Tonearm pour l'envoi de données de scrobbling à Last.FM."
 
 #: internal/ui/window_preferences.go:135
 msgid "Configure Tonearm to send scrobbling data to ListenBrainz."
