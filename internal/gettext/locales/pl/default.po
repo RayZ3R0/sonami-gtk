@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: v1.0.0-26-g6264155\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2026-02-17 19:04+0100\n"
-"PO-Revision-Date: 2026-02-17 18:34+0000\n"
+"PO-Revision-Date: 2026-02-17 18:45+0000\n"
 "Last-Translator: LukaszH77 <lukasz@horodecki.net>\n"
 "Language-Team: Polish <https://translate.codeberg.org/projects/tonearm/"
 "tonearm/pl/>\n"
@@ -60,11 +60,11 @@ msgstr "Dodaj moje utwory do kolejki"
 
 #: internal/ui/routes/playlist.go:87
 msgid "Add Playlist to Queue"
-msgstr ""
+msgstr "Dodaj playlistę do kolejki"
 
 #: internal/ui/routes/artist.go:47
 msgid "Add Top Tracks to Queue"
-msgstr ""
+msgstr "Dodaj topowe utwory do kolejki"
 
 #: internal/ui/components/favourite_button/favourite_button.go:54
 msgid "Add to Collection"
@@ -108,7 +108,7 @@ msgstr "Pozwól Tonearm na wczytywanie obrazów na przyciskach skrótów"
 
 #: internal/ui/window_preferences.go:97
 msgid "Allow Tonearm to load images for tracklists with the cover column"
-msgstr ""
+msgstr "Pozwól Tonearm na wczytywanie obrazów na listach utworów z okładkami"
 
 #: internal/ui/window_preferences.go:25
 msgid ""
@@ -139,6 +139,8 @@ msgid ""
 "Allow Tonearm to temporarily store images on the file system to improve "
 "performance and reduce network traffic"
 msgstr ""
+"Pozwól Tonearm na tymczasowe przechowywanie obrazów, by poprawić wydajność i "
+"zmniejszyć obciążenie sieci"
 
 #: internal/ui/window_preferences.go:96
 msgid "Allow Tracklist Images"
@@ -170,11 +172,11 @@ msgstr "Wystąpił błąd podczas odtwarzania utworu"
 
 #: internal/ui/routes/my_collection/tracks.go:105
 msgid "An error occurred while playing the tracks"
-msgstr ""
+msgstr "Wystąpił błąd podczas odtwarzania utworów"
 
 #: internal/ui/routes/my_collection/tracks.go:85
 msgid "An error occurred while shuffling the tracks"
-msgstr ""
+msgstr "Wystąpił błąd podczas losowania utworów"
 
 #: internal/secrets/service_linux.go:55
 msgid ""
@@ -318,11 +320,11 @@ msgstr "Strona domyślna"
 
 #: internal/ui/components/sidebar/player/component_controls.go:89
 msgid "Disable Repeat"
-msgstr ""
+msgstr "Wyłącz powtarzanie"
 
 #: internal/ui/components/sidebar/player/component_controls.go:99
 msgid "Disable Shuffle"
-msgstr ""
+msgstr "Wyłącz losowanie"
 
 #: internal/ui/window_popups.go:21
 msgid "Don't show again"
@@ -334,7 +336,7 @@ msgstr "EP autorstwa %s"
 
 #: internal/ui/window_preferences.go:57
 msgid "Enable Autoplay"
-msgstr ""
+msgstr "Włącz autoodtwarzanie"
 
 #: internal/ui/window_preferences.go:138
 msgid "Enable Last.fm"
@@ -346,11 +348,11 @@ msgstr "Włącz ListenBrainz"
 
 #: internal/ui/components/sidebar/player/component_controls.go:102
 msgid "Enable Shuffle"
-msgstr ""
+msgstr "Włącz losowanie"
 
 #: internal/ui/components/sidebar/lyrics/lyrics.go:51
 msgid "Error Fetching Lyrics"
-msgstr ""
+msgstr "Błąd przy pobieraniu tekstu utworu"
 
 #: internal/ui/routes/my-collection.go:43
 msgid "Error loading collection"
@@ -410,7 +412,7 @@ msgstr "Ostatni tydzień"
 
 #: internal/ui/window_preferences.go:263
 msgid "Last.fm"
-msgstr ""
+msgstr "Last.fm"
 
 #: internal/ui/window_preferences.go:134
 msgid "ListenBrainz"
@@ -426,7 +428,7 @@ msgstr "Adres URL API ListenBrainz"
 
 #: internal/ui/components/sidebar/lyrics/lyrics.go:53
 msgid "Loading Lyrics"
-msgstr ""
+msgstr "Wczytywanie tekstu utworu"
 
 #: internal/ui/window_preferences.go:144
 msgid "Log In to Last.fm…"
@@ -550,11 +552,11 @@ msgstr "Brak artysty"
 
 #: internal/ui/components/sidebar/lyrics/lyrics.go:55
 msgid "No Lyrics Available"
-msgstr ""
+msgstr "Tekst utworu niedostępny"
 
 #: internal/ui/components/sidebar/lyrics/lyrics.go:49
 msgid "No Song Currently Playing"
-msgstr ""
+msgstr "Brak odtwarzanej piosenki"
 
 #: internal/ui/components/sidebar/player/component_track_info.go:24
 msgid "No Track"
@@ -562,7 +564,7 @@ msgstr "Brak utworu"
 
 #: internal/ui/components/sidebar/queue/queue.go:40
 msgid "No Tracks in Queue"
-msgstr ""
+msgstr "Brak utworów w kolejce"
 
 #: internal/ui/components/sidebar/player/component_action_row.go:229
 msgid "No mix found for the current track"
@@ -587,7 +589,7 @@ msgstr ""
 
 #: internal/ui/window_preferences.go:63
 msgid "Normalize Volume"
-msgstr ""
+msgstr "Normalizuj głośność"
 
 #: internal/router/handler_notfound.go:10
 msgid "Not Found"
