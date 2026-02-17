@@ -8,9 +8,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: 1\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-02-17 19:04+0100\n"
-"PO-Revision-Date: 2026-02-15 01:00+0000\n"
-"Last-Translator: drafolin <drafolin@noreply.codeberg.org>\n"
+"POT-Creation-Date: 2026-02-15 18:03+0100\n"
+"PO-Revision-Date: 2026-02-17 18:34+0000\n"
+"Last-Translator: NilaTheDragon <nilathedragon@noreply.codeberg.org>\n"
 "Language-Team: German <https://translate.codeberg.org/projects/tonearm/"
 "tonearm/de/>\n"
 "Language: de\n"
@@ -921,17 +921,21 @@ msgstr ""
 msgid "translator-credits"
 msgstr "Nila The Dragon https://github.com/NilaTheDragon"
 
-#~ msgid "No lyrics available"
-#~ msgstr "Songtext nicht verfügbar"
+#: internal/ui/routes/album.go:102
+msgid "Add Album to Queue"
+msgstr "Album zur Warteschlange Hinzufügen"
 
-#~ msgid "Sync with track"
-#~ msgstr "Mit Titel synchronisieren"
+#: internal/ui/routes/my_collection/tracks.go:54
+msgid "Add My Tracks to Queue"
+msgstr "Meine Titel zur Warteschlange Hinzufügen"
 
-#~ msgid "Error fetching lyrics"
-#~ msgstr "Während dem Abruf des Songtextes ist ein Fehler aufgetreten"
+#: internal/ui/routes/playlist.go:87
+msgid "Add Playlist to Queue"
+msgstr "Playlist zur Warteschlange Hinzufügen"
 
-#~ msgid "No song currently playing"
-#~ msgstr "Aktuell wird kein Titel abgespielt"
+#: internal/ui/routes/artist.go:47
+msgid "Add Top Tracks to Queue"
+msgstr "Top Titel zur Warteschlange Hinzufügen"
 
 #~ msgid "Toggle Repeat"
 #~ msgstr "Wiederholungsmodus ein-/ausschalten"
@@ -942,8 +946,221 @@ msgstr "Nila The Dragon https://github.com/NilaTheDragon"
 #~ msgid "No album could be shared."
 #~ msgstr "Es konnte kein Album geteilt werden."
 
-#~ msgid "No playlist could be shared."
-#~ msgstr "Playlist konnte nicht geteilt werden."
+#: internal/ui/window_preferences.go:103
+msgid ""
+"Allow Tonearm to temporarily store images on the file system to improve "
+"performance and reduce network traffic"
+msgstr ""
+"Erlaube Tonearm Bilder auf deinem Computer zwischenzuspeichern um die "
+"Leistung zu verbessern und den Netzwerkverkehr zu reduzieren"
+
+#: internal/ui/window_preferences.go:235
+msgid "An error occurred while logging in to Last.fm"
+msgstr "Während dem Anmeldevorgang bei Last.fm ist ein Fehler aufgetreten"
+
+#: internal/ui/window_preferences.go:210
+msgid "An error occurred while logging out of Last.fm"
+msgstr "Während dem Abmeldevorgang bei Last.fm ist ein Fehler aufgetreten"
+
+#: internal/ui/routes/my_collection/tracks.go:105
+msgid "An error occurred while playing the tracks"
+msgstr "Während dem Abspielen der Titel ist ein Fehler aufgetreten"
+
+#: internal/ui/routes/my_collection/tracks.go:85
+msgid "An error occurred while shuffling the tracks"
+msgstr "Während der Zufallswiedergabe der Titel ist ein Fehler aufgetreten"
+
+#: internal/ui/window_preferences.go:264
+msgid "Configure Tonearm to send scrobbling data to Last.fm"
+msgstr "Tonearm konfigurieren, um Scrobbling-Daten an Last.fm zu senden"
+
+#: internal/ui/window_preferences.go:135
+msgid "Configure Tonearm to send scrobbling data to ListenBrainz"
+msgstr "Konfiguriere Tonearm um Scrobbling Daten an ListenBrainz zu senden"
+
+#: internal/ui/window_preferences.go:107
+msgid "Configure the behaviour of Tonearm regarding images"
+msgstr "Entscheide welche Bilder Tonearm laden soll"
+
+#: internal/ui/window_preferences.go:76
+msgid "Configure the behaviour of Tonearm regarding playback"
+msgstr "Entscheide wie Tonearm sich bei der Wiedergabe verhalten soll"
+
+#: internal/ui/window_preferences.go:49
+msgid "Configure the behaviour of Tonearm when navigating between pages"
+msgstr "Entscheide wie Tonearm sich bei der Navigation verhalten soll"
+
+#: internal/ui/window_preferences.go:31
+msgid "Configure the behaviour of Tonearm when running in the background"
+msgstr "Entscheide wie Tonearm sich im Hintergrund verhalten soll"
+
+#: internal/ui/routes/album.go:195
+msgid "Copied album URL to clipboard"
+msgstr "Album-URL in die Zwischenablage kopiert"
+
+#: internal/ui/routes/artist.go:138
+msgid "Copied artist URL to clipboard"
+msgstr "Profillink kopiert"
+
+#: internal/ui/routes/playlist.go:182
+msgid "Copied playlist URL to clipboard"
+msgstr "Playlistlink kopiert"
+
+#: internal/ui/components/sidebar/player/component_action_row.go:250
+msgid "Copied track URL to clipboard"
+msgstr "Titellink kopiert"
+
+#: internal/ui/components/sidebar/player/component_controls.go:89
+msgid "Disable Repeat"
+msgstr "Wiederholungsmodus Deaktivieren"
+
+#: internal/ui/components/sidebar/player/component_controls.go:99
+msgid "Disable Shuffle"
+msgstr "Zufallswiedergabe Deaktivieren"
+
+#: internal/ui/window_preferences.go:57
+msgid "Enable Autoplay"
+msgstr "Autoplay Aktivieren"
+
+#: internal/ui/components/sidebar/player/component_controls.go:102
+msgid "Enable Shuffle"
+msgstr "Zufallswiedergabe Aktivieren"
+
+#: internal/ui/components/sidebar/lyrics/lyrics.go:51
+msgid "Error Fetching Lyrics"
+msgstr "Fehler beim Abrufen des Songtextes"
+
+#: internal/ui/routes/search.go:33
+msgid "For example, Fox Stevenson"
+msgstr "Zum Beispiel, Fox Stevenson"
+
+#: internal/ui/window_preferences.go:263
+msgid "Last.fm"
+msgstr "Last.fm"
+
+#: internal/ui/components/sidebar/lyrics/lyrics.go:53
+msgid "Loading Lyrics"
+msgstr "Songtext Wird Geladen"
+
+#: internal/ui/window_preferences.go:144
+msgid "Log In to Last.fm…"
+msgstr "Bei Last.fm anmelden…"
+
+#: internal/ui/window_preferences.go:153
+msgid "Log Out of Last.fm"
+msgstr "Bei Last.fm abmelden"
+
+#: internal/ui/window_preferences.go:251
+msgid "Logged in to Last.fm as %s"
+msgstr "Bei Last.fm als %s angemeldet"
+
+#: internal/ui/window_preferences.go:221
+msgid "Logged out of Last.fm"
+msgstr "Von Last.fm abgemeldet"
+
+#: internal/ui/window_preferences.go:43
+msgid "Maximum history length before dropping old entries"
+msgstr ""
+"Maximale Anzahl Einträge im Verlauf bevor alte Einträge gelöscht werden"
+
+#: internal/ui/components/sidebar/lyrics/lyrics.go:55
+msgid "No Lyrics Available"
+msgstr "Kein Songtext Verfügbar"
+
+#: internal/ui/components/sidebar/lyrics/lyrics.go:49
+msgid "No Song Currently Playing"
+msgstr "Kein Titel wird Abgespielt"
+
+#: internal/ui/components/sidebar/queue/queue.go:40
+msgid "No Tracks in Queue"
+msgstr "Keine Titel in der Warteschlange"
+
+#: internal/ui/window_preferences.go:63
+msgid "Normalize Volume"
+msgstr "Lautstärke Normalisieren"
+
+#: internal/ui/components/sidebar/player/component_controls.go:45
+msgid "Pause"
+msgstr "Pausieren"
+
+#: internal/ui/components/sidebar/player/component_controls.go:48
+msgid "Play"
+msgstr "Abspielen"
+
+#: internal/ui/routes/my_collection/tracks.go:97
+msgid "Play My Tracks"
+msgstr "Meine Titel Abspielen"
+
+#: internal/ui/components/sidebar/player/component_track_timeline.go:73
+msgid "Playback quality saved. Changes will be applied on next track change"
+msgstr ""
+"Wiedergabe Qualität gespeichert. Die Änderungen werden beim nächsten Titel "
+"wirksam."
+
+#: internal/ui/components/favourite_button/favourite_button.go:50
+msgid "Remove from Collection"
+msgstr "Von Deiner Sammlung Entfernen"
+
+#: internal/ui/components/sidebar/player/component_controls.go:81
+msgid "Repeat Queue"
+msgstr "Warteschlange Wiederholen"
+
+#: internal/ui/components/sidebar/player/component_controls.go:85
+msgid "Repeat Track"
+msgstr "Titel Wiederholen"
+
+#: internal/ui/components/linking/linking.go:59
+msgid "Scan this QR code to sign into your TIDAL account"
+msgstr "Scanne diesen QR Code um dich bei TIDAL anzumelden"
+
+#: internal/ui/components/horizontal_list/horizontal_list.go:66
+msgid "Scroll to the Left"
+msgstr "Nach links scrollen"
+
+#: internal/ui/components/horizontal_list/horizontal_list.go:55
+msgid "Scroll to the Right"
+msgstr "Nach rechts scrollen"
+
+#: internal/ui/window_sidebar.go:30
+msgid "Set as Default Page"
+msgstr "Als Startseite festlegen"
+
+#: internal/ui/window_preferences.go:64
+msgid "Set the same volume for all tracks"
+msgstr "Dieselbe Lautstärke für alle Titel festlegen"
+
+#: internal/ui/routes/my_collection/tracks.go:78
+msgid "Shuffle My Tracks"
+msgstr "Meine Titel im Zufallsmodus Wiedergeben"
+
+#: internal/ui/routes/search/search.go:13
+msgid ""
+"Start typing in the search bar to search for songs, artists, albums or "
+"playlists"
+msgstr ""
+"Tippe in der Suchleiste um nach Songs, Künstlern, Alben oder Playlists zu "
+"suchen"
+
+#: internal/ui/components/sidebar/lyrics/lyrics_view.go:63
+msgid "Sync with Track"
+msgstr "Mit Titel Synchronisieren"
+
+#: internal/ui/window_preferences.go:145
+msgid "You are currently not logged in to Last.fm"
+msgstr "Du bist derzeit nicht bei Last.fm angemeldet"
+
+#: internal/ui/window_preferences.go:157
+msgid "You are logged in to Last.fm"
+msgstr "Du bist bei Last.fm angemeldet"
+
+#: internal/ui/window_preferences.go:160
+msgid "You are logged in to Last.fm as %s"
+msgstr "Du bist bei Last.fm als %s angemeldet"
+
+#: internal/ui/components/linking/linking.go:29
+msgid "You can also open the linking page using the button below"
+msgstr ""
+"Mit dem folgenden Knopf kannst du auch direkt zur Anmeldeseite wechseln"
 
 #~ msgid "Authentication required"
 #~ msgstr "Anmeldung erforderlich"
