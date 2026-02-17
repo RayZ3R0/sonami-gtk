@@ -93,7 +93,7 @@ func Playlist(playlistID string) *router.Response {
 	)
 
 	playControlsMenu := gio.NewMenu()
-	queueAllItem := gio.NewMenuItem("Add playlist to queue", "win.player.queue")
+	queueAllItem := gio.NewMenuItem(gettext.Get("Add playlist to queue"), "win.player.queue")
 	queueAllItem.SetActionAndTargetValue("win.player.queue", glib.NewVariantString(fmt.Sprintf("playlist/%s", playlistID)))
 	playControlsMenu.AppendItem(queueAllItem)
 	playControlsPopover := gtk.NewPopoverMenuFromModel(&playControlsMenu.MenuModel)

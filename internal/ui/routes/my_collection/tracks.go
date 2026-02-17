@@ -20,6 +20,8 @@ import (
 	"codeberg.org/dergs/tonearm/pkg/tonearm"
 	"codeberg.org/dergs/tonearm/pkg/utils/imgutil"
 	"github.com/infinytum/injector"
+	"github.com/jwijenbergh/puregotk/v4/gio"
+	"github.com/jwijenbergh/puregotk/v4/glib"
 	"github.com/jwijenbergh/puregotk/v4/gtk"
 	"github.com/jwijenbergh/puregotk/v4/pango"
 )
@@ -55,6 +57,11 @@ func Tracks() *router.Response {
 		return tl.HMargin(40).VAlign(gtk.AlignStartValue)
 	})
 
+	playControlsMenu := gio.NewMenu()
+	queueAllItem := gio.NewMenuItem(gettext.Get("Add My Tracks to Queue"), "win.player.queue")
+	queueAllItem.SetActionAndTargetValue("win.player.queue", glib.NewVariantString("my_collection/tracks"))
+	playControlsMenu.AppendItem(queueAllItem)
+
 	return &router.Response{
 		PageTitle: gettext.Get("My Tracks"),
 		Error:     err,
@@ -75,7 +82,7 @@ func Tracks() *router.Response {
 					Spacer().VExpand(false).MinWidth(20),
 					HStack(
 						Button().
-							TooltipText(gettext.Get("Shuffle Album")).
+							TooltipText(gettext.Get("Shuffle My Tracks")).
 							IconName("playlist-shuffle-symbolic").
 							WithCSSClass("pill").
 							ConnectClicked(func(b gtk.Button) {
@@ -94,7 +101,7 @@ func Tracks() *router.Response {
 								}()
 							}),
 						Button().
-							TooltipText(gettext.Get("Play Album")).
+							TooltipText(gettext.Get("Play My Tracks")).
 							IconName("play-symbolic").
 							WithCSSClass("pill").
 							WithCSSClass("suggested-action").
@@ -113,6 +120,13 @@ func Tracks() *router.Response {
 									}
 								}()
 							}),
+						MenuButton().
+							MenuModel(&playControlsMenu.MenuModel).
+							TooltipText(gettext.Get("More…")).
+							WithCSSClass("circular").
+							WithCSSClass("flat").
+							VAlign(gtk.AlignCenterValue).
+							IconName("view-more-symbolic"),
 					).
 						Spacing(12).
 						VAlign(gtk.AlignCenterValue),

@@ -44,7 +44,7 @@ func Artist(artistId string) *router.Response {
 	}
 
 	playControlsMenu := gio.NewMenu()
-	queueAllItem := gio.NewMenuItem("Add top tracks to queue", "win.player.queue")
+	queueAllItem := gio.NewMenuItem(gettext.Get("Add top tracks to queue"), "win.player.queue")
 	queueAllItem.SetActionAndTargetValue("win.player.queue", glib.NewVariantString(fmt.Sprintf("artist/%s", artistId)))
 	playControlsMenu.AppendItem(queueAllItem)
 	playControlsPopover := gtk.NewPopoverMenuFromModel(&playControlsMenu.MenuModel)

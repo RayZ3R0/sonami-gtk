@@ -11,12 +11,14 @@ import (
 	"codeberg.org/dergs/tonearm/internal/player"
 	"codeberg.org/dergs/tonearm/internal/router"
 	"codeberg.org/dergs/tonearm/internal/secrets"
+	"codeberg.org/dergs/tonearm/internal/services/tidal/openapi"
 	v2 "codeberg.org/dergs/tonearm/internal/services/tidal/v2"
 	"codeberg.org/dergs/tonearm/internal/settings"
 	"codeberg.org/dergs/tonearm/internal/ui/components/linking"
 	"codeberg.org/dergs/tonearm/pkg/schwifty"
 	"codeberg.org/dergs/tonearm/pkg/tidalapi"
 	"codeberg.org/dergs/tonearm/pkg/tidalapi/auth"
+	modelopenapi "codeberg.org/dergs/tonearm/pkg/tidalapi/models/openapi"
 	modelv2 "codeberg.org/dergs/tonearm/pkg/tidalapi/models/v2"
 	"codeberg.org/dergs/tonearm/pkg/tonearm"
 	"github.com/infinytum/injector"
@@ -145,6 +147,7 @@ func (w *Window) installActions() {
 		logger := slog.With("module", "window_actions", "action", "win.player.queue", "parameter", param)
 
 		parts := strings.Split(param, "/")
+
 		if len(parts) != 2 {
 			logger.Error("parameter doesn't follow the format 'type/id'")
 			return
@@ -215,6 +218,45 @@ func (w *Window) installActions() {
 
 				player.AddTracklistToUserQueue(topTracks)
 			}()
+		case "my_collection":
+			logger := logger.With("object_type", "my_collection").WithGroup("my_collection")
+			switch parts[1] {
+			case "tracks":
+				tidal := injector.MustInject[*tidalapi.TidalAPI]()
+				go func() {
+					userId := secrets.UserID()
+					if userId == "" {
+						logger.Warn("user not logged in, ignoring action")
+						return
+					}
+
+					paginator := openapi.NewPaginator(
+						tidal.OpenAPI.V2.UserCollections.Tracks,
+						userId,
+						func(r *modelopenapi.Response[[]modelopenapi.Relationship]) []tonearm.Track {
+							results := r.Included.Tracks(r.Data...)
+							tracks := make([]tonearm.Track, len(results))
+							for i, track := range results {
+								tracks[i] = openapi.NewTrack(track)
+							}
+							return tracks
+						},
+						"tracks.artists",
+						"tracks.albums.coverArt",
+					)
+
+					tracks, err := paginator.GetAll()
+					if err != nil {
+						logger.Error("failed to get tracks", "error", err)
+						return
+					}
+
+					player.AddTracklistToUserQueue(tracks)
+				}()
+			default:
+				logger.Error("unknown object type to add to queue", "type", parts[0])
+				return
+			}
 		default:
 			logger.Error("unknown object type to add to queue", "type", parts[0])
 			return
