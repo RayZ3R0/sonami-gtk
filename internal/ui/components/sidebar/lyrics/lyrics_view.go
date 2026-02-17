@@ -1,6 +1,7 @@
 package lyrics
 
 import (
+	"slices"
 	"time"
 
 	"codeberg.org/dergs/tonearm/internal/g"
@@ -8,11 +9,15 @@ import (
 	"codeberg.org/dergs/tonearm/pkg/schwifty"
 	"codeberg.org/dergs/tonearm/pkg/schwifty/state"
 	. "codeberg.org/dergs/tonearm/pkg/schwifty/syntax"
+	"github.com/jwijenbergh/puregotk/v4/gdk"
 	"github.com/jwijenbergh/puregotk/v4/graphene"
 	"github.com/jwijenbergh/puregotk/v4/gtk"
 )
 
-var lyricsList = state.NewStateful[any](nil)
+var (
+	lyricsList           = state.NewStateful[any](nil)
+	userManuallyScrolled = state.NewStateful(false)
+)
 
 var lyricsView = g.Lazy(func() (w *gtk.ScrolledWindow) {
 	w = ScrolledWindow().
@@ -20,13 +25,29 @@ var lyricsView = g.Lazy(func() (w *gtk.ScrolledWindow) {
 		BindChild(lyricsList).
 		Policy(gtk.PolicyNeverValue, gtk.PolicyExternalValue)()
 
-	adj := w.GetVadjustment()
-	defer adj.Unref()
-	adj.ConnectValueChanged(new(func(adj gtk.Adjustment) {
-		if !scrollIsProgrammatic {
+	scrollController := gtk.NewEventControllerScroll(gtk.EventControllerScrollVerticalValue)
+	scrollController.ConnectScroll(new(func(controller gtk.EventControllerScroll, deltaX, deltaY float64) bool {
+		userManuallyScrolled.SetValue(true)
+		return gdk.EVENT_PROPAGATE
+	}))
+	w.AddController(&scrollController.EventController)
+
+	keyController := gtk.NewEventControllerKey()
+	keyController.ConnectKeyPressed(new(func(controller gtk.EventControllerKey, a, b uint, c gdk.ModifierType) bool {
+		if slices.Contains([]uint{
+			23,  // Tab
+			110, // Home
+			111, // Up
+			112, // Pg Up
+			115, // End
+			116, // Down
+			117, // Pg Down
+		}, b) {
 			userManuallyScrolled.SetValue(true)
 		}
+		return gdk.EVENT_PROPAGATE
 	}))
+	w.AddController(&keyController.EventController)
 
 	return
 })
@@ -42,10 +63,12 @@ var lyricsOverlay = g.Lazy(func() *gtk.Overlay {
 			TooltipText(gettext.Get("Sync with Track")).
 			BindVisible(userManuallyScrolled).
 			ConnectClicked(func(b gtk.Button) {
+				var w *gtk.Button
 				if activeLyricButtonPtr := activeLyricIndex.Value(); activeLyricButtonPtr != 0 {
-					w := gtk.ButtonNewFromInternalPtr(activeLyricButtonPtr)
-					scrollToLyric(w)
+					w = gtk.ButtonNewFromInternalPtr(activeLyricButtonPtr)
 				}
+
+				scrollToLyric(w)
 				userManuallyScrolled.SetValue(false)
 			}).
 			Child(
@@ -59,7 +82,13 @@ var lyricsOverlay = g.Lazy(func() *gtk.Overlay {
 })
 
 func scrollToLyric(w *gtk.Button) {
-	scrollIsProgrammatic = true
+	vadj := lyricsView().GetVadjustment()
+	defer vadj.Unref()
+
+	if w == nil {
+		vadj.SetValue(0)
+		return
+	}
 	parentWidget := w.GetParent()
 	if parentWidget == nil {
 		return
@@ -69,8 +98,6 @@ func scrollToLyric(w *gtk.Button) {
 
 	var bounds graphene.Rect
 	w.ComputeBounds(parentWidget, &bounds)
-	vadj := lyricsView().GetVadjustment()
-	defer vadj.Unref()
 	scrollViewHeight := lyricsView().GetHeight()
 
 	// Calculate the position to center the active lyric
@@ -86,7 +113,6 @@ func scrollToLyric(w *gtk.Button) {
 	}
 
 	vadj.SetValue(targetPosition)
-	scrollIsProgrammatic = false
 }
 
 func setNewIndex(timing highlightTiming) {

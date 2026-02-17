@@ -22,8 +22,6 @@ var (
 
 	logger = slog.With("module", "ui").WithGroup("ui").With("component", "lyrics")
 
-	userManuallyScrolled            = state.NewStateful(false)
-	scrollIsProgrammatic            = false
 	activeLyricIndex                = state.NewStateful[uintptr](0)
 	activeIndexChangeOnPlayerUpdate *signals.Subscription
 )
