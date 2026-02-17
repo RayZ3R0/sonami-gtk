@@ -10,7 +10,7 @@ msgstr ""
 "Project-Id-Version: v1.0.0-12-g1ce38cd\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2026-02-17 19:04+0100\n"
-"PO-Revision-Date: 2026-02-15 23:06+0000\n"
+"PO-Revision-Date: 2026-02-17 20:13+0000\n"
 "Last-Translator: drafolin <drafolin@noreply.codeberg.org>\n"
 "Language-Team: French <https://translate.codeberg.org/projects/tonearm/"
 "tonearm/fr/>\n"
@@ -49,19 +49,19 @@ msgstr "À propos de Tonearm"
 
 #: internal/ui/routes/album.go:102
 msgid "Add Album to Queue"
-msgstr ""
+msgstr "Ajouter l'Album à la File d'Attente"
 
 #: internal/ui/routes/my_collection/tracks.go:54
 msgid "Add My Tracks to Queue"
-msgstr ""
+msgstr "Ajouter Mes Morceaux à la File d'Attente"
 
 #: internal/ui/routes/playlist.go:87
 msgid "Add Playlist to Queue"
-msgstr ""
+msgstr "Ajouter la Playlist à la File d'Attente"
 
 #: internal/ui/routes/artist.go:47
 msgid "Add Top Tracks to Queue"
-msgstr ""
+msgstr "Ajouter les Titres les Plus Écoutés à la File d'Attente"
 
 #: internal/ui/components/favourite_button/favourite_button.go:54
 msgid "Add to Collection"
@@ -107,7 +107,7 @@ msgstr "Autoriser Tonearm à charger des images pour les boutons de raccourcis"
 msgid "Allow Tonearm to load images for tracklists with the cover column"
 msgstr ""
 "Autoriser Tonearm à charger des images pour les listes de morceaux avec une "
-"colonne album."
+"colonne album"
 
 #: internal/ui/window_preferences.go:25
 msgid ""
@@ -138,6 +138,8 @@ msgid ""
 "Allow Tonearm to temporarily store images on the file system to improve "
 "performance and reduce network traffic"
 msgstr ""
+"Autoriser Tonearm à temporairement enregistrer des images sur votre disque "
+"pour améliorer la performance et réduire le traffic réseau"
 
 #: internal/ui/window_preferences.go:96
 msgid "Allow Tracklist Images"
@@ -170,11 +172,11 @@ msgstr "Une erreur s'est produite lors de la lecture du morceau"
 
 #: internal/ui/routes/my_collection/tracks.go:105
 msgid "An error occurred while playing the tracks"
-msgstr ""
+msgstr "Une erreur s'est produite pendant la lecture des morceaux"
 
 #: internal/ui/routes/my_collection/tracks.go:85
 msgid "An error occurred while shuffling the tracks"
-msgstr ""
+msgstr "Une erreur s'est produite pendant la lecture en aléatoire des morceaux"
 
 #: internal/secrets/service_linux.go:55
 msgid ""
@@ -321,11 +323,11 @@ msgstr "Page par défaut"
 
 #: internal/ui/components/sidebar/player/component_controls.go:89
 msgid "Disable Repeat"
-msgstr ""
+msgstr "Désactiver le mode répétition"
 
 #: internal/ui/components/sidebar/player/component_controls.go:99
 msgid "Disable Shuffle"
-msgstr ""
+msgstr "Désactiver la lecture aléatoire"
 
 #: internal/ui/window_popups.go:21
 msgid "Don't show again"
@@ -337,7 +339,7 @@ msgstr "EP de %s"
 
 #: internal/ui/window_preferences.go:57
 msgid "Enable Autoplay"
-msgstr ""
+msgstr "Activer la Lecture Automatique"
 
 #: internal/ui/window_preferences.go:138
 msgid "Enable Last.fm"
@@ -349,11 +351,11 @@ msgstr "Activer ListenBrainz"
 
 #: internal/ui/components/sidebar/player/component_controls.go:102
 msgid "Enable Shuffle"
-msgstr ""
+msgstr "Activer la Lecture Aléatoire"
 
 #: internal/ui/components/sidebar/lyrics/lyrics.go:51
 msgid "Error Fetching Lyrics"
-msgstr ""
+msgstr "Erreur de Récupération des Paroles"
 
 #: internal/ui/routes/my-collection.go:43
 msgid "Error loading collection"
@@ -413,7 +415,7 @@ msgstr "La semaine dernière"
 
 #: internal/ui/window_preferences.go:263
 msgid "Last.fm"
-msgstr ""
+msgstr "Last.fm"
 
 #: internal/ui/window_preferences.go:134
 msgid "ListenBrainz"
@@ -429,7 +431,7 @@ msgstr "URL d'API ListenBrainz"
 
 #: internal/ui/components/sidebar/lyrics/lyrics.go:53
 msgid "Loading Lyrics"
-msgstr ""
+msgstr "Chargement des Paroles"
 
 #: internal/ui/window_preferences.go:144
 msgid "Log In to Last.fm…"
@@ -554,11 +556,11 @@ msgstr "Pas d'Artiste"
 
 #: internal/ui/components/sidebar/lyrics/lyrics.go:55
 msgid "No Lyrics Available"
-msgstr ""
+msgstr "Paroles non Disponible"
 
 #: internal/ui/components/sidebar/lyrics/lyrics.go:49
 msgid "No Song Currently Playing"
-msgstr ""
+msgstr "Pas de Morceau en Lecture"
 
 #: internal/ui/components/sidebar/player/component_track_info.go:24
 msgid "No Track"
@@ -566,7 +568,7 @@ msgstr "Pas de Morceau"
 
 #: internal/ui/components/sidebar/queue/queue.go:40
 msgid "No Tracks in Queue"
-msgstr ""
+msgstr "Aucun Morceau dans la File d'Attente"
 
 #: internal/ui/components/sidebar/player/component_action_row.go:229
 msgid "No mix found for the current track"
@@ -591,7 +593,7 @@ msgstr ""
 
 #: internal/ui/window_preferences.go:63
 msgid "Normalize Volume"
-msgstr ""
+msgstr "Normaliser le Volume"
 
 #: internal/router/handler_notfound.go:10
 msgid "Not Found"
@@ -611,7 +613,7 @@ msgstr "Ouvrir dans TIDAL"
 
 #: internal/ui/components/sidebar/player/component_controls.go:45
 msgid "Pause"
-msgstr ""
+msgstr "Pause"
 
 #: internal/ui/window_preferences.go:108
 msgid "Performance"
@@ -623,7 +625,7 @@ msgstr "Mix Personnalisé"
 
 #: internal/ui/components/sidebar/player/component_controls.go:48
 msgid "Play"
-msgstr ""
+msgstr "Play"
 
 #: internal/ui/components/sidebar/miniplayer.go:98
 msgid "Play / Pause"
@@ -635,7 +637,7 @@ msgstr "Jouer l'album"
 
 #: internal/ui/routes/my_collection/tracks.go:97
 msgid "Play My Tracks"
-msgstr ""
+msgstr "Jouer Mes Morceaux"
 
 #: internal/ui/routes/playlist.go:145
 msgid "Play Playlist"
@@ -653,7 +655,7 @@ msgstr "Lecture"
 msgid "Playback quality saved. Changes will be applied on next track change"
 msgstr ""
 "Qualité de lecture sauvegardée. Les changements seront appliqués à partir du "
-"prochain morceau."
+"prochain morceau"
 
 #: internal/ui/window_sidebar.go:73
 msgid "Player"
@@ -705,7 +707,7 @@ msgstr "Retirer de la file d'attente"
 
 #: internal/ui/components/favourite_button/favourite_button.go:50
 msgid "Remove from Collection"
-msgstr ""
+msgstr "Retirer de la Collection"
 
 #: internal/features/scrobbling/lastfm.go:56
 msgid "Reopen Browser"
@@ -713,11 +715,11 @@ msgstr "Réouvrir le Navigateur"
 
 #: internal/ui/components/sidebar/player/component_controls.go:81
 msgid "Repeat Queue"
-msgstr ""
+msgstr "Répéter la File d'Attente"
 
 #: internal/ui/components/sidebar/player/component_controls.go:85
 msgid "Repeat Track"
-msgstr ""
+msgstr "Répéter le Morceau"
 
 #: internal/ui/components/linking/linking.go:59
 msgid "Scan this QR code to sign into your TIDAL account"
@@ -753,7 +755,7 @@ msgstr "Service de secret non disponible"
 
 #: internal/ui/window_sidebar.go:30
 msgid "Set as Default Page"
-msgstr ""
+msgstr "Définir comme Page par Défaut"
 
 #: internal/ui/window_actions.go:333
 msgid "Set current page as default"
@@ -769,7 +771,7 @@ msgstr "Jouer l'album en mode aléatoire"
 
 #: internal/ui/routes/my_collection/tracks.go:78
 msgid "Shuffle My Tracks"
-msgstr ""
+msgstr "Jouer Mes Morceaux Aléatoirement"
 
 #: internal/ui/routes/playlist.go:131
 msgid "Shuffle Playlist"
@@ -816,10 +818,12 @@ msgid ""
 "Start typing in the search bar to search for songs, artists, albums or "
 "playlists"
 msgstr ""
+"Commencez à écrire dans la barre de recherche pour rechercher des morceaux, "
+"artistes, albums ou playlists"
 
 #: internal/ui/components/sidebar/lyrics/lyrics_view.go:63
 msgid "Sync with Track"
-msgstr ""
+msgstr "Synchroniser avec le Morceau"
 
 #: internal/router/handler_notfound.go:13
 msgid "The requested deeplink did not have any available handlers."
