@@ -21,7 +21,7 @@ var (
 
 func init() {
 	gst.Init(nil)
-	pb, err := gst.NewElement("playbin")
+	pb, err := gst.NewElement("playbin3")
 	if err != nil {
 		panic(err)
 	}

@@ -3,7 +3,6 @@ package player
 import (
 	"context"
 	"errors"
-	"strconv"
 
 	"codeberg.org/dergs/tonearm/internal/gettext"
 	"codeberg.org/dergs/tonearm/internal/notifications"
@@ -38,7 +37,8 @@ func playTrack(track tonearm.Track) error {
 		return errors.New("track not available for streaming")
 	}
 
-	if currentlyEnqueuedTrack == nil || strconv.Itoa(currentlyEnqueuedTrack.TrackID) != track.ID() {
+	if !didQueueGaplessPlayback {
+
 		logger.Debug("fetching playback info for track", "track_id", track.ID())
 		playbackInfo, err := tidal.V1.Tracks.PlaybackInfo(
 			context.Background(),
@@ -53,6 +53,8 @@ func playTrack(track tonearm.Track) error {
 		}
 		return play(playbackInfo)
 	}
+	// In case the user switched track during a gapless transition, we want to make sure the player does not get stuck in a gapless playback loop
+	didQueueGaplessPlayback = false
 	logger.Debug("gapless playback detected, not enqueueing track again")
 	resetLoadingState()
 	return nil
