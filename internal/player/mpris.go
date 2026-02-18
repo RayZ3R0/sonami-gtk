@@ -84,7 +84,7 @@ func init() {
 		return signals.Continue
 	})
 
-	TrackChanged.Signal.On(func(trackInfo tonearm.Track) bool {
+	TrackChanged.On(func(trackInfo tonearm.Track) bool {
 		if trackInfo == nil {
 			mprisServer().SetTrackMetadata(map[string]any{})
 			mprisServer().Disconnect()
