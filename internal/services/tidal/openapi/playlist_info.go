@@ -23,7 +23,6 @@ func (p PlaylistInfo) Cover(preferredSize int) string {
 	}
 
 	artworks := p.Included.PlainArtworks(p.Data.Relationships.CoverArt.Data...)
-	logger.Debug("resolved playlist artworks", "count", len(artworks))
 
 	return artworks.AtLeast(preferredSize)
 }

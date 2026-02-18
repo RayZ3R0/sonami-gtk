@@ -24,7 +24,6 @@ func (a ArtistInfo) Cover(preferredSize int) string {
 	}
 
 	artworks := a.Included.PlainArtworks(a.Data.Relationships.ProfileArt.Data...)
-	logger.Debug("resolved profile artworks", "count", len(artworks))
 
 	return artworks.AtLeast(preferredSize)
 }

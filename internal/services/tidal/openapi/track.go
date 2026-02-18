@@ -14,10 +14,7 @@ type Track struct {
 }
 
 func (t Track) Album() tonearm.AlbumInfo {
-	logger := trackLogger.With("method", "Album").WithGroup("album")
-
 	albums := t.Included.Albums(t.Data.Relationships.Albums.Data...)
-	logger.Debug("resolved track albums", "count", len(albums))
 
 	for _, album := range albums {
 		return NewAlbumInfo(album)
@@ -26,10 +23,7 @@ func (t Track) Album() tonearm.AlbumInfo {
 }
 
 func (t Track) Artists() tonearm.ArtistInfos {
-	logger := trackLogger.With("method", "Artists").WithGroup("artists")
-
 	artworks := t.Included.Artists(t.Data.Relationships.Artists.Data...)
-	logger.Debug("resolved track artists", "count", len(artworks))
 
 	artists := make(tonearm.ArtistInfos, 0)
 	for _, artist := range artworks {

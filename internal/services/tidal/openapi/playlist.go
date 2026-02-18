@@ -16,10 +16,7 @@ func (p Playlist) Count() int {
 }
 
 func (p Playlist) Creator() tonearm.ArtistInfo {
-	logger := playlistLogger.With("method", "Creator").WithGroup("creator")
-
 	artists := p.Included.Artists(p.Data.Relationships.OwnerProfiles.Data...)
-	logger.Debug("resolved playlist creator", "count", len(artists))
 
 	if len(artists) == 0 {
 		return nil
