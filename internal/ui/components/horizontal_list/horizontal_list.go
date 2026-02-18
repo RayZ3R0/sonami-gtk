@@ -8,6 +8,8 @@ import (
 	"codeberg.org/dergs/tonearm/pkg/schwifty"
 	"codeberg.org/dergs/tonearm/pkg/schwifty/state"
 	. "codeberg.org/dergs/tonearm/pkg/schwifty/syntax"
+	"codeberg.org/dergs/tonearm/pkg/schwifty/tracking"
+	"github.com/jwijenbergh/puregotk/v4/gobject"
 	"github.com/jwijenbergh/puregotk/v4/gtk"
 	"github.com/jwijenbergh/puregotk/v4/pango"
 )
@@ -48,16 +50,20 @@ func NewHorizontalList(title string) *HorizontalList {
 	routeButtonState := state.NewStateful[any](nil)
 	container := HStack().BindHMargin(marginState)()
 
-	var hAdjust *gtk.Adjustment
+	var hAdjustWeakRef *tracking.WeakRef
 	nextButton := Button().
 		MinHeight(10).MinWidth(10).HPadding(10).
 		Child(Image().FromIconName("right-symbolic").PixelSize(10)).
 		TooltipText(gettext.Get("Scroll to the Right")).
 		ConnectClicked(func(b gtk.Button) {
-			current := hAdjust.GetValue()
-			current -= math.Mod(current, 192)
-			hAdjust.SetStepIncrement(192)
-			go hAdjust.SetValue(current + hAdjust.GetStepIncrement())
+			hAdjustWeakRef.Use(func(obj *gobject.Object) {
+				hAdjust := gtk.AdjustmentNewFromInternalPtr(obj.Ptr)
+
+				current := hAdjust.GetValue()
+				current -= math.Mod(current, 192)
+				hAdjust.SetStepIncrement(192)
+				go hAdjust.SetValue(current + hAdjust.GetStepIncrement())
+			})
 		})
 
 	previousButton := Button().
@@ -65,12 +71,16 @@ func NewHorizontalList(title string) *HorizontalList {
 		Child(Image().FromIconName("left-symbolic").PixelSize(10)).
 		TooltipText(gettext.Get("Scroll to the Left")).
 		ConnectClicked(func(b gtk.Button) {
-			current := hAdjust.GetValue()
-			if math.Mod(current, 192) > 0 {
-				current += 192 - math.Mod(current, 192)
-			}
-			hAdjust.SetStepIncrement(192)
-			hAdjust.SetValue(current - hAdjust.GetStepIncrement())
+			hAdjustWeakRef.Use(func(obj *gobject.Object) {
+				hAdjust := gtk.AdjustmentNewFromInternalPtr(obj.Ptr)
+
+				current := hAdjust.GetValue()
+				if math.Mod(current, 192) > 0 {
+					current += 192 - math.Mod(current, 192)
+				}
+				hAdjust.SetStepIncrement(192)
+				hAdjust.SetValue(current - hAdjust.GetStepIncrement())
+			})
 		})
 
 	return &HorizontalList{
@@ -90,14 +100,19 @@ func NewHorizontalList(title string) *HorizontalList {
 				).BindHMargin(marginState),
 			).HMargin(10).MarginBottom(5),
 			ScrolledWindow().
-				Child(Widget(&container.Widget)).
+				Child(container).
 				VAlign(gtk.AlignStartValue).
 				Policy(gtk.PolicyExternalValue, gtk.PolicyNeverValue).
 				PropagateNaturalWidth(true).
 				PropagateNaturalWidth(true).
 				ConnectConstruct(func(sw *gtk.ScrolledWindow) {
-					sw.GetChild().SetOverflow(gtk.OverflowVisibleValue)
-					hAdjust = sw.GetHadjustment()
+					child := sw.GetChild()
+					defer child.Unref()
+					child.SetOverflow(gtk.OverflowVisibleValue)
+
+					adj := sw.GetHadjustment()
+					defer adj.Unref()
+					hAdjustWeakRef = tracking.NewWeakRef(adj)
 				}),
 		),
 		routeButtonState: routeButtonState,
