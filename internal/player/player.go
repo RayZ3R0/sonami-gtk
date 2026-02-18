@@ -48,7 +48,7 @@ func init() {
 			err = playbin.Set("audio-filter", emptyBin)
 		}
 		if err != nil {
-			logger.Error("Failed to set volume", err)
+			logger.Error("Failed to set audio filter", err)
 		}
 		return signals.Continue
 	})
