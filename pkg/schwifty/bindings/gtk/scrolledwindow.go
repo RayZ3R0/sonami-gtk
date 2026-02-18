@@ -147,7 +147,7 @@ func (f ScrolledWindow) ConnectReachEdgeSoon(edge gtk.PositionType, cb func() bo
 			}
 		})
 
-		tracking.SetFinalizer("Adjustment", adj)
+		adj.Unref()
 
 		return scrolledWindow
 	}
