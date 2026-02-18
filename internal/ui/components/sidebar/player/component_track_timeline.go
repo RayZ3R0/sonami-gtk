@@ -9,9 +9,12 @@ import (
 	"codeberg.org/dergs/tonearm/pkg/schwifty"
 	"codeberg.org/dergs/tonearm/pkg/schwifty/state"
 	. "codeberg.org/dergs/tonearm/pkg/schwifty/syntax"
+	"codeberg.org/dergs/tonearm/pkg/schwifty/tracking"
 	"codeberg.org/dergs/tonearm/pkg/tidalapi"
 	v1 "codeberg.org/dergs/tonearm/pkg/tidalapi/models/v1"
 	"codeberg.org/dergs/tonearm/pkg/tonearm"
+	"github.com/jwijenbergh/puregotk/v4/gdk"
+	"github.com/jwijenbergh/puregotk/v4/gobject"
 	"github.com/jwijenbergh/puregotk/v4/gtk"
 )
 
@@ -20,7 +23,9 @@ var (
 	positionState       = state.NewStateful("00:00")
 	timelineSliderState = state.NewStateful(0.0)
 
-	playbackQualityText  = state.NewStateful("Max")
+	selectedQuality      = state.NewStateful("Max")
+	playbackQualityText  = state.NewBoundStateful(selectedQuality)
+	areDetailsDisplayed  = false
 	playbackQualityClass = state.NewStateful("max")
 )
 
@@ -50,22 +55,7 @@ func init() {
 	})
 
 	player.PlaybackQualityChanged.On(func(quality v1.AudioQuality) bool {
-		schwifty.OnMainThreadOncePure(func() {
-			switch quality {
-			case v1.AudioQualityLossy:
-				playbackQualityText.SetValue(gettext.Get("Low (96 kbps)"))
-				playbackQualityClass.SetValue("low")
-			case v1.AudioQualityHighRes:
-				playbackQualityText.SetValue(gettext.Get("Low (320 kbps)"))
-				playbackQualityClass.SetValue("low")
-			case v1.AudioQualityLossless:
-				playbackQualityText.SetValue(gettext.Get("High"))
-				playbackQualityClass.SetValue("high")
-			case v1.AudioQualityHighResLossless:
-				playbackQualityText.SetValue(gettext.Get("Max"))
-				playbackQualityClass.SetValue("max")
-			}
-		})
+		setSelectedQualityLabel(quality)
 		return signals.Continue
 	})
 
@@ -74,6 +64,8 @@ func init() {
 
 		return signals.Continue
 	})
+
+	setSelectedQualityLabel(settings.Player().GetAudioQuality())
 }
 
 func hideCheckmarkHook(quality v1.AudioQuality) func(*gtk.Label) {
@@ -98,7 +90,7 @@ func hideCheckmarkHook(quality v1.AudioQuality) func(*gtk.Label) {
 	}
 }
 
-func makeQualitySelectEntry(quality v1.AudioQuality, css, label, details string, popover **gtk.Popover) schwifty.Button {
+func makeQualitySelectEntry(quality v1.AudioQuality, css, label, details string, popover **tracking.WeakRef) schwifty.Button {
 	return Button().
 		Child(
 			HStack(
@@ -112,9 +104,39 @@ func makeQualitySelectEntry(quality v1.AudioQuality, css, label, details string,
 		).
 		ConnectClicked(func(b gtk.Button) {
 			settings.Player().SetAudioQuality(quality)
-			(*popover).Hide()
+			(*popover).Use(func(obj *gobject.Object) {
+				popover := gtk.PopoverNewFromInternalPtr(obj.Ptr)
+				popover.Hide()
+			})
 		}).
 		WithCSSClass(css)
+}
+
+func setSelectedQualityLabel(quality v1.AudioQuality) {
+	switch quality {
+	case v1.AudioQualityLossy:
+		selectedQuality.SetValue(gettext.Get("Low (96 kbps)"))
+		playbackQualityClass.SetValue("low")
+	case v1.AudioQualityHighRes:
+		selectedQuality.SetValue(gettext.Get("Low (320 kbps)"))
+		playbackQualityClass.SetValue("low")
+	case v1.AudioQualityLossless:
+		selectedQuality.SetValue(gettext.Get("High"))
+		playbackQualityClass.SetValue("high")
+	case v1.AudioQualityHighResLossless:
+		selectedQuality.SetValue(gettext.Get("Max"))
+		playbackQualityClass.SetValue("max")
+	}
+}
+
+func toggleQualityLabel() {
+	if areDetailsDisplayed {
+		playbackQualityText.BindState(selectedQuality)
+		areDetailsDisplayed = false
+	} else {
+		playbackQualityText.BindState(player.AudioStreamQuality)
+		areDetailsDisplayed = true
+	}
 }
 
 func trackTimeline() schwifty.Widget {
@@ -139,17 +161,18 @@ func trackTimeline() schwifty.Widget {
 		),
 	).MarginBottom(2).ToGTK())
 
-	var popover *gtk.Popover
-	popover = Popover(
+	var ref *tracking.WeakRef
+	popover := Popover(
 		VStack(
-			makeQualitySelectEntry(v1.AudioQualityLossy, "low", "Low (96 kbps)", "96 kbps AAC", &popover),
-			makeQualitySelectEntry(v1.AudioQualityHighRes, "low", "Low (320 kbps)", "320 kbps AAC", &popover),
-			makeQualitySelectEntry(v1.AudioQualityLossless, "high", "High", "16-bit 44.1 kHz FLAC", &popover),
-			makeQualitySelectEntry(v1.AudioQualityHighResLossless, "max", "Max", "24-bit 48 kHz FLAC", &popover),
+			makeQualitySelectEntry(v1.AudioQualityLossy, "low", "Low (96 kbps)", "96 kbps AAC", &ref),
+			makeQualitySelectEntry(v1.AudioQualityHighRes, "low", "Low (320 kbps)", "320 kbps AAC", &ref),
+			makeQualitySelectEntry(v1.AudioQualityLossless, "high", "High", "16-bit 44.1kHz FLAC", &ref),
+			makeQualitySelectEntry(v1.AudioQualityHighResLossless, "max", "Max", "24-bit 192kHz FLAC", &ref),
 		).
 			WithCSSClass("selector").
 			Spacing(8),
 	)()
+	ref = tracking.NewWeakRef(popover)
 
 	overlay.AddOverlay(
 		MenuButton().
@@ -163,6 +186,46 @@ func trackTimeline() schwifty.Widget {
 					HPadding(8).
 					VPadding(4),
 			).
+			ConnectConstruct(func(mb *gtk.MenuButton) {
+				ref := tracking.NewWeakRef(mb)
+
+				click := gtk.NewGestureClick()
+				click.SetButton(3)
+				click.ConnectPressed(new(func(click gtk.GestureClick, nPress int, x, y float64) {
+					toggleQualityLabel()
+				}))
+				mb.AddController(&click.EventController)
+
+				longPress := gtk.NewGestureLongPress()
+				var longPressed bool
+				longPress.ConnectPressed(new(func(gtk.GestureLongPress, float64, float64) {
+					longPressed = true
+					toggleQualityLabel()
+				}))
+				longPress.ConnectEnd(new(func(gtk.Gesture, uintptr) {
+					if longPressed {
+						ref.Use(func(obj *gobject.Object) {
+							mb := gtk.MenuButtonNewFromInternalPtr(obj.Ptr)
+							mb.SetActive(false)
+						})
+					}
+					longPressed = false
+				}))
+				mb.AddController(&longPress.EventController)
+
+				keyCtrl := gtk.NewEventControllerKey()
+				keyCtrl.SetPropagationPhase(gtk.PhaseCaptureValue)
+				keyCtrl.ConnectKeyPressed(new(func(ctrl gtk.EventControllerKey, keyval uint, keycode uint, state gdk.ModifierType) bool {
+					switch int(keyval) {
+					case gdk.KEY_space, gdk.KEY_KP_Space:
+						toggleQualityLabel()
+						return gdk.EVENT_STOP
+					}
+
+					return gdk.EVENT_PROPAGATE // propagate unhandled keys
+				}))
+				mb.AddController(&keyCtrl.EventController)
+			}).
 			Popover(popover).
 			HExpand(false).
 			VAlign(gtk.AlignEndValue).

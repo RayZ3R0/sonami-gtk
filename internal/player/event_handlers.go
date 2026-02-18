@@ -2,8 +2,10 @@ package player
 
 import (
 	"context"
+	"fmt"
 	"time"
 
+	"codeberg.org/dergs/tonearm/internal/g"
 	"codeberg.org/dergs/tonearm/internal/settings"
 	"codeberg.org/dergs/tonearm/internal/signals"
 	"codeberg.org/dergs/tonearm/pkg/tidalapi"
@@ -61,11 +63,87 @@ func onAboutToFinish(_ *gst.Element) {
 	}
 }
 
+type codec string
+
+const (
+	flac codec = "Free Lossless Audio Codec (FLAC)"
+	aac  codec = "MPEG-4 AAC"
+)
+
+func (c codec) String() string {
+	switch c {
+	case flac:
+		return "FLAC"
+	case aac:
+		return "AAC"
+	default:
+		return "unknown codec"
+	}
+}
+
 func onBusMessage(msg *gst.Message) bool {
 	switch msg.Type() {
 	case gst.MessageError:
 		err := msg.ParseError()
 		logger.Error("playback failed", "code", err.Code(), "message", err.Message(), "error", err.Error(), "debug", err.DebugString())
+	case gst.MessageTag:
+		// The logs in this branch are all debug because of the nature of MessageTag.
+		// If they weren't Debug, the console would get spammed with error messages,
+		// since it is expected to have missing data. Between streams
+
+		// CODEC
+		tagList := msg.ParseTags()
+		if tagList == nil {
+			logger.Debug("Error while getting codec")
+			return true
+		}
+
+		codecIdentifier, ok := tagList.GetString(gst.TagAudioCodec)
+		if !ok {
+			logger.Debug("Error while getting codec")
+			return true
+		}
+		codec := codec(codecIdentifier)
+
+		// AUDIO CAPS
+		format, rate, err := getAudioCaps()
+		if err != nil {
+			logger.Debug("Error while getting audio stream quality", "error", err)
+			return true
+		}
+
+		/// Format
+		var readableBitDepth string
+		switch format {
+		case "S16LE":
+			readableBitDepth = "16-bit"
+		case "S24LE", "S24_32LE":
+			readableBitDepth = "24-bit"
+		case "S32LE":
+			readableBitDepth = "32-bit"
+		}
+
+		// Compilation
+		var res string
+		switch codec {
+		case aac:
+			// BITRATE (for AAC)
+			rate, ok := tagList.GetUint32(gst.TagMaximumBitrate)
+			if !ok {
+				logger.Debug("Error while getting bitrate")
+				return true
+			}
+
+			bitrate := g.TruncateFloat(float64(rate)/1000, 1)
+			res = fmt.Sprintf("%s %s kbps AAC", readableBitDepth, bitrate)
+		case flac:
+			/// Sample rate (FLAC)
+			sampleRate := g.TruncateFloat(float64(rate)/1000, 1)
+
+			res = fmt.Sprintf("%s %skHz FLAC", readableBitDepth, sampleRate)
+		}
+
+		AudioStreamQuality.SetValue(res)
 	case gst.MessageStreamStart:
 		startUpdateRunner()
 		playbin.Set("volume", settings.Player().GetVolume())
