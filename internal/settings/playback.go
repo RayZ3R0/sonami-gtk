@@ -2,6 +2,8 @@ package settings
 
 import (
 	"codeberg.org/dergs/tonearm/internal/gettext"
+	"codeberg.org/dergs/tonearm/internal/signals"
+	"codeberg.org/dergs/tonearm/pkg/schwifty/callback"
 	"github.com/jwijenbergh/puregotk/v4/gio"
 	"github.com/jwijenbergh/puregotk/v4/gobject"
 )
@@ -33,6 +35,26 @@ func (p *PlaybackSettings) BindAllowAutoplay(target *gobject.Object, property st
 
 func (p *PlaybackSettings) BindNormalizeVolume(target *gobject.Object, property string) {
 	p.settings.Bind("normalize-volume", target, property, gio.GSettingsBindNoSensitivityValue)
+}
+
+func (p *PlaybackSettings) ConnectNormalizeVolumeChanged(cb func(bool) bool) {
+	// Ensure that audio-quality gets watched by gio,
+	// since ConnectChanged specifies "
+	// 	Note that @settings only emits this signal if you have read
+	// 	@key at least once while a signal handler was already connected for @key.
+	// "
+	if cb(p.NormalizeVolume()) == signals.Unsubscribe {
+		return
+	}
+
+	var callbackId int
+	callbackId = callback.HandleCallback(p.settings.Object, "changed", func(settings gio.Settings, setting string) {
+		if setting == "normalize-volume" {
+			if cb(p.NormalizeVolume()) == signals.Unsubscribe {
+				callback.DeleteCallback(p.settings.Object, "changed", callbackId)
+			}
+		}
+	})
 }
 
 func (p *PlaybackSettings) AllowAutoplay() bool {

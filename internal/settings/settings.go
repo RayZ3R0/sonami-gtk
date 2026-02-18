@@ -25,8 +25,11 @@ var General = g.Lazy(func() *GeneralSettings {
 })
 
 var Playback = g.Lazy(func() *PlaybackSettings {
+	settings := gio.NewSettings("dev.dergs.Tonearm.playback")
+	settings.ConnectChanged(&GioSettingsChangedCallback)
+	tracking.Track(settings.GoPointer(), "Settings")
 	return &PlaybackSettings{
-		finalize(gio.NewSettings("dev.dergs.Tonearm.playback")),
+		finalize(settings),
 	}
 })
 
@@ -41,7 +44,7 @@ var Player = g.Lazy(func() *PlayerSettings {
 	settings.ConnectChanged(&GioSettingsChangedCallback)
 	tracking.Track(settings.GoPointer(), "Settings")
 	return &PlayerSettings{
-		settings: settings,
+		finalize(settings),
 	}
 })
 

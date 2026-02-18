@@ -5,6 +5,8 @@ import (
 	"log/slog"
 	"strconv"
 
+	"codeberg.org/dergs/tonearm/internal/settings"
+	"codeberg.org/dergs/tonearm/internal/signals"
 	"codeberg.org/dergs/tonearm/pkg/tidalapi"
 	v2 "codeberg.org/dergs/tonearm/pkg/tidalapi/models/v2"
 	"codeberg.org/dergs/tonearm/pkg/tonearm"
@@ -32,7 +34,24 @@ func init() {
 	if err != nil {
 		panic(err)
 	}
-	playbin.Set("audio-filter", audioFilterBin)
+
+	emptyBin, err := buildEmptyBin()
+	if err != nil {
+		panic(err)
+	}
+
+	settings.Playback().ConnectNormalizeVolumeChanged(func(newVal bool) bool {
+		var err error
+		if newVal {
+			err = playbin.Set("audio-filter", audioFilterBin)
+		} else {
+			err = playbin.Set("audio-filter", emptyBin)
+		}
+		if err != nil {
+			logger.Error("Failed to set volume", err)
+		}
+		return signals.Continue
+	})
 }
 
 var stateBeforeLoading gst.State

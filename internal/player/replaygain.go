@@ -48,6 +48,22 @@ var (
 	})
 )
 
+func buildEmptyBin() (*gst.Bin, error) {
+	emptyBin := gst.NewBin("emptybin")
+	identity, err := gst.NewElement("identity")
+	if err != nil {
+		return nil, err
+	}
+	emptyBin.Add(identity)
+
+	ghostSink := gst.NewGhostPad("sink", identity.GetStaticPad("sink"))
+	emptyBin.AddPad(ghostSink.Pad)
+
+	ghostSrc := gst.NewGhostPad("src", identity.GetStaticPad("src"))
+	emptyBin.AddPad(ghostSrc.Pad)
+	return emptyBin, nil
+}
+
 func buildReplayGainFilterBin() (*gst.Bin, error) {
 	bin := gst.NewBin("replaygain-bin")
 
