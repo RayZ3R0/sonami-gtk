@@ -66,7 +66,6 @@ func onBusMessage(msg *gst.Message) bool {
 		playbin.Set("volume", settings.Player().GetVolume())
 		// A hack to trigger the correct track updates with gapless playback
 		if didQueueGaplessPlayback {
-			didQueueGaplessPlayback = false
 			stateBeforeLoading = gst.StatePlaying
 			go playNextTrack()
 		}
@@ -117,7 +116,7 @@ func onVolumeChange() {
 var onUpdateTick = glib.SourceFunc(func(uintptr) bool {
 	PlaybackStateChanged.Notify(func(oldValue *PlaybackState) *PlaybackState {
 		newState := *oldValue
-		if ok, duration := playbin.QueryDuration(gst.FormatTime); ok {
+		if ok, duration := playbin.QueryDuration(gst.FormatTime); ok && !didQueueGaplessPlayback {
 			newState.Duration = time.Duration(duration)
 		}
 
