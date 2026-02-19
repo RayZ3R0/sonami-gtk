@@ -7,6 +7,7 @@ import (
 	"codeberg.org/dergs/tonearm/pkg/schwifty"
 	. "codeberg.org/dergs/tonearm/pkg/schwifty/syntax"
 	"codeberg.org/dergs/tonearm/pkg/schwifty/tracking"
+	"github.com/jwijenbergh/puregotk/v4/adw"
 	"github.com/jwijenbergh/puregotk/v4/gdk"
 	"github.com/jwijenbergh/puregotk/v4/gobject"
 	"github.com/jwijenbergh/puregotk/v4/gtk"
@@ -76,32 +77,47 @@ func GetMediaViewer() *MediaViewer {
 		}
 	}))
 
+	backButton := Button().
+		IconName("go-previous-symbolic")
+	moreButton := Button().
+		ConnectClicked(func(b gtk.Button) {
+		}).
+		IconName("view-more-symbolic")
+	toolbar := adw.NewToolbarView()
+	toolbar.AddTopBar(HeaderBar().
+		TitleWidget(Bin()).
+		DecorationLayout("").
+		PackStart(backButton).
+		PackEnd(moreButton).
+		ToGTK())
+	toolbar.SetContent(
+		ScrolledWindow().
+			Child(
+				Picture().
+					HAlign(gtk.AlignCenterValue).
+					VAlign(gtk.AlignCenterValue).
+					CanShrink(true).
+					ContentFit(gtk.ContentFitContainValue).
+					ConnectConstruct(func(p *gtk.Picture) {
+						mvInstance.picture = tracking.NewWeakRef(p)
+					}).
+					Controller(&dblClick.EventController),
+			).
+			HExpand(true).
+			VExpand(true).
+			Controller(&clickGesture.EventController).
+			Controller(&scrollGesture.EventController).
+			Controller(&zoomGesture.EventController).
+			Policy(gtk.PolicyAutomaticValue, gtk.PolicyAutomaticValue).ToGTK(),
+	)
+
 	mvInstance.revealer = tracking.NewWeakRef(
 		Revealer(
-			VStack(
-				ScrolledWindow().
-					Child(
-						Picture().
-							HAlign(gtk.AlignCenterValue).
-							VAlign(gtk.AlignCenterValue).
-							CanShrink(true).
-							ContentFit(gtk.ContentFitContainValue).
-							ConnectConstruct(func(p *gtk.Picture) {
-								mvInstance.picture = tracking.NewWeakRef(p)
-							}).
-							Controller(&dblClick.EventController),
-					).
-					HExpand(true).
-					VExpand(true).
-					Policy(gtk.PolicyAutomaticValue, gtk.PolicyAutomaticValue),
-			).
+			VStack(toolbar).
 				HAlign(gtk.AlignFillValue).
 				VAlign(gtk.AlignFillValue).
 				HExpand(true).
 				VExpand(true).
-				Controller(&clickGesture.EventController).
-				Controller(&scrollGesture.EventController).
-				Controller(&zoomGesture.EventController).
 				WithCSSClass("mediaviewer"),
 		).
 			Visible(false).
