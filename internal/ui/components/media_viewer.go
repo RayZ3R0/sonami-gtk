@@ -7,7 +7,6 @@ import (
 	"codeberg.org/dergs/tonearm/pkg/schwifty"
 	. "codeberg.org/dergs/tonearm/pkg/schwifty/syntax"
 	"codeberg.org/dergs/tonearm/pkg/schwifty/tracking"
-	"github.com/jwijenbergh/puregotk/v4/adw"
 	"github.com/jwijenbergh/puregotk/v4/gdk"
 	"github.com/jwijenbergh/puregotk/v4/gobject"
 	"github.com/jwijenbergh/puregotk/v4/gtk"
@@ -16,7 +15,6 @@ import (
 type MediaViewer struct {
 	revealer     *tracking.WeakRef // darkened background + picture container
 	picture      *tracking.WeakRef
-	clamp        *tracking.WeakRef
 	zoomLevel    float64
 	baseW, baseH int
 }
@@ -83,22 +81,15 @@ func GetMediaViewer() *MediaViewer {
 			VStack(
 				ScrolledWindow().
 					Child(
-						Clamp().
-							Orientation(gtk.OrientationHorizontalValue).
-							ConnectConstruct(func(clamp *adw.Clamp) {
-								mvInstance.clamp = tracking.NewWeakRef(clamp)
+						Picture().
+							HAlign(gtk.AlignCenterValue).
+							VAlign(gtk.AlignCenterValue).
+							CanShrink(true).
+							ContentFit(gtk.ContentFitContainValue).
+							ConnectConstruct(func(p *gtk.Picture) {
+								mvInstance.picture = tracking.NewWeakRef(p)
 							}).
-							Child(
-								Picture().
-									HAlign(gtk.AlignCenterValue).
-									VAlign(gtk.AlignCenterValue).
-									CanShrink(true).
-									ContentFit(gtk.ContentFitContainValue).
-									ConnectConstruct(func(p *gtk.Picture) {
-										mvInstance.picture = tracking.NewWeakRef(p)
-									}).
-									Controller(&dblClick.EventController),
-							),
+							Controller(&dblClick.EventController),
 					).
 					HExpand(true).
 					VExpand(true).
@@ -160,10 +151,6 @@ func (mv *MediaViewer) resetZoom() {
 	schwifty.OnMainThreadOncePure(func() {
 		mv.picture.Use(func(obj *gobject.Object) {
 			picture := gtk.PictureNewFromInternalPtr(obj.Ptr)
-			mv.clamp.Use(func(obj *gobject.Object) {
-				clamp := adw.ClampNewFromInternalPtr(obj.Ptr)
-				clamp.SetMaximumSize(picture.GetPaintable().GetIntrinsicWidth())
-			})
 			picture.SetSizeRequest(-1, -1)
 		})
 	})
@@ -175,8 +162,8 @@ func (mv *MediaViewer) zoom(factor float64) {
 
 func (mv *MediaViewer) setZoom(level float64) {
 	// Clamp zoom between 0.5x and 5x
-	if level < .5 {
-		level = .5
+	if level < 1 {
+		level = 1
 	}
 	if level > 10.0 {
 		level = 10.0
@@ -201,12 +188,8 @@ func (mv *MediaViewer) setZoom(level float64) {
 	w := int(float64(mv.baseW) * mv.zoomLevel)
 	h := int(float64(mv.baseH) * mv.zoomLevel)
 	schwifty.OnMainThreadOncePure(func() {
-		mv.clamp.Use(func(obj *gobject.Object) {
-			fmt.Println(w, h)
-			clamp := adw.ClampNewFromInternalPtr(obj.Ptr)
-			clamp.SetMaximumSize(w)
-		})
 		mv.picture.Use(func(obj *gobject.Object) {
+			fmt.Println(w, h)
 			pic := gtk.PictureNewFromInternalPtr(obj.Ptr)
 			pic.SetSizeRequest(w, h)
 		})
