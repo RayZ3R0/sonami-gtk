@@ -19,9 +19,14 @@ const UpdateInterval = 250 * time.Millisecond
 
 var updateRunnerSourceHandle uint
 var didQueueGaplessPlayback bool
+var disableGaplessPlayback bool
 
 func onAboutToFinish(_ *gst.Element) {
 	if RepeatModeChanged.CurrentValue() == RepeatModeTrack {
+		return
+	}
+
+	if disableGaplessPlayback {
 		return
 	}
 

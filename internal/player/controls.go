@@ -36,7 +36,9 @@ func SetShuffle(enabled bool) {
 
 func Next() {
 	logger.Debug("player controls requested to play next track")
+	disableGaplessPlayback = true
 	playNextTrack()
+	disableGaplessPlayback = false
 }
 
 func Pause() {
