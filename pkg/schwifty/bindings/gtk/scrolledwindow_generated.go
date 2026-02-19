@@ -3,7 +3,7 @@ package gtk
 import (
 	"codeberg.org/dergs/tonearm/pkg/schwifty/callback"
 	"codeberg.org/dergs/tonearm/pkg/schwifty/state"
-	"codeberg.org/dergs/tonearm/pkg/schwifty/tracking"
+	"codeberg.org/dergs/tonearm/pkg/schwifty/utils/weak"
 	"fmt"
 	"github.com/jwijenbergh/puregotk/v4/gtk"
 )
@@ -250,9 +250,9 @@ func (f ScrolledWindow) CSS(css string) ScrolledWindow {
 func (f ScrolledWindow) BindCSSClass(state *state.State[string]) ScrolledWindow {
 	return func() *gtk.ScrolledWindow {
 		var callbackId string
-		var ref *tracking.WeakRef
-		return f.ConnectConstruct(func(w *gtk.ScrolledWindow) {
-			ref = tracking.NewWeakRef(&w.Widget)
+		var ref weak.WidgetRef
+		return f.ConnectRealize(func(w gtk.Widget) {
+			ref = weak.NewWidgetRef(&w)
 			callbackId = state.AddCallback(func(newValue string) {
 				oldValue := state.Value()
 				callback.OnMainThreadOncePure(func() {
@@ -268,7 +268,7 @@ func (f ScrolledWindow) BindCSSClass(state *state.State[string]) ScrolledWindow 
 					}
 				})
 			})
-		}).ConnectDestroy(func(w gtk.Widget) {
+		}).ConnectUnrealize(func(w gtk.Widget) {
 			state.RemoveCallback(callbackId)
 		})()
 	}
@@ -376,9 +376,9 @@ func (f ScrolledWindow) VPadding(padding int) ScrolledWindow {
 func (f ScrolledWindow) BindVisible(state *state.State[bool]) ScrolledWindow {
 	return func() *gtk.ScrolledWindow {
 		var callbackId string
-		var ref *tracking.WeakRef
-		return f.ConnectConstruct(func(w *gtk.ScrolledWindow) {
-			ref = tracking.NewWeakRef(&w.Widget)
+		var ref weak.WidgetRef
+		return f.ConnectRealize(func(w gtk.Widget) {
+			ref = weak.NewWidgetRef(&w)
 			callbackId = state.AddCallback(func(newValue bool) {
 				callback.OnMainThreadOncePure(func() {
 					if obj := ref.Get(); obj != nil {
@@ -387,7 +387,7 @@ func (f ScrolledWindow) BindVisible(state *state.State[bool]) ScrolledWindow {
 					}
 				})
 			})
-		}).ConnectDestroy(func(w gtk.Widget) {
+		}).ConnectUnrealize(func(w gtk.Widget) {
 			state.RemoveCallback(callbackId)
 		})()
 	}
@@ -396,9 +396,9 @@ func (f ScrolledWindow) BindVisible(state *state.State[bool]) ScrolledWindow {
 func (f ScrolledWindow) BindHMargin(state *state.State[int]) ScrolledWindow {
 	return func() *gtk.ScrolledWindow {
 		var callbackId string
-		var ref *tracking.WeakRef
-		return f.ConnectConstruct(func(w *gtk.ScrolledWindow) {
-			ref = tracking.NewWeakRef(&w.Widget)
+		var ref weak.WidgetRef
+		return f.ConnectRealize(func(w gtk.Widget) {
+			ref = weak.NewWidgetRef(&w)
 			callbackId = state.AddCallback(func(newValue int) {
 				callback.OnMainThreadOncePure(func() {
 					if obj := ref.Get(); obj != nil {
@@ -408,7 +408,7 @@ func (f ScrolledWindow) BindHMargin(state *state.State[int]) ScrolledWindow {
 					}
 				})
 			})
-		}).ConnectDestroy(func(w gtk.Widget) {
+		}).ConnectUnrealize(func(w gtk.Widget) {
 			state.RemoveCallback(callbackId)
 		})()
 	}
@@ -417,9 +417,9 @@ func (f ScrolledWindow) BindHMargin(state *state.State[int]) ScrolledWindow {
 func (f ScrolledWindow) BindMargin(state *state.State[int]) ScrolledWindow {
 	return func() *gtk.ScrolledWindow {
 		var callbackId string
-		var ref *tracking.WeakRef
-		return f.ConnectConstruct(func(w *gtk.ScrolledWindow) {
-			ref = tracking.NewWeakRef(&w.Widget)
+		var ref weak.WidgetRef
+		return f.ConnectRealize(func(w gtk.Widget) {
+			ref = weak.NewWidgetRef(&w)
 			callbackId = state.AddCallback(func(newValue int) {
 				callback.OnMainThreadOncePure(func() {
 					if obj := ref.Get(); obj != nil {
@@ -431,7 +431,7 @@ func (f ScrolledWindow) BindMargin(state *state.State[int]) ScrolledWindow {
 					}
 				})
 			})
-		}).ConnectDestroy(func(gtk.Widget) {
+		}).ConnectUnrealize(func(gtk.Widget) {
 			state.RemoveCallback(callbackId)
 		})()
 	}
@@ -440,9 +440,9 @@ func (f ScrolledWindow) BindMargin(state *state.State[int]) ScrolledWindow {
 func (f ScrolledWindow) BindMarginBottom(state *state.State[int]) ScrolledWindow {
 	return func() *gtk.ScrolledWindow {
 		var callbackId string
-		var ref *tracking.WeakRef
-		return f.ConnectConstruct(func(w *gtk.ScrolledWindow) {
-			ref = tracking.NewWeakRef(&w.Widget)
+		var ref weak.WidgetRef
+		return f.ConnectRealize(func(w gtk.Widget) {
+			ref = weak.NewWidgetRef(&w)
 			callbackId = state.AddCallback(func(newValue int) {
 				callback.OnMainThreadOncePure(func() {
 					if obj := ref.Get(); obj != nil {
@@ -451,7 +451,7 @@ func (f ScrolledWindow) BindMarginBottom(state *state.State[int]) ScrolledWindow
 					}
 				})
 			})
-		}).ConnectDestroy(func(w gtk.Widget) {
+		}).ConnectUnrealize(func(w gtk.Widget) {
 			state.RemoveCallback(callbackId)
 		})()
 	}
@@ -460,9 +460,9 @@ func (f ScrolledWindow) BindMarginBottom(state *state.State[int]) ScrolledWindow
 func (f ScrolledWindow) BindMarginEnd(state *state.State[int]) ScrolledWindow {
 	return func() *gtk.ScrolledWindow {
 		var callbackId string
-		var ref *tracking.WeakRef
-		return f.ConnectConstruct(func(w *gtk.ScrolledWindow) {
-			ref = tracking.NewWeakRef(&w.Widget)
+		var ref weak.WidgetRef
+		return f.ConnectRealize(func(w gtk.Widget) {
+			ref = weak.NewWidgetRef(&w)
 			callbackId = state.AddCallback(func(newValue int) {
 				callback.OnMainThreadOncePure(func() {
 					if obj := ref.Get(); obj != nil {
@@ -471,7 +471,7 @@ func (f ScrolledWindow) BindMarginEnd(state *state.State[int]) ScrolledWindow {
 					}
 				})
 			})
-		}).ConnectDestroy(func(w gtk.Widget) {
+		}).ConnectUnrealize(func(w gtk.Widget) {
 			state.RemoveCallback(callbackId)
 		})()
 	}
@@ -480,9 +480,9 @@ func (f ScrolledWindow) BindMarginEnd(state *state.State[int]) ScrolledWindow {
 func (f ScrolledWindow) BindMarginStart(state *state.State[int]) ScrolledWindow {
 	return func() *gtk.ScrolledWindow {
 		var callbackId string
-		var ref *tracking.WeakRef
-		return f.ConnectConstruct(func(w *gtk.ScrolledWindow) {
-			ref = tracking.NewWeakRef(&w.Widget)
+		var ref weak.WidgetRef
+		return f.ConnectRealize(func(w gtk.Widget) {
+			ref = weak.NewWidgetRef(&w)
 			callbackId = state.AddCallback(func(newValue int) {
 				callback.OnMainThreadOncePure(func() {
 					if obj := ref.Get(); obj != nil {
@@ -491,7 +491,7 @@ func (f ScrolledWindow) BindMarginStart(state *state.State[int]) ScrolledWindow 
 					}
 				})
 			})
-		}).ConnectDestroy(func(w gtk.Widget) {
+		}).ConnectUnrealize(func(w gtk.Widget) {
 			state.RemoveCallback(callbackId)
 		})()
 	}
@@ -500,9 +500,9 @@ func (f ScrolledWindow) BindMarginStart(state *state.State[int]) ScrolledWindow 
 func (f ScrolledWindow) BindMarginTop(state *state.State[int]) ScrolledWindow {
 	return func() *gtk.ScrolledWindow {
 		var callbackId string
-		var ref *tracking.WeakRef
-		return f.ConnectConstruct(func(w *gtk.ScrolledWindow) {
-			ref = tracking.NewWeakRef(&w.Widget)
+		var ref weak.WidgetRef
+		return f.ConnectRealize(func(w gtk.Widget) {
+			ref = weak.NewWidgetRef(&w)
 			callbackId = state.AddCallback(func(newValue int) {
 				callback.OnMainThreadOncePure(func() {
 					if obj := ref.Get(); obj != nil {
@@ -511,7 +511,7 @@ func (f ScrolledWindow) BindMarginTop(state *state.State[int]) ScrolledWindow {
 					}
 				})
 			})
-		}).ConnectDestroy(func(w gtk.Widget) {
+		}).ConnectUnrealize(func(w gtk.Widget) {
 			state.RemoveCallback(callbackId)
 		})()
 	}
@@ -520,9 +520,9 @@ func (f ScrolledWindow) BindMarginTop(state *state.State[int]) ScrolledWindow {
 func (f ScrolledWindow) BindSensitive(state *state.State[bool]) ScrolledWindow {
 	return func() *gtk.ScrolledWindow {
 		var callbackId string
-		var ref *tracking.WeakRef
-		return f.ConnectConstruct(func(w *gtk.ScrolledWindow) {
-			ref = tracking.NewWeakRef(&w.Widget)
+		var ref weak.WidgetRef
+		return f.ConnectRealize(func(w gtk.Widget) {
+			ref = weak.NewWidgetRef(&w)
 			callbackId = state.AddCallback(func(newValue bool) {
 				callback.OnMainThreadOncePure(func() {
 					if obj := ref.Get(); obj != nil {
@@ -531,7 +531,7 @@ func (f ScrolledWindow) BindSensitive(state *state.State[bool]) ScrolledWindow {
 					}
 				})
 			})
-		}).ConnectDestroy(func(w gtk.Widget) {
+		}).ConnectUnrealize(func(w gtk.Widget) {
 			state.RemoveCallback(callbackId)
 		})()
 	}

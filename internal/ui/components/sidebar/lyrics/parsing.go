@@ -11,11 +11,10 @@ import (
 	"codeberg.org/dergs/tonearm/internal/signals"
 	"codeberg.org/dergs/tonearm/pkg/schwifty"
 	. "codeberg.org/dergs/tonearm/pkg/schwifty/syntax"
-	"codeberg.org/dergs/tonearm/pkg/schwifty/tracking"
+	"codeberg.org/dergs/tonearm/pkg/schwifty/utils/weak"
 	"codeberg.org/dergs/tonearm/pkg/tidalapi"
 	"codeberg.org/dergs/tonearm/pkg/tidalapi/models/openapi"
 	"github.com/infinytum/injector"
-	"github.com/jwijenbergh/puregotk/v4/gobject"
 	"github.com/jwijenbergh/puregotk/v4/gtk"
 )
 
@@ -84,7 +83,6 @@ func parseLRCLyrics(lyrics string, trackDuration time.Duration) (lines []any) {
 			timings = append(timings, &highlightTiming{
 				Start: timeStart,
 				End:   timeEnd,
-				Ref:   new(tracking.WeakRef),
 			})
 
 			continue
@@ -107,7 +105,7 @@ func parseLRCLyrics(lyrics string, trackDuration time.Duration) (lines []any) {
 
 		lines = append(lines, boxWidget)
 
-		timing.Ref = tracking.NewWeakRef(boxWidget)
+		timing.Ref = weak.NewWidgetRef(boxWidget)
 
 		timings = append(timings, timing)
 	}
@@ -126,7 +124,7 @@ func parseLRCLyrics(lyrics string, trackDuration time.Duration) (lines []any) {
 			}
 
 			if timing.Start <= state.Position {
-				timing.Ref.Use(func(obj *gobject.Object) {
+				timing.Ref.Use(func(obj *gtk.Widget) {
 					if activeLyricIndex.Value() != obj.Ptr {
 						setNewIndex(timing)
 					}
@@ -139,7 +137,7 @@ func parseLRCLyrics(lyrics string, trackDuration time.Duration) (lines []any) {
 			if timing.Start <= state.Position+player.UpdateInterval {
 				logger.Debug("next lyric line scheduled", "timing", timing.Start-state.Position)
 				time.AfterFunc(timing.Start-state.Position, func() {
-					timing.Ref.Use(func(obj *gobject.Object) {
+					timing.Ref.Use(func(obj *gtk.Widget) {
 						if activeLyricIndex.Value() != obj.Ptr {
 							setNewIndex(timing)
 						}

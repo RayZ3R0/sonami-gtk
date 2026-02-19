@@ -3,7 +3,7 @@ package gtk
 import (
 	"codeberg.org/dergs/tonearm/pkg/schwifty/callback"
 	"codeberg.org/dergs/tonearm/pkg/schwifty/state"
-	"codeberg.org/dergs/tonearm/pkg/schwifty/tracking"
+	"codeberg.org/dergs/tonearm/pkg/schwifty/utils/weak"
 	"github.com/jwijenbergh/puregotk/v4/gdk"
 	"github.com/jwijenbergh/puregotk/v4/gdkpixbuf"
 	"github.com/jwijenbergh/puregotk/v4/gtk"
@@ -11,12 +11,32 @@ import (
 
 //go:generate go run codeberg.org/dergs/tonearm/pkg/schwifty/gen Image *gtk.Image gtk
 
+func (f Image) BindIconName(state *state.State[string]) Image {
+	return func() *gtk.Image {
+		var callbackId string
+		var ref weak.WidgetRef
+		return f.ConnectRealize(func(w gtk.Widget) {
+			ref = weak.NewWidgetRef(&w)
+			callbackId = state.AddCallback(func(newValue string) {
+				callback.OnMainThreadOncePure(func() {
+					if obj := ref.Get(); obj != nil {
+						defer obj.Unref()
+						gtk.ImageNewFromInternalPtr(obj.Ptr).SetFromIconName(newValue)
+					}
+				})
+			})
+		}).ConnectUnrealize(func(w gtk.Widget) {
+			state.RemoveCallback(callbackId)
+		})()
+	}
+}
+
 func (f Image) BindPaintable(state *state.State[Paintable]) Image {
 	return func() *gtk.Image {
 		var callbackId string
-		var ref *tracking.WeakRef
-		return f.ConnectConstruct(func(w *gtk.Image) {
-			ref = tracking.NewWeakRef(w)
+		var ref weak.WidgetRef
+		return f.ConnectRealize(func(w gtk.Widget) {
+			ref = weak.NewWidgetRef(&w)
 			callbackId = state.AddCallback(func(newValue Paintable) {
 				newValue.Ref()
 				callback.OnMainThreadOncePure(func() {
@@ -27,7 +47,7 @@ func (f Image) BindPaintable(state *state.State[Paintable]) Image {
 					}
 				})
 			})
-		}).ConnectDestroy(func(w gtk.Widget) {
+		}).ConnectUnrealize(func(w gtk.Widget) {
 			state.RemoveCallback(callbackId)
 		})()
 	}
@@ -36,9 +56,9 @@ func (f Image) BindPaintable(state *state.State[Paintable]) Image {
 func (f Image) BindPixbuf(state *state.State[*gdkpixbuf.Pixbuf]) Image {
 	return func() *gtk.Image {
 		var callbackId string
-		var ref *tracking.WeakRef
-		return f.ConnectConstruct(func(w *gtk.Image) {
-			ref = tracking.NewWeakRef(w)
+		var ref weak.WidgetRef
+		return f.ConnectRealize(func(w gtk.Widget) {
+			ref = weak.NewWidgetRef(&w)
 			callbackId = state.AddCallback(func(newValue *gdkpixbuf.Pixbuf) {
 				newValue.Ref()
 				callback.OnMainThreadOncePure(func() {
@@ -49,7 +69,7 @@ func (f Image) BindPixbuf(state *state.State[*gdkpixbuf.Pixbuf]) Image {
 					}
 				})
 			})
-		}).ConnectDestroy(func(w gtk.Widget) {
+		}).ConnectUnrealize(func(w gtk.Widget) {
 			state.RemoveCallback(callbackId)
 		})()
 	}

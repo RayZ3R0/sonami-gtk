@@ -11,9 +11,8 @@ import (
 	"codeberg.org/dergs/tonearm/pkg/schwifty"
 	gtkbindings "codeberg.org/dergs/tonearm/pkg/schwifty/bindings/gtk"
 	. "codeberg.org/dergs/tonearm/pkg/schwifty/syntax"
-	"codeberg.org/dergs/tonearm/pkg/schwifty/tracking"
+	"codeberg.org/dergs/tonearm/pkg/schwifty/utils/weak"
 	"github.com/jwijenbergh/puregotk/v4/adw"
-	"github.com/jwijenbergh/puregotk/v4/gobject"
 	"github.com/jwijenbergh/puregotk/v4/gtk"
 )
 
@@ -31,14 +30,14 @@ func FavouriteButton(favouriteCache state.FavouriteCache, resourceID string) gtk
 		WithCSSClass("flat").
 		BindSensitive(secrets.SignedInState).
 		ConnectConstruct(func(b *gtk.Button) {
-			weakRef := tracking.NewWeakRef(&b.Object)
+			weakRef := weak.NewWidgetRef(&b.Widget)
 			isLoading.Set(true)
 			defer isLoading.Set(false)
 
 			isLoading.On(func(loading bool) bool {
 				schwifty.OnMainThreadOncePure(func() {
-					weakRef.Use(func(obj *gobject.Object) {
-						b := gtk.ButtonNewFromInternalPtr(obj.Ptr)
+					weakRef.Use(func(widget *gtk.Widget) {
+						b := gtk.ButtonNewFromInternalPtr(widget.Ptr)
 
 						if loading {
 							b.SetChild(spinner())
@@ -76,8 +75,8 @@ func FavouriteButton(favouriteCache state.FavouriteCache, resourceID string) gtk
 				}
 
 				schwifty.OnMainThreadOncePure(func() {
-					weakRef.Use(func(obj *gobject.Object) {
-						b := gtk.ButtonNewFromInternalPtr(obj.Ptr)
+					weakRef.Use(func(widget *gtk.Widget) {
+						b := gtk.ButtonNewFromInternalPtr(widget.Ptr)
 
 						if value {
 							b.SetIconName("heart-filled-symbolic")

@@ -12,7 +12,7 @@ import (
 	"codeberg.org/dergs/tonearm/pkg/schwifty"
 	"codeberg.org/dergs/tonearm/pkg/schwifty/state"
 	. "codeberg.org/dergs/tonearm/pkg/schwifty/syntax"
-	"codeberg.org/dergs/tonearm/pkg/schwifty/tracking"
+	"codeberg.org/dergs/tonearm/pkg/schwifty/utils/weak"
 	"codeberg.org/dergs/tonearm/pkg/tonearm"
 	"github.com/jwijenbergh/puregotk/v4/gtk"
 )
@@ -28,7 +28,7 @@ var (
 
 type highlightTiming struct {
 	Start, End time.Duration
-	Ref        *tracking.WeakRef
+	Ref        weak.WidgetRef
 }
 
 type lyricsStatus int

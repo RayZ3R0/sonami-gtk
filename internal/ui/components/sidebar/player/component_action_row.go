@@ -106,11 +106,11 @@ func favouriteButton() schwifty.Button {
 		IconName("heart-outline-thick-symbolic").
 		WithCSSClass("flat").
 		ConnectConstruct(func(b *gtk.Button) {
-			weakRef := tracking.NewWeakRef(&b.Object)
+			weakRef := weak.NewWidgetRef(b)
 
 			isLoading.On(func(loading bool) bool {
 				schwifty.OnMainThreadOncePure(func() {
-					weakRef.Use(func(obj *gobject.Object) {
+					weakRef.Use(func(obj *gtk.Widget) {
 						b := gtk.ButtonNewFromInternalPtr(obj.Ptr)
 
 						if loading {
@@ -135,7 +135,7 @@ func favouriteButton() schwifty.Button {
 
 			isFavourited.On(func(value bool) bool {
 				schwifty.OnMainThreadOncePure(func() {
-					weakRef.Use(func(obj *gobject.Object) {
+					weakRef.Use(func(obj *gtk.Widget) {
 						b := gtk.ButtonNewFromInternalPtr(obj.Ptr)
 
 						if value {

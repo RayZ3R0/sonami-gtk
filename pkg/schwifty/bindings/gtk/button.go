@@ -3,7 +3,7 @@ package gtk
 import (
 	"codeberg.org/dergs/tonearm/pkg/schwifty/callback"
 	"codeberg.org/dergs/tonearm/pkg/schwifty/state"
-	"codeberg.org/dergs/tonearm/pkg/schwifty/tracking"
+	"codeberg.org/dergs/tonearm/pkg/schwifty/utils/weak"
 	"github.com/jwijenbergh/puregotk/v4/glib"
 	"github.com/jwijenbergh/puregotk/v4/gtk"
 )
@@ -29,9 +29,9 @@ func (f Button) ActionTargetValue(targetValue *glib.Variant) Button {
 func (f Button) BindChild(state *state.State[any]) Button {
 	return func() *gtk.Button {
 		var callbackId string
-		var ref *tracking.WeakRef
-		return f.ConnectConstruct(func(w *gtk.Button) {
-			ref = tracking.NewWeakRef(w)
+		var ref weak.WidgetRef
+		return f.ConnectRealize(func(w gtk.Widget) {
+			ref = weak.NewWidgetRef(&w)
 			callbackId = state.AddCallback(func(newValue any) {
 				widget := ResolveWidget(newValue)
 				if widget == nil {
@@ -52,7 +52,7 @@ func (f Button) BindChild(state *state.State[any]) Button {
 					})
 				}
 			})
-		}).ConnectDestroy(func(w gtk.Widget) {
+		}).ConnectUnrealize(func(w gtk.Widget) {
 			state.RemoveCallback(callbackId)
 		})()
 	}
@@ -61,9 +61,9 @@ func (f Button) BindChild(state *state.State[any]) Button {
 func (f Button) BindIconName(state *state.State[string]) Button {
 	return func() *gtk.Button {
 		var callbackId string
-		var ref *tracking.WeakRef
-		return f.ConnectConstruct(func(w *gtk.Button) {
-			ref = tracking.NewWeakRef(w)
+		var ref weak.WidgetRef
+		return f.ConnectRealize(func(w gtk.Widget) {
+			ref = weak.NewWidgetRef(&w)
 			callbackId = state.AddCallback(func(newValue string) {
 				callback.OnMainThreadOncePure(func() {
 					if obj := ref.Get(); obj != nil {
@@ -72,7 +72,7 @@ func (f Button) BindIconName(state *state.State[string]) Button {
 					}
 				})
 			})
-		}).ConnectDestroy(func(w gtk.Widget) {
+		}).ConnectUnrealize(func(w gtk.Widget) {
 			state.RemoveCallback(callbackId)
 		})()
 	}
@@ -121,9 +121,9 @@ func (f Button) TooltipText(tooltip string) Button {
 func (f Button) BindTooltipText(state *state.State[string]) Button {
 	return func() *gtk.Button {
 		var callbackId string
-		var ref *tracking.WeakRef
-		return f.ConnectConstruct(func(w *gtk.Button) {
-			ref = tracking.NewWeakRef(w)
+		var ref weak.WidgetRef
+		return f.ConnectRealize(func(w gtk.Widget) {
+			ref = weak.NewWidgetRef(&w)
 			callbackId = state.AddCallback(func(newValue string) {
 				callback.OnMainThreadOncePure(func() {
 					if obj := ref.Get(); obj != nil {
@@ -132,7 +132,7 @@ func (f Button) BindTooltipText(state *state.State[string]) Button {
 					}
 				})
 			})
-		}).ConnectDestroy(func(w gtk.Widget) {
+		}).ConnectUnrealize(func(w gtk.Widget) {
 			state.RemoveCallback(callbackId)
 		})()
 	}

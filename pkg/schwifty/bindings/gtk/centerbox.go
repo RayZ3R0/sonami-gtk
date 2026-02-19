@@ -3,7 +3,7 @@ package gtk
 import (
 	"codeberg.org/dergs/tonearm/pkg/schwifty/callback"
 	"codeberg.org/dergs/tonearm/pkg/schwifty/state"
-	"codeberg.org/dergs/tonearm/pkg/schwifty/tracking"
+	"codeberg.org/dergs/tonearm/pkg/schwifty/utils/weak"
 	"github.com/jwijenbergh/puregotk/v4/gtk"
 )
 
@@ -12,9 +12,9 @@ import (
 func (f CenterBox) BindCenterWidget(state *state.State[any]) CenterBox {
 	return func() *gtk.CenterBox {
 		var callbackId string
-		var ref *tracking.WeakRef
-		return f.ConnectConstruct(func(w *gtk.CenterBox) {
-			ref = tracking.NewWeakRef(w)
+		var ref weak.WidgetRef
+		return f.ConnectRealize(func(w gtk.Widget) {
+			ref = weak.NewWidgetRef(&w)
 			callbackId = state.AddCallback(func(newValue any) {
 				widget := ResolveWidget(newValue)
 				if widget == nil {
@@ -35,7 +35,7 @@ func (f CenterBox) BindCenterWidget(state *state.State[any]) CenterBox {
 					})
 				}
 			})
-		}).ConnectDestroy(func(w gtk.Widget) {
+		}).ConnectUnrealize(func(w gtk.Widget) {
 			state.RemoveCallback(callbackId)
 		})()
 	}

@@ -14,6 +14,7 @@ import (
 	"codeberg.org/dergs/tonearm/pkg/schwifty/state"
 	. "codeberg.org/dergs/tonearm/pkg/schwifty/syntax"
 	"codeberg.org/dergs/tonearm/pkg/schwifty/tracking"
+	"codeberg.org/dergs/tonearm/pkg/schwifty/utils/weak"
 	"codeberg.org/dergs/tonearm/pkg/tonearm"
 	"github.com/jwijenbergh/puregotk/v4/adw"
 	"github.com/jwijenbergh/puregotk/v4/gdk"
@@ -89,15 +90,14 @@ func (t *TrackList) onBind(_ gtk.SignalListItemFactory, listItem *gtk.ListItem) 
 	defer container.Unref()
 
 	body := HStack().ConnectConstruct(func(b *gtk.Box) {
-		var ref = tracking.NewWeakRef(b)
+		var ref = weak.NewWidgetRef(b)
 		player.TrackChanged.On(func(t tonearm.Track) bool {
 			return signals.ContinueIf(
-				ref.Use(func(obj *gobject.Object) {
-					grid := gtk.BoxNewFromInternalPtr(obj.Ptr)
+				ref.Use(func(obj *gtk.Widget) {
 					if t != nil && track.ID() == t.ID() {
-						grid.AddCssClass("playing")
+						obj.AddCssClass("playing")
 					} else {
-						grid.RemoveCssClass("playing")
+						obj.RemoveCssClass("playing")
 					}
 				}),
 			)

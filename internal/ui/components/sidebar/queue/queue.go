@@ -12,9 +12,8 @@ import (
 	"codeberg.org/dergs/tonearm/pkg/schwifty"
 	"codeberg.org/dergs/tonearm/pkg/schwifty/state"
 	. "codeberg.org/dergs/tonearm/pkg/schwifty/syntax"
-	"codeberg.org/dergs/tonearm/pkg/schwifty/tracking"
+	"codeberg.org/dergs/tonearm/pkg/schwifty/utils/weak"
 	"codeberg.org/dergs/tonearm/pkg/tonearm"
-	"github.com/jwijenbergh/puregotk/v4/gobject"
 	"github.com/jwijenbergh/puregotk/v4/gtk"
 )
 
@@ -65,7 +64,7 @@ var queueList = g.Lazy(func() *gtk.ScrolledWindow {
 			).VAlign(gtk.AlignStartValue),
 		).
 		ConnectRealize(func(sw gtk.Widget) {
-			ref := tracking.NewWeakRef(&sw)
+			ref := weak.NewWidgetRef(&sw)
 
 			action := 0.0
 
@@ -81,7 +80,7 @@ var queueList = g.Lazy(func() *gtk.ScrolledWindow {
 							continue
 						}
 
-						ref.Use(func(obj *gobject.Object) {
+						ref.Use(func(obj *gtk.Widget) {
 							sw := gtk.ScrolledWindowNewFromInternalPtr(obj.Ptr)
 
 							adj := sw.GetVadjustment()
@@ -98,7 +97,7 @@ var queueList = g.Lazy(func() *gtk.ScrolledWindow {
 
 			controller := gtk.NewDropControllerMotion()
 			controller.ConnectMotion(new(func(controller gtk.DropControllerMotion, _, y float64) {
-				ref.Use(func(obj *gobject.Object) {
+				ref.Use(func(obj *gtk.Widget) {
 					sw := gtk.ScrolledWindowNewFromInternalPtr(obj.Ptr)
 					if y < queueScrollMargin {
 						speed := (queueScrollMargin - y) / queueScrollMargin

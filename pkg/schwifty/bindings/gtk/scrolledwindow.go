@@ -6,7 +6,7 @@ import (
 	"codeberg.org/dergs/tonearm/internal/signals"
 	"codeberg.org/dergs/tonearm/pkg/schwifty/callback"
 	"codeberg.org/dergs/tonearm/pkg/schwifty/state"
-	"codeberg.org/dergs/tonearm/pkg/schwifty/tracking"
+	"codeberg.org/dergs/tonearm/pkg/schwifty/utils/weak"
 	"github.com/jwijenbergh/puregotk/v4/gtk"
 )
 
@@ -15,9 +15,9 @@ import (
 func (f ScrolledWindow) BindChild(state *state.State[any]) ScrolledWindow {
 	return func() *gtk.ScrolledWindow {
 		var callbackId string
-		var ref *tracking.WeakRef
-		return f.ConnectConstruct(func(w *gtk.ScrolledWindow) {
-			ref = tracking.NewWeakRef(w)
+		var ref weak.WidgetRef
+		return f.ConnectRealize(func(w gtk.Widget) {
+			ref = weak.NewWidgetRef(&w)
 			callbackId = state.AddCallback(func(newValue any) {
 				widget := ResolveWidget(newValue)
 				if widget == nil {
@@ -38,7 +38,7 @@ func (f ScrolledWindow) BindChild(state *state.State[any]) ScrolledWindow {
 					})
 				}
 			})
-		}).ConnectDestroy(func(w gtk.Widget) {
+		}).ConnectUnrealize(func(w gtk.Widget) {
 			state.RemoveCallback(callbackId)
 		})()
 	}

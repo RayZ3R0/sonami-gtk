@@ -7,10 +7,9 @@ import (
 	"codeberg.org/dergs/tonearm/internal/ui/components"
 	"codeberg.org/dergs/tonearm/pkg/schwifty"
 	. "codeberg.org/dergs/tonearm/pkg/schwifty/syntax"
-	"codeberg.org/dergs/tonearm/pkg/schwifty/tracking"
+	"codeberg.org/dergs/tonearm/pkg/schwifty/utils/weak"
 	"codeberg.org/dergs/tonearm/pkg/tidalapi/pagination"
 	"github.com/jwijenbergh/puregotk/v4/adw"
-	"github.com/jwijenbergh/puregotk/v4/gobject"
 	"github.com/jwijenbergh/puregotk/v4/gtk"
 )
 
@@ -28,7 +27,7 @@ func NewPaginatedMediaCardPage[T any](
 		child := CenterBox().CenterWidget(factory(item)).ToGTK()
 		list.Append(child)
 	}
-	listRef := tracking.NewWeakRef(list)
+	listRef := weak.NewWidgetRef(list)
 
 	return ScrolledWindow().
 		Child(
@@ -43,7 +42,7 @@ func NewPaginatedMediaCardPage[T any](
 				}
 
 				schwifty.OnMainThreadOncePure(func() {
-					listRef.Use(func(obj *gobject.Object) {
+					listRef.Use(func(obj *gtk.Widget) {
 						list := adw.WrapBoxNewFromInternalPtr(obj.Ptr)
 						for _, item := range items {
 							child := CenterBox().CenterWidget(factory(item)).ToGTK()
