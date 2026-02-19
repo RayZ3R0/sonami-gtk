@@ -67,6 +67,14 @@ func (f Button) ConnectUnrealize(cb func(gtk.Widget)) Button {
 	}
 }
 
+func (f Button) Controller(controller *gtk.EventController) Button {
+	return func() *gtk.Button {
+		widget := f()
+		widget.AddController(controller)
+		return widget
+	}
+}
+
 func (f Button) Focusable(focusable bool) Button {
 	return func() *gtk.Button {
 		widget := f()

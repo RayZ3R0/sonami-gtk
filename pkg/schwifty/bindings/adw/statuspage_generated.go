@@ -68,6 +68,14 @@ func (f StatusPage) ConnectUnrealize(cb func(gtk.Widget)) StatusPage {
 	}
 }
 
+func (f StatusPage) Controller(controller *gtk.EventController) StatusPage {
+	return func() *adw.StatusPage {
+		widget := f()
+		widget.AddController(controller)
+		return widget
+	}
+}
+
 func (f StatusPage) Focusable(focusable bool) StatusPage {
 	return func() *adw.StatusPage {
 		widget := f()

@@ -68,6 +68,14 @@ func (f SwitchRow) ConnectUnrealize(cb func(gtk.Widget)) SwitchRow {
 	}
 }
 
+func (f SwitchRow) Controller(controller *gtk.EventController) SwitchRow {
+	return func() *adw.SwitchRow {
+		widget := f()
+		widget.AddController(controller)
+		return widget
+	}
+}
+
 func (f SwitchRow) Focusable(focusable bool) SwitchRow {
 	return func() *adw.SwitchRow {
 		widget := f()

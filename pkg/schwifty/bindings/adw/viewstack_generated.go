@@ -68,6 +68,14 @@ func (f ViewStack) ConnectUnrealize(cb func(gtk.Widget)) ViewStack {
 	}
 }
 
+func (f ViewStack) Controller(controller *gtk.EventController) ViewStack {
+	return func() *adw.ViewStack {
+		widget := f()
+		widget.AddController(controller)
+		return widget
+	}
+}
+
 func (f ViewStack) Focusable(focusable bool) ViewStack {
 	return func() *adw.ViewStack {
 		widget := f()

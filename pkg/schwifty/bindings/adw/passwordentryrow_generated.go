@@ -68,6 +68,14 @@ func (f PasswordEntryRow) ConnectUnrealize(cb func(gtk.Widget)) PasswordEntryRow
 	}
 }
 
+func (f PasswordEntryRow) Controller(controller *gtk.EventController) PasswordEntryRow {
+	return func() *adw.PasswordEntryRow {
+		widget := f()
+		widget.AddController(controller)
+		return widget
+	}
+}
+
 func (f PasswordEntryRow) Focusable(focusable bool) PasswordEntryRow {
 	return func() *adw.PasswordEntryRow {
 		widget := f()

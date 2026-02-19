@@ -67,6 +67,14 @@ func (f Scale) ConnectUnrealize(cb func(gtk.Widget)) Scale {
 	}
 }
 
+func (f Scale) Controller(controller *gtk.EventController) Scale {
+	return func() *gtk.Scale {
+		widget := f()
+		widget.AddController(controller)
+		return widget
+	}
+}
+
 func (f Scale) Focusable(focusable bool) Scale {
 	return func() *gtk.Scale {
 		widget := f()

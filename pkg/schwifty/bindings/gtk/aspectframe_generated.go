@@ -67,6 +67,14 @@ func (f AspectFrame) ConnectUnrealize(cb func(gtk.Widget)) AspectFrame {
 	}
 }
 
+func (f AspectFrame) Controller(controller *gtk.EventController) AspectFrame {
+	return func() *gtk.AspectFrame {
+		widget := f()
+		widget.AddController(controller)
+		return widget
+	}
+}
+
 func (f AspectFrame) Focusable(focusable bool) AspectFrame {
 	return func() *gtk.AspectFrame {
 		widget := f()

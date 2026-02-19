@@ -1,115 +1,114 @@
-package adw
+package gtk
 
 import (
 	"codeberg.org/dergs/tonearm/pkg/schwifty/callback"
 	"codeberg.org/dergs/tonearm/pkg/schwifty/state"
-	"codeberg.org/dergs/tonearm/pkg/schwifty/utils/weak"
+	"codeberg.org/dergs/tonearm/pkg/schwifty/tracking"
 	"fmt"
-	"github.com/jwijenbergh/puregotk/v4/adw"
 	"github.com/jwijenbergh/puregotk/v4/gtk"
 )
 
 
-type EntryRow func() *adw.EntryRow
+type Revealer func() *gtk.Revealer
 
-func (f EntryRow) AddController(controller *gtk.EventController) EntryRow {
-	return func() *adw.EntryRow {
+func (f Revealer) AddController(controller *gtk.EventController) Revealer {
+	return func() *gtk.Revealer {
 		widget := f()
 		widget.AddController(controller)
 		return widget
 	}
 }
 
-func (f EntryRow) ConnectConstruct(cb func(*adw.EntryRow)) EntryRow {
-	return func() *adw.EntryRow {
+func (f Revealer) ConnectConstruct(cb func(*gtk.Revealer)) Revealer {
+	return func() *gtk.Revealer {
 		widget := f()
 		cb(widget)
 		return widget
 	}
 }
 
-func (f EntryRow) ConnectDestroy(cb func(gtk.Widget)) EntryRow {
-	return func() *adw.EntryRow {
+func (f Revealer) ConnectDestroy(cb func(gtk.Widget)) Revealer {
+	return func() *gtk.Revealer {
 		widget := f()
 		callback.HandleCallback(widget.Object, "destroy", cb)
 		return widget
 	}
 }
 
-func (f EntryRow) ConnectMap(cb func(gtk.Widget)) EntryRow {
-	return func() *adw.EntryRow {
+func (f Revealer) ConnectMap(cb func(gtk.Widget)) Revealer {
+	return func() *gtk.Revealer {
 		widget := f()
 		callback.HandleCallback(widget.Object, "map", cb)
 		return widget
 	}
 }
 
-func (f EntryRow) ConnectRealize(cb func(gtk.Widget)) EntryRow {
-	return func() *adw.EntryRow {
+func (f Revealer) ConnectRealize(cb func(gtk.Widget)) Revealer {
+	return func() *gtk.Revealer {
 		widget := f()
 		callback.HandleCallback(widget.Object, "realize", cb)
 		return widget
 	}
 }
 
-func (f EntryRow) ConnectUnmap(cb func(gtk.Widget)) EntryRow {
-	return func() *adw.EntryRow {
+func (f Revealer) ConnectUnmap(cb func(gtk.Widget)) Revealer {
+	return func() *gtk.Revealer {
 		widget := f()
 		callback.HandleCallback(widget.Object, "unmap", cb)
 		return widget
 	}
 }
 
-func (f EntryRow) ConnectUnrealize(cb func(gtk.Widget)) EntryRow {
-	return func() *adw.EntryRow {
+func (f Revealer) ConnectUnrealize(cb func(gtk.Widget)) Revealer {
+	return func() *gtk.Revealer {
 		widget := f()
 		callback.HandleCallback(widget.Object, "unrealize", cb)
 		return widget
 	}
 }
 
-func (f EntryRow) Controller(controller *gtk.EventController) EntryRow {
-	return func() *adw.EntryRow {
+func (f Revealer) Controller(controller *gtk.EventController) Revealer {
+	return func() *gtk.Revealer {
 		widget := f()
 		widget.AddController(controller)
 		return widget
 	}
 }
 
-func (f EntryRow) Focusable(focusable bool) EntryRow {
-	return func() *adw.EntryRow {
+func (f Revealer) Focusable(focusable bool) Revealer {
+	return func() *gtk.Revealer {
 		widget := f()
 		widget.SetFocusable(focusable)
 		return widget
 	}
 }
 
-func (f EntryRow) FocusOnClick(focusOnClick bool) EntryRow {
-	return func() *adw.EntryRow {
+func (f Revealer) FocusOnClick(focusOnClick bool) Revealer {
+	return func() *gtk.Revealer {
 		widget := f()
 		widget.SetFocusOnClick(focusOnClick)
 		return widget
 	}
 }
 
-func (f EntryRow) HAlign(align gtk.Align) EntryRow {
-	return func() *adw.EntryRow {
+func (f Revealer) HAlign(align gtk.Align) Revealer {
+	return func() *gtk.Revealer {
 		widget := f()
 		widget.SetHalign(align)
 		return widget
 	}
 }
 
-func (f EntryRow) HExpand(expand bool) EntryRow {
-	return func() *adw.EntryRow {
+func (f Revealer) HExpand(expand bool) Revealer {
+	return func() *gtk.Revealer {
 		widget := f()
 		widget.SetHexpand(expand)
 		return widget
 	}
 }
 
-func (f EntryRow) HMargin(horizontal int) EntryRow {
-	return func() *adw.EntryRow {
+func (f Revealer) HMargin(horizontal int) Revealer {
+	return func() *gtk.Revealer {
 		widget := f()
 		widget.SetMarginEnd(horizontal)
 		widget.SetMarginStart(horizontal)
@@ -117,8 +116,8 @@ func (f EntryRow) HMargin(horizontal int) EntryRow {
 	}
 }
 
-func (f EntryRow) Margin(margin int) EntryRow {
-	return func() *adw.EntryRow {
+func (f Revealer) Margin(margin int) Revealer {
+	return func() *gtk.Revealer {
 		widget := f()
 		widget.SetMarginBottom(margin)
 		widget.SetMarginEnd(margin)
@@ -128,101 +127,101 @@ func (f EntryRow) Margin(margin int) EntryRow {
 	}
 }
 
-func (f EntryRow) MarginBottom(bottom int) EntryRow {
-	return func() *adw.EntryRow {
+func (f Revealer) MarginBottom(bottom int) Revealer {
+	return func() *gtk.Revealer {
 		widget := f()
 		widget.SetMarginBottom(bottom)
 		return widget
 	}
 }
 
-func (f EntryRow) MarginEnd(end int) EntryRow {
-	return func() *adw.EntryRow {
+func (f Revealer) MarginEnd(end int) Revealer {
+	return func() *gtk.Revealer {
 		widget := f()
 		widget.SetMarginEnd(end)
 		return widget
 	}
 }
 
-func (f EntryRow) MarginStart(start int) EntryRow {
-	return func() *adw.EntryRow {
+func (f Revealer) MarginStart(start int) Revealer {
+	return func() *gtk.Revealer {
 		widget := f()
 		widget.SetMarginStart(start)
 		return widget
 	}
 }
 
-func (f EntryRow) MarginTop(top int) EntryRow {
-	return func() *adw.EntryRow {
+func (f Revealer) MarginTop(top int) Revealer {
+	return func() *gtk.Revealer {
 		widget := f()
 		widget.SetMarginTop(top)
 		return widget
 	}
 }
 
-func (f EntryRow) Opacity(opacity float64) EntryRow {
-	return func() *adw.EntryRow {
+func (f Revealer) Opacity(opacity float64) Revealer {
+	return func() *gtk.Revealer {
 		widget := f()
 		widget.SetOpacity(opacity)
 		return widget
 	}
 }
 
-func (f EntryRow) Overflow(overflow gtk.Overflow) EntryRow {
-	return func() *adw.EntryRow {
+func (f Revealer) Overflow(overflow gtk.Overflow) Revealer {
+	return func() *gtk.Revealer {
 		widget := f()
 		widget.SetOverflow(overflow)
 		return widget
 	}
 }
 
-func (f EntryRow) Sensitive(sensitive bool) EntryRow {
-	return func() *adw.EntryRow {
+func (f Revealer) Sensitive(sensitive bool) Revealer {
+	return func() *gtk.Revealer {
 		widget := f()
 		widget.SetSensitive(sensitive)
 		return widget
 	}
 }
 
-func (f EntryRow) SizeRequest(width, height int) EntryRow {
-	return func() *adw.EntryRow {
+func (f Revealer) SizeRequest(width, height int) Revealer {
+	return func() *gtk.Revealer {
 		widget := f()
 		widget.SetSizeRequest(width, height)
 		return widget
 	}
 }
 
-func (f EntryRow) ToGTK() *gtk.Widget {
+func (f Revealer) ToGTK() *gtk.Widget {
 	val := f()
 	return &val.Widget
 }
 
-func (f EntryRow) VAlign(align gtk.Align) EntryRow {
-	return func() *adw.EntryRow {
+func (f Revealer) VAlign(align gtk.Align) Revealer {
+	return func() *gtk.Revealer {
 		widget := f()
 		widget.SetValign(align)
 		return widget
 	}
 }
 
-func (f EntryRow) VExpand(expand bool) EntryRow {
-	return func() *adw.EntryRow {
+func (f Revealer) VExpand(expand bool) Revealer {
+	return func() *gtk.Revealer {
 		widget := f()
 		widget.SetVexpand(expand)
 		return widget
 	}
 }
 
-func (f EntryRow) Visible(visible bool) EntryRow {
-	return func() *adw.EntryRow {
+func (f Revealer) Visible(visible bool) Revealer {
+	return func() *gtk.Revealer {
 		widget := f()
 		widget.SetVisible(visible)
 		return widget
 	}
 }
 
-func (f EntryRow) VMargin(vertical int) EntryRow {
-	return func() *adw.EntryRow {
+func (f Revealer) VMargin(vertical int) Revealer {
+	return func() *gtk.Revealer {
 		widget := f()
 		widget.SetMarginTop(vertical)
 		widget.SetMarginBottom(vertical)
@@ -232,36 +231,36 @@ func (f EntryRow) VMargin(vertical int) EntryRow {
 
 
 
-func (f EntryRow) Background(color string) EntryRow {
-	return func() *adw.EntryRow {
+func (f Revealer) Background(color string) Revealer {
+	return func() *gtk.Revealer {
 		return f.CSSWithCallback(func(elementName string) string {
 			return fmt.Sprintf("%s { background-color: %s; }", elementName, color)
 		})()
 	}
 }
 
-func (f EntryRow) CornerRadius(radius int) EntryRow {
-	return func() *adw.EntryRow {
+func (f Revealer) CornerRadius(radius int) Revealer {
+	return func() *gtk.Revealer {
 		return f.CSSWithCallback(func(elementName string) string {
 			return fmt.Sprintf("%s { border-radius: %dpx; }", elementName, radius)
 		})()
 	}
 }
 
-func (f EntryRow) CSS(css string) EntryRow {
-	return func() *adw.EntryRow {
+func (f Revealer) CSS(css string) Revealer {
+	return func() *gtk.Revealer {
 		return f.CSSWithCallback(func(elementName string) string {
 			return css
 		})()
 	}
 }
 
-func (f EntryRow) BindCSSClass(state *state.State[string]) EntryRow {
-	return func() *adw.EntryRow {
+func (f Revealer) BindCSSClass(state *state.State[string]) Revealer {
+	return func() *gtk.Revealer {
 		var callbackId string
-		var ref weak.WidgetRef
-		return f.ConnectRealize(func(w gtk.Widget) {
-			ref = weak.NewWidgetRef(&w)
+		var ref *tracking.WeakRef
+		return f.ConnectConstruct(func(w *gtk.Revealer) {
+			ref = tracking.NewWeakRef(&w.Widget)
 			callbackId = state.AddCallback(func(newValue string) {
 				oldValue := state.Value()
 				callback.OnMainThreadOncePure(func() {
@@ -277,14 +276,14 @@ func (f EntryRow) BindCSSClass(state *state.State[string]) EntryRow {
 					}
 				})
 			})
-		}).ConnectUnrealize(func(w gtk.Widget) {
+		}).ConnectDestroy(func(w gtk.Widget) {
 			state.RemoveCallback(callbackId)
 		})()
 	}
 }
 
-func (f EntryRow) WithCSSClass(className string) EntryRow {
-	return func() *adw.EntryRow {
+func (f Revealer) WithCSSClass(className string) Revealer {
+	return func() *gtk.Revealer {
 		w := f()
 		styleContext := w.GetStyleContext()
 		defer styleContext.Unref()
@@ -294,10 +293,10 @@ func (f EntryRow) WithCSSClass(className string) EntryRow {
 	}
 }
 
-func (f EntryRow) CSSWithCallback(cb func(elementName string) string) EntryRow {
-	return func() *adw.EntryRow {
+func (f Revealer) CSSWithCallback(cb func(elementName string) string) Revealer {
+	return func() *gtk.Revealer {
 		provider := gtk.NewCssProvider()
-		return f.ConnectConstruct(func(t *adw.EntryRow) {
+		return f.ConnectConstruct(func(t *gtk.Revealer) {
 			provider.LoadFromString(cb(t.GetCssName()))
 			t.GetStyleContext().AddProvider(provider, uint(gtk.STYLE_PROVIDER_PRIORITY_APPLICATION))
 		}).ConnectDestroy(func(w gtk.Widget) {
@@ -308,72 +307,72 @@ func (f EntryRow) CSSWithCallback(cb func(elementName string) string) EntryRow {
 	}
 }
 
-func (f EntryRow) HPadding(padding int) EntryRow {
-	return func() *adw.EntryRow {
+func (f Revealer) HPadding(padding int) Revealer {
+	return func() *gtk.Revealer {
 		return f.CSSWithCallback(func(elementName string) string {
 			return fmt.Sprintf("%s { padding-left: %dpx; padding-right: %dpx; }", elementName, padding, padding)
 		})()
 	}
 }
 
-func (f EntryRow) MinHeight(minHeight int) EntryRow {
-	return func() *adw.EntryRow {
+func (f Revealer) MinHeight(minHeight int) Revealer {
+	return func() *gtk.Revealer {
 		return f.CSSWithCallback(func(elementName string) string {
 			return fmt.Sprintf("%s { min-height: %dpx; }", elementName, minHeight)
 		})()
 	}
 }
 
-func (f EntryRow) MinWidth(minWidth int) EntryRow {
-	return func() *adw.EntryRow {
+func (f Revealer) MinWidth(minWidth int) Revealer {
+	return func() *gtk.Revealer {
 		return f.CSSWithCallback(func(elementName string) string {
 			return fmt.Sprintf("%s { min-width: %dpx; }", elementName, minWidth)
 		})()
 	}
 }
 
-func (f EntryRow) Padding(padding int) EntryRow {
-	return func() *adw.EntryRow {
+func (f Revealer) Padding(padding int) Revealer {
+	return func() *gtk.Revealer {
 		return f.CSSWithCallback(func(elementName string) string {
 			return fmt.Sprintf("%s { padding: %dpx; }", elementName, padding)
 		})()
 	}
 }
 
-func (f EntryRow) PaddingBottom(padding int) EntryRow {
-	return func() *adw.EntryRow {
+func (f Revealer) PaddingBottom(padding int) Revealer {
+	return func() *gtk.Revealer {
 		return f.CSSWithCallback(func(elementName string) string {
 			return fmt.Sprintf("%s { padding-bottom: %dpx; }", elementName, padding)
 		})()
 	}
 }
 
-func (f EntryRow) PaddingEnd(padding int) EntryRow {
-	return func() *adw.EntryRow {
+func (f Revealer) PaddingEnd(padding int) Revealer {
+	return func() *gtk.Revealer {
 		return f.CSSWithCallback(func(elementName string) string {
 			return fmt.Sprintf("%s { padding-right: %dpx; }", elementName, padding)
 		})()
 	}
 }
 
-func (f EntryRow) PaddingStart(padding int) EntryRow {
-	return func() *adw.EntryRow {
+func (f Revealer) PaddingStart(padding int) Revealer {
+	return func() *gtk.Revealer {
 		return f.CSSWithCallback(func(elementName string) string {
 			return fmt.Sprintf("%s { padding-left: %dpx; }", elementName, padding)
 		})()
 	}
 }
 
-func (f EntryRow) PaddingTop(padding int) EntryRow {
-	return func() *adw.EntryRow {
+func (f Revealer) PaddingTop(padding int) Revealer {
+	return func() *gtk.Revealer {
 		return f.CSSWithCallback(func(elementName string) string {
 			return fmt.Sprintf("%s { padding-top: %dpx; }", elementName, padding)
 		})()
 	}
 }
 
-func (f EntryRow) VPadding(padding int) EntryRow {
-	return func() *adw.EntryRow {
+func (f Revealer) VPadding(padding int) Revealer {
+	return func() *gtk.Revealer {
 		return f.CSSWithCallback(func(elementName string) string {
 			return fmt.Sprintf("%s { padding-bottom: %dpx; padding-top: %dpx; }", elementName, padding, padding)
 		})()
@@ -382,12 +381,12 @@ func (f EntryRow) VPadding(padding int) EntryRow {
 
 
 
-func (f EntryRow) BindVisible(state *state.State[bool]) EntryRow {
-	return func() *adw.EntryRow {
+func (f Revealer) BindVisible(state *state.State[bool]) Revealer {
+	return func() *gtk.Revealer {
 		var callbackId string
-		var ref weak.WidgetRef
-		return f.ConnectRealize(func(w gtk.Widget) {
-			ref = weak.NewWidgetRef(&w)
+		var ref *tracking.WeakRef
+		return f.ConnectConstruct(func(w *gtk.Revealer) {
+			ref = tracking.NewWeakRef(&w.Widget)
 			callbackId = state.AddCallback(func(newValue bool) {
 				callback.OnMainThreadOncePure(func() {
 					if obj := ref.Get(); obj != nil {
@@ -396,18 +395,18 @@ func (f EntryRow) BindVisible(state *state.State[bool]) EntryRow {
 					}
 				})
 			})
-		}).ConnectUnrealize(func(w gtk.Widget) {
+		}).ConnectDestroy(func(w gtk.Widget) {
 			state.RemoveCallback(callbackId)
 		})()
 	}
 }
 
-func (f EntryRow) BindHMargin(state *state.State[int]) EntryRow {
-	return func() *adw.EntryRow {
+func (f Revealer) BindHMargin(state *state.State[int]) Revealer {
+	return func() *gtk.Revealer {
 		var callbackId string
-		var ref weak.WidgetRef
-		return f.ConnectRealize(func(w gtk.Widget) {
-			ref = weak.NewWidgetRef(&w)
+		var ref *tracking.WeakRef
+		return f.ConnectConstruct(func(w *gtk.Revealer) {
+			ref = tracking.NewWeakRef(&w.Widget)
 			callbackId = state.AddCallback(func(newValue int) {
 				callback.OnMainThreadOncePure(func() {
 					if obj := ref.Get(); obj != nil {
@@ -417,18 +416,18 @@ func (f EntryRow) BindHMargin(state *state.State[int]) EntryRow {
 					}
 				})
 			})
-		}).ConnectUnrealize(func(w gtk.Widget) {
+		}).ConnectDestroy(func(w gtk.Widget) {
 			state.RemoveCallback(callbackId)
 		})()
 	}
 }
 
-func (f EntryRow) BindMargin(state *state.State[int]) EntryRow {
-	return func() *adw.EntryRow {
+func (f Revealer) BindMargin(state *state.State[int]) Revealer {
+	return func() *gtk.Revealer {
 		var callbackId string
-		var ref weak.WidgetRef
-		return f.ConnectRealize(func(w gtk.Widget) {
-			ref = weak.NewWidgetRef(&w)
+		var ref *tracking.WeakRef
+		return f.ConnectConstruct(func(w *gtk.Revealer) {
+			ref = tracking.NewWeakRef(&w.Widget)
 			callbackId = state.AddCallback(func(newValue int) {
 				callback.OnMainThreadOncePure(func() {
 					if obj := ref.Get(); obj != nil {
@@ -440,18 +439,18 @@ func (f EntryRow) BindMargin(state *state.State[int]) EntryRow {
 					}
 				})
 			})
-		}).ConnectUnrealize(func(gtk.Widget) {
+		}).ConnectDestroy(func(gtk.Widget) {
 			state.RemoveCallback(callbackId)
 		})()
 	}
 }
 
-func (f EntryRow) BindMarginBottom(state *state.State[int]) EntryRow {
-	return func() *adw.EntryRow {
+func (f Revealer) BindMarginBottom(state *state.State[int]) Revealer {
+	return func() *gtk.Revealer {
 		var callbackId string
-		var ref weak.WidgetRef
-		return f.ConnectRealize(func(w gtk.Widget) {
-			ref = weak.NewWidgetRef(&w)
+		var ref *tracking.WeakRef
+		return f.ConnectConstruct(func(w *gtk.Revealer) {
+			ref = tracking.NewWeakRef(&w.Widget)
 			callbackId = state.AddCallback(func(newValue int) {
 				callback.OnMainThreadOncePure(func() {
 					if obj := ref.Get(); obj != nil {
@@ -460,18 +459,18 @@ func (f EntryRow) BindMarginBottom(state *state.State[int]) EntryRow {
 					}
 				})
 			})
-		}).ConnectUnrealize(func(w gtk.Widget) {
+		}).ConnectDestroy(func(w gtk.Widget) {
 			state.RemoveCallback(callbackId)
 		})()
 	}
 }
 
-func (f EntryRow) BindMarginEnd(state *state.State[int]) EntryRow {
-	return func() *adw.EntryRow {
+func (f Revealer) BindMarginEnd(state *state.State[int]) Revealer {
+	return func() *gtk.Revealer {
 		var callbackId string
-		var ref weak.WidgetRef
-		return f.ConnectRealize(func(w gtk.Widget) {
-			ref = weak.NewWidgetRef(&w)
+		var ref *tracking.WeakRef
+		return f.ConnectConstruct(func(w *gtk.Revealer) {
+			ref = tracking.NewWeakRef(&w.Widget)
 			callbackId = state.AddCallback(func(newValue int) {
 				callback.OnMainThreadOncePure(func() {
 					if obj := ref.Get(); obj != nil {
@@ -480,18 +479,18 @@ func (f EntryRow) BindMarginEnd(state *state.State[int]) EntryRow {
 					}
 				})
 			})
-		}).ConnectUnrealize(func(w gtk.Widget) {
+		}).ConnectDestroy(func(w gtk.Widget) {
 			state.RemoveCallback(callbackId)
 		})()
 	}
 }
 
-func (f EntryRow) BindMarginStart(state *state.State[int]) EntryRow {
-	return func() *adw.EntryRow {
+func (f Revealer) BindMarginStart(state *state.State[int]) Revealer {
+	return func() *gtk.Revealer {
 		var callbackId string
-		var ref weak.WidgetRef
-		return f.ConnectRealize(func(w gtk.Widget) {
-			ref = weak.NewWidgetRef(&w)
+		var ref *tracking.WeakRef
+		return f.ConnectConstruct(func(w *gtk.Revealer) {
+			ref = tracking.NewWeakRef(&w.Widget)
 			callbackId = state.AddCallback(func(newValue int) {
 				callback.OnMainThreadOncePure(func() {
 					if obj := ref.Get(); obj != nil {
@@ -500,18 +499,18 @@ func (f EntryRow) BindMarginStart(state *state.State[int]) EntryRow {
 					}
 				})
 			})
-		}).ConnectUnrealize(func(w gtk.Widget) {
+		}).ConnectDestroy(func(w gtk.Widget) {
 			state.RemoveCallback(callbackId)
 		})()
 	}
 }
 
-func (f EntryRow) BindMarginTop(state *state.State[int]) EntryRow {
-	return func() *adw.EntryRow {
+func (f Revealer) BindMarginTop(state *state.State[int]) Revealer {
+	return func() *gtk.Revealer {
 		var callbackId string
-		var ref weak.WidgetRef
-		return f.ConnectRealize(func(w gtk.Widget) {
-			ref = weak.NewWidgetRef(&w)
+		var ref *tracking.WeakRef
+		return f.ConnectConstruct(func(w *gtk.Revealer) {
+			ref = tracking.NewWeakRef(&w.Widget)
 			callbackId = state.AddCallback(func(newValue int) {
 				callback.OnMainThreadOncePure(func() {
 					if obj := ref.Get(); obj != nil {
@@ -520,18 +519,18 @@ func (f EntryRow) BindMarginTop(state *state.State[int]) EntryRow {
 					}
 				})
 			})
-		}).ConnectUnrealize(func(w gtk.Widget) {
+		}).ConnectDestroy(func(w gtk.Widget) {
 			state.RemoveCallback(callbackId)
 		})()
 	}
 }
 
-func (f EntryRow) BindSensitive(state *state.State[bool]) EntryRow {
-	return func() *adw.EntryRow {
+func (f Revealer) BindSensitive(state *state.State[bool]) Revealer {
+	return func() *gtk.Revealer {
 		var callbackId string
-		var ref weak.WidgetRef
-		return f.ConnectRealize(func(w gtk.Widget) {
-			ref = weak.NewWidgetRef(&w)
+		var ref *tracking.WeakRef
+		return f.ConnectConstruct(func(w *gtk.Revealer) {
+			ref = tracking.NewWeakRef(&w.Widget)
 			callbackId = state.AddCallback(func(newValue bool) {
 				callback.OnMainThreadOncePure(func() {
 					if obj := ref.Get(); obj != nil {
@@ -540,7 +539,7 @@ func (f EntryRow) BindSensitive(state *state.State[bool]) EntryRow {
 					}
 				})
 			})
-		}).ConnectUnrealize(func(w gtk.Widget) {
+		}).ConnectDestroy(func(w gtk.Widget) {
 			state.RemoveCallback(callbackId)
 		})()
 	}

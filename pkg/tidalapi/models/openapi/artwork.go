@@ -2,6 +2,7 @@ package openapi
 
 import (
 	"encoding/json"
+	"math"
 	"sort"
 )
 
@@ -60,6 +61,23 @@ func (files ArtworkFiles) AtLeast(size int) ArtworkFile {
 	sort.Slice(squareFiles, func(i, j int) bool {
 		return squareFiles[i].Meta.Height < squareFiles[j].Meta.Height || squareFiles[i].Meta.Width < squareFiles[j].Meta.Width
 	})
+
+	if size == math.MaxInt {
+		var (
+			maxHeight int
+			f         ArtworkFile
+		)
+
+		for _, file := range squareFiles {
+			if file.Meta.Height > maxHeight {
+				maxHeight = file.Meta.Height
+				f = file
+			}
+		}
+
+		return f
+	}
+
 	for _, file := range squareFiles {
 		if min(file.Meta.Height, file.Meta.Width) >= size {
 			return file

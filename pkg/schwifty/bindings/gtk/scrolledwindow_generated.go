@@ -67,6 +67,14 @@ func (f ScrolledWindow) ConnectUnrealize(cb func(gtk.Widget)) ScrolledWindow {
 	}
 }
 
+func (f ScrolledWindow) Controller(controller *gtk.EventController) ScrolledWindow {
+	return func() *gtk.ScrolledWindow {
+		widget := f()
+		widget.AddController(controller)
+		return widget
+	}
+}
+
 func (f ScrolledWindow) Focusable(focusable bool) ScrolledWindow {
 	return func() *gtk.ScrolledWindow {
 		widget := f()

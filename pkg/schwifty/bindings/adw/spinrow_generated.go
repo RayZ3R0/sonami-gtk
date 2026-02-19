@@ -68,6 +68,14 @@ func (f SpinRow) ConnectUnrealize(cb func(gtk.Widget)) SpinRow {
 	}
 }
 
+func (f SpinRow) Controller(controller *gtk.EventController) SpinRow {
+	return func() *adw.SpinRow {
+		widget := f()
+		widget.AddController(controller)
+		return widget
+	}
+}
+
 func (f SpinRow) Focusable(focusable bool) SpinRow {
 	return func() *adw.SpinRow {
 		widget := f()

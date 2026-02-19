@@ -68,6 +68,14 @@ func (f PreferencesPage) ConnectUnrealize(cb func(gtk.Widget)) PreferencesPage {
 	}
 }
 
+func (f PreferencesPage) Controller(controller *gtk.EventController) PreferencesPage {
+	return func() *adw.PreferencesPage {
+		widget := f()
+		widget.AddController(controller)
+		return widget
+	}
+}
+
 func (f PreferencesPage) Focusable(focusable bool) PreferencesPage {
 	return func() *adw.PreferencesPage {
 		widget := f()

@@ -67,6 +67,14 @@ func (f SearchEntry) ConnectUnrealize(cb func(gtk.Widget)) SearchEntry {
 	}
 }
 
+func (f SearchEntry) Controller(controller *gtk.EventController) SearchEntry {
+	return func() *gtk.SearchEntry {
+		widget := f()
+		widget.AddController(controller)
+		return widget
+	}
+}
+
 func (f SearchEntry) Focusable(focusable bool) SearchEntry {
 	return func() *gtk.SearchEntry {
 		widget := f()

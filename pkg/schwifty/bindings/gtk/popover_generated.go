@@ -67,6 +67,14 @@ func (f Popover) ConnectUnrealize(cb func(gtk.Widget)) Popover {
 	}
 }
 
+func (f Popover) Controller(controller *gtk.EventController) Popover {
+	return func() *gtk.Popover {
+		widget := f()
+		widget.AddController(controller)
+		return widget
+	}
+}
+
 func (f Popover) Focusable(focusable bool) Popover {
 	return func() *gtk.Popover {
 		widget := f()

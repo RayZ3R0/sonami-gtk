@@ -67,6 +67,14 @@ func (f CenterBox) ConnectUnrealize(cb func(gtk.Widget)) CenterBox {
 	}
 }
 
+func (f CenterBox) Controller(controller *gtk.EventController) CenterBox {
+	return func() *gtk.CenterBox {
+		widget := f()
+		widget.AddController(controller)
+		return widget
+	}
+}
+
 func (f CenterBox) Focusable(focusable bool) CenterBox {
 	return func() *gtk.CenterBox {
 		widget := f()

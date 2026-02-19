@@ -67,6 +67,14 @@ func (f Grid) ConnectUnrealize(cb func(gtk.Widget)) Grid {
 	}
 }
 
+func (f Grid) Controller(controller *gtk.EventController) Grid {
+	return func() *gtk.Grid {
+		widget := f()
+		widget.AddController(controller)
+		return widget
+	}
+}
+
 func (f Grid) Focusable(focusable bool) Grid {
 	return func() *gtk.Grid {
 		widget := f()

@@ -68,6 +68,14 @@ func (f AlertDialog) ConnectUnrealize(cb func(gtk.Widget)) AlertDialog {
 	}
 }
 
+func (f AlertDialog) Controller(controller *gtk.EventController) AlertDialog {
+	return func() *adw.AlertDialog {
+		widget := f()
+		widget.AddController(controller)
+		return widget
+	}
+}
+
 func (f AlertDialog) Focusable(focusable bool) AlertDialog {
 	return func() *adw.AlertDialog {
 		widget := f()

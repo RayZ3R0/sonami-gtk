@@ -67,6 +67,14 @@ func (f Label) ConnectUnrealize(cb func(gtk.Widget)) Label {
 	}
 }
 
+func (f Label) Controller(controller *gtk.EventController) Label {
+	return func() *gtk.Label {
+		widget := f()
+		widget.AddController(controller)
+		return widget
+	}
+}
+
 func (f Label) Focusable(focusable bool) Label {
 	return func() *gtk.Label {
 		widget := f()

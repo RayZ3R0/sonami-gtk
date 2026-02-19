@@ -68,6 +68,14 @@ func (f PreferencesDialog) ConnectUnrealize(cb func(gtk.Widget)) PreferencesDial
 	}
 }
 
+func (f PreferencesDialog) Controller(controller *gtk.EventController) PreferencesDialog {
+	return func() *adw.PreferencesDialog {
+		widget := f()
+		widget.AddController(controller)
+		return widget
+	}
+}
+
 func (f PreferencesDialog) Focusable(focusable bool) PreferencesDialog {
 	return func() *adw.PreferencesDialog {
 		widget := f()

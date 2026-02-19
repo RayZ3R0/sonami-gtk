@@ -68,6 +68,14 @@ func (f Clamp) ConnectUnrealize(cb func(gtk.Widget)) Clamp {
 	}
 }
 
+func (f Clamp) Controller(controller *gtk.EventController) Clamp {
+	return func() *adw.Clamp {
+		widget := f()
+		widget.AddController(controller)
+		return widget
+	}
+}
+
 func (f Clamp) Focusable(focusable bool) Clamp {
 	return func() *adw.Clamp {
 		widget := f()

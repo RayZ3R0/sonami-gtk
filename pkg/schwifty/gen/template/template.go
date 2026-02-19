@@ -65,6 +65,14 @@ func (f TEMPLATE_TYPE) ConnectUnrealize(cb func(gtk.Widget)) TEMPLATE_TYPE {
 	}
 }
 
+func (f TEMPLATE_TYPE) Controller(controller *gtk.EventController) TEMPLATE_TYPE {
+	return func() TEMPLATE_BASE_TYPE {
+		widget := f()
+		widget.AddController(controller)
+		return widget
+	}
+}
+
 func (f TEMPLATE_TYPE) Focusable(focusable bool) TEMPLATE_TYPE {
 	return func() TEMPLATE_BASE_TYPE {
 		widget := f()

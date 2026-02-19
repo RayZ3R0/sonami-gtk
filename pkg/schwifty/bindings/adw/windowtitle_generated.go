@@ -68,6 +68,14 @@ func (f WindowTitle) ConnectUnrealize(cb func(gtk.Widget)) WindowTitle {
 	}
 }
 
+func (f WindowTitle) Controller(controller *gtk.EventController) WindowTitle {
+	return func() *adw.WindowTitle {
+		widget := f()
+		widget.AddController(controller)
+		return widget
+	}
+}
+
 func (f WindowTitle) Focusable(focusable bool) WindowTitle {
 	return func() *adw.WindowTitle {
 		widget := f()

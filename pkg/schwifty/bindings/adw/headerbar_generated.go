@@ -68,6 +68,14 @@ func (f HeaderBar) ConnectUnrealize(cb func(gtk.Widget)) HeaderBar {
 	}
 }
 
+func (f HeaderBar) Controller(controller *gtk.EventController) HeaderBar {
+	return func() *adw.HeaderBar {
+		widget := f()
+		widget.AddController(controller)
+		return widget
+	}
+}
+
 func (f HeaderBar) Focusable(focusable bool) HeaderBar {
 	return func() *adw.HeaderBar {
 		widget := f()

@@ -67,6 +67,14 @@ func (f MenuButton) ConnectUnrealize(cb func(gtk.Widget)) MenuButton {
 	}
 }
 
+func (f MenuButton) Controller(controller *gtk.EventController) MenuButton {
+	return func() *gtk.MenuButton {
+		widget := f()
+		widget.AddController(controller)
+		return widget
+	}
+}
+
 func (f MenuButton) Focusable(focusable bool) MenuButton {
 	return func() *gtk.MenuButton {
 		widget := f()

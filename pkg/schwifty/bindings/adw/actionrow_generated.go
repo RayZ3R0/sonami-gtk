@@ -68,6 +68,14 @@ func (f ActionRow) ConnectUnrealize(cb func(gtk.Widget)) ActionRow {
 	}
 }
 
+func (f ActionRow) Controller(controller *gtk.EventController) ActionRow {
+	return func() *adw.ActionRow {
+		widget := f()
+		widget.AddController(controller)
+		return widget
+	}
+}
+
 func (f ActionRow) Focusable(focusable bool) ActionRow {
 	return func() *adw.ActionRow {
 		widget := f()

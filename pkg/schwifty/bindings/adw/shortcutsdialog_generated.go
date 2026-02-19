@@ -68,6 +68,14 @@ func (f ShortcutsDialog) ConnectUnrealize(cb func(gtk.Widget)) ShortcutsDialog {
 	}
 }
 
+func (f ShortcutsDialog) Controller(controller *gtk.EventController) ShortcutsDialog {
+	return func() *adw.ShortcutsDialog {
+		widget := f()
+		widget.AddController(controller)
+		return widget
+	}
+}
+
 func (f ShortcutsDialog) Focusable(focusable bool) ShortcutsDialog {
 	return func() *adw.ShortcutsDialog {
 		widget := f()
