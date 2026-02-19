@@ -43,5 +43,9 @@ func executeHandler(handler Handler) (response *Response, shouldCache bool) {
 }
 
 func handleNavigationComplete(entry *HistoryEntry) {
-	NavigationCompleted.Notify(*entry)
+	Navigation.Notify(&NavigationEvent{
+		Completed: true,
+		Path:      entry.Path,
+		Result:    entry,
+	})
 }

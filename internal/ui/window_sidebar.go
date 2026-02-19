@@ -1,6 +1,8 @@
 package ui
 
 import (
+	"os"
+
 	"codeberg.org/dergs/tonearm/internal/gettext"
 	"codeberg.org/dergs/tonearm/internal/router"
 	"codeberg.org/dergs/tonearm/internal/secrets"
@@ -18,10 +20,12 @@ import (
 
 func (w *Window) buildSidebarHeader() *gtk.Widget {
 	windowTitle := WindowTitle("Tonearm", "")()
-	router.NavigationCompleted.On(func(entry router.HistoryEntry) bool {
-		schwifty.OnMainThreadOncePure(func() {
-			w.SetTitle("Tonearm - " + entry.PageTitle)
-		})
+	router.Navigation.On(func(entry *router.NavigationEvent) bool {
+		if entry.Completed {
+			schwifty.OnMainThreadOncePure(func() {
+				w.SetTitle("Tonearm - " + entry.Result.PageTitle)
+			})
+		}
 		return signals.Continue
 	})
 
