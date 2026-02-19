@@ -23,9 +23,9 @@ func NewShortcut(title string, subtitle string, coverUrl string) schwifty.Button
 					Image().
 						PixelSize(54).
 						FromPaintable(resources.MissingAlbum()).
-						ConnectConstruct(func(i *gtk.Image) {
+						ConnectRealize(func(i gtk.Widget) {
 							if settings.Performance().AllowShortcutImages() {
-								injector.MustInject[*imgutil.ImgUtil]().LoadIntoImage(coverUrl, i)
+								injector.MustInject[*imgutil.ImgUtil]().LoadIntoImageCropped(coverUrl, gtk.ImageNewFromInternalPtr(i.Ptr))
 							}
 						}),
 				).CornerRadius(10).Overflow(gtk.OverflowHiddenValue).HAlign(gtk.AlignEndValue).MarginStart(10),

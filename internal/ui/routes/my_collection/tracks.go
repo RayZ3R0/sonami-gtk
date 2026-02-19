@@ -65,8 +65,8 @@ func Tracks() *router.Response {
 						Image().
 							PixelSize(146).
 							FromPaintable(resources.MissingAlbum()).
-							ConnectConstruct(func(i *gtk.Image) {
-								injector.MustInject[*imgutil.ImgUtil]().LoadIntoImage(new(openapi.MyTracksInfo).Cover(146), i)
+							ConnectRealize(func(i gtk.Widget) {
+								injector.MustInject[*imgutil.ImgUtil]().LoadIntoImage(new(openapi.MyTracksInfo).Cover(146), gtk.ImageNewFromInternalPtr(i.Ptr))
 							}),
 					).
 						CornerRadius(10).

@@ -58,9 +58,9 @@ func Artist(artistId string) *router.Response {
 						Image().
 							PixelSize(146).
 							FromPaintable(resources.MissingAlbum()).
-							ConnectConstruct(func(i *gtk.Image) {
+							ConnectRealize(func(i gtk.Widget) {
 								if artistPage.Item.Data.Artist.Picture != "" {
-									injector.MustInject[*imgutil.ImgUtil]().LoadIntoImage(tidalapi.ImageURL(artistPage.Item.Data.Artist.Picture), i)
+									injector.MustInject[*imgutil.ImgUtil]().LoadIntoImage(tidalapi.ImageURL(artistPage.Item.Data.Artist.Picture), gtk.ImageNewFromInternalPtr(i.Ptr))
 								}
 							}),
 					).CornerRadius(10).Overflow(gtk.OverflowHiddenValue),

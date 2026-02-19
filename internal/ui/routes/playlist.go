@@ -99,9 +99,9 @@ func Playlist(playlistID string) *router.Response {
 						Image().
 							PixelSize(146).
 							FromPaintable(resources.MissingAlbum()).
-							ConnectConstruct(func(i *gtk.Image) {
+							ConnectRealize(func(i gtk.Widget) {
 								if playlist.Cover(146) != "" {
-									injector.MustInject[*imgutil.ImgUtil]().LoadIntoImage(playlist.Cover(146), i)
+									injector.MustInject[*imgutil.ImgUtil]().LoadIntoImage(playlist.Cover(146), gtk.ImageNewFromInternalPtr(i.Ptr))
 								}
 							}),
 					).CornerRadius(10).Overflow(gtk.OverflowHiddenValue),
