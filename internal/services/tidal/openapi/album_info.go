@@ -22,7 +22,6 @@ func (a AlbumInfo) Cover(preferredSize int) string {
 	}
 
 	artworks := a.Included.PlainArtworks(a.Data.Relationships.CoverArt.Data...)
-	logger.Debug("resolved album artworks", "count", len(artworks))
 
 	return artworks.AtLeast(preferredSize)
 }
