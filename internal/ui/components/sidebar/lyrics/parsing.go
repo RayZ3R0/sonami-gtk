@@ -123,7 +123,7 @@ func parseLRCLyrics(lyrics string, trackDuration time.Duration) (lines []any) {
 				continue
 			}
 
-			if timing.Start <= state.Position {
+			if timing.Start <= state.Position && timing.Ref != nil {
 				timing.Ref.Use(func(obj *gtk.Widget) {
 					if activeLyricIndex.Value() != obj.Ptr {
 						setNewIndex(timing)
@@ -134,7 +134,7 @@ func parseLRCLyrics(lyrics string, trackDuration time.Duration) (lines []any) {
 				continue
 			}
 
-			if timing.Start <= state.Position+player.UpdateInterval {
+			if timing.Start <= state.Position+player.UpdateInterval && timing.Ref != nil {
 				logger.Debug("next lyric line scheduled", "timing", timing.Start-state.Position)
 				time.AfterFunc(timing.Start-state.Position, func() {
 					timing.Ref.Use(func(obj *gtk.Widget) {
