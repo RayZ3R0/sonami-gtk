@@ -9,7 +9,6 @@ import (
 	"codeberg.org/dergs/tonearm/internal/state"
 	favouritebutton "codeberg.org/dergs/tonearm/internal/ui/components/favourite_button"
 	. "codeberg.org/dergs/tonearm/pkg/schwifty/syntax"
-	"codeberg.org/dergs/tonearm/pkg/schwifty/tracking"
 	"codeberg.org/dergs/tonearm/pkg/tonearm"
 	"github.com/jwijenbergh/puregotk/v4/gio"
 	"github.com/jwijenbergh/puregotk/v4/glib"
@@ -25,32 +24,31 @@ type lightArtist struct {
 
 func controlsColumn(trackId, albumId string, artistId []lightArtist, grid *gtk.Grid, position int, column int) int {
 	model := gio.NewMenu()
-	tracking.SetFinalizer("Menu", model)
 
 	item := gio.NewMenuItem(gettext.Get("Navigate to Album"), "win.route.album")
 	item.SetActionAndTargetValue("win.route.album", glib.NewVariantString(albumId))
-	tracking.SetFinalizer("MenuItem", item)
 	model.AppendItem(item)
+	item.Unref()
 
 	if len(artistId) > 1 {
 		submenu := gio.NewMenu()
-		tracking.SetFinalizer("Menu", submenu)
 		for _, artist := range artistId {
 			item := gio.NewMenuItem(fmt.Sprintf(gettext.Get("Navigate to %s"), artist.Name), "win.route.artist")
 			item.SetActionAndTargetValue("win.route.artist", glib.NewVariantString(artist.ID))
-			tracking.SetFinalizer("MenuItem", item)
 			submenu.AppendItem(item)
+			item.Unref()
 		}
 		model.AppendSubmenu(gettext.Get("Navigate to Artist"), &submenu.MenuModel)
+		submenu.Unref()
 	} else if len(artistId) == 1 {
 		item := gio.NewMenuItem(gettext.Get("Navigate to Artist"), "win.route.artist")
 		item.SetActionAndTargetValue("win.route.artist", glib.NewVariantString(artistId[0].ID))
-		tracking.SetFinalizer("MenuItem", item)
 		model.AppendItem(item)
+		item.Unref()
 	}
 
 	popover := gtk.NewPopoverMenuFromModel(&model.MenuModel)
-	tracking.SetFinalizer("PopoverMenu", popover)
+	model.Unref()
 
 	grid.Attach(
 		HStack(
@@ -81,6 +79,8 @@ func controlsColumn(trackId, albumId string, artistId []lightArtist, grid *gtk.G
 		1,
 		1,
 	)
+
+	popover.Unref()
 	return 1
 }
 
