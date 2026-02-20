@@ -6,7 +6,6 @@ import (
 	"sync"
 	"sync/atomic"
 
-	"codeberg.org/dergs/tonearm/pkg/schwifty/callback"
 	"github.com/google/uuid"
 )
 
@@ -50,31 +49,27 @@ func (b *Signal[T]) Notify(args ...any) {
 	handlers := maps.Clone(b.handlers)
 	b.mutex.Unlock()
 
-	go func() {
-		b.notifyMutex.Lock()
-		defer b.notifyMutex.Unlock()
+	b.notifyMutex.Lock()
+	defer b.notifyMutex.Unlock()
 
-		for sub, handler := range handlers {
-			if sub.removed.Load() {
-				continue
-			}
-			handlerType := reflect.TypeOf(handler)
-			reflectArgs := make([]reflect.Value, len(args))
-			for i, arg := range args {
-				if arg == nil {
-					reflectArgs[i] = reflect.Zero(handlerType.In(i))
-				} else {
-					reflectArgs[i] = reflect.ValueOf(arg)
-				}
-			}
-			callback.OnMainThreadOncePure(func() {
-				result := reflect.ValueOf(handler).Call(reflectArgs)
-				if len(result) > 0 && result[0].CanConvert(reflect.TypeFor[bool]()) && result[0].Bool() {
-					b.removeHandler(sub)
-				}
-			})
+	for sub, handler := range handlers {
+		if sub.removed.Load() {
+			continue
 		}
-	}()
+		handlerType := reflect.TypeOf(handler)
+		reflectArgs := make([]reflect.Value, len(args))
+		for i, arg := range args {
+			if arg == nil {
+				reflectArgs[i] = reflect.Zero(handlerType.In(i))
+			} else {
+				reflectArgs[i] = reflect.ValueOf(arg)
+			}
+		}
+		result := reflect.ValueOf(handler).Call(reflectArgs)
+		if len(result) > 0 && result[0].CanConvert(reflect.TypeFor[bool]()) && result[0].Bool() {
+			b.removeHandler(sub)
+		}
+	}
 }
 
 func (b *Signal[T]) On(handler T) *Subscription {
