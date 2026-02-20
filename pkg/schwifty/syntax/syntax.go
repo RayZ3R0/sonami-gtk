@@ -1,6 +1,8 @@
 package syntax
 
 import (
+	"runtime/debug"
+
 	"codeberg.org/dergs/tonearm/pkg/schwifty/callback"
 	"codeberg.org/dergs/tonearm/pkg/schwifty/tracking"
 	"github.com/jwijenbergh/puregotk/v4/gtk"
@@ -20,6 +22,11 @@ type manageableWidget interface {
 }
 
 func managedWidget[InnerType manageableWidget, T func() InnerType](tag string, fn T) T {
+	// Track where the schwifty expression was originally created
+	// as it may be actually constructed somewhere entirely different
+	// when getting rendered.
+	creationStack := debug.Stack()
+
 	return func() InnerType {
 		widget := fn()
 		widget.ConnectDestroy(&callback.DestroyCallback)
@@ -28,6 +35,7 @@ func managedWidget[InnerType manageableWidget, T func() InnerType](tag string, f
 		widget.ConnectUnmap(&callback.UnmapCallback)
 		widget.ConnectUnrealize(&callback.UnrealizedCallback)
 		tracking.SetFinalizer(tag, widget)
+		tracking.TrackStack(widget.GoPointer(), creationStack)
 		return widget
 	}
 }
