@@ -1,8 +1,6 @@
 package ui
 
 import (
-	"os"
-
 	"codeberg.org/dergs/tonearm/internal/gettext"
 	"codeberg.org/dergs/tonearm/internal/router"
 	"codeberg.org/dergs/tonearm/internal/secrets"
