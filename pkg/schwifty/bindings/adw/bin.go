@@ -15,8 +15,8 @@ func (f Bin) BindChild(state *state.State[any]) Bin {
 	return func() *adw.Bin {
 		var callbackId string
 		var ref weak.WidgetRef
-		return f.ConnectConstruct(func(w *adw.Bin) {
-			ref = weak.NewWidgetRef(&w.Widget)
+		return f.ConnectRealize(func(w gtk.Widget) {
+			ref = weak.NewWidgetRef(&w)
 			callbackId = state.AddCallback(func(newValue any) {
 				widget := <-gtkbindings.ResolveWidgetOnMain(newValue)
 				widget.Ref()
@@ -34,7 +34,7 @@ func (f Bin) BindChild(state *state.State[any]) Bin {
 					}
 				})
 			})
-		}).ConnectDestroy(func(w gtk.Widget) {
+		}).ConnectUnrealize(func(w gtk.Widget) {
 			state.RemoveCallback(callbackId)
 		})()
 	}
