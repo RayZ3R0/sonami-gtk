@@ -1,9 +1,11 @@
 package tracking
 
 import (
+	"reflect"
 	"runtime"
 
 	"codeberg.org/dergs/tonearm/pkg/schwifty/callback"
+	"codeberg.org/dergs/tonearm/pkg/schwifty/utils/weak"
 	"github.com/jwijenbergh/puregotk/v4/gobject"
 )
 
@@ -21,24 +23,34 @@ var onUnref = gobject.WeakNotify(func(userData uintptr, objPtr uintptr) {
 
 type Trackable interface {
 	GoPointer() uintptr
+	Ref() *gobject.Object
 	Unref()
 	WeakRef(NotifyVar *gobject.WeakNotify, DataVar uintptr)
 }
 
-func SetFinalizer[T Trackable](tag string, widgetToBeFinalized T) {
-	ptr := widgetToBeFinalized.GoPointer()
-	Track(ptr, tag)
-	if shouldLogLifecycle {
-		logger.Debug("now managing cleanup for object", "ptr", ptr, "tag", tag)
-	}
+func SetFinalizer(tag string, widgetToBeFinalized Trackable) {
+	widgetToBeFinalized.Ref()
+	defer widgetToBeFinalized.Unref()
+
+	Track(widgetToBeFinalized.GoPointer(), tag)
 	widgetToBeFinalized.WeakRef(&onUnref, 0)
-	runtime.SetFinalizer(widgetToBeFinalized, func(finalizedWidget T) {
-		if shouldLogLifecycle {
-			logger.Debug("releasing reference on schwifty-managed object, GTK may still hold a reference to this object", "tag", tag, "ptr", finalizedWidget.GoPointer())
-		}
-		finalizedWidget.Unref()
-		TrackGC(ptr)
-	})
+
+	ref := weak.NewObjectRef(widgetToBeFinalized)
+	runtime.AddCleanup[any]((*any)(reflect.ValueOf(widgetToBeFinalized).UnsafePointer()), func(ref weak.ObjectRef) {
+		callback.ScheduleOnMainThreadOncePure(func() {
+			ref.Use(func(obj *gobject.Object) {
+				if shouldLogLifecycle {
+					logger.Debug("releasing reference on schwifty-managed object, GTK may still hold a reference to this object", "tag", tag, "ptr", obj.GoPointer())
+				}
+				obj.Unref()
+				TrackGC(obj.Ptr)
+			})
+		})
+	}, ref)
+
+	if shouldLogLifecycle {
+		logger.Debug("now managing cleanup for object", "ptr", widgetToBeFinalized.GoPointer(), "tag", tag)
+	}
 }
 
 func SetLogLifecycle(enabled bool) {

@@ -39,15 +39,12 @@ var mainLoopHandler = glib.SourceFunc(func(ptr uintptr) bool {
 })
 
 func OnMainThread(callback MainThreadCallback, params uintptr) uint {
-	id := uintptr(callbackIdPool.Get())
-	mainThreadCallbacksLock.Lock()
-	mainThreadCallbacks[id] = MainThreadCallbackEntry{
-		Callback: callback,
-		Param:    params,
+	if glib.MainContextDefault().IsOwner() {
+		callback(params)
+		return 0
 	}
-	mainThreadCallbacksLock.Unlock()
 
-	return glib.IdleAdd(&mainLoopHandler, id)
+	return ScheduleOnMainThread(callback, params)
 }
 
 func OnMainThreadOnce(cb func(u uintptr), param uintptr) uint {
@@ -59,6 +56,29 @@ func OnMainThreadOnce(cb func(u uintptr), param uintptr) uint {
 
 func OnMainThreadOncePure(cb func()) uint {
 	return OnMainThreadOnce(func(uintptr) { cb() }, 0)
+}
+
+func ScheduleOnMainThread(callback MainThreadCallback, params uintptr) uint {
+	id := uintptr(callbackIdPool.Get())
+	mainThreadCallbacksLock.Lock()
+	mainThreadCallbacks[id] = MainThreadCallbackEntry{
+		Callback: callback,
+		Param:    params,
+	}
+	mainThreadCallbacksLock.Unlock()
+
+	return glib.IdleAdd(&mainLoopHandler, id)
+}
+
+func ScheduleOnMainThreadOnce(cb func(u uintptr), param uintptr) uint {
+	return ScheduleOnMainThread(func(u uintptr) bool {
+		cb(param)
+		return glib.SOURCE_REMOVE
+	}, param)
+}
+
+func ScheduleOnMainThreadOncePure(cb func()) uint {
+	return ScheduleOnMainThreadOnce(func(uintptr) { cb() }, 0)
 }
 
 // IntPool manages a pool of integers that can be checked out and returned
