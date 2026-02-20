@@ -4,7 +4,9 @@ import (
 	"maps"
 	"reflect"
 	"sync"
+	"sync/atomic"
 
+	"codeberg.org/dergs/tonearm/pkg/schwifty/callback"
 	"github.com/google/uuid"
 )
 
@@ -13,24 +15,33 @@ const (
 	Unsubscribe = true
 )
 
-type Subscription uuid.UUID
+type Subscription struct {
+	id      uuid.UUID
+	removed atomic.Bool
+}
 
 type Signal[T any] struct {
-	mutex    sync.Mutex
-	handlers map[*Subscription]T
+	mutex       sync.Mutex
+	handlers    map[*Subscription]T
+	notifyMutex sync.Mutex
 }
 
 func (b *Signal[T]) addHandler(handler T) *Subscription {
 	b.mutex.Lock()
 	defer b.mutex.Unlock()
-	sub := Subscription(uuid.New())
-	b.handlers[&sub] = handler
-	return &sub
+	sub := &Subscription{id: uuid.New(), removed: atomic.Bool{}}
+	b.handlers[sub] = handler
+	return sub
 }
 
 func (b *Signal[T]) removeHandler(sub *Subscription) {
+	if sub == nil || sub.removed.Load() {
+		return
+	}
+
 	b.mutex.Lock()
 	defer b.mutex.Unlock()
+	sub.removed.Store(true)
 	delete(b.handlers, sub)
 }
 
@@ -39,9 +50,14 @@ func (b *Signal[T]) Notify(args ...any) {
 	handlers := maps.Clone(b.handlers)
 	b.mutex.Unlock()
 
-	wg := sync.WaitGroup{}
-	for sub, handler := range handlers {
-		wg.Go(func() {
+	go func() {
+		b.notifyMutex.Lock()
+		defer b.notifyMutex.Unlock()
+
+		for sub, handler := range handlers {
+			if sub.removed.Load() {
+				continue
+			}
 			handlerType := reflect.TypeOf(handler)
 			reflectArgs := make([]reflect.Value, len(args))
 			for i, arg := range args {
@@ -51,13 +67,14 @@ func (b *Signal[T]) Notify(args ...any) {
 					reflectArgs[i] = reflect.ValueOf(arg)
 				}
 			}
-			result := reflect.ValueOf(handler).Call(reflectArgs)
-			if len(result) > 0 && result[0].CanConvert(reflect.TypeFor[bool]()) && result[0].Bool() {
-				b.removeHandler(sub)
-			}
-		})
-	}
-	wg.Wait()
+			callback.OnMainThreadOncePure(func() {
+				result := reflect.ValueOf(handler).Call(reflectArgs)
+				if len(result) > 0 && result[0].CanConvert(reflect.TypeFor[bool]()) && result[0].Bool() {
+					b.removeHandler(sub)
+				}
+			})
+		}
+	}()
 }
 
 func (b *Signal[T]) On(handler T) *Subscription {
