@@ -92,8 +92,8 @@ func (t *TrackList) onBind(_ gtk.SignalListItemFactory, listItem *gtk.ListItem) 
 	container := adw.BinNewFromInternalPtr(listItem.GetChild().GoPointer())
 	defer container.Unref()
 
-	body := HStack().ConnectConstruct(func(b *gtk.Box) {
-		var ref = weak.NewWidgetRef(b)
+	body := HStack().ConnectRealize(func(b gtk.Widget) {
+		var ref = weak.NewWidgetRef(&b)
 		player.TrackChanged.On(func(t tonearm.Track) bool {
 			return signals.ContinueIf(
 				ref.Use(func(obj *gtk.Widget) {
