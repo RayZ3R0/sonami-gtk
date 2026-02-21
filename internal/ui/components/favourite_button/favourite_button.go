@@ -25,16 +25,18 @@ func FavouriteButton(favouriteCache state.FavouriteCache, resourceID string) gtk
 	isFavourited := signals.NewStatefulSignal(false)
 	isLoading := signals.NewStatefulSignal(false)
 
+	var loadingSubscription *signals.Subscription
+	var favouritedSubscription *signals.Subscription
 	return Button().
 		IconName("heart-outline-thick-symbolic").
 		WithCSSClass("flat").
 		BindSensitive(secrets.SignedInState).
-		ConnectConstruct(func(b *gtk.Button) {
-			weakRef := weak.NewWidgetRef(&b.Widget)
+		ConnectRealize(func(b gtk.Widget) {
+			weakRef := weak.NewWidgetRef(&b)
 			isLoading.Set(true)
 			defer isLoading.Set(false)
 
-			isLoading.On(func(loading bool) bool {
+			loadingSubscription = isLoading.On(func(loading bool) bool {
 				schwifty.OnMainThreadOncePure(func() {
 					weakRef.Use(func(widget *gtk.Widget) {
 						b := gtk.ButtonNewFromInternalPtr(widget.Ptr)
@@ -69,7 +71,7 @@ func FavouriteButton(favouriteCache state.FavouriteCache, resourceID string) gtk
 				return slices.Contains(*items, resourceID)
 			})
 
-			isFavourited.On(func(value bool) bool {
+			favouritedSubscription = isFavourited.On(func(value bool) bool {
 				if isLoading.CurrentValue() {
 					return signals.Continue
 				}
@@ -92,6 +94,10 @@ func FavouriteButton(favouriteCache state.FavouriteCache, resourceID string) gtk
 
 				return signals.Continue
 			})
+		}).
+		ConnectUnrealize(func(w gtk.Widget) {
+			isLoading.Unsubscribe(loadingSubscription)
+			isFavourited.Unsubscribe(favouritedSubscription)
 		}).
 		ConnectClicked(func(b gtk.Button) {
 			go func() {
