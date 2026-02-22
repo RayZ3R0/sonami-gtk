@@ -36,6 +36,14 @@ func (f Clamp) ConnectDestroy(cb func(gtk.Widget)) Clamp {
 	}
 }
 
+func (f Clamp) ConnectHide(cb func(gtk.Widget)) Clamp {
+	return func() *adw.Clamp {
+		widget := f()
+		callback.HandleCallback(widget.Object, "hide", cb)
+		return widget
+	}
+}
+
 func (f Clamp) ConnectMap(cb func(gtk.Widget)) Clamp {
 	return func() *adw.Clamp {
 		widget := f()
@@ -48,6 +56,14 @@ func (f Clamp) ConnectRealize(cb func(gtk.Widget)) Clamp {
 	return func() *adw.Clamp {
 		widget := f()
 		callback.HandleCallback(widget.Object, "realize", cb)
+		return widget
+	}
+}
+
+func (f Clamp) ConnectShow(cb func(gtk.Widget)) Clamp {
+	return func() *adw.Clamp {
+		widget := f()
+		callback.HandleCallback(widget.Object, "show", cb)
 		return widget
 	}
 }

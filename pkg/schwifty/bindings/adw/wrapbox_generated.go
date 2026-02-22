@@ -36,6 +36,14 @@ func (f WrapBox) ConnectDestroy(cb func(gtk.Widget)) WrapBox {
 	}
 }
 
+func (f WrapBox) ConnectHide(cb func(gtk.Widget)) WrapBox {
+	return func() *adw.WrapBox {
+		widget := f()
+		callback.HandleCallback(widget.Object, "hide", cb)
+		return widget
+	}
+}
+
 func (f WrapBox) ConnectMap(cb func(gtk.Widget)) WrapBox {
 	return func() *adw.WrapBox {
 		widget := f()
@@ -48,6 +56,14 @@ func (f WrapBox) ConnectRealize(cb func(gtk.Widget)) WrapBox {
 	return func() *adw.WrapBox {
 		widget := f()
 		callback.HandleCallback(widget.Object, "realize", cb)
+		return widget
+	}
+}
+
+func (f WrapBox) ConnectShow(cb func(gtk.Widget)) WrapBox {
+	return func() *adw.WrapBox {
+		widget := f()
+		callback.HandleCallback(widget.Object, "show", cb)
 		return widget
 	}
 }

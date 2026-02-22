@@ -125,6 +125,13 @@ func Scale(orientation gtk.Orientation) gtkbindings.Scale {
 	})
 }
 
+func ShortcutController() gtkbindings.ShortcutController {
+	return managedObject("ShortcutController", func() *gtk.ShortcutController {
+		controller := gtk.NewShortcutController()
+		return controller
+	})
+}
+
 func ScrolledWindow() gtkbindings.ScrolledWindow {
 	return managedWidget("ScrolledWindow", func() *gtk.ScrolledWindow {
 		scrolledWindow := gtk.NewScrolledWindow()

@@ -9,15 +9,21 @@ import (
 	"codeberg.org/dergs/tonearm/pkg/schwifty/tracking"
 	"github.com/jwijenbergh/puregotk/v4/adw"
 	"github.com/jwijenbergh/puregotk/v4/gdk"
+	"github.com/jwijenbergh/puregotk/v4/gio"
 	"github.com/jwijenbergh/puregotk/v4/gobject"
+	"github.com/jwijenbergh/puregotk/v4/gsk"
 	"github.com/jwijenbergh/puregotk/v4/gtk"
 )
 
 type MediaViewer struct {
-	revealer     *tracking.WeakRef // darkened background + picture container
-	picture      *tracking.WeakRef
+	revealer   *tracking.WeakRef // darkened background + picture container
+	picture    *tracking.WeakRef
+	backButton *tracking.WeakRef
+
 	zoomLevel    float64
 	baseW, baseH int
+
+	media *gdk.Texture
 }
 
 var (
@@ -78,10 +84,18 @@ func GetMediaViewer() *MediaViewer {
 	}))
 
 	backButton := Button().
-		IconName("go-previous-symbolic")
-	moreButton := Button().
-		ConnectClicked(func(b gtk.Button) {
-		}).
+		ActionName("mediaviewer.close").
+		IconName("go-previous-symbolic").
+		ConnectConstruct(func(b *gtk.Button) {
+			mvInstance.backButton = tracking.NewWeakRef(b)
+		})()
+	backButtonRef := tracking.NewWeakRef(backButton)
+
+	model := gio.NewMenu()
+	copyItem := gio.NewMenuItem("Copy Media", "mediaviewer.copy")
+	model.AppendItem(copyItem)
+	moreButton := MenuButton().
+		MenuModel(&model.MenuModel).
 		IconName("view-more-symbolic")
 	toolbar := adw.NewToolbarView()
 	toolbar.AddTopBar(HeaderBar().
@@ -111,20 +125,71 @@ func GetMediaViewer() *MediaViewer {
 			Policy(gtk.PolicyAutomaticValue, gtk.PolicyAutomaticValue).ToGTK(),
 	)
 
+	defer toolbar.Unref()
+
+	overlay := adw.NewToastOverlay()
+	overlay.SetChild(&toolbar.Widget)
+	overlayRef := tracking.NewWeakRef(overlay)
+
 	mvInstance.revealer = tracking.NewWeakRef(
 		Revealer(
-			VStack(toolbar).
+			VStack(overlay).
 				HAlign(gtk.AlignFillValue).
 				VAlign(gtk.AlignFillValue).
 				HExpand(true).
 				VExpand(true).
 				WithCSSClass("mediaviewer"),
 		).
+			ConnectConstruct(func(r *gtk.Revealer) {
+				actionGroup := gio.NewSimpleActionGroup()
+				defer actionGroup.Unref()
+
+				copyItem := gio.NewSimpleAction("copy", nil)
+				copyItem.ConnectActivate(new(func(action gio.SimpleAction, _ uintptr) {
+					mvInstance.copyMedia()
+
+					overlayRef.Use(func(obj *gobject.Object) {
+						overlay := adw.ToastOverlayNewFromInternalPtr(obj.Ptr)
+						toast := adw.NewToast("Copied image to clipboard")
+						toast.SetTimeout(3)
+						overlay.AddToast(toast)
+					})
+				}))
+				actionGroup.AddAction(copyItem)
+
+				closeItem := gio.NewSimpleAction("close", nil)
+				closeItem.ConnectActivate(new(func(action gio.SimpleAction, _ uintptr) {
+					mvInstance.Hide()
+				}))
+				actionGroup.AddAction(closeItem)
+
+				r.InsertActionGroup("mediaviewer", actionGroup)
+
+				ShortcutController().
+					ShortcutFromNames("<Ctrl>C", "mediaviewer.copy").
+					ShortcutFromNames("Escape", "mediaviewer.close").
+					Into(r)
+			}).
+			ConnectShow(func(w gtk.Widget) {
+				backButtonRef.Use(func(obj *gobject.Object) {
+					button := gtk.ButtonNewFromInternalPtr(obj.Ptr)
+					button.GrabFocus()
+				})
+			}).
 			Visible(false).
 			TransitionType(gtk.RevealerTransitionTypeCrossfadeValue)(),
 	)
 
 	return mvInstance
+}
+
+func (mv *MediaViewer) copyMedia() {
+	display := gdk.DisplayGetDefault()
+	defer display.Unref()
+	clipboard := display.GetClipboard()
+	defer clipboard.Unref()
+
+	clipboard.SetTexture(mv.media)
 }
 
 func (mv *MediaViewer) ShowFile(paintable gdk.Paintable) {
@@ -143,6 +208,25 @@ func (mv *MediaViewer) ShowFile(paintable gdk.Paintable) {
 		revealer.SetVisible(true)
 		revealer.SetRevealChild(true)
 	})
+
+	snapshot := gtk.NewSnapshot()
+	width := float64(paintable.GetIntrinsicWidth())
+	height := float64(paintable.GetIntrinsicHeight())
+	if width <= 0 {
+		width = 1440
+	}
+	if height <= 0 {
+		height = 1440
+	}
+	paintable.Snapshot(&snapshot.Snapshot, width, height)
+	node := snapshot.FreeToNode()
+	defer node.Unref()
+
+	renderer := gsk.NewCairoRenderer()
+	defer renderer.Unref()
+	renderer.Realize(nil)
+	defer renderer.Unrealize()
+	mv.media = renderer.RenderTexture(node, nil)
 }
 
 func (mv *MediaViewer) Hide() {
@@ -152,9 +236,19 @@ func (mv *MediaViewer) Hide() {
 			return
 		}
 
-		revealer.SetRevealChild(false)
+		schwifty.OnMainThreadOncePure(func() {
+			mv.revealer.Use(func(obj *gobject.Object) {
+				revealer := gtk.RevealerNewFromInternalPtr(obj.Ptr)
+				revealer.SetRevealChild(false)
+			})
+		})
 		time.AfterFunc(time.Duration(revealer.GetTransitionDuration()*uint(time.Millisecond)), func() {
-			revealer.SetVisible(false)
+			schwifty.OnMainThreadOncePure(func() {
+				mv.revealer.Use(func(obj *gobject.Object) {
+					revealer := gtk.RevealerNewFromInternalPtr(obj.Ptr)
+					revealer.SetVisible(false)
+				})
+			})
 		})
 	})
 }

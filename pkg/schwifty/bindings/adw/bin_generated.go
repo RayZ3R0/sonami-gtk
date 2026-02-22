@@ -36,6 +36,14 @@ func (f Bin) ConnectDestroy(cb func(gtk.Widget)) Bin {
 	}
 }
 
+func (f Bin) ConnectHide(cb func(gtk.Widget)) Bin {
+	return func() *adw.Bin {
+		widget := f()
+		callback.HandleCallback(widget.Object, "hide", cb)
+		return widget
+	}
+}
+
 func (f Bin) ConnectMap(cb func(gtk.Widget)) Bin {
 	return func() *adw.Bin {
 		widget := f()
@@ -48,6 +56,14 @@ func (f Bin) ConnectRealize(cb func(gtk.Widget)) Bin {
 	return func() *adw.Bin {
 		widget := f()
 		callback.HandleCallback(widget.Object, "realize", cb)
+		return widget
+	}
+}
+
+func (f Bin) ConnectShow(cb func(gtk.Widget)) Bin {
+	return func() *adw.Bin {
+		widget := f()
+		callback.HandleCallback(widget.Object, "show", cb)
 		return widget
 	}
 }

@@ -36,6 +36,14 @@ func (f EntryRow) ConnectDestroy(cb func(gtk.Widget)) EntryRow {
 	}
 }
 
+func (f EntryRow) ConnectHide(cb func(gtk.Widget)) EntryRow {
+	return func() *adw.EntryRow {
+		widget := f()
+		callback.HandleCallback(widget.Object, "hide", cb)
+		return widget
+	}
+}
+
 func (f EntryRow) ConnectMap(cb func(gtk.Widget)) EntryRow {
 	return func() *adw.EntryRow {
 		widget := f()
@@ -48,6 +56,14 @@ func (f EntryRow) ConnectRealize(cb func(gtk.Widget)) EntryRow {
 	return func() *adw.EntryRow {
 		widget := f()
 		callback.HandleCallback(widget.Object, "realize", cb)
+		return widget
+	}
+}
+
+func (f EntryRow) ConnectShow(cb func(gtk.Widget)) EntryRow {
+	return func() *adw.EntryRow {
+		widget := f()
+		callback.HandleCallback(widget.Object, "show", cb)
 		return widget
 	}
 }

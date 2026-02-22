@@ -36,6 +36,14 @@ func (f ComboRow) ConnectDestroy(cb func(gtk.Widget)) ComboRow {
 	}
 }
 
+func (f ComboRow) ConnectHide(cb func(gtk.Widget)) ComboRow {
+	return func() *adw.ComboRow {
+		widget := f()
+		callback.HandleCallback(widget.Object, "hide", cb)
+		return widget
+	}
+}
+
 func (f ComboRow) ConnectMap(cb func(gtk.Widget)) ComboRow {
 	return func() *adw.ComboRow {
 		widget := f()
@@ -48,6 +56,14 @@ func (f ComboRow) ConnectRealize(cb func(gtk.Widget)) ComboRow {
 	return func() *adw.ComboRow {
 		widget := f()
 		callback.HandleCallback(widget.Object, "realize", cb)
+		return widget
+	}
+}
+
+func (f ComboRow) ConnectShow(cb func(gtk.Widget)) ComboRow {
+	return func() *adw.ComboRow {
+		widget := f()
+		callback.HandleCallback(widget.Object, "show", cb)
 		return widget
 	}
 }

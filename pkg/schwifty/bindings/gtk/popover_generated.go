@@ -35,6 +35,14 @@ func (f Popover) ConnectDestroy(cb func(gtk.Widget)) Popover {
 	}
 }
 
+func (f Popover) ConnectHide(cb func(gtk.Widget)) Popover {
+	return func() *gtk.Popover {
+		widget := f()
+		callback.HandleCallback(widget.Object, "hide", cb)
+		return widget
+	}
+}
+
 func (f Popover) ConnectMap(cb func(gtk.Widget)) Popover {
 	return func() *gtk.Popover {
 		widget := f()
@@ -47,6 +55,14 @@ func (f Popover) ConnectRealize(cb func(gtk.Widget)) Popover {
 	return func() *gtk.Popover {
 		widget := f()
 		callback.HandleCallback(widget.Object, "realize", cb)
+		return widget
+	}
+}
+
+func (f Popover) ConnectShow(cb func(gtk.Widget)) Popover {
+	return func() *gtk.Popover {
+		widget := f()
+		callback.HandleCallback(widget.Object, "show", cb)
 		return widget
 	}
 }

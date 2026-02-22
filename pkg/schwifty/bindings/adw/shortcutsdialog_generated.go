@@ -36,6 +36,14 @@ func (f ShortcutsDialog) ConnectDestroy(cb func(gtk.Widget)) ShortcutsDialog {
 	}
 }
 
+func (f ShortcutsDialog) ConnectHide(cb func(gtk.Widget)) ShortcutsDialog {
+	return func() *adw.ShortcutsDialog {
+		widget := f()
+		callback.HandleCallback(widget.Object, "hide", cb)
+		return widget
+	}
+}
+
 func (f ShortcutsDialog) ConnectMap(cb func(gtk.Widget)) ShortcutsDialog {
 	return func() *adw.ShortcutsDialog {
 		widget := f()
@@ -48,6 +56,14 @@ func (f ShortcutsDialog) ConnectRealize(cb func(gtk.Widget)) ShortcutsDialog {
 	return func() *adw.ShortcutsDialog {
 		widget := f()
 		callback.HandleCallback(widget.Object, "realize", cb)
+		return widget
+	}
+}
+
+func (f ShortcutsDialog) ConnectShow(cb func(gtk.Widget)) ShortcutsDialog {
+	return func() *adw.ShortcutsDialog {
+		widget := f()
+		callback.HandleCallback(widget.Object, "show", cb)
 		return widget
 	}
 }

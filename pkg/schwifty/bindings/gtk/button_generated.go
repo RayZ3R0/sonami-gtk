@@ -35,6 +35,14 @@ func (f Button) ConnectDestroy(cb func(gtk.Widget)) Button {
 	}
 }
 
+func (f Button) ConnectHide(cb func(gtk.Widget)) Button {
+	return func() *gtk.Button {
+		widget := f()
+		callback.HandleCallback(widget.Object, "hide", cb)
+		return widget
+	}
+}
+
 func (f Button) ConnectMap(cb func(gtk.Widget)) Button {
 	return func() *gtk.Button {
 		widget := f()
@@ -47,6 +55,14 @@ func (f Button) ConnectRealize(cb func(gtk.Widget)) Button {
 	return func() *gtk.Button {
 		widget := f()
 		callback.HandleCallback(widget.Object, "realize", cb)
+		return widget
+	}
+}
+
+func (f Button) ConnectShow(cb func(gtk.Widget)) Button {
+	return func() *gtk.Button {
+		widget := f()
+		callback.HandleCallback(widget.Object, "show", cb)
 		return widget
 	}
 }

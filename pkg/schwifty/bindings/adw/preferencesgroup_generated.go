@@ -36,6 +36,14 @@ func (f PreferencesGroup) ConnectDestroy(cb func(gtk.Widget)) PreferencesGroup {
 	}
 }
 
+func (f PreferencesGroup) ConnectHide(cb func(gtk.Widget)) PreferencesGroup {
+	return func() *adw.PreferencesGroup {
+		widget := f()
+		callback.HandleCallback(widget.Object, "hide", cb)
+		return widget
+	}
+}
+
 func (f PreferencesGroup) ConnectMap(cb func(gtk.Widget)) PreferencesGroup {
 	return func() *adw.PreferencesGroup {
 		widget := f()
@@ -48,6 +56,14 @@ func (f PreferencesGroup) ConnectRealize(cb func(gtk.Widget)) PreferencesGroup {
 	return func() *adw.PreferencesGroup {
 		widget := f()
 		callback.HandleCallback(widget.Object, "realize", cb)
+		return widget
+	}
+}
+
+func (f PreferencesGroup) ConnectShow(cb func(gtk.Widget)) PreferencesGroup {
+	return func() *adw.PreferencesGroup {
+		widget := f()
+		callback.HandleCallback(widget.Object, "show", cb)
 		return widget
 	}
 }

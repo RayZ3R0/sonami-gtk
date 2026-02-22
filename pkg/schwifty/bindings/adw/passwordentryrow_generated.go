@@ -36,6 +36,14 @@ func (f PasswordEntryRow) ConnectDestroy(cb func(gtk.Widget)) PasswordEntryRow {
 	}
 }
 
+func (f PasswordEntryRow) ConnectHide(cb func(gtk.Widget)) PasswordEntryRow {
+	return func() *adw.PasswordEntryRow {
+		widget := f()
+		callback.HandleCallback(widget.Object, "hide", cb)
+		return widget
+	}
+}
+
 func (f PasswordEntryRow) ConnectMap(cb func(gtk.Widget)) PasswordEntryRow {
 	return func() *adw.PasswordEntryRow {
 		widget := f()
@@ -48,6 +56,14 @@ func (f PasswordEntryRow) ConnectRealize(cb func(gtk.Widget)) PasswordEntryRow {
 	return func() *adw.PasswordEntryRow {
 		widget := f()
 		callback.HandleCallback(widget.Object, "realize", cb)
+		return widget
+	}
+}
+
+func (f PasswordEntryRow) ConnectShow(cb func(gtk.Widget)) PasswordEntryRow {
+	return func() *adw.PasswordEntryRow {
+		widget := f()
+		callback.HandleCallback(widget.Object, "show", cb)
 		return widget
 	}
 }

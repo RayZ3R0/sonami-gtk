@@ -35,6 +35,14 @@ func (f Revealer) ConnectDestroy(cb func(gtk.Widget)) Revealer {
 	}
 }
 
+func (f Revealer) ConnectHide(cb func(gtk.Widget)) Revealer {
+	return func() *gtk.Revealer {
+		widget := f()
+		callback.HandleCallback(widget.Object, "hide", cb)
+		return widget
+	}
+}
+
 func (f Revealer) ConnectMap(cb func(gtk.Widget)) Revealer {
 	return func() *gtk.Revealer {
 		widget := f()
@@ -47,6 +55,14 @@ func (f Revealer) ConnectRealize(cb func(gtk.Widget)) Revealer {
 	return func() *gtk.Revealer {
 		widget := f()
 		callback.HandleCallback(widget.Object, "realize", cb)
+		return widget
+	}
+}
+
+func (f Revealer) ConnectShow(cb func(gtk.Widget)) Revealer {
+	return func() *gtk.Revealer {
+		widget := f()
+		callback.HandleCallback(widget.Object, "show", cb)
 		return widget
 	}
 }

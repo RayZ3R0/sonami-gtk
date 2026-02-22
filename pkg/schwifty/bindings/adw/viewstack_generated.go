@@ -36,6 +36,14 @@ func (f ViewStack) ConnectDestroy(cb func(gtk.Widget)) ViewStack {
 	}
 }
 
+func (f ViewStack) ConnectHide(cb func(gtk.Widget)) ViewStack {
+	return func() *adw.ViewStack {
+		widget := f()
+		callback.HandleCallback(widget.Object, "hide", cb)
+		return widget
+	}
+}
+
 func (f ViewStack) ConnectMap(cb func(gtk.Widget)) ViewStack {
 	return func() *adw.ViewStack {
 		widget := f()
@@ -48,6 +56,14 @@ func (f ViewStack) ConnectRealize(cb func(gtk.Widget)) ViewStack {
 	return func() *adw.ViewStack {
 		widget := f()
 		callback.HandleCallback(widget.Object, "realize", cb)
+		return widget
+	}
+}
+
+func (f ViewStack) ConnectShow(cb func(gtk.Widget)) ViewStack {
+	return func() *adw.ViewStack {
+		widget := f()
+		callback.HandleCallback(widget.Object, "show", cb)
 		return widget
 	}
 }
