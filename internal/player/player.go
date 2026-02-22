@@ -30,6 +30,7 @@ func init() {
 	playbin.GetBus().AddWatch(onBusMessage)
 	playbin.Connect("notify::volume", onVolumeChange)
 	playbin.Connect("about-to-finish", onAboutToFinish)
+	playbin.Connect("deep-element-added", onDeepElementAdded)
 	playbin.SetProperty("buffer-size", 20*1024*1024)                         // 20 MB
 	playbin.SetProperty("buffer-duration", (30 * time.Second).Nanoseconds()) // 30 seconds
 

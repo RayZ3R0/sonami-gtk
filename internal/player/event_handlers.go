@@ -66,6 +66,46 @@ func onBusMessage(msg *gst.Message) bool {
 	case gst.MessageError:
 		err := msg.ParseError()
 		logger.Error("playback failed", "code", err.Code(), "message", err.Message(), "error", err.Error(), "debug", err.DebugString())
+	case gst.MessageTag:
+		// The logs in this branch are all debug because of the nature of MessageTag.
+		// If they weren't Debug, the console would get spammed with error messages,
+		// since it is expected to have missing data. Between streams
+		tagList := msg.ParseTags()
+		if tagList == nil {
+			logger.Debug("Error while getting codec")
+			return true
+		}
+
+		codecIdentifier, ok := tagList.GetString(gst.TagAudioCodec)
+		if !ok {
+			logger.Debug("Error while getting codec")
+			return true
+		}
+		codec := Codec(codecIdentifier)
+
+		var bitRate uint32
+		if codec == CodecAAC {
+			bitRate, ok = tagList.GetUint32(gst.TagMaximumBitrate)
+
+			if !ok {
+				logger.Debug("Error while getting bitrate")
+				return true
+			}
+		}
+
+		AudioStreamQuality.Notify(func(oldValue *StreamQuality) *StreamQuality {
+			var res StreamQuality
+			if oldValue == nil {
+				res = StreamQuality{}
+			} else {
+				res = *oldValue
+			}
+
+			res.Codec = codec
+			res.BitRate = bitRate
+
+			return &res
+		})
 	case gst.MessageStreamStart:
 		startUpdateRunner()
 		playbin.Set("volume", settings.Player().GetVolume())
@@ -103,6 +143,73 @@ func onBusMessage(msg *gst.Message) bool {
 		}
 	}
 	return true
+}
+
+func onDeepElementAdded(bin, obj any) {
+	if element, ok := obj.(*gst.Bin); ok {
+		factory := element.GetFactory()
+		if factory == nil {
+			return
+		}
+
+		if factory.GetName() != "decodebin3" {
+			return
+		}
+
+		element.Connect("pad-added", func(decodebin *gst.Element, pad *gst.Pad) {
+			if pad.GetDirection() != gst.PadDirectionSource {
+				return
+			}
+
+			pad.AddProbe(gst.PadProbeTypeEventDownstream, func(p *gst.Pad, info *gst.PadProbeInfo) gst.PadProbeReturn {
+				event := info.GetEvent()
+				if event.Type() != gst.EventTypeCaps {
+					return gst.PadProbeOK
+				}
+
+				caps := p.GetCurrentCaps()
+				if caps == nil {
+					return gst.PadProbeOK
+				}
+
+				s := caps.GetStructureAt(0)
+				name := s.Name() // e.g. "audio/x-raw"
+				if name != "audio/x-raw" {
+					return gst.PadProbeOK
+				}
+
+				var bitDepth int
+				switch format, _ := s.GetValue("format"); format {
+				case "S16LE":
+					bitDepth = 16
+				case "S24LE", "S24_32LE":
+					bitDepth = 24
+				case "S32LE":
+					bitDepth = 32
+				}
+
+				rate, _ := s.GetValue("rate")
+
+				AudioStreamQuality.Notify(func(oldValue *StreamQuality) *StreamQuality {
+					var res StreamQuality
+					if oldValue == nil {
+						res = StreamQuality{}
+					} else {
+						res = *oldValue
+					}
+
+					res.BitDepth = bitDepth
+					if rate, ok := rate.(int); ok {
+						res.SampleRate = rate
+					}
+
+					return &res
+				})
+
+				return gst.PadProbeOK
+			})
+		})
+	}
 }
 
 func onVolumeChange() {
