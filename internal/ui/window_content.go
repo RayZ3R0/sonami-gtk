@@ -59,13 +59,13 @@ func (w *Window) buildContentHeader() *gtk.Widget {
 		TitleWidget(defaultToolbar)()
 
 	router.Navigation.On(func(event *router.NavigationEvent) bool {
-		schwifty.OnMainThreadOnce(func(u uintptr) {
+		schwifty.OnMainThreadOncePure(func() {
 			if event.Completed && event.Result.Toolbar != nil {
 				headerbar.SetTitleWidget(event.Result.Toolbar)
 			} else {
 				headerbar.SetTitleWidget(&defaultToolbar.Widget)
 			}
-		}, 0)
+		})
 		return signals.Continue
 	})
 
