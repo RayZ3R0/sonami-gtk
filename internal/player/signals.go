@@ -7,6 +7,9 @@ import (
 	"codeberg.org/dergs/tonearm/pkg/tonearm"
 )
 
+// Holds the current audio stream quality.
+var AudioStreamQuality = signals.NewStatefulSignal[*StreamQuality](nil)
+
 // Holds the current playback state including the expected duration and playing position of the
 // currently playing track, if any.
 //

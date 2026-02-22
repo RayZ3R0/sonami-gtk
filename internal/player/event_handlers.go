@@ -2,10 +2,8 @@ package player
 
 import (
 	"context"
-	"fmt"
 	"time"
 
-	"codeberg.org/dergs/tonearm/internal/g"
 	"codeberg.org/dergs/tonearm/internal/settings"
 	"codeberg.org/dergs/tonearm/internal/signals"
 	"codeberg.org/dergs/tonearm/pkg/tidalapi"
@@ -63,22 +61,33 @@ func onAboutToFinish(_ *gst.Element) {
 	}
 }
 
-type codec string
+type Codec string
 
 const (
-	flac codec = "Free Lossless Audio Codec (FLAC)"
-	aac  codec = "MPEG-4 AAC"
+	CodecFLAC Codec = "Free Lossless Audio Codec (FLAC)"
+	CodecAAC  Codec = "MPEG-4 AAC"
 )
 
-func (c codec) String() string {
+func (c Codec) String() string {
 	switch c {
-	case flac:
+	case CodecFLAC:
 		return "FLAC"
-	case aac:
+	case CodecAAC:
 		return "AAC"
 	default:
 		return "unknown codec"
 	}
+}
+
+type StreamQuality struct {
+	Codec    Codec
+	BitDepth int
+
+	// BitRate is the bitrate in bps if the codec is AAC, otherwise 0.
+	BitRate uint32
+
+	// SampleRate is the sample rate in Hz if the codec is FLAC, otherwise 0.
+	SampleRate int
 }
 
 func onBusMessage(msg *gst.Message) bool {
@@ -90,8 +99,6 @@ func onBusMessage(msg *gst.Message) bool {
 		// The logs in this branch are all debug because of the nature of MessageTag.
 		// If they weren't Debug, the console would get spammed with error messages,
 		// since it is expected to have missing data. Between streams
-
-		// CODEC
 		tagList := msg.ParseTags()
 		if tagList == nil {
 			logger.Debug("Error while getting codec")
@@ -103,47 +110,31 @@ func onBusMessage(msg *gst.Message) bool {
 			logger.Debug("Error while getting codec")
 			return true
 		}
-		codec := codec(codecIdentifier)
+		codec := Codec(codecIdentifier)
 
-		// AUDIO CAPS
-		format, rate, err := getAudioCaps()
-		if err != nil {
-			logger.Debug("Error while getting audio stream quality", "error", err)
-			return true
-		}
+		var bitRate uint32
+		if codec == CodecAAC {
+			bitRate, ok = tagList.GetUint32(gst.TagMaximumBitrate)
 
-		/// Format
-		var readableBitDepth string
-		switch format {
-		case "S16LE":
-			readableBitDepth = "16-bit"
-		case "S24LE", "S24_32LE":
-			readableBitDepth = "24-bit"
-		case "S32LE":
-			readableBitDepth = "32-bit"
-		}
-
-		// Compilation
-		var res string
-		switch codec {
-		case aac:
-			// BITRATE (for AAC)
-			rate, ok := tagList.GetUint32(gst.TagMaximumBitrate)
 			if !ok {
 				logger.Debug("Error while getting bitrate")
 				return true
 			}
-
-			bitrate := g.TruncateFloat(float64(rate)/1000, 1)
-			res = fmt.Sprintf("%s %s kbps AAC", readableBitDepth, bitrate)
-		case flac:
-			/// Sample rate (FLAC)
-			sampleRate := g.TruncateFloat(float64(rate)/1000, 1)
-
-			res = fmt.Sprintf("%s %skHz FLAC", readableBitDepth, sampleRate)
 		}
 
-		AudioStreamQuality.SetValue(res)
+		AudioStreamQuality.Notify(func(oldValue *StreamQuality) *StreamQuality {
+			var res StreamQuality
+			if oldValue == nil {
+				res = StreamQuality{}
+			} else {
+				res = *oldValue
+			}
+
+			res.Codec = codec
+			res.BitRate = bitRate
+
+			return &res
+		})
 	case gst.MessageStreamStart:
 		startUpdateRunner()
 		playbin.Set("volume", settings.Player().GetVolume())
@@ -181,6 +172,73 @@ func onBusMessage(msg *gst.Message) bool {
 		}
 	}
 	return true
+}
+
+func onDeepElementAdded(bin, obj any) {
+	if element, ok := obj.(*gst.Bin); ok {
+		factory := element.GetFactory()
+		if factory == nil {
+			return
+		}
+
+		if factory.GetName() != "decodebin3" {
+			return
+		}
+
+		element.Connect("pad-added", func(decodebin *gst.Element, pad *gst.Pad) {
+			if pad.GetDirection() != gst.PadDirectionSource {
+				return
+			}
+
+			pad.AddProbe(gst.PadProbeTypeEventDownstream, func(p *gst.Pad, info *gst.PadProbeInfo) gst.PadProbeReturn {
+				event := info.GetEvent()
+				if event.Type() != gst.EventTypeCaps {
+					return gst.PadProbeOK
+				}
+
+				caps := p.GetCurrentCaps()
+				if caps == nil {
+					return gst.PadProbeOK
+				}
+
+				s := caps.GetStructureAt(0)
+				name := s.Name() // e.g. "audio/x-raw"
+				if name != "audio/x-raw" {
+					return gst.PadProbeOK
+				}
+
+				var bitDepth int
+				switch format, _ := s.GetValue("format"); format {
+				case "S16LE":
+					bitDepth = 16
+				case "S24LE", "S24_32LE":
+					bitDepth = 24
+				case "S32LE":
+					bitDepth = 32
+				}
+
+				rate, _ := s.GetValue("rate")
+
+				AudioStreamQuality.Notify(func(oldValue *StreamQuality) *StreamQuality {
+					var res StreamQuality
+					if oldValue == nil {
+						res = StreamQuality{}
+					} else {
+						res = *oldValue
+					}
+
+					res.BitDepth = bitDepth
+					if rate, ok := rate.(int); ok {
+						res.SampleRate = rate
+					}
+
+					return &res
+				})
+
+				return gst.PadProbeOK
+			})
+		})
+	}
 }
 
 func onVolumeChange() {

@@ -2,14 +2,12 @@ package player
 
 import (
 	"context"
-	"fmt"
 	"log/slog"
 	"strconv"
 	"time"
 
 	"codeberg.org/dergs/tonearm/internal/settings"
 	"codeberg.org/dergs/tonearm/internal/signals"
-	"codeberg.org/dergs/tonearm/pkg/schwifty/state"
 	"codeberg.org/dergs/tonearm/pkg/tidalapi"
 	v2 "codeberg.org/dergs/tonearm/pkg/tidalapi/models/v2"
 	"codeberg.org/dergs/tonearm/pkg/tonearm"
@@ -20,46 +18,7 @@ import (
 var (
 	logger  = slog.With("module", "player")
 	playbin *gst.Element
-
-	AudioStreamQuality = state.NewStateful("N/A")
 )
-
-func getAudioCaps() (format string, sampleRate int, err error) {
-	audio_sink, err := playbin.GetProperty("audio-sink")
-	if err != nil {
-		return
-	}
-
-	audio_sink_element, ok := audio_sink.(*gst.Element)
-	if !ok {
-		err = fmt.Errorf("audio sink is not an element")
-		return
-	}
-
-	sink_pad := audio_sink_element.GetStaticPad("sink")
-	if sink_pad == nil {
-		err = fmt.Errorf("failed to get sink pad from audio sink element")
-		return
-	}
-
-	caps := sink_pad.GetCurrentCaps()
-	if caps == nil {
-		err = fmt.Errorf("failed to get caps from sink pad")
-		return
-	}
-
-	for i := range caps.GetSize() {
-		structure := caps.GetStructureAt(i)
-		if v, err := structure.GetValue("rate"); err == nil {
-			sampleRate = v.(int)
-		}
-		if v, err := structure.GetValue("format"); err == nil {
-			format = v.(string)
-		}
-	}
-
-	return
-}
 
 func init() {
 	gst.Init(nil)
@@ -71,6 +30,7 @@ func init() {
 	playbin.GetBus().AddWatch(onBusMessage)
 	playbin.Connect("notify::volume", onVolumeChange)
 	playbin.Connect("about-to-finish", onAboutToFinish)
+	playbin.Connect("deep-element-added", onDeepElementAdded)
 	playbin.SetProperty("buffer-size", 20*1024*1024)                         // 20 MB
 	playbin.SetProperty("buffer-duration", (30 * time.Second).Nanoseconds()) // 30 seconds
 

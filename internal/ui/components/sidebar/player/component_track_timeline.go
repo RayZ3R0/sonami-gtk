@@ -1,6 +1,9 @@
 package player
 
 import (
+	"fmt"
+
+	"codeberg.org/dergs/tonearm/internal/g"
 	"codeberg.org/dergs/tonearm/internal/gettext"
 	"codeberg.org/dergs/tonearm/internal/notifications"
 	"codeberg.org/dergs/tonearm/internal/player"
@@ -23,6 +26,7 @@ var (
 	timelineSliderState = state.NewStateful(0.0)
 
 	selectedQuality      = state.NewStateful("Max")
+	actualQuality        = state.NewStateful("N/A")
 	playbackQualityText  = state.NewBoundStateful(selectedQuality)
 	areDetailsDisplayed  = false
 	playbackQualityClass = state.NewStateful("max")
@@ -61,6 +65,23 @@ func init() {
 	settings.Player().ConnectAudioQualityChanged(func(aq v1.AudioQuality) bool {
 		notifications.OnToast.Notify(gettext.Get("Playback quality saved. Changes will be applied on next track change"))
 
+		return signals.Continue
+	})
+
+	player.AudioStreamQuality.On(func(sq *player.StreamQuality) bool {
+		if sq == nil {
+			actualQuality.SetValue("N/A")
+			return signals.Continue
+		}
+
+		switch sq.Codec {
+		case player.CodecAAC:
+			bitrate := g.TruncateFloat(float64(sq.BitRate)/1000, 1)
+			actualQuality.SetValue(fmt.Sprintf("%s kbps AAC", bitrate))
+		case player.CodecFLAC:
+			sampleRate := g.TruncateFloat(float64(sq.SampleRate)/1000, 1)
+			actualQuality.SetValue(fmt.Sprintf("%d-bit %skHz FLAC", sq.BitDepth, sampleRate))
+		}
 		return signals.Continue
 	})
 
@@ -133,7 +154,7 @@ func toggleQualityLabel() {
 		playbackQualityText.BindState(selectedQuality)
 		areDetailsDisplayed = false
 	} else {
-		playbackQualityText.BindState(player.AudioStreamQuality)
+		playbackQualityText.BindState(actualQuality)
 		areDetailsDisplayed = true
 	}
 }
