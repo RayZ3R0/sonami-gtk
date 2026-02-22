@@ -3,7 +3,7 @@ package adw
 import (
 	"codeberg.org/dergs/tonearm/pkg/schwifty/callback"
 	"codeberg.org/dergs/tonearm/pkg/schwifty/state"
-	"codeberg.org/dergs/tonearm/pkg/schwifty/tracking"
+	"codeberg.org/dergs/tonearm/pkg/schwifty/utils/weak"
 	"fmt"
 	"github.com/jwijenbergh/puregotk/v4/adw"
 	"github.com/jwijenbergh/puregotk/v4/gtk"
@@ -251,9 +251,9 @@ func (f Spinner) CSS(css string) Spinner {
 func (f Spinner) BindCSSClass(state *state.State[string]) Spinner {
 	return func() *adw.Spinner {
 		var callbackId string
-		var ref *tracking.WeakRef
-		return f.ConnectConstruct(func(w *adw.Spinner) {
-			ref = tracking.NewWeakRef(&w.Widget)
+		var ref weak.WidgetRef
+		return f.ConnectRealize(func(w gtk.Widget) {
+			ref = weak.NewWidgetRef(&w)
 			callbackId = state.AddCallback(func(newValue string) {
 				oldValue := state.Value()
 				callback.OnMainThreadOncePure(func() {
@@ -269,7 +269,7 @@ func (f Spinner) BindCSSClass(state *state.State[string]) Spinner {
 					}
 				})
 			})
-		}).ConnectDestroy(func(w gtk.Widget) {
+		}).ConnectUnrealize(func(w gtk.Widget) {
 			state.RemoveCallback(callbackId)
 		})()
 	}
@@ -377,9 +377,9 @@ func (f Spinner) VPadding(padding int) Spinner {
 func (f Spinner) BindVisible(state *state.State[bool]) Spinner {
 	return func() *adw.Spinner {
 		var callbackId string
-		var ref *tracking.WeakRef
-		return f.ConnectConstruct(func(w *adw.Spinner) {
-			ref = tracking.NewWeakRef(&w.Widget)
+		var ref weak.WidgetRef
+		return f.ConnectRealize(func(w gtk.Widget) {
+			ref = weak.NewWidgetRef(&w)
 			callbackId = state.AddCallback(func(newValue bool) {
 				callback.OnMainThreadOncePure(func() {
 					if obj := ref.Get(); obj != nil {
@@ -388,7 +388,7 @@ func (f Spinner) BindVisible(state *state.State[bool]) Spinner {
 					}
 				})
 			})
-		}).ConnectDestroy(func(w gtk.Widget) {
+		}).ConnectUnrealize(func(w gtk.Widget) {
 			state.RemoveCallback(callbackId)
 		})()
 	}
@@ -397,9 +397,9 @@ func (f Spinner) BindVisible(state *state.State[bool]) Spinner {
 func (f Spinner) BindHMargin(state *state.State[int]) Spinner {
 	return func() *adw.Spinner {
 		var callbackId string
-		var ref *tracking.WeakRef
-		return f.ConnectConstruct(func(w *adw.Spinner) {
-			ref = tracking.NewWeakRef(&w.Widget)
+		var ref weak.WidgetRef
+		return f.ConnectRealize(func(w gtk.Widget) {
+			ref = weak.NewWidgetRef(&w)
 			callbackId = state.AddCallback(func(newValue int) {
 				callback.OnMainThreadOncePure(func() {
 					if obj := ref.Get(); obj != nil {
@@ -409,7 +409,7 @@ func (f Spinner) BindHMargin(state *state.State[int]) Spinner {
 					}
 				})
 			})
-		}).ConnectDestroy(func(w gtk.Widget) {
+		}).ConnectUnrealize(func(w gtk.Widget) {
 			state.RemoveCallback(callbackId)
 		})()
 	}
@@ -418,9 +418,9 @@ func (f Spinner) BindHMargin(state *state.State[int]) Spinner {
 func (f Spinner) BindMargin(state *state.State[int]) Spinner {
 	return func() *adw.Spinner {
 		var callbackId string
-		var ref *tracking.WeakRef
-		return f.ConnectConstruct(func(w *adw.Spinner) {
-			ref = tracking.NewWeakRef(&w.Widget)
+		var ref weak.WidgetRef
+		return f.ConnectRealize(func(w gtk.Widget) {
+			ref = weak.NewWidgetRef(&w)
 			callbackId = state.AddCallback(func(newValue int) {
 				callback.OnMainThreadOncePure(func() {
 					if obj := ref.Get(); obj != nil {
@@ -432,7 +432,7 @@ func (f Spinner) BindMargin(state *state.State[int]) Spinner {
 					}
 				})
 			})
-		}).ConnectDestroy(func(gtk.Widget) {
+		}).ConnectUnrealize(func(gtk.Widget) {
 			state.RemoveCallback(callbackId)
 		})()
 	}
@@ -441,9 +441,9 @@ func (f Spinner) BindMargin(state *state.State[int]) Spinner {
 func (f Spinner) BindMarginBottom(state *state.State[int]) Spinner {
 	return func() *adw.Spinner {
 		var callbackId string
-		var ref *tracking.WeakRef
-		return f.ConnectConstruct(func(w *adw.Spinner) {
-			ref = tracking.NewWeakRef(&w.Widget)
+		var ref weak.WidgetRef
+		return f.ConnectRealize(func(w gtk.Widget) {
+			ref = weak.NewWidgetRef(&w)
 			callbackId = state.AddCallback(func(newValue int) {
 				callback.OnMainThreadOncePure(func() {
 					if obj := ref.Get(); obj != nil {
@@ -452,7 +452,7 @@ func (f Spinner) BindMarginBottom(state *state.State[int]) Spinner {
 					}
 				})
 			})
-		}).ConnectDestroy(func(w gtk.Widget) {
+		}).ConnectUnrealize(func(w gtk.Widget) {
 			state.RemoveCallback(callbackId)
 		})()
 	}
@@ -461,9 +461,9 @@ func (f Spinner) BindMarginBottom(state *state.State[int]) Spinner {
 func (f Spinner) BindMarginEnd(state *state.State[int]) Spinner {
 	return func() *adw.Spinner {
 		var callbackId string
-		var ref *tracking.WeakRef
-		return f.ConnectConstruct(func(w *adw.Spinner) {
-			ref = tracking.NewWeakRef(&w.Widget)
+		var ref weak.WidgetRef
+		return f.ConnectRealize(func(w gtk.Widget) {
+			ref = weak.NewWidgetRef(&w)
 			callbackId = state.AddCallback(func(newValue int) {
 				callback.OnMainThreadOncePure(func() {
 					if obj := ref.Get(); obj != nil {
@@ -472,7 +472,7 @@ func (f Spinner) BindMarginEnd(state *state.State[int]) Spinner {
 					}
 				})
 			})
-		}).ConnectDestroy(func(w gtk.Widget) {
+		}).ConnectUnrealize(func(w gtk.Widget) {
 			state.RemoveCallback(callbackId)
 		})()
 	}
@@ -481,9 +481,9 @@ func (f Spinner) BindMarginEnd(state *state.State[int]) Spinner {
 func (f Spinner) BindMarginStart(state *state.State[int]) Spinner {
 	return func() *adw.Spinner {
 		var callbackId string
-		var ref *tracking.WeakRef
-		return f.ConnectConstruct(func(w *adw.Spinner) {
-			ref = tracking.NewWeakRef(&w.Widget)
+		var ref weak.WidgetRef
+		return f.ConnectRealize(func(w gtk.Widget) {
+			ref = weak.NewWidgetRef(&w)
 			callbackId = state.AddCallback(func(newValue int) {
 				callback.OnMainThreadOncePure(func() {
 					if obj := ref.Get(); obj != nil {
@@ -492,7 +492,7 @@ func (f Spinner) BindMarginStart(state *state.State[int]) Spinner {
 					}
 				})
 			})
-		}).ConnectDestroy(func(w gtk.Widget) {
+		}).ConnectUnrealize(func(w gtk.Widget) {
 			state.RemoveCallback(callbackId)
 		})()
 	}
@@ -501,9 +501,9 @@ func (f Spinner) BindMarginStart(state *state.State[int]) Spinner {
 func (f Spinner) BindMarginTop(state *state.State[int]) Spinner {
 	return func() *adw.Spinner {
 		var callbackId string
-		var ref *tracking.WeakRef
-		return f.ConnectConstruct(func(w *adw.Spinner) {
-			ref = tracking.NewWeakRef(&w.Widget)
+		var ref weak.WidgetRef
+		return f.ConnectRealize(func(w gtk.Widget) {
+			ref = weak.NewWidgetRef(&w)
 			callbackId = state.AddCallback(func(newValue int) {
 				callback.OnMainThreadOncePure(func() {
 					if obj := ref.Get(); obj != nil {
@@ -512,7 +512,7 @@ func (f Spinner) BindMarginTop(state *state.State[int]) Spinner {
 					}
 				})
 			})
-		}).ConnectDestroy(func(w gtk.Widget) {
+		}).ConnectUnrealize(func(w gtk.Widget) {
 			state.RemoveCallback(callbackId)
 		})()
 	}
@@ -521,9 +521,9 @@ func (f Spinner) BindMarginTop(state *state.State[int]) Spinner {
 func (f Spinner) BindSensitive(state *state.State[bool]) Spinner {
 	return func() *adw.Spinner {
 		var callbackId string
-		var ref *tracking.WeakRef
-		return f.ConnectConstruct(func(w *adw.Spinner) {
-			ref = tracking.NewWeakRef(&w.Widget)
+		var ref weak.WidgetRef
+		return f.ConnectRealize(func(w gtk.Widget) {
+			ref = weak.NewWidgetRef(&w)
 			callbackId = state.AddCallback(func(newValue bool) {
 				callback.OnMainThreadOncePure(func() {
 					if obj := ref.Get(); obj != nil {
@@ -532,7 +532,7 @@ func (f Spinner) BindSensitive(state *state.State[bool]) Spinner {
 					}
 				})
 			})
-		}).ConnectDestroy(func(w gtk.Widget) {
+		}).ConnectUnrealize(func(w gtk.Widget) {
 			state.RemoveCallback(callbackId)
 		})()
 	}

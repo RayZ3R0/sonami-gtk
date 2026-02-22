@@ -103,17 +103,14 @@ func (w *Window) buildContentLayout() *gtk.Widget {
 	toolbarView := adw.NewToolbarView()
 	toolbarView.AddTopBar(w.buildContentHeader())
 
-	router.NavigationStarted.On(func(path string) bool {
+	router.Navigation.On(func(event *router.NavigationEvent) bool {
 		schwifty.OnMainThreadOnce(func(u uintptr) {
-			toolbarView.SetContent(loadingView())
+			if event.Completed {
+				toolbarView.SetContent(event.Result.View)
+			} else {
+				toolbarView.SetContent(loadingView())
+			}
 		}, 0)
-		return signals.Continue
-	})
-
-	router.NavigationCompleted.On(func(entry router.HistoryEntry) bool {
-		schwifty.OnMainThreadOncePure(func() {
-			toolbarView.SetContent(entry.View)
-		})
 		return signals.Continue
 	})
 

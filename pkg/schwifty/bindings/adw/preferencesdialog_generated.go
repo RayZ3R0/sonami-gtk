@@ -3,7 +3,7 @@ package adw
 import (
 	"codeberg.org/dergs/tonearm/pkg/schwifty/callback"
 	"codeberg.org/dergs/tonearm/pkg/schwifty/state"
-	"codeberg.org/dergs/tonearm/pkg/schwifty/tracking"
+	"codeberg.org/dergs/tonearm/pkg/schwifty/utils/weak"
 	"fmt"
 	"github.com/jwijenbergh/puregotk/v4/adw"
 	"github.com/jwijenbergh/puregotk/v4/gtk"
@@ -251,9 +251,9 @@ func (f PreferencesDialog) CSS(css string) PreferencesDialog {
 func (f PreferencesDialog) BindCSSClass(state *state.State[string]) PreferencesDialog {
 	return func() *adw.PreferencesDialog {
 		var callbackId string
-		var ref *tracking.WeakRef
-		return f.ConnectConstruct(func(w *adw.PreferencesDialog) {
-			ref = tracking.NewWeakRef(&w.Widget)
+		var ref weak.WidgetRef
+		return f.ConnectRealize(func(w gtk.Widget) {
+			ref = weak.NewWidgetRef(&w)
 			callbackId = state.AddCallback(func(newValue string) {
 				oldValue := state.Value()
 				callback.OnMainThreadOncePure(func() {
@@ -269,7 +269,7 @@ func (f PreferencesDialog) BindCSSClass(state *state.State[string]) PreferencesD
 					}
 				})
 			})
-		}).ConnectDestroy(func(w gtk.Widget) {
+		}).ConnectUnrealize(func(w gtk.Widget) {
 			state.RemoveCallback(callbackId)
 		})()
 	}
@@ -377,9 +377,9 @@ func (f PreferencesDialog) VPadding(padding int) PreferencesDialog {
 func (f PreferencesDialog) BindVisible(state *state.State[bool]) PreferencesDialog {
 	return func() *adw.PreferencesDialog {
 		var callbackId string
-		var ref *tracking.WeakRef
-		return f.ConnectConstruct(func(w *adw.PreferencesDialog) {
-			ref = tracking.NewWeakRef(&w.Widget)
+		var ref weak.WidgetRef
+		return f.ConnectRealize(func(w gtk.Widget) {
+			ref = weak.NewWidgetRef(&w)
 			callbackId = state.AddCallback(func(newValue bool) {
 				callback.OnMainThreadOncePure(func() {
 					if obj := ref.Get(); obj != nil {
@@ -388,7 +388,7 @@ func (f PreferencesDialog) BindVisible(state *state.State[bool]) PreferencesDial
 					}
 				})
 			})
-		}).ConnectDestroy(func(w gtk.Widget) {
+		}).ConnectUnrealize(func(w gtk.Widget) {
 			state.RemoveCallback(callbackId)
 		})()
 	}
@@ -397,9 +397,9 @@ func (f PreferencesDialog) BindVisible(state *state.State[bool]) PreferencesDial
 func (f PreferencesDialog) BindHMargin(state *state.State[int]) PreferencesDialog {
 	return func() *adw.PreferencesDialog {
 		var callbackId string
-		var ref *tracking.WeakRef
-		return f.ConnectConstruct(func(w *adw.PreferencesDialog) {
-			ref = tracking.NewWeakRef(&w.Widget)
+		var ref weak.WidgetRef
+		return f.ConnectRealize(func(w gtk.Widget) {
+			ref = weak.NewWidgetRef(&w)
 			callbackId = state.AddCallback(func(newValue int) {
 				callback.OnMainThreadOncePure(func() {
 					if obj := ref.Get(); obj != nil {
@@ -409,7 +409,7 @@ func (f PreferencesDialog) BindHMargin(state *state.State[int]) PreferencesDialo
 					}
 				})
 			})
-		}).ConnectDestroy(func(w gtk.Widget) {
+		}).ConnectUnrealize(func(w gtk.Widget) {
 			state.RemoveCallback(callbackId)
 		})()
 	}
@@ -418,9 +418,9 @@ func (f PreferencesDialog) BindHMargin(state *state.State[int]) PreferencesDialo
 func (f PreferencesDialog) BindMargin(state *state.State[int]) PreferencesDialog {
 	return func() *adw.PreferencesDialog {
 		var callbackId string
-		var ref *tracking.WeakRef
-		return f.ConnectConstruct(func(w *adw.PreferencesDialog) {
-			ref = tracking.NewWeakRef(&w.Widget)
+		var ref weak.WidgetRef
+		return f.ConnectRealize(func(w gtk.Widget) {
+			ref = weak.NewWidgetRef(&w)
 			callbackId = state.AddCallback(func(newValue int) {
 				callback.OnMainThreadOncePure(func() {
 					if obj := ref.Get(); obj != nil {
@@ -432,7 +432,7 @@ func (f PreferencesDialog) BindMargin(state *state.State[int]) PreferencesDialog
 					}
 				})
 			})
-		}).ConnectDestroy(func(gtk.Widget) {
+		}).ConnectUnrealize(func(gtk.Widget) {
 			state.RemoveCallback(callbackId)
 		})()
 	}
@@ -441,9 +441,9 @@ func (f PreferencesDialog) BindMargin(state *state.State[int]) PreferencesDialog
 func (f PreferencesDialog) BindMarginBottom(state *state.State[int]) PreferencesDialog {
 	return func() *adw.PreferencesDialog {
 		var callbackId string
-		var ref *tracking.WeakRef
-		return f.ConnectConstruct(func(w *adw.PreferencesDialog) {
-			ref = tracking.NewWeakRef(&w.Widget)
+		var ref weak.WidgetRef
+		return f.ConnectRealize(func(w gtk.Widget) {
+			ref = weak.NewWidgetRef(&w)
 			callbackId = state.AddCallback(func(newValue int) {
 				callback.OnMainThreadOncePure(func() {
 					if obj := ref.Get(); obj != nil {
@@ -452,7 +452,7 @@ func (f PreferencesDialog) BindMarginBottom(state *state.State[int]) Preferences
 					}
 				})
 			})
-		}).ConnectDestroy(func(w gtk.Widget) {
+		}).ConnectUnrealize(func(w gtk.Widget) {
 			state.RemoveCallback(callbackId)
 		})()
 	}
@@ -461,9 +461,9 @@ func (f PreferencesDialog) BindMarginBottom(state *state.State[int]) Preferences
 func (f PreferencesDialog) BindMarginEnd(state *state.State[int]) PreferencesDialog {
 	return func() *adw.PreferencesDialog {
 		var callbackId string
-		var ref *tracking.WeakRef
-		return f.ConnectConstruct(func(w *adw.PreferencesDialog) {
-			ref = tracking.NewWeakRef(&w.Widget)
+		var ref weak.WidgetRef
+		return f.ConnectRealize(func(w gtk.Widget) {
+			ref = weak.NewWidgetRef(&w)
 			callbackId = state.AddCallback(func(newValue int) {
 				callback.OnMainThreadOncePure(func() {
 					if obj := ref.Get(); obj != nil {
@@ -472,7 +472,7 @@ func (f PreferencesDialog) BindMarginEnd(state *state.State[int]) PreferencesDia
 					}
 				})
 			})
-		}).ConnectDestroy(func(w gtk.Widget) {
+		}).ConnectUnrealize(func(w gtk.Widget) {
 			state.RemoveCallback(callbackId)
 		})()
 	}
@@ -481,9 +481,9 @@ func (f PreferencesDialog) BindMarginEnd(state *state.State[int]) PreferencesDia
 func (f PreferencesDialog) BindMarginStart(state *state.State[int]) PreferencesDialog {
 	return func() *adw.PreferencesDialog {
 		var callbackId string
-		var ref *tracking.WeakRef
-		return f.ConnectConstruct(func(w *adw.PreferencesDialog) {
-			ref = tracking.NewWeakRef(&w.Widget)
+		var ref weak.WidgetRef
+		return f.ConnectRealize(func(w gtk.Widget) {
+			ref = weak.NewWidgetRef(&w)
 			callbackId = state.AddCallback(func(newValue int) {
 				callback.OnMainThreadOncePure(func() {
 					if obj := ref.Get(); obj != nil {
@@ -492,7 +492,7 @@ func (f PreferencesDialog) BindMarginStart(state *state.State[int]) PreferencesD
 					}
 				})
 			})
-		}).ConnectDestroy(func(w gtk.Widget) {
+		}).ConnectUnrealize(func(w gtk.Widget) {
 			state.RemoveCallback(callbackId)
 		})()
 	}
@@ -501,9 +501,9 @@ func (f PreferencesDialog) BindMarginStart(state *state.State[int]) PreferencesD
 func (f PreferencesDialog) BindMarginTop(state *state.State[int]) PreferencesDialog {
 	return func() *adw.PreferencesDialog {
 		var callbackId string
-		var ref *tracking.WeakRef
-		return f.ConnectConstruct(func(w *adw.PreferencesDialog) {
-			ref = tracking.NewWeakRef(&w.Widget)
+		var ref weak.WidgetRef
+		return f.ConnectRealize(func(w gtk.Widget) {
+			ref = weak.NewWidgetRef(&w)
 			callbackId = state.AddCallback(func(newValue int) {
 				callback.OnMainThreadOncePure(func() {
 					if obj := ref.Get(); obj != nil {
@@ -512,7 +512,7 @@ func (f PreferencesDialog) BindMarginTop(state *state.State[int]) PreferencesDia
 					}
 				})
 			})
-		}).ConnectDestroy(func(w gtk.Widget) {
+		}).ConnectUnrealize(func(w gtk.Widget) {
 			state.RemoveCallback(callbackId)
 		})()
 	}
@@ -521,9 +521,9 @@ func (f PreferencesDialog) BindMarginTop(state *state.State[int]) PreferencesDia
 func (f PreferencesDialog) BindSensitive(state *state.State[bool]) PreferencesDialog {
 	return func() *adw.PreferencesDialog {
 		var callbackId string
-		var ref *tracking.WeakRef
-		return f.ConnectConstruct(func(w *adw.PreferencesDialog) {
-			ref = tracking.NewWeakRef(&w.Widget)
+		var ref weak.WidgetRef
+		return f.ConnectRealize(func(w gtk.Widget) {
+			ref = weak.NewWidgetRef(&w)
 			callbackId = state.AddCallback(func(newValue bool) {
 				callback.OnMainThreadOncePure(func() {
 					if obj := ref.Get(); obj != nil {
@@ -532,7 +532,7 @@ func (f PreferencesDialog) BindSensitive(state *state.State[bool]) PreferencesDi
 					}
 				})
 			})
-		}).ConnectDestroy(func(w gtk.Widget) {
+		}).ConnectUnrealize(func(w gtk.Widget) {
 			state.RemoveCallback(callbackId)
 		})()
 	}

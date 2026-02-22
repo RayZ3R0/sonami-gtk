@@ -11,9 +11,8 @@ import (
 	"codeberg.org/dergs/tonearm/pkg/schwifty"
 	adwbindings "codeberg.org/dergs/tonearm/pkg/schwifty/bindings/adw"
 	. "codeberg.org/dergs/tonearm/pkg/schwifty/syntax"
-	"codeberg.org/dergs/tonearm/pkg/schwifty/tracking"
+	"codeberg.org/dergs/tonearm/pkg/schwifty/utils/weak"
 	"github.com/jwijenbergh/puregotk/v4/adw"
-	"github.com/jwijenbergh/puregotk/v4/gobject"
 	"github.com/jwijenbergh/puregotk/v4/gtk"
 )
 
@@ -109,7 +108,7 @@ func buildPreferencesPerformance(*adw.PreferencesDialog) adwbindings.Preferences
 }
 
 func buildPreferencesScrobbling(dialog *adw.PreferencesDialog) adwbindings.PreferencesPage {
-	dialogRef := tracking.NewWeakRef(dialog)
+	dialogRef := weak.NewWidgetRef(dialog)
 	isLastFmLoggedIn := signals.NewStatefulSignal(settings.Scrobbling().LastFMToken() != "")
 
 	return PreferencesPage(
@@ -144,11 +143,11 @@ func buildPreferencesScrobbling(dialog *adw.PreferencesDialog) adwbindings.Prefe
 				Title(gettext.Get("Log In to Last.fm…")).
 				Subtitle(gettext.Get("You are currently not logged in to Last.fm")).
 				ConnectConstruct(func(ar *adw.ActionRow) {
-					actionRowRef := tracking.NewWeakRef(ar)
+					actionRowRef := weak.NewWidgetRef(ar)
 
 					isLastFmLoggedIn.On(func(b bool) bool {
 						if b {
-							actionRowRef.Use(func(obj *gobject.Object) {
+							actionRowRef.Use(func(obj *gtk.Widget) {
 								ar := adw.ActionRowNewFromInternalPtr(obj.Ptr)
 								ar.SetTitle(gettext.Get("Log Out of Last.fm"))
 
@@ -163,7 +162,7 @@ func buildPreferencesScrobbling(dialog *adw.PreferencesDialog) adwbindings.Prefe
 								}
 							})
 						} else {
-							actionRowRef.Use(func(obj *gobject.Object) {
+							actionRowRef.Use(func(obj *gtk.Widget) {
 								ar := adw.ActionRowNewFromInternalPtr(obj.Ptr)
 								ar.SetTitle(gettext.Get("Log In to Last.fm…"))
 								ar.SetSubtitle(gettext.Get("You are currently not logged in to Last.fm"))
@@ -177,19 +176,19 @@ func buildPreferencesScrobbling(dialog *adw.PreferencesDialog) adwbindings.Prefe
 					Button().
 						IconName("key-login-symbolic").
 						ConnectConstruct(func(b *gtk.Button) {
-							buttonRef := tracking.NewWeakRef(b)
+							buttonRef := weak.NewWidgetRef(b)
 
 							isLastFmLoggedIn.On(func(loggedIn bool) bool {
 								if loggedIn {
 									schwifty.OnMainThreadOncePure(func() {
-										buttonRef.Use(func(obj *gobject.Object) {
+										buttonRef.Use(func(obj *gtk.Widget) {
 											button := gtk.ButtonNewFromInternalPtr(obj.Ptr)
 											button.SetIconName("system-log-out-symbolic")
 										})
 									})
 								} else {
 									schwifty.OnMainThreadOncePure(func() {
-										buttonRef.Use(func(obj *gobject.Object) {
+										buttonRef.Use(func(obj *gtk.Widget) {
 											button := gtk.ButtonNewFromInternalPtr(obj.Ptr)
 											button.SetIconName("key-login-symbolic")
 										})
@@ -204,7 +203,7 @@ func buildPreferencesScrobbling(dialog *adw.PreferencesDialog) adwbindings.Prefe
 								go func() {
 									if err := scrobbling.LastFmScrobbler.Unconfigure(); err != nil {
 										schwifty.OnMainThreadOncePure(func() {
-											dialogRef.Use(func(obj *gobject.Object) {
+											dialogRef.Use(func(obj *gtk.Widget) {
 												dialog := adw.PreferencesDialogNewFromInternalPtr(obj.Ptr)
 
 												toast := adw.NewToast(gettext.Get("An error occurred while logging out of Last.fm"))
@@ -215,7 +214,7 @@ func buildPreferencesScrobbling(dialog *adw.PreferencesDialog) adwbindings.Prefe
 									} else {
 										isLastFmLoggedIn.Set(false)
 										schwifty.OnMainThreadOncePure(func() {
-											dialogRef.Use(func(obj *gobject.Object) {
+											dialogRef.Use(func(obj *gtk.Widget) {
 												dialog := adw.PreferencesDialogNewFromInternalPtr(obj.Ptr)
 
 												toast := adw.NewToast(gettext.Get("Logged out of Last.fm"))
@@ -229,7 +228,7 @@ func buildPreferencesScrobbling(dialog *adw.PreferencesDialog) adwbindings.Prefe
 								go func() {
 									if completed, err := scrobbling.LastFmScrobbler.Configure(); err != nil {
 										schwifty.OnMainThreadOncePure(func() {
-											dialogRef.Use(func(obj *gobject.Object) {
+											dialogRef.Use(func(obj *gtk.Widget) {
 												dialog := adw.PreferencesDialogNewFromInternalPtr(obj.Ptr)
 
 												toast := adw.NewToast(gettext.Get("An error occurred while logging in to Last.fm"))
@@ -240,7 +239,7 @@ func buildPreferencesScrobbling(dialog *adw.PreferencesDialog) adwbindings.Prefe
 									} else if completed {
 										isLastFmLoggedIn.Set(true)
 										schwifty.OnMainThreadOncePure(func() {
-											dialogRef.Use(func(obj *gobject.Object) {
+											dialogRef.Use(func(obj *gtk.Widget) {
 												user, err := scrobbling.LastFmScrobbler.Client.User.SelfInfo()
 												if err != nil {
 													return

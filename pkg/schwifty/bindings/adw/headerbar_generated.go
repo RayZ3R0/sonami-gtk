@@ -3,7 +3,7 @@ package adw
 import (
 	"codeberg.org/dergs/tonearm/pkg/schwifty/callback"
 	"codeberg.org/dergs/tonearm/pkg/schwifty/state"
-	"codeberg.org/dergs/tonearm/pkg/schwifty/tracking"
+	"codeberg.org/dergs/tonearm/pkg/schwifty/utils/weak"
 	"fmt"
 	"github.com/jwijenbergh/puregotk/v4/adw"
 	"github.com/jwijenbergh/puregotk/v4/gtk"
@@ -251,9 +251,9 @@ func (f HeaderBar) CSS(css string) HeaderBar {
 func (f HeaderBar) BindCSSClass(state *state.State[string]) HeaderBar {
 	return func() *adw.HeaderBar {
 		var callbackId string
-		var ref *tracking.WeakRef
-		return f.ConnectConstruct(func(w *adw.HeaderBar) {
-			ref = tracking.NewWeakRef(&w.Widget)
+		var ref weak.WidgetRef
+		return f.ConnectRealize(func(w gtk.Widget) {
+			ref = weak.NewWidgetRef(&w)
 			callbackId = state.AddCallback(func(newValue string) {
 				oldValue := state.Value()
 				callback.OnMainThreadOncePure(func() {
@@ -269,7 +269,7 @@ func (f HeaderBar) BindCSSClass(state *state.State[string]) HeaderBar {
 					}
 				})
 			})
-		}).ConnectDestroy(func(w gtk.Widget) {
+		}).ConnectUnrealize(func(w gtk.Widget) {
 			state.RemoveCallback(callbackId)
 		})()
 	}
@@ -377,9 +377,9 @@ func (f HeaderBar) VPadding(padding int) HeaderBar {
 func (f HeaderBar) BindVisible(state *state.State[bool]) HeaderBar {
 	return func() *adw.HeaderBar {
 		var callbackId string
-		var ref *tracking.WeakRef
-		return f.ConnectConstruct(func(w *adw.HeaderBar) {
-			ref = tracking.NewWeakRef(&w.Widget)
+		var ref weak.WidgetRef
+		return f.ConnectRealize(func(w gtk.Widget) {
+			ref = weak.NewWidgetRef(&w)
 			callbackId = state.AddCallback(func(newValue bool) {
 				callback.OnMainThreadOncePure(func() {
 					if obj := ref.Get(); obj != nil {
@@ -388,7 +388,7 @@ func (f HeaderBar) BindVisible(state *state.State[bool]) HeaderBar {
 					}
 				})
 			})
-		}).ConnectDestroy(func(w gtk.Widget) {
+		}).ConnectUnrealize(func(w gtk.Widget) {
 			state.RemoveCallback(callbackId)
 		})()
 	}
@@ -397,9 +397,9 @@ func (f HeaderBar) BindVisible(state *state.State[bool]) HeaderBar {
 func (f HeaderBar) BindHMargin(state *state.State[int]) HeaderBar {
 	return func() *adw.HeaderBar {
 		var callbackId string
-		var ref *tracking.WeakRef
-		return f.ConnectConstruct(func(w *adw.HeaderBar) {
-			ref = tracking.NewWeakRef(&w.Widget)
+		var ref weak.WidgetRef
+		return f.ConnectRealize(func(w gtk.Widget) {
+			ref = weak.NewWidgetRef(&w)
 			callbackId = state.AddCallback(func(newValue int) {
 				callback.OnMainThreadOncePure(func() {
 					if obj := ref.Get(); obj != nil {
@@ -409,7 +409,7 @@ func (f HeaderBar) BindHMargin(state *state.State[int]) HeaderBar {
 					}
 				})
 			})
-		}).ConnectDestroy(func(w gtk.Widget) {
+		}).ConnectUnrealize(func(w gtk.Widget) {
 			state.RemoveCallback(callbackId)
 		})()
 	}
@@ -418,9 +418,9 @@ func (f HeaderBar) BindHMargin(state *state.State[int]) HeaderBar {
 func (f HeaderBar) BindMargin(state *state.State[int]) HeaderBar {
 	return func() *adw.HeaderBar {
 		var callbackId string
-		var ref *tracking.WeakRef
-		return f.ConnectConstruct(func(w *adw.HeaderBar) {
-			ref = tracking.NewWeakRef(&w.Widget)
+		var ref weak.WidgetRef
+		return f.ConnectRealize(func(w gtk.Widget) {
+			ref = weak.NewWidgetRef(&w)
 			callbackId = state.AddCallback(func(newValue int) {
 				callback.OnMainThreadOncePure(func() {
 					if obj := ref.Get(); obj != nil {
@@ -432,7 +432,7 @@ func (f HeaderBar) BindMargin(state *state.State[int]) HeaderBar {
 					}
 				})
 			})
-		}).ConnectDestroy(func(gtk.Widget) {
+		}).ConnectUnrealize(func(gtk.Widget) {
 			state.RemoveCallback(callbackId)
 		})()
 	}
@@ -441,9 +441,9 @@ func (f HeaderBar) BindMargin(state *state.State[int]) HeaderBar {
 func (f HeaderBar) BindMarginBottom(state *state.State[int]) HeaderBar {
 	return func() *adw.HeaderBar {
 		var callbackId string
-		var ref *tracking.WeakRef
-		return f.ConnectConstruct(func(w *adw.HeaderBar) {
-			ref = tracking.NewWeakRef(&w.Widget)
+		var ref weak.WidgetRef
+		return f.ConnectRealize(func(w gtk.Widget) {
+			ref = weak.NewWidgetRef(&w)
 			callbackId = state.AddCallback(func(newValue int) {
 				callback.OnMainThreadOncePure(func() {
 					if obj := ref.Get(); obj != nil {
@@ -452,7 +452,7 @@ func (f HeaderBar) BindMarginBottom(state *state.State[int]) HeaderBar {
 					}
 				})
 			})
-		}).ConnectDestroy(func(w gtk.Widget) {
+		}).ConnectUnrealize(func(w gtk.Widget) {
 			state.RemoveCallback(callbackId)
 		})()
 	}
@@ -461,9 +461,9 @@ func (f HeaderBar) BindMarginBottom(state *state.State[int]) HeaderBar {
 func (f HeaderBar) BindMarginEnd(state *state.State[int]) HeaderBar {
 	return func() *adw.HeaderBar {
 		var callbackId string
-		var ref *tracking.WeakRef
-		return f.ConnectConstruct(func(w *adw.HeaderBar) {
-			ref = tracking.NewWeakRef(&w.Widget)
+		var ref weak.WidgetRef
+		return f.ConnectRealize(func(w gtk.Widget) {
+			ref = weak.NewWidgetRef(&w)
 			callbackId = state.AddCallback(func(newValue int) {
 				callback.OnMainThreadOncePure(func() {
 					if obj := ref.Get(); obj != nil {
@@ -472,7 +472,7 @@ func (f HeaderBar) BindMarginEnd(state *state.State[int]) HeaderBar {
 					}
 				})
 			})
-		}).ConnectDestroy(func(w gtk.Widget) {
+		}).ConnectUnrealize(func(w gtk.Widget) {
 			state.RemoveCallback(callbackId)
 		})()
 	}
@@ -481,9 +481,9 @@ func (f HeaderBar) BindMarginEnd(state *state.State[int]) HeaderBar {
 func (f HeaderBar) BindMarginStart(state *state.State[int]) HeaderBar {
 	return func() *adw.HeaderBar {
 		var callbackId string
-		var ref *tracking.WeakRef
-		return f.ConnectConstruct(func(w *adw.HeaderBar) {
-			ref = tracking.NewWeakRef(&w.Widget)
+		var ref weak.WidgetRef
+		return f.ConnectRealize(func(w gtk.Widget) {
+			ref = weak.NewWidgetRef(&w)
 			callbackId = state.AddCallback(func(newValue int) {
 				callback.OnMainThreadOncePure(func() {
 					if obj := ref.Get(); obj != nil {
@@ -492,7 +492,7 @@ func (f HeaderBar) BindMarginStart(state *state.State[int]) HeaderBar {
 					}
 				})
 			})
-		}).ConnectDestroy(func(w gtk.Widget) {
+		}).ConnectUnrealize(func(w gtk.Widget) {
 			state.RemoveCallback(callbackId)
 		})()
 	}
@@ -501,9 +501,9 @@ func (f HeaderBar) BindMarginStart(state *state.State[int]) HeaderBar {
 func (f HeaderBar) BindMarginTop(state *state.State[int]) HeaderBar {
 	return func() *adw.HeaderBar {
 		var callbackId string
-		var ref *tracking.WeakRef
-		return f.ConnectConstruct(func(w *adw.HeaderBar) {
-			ref = tracking.NewWeakRef(&w.Widget)
+		var ref weak.WidgetRef
+		return f.ConnectRealize(func(w gtk.Widget) {
+			ref = weak.NewWidgetRef(&w)
 			callbackId = state.AddCallback(func(newValue int) {
 				callback.OnMainThreadOncePure(func() {
 					if obj := ref.Get(); obj != nil {
@@ -512,7 +512,7 @@ func (f HeaderBar) BindMarginTop(state *state.State[int]) HeaderBar {
 					}
 				})
 			})
-		}).ConnectDestroy(func(w gtk.Widget) {
+		}).ConnectUnrealize(func(w gtk.Widget) {
 			state.RemoveCallback(callbackId)
 		})()
 	}
@@ -521,9 +521,9 @@ func (f HeaderBar) BindMarginTop(state *state.State[int]) HeaderBar {
 func (f HeaderBar) BindSensitive(state *state.State[bool]) HeaderBar {
 	return func() *adw.HeaderBar {
 		var callbackId string
-		var ref *tracking.WeakRef
-		return f.ConnectConstruct(func(w *adw.HeaderBar) {
-			ref = tracking.NewWeakRef(&w.Widget)
+		var ref weak.WidgetRef
+		return f.ConnectRealize(func(w gtk.Widget) {
+			ref = weak.NewWidgetRef(&w)
 			callbackId = state.AddCallback(func(newValue bool) {
 				callback.OnMainThreadOncePure(func() {
 					if obj := ref.Get(); obj != nil {
@@ -532,7 +532,7 @@ func (f HeaderBar) BindSensitive(state *state.State[bool]) HeaderBar {
 					}
 				})
 			})
-		}).ConnectDestroy(func(w gtk.Widget) {
+		}).ConnectUnrealize(func(w gtk.Widget) {
 			state.RemoveCallback(callbackId)
 		})()
 	}

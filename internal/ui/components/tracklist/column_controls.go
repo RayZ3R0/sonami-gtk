@@ -28,6 +28,7 @@ func controlsColumn(trackId, albumId string, artistId []lightArtist, grid *gtk.G
 	item := gio.NewMenuItem(gettext.Get("Navigate to Album"), "win.route.album")
 	item.SetActionAndTargetValue("win.route.album", glib.NewVariantString(albumId))
 	model.AppendItem(item)
+	item.Unref()
 
 	if len(artistId) > 1 {
 		submenu := gio.NewMenu()
@@ -35,15 +36,19 @@ func controlsColumn(trackId, albumId string, artistId []lightArtist, grid *gtk.G
 			item := gio.NewMenuItem(fmt.Sprintf(gettext.Get("Navigate to %s"), artist.Name), "win.route.artist")
 			item.SetActionAndTargetValue("win.route.artist", glib.NewVariantString(artist.ID))
 			submenu.AppendItem(item)
+			item.Unref()
 		}
 		model.AppendSubmenu(gettext.Get("Navigate to Artist"), &submenu.MenuModel)
+		submenu.Unref()
 	} else if len(artistId) == 1 {
 		item := gio.NewMenuItem(gettext.Get("Navigate to Artist"), "win.route.artist")
 		item.SetActionAndTargetValue("win.route.artist", glib.NewVariantString(artistId[0].ID))
 		model.AppendItem(item)
+		item.Unref()
 	}
 
 	popover := gtk.NewPopoverMenuFromModel(&model.MenuModel)
+	model.Unref()
 
 	grid.Attach(
 		HStack(
@@ -74,6 +79,8 @@ func controlsColumn(trackId, albumId string, artistId []lightArtist, grid *gtk.G
 		1,
 		1,
 	)
+
+	popover.Unref()
 	return 1
 }
 

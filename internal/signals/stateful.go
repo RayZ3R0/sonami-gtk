@@ -19,25 +19,26 @@ func (s *StatefulSignal[T]) CurrentValue() T {
 
 func (s *StatefulSignal[T]) Notify(callback func(oldValue T) T) {
 	s.lock.Lock()
-	defer s.lock.Unlock()
+	s.currentValue = callback(s.currentValue)
+	newValue := s.currentValue
+	s.lock.Unlock()
 
-	oldValue := s.currentValue
-	s.currentValue = callback(oldValue)
-	s.Signal.Notify(s.currentValue)
+	s.Signal.Notify(newValue)
 }
 
 func (s *StatefulSignal[T]) On(handler func(T) bool) *Subscription {
 	s.lock.RLock()
-	defer s.lock.RUnlock()
+	currentVal := s.currentValue
+	sub := s.Signal.On(handler)
+	s.lock.RUnlock()
 
-	handler(s.currentValue)
-	return s.Signal.On(handler)
+	if handler(currentVal) {
+		s.Signal.removeHandler(sub)
+	}
+	return sub
 }
 
 func (s *StatefulSignal[T]) OnLazy(handler func(T) bool) *Subscription {
-	s.lock.RLock()
-	defer s.lock.RUnlock()
-
 	return s.Signal.On(handler)
 }
 

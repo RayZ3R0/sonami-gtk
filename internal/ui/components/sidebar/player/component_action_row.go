@@ -15,7 +15,7 @@ import (
 	"codeberg.org/dergs/tonearm/pkg/schwifty"
 	"codeberg.org/dergs/tonearm/pkg/schwifty/state"
 	. "codeberg.org/dergs/tonearm/pkg/schwifty/syntax"
-	"codeberg.org/dergs/tonearm/pkg/schwifty/tracking"
+	"codeberg.org/dergs/tonearm/pkg/schwifty/utils/weak"
 	"codeberg.org/dergs/tonearm/pkg/tidalapi"
 	"codeberg.org/dergs/tonearm/pkg/tonearm"
 	"github.com/infinytum/injector"
@@ -23,7 +23,6 @@ import (
 	"github.com/jwijenbergh/puregotk/v4/gdk"
 	"github.com/jwijenbergh/puregotk/v4/gio"
 	"github.com/jwijenbergh/puregotk/v4/glib"
-	"github.com/jwijenbergh/puregotk/v4/gobject"
 	"github.com/jwijenbergh/puregotk/v4/gtk"
 )
 
@@ -51,11 +50,13 @@ func init() {
 			artists := t.Artists()
 			if len(artists) > 1 {
 				menu := gio.NewMenu()
-				defer menu.Unref()
 				for _, artist := range artists {
-					menu.AppendItem(gio.NewMenuItem(artist.Title(), "win.route.artist::"+artist.ID()))
+					item := gio.NewMenuItem(artist.Title(), "win.route.artist::"+artist.ID())
+					menu.AppendItem(item)
+					item.Unref()
 				}
 				artistButtonState.SetValue(artistButtonMultiple.MenuModel(&menu.MenuModel))
+				menu.Unref()
 			} else {
 				artistButtonState.SetValue(artistButtonSingle.ActionName("win.route.artist").ActionTargetValue(glib.NewVariantString(artists[0].ID())))
 			}
@@ -106,11 +107,11 @@ func favouriteButton() schwifty.Button {
 		IconName("heart-outline-thick-symbolic").
 		WithCSSClass("flat").
 		ConnectConstruct(func(b *gtk.Button) {
-			weakRef := tracking.NewWeakRef(&b.Object)
+			weakRef := weak.NewWidgetRef(b)
 
 			isLoading.On(func(loading bool) bool {
 				schwifty.OnMainThreadOncePure(func() {
-					weakRef.Use(func(obj *gobject.Object) {
+					weakRef.Use(func(obj *gtk.Widget) {
 						b := gtk.ButtonNewFromInternalPtr(obj.Ptr)
 
 						if loading {
@@ -135,7 +136,7 @@ func favouriteButton() schwifty.Button {
 
 			isFavourited.On(func(value bool) bool {
 				schwifty.OnMainThreadOncePure(func() {
-					weakRef.Use(func(obj *gobject.Object) {
+					weakRef.Use(func(obj *gtk.Widget) {
 						b := gtk.ButtonNewFromInternalPtr(obj.Ptr)
 
 						if value {

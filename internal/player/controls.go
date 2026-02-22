@@ -36,7 +36,9 @@ func SetShuffle(enabled bool) {
 
 func Next() {
 	logger.Debug("player controls requested to play next track")
+	disableGaplessPlayback = true
 	playNextTrack()
+	disableGaplessPlayback = false
 }
 
 func Pause() {
@@ -69,7 +71,9 @@ func PlayPause() {
 
 func Previous() {
 	logger.Debug("player controls requested to play previous track")
+	disableGaplessPlayback = true
 	playPreviousTrack()
+	disableGaplessPlayback = false
 }
 
 func SeekToPercent(percent float64) {

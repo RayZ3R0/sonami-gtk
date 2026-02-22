@@ -6,42 +6,42 @@ import (
 	"codeberg.org/dergs/tonearm/internal/router"
 	"codeberg.org/dergs/tonearm/internal/signals"
 	"codeberg.org/dergs/tonearm/pkg/schwifty"
+	"codeberg.org/dergs/tonearm/pkg/schwifty/state"
 	. "codeberg.org/dergs/tonearm/pkg/schwifty/syntax"
+	"codeberg.org/dergs/tonearm/pkg/schwifty/utils/weak"
 	"github.com/jwijenbergh/puregotk/v4/gtk"
 )
 
 type RouteButton struct {
-	*gtk.Button
-	label *gtk.Label
-	icon  *gtk.Image
-}
+	schwifty.BaseWidgetable
 
-func (r *RouteButton) setActive(active bool) {
-	if active {
-		r.AddCssClass("active")
-	} else {
-		r.RemoveCssClass("active")
-	}
+	iconState *state.State[string]
+
+	titleState           *state.State[string]
+	titleVisibilityState *state.State[bool]
+	titleClassState      *state.State[string]
+
+	tooltipState *state.State[string]
 }
 
 func (r *RouteButton) Title(title string) *RouteButton {
-	r.label.SetText(title)
-	r.label.SetVisible(title != "")
+	r.titleState.SetValue(title)
+	r.titleVisibilityState.SetValue(title != "")
 	if title == "" {
-		r.RemoveCssClass("title")
+		r.titleClassState.SetValue("")
 	} else {
-		r.AddCssClass("title")
+		r.titleClassState.SetValue("title")
 	}
 	return r
 }
 
 func (r *RouteButton) Icon(iconName string) *RouteButton {
-	r.icon.SetFromIconName(iconName)
+	r.iconState.SetValue(iconName)
 	return r
 }
 
 func (r *RouteButton) TooltipText(tooltip string) *RouteButton {
-	r.Button.SetTooltipText(tooltip)
+	r.tooltipState.SetValue(tooltip)
 	return r
 }
 
@@ -49,42 +49,64 @@ func (r *RouteButton) TooltipText(tooltip string) *RouteButton {
 // If root is true, it also tells the router to forget its current history.
 func NewRouteButton(path string, root bool) *RouteButton {
 	routeButton := &RouteButton{
-		icon:  Image().FromIconName("image-missing-symbolic")(),
-		label: Label("").PaddingStart(7).PaddingEnd(7).Visible(false)(),
+		iconState: state.NewStateful("image-missing-symbolic"),
+
+		titleState:           state.NewStateful(""),
+		titleClassState:      state.NewStateful(""),
+		titleVisibilityState: state.NewStateful(false),
+
+		tooltipState: state.NewStateful(""),
 	}
-	routeButton.Button = Button().
+
+	var subscription *signals.Subscription
+	routeButton.BaseWidgetable = Button().
 		PaddingStart(0).
 		PaddingEnd(0).
 		MinHeight(24).
+		WithCSSClass("flat").
+		BindTooltipText(routeButton.tooltipState).
+		ConnectConstruct(func(b *gtk.Button) {
+			ref := weak.NewWidgetRef(&b.Widget)
+			subscription = router.Navigation.On(func(event *router.NavigationEvent) bool {
+				schwifty.OnMainThreadOnce(func(u uintptr) {
+					ref.Use(func(widget *gtk.Widget) {
+						if strings.HasPrefix(event.Path, path) {
+							widget.RemoveCssClass("flat")
+							widget.AddCssClass("raised")
+						} else {
+							widget.RemoveCssClass("raised")
+							widget.AddCssClass("flat")
+						}
+					})
+				}, 0)
+				return signals.Continue
+			})
+		}).
+		ConnectDestroy(func(w gtk.Widget) {
+			router.Navigation.Unsubscribe(subscription)
+		}).
 		ConnectClicked(func(b gtk.Button) {
-			router.Navigate(path)
 			if root {
 				router.Clear()
 			}
+			router.Navigate(path)
 		}).
 		Child(
 			HStack(
-				Clamp().MaximumSize(16).Child(&routeButton.icon.Widget),
-				routeButton.label,
+				Clamp().MaximumSize(16).Child(
+					Image().BindIconName(routeButton.iconState),
+				),
+				Label("").
+					BindText(routeButton.titleState).
+					BindCSSClass(routeButton.titleClassState).
+					BindVisible(routeButton.titleVisibilityState).
+					PaddingStart(7).
+					PaddingEnd(7),
 			).
 				Spacing(7).
 				HMargin(9).
 				VMargin(2),
-		).
-		WithCSSClass("flat")()
-
-	router.NavigationStarted.On(func(newPath string) bool {
-		schwifty.OnMainThreadOnce(func(u uintptr) {
-			if strings.HasPrefix(newPath, path) {
-				routeButton.RemoveCssClass("flat")
-				routeButton.AddCssClass("raised")
-			} else {
-				routeButton.RemoveCssClass("raised")
-				routeButton.AddCssClass("flat")
-			}
-		}, 0)
-		return signals.Continue
-	})
+		)
 
 	return routeButton
 }

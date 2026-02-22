@@ -14,6 +14,7 @@ import (
 	"codeberg.org/dergs/tonearm/pkg/schwifty/state"
 	. "codeberg.org/dergs/tonearm/pkg/schwifty/syntax"
 	"codeberg.org/dergs/tonearm/pkg/schwifty/tracking"
+	"codeberg.org/dergs/tonearm/pkg/schwifty/utils/weak"
 	"codeberg.org/dergs/tonearm/pkg/tonearm"
 	"github.com/jwijenbergh/puregotk/v4/adw"
 	"github.com/jwijenbergh/puregotk/v4/gdk"
@@ -49,7 +50,7 @@ func (t *TrackList) AddTrack(track tonearm.Track) {
 }
 
 func (t *TrackList) BindTracks(state *state.State[[]tonearm.Track]) {
-	state.AddCallback(func(newValue []tonearm.Track) {
+	id := state.AddCallback(func(newValue []tonearm.Track) {
 		t.lock.Lock()
 		defer t.lock.Unlock()
 
@@ -66,6 +67,9 @@ func (t *TrackList) BindTracks(state *state.State[[]tonearm.Track]) {
 			t.trackList = t.trackList[:i]
 			t.store.Remove(uint(i))
 		}
+	})
+	t.ConnectDestroy(func(w gtk.Widget) {
+		state.RemoveCallback(id)
 	})
 }
 
@@ -88,16 +92,15 @@ func (t *TrackList) onBind(_ gtk.SignalListItemFactory, listItem *gtk.ListItem) 
 	container := adw.BinNewFromInternalPtr(listItem.GetChild().GoPointer())
 	defer container.Unref()
 
-	body := HStack().ConnectConstruct(func(b *gtk.Box) {
-		var ref = tracking.NewWeakRef(b)
+	body := HStack().ConnectRealize(func(b gtk.Widget) {
+		var ref = weak.NewWidgetRef(&b)
 		player.TrackChanged.On(func(t tonearm.Track) bool {
 			return signals.ContinueIf(
-				ref.Use(func(obj *gobject.Object) {
-					grid := gtk.BoxNewFromInternalPtr(obj.Ptr)
+				ref.Use(func(obj *gtk.Widget) {
 					if t != nil && track.ID() == t.ID() {
-						grid.AddCssClass("playing")
+						obj.AddCssClass("playing")
 					} else {
-						grid.RemoveCssClass("playing")
+						obj.RemoveCssClass("playing")
 					}
 				}),
 			)
@@ -118,8 +121,8 @@ func (t *TrackList) onBind(_ gtk.SignalListItemFactory, listItem *gtk.ListItem) 
 
 func (t *TrackList) onUnbind(_ gtk.SignalListItemFactory, listItem *gtk.ListItem) {
 	container := adw.BinNewFromInternalPtr(listItem.GetChild().GoPointer())
-	defer container.Unref()
 	container.SetChild(nil)
+	container.Unref()
 }
 
 func (t *TrackList) onSetup(_ gtk.SignalListItemFactory, listItem *gtk.ListItem) {
@@ -186,10 +189,13 @@ func (t *TrackList) onSetup(_ gtk.SignalListItemFactory, listItem *gtk.ListItem)
 }
 
 func NewTrackList(columnFuncs ...ColumnFunc) *TrackList {
+	store := gio.NewListStore(gtk.StringObjectGLibType())
+	tracking.SetFinalizer("ListStore", store)
+
 	tracklist := &TrackList{
 		columnFuncs: columnFuncs,
 		sizeGroups:  []*gtk.SizeGroup{},
-		store:       gio.NewListStore(gtk.StringObjectGLibType()),
+		store:       store,
 		trackList:   make([]tonearm.Track, 0),
 		clickHandler: func(track tonearm.Track, position int) {
 			player.PlayTrack(track)
@@ -202,6 +208,7 @@ func NewTrackList(columnFuncs ...ColumnFunc) *TrackList {
 
 	for range columnFuncs {
 		sizeGroup := gtk.NewSizeGroup(gtk.SizeGroupHorizontalValue)
+		tracking.SetFinalizer("SizeGroup", sizeGroup)
 		tracklist.sizeGroups = append(tracklist.sizeGroups, sizeGroup)
 	}
 

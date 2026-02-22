@@ -8,7 +8,7 @@ import (
 	"codeberg.org/dergs/tonearm/pkg/schwifty"
 	"codeberg.org/dergs/tonearm/pkg/schwifty/state"
 	. "codeberg.org/dergs/tonearm/pkg/schwifty/syntax"
-	"codeberg.org/dergs/tonearm/pkg/schwifty/tracking"
+	"codeberg.org/dergs/tonearm/pkg/schwifty/utils/weak"
 	"github.com/jwijenbergh/puregotk/v4/gobject"
 	"github.com/jwijenbergh/puregotk/v4/gtk"
 	"github.com/jwijenbergh/puregotk/v4/pango"
@@ -50,7 +50,8 @@ func NewHorizontalList(title string) *HorizontalList {
 	routeButtonState := state.NewStateful[any](nil)
 	container := HStack().BindHMargin(marginState)()
 
-	var hAdjustWeakRef *tracking.WeakRef
+	var hAdjustWeakRef weak.ObjectRef
+
 	nextButton := Button().
 		MinHeight(10).MinWidth(10).HPadding(10).
 		Child(Image().FromIconName("right-symbolic").PixelSize(10)).
@@ -112,7 +113,7 @@ func NewHorizontalList(title string) *HorizontalList {
 
 					adj := sw.GetHadjustment()
 					defer adj.Unref()
-					hAdjustWeakRef = tracking.NewWeakRef(adj)
+					hAdjustWeakRef = weak.NewObjectRef(adj)
 				}),
 		),
 		routeButtonState: routeButtonState,

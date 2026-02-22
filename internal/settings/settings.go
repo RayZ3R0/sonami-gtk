@@ -1,8 +1,6 @@
 package settings
 
 import (
-	"runtime"
-
 	"codeberg.org/dergs/tonearm/internal/g"
 	"codeberg.org/dergs/tonearm/pkg/schwifty/callback"
 	"codeberg.org/dergs/tonearm/pkg/schwifty/tracking"
@@ -55,8 +53,6 @@ var Scrobbling = g.Lazy(func() *ScrobblingSettings {
 })
 
 func finalize(settings *gio.Settings) *gio.Settings {
-	runtime.SetFinalizer(settings, func(s *gio.Settings) {
-		s.Unref()
-	})
+	tracking.SetFinalizer("Settings", settings)
 	return settings
 }

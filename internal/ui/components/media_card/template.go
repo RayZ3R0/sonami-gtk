@@ -27,9 +27,9 @@ func Card[T any](title string, subTitle schwifty.Widgetable[T], coverUrl string)
 				Image().
 					PixelSize(172).
 					FromPaintable(resources.MissingAlbum()).
-					ConnectConstruct(func(i *gtk.Image) {
+					ConnectRealize(func(i gtk.Widget) {
 						if settings.Performance().AllowMediaCardImages() {
-							injector.MustInject[*imgutil.ImgUtil]().LoadIntoImageCropped(coverUrl, i)
+							injector.MustInject[*imgutil.ImgUtil]().LoadIntoImageCropped(coverUrl, gtk.ImageNewFromInternalPtr(i.Ptr))
 						}
 					}).CornerRadius(10).Overflow(gtk.OverflowHiddenValue),
 				Label(title).

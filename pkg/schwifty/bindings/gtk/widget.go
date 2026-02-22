@@ -3,6 +3,7 @@ package gtk
 import (
 	"reflect"
 
+	"codeberg.org/dergs/tonearm/pkg/schwifty/callback"
 	"github.com/jwijenbergh/puregotk/v4/gtk"
 )
 
@@ -69,5 +70,34 @@ func ResolveWidget(value any) *gtk.Widget {
 	}
 
 	// logger.Warn("failed to resolve widget")
+	return nil
+}
+
+func ResolveWidgetOnMain(value any) *gtk.Widget {
+	t := reflect.TypeOf(value)
+
+	if value == nil {
+		return nil
+	}
+
+	if t.AssignableTo(reflect.TypeFor[*gtk.Widget]()) {
+		return value.(*gtk.Widget)
+	}
+
+	if t.AssignableTo(reflect.TypeFor[BaseWidgetable]()) {
+		channel := make(chan *gtk.Widget, 1)
+		callback.OnMainThreadOncePure(func() {
+			channel <- value.(BaseWidgetable).ToGTK()
+		})
+		return <-channel
+	}
+
+	if t.Kind() == reflect.Pointer && t.Elem().Kind() == reflect.Struct {
+		if field := reflect.ValueOf(value).Elem().FieldByName("Widget"); field.IsValid() {
+			widget := field.Interface().(gtk.Widget)
+			return &widget
+		}
+	}
+
 	return nil
 }

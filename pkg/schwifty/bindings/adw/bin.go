@@ -4,7 +4,7 @@ import (
 	gtkbindings "codeberg.org/dergs/tonearm/pkg/schwifty/bindings/gtk"
 	"codeberg.org/dergs/tonearm/pkg/schwifty/callback"
 	"codeberg.org/dergs/tonearm/pkg/schwifty/state"
-	"codeberg.org/dergs/tonearm/pkg/schwifty/tracking"
+	"codeberg.org/dergs/tonearm/pkg/schwifty/utils/weak"
 	"github.com/jwijenbergh/puregotk/v4/adw"
 	"github.com/jwijenbergh/puregotk/v4/gtk"
 )
@@ -14,31 +14,27 @@ import (
 func (f Bin) BindChild(state *state.State[any]) Bin {
 	return func() *adw.Bin {
 		var callbackId string
-		var ref *tracking.WeakRef
-		return f.ConnectConstruct(func(w *adw.Bin) {
-			ref = tracking.NewWeakRef(w)
+		var ref weak.WidgetRef
+		return f.ConnectRealize(func(w gtk.Widget) {
+			ref = weak.NewWidgetRef(&w)
 			callbackId = state.AddCallback(func(newValue any) {
-				widget := gtkbindings.ResolveWidget(newValue)
-				if widget == nil {
-					callback.OnMainThreadOncePure(func() {
-						if obj := ref.Get(); obj != nil {
-							defer obj.Unref()
-							adw.BinNewFromInternalPtr(obj.Ptr).SetChild(nil)
-						}
-					})
-				} else {
-					widget.Ref()
-					callback.OnMainThreadOncePure(func() {
-						defer widget.Unref()
-						if obj := ref.Get(); obj != nil {
-							defer obj.Unref()
-							adw.BinNewFromInternalPtr(obj.Ptr).SetChild(widget)
-						}
-					})
+				widget := gtkbindings.ResolveWidgetOnMain(newValue)
+				widget.Ref()
 
-				}
+				callback.OnMainThreadOncePure(func() {
+					defer widget.Unref()
+					if obj := ref.Get(); obj != nil {
+						defer obj.Unref()
+						bin := adw.BinNewFromInternalPtr(obj.Ptr)
+						if widget == nil {
+							bin.SetChild(nil)
+						} else {
+							bin.SetChild(widget)
+						}
+					}
+				})
 			})
-		}).ConnectDestroy(func(w gtk.Widget) {
+		}).ConnectUnrealize(func(w gtk.Widget) {
 			state.RemoveCallback(callbackId)
 		})()
 	}

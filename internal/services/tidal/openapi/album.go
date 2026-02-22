@@ -12,10 +12,7 @@ type Album struct {
 }
 
 func (a *Album) Artists() tonearm.ArtistInfos {
-	logger := albumLogger.With("method", "Artists").WithGroup("artists")
-
 	artworks := a.Included.Artists(a.Data.Relationships.Artists.Data...)
-	logger.Debug("resolved album artists", "count", len(artworks))
 
 	artists := make(tonearm.ArtistInfos, 0)
 	for _, artist := range artworks {

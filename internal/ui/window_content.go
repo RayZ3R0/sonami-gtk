@@ -27,9 +27,9 @@ func (w *Window) buildContentHeader() *gtk.Widget {
 	collectionButton.TooltipText(gettext.Get("Navigate to Collection"))
 
 	defaultToolbar := HStack(
-		Widget(&homeButton.Widget),
-		Widget(&exploreButton.Widget),
-		Widget(&collectionButton.Widget),
+		homeButton,
+		exploreButton,
+		collectionButton,
 	).Spacing(3)()
 
 	// We never want to delete the default toolbar. NEVER.
@@ -58,17 +58,10 @@ func (w *Window) buildContentHeader() *gtk.Widget {
 		).
 		TitleWidget(defaultToolbar)()
 
-	router.NavigationStarted.On(func(path string) bool {
-		schwifty.OnMainThreadOnce(func(u uintptr) {
-			headerbar.SetTitleWidget(&defaultToolbar.Widget)
-		}, 0)
-		return signals.Continue
-	})
-
-	router.NavigationCompleted.On(func(entry router.HistoryEntry) bool {
+	router.Navigation.On(func(event *router.NavigationEvent) bool {
 		schwifty.OnMainThreadOncePure(func() {
-			if entry.Toolbar != nil {
-				headerbar.SetTitleWidget(entry.Toolbar)
+			if event.Completed && event.Result.Toolbar != nil {
+				headerbar.SetTitleWidget(event.Result.Toolbar)
 			} else {
 				headerbar.SetTitleWidget(&defaultToolbar.Widget)
 			}

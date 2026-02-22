@@ -1,6 +1,7 @@
 package imgutil
 
 import (
+	"codeberg.org/dergs/tonearm/pkg/schwifty/tracking"
 	"github.com/jwijenbergh/puregotk/v4/gdk"
 	"github.com/jwijenbergh/puregotk/v4/glib"
 )
@@ -14,6 +15,10 @@ func (i *ImgUtil) Load(url string) (*gdk.Texture, error) {
 	gBytes := glib.NewBytes(image, uint(len(image)))
 	texture, err := gdk.NewTextureFromBytes(gBytes)
 	gBytes.Unref()
+
+	if err == nil {
+		tracking.SetFinalizer("Texture", texture)
+	}
 
 	return texture, err
 }
@@ -34,6 +39,8 @@ func (i *ImgUtil) LoadCropped(url string) (*gdk.Texture, error) {
 
 	cropped := Crop(texture)
 	texture.Unref()
+
+	tracking.SetFinalizer("Texture", cropped)
 
 	return cropped, err
 }

@@ -2,6 +2,7 @@ package imgutil
 
 import (
 	"codeberg.org/dergs/tonearm/pkg/schwifty"
+	"codeberg.org/dergs/tonearm/pkg/schwifty/utils/weak"
 	"codeberg.org/dergs/tonearm/pkg/utils/cacheutil"
 	"github.com/jwijenbergh/puregotk/v4/gtk"
 )
@@ -11,43 +12,37 @@ type ImgUtil struct {
 }
 
 func (i *ImgUtil) LoadIntoImage(url string, image *gtk.Image) {
-	image.Ref()
+	ref := weak.NewWidgetRef(&image.Widget)
 	go func() {
 		texture, err := i.Load(url)
 		if err != nil {
-			image.Unref()
-			image = nil
 			return
 		}
 
 		schwifty.OnMainThreadOnce(func(u uintptr) {
-			image.SetFromPaintable(texture)
-			texture.Unref()
+			ref.Use(func(widget *gtk.Widget) {
+				gtk.ImageNewFromInternalPtr(widget.GoPointer()).SetFromPaintable(texture)
+			})
 			texture = nil
-			image.Unref()
-			image = nil
 		}, 0)
 	}()
 }
 
 func (i *ImgUtil) LoadIntoImageCropped(url string, image *gtk.Image) {
-	image.Ref()
+	ref := weak.NewWidgetRef(&image.Widget)
 	go func() {
 		texture, err := i.Load(url)
 		if err != nil {
-			image.Unref()
-			image = nil
 			return
 		}
 		cropped := Crop(texture)
-		texture.Unref()
+		texture = nil
 
 		schwifty.OnMainThreadOnce(func(u uintptr) {
-			image.SetFromPaintable(cropped)
-			cropped.Unref()
+			ref.Use(func(widget *gtk.Widget) {
+				gtk.ImageNewFromInternalPtr(widget.GoPointer()).SetFromPaintable(cropped)
+			})
 			cropped = nil
-			image.Unref()
-			image = nil
 		}, 0)
 	}()
 }

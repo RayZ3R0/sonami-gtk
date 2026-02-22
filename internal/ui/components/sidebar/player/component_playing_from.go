@@ -45,7 +45,6 @@ func init() {
 			}
 			schwifty.OnMainThreadOncePure(func() {
 				playingFromCoverState.SetValue(texture)
-				texture.Unref()
 			})
 		}
 		return signals.Continue

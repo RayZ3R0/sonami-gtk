@@ -114,9 +114,9 @@ func Album(albumId string) *router.Response {
 						Image().
 							PixelSize(146).
 							FromPaintable(resources.MissingAlbum()).
-							ConnectConstruct(func(i *gtk.Image) {
+							ConnectRealize(func(i gtk.Widget) {
 								if coverUrl != "" {
-									injector.MustInject[*imgutil.ImgUtil]().LoadIntoImage(coverUrl, i)
+									injector.MustInject[*imgutil.ImgUtil]().LoadIntoImage(coverUrl, gtk.ImageNewFromInternalPtr(i.Ptr))
 								}
 							}),
 					).CornerRadius(10).Overflow(gtk.OverflowHiddenValue),

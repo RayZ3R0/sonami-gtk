@@ -13,10 +13,9 @@ import (
 
 	adwbindings "codeberg.org/dergs/tonearm/pkg/schwifty/bindings/adw"
 	. "codeberg.org/dergs/tonearm/pkg/schwifty/syntax"
-	"codeberg.org/dergs/tonearm/pkg/schwifty/tracking"
+	"codeberg.org/dergs/tonearm/pkg/schwifty/utils/weak"
 	"github.com/infinytum/injector"
 	"github.com/jwijenbergh/puregotk/v4/adw"
-	"github.com/jwijenbergh/puregotk/v4/gobject"
 	"github.com/jwijenbergh/puregotk/v4/gtk"
 
 	lastfmlib "github.com/twoscott/gobble-fm/lastfm"
@@ -36,14 +35,14 @@ func init() {
 
 func loadingDialog(pollingCancel context.CancelFunc, browserUri string) adwbindings.AlertDialog {
 	window := injector.MustInject[*gtk.Window]()
-	var self *tracking.WeakRef
+	var self weak.WidgetRef
 
 	return AlertDialog(
 		gettext.Get("Logging in to Last.fm"),
 		gettext.Get("Continue the authentication process in your browser."),
 	).
 		ConnectConstruct(func(ad *adw.AlertDialog) {
-			self = tracking.NewWeakRef(ad)
+			self = weak.NewWidgetRef(ad)
 		}).
 		WithCSSClass("no-response").
 		ConnectClosed(func(d adw.Dialog) {
@@ -65,7 +64,7 @@ func loadingDialog(pollingCancel context.CancelFunc, browserUri string) adwbindi
 				Button().
 					Label(gettext.Get("Cancel")).
 					ConnectClicked(func(b gtk.Button) {
-						self.Use(func(obj *gobject.Object) {
+						self.Use(func(obj *gtk.Widget) {
 							adw.AlertDialogNewFromInternalPtr(obj.Ptr).Close()
 						})
 					}).
@@ -91,7 +90,7 @@ func (scrobbler *LastFm) Configure() (completed bool, err error) {
 
 	pollingCtx, pollingCancel := context.WithCancel(context.Background())
 	dialog := loadingDialog(pollingCancel, uri)()
-	ref := tracking.NewWeakRef(dialog)
+	ref := weak.NewWidgetRef(dialog)
 
 	dialog.Ref()
 	schwifty.OnMainThreadOncePure(func() {
@@ -99,7 +98,7 @@ func (scrobbler *LastFm) Configure() (completed bool, err error) {
 		dialog.Present(&window.Widget)
 	})
 
-	defer ref.Use(func(obj *gobject.Object) {
+	defer ref.Use(func(obj *gtk.Widget) {
 		adw.AlertDialogNewFromInternalPtr(obj.Ptr).Close()
 	})
 
