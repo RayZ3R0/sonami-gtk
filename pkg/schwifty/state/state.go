@@ -1,6 +1,7 @@
 package state
 
 import (
+	"runtime"
 	"sync"
 
 	"github.com/google/uuid"
@@ -30,19 +31,28 @@ func (s *State[T]) AddCallback(callback StateCallback[T]) string {
 }
 
 func (s *State[T]) BindState(other *State[T]) {
-	if s.boundState != nil {
-		s.boundState.RemoveCallback(s.boundStateCallback)
-		s.boundState = nil
-		s.boundStateCallback = ""
-	}
+	s.UnbindState()
 
 	if other == nil {
 		return
 	}
 
+	runtime.SetFinalizer(s, func(s *State[T]) {
+		s.UnbindState()
+	})
+
 	s.boundState = other
 	s.boundStateCallback = other.AddCallback(s.SetValue)
 	s.SetValue(other.Value())
+}
+
+func (s *State[T]) UnbindState() {
+	if s.boundState != nil {
+		s.boundState.RemoveCallback(s.boundStateCallback)
+		s.boundState = nil
+		s.boundStateCallback = ""
+		runtime.SetFinalizer(s, nil)
+	}
 }
 
 func (s *State[T]) RemoveCallback(id string) {
