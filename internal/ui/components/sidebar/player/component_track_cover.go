@@ -37,9 +37,6 @@ func init() {
 					slog.Error("failed to load hi-res track cover", "error", err)
 					return
 				}
-				if coverHiRes != nil {
-					coverHiRes.Unref()
-				}
 				coverHiRes = texture
 			}()
 
