@@ -9,12 +9,11 @@ import (
 	"codeberg.org/dergs/tonearm/pkg/schwifty"
 	"codeberg.org/dergs/tonearm/pkg/schwifty/state"
 	. "codeberg.org/dergs/tonearm/pkg/schwifty/syntax"
-	"codeberg.org/dergs/tonearm/pkg/schwifty/tracking"
+	"codeberg.org/dergs/tonearm/pkg/schwifty/utils/weak"
 	"codeberg.org/dergs/tonearm/pkg/tidalapi"
 	v1 "codeberg.org/dergs/tonearm/pkg/tidalapi/models/v1"
 	"codeberg.org/dergs/tonearm/pkg/tonearm"
 	"github.com/jwijenbergh/puregotk/v4/gdk"
-	"github.com/jwijenbergh/puregotk/v4/gobject"
 	"github.com/jwijenbergh/puregotk/v4/gtk"
 )
 
@@ -90,7 +89,7 @@ func hideCheckmarkHook(quality v1.AudioQuality) func(*gtk.Label) {
 	}
 }
 
-func makeQualitySelectEntry(quality v1.AudioQuality, css, label, details string, popover **tracking.WeakRef) schwifty.Button {
+func makeQualitySelectEntry(quality v1.AudioQuality, css, label, details string, popover *weak.WidgetRef) schwifty.Button {
 	return Button().
 		Child(
 			HStack(
@@ -104,7 +103,7 @@ func makeQualitySelectEntry(quality v1.AudioQuality, css, label, details string,
 		).
 		ConnectClicked(func(b gtk.Button) {
 			settings.Player().SetAudioQuality(quality)
-			(*popover).Use(func(obj *gobject.Object) {
+			(*popover).Use(func(obj *gtk.Widget) {
 				popover := gtk.PopoverNewFromInternalPtr(obj.Ptr)
 				popover.Hide()
 			})
@@ -161,7 +160,7 @@ func trackTimeline() schwifty.Widget {
 		),
 	).MarginBottom(2).ToGTK())
 
-	var ref *tracking.WeakRef
+	var ref weak.WidgetRef
 	popover := Popover(
 		VStack(
 			makeQualitySelectEntry(v1.AudioQualityLossy, "low", "Low (96 kbps)", "96 kbps AAC", &ref),
@@ -172,7 +171,7 @@ func trackTimeline() schwifty.Widget {
 			WithCSSClass("selector").
 			Spacing(8),
 	)()
-	ref = tracking.NewWeakRef(popover)
+	ref = weak.NewWidgetRef(popover)
 
 	overlay.AddOverlay(
 		MenuButton().
@@ -187,7 +186,7 @@ func trackTimeline() schwifty.Widget {
 					VPadding(4),
 			).
 			ConnectConstruct(func(mb *gtk.MenuButton) {
-				ref := tracking.NewWeakRef(mb)
+				ref := weak.NewWidgetRef(mb)
 
 				click := gtk.NewGestureClick()
 				click.SetButton(3)
@@ -204,7 +203,7 @@ func trackTimeline() schwifty.Widget {
 				}))
 				longPress.ConnectEnd(new(func(gtk.Gesture, uintptr) {
 					if longPressed {
-						ref.Use(func(obj *gobject.Object) {
+						ref.Use(func(obj *gtk.Widget) {
 							mb := gtk.MenuButtonNewFromInternalPtr(obj.Ptr)
 							mb.SetActive(false)
 						})
