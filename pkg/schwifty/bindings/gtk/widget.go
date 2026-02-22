@@ -73,35 +73,31 @@ func ResolveWidget(value any) *gtk.Widget {
 	return nil
 }
 
-func ResolveWidgetOnMain(value any) (channel chan *gtk.Widget) {
+func ResolveWidgetOnMain(value any) *gtk.Widget {
 	t := reflect.TypeOf(value)
-	channel = make(chan *gtk.Widget, 1)
 
 	if value == nil {
-		channel <- nil
-		return
+		return nil
 	}
 
 	if t.AssignableTo(reflect.TypeFor[*gtk.Widget]()) {
-		channel <- value.(*gtk.Widget)
-		return
+		return value.(*gtk.Widget)
 	}
 
 	if t.AssignableTo(reflect.TypeFor[BaseWidgetable]()) {
+		channel := make(chan *gtk.Widget, 1)
 		callback.OnMainThreadOncePure(func() {
 			channel <- value.(BaseWidgetable).ToGTK()
 		})
-		return channel
+		return <-channel
 	}
 
 	if t.Kind() == reflect.Pointer && t.Elem().Kind() == reflect.Struct {
 		if field := reflect.ValueOf(value).Elem().FieldByName("Widget"); field.IsValid() {
 			widget := field.Interface().(gtk.Widget)
-			channel <- &widget
-			return
+			return &widget
 		}
 	}
 
-	channel <- nil
-	return
+	return nil
 }

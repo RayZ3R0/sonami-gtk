@@ -18,7 +18,7 @@ func (f Bin) BindChild(state *state.State[any]) Bin {
 		return f.ConnectRealize(func(w gtk.Widget) {
 			ref = weak.NewWidgetRef(&w)
 			callbackId = state.AddCallback(func(newValue any) {
-				widget := <-gtkbindings.ResolveWidgetOnMain(newValue)
+				widget := gtkbindings.ResolveWidgetOnMain(newValue)
 				widget.Ref()
 
 				callback.OnMainThreadOncePure(func() {
