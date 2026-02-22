@@ -1,13 +1,13 @@
 package gtk
 
 import (
+	"fmt"
+
 	"codeberg.org/dergs/tonearm/pkg/schwifty/callback"
 	"codeberg.org/dergs/tonearm/pkg/schwifty/state"
-	"codeberg.org/dergs/tonearm/pkg/schwifty/tracking"
-	"fmt"
+	"codeberg.org/dergs/tonearm/pkg/schwifty/utils/weak"
 	"github.com/jwijenbergh/puregotk/v4/gtk"
 )
-
 
 type Revealer func() *gtk.Revealer
 
@@ -245,8 +245,6 @@ func (f Revealer) VMargin(vertical int) Revealer {
 	}
 }
 
-
-
 func (f Revealer) Background(color string) Revealer {
 	return func() *gtk.Revealer {
 		return f.CSSWithCallback(func(elementName string) string {
@@ -274,9 +272,9 @@ func (f Revealer) CSS(css string) Revealer {
 func (f Revealer) BindCSSClass(state *state.State[string]) Revealer {
 	return func() *gtk.Revealer {
 		var callbackId string
-		var ref *tracking.WeakRef
+		var ref weak.WidgetRef
 		return f.ConnectConstruct(func(w *gtk.Revealer) {
-			ref = tracking.NewWeakRef(&w.Widget)
+			ref = weak.NewWidgetRef(&w.Widget)
 			callbackId = state.AddCallback(func(newValue string) {
 				oldValue := state.Value()
 				callback.OnMainThreadOncePure(func() {
@@ -395,14 +393,12 @@ func (f Revealer) VPadding(padding int) Revealer {
 	}
 }
 
-
-
 func (f Revealer) BindVisible(state *state.State[bool]) Revealer {
 	return func() *gtk.Revealer {
 		var callbackId string
-		var ref *tracking.WeakRef
+		var ref weak.WidgetRef
 		return f.ConnectConstruct(func(w *gtk.Revealer) {
-			ref = tracking.NewWeakRef(&w.Widget)
+			ref = weak.NewWidgetRef(&w.Widget)
 			callbackId = state.AddCallback(func(newValue bool) {
 				callback.OnMainThreadOncePure(func() {
 					if obj := ref.Get(); obj != nil {
@@ -420,9 +416,9 @@ func (f Revealer) BindVisible(state *state.State[bool]) Revealer {
 func (f Revealer) BindHMargin(state *state.State[int]) Revealer {
 	return func() *gtk.Revealer {
 		var callbackId string
-		var ref *tracking.WeakRef
+		var ref weak.WidgetRef
 		return f.ConnectConstruct(func(w *gtk.Revealer) {
-			ref = tracking.NewWeakRef(&w.Widget)
+			ref = weak.NewWidgetRef(&w.Widget)
 			callbackId = state.AddCallback(func(newValue int) {
 				callback.OnMainThreadOncePure(func() {
 					if obj := ref.Get(); obj != nil {
@@ -441,9 +437,9 @@ func (f Revealer) BindHMargin(state *state.State[int]) Revealer {
 func (f Revealer) BindMargin(state *state.State[int]) Revealer {
 	return func() *gtk.Revealer {
 		var callbackId string
-		var ref *tracking.WeakRef
+		var ref weak.WidgetRef
 		return f.ConnectConstruct(func(w *gtk.Revealer) {
-			ref = tracking.NewWeakRef(&w.Widget)
+			ref = weak.NewWidgetRef(&w.Widget)
 			callbackId = state.AddCallback(func(newValue int) {
 				callback.OnMainThreadOncePure(func() {
 					if obj := ref.Get(); obj != nil {
@@ -464,9 +460,9 @@ func (f Revealer) BindMargin(state *state.State[int]) Revealer {
 func (f Revealer) BindMarginBottom(state *state.State[int]) Revealer {
 	return func() *gtk.Revealer {
 		var callbackId string
-		var ref *tracking.WeakRef
+		var ref weak.WidgetRef
 		return f.ConnectConstruct(func(w *gtk.Revealer) {
-			ref = tracking.NewWeakRef(&w.Widget)
+			ref = weak.NewWidgetRef(&w.Widget)
 			callbackId = state.AddCallback(func(newValue int) {
 				callback.OnMainThreadOncePure(func() {
 					if obj := ref.Get(); obj != nil {
@@ -484,9 +480,9 @@ func (f Revealer) BindMarginBottom(state *state.State[int]) Revealer {
 func (f Revealer) BindMarginEnd(state *state.State[int]) Revealer {
 	return func() *gtk.Revealer {
 		var callbackId string
-		var ref *tracking.WeakRef
+		var ref weak.WidgetRef
 		return f.ConnectConstruct(func(w *gtk.Revealer) {
-			ref = tracking.NewWeakRef(&w.Widget)
+			ref = weak.NewWidgetRef(&w.Widget)
 			callbackId = state.AddCallback(func(newValue int) {
 				callback.OnMainThreadOncePure(func() {
 					if obj := ref.Get(); obj != nil {
@@ -504,9 +500,9 @@ func (f Revealer) BindMarginEnd(state *state.State[int]) Revealer {
 func (f Revealer) BindMarginStart(state *state.State[int]) Revealer {
 	return func() *gtk.Revealer {
 		var callbackId string
-		var ref *tracking.WeakRef
+		var ref weak.WidgetRef
 		return f.ConnectConstruct(func(w *gtk.Revealer) {
-			ref = tracking.NewWeakRef(&w.Widget)
+			ref = weak.NewWidgetRef(&w.Widget)
 			callbackId = state.AddCallback(func(newValue int) {
 				callback.OnMainThreadOncePure(func() {
 					if obj := ref.Get(); obj != nil {
@@ -524,9 +520,9 @@ func (f Revealer) BindMarginStart(state *state.State[int]) Revealer {
 func (f Revealer) BindMarginTop(state *state.State[int]) Revealer {
 	return func() *gtk.Revealer {
 		var callbackId string
-		var ref *tracking.WeakRef
+		var ref weak.WidgetRef
 		return f.ConnectConstruct(func(w *gtk.Revealer) {
-			ref = tracking.NewWeakRef(&w.Widget)
+			ref = weak.NewWidgetRef(&w.Widget)
 			callbackId = state.AddCallback(func(newValue int) {
 				callback.OnMainThreadOncePure(func() {
 					if obj := ref.Get(); obj != nil {
@@ -544,9 +540,9 @@ func (f Revealer) BindMarginTop(state *state.State[int]) Revealer {
 func (f Revealer) BindSensitive(state *state.State[bool]) Revealer {
 	return func() *gtk.Revealer {
 		var callbackId string
-		var ref *tracking.WeakRef
+		var ref weak.WidgetRef
 		return f.ConnectConstruct(func(w *gtk.Revealer) {
-			ref = tracking.NewWeakRef(&w.Widget)
+			ref = weak.NewWidgetRef(&w.Widget)
 			callbackId = state.AddCallback(func(newValue bool) {
 				callback.OnMainThreadOncePure(func() {
 					if obj := ref.Get(); obj != nil {

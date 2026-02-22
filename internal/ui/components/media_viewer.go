@@ -1,24 +1,22 @@
 package components
 
 import (
-	"fmt"
 	"time"
 
 	"codeberg.org/dergs/tonearm/pkg/schwifty"
 	. "codeberg.org/dergs/tonearm/pkg/schwifty/syntax"
-	"codeberg.org/dergs/tonearm/pkg/schwifty/tracking"
+	"codeberg.org/dergs/tonearm/pkg/schwifty/utils/weak"
 	"github.com/jwijenbergh/puregotk/v4/adw"
 	"github.com/jwijenbergh/puregotk/v4/gdk"
 	"github.com/jwijenbergh/puregotk/v4/gio"
-	"github.com/jwijenbergh/puregotk/v4/gobject"
 	"github.com/jwijenbergh/puregotk/v4/gsk"
 	"github.com/jwijenbergh/puregotk/v4/gtk"
 )
 
 type MediaViewer struct {
-	revealer   *tracking.WeakRef // darkened background + picture container
-	picture    *tracking.WeakRef
-	backButton *tracking.WeakRef
+	revealer   weak.WidgetRef // darkened background + picture container
+	picture    weak.WidgetRef
+	backButton weak.WidgetRef
 
 	zoomLevel    float64
 	baseW, baseH int
@@ -87,9 +85,8 @@ func GetMediaViewer() *MediaViewer {
 		ActionName("mediaviewer.close").
 		IconName("go-previous-symbolic").
 		ConnectConstruct(func(b *gtk.Button) {
-			mvInstance.backButton = tracking.NewWeakRef(b)
+			mvInstance.backButton = weak.NewWidgetRef(b)
 		})()
-	backButtonRef := tracking.NewWeakRef(backButton)
 
 	model := gio.NewMenu()
 	copyItem := gio.NewMenuItem("Copy Media", "mediaviewer.copy")
@@ -114,7 +111,7 @@ func GetMediaViewer() *MediaViewer {
 						CanShrink(true).
 						ContentFit(gtk.ContentFitContainValue).
 						ConnectConstruct(func(p *gtk.Picture) {
-							mvInstance.picture = tracking.NewWeakRef(p)
+							mvInstance.picture = weak.NewWidgetRef(p)
 						}).
 						Controller(&dblClick.EventController),
 				),
@@ -131,9 +128,9 @@ func GetMediaViewer() *MediaViewer {
 
 	overlay := adw.NewToastOverlay()
 	overlay.SetChild(&toolbar.Widget)
-	overlayRef := tracking.NewWeakRef(overlay)
+	overlayRef := weak.NewWidgetRef(overlay)
 
-	mvInstance.revealer = tracking.NewWeakRef(
+	mvInstance.revealer = weak.NewWidgetRef(
 		Revealer(
 			VStack(overlay).
 				HAlign(gtk.AlignFillValue).
@@ -150,7 +147,7 @@ func GetMediaViewer() *MediaViewer {
 				copyItem.ConnectActivate(new(func(action gio.SimpleAction, _ uintptr) {
 					mvInstance.copyMedia()
 
-					overlayRef.Use(func(obj *gobject.Object) {
+					overlayRef.Use(func(obj *gtk.Widget) {
 						overlay := adw.ToastOverlayNewFromInternalPtr(obj.Ptr)
 						toast := adw.NewToast("Copied image to clipboard")
 						toast.SetTimeout(3)
@@ -173,9 +170,8 @@ func GetMediaViewer() *MediaViewer {
 					Into(r)
 			}).
 			ConnectShow(func(w gtk.Widget) {
-				backButtonRef.Use(func(obj *gobject.Object) {
-					button := gtk.ButtonNewFromInternalPtr(obj.Ptr)
-					button.GrabFocus()
+				mvInstance.backButton.Use(func(obj *gtk.Widget) {
+					obj.GrabFocus()
 				})
 			}).
 			Visible(false).
@@ -200,12 +196,12 @@ func (mv *MediaViewer) ShowFile(paintable gdk.Paintable) {
 	}
 
 	mv.resetZoom()
-	mv.picture.Use(func(obj *gobject.Object) {
+	mv.picture.Use(func(obj *gtk.Widget) {
 		picture := gtk.PictureNewFromInternalPtr(obj.Ptr)
 		picture.SetPaintable(paintable)
 	})
 
-	mv.revealer.Use(func(obj *gobject.Object) {
+	mv.revealer.Use(func(obj *gtk.Widget) {
 		revealer := gtk.RevealerNewFromInternalPtr(obj.Ptr)
 		revealer.SetVisible(true)
 		revealer.SetRevealChild(true)
@@ -232,23 +228,22 @@ func (mv *MediaViewer) ShowFile(paintable gdk.Paintable) {
 }
 
 func (mv *MediaViewer) Hide() {
-	mv.revealer.Use(func(obj *gobject.Object) {
+	mv.revealer.Use(func(obj *gtk.Widget) {
 		revealer := gtk.RevealerNewFromInternalPtr(obj.Ptr)
 		if !revealer.GetRevealChild() {
 			return
 		}
 
 		schwifty.OnMainThreadOncePure(func() {
-			mv.revealer.Use(func(obj *gobject.Object) {
+			mv.revealer.Use(func(obj *gtk.Widget) {
 				revealer := gtk.RevealerNewFromInternalPtr(obj.Ptr)
 				revealer.SetRevealChild(false)
 			})
 		})
 		time.AfterFunc(time.Duration(revealer.GetTransitionDuration()*uint(time.Millisecond)), func() {
 			schwifty.OnMainThreadOncePure(func() {
-				mv.revealer.Use(func(obj *gobject.Object) {
-					revealer := gtk.RevealerNewFromInternalPtr(obj.Ptr)
-					revealer.SetVisible(false)
+				mv.revealer.Use(func(obj *gtk.Widget) {
+					obj.SetVisible(false)
 				})
 			})
 		})
@@ -261,7 +256,7 @@ func (mv *MediaViewer) resetZoom() {
 	mv.baseH = 0
 
 	schwifty.OnMainThreadOncePure(func() {
-		mv.picture.Use(func(obj *gobject.Object) {
+		mv.picture.Use(func(obj *gtk.Widget) {
 			picture := gtk.PictureNewFromInternalPtr(obj.Ptr)
 			picture.SetSizeRequest(-1, -1)
 		})
@@ -285,7 +280,7 @@ func (mv *MediaViewer) setZoom(level float64) {
 	if mv.baseW == 0 || mv.baseH == 0 {
 		c := make(chan struct{})
 		schwifty.OnMainThreadOncePure(func() {
-			mv.picture.Use(func(obj *gobject.Object) {
+			mv.picture.Use(func(obj *gtk.Widget) {
 				pic := gtk.PictureNewFromInternalPtr(obj.Ptr)
 				mv.baseW = pic.GetSize(gtk.OrientationHorizontalValue)
 				mv.baseH = pic.GetSize(gtk.OrientationVerticalValue)
@@ -300,8 +295,7 @@ func (mv *MediaViewer) setZoom(level float64) {
 	w := int(float64(mv.baseW) * mv.zoomLevel)
 	h := int(float64(mv.baseH) * mv.zoomLevel)
 	schwifty.OnMainThreadOncePure(func() {
-		mv.picture.Use(func(obj *gobject.Object) {
-			fmt.Println(w, h)
+		mv.picture.Use(func(obj *gtk.Widget) {
 			pic := gtk.PictureNewFromInternalPtr(obj.Ptr)
 			pic.SetSizeRequest(w, h)
 		})
