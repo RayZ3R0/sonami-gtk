@@ -107,15 +107,17 @@ func GetMediaViewer() *MediaViewer {
 	toolbar.SetContent(
 		ScrolledWindow().
 			Child(
-				Picture().
-					HAlign(gtk.AlignCenterValue).
-					VAlign(gtk.AlignCenterValue).
-					CanShrink(true).
-					ContentFit(gtk.ContentFitContainValue).
-					ConnectConstruct(func(p *gtk.Picture) {
-						mvInstance.picture = tracking.NewWeakRef(p)
-					}).
-					Controller(&dblClick.EventController),
+				AspectFrame(
+					Picture().
+						HAlign(gtk.AlignCenterValue).
+						VAlign(gtk.AlignCenterValue).
+						CanShrink(true).
+						ContentFit(gtk.ContentFitContainValue).
+						ConnectConstruct(func(p *gtk.Picture) {
+							mvInstance.picture = tracking.NewWeakRef(p)
+						}).
+						Controller(&dblClick.EventController),
+				),
 			).
 			HExpand(true).
 			VExpand(true).
