@@ -5,7 +5,8 @@ type Service interface {
 	GetAlbumInfo(id string) (AlbumInfo, error)
 	GetAlbumTracks(id string) (Paginator[Track], error)
 
-	GetArtist(id string) (ArtistInfo, error)
+	GetArtist(id string) (Artist, error)
+	GetArtistInfo(id string) (ArtistInfo, error)
 
 	GetPlaylist(id string) (Playlist, error)
 	GetPlaylistInfo(id string) (PlaylistInfo, error)

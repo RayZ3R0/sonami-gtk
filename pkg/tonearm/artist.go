@@ -12,10 +12,16 @@ func (infos ArtistInfos) Names() []string {
 
 type ArtistInfo interface {
 	PlaybackSource
+	Shareable
 
 	// ID returns the unique identifier for the artist
 	ID() string
+}
 
-	// URL returns the shareable URL for the artist
-	URL() string
+type Artist interface {
+	ArtistInfo
+
+	Description() string
+
+	FollowerCount() int
 }

@@ -7,6 +7,7 @@ import (
 	"codeberg.org/dergs/tonearm/internal/secrets"
 	"codeberg.org/dergs/tonearm/internal/services/tidal/openapi"
 	v1 "codeberg.org/dergs/tonearm/internal/services/tidal/v1"
+	v2 "codeberg.org/dergs/tonearm/internal/services/tidal/v2"
 	"codeberg.org/dergs/tonearm/pkg/tidalapi"
 	modelopenapi "codeberg.org/dergs/tonearm/pkg/tidalapi/models/openapi"
 	modelv1 "codeberg.org/dergs/tonearm/pkg/tidalapi/models/v1"
@@ -72,7 +73,16 @@ func (t *Tidal) GetAlbumTracks(id string) (tonearm.Paginator[tonearm.Track], err
 	return paginator, nil
 }
 
-func (t *Tidal) GetArtist(id string) (tonearm.ArtistInfo, error) {
+func (t *Tidal) GetArtist(id string) (tonearm.Artist, error) {
+	artistPage, err := t.API.V2.Artist.Artist(context.Background(), id)
+	if err != nil {
+		return nil, err
+	}
+
+	return v2.NewArtist(*artistPage), nil
+}
+
+func (t *Tidal) GetArtistInfo(id string) (tonearm.ArtistInfo, error) {
 	artist, err := t.API.OpenAPI.V2.Artists.Artist(context.Background(), id, "profileArt")
 	if err != nil {
 		return nil, err

@@ -12,6 +12,8 @@ const (
 )
 
 type TrackInfo interface {
+	Shareable
+
 	// Duration returns the total duration of the track
 	Duration() time.Duration
 
@@ -23,9 +25,6 @@ type TrackInfo interface {
 
 	// Title returns the title of the track without any additional information
 	Title() string
-
-	// URL returns the shareable URL for the track
-	URL() string
 
 	// Version returns the version of the track (e.g. "Acoustic")
 	Version() string

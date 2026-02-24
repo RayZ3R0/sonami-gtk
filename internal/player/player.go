@@ -187,7 +187,7 @@ func PlayArtistTopSongs(artistId string, shuffle bool, position int) error {
 		return err
 	}
 
-	artistInfo, err := service.GetArtist(artistId)
+	artistInfo, err := service.GetArtistInfo(artistId)
 	if err != nil {
 		resetLoadingState()
 		return err
