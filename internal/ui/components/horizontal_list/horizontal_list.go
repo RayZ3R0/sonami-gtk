@@ -106,7 +106,8 @@ func NewHorizontalList(title string) *HorizontalList {
 				Policy(gtk.PolicyExternalValue, gtk.PolicyNeverValue).
 				PropagateNaturalWidth(true).
 				PropagateNaturalWidth(true).
-				ConnectConstruct(func(sw *gtk.ScrolledWindow) {
+				ConnectRealize(func(w gtk.Widget) {
+					sw := gtk.ScrolledWindowNewFromInternalPtr(w.Ptr)
 					child := sw.GetChild()
 					defer child.Unref()
 					child.SetOverflow(gtk.OverflowVisibleValue)
