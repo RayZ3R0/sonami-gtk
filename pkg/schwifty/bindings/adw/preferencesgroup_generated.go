@@ -377,9 +377,9 @@ func (f PreferencesGroup) VPadding(padding int) PreferencesGroup {
 func (f PreferencesGroup) BindVisible(state *state.State[bool]) PreferencesGroup {
 	return func() *adw.PreferencesGroup {
 		var callbackId string
-		var ref weak.WidgetRef
-		return f.ConnectRealize(func(w gtk.Widget) {
-			ref = weak.NewWidgetRef(&w)
+		var ref weak.ObjectRef
+		return f.ConnectConstruct(func(w *adw.PreferencesGroup) {
+			ref = weak.NewObjectRef(&w.Widget)
 			callbackId = state.AddCallback(func(newValue bool) {
 				callback.OnMainThreadOncePure(func() {
 					if obj := ref.Get(); obj != nil {
@@ -388,7 +388,7 @@ func (f PreferencesGroup) BindVisible(state *state.State[bool]) PreferencesGroup
 					}
 				})
 			})
-		}).ConnectUnrealize(func(w gtk.Widget) {
+		}).ConnectDestroy(func(w gtk.Widget) {
 			state.RemoveCallback(callbackId)
 		})()
 	}
