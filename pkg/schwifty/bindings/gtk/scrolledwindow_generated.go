@@ -376,9 +376,9 @@ func (f ScrolledWindow) VPadding(padding int) ScrolledWindow {
 func (f ScrolledWindow) BindVisible(state *state.State[bool]) ScrolledWindow {
 	return func() *gtk.ScrolledWindow {
 		var callbackId string
-		var ref weak.WidgetRef
-		return f.ConnectRealize(func(w gtk.Widget) {
-			ref = weak.NewWidgetRef(&w)
+		var ref weak.ObjectRef
+		return f.ConnectConstruct(func(w *gtk.ScrolledWindow) {
+			ref = weak.NewObjectRef(&w.Widget)
 			callbackId = state.AddCallback(func(newValue bool) {
 				callback.OnMainThreadOncePure(func() {
 					if obj := ref.Get(); obj != nil {
@@ -387,7 +387,7 @@ func (f ScrolledWindow) BindVisible(state *state.State[bool]) ScrolledWindow {
 					}
 				})
 			})
-		}).ConnectUnrealize(func(w gtk.Widget) {
+		}).ConnectDestroy(func(w gtk.Widget) {
 			state.RemoveCallback(callbackId)
 		})()
 	}

@@ -376,9 +376,9 @@ func (f Scale) VPadding(padding int) Scale {
 func (f Scale) BindVisible(state *state.State[bool]) Scale {
 	return func() *gtk.Scale {
 		var callbackId string
-		var ref weak.WidgetRef
-		return f.ConnectRealize(func(w gtk.Widget) {
-			ref = weak.NewWidgetRef(&w)
+		var ref weak.ObjectRef
+		return f.ConnectConstruct(func(w *gtk.Scale) {
+			ref = weak.NewObjectRef(&w.Widget)
 			callbackId = state.AddCallback(func(newValue bool) {
 				callback.OnMainThreadOncePure(func() {
 					if obj := ref.Get(); obj != nil {
@@ -387,7 +387,7 @@ func (f Scale) BindVisible(state *state.State[bool]) Scale {
 					}
 				})
 			})
-		}).ConnectUnrealize(func(w gtk.Widget) {
+		}).ConnectDestroy(func(w gtk.Widget) {
 			state.RemoveCallback(callbackId)
 		})()
 	}

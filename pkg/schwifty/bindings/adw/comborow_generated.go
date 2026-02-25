@@ -377,9 +377,9 @@ func (f ComboRow) VPadding(padding int) ComboRow {
 func (f ComboRow) BindVisible(state *state.State[bool]) ComboRow {
 	return func() *adw.ComboRow {
 		var callbackId string
-		var ref weak.WidgetRef
-		return f.ConnectRealize(func(w gtk.Widget) {
-			ref = weak.NewWidgetRef(&w)
+		var ref weak.ObjectRef
+		return f.ConnectConstruct(func(w *adw.ComboRow) {
+			ref = weak.NewObjectRef(&w.Widget)
 			callbackId = state.AddCallback(func(newValue bool) {
 				callback.OnMainThreadOncePure(func() {
 					if obj := ref.Get(); obj != nil {
@@ -388,7 +388,7 @@ func (f ComboRow) BindVisible(state *state.State[bool]) ComboRow {
 					}
 				})
 			})
-		}).ConnectUnrealize(func(w gtk.Widget) {
+		}).ConnectDestroy(func(w gtk.Widget) {
 			state.RemoveCallback(callbackId)
 		})()
 	}

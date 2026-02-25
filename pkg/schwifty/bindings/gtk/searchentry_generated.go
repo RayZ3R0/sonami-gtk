@@ -376,9 +376,9 @@ func (f SearchEntry) VPadding(padding int) SearchEntry {
 func (f SearchEntry) BindVisible(state *state.State[bool]) SearchEntry {
 	return func() *gtk.SearchEntry {
 		var callbackId string
-		var ref weak.WidgetRef
-		return f.ConnectRealize(func(w gtk.Widget) {
-			ref = weak.NewWidgetRef(&w)
+		var ref weak.ObjectRef
+		return f.ConnectConstruct(func(w *gtk.SearchEntry) {
+			ref = weak.NewObjectRef(&w.Widget)
 			callbackId = state.AddCallback(func(newValue bool) {
 				callback.OnMainThreadOncePure(func() {
 					if obj := ref.Get(); obj != nil {
@@ -387,7 +387,7 @@ func (f SearchEntry) BindVisible(state *state.State[bool]) SearchEntry {
 					}
 				})
 			})
-		}).ConnectUnrealize(func(w gtk.Widget) {
+		}).ConnectDestroy(func(w gtk.Widget) {
 			state.RemoveCallback(callbackId)
 		})()
 	}

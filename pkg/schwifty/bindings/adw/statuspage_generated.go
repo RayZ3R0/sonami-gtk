@@ -377,9 +377,9 @@ func (f StatusPage) VPadding(padding int) StatusPage {
 func (f StatusPage) BindVisible(state *state.State[bool]) StatusPage {
 	return func() *adw.StatusPage {
 		var callbackId string
-		var ref weak.WidgetRef
-		return f.ConnectRealize(func(w gtk.Widget) {
-			ref = weak.NewWidgetRef(&w)
+		var ref weak.ObjectRef
+		return f.ConnectConstruct(func(w *adw.StatusPage) {
+			ref = weak.NewObjectRef(&w.Widget)
 			callbackId = state.AddCallback(func(newValue bool) {
 				callback.OnMainThreadOncePure(func() {
 					if obj := ref.Get(); obj != nil {
@@ -388,7 +388,7 @@ func (f StatusPage) BindVisible(state *state.State[bool]) StatusPage {
 					}
 				})
 			})
-		}).ConnectUnrealize(func(w gtk.Widget) {
+		}).ConnectDestroy(func(w gtk.Widget) {
 			state.RemoveCallback(callbackId)
 		})()
 	}
