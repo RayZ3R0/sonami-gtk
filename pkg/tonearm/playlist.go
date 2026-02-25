@@ -4,6 +4,7 @@ import "time"
 
 type PlaylistInfo interface {
 	PlaybackSource
+	Shareable
 
 	// CreatedAt returns the creation date of the playlist
 	CreatedAt() time.Time
@@ -16,9 +17,6 @@ type PlaylistInfo interface {
 
 	// IsMix returns true if the playlist is a mix
 	IsMix() bool
-
-	// URL returns the shareable URL for the album
-	URL() string
 }
 
 type Playlist interface {

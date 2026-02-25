@@ -4,6 +4,7 @@ import "time"
 
 type AlbumInfo interface {
 	PlaybackSource
+	Shareable
 
 	// Duration returns the duration of the album
 	Duration() time.Duration
@@ -13,9 +14,6 @@ type AlbumInfo interface {
 
 	// ReleasedAt returns the release date of the album
 	ReleasedAt() time.Time
-
-	// URL returns the shareable URL for the album
-	URL() string
 }
 
 type Album interface {

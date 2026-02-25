@@ -22,3 +22,7 @@ func (m MyTracksInfo) Title() string {
 func (m MyTracksInfo) SourceType() tonearm.SourceType {
 	return tonearm.SourceTypePlaylist
 }
+
+func (m MyTracksInfo) URL() string {
+	return "https://tidal.com/my-collection/tracks"
+}
