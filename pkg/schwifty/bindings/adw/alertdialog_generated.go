@@ -36,6 +36,14 @@ func (f AlertDialog) ConnectDestroy(cb func(gtk.Widget)) AlertDialog {
 	}
 }
 
+func (f AlertDialog) ConnectHide(cb func(gtk.Widget)) AlertDialog {
+	return func() *adw.AlertDialog {
+		widget := f()
+		callback.HandleCallback(widget.Object, "hide", cb)
+		return widget
+	}
+}
+
 func (f AlertDialog) ConnectMap(cb func(gtk.Widget)) AlertDialog {
 	return func() *adw.AlertDialog {
 		widget := f()
@@ -52,6 +60,14 @@ func (f AlertDialog) ConnectRealize(cb func(gtk.Widget)) AlertDialog {
 	}
 }
 
+func (f AlertDialog) ConnectShow(cb func(gtk.Widget)) AlertDialog {
+	return func() *adw.AlertDialog {
+		widget := f()
+		callback.HandleCallback(widget.Object, "show", cb)
+		return widget
+	}
+}
+
 func (f AlertDialog) ConnectUnmap(cb func(gtk.Widget)) AlertDialog {
 	return func() *adw.AlertDialog {
 		widget := f()
@@ -64,6 +80,14 @@ func (f AlertDialog) ConnectUnrealize(cb func(gtk.Widget)) AlertDialog {
 	return func() *adw.AlertDialog {
 		widget := f()
 		callback.HandleCallback(widget.Object, "unrealize", cb)
+		return widget
+	}
+}
+
+func (f AlertDialog) Controller(controller *gtk.EventController) AlertDialog {
+	return func() *adw.AlertDialog {
+		widget := f()
+		widget.AddController(controller)
 		return widget
 	}
 }

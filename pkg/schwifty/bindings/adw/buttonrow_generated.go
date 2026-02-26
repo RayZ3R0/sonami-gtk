@@ -36,6 +36,14 @@ func (f ButtonRow) ConnectDestroy(cb func(gtk.Widget)) ButtonRow {
 	}
 }
 
+func (f ButtonRow) ConnectHide(cb func(gtk.Widget)) ButtonRow {
+	return func() *adw.ButtonRow {
+		widget := f()
+		callback.HandleCallback(widget.Object, "hide", cb)
+		return widget
+	}
+}
+
 func (f ButtonRow) ConnectMap(cb func(gtk.Widget)) ButtonRow {
 	return func() *adw.ButtonRow {
 		widget := f()
@@ -52,6 +60,14 @@ func (f ButtonRow) ConnectRealize(cb func(gtk.Widget)) ButtonRow {
 	}
 }
 
+func (f ButtonRow) ConnectShow(cb func(gtk.Widget)) ButtonRow {
+	return func() *adw.ButtonRow {
+		widget := f()
+		callback.HandleCallback(widget.Object, "show", cb)
+		return widget
+	}
+}
+
 func (f ButtonRow) ConnectUnmap(cb func(gtk.Widget)) ButtonRow {
 	return func() *adw.ButtonRow {
 		widget := f()
@@ -64,6 +80,14 @@ func (f ButtonRow) ConnectUnrealize(cb func(gtk.Widget)) ButtonRow {
 	return func() *adw.ButtonRow {
 		widget := f()
 		callback.HandleCallback(widget.Object, "unrealize", cb)
+		return widget
+	}
+}
+
+func (f ButtonRow) Controller(controller *gtk.EventController) ButtonRow {
+	return func() *adw.ButtonRow {
+		widget := f()
+		widget.AddController(controller)
 		return widget
 	}
 }

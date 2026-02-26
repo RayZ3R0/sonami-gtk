@@ -35,6 +35,14 @@ func (f Box) ConnectDestroy(cb func(gtk.Widget)) Box {
 	}
 }
 
+func (f Box) ConnectHide(cb func(gtk.Widget)) Box {
+	return func() *gtk.Box {
+		widget := f()
+		callback.HandleCallback(widget.Object, "hide", cb)
+		return widget
+	}
+}
+
 func (f Box) ConnectMap(cb func(gtk.Widget)) Box {
 	return func() *gtk.Box {
 		widget := f()
@@ -51,6 +59,14 @@ func (f Box) ConnectRealize(cb func(gtk.Widget)) Box {
 	}
 }
 
+func (f Box) ConnectShow(cb func(gtk.Widget)) Box {
+	return func() *gtk.Box {
+		widget := f()
+		callback.HandleCallback(widget.Object, "show", cb)
+		return widget
+	}
+}
+
 func (f Box) ConnectUnmap(cb func(gtk.Widget)) Box {
 	return func() *gtk.Box {
 		widget := f()
@@ -63,6 +79,14 @@ func (f Box) ConnectUnrealize(cb func(gtk.Widget)) Box {
 	return func() *gtk.Box {
 		widget := f()
 		callback.HandleCallback(widget.Object, "unrealize", cb)
+		return widget
+	}
+}
+
+func (f Box) Controller(controller *gtk.EventController) Box {
+	return func() *gtk.Box {
+		widget := f()
+		widget.AddController(controller)
 		return widget
 	}
 }

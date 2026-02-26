@@ -35,6 +35,14 @@ func (f ScrolledWindow) ConnectDestroy(cb func(gtk.Widget)) ScrolledWindow {
 	}
 }
 
+func (f ScrolledWindow) ConnectHide(cb func(gtk.Widget)) ScrolledWindow {
+	return func() *gtk.ScrolledWindow {
+		widget := f()
+		callback.HandleCallback(widget.Object, "hide", cb)
+		return widget
+	}
+}
+
 func (f ScrolledWindow) ConnectMap(cb func(gtk.Widget)) ScrolledWindow {
 	return func() *gtk.ScrolledWindow {
 		widget := f()
@@ -51,6 +59,14 @@ func (f ScrolledWindow) ConnectRealize(cb func(gtk.Widget)) ScrolledWindow {
 	}
 }
 
+func (f ScrolledWindow) ConnectShow(cb func(gtk.Widget)) ScrolledWindow {
+	return func() *gtk.ScrolledWindow {
+		widget := f()
+		callback.HandleCallback(widget.Object, "show", cb)
+		return widget
+	}
+}
+
 func (f ScrolledWindow) ConnectUnmap(cb func(gtk.Widget)) ScrolledWindow {
 	return func() *gtk.ScrolledWindow {
 		widget := f()
@@ -63,6 +79,14 @@ func (f ScrolledWindow) ConnectUnrealize(cb func(gtk.Widget)) ScrolledWindow {
 	return func() *gtk.ScrolledWindow {
 		widget := f()
 		callback.HandleCallback(widget.Object, "unrealize", cb)
+		return widget
+	}
+}
+
+func (f ScrolledWindow) Controller(controller *gtk.EventController) ScrolledWindow {
+	return func() *gtk.ScrolledWindow {
+		widget := f()
+		widget.AddController(controller)
 		return widget
 	}
 }

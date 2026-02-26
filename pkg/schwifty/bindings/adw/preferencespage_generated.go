@@ -36,6 +36,14 @@ func (f PreferencesPage) ConnectDestroy(cb func(gtk.Widget)) PreferencesPage {
 	}
 }
 
+func (f PreferencesPage) ConnectHide(cb func(gtk.Widget)) PreferencesPage {
+	return func() *adw.PreferencesPage {
+		widget := f()
+		callback.HandleCallback(widget.Object, "hide", cb)
+		return widget
+	}
+}
+
 func (f PreferencesPage) ConnectMap(cb func(gtk.Widget)) PreferencesPage {
 	return func() *adw.PreferencesPage {
 		widget := f()
@@ -52,6 +60,14 @@ func (f PreferencesPage) ConnectRealize(cb func(gtk.Widget)) PreferencesPage {
 	}
 }
 
+func (f PreferencesPage) ConnectShow(cb func(gtk.Widget)) PreferencesPage {
+	return func() *adw.PreferencesPage {
+		widget := f()
+		callback.HandleCallback(widget.Object, "show", cb)
+		return widget
+	}
+}
+
 func (f PreferencesPage) ConnectUnmap(cb func(gtk.Widget)) PreferencesPage {
 	return func() *adw.PreferencesPage {
 		widget := f()
@@ -64,6 +80,14 @@ func (f PreferencesPage) ConnectUnrealize(cb func(gtk.Widget)) PreferencesPage {
 	return func() *adw.PreferencesPage {
 		widget := f()
 		callback.HandleCallback(widget.Object, "unrealize", cb)
+		return widget
+	}
+}
+
+func (f PreferencesPage) Controller(controller *gtk.EventController) PreferencesPage {
+	return func() *adw.PreferencesPage {
+		widget := f()
+		widget.AddController(controller)
 		return widget
 	}
 }

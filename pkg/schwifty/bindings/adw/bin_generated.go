@@ -36,6 +36,14 @@ func (f Bin) ConnectDestroy(cb func(gtk.Widget)) Bin {
 	}
 }
 
+func (f Bin) ConnectHide(cb func(gtk.Widget)) Bin {
+	return func() *adw.Bin {
+		widget := f()
+		callback.HandleCallback(widget.Object, "hide", cb)
+		return widget
+	}
+}
+
 func (f Bin) ConnectMap(cb func(gtk.Widget)) Bin {
 	return func() *adw.Bin {
 		widget := f()
@@ -52,6 +60,14 @@ func (f Bin) ConnectRealize(cb func(gtk.Widget)) Bin {
 	}
 }
 
+func (f Bin) ConnectShow(cb func(gtk.Widget)) Bin {
+	return func() *adw.Bin {
+		widget := f()
+		callback.HandleCallback(widget.Object, "show", cb)
+		return widget
+	}
+}
+
 func (f Bin) ConnectUnmap(cb func(gtk.Widget)) Bin {
 	return func() *adw.Bin {
 		widget := f()
@@ -64,6 +80,14 @@ func (f Bin) ConnectUnrealize(cb func(gtk.Widget)) Bin {
 	return func() *adw.Bin {
 		widget := f()
 		callback.HandleCallback(widget.Object, "unrealize", cb)
+		return widget
+	}
+}
+
+func (f Bin) Controller(controller *gtk.EventController) Bin {
+	return func() *adw.Bin {
+		widget := f()
+		widget.AddController(controller)
 		return widget
 	}
 }

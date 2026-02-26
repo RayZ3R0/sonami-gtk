@@ -36,6 +36,14 @@ func (f HeaderBar) ConnectDestroy(cb func(gtk.Widget)) HeaderBar {
 	}
 }
 
+func (f HeaderBar) ConnectHide(cb func(gtk.Widget)) HeaderBar {
+	return func() *adw.HeaderBar {
+		widget := f()
+		callback.HandleCallback(widget.Object, "hide", cb)
+		return widget
+	}
+}
+
 func (f HeaderBar) ConnectMap(cb func(gtk.Widget)) HeaderBar {
 	return func() *adw.HeaderBar {
 		widget := f()
@@ -52,6 +60,14 @@ func (f HeaderBar) ConnectRealize(cb func(gtk.Widget)) HeaderBar {
 	}
 }
 
+func (f HeaderBar) ConnectShow(cb func(gtk.Widget)) HeaderBar {
+	return func() *adw.HeaderBar {
+		widget := f()
+		callback.HandleCallback(widget.Object, "show", cb)
+		return widget
+	}
+}
+
 func (f HeaderBar) ConnectUnmap(cb func(gtk.Widget)) HeaderBar {
 	return func() *adw.HeaderBar {
 		widget := f()
@@ -64,6 +80,14 @@ func (f HeaderBar) ConnectUnrealize(cb func(gtk.Widget)) HeaderBar {
 	return func() *adw.HeaderBar {
 		widget := f()
 		callback.HandleCallback(widget.Object, "unrealize", cb)
+		return widget
+	}
+}
+
+func (f HeaderBar) Controller(controller *gtk.EventController) HeaderBar {
+	return func() *adw.HeaderBar {
+		widget := f()
+		widget.AddController(controller)
 		return widget
 	}
 }

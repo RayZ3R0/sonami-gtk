@@ -36,6 +36,14 @@ func (f StatusPage) ConnectDestroy(cb func(gtk.Widget)) StatusPage {
 	}
 }
 
+func (f StatusPage) ConnectHide(cb func(gtk.Widget)) StatusPage {
+	return func() *adw.StatusPage {
+		widget := f()
+		callback.HandleCallback(widget.Object, "hide", cb)
+		return widget
+	}
+}
+
 func (f StatusPage) ConnectMap(cb func(gtk.Widget)) StatusPage {
 	return func() *adw.StatusPage {
 		widget := f()
@@ -52,6 +60,14 @@ func (f StatusPage) ConnectRealize(cb func(gtk.Widget)) StatusPage {
 	}
 }
 
+func (f StatusPage) ConnectShow(cb func(gtk.Widget)) StatusPage {
+	return func() *adw.StatusPage {
+		widget := f()
+		callback.HandleCallback(widget.Object, "show", cb)
+		return widget
+	}
+}
+
 func (f StatusPage) ConnectUnmap(cb func(gtk.Widget)) StatusPage {
 	return func() *adw.StatusPage {
 		widget := f()
@@ -64,6 +80,14 @@ func (f StatusPage) ConnectUnrealize(cb func(gtk.Widget)) StatusPage {
 	return func() *adw.StatusPage {
 		widget := f()
 		callback.HandleCallback(widget.Object, "unrealize", cb)
+		return widget
+	}
+}
+
+func (f StatusPage) Controller(controller *gtk.EventController) StatusPage {
+	return func() *adw.StatusPage {
+		widget := f()
+		widget.AddController(controller)
 		return widget
 	}
 }

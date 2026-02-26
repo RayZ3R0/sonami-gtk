@@ -109,11 +109,26 @@ func Popover(child any) gtkbindings.Popover {
 	})
 }
 
+func Revealer(child any) gtkbindings.Revealer {
+	return managedWidget("Revealer", func() *gtk.Revealer {
+		revealer := gtk.NewRevealer()
+		revealer.SetChild(gtkbindings.ResolveWidget(child))
+		return revealer
+	})
+}
+
 func Scale(orientation gtk.Orientation) gtkbindings.Scale {
 	return managedWidget("Scale", func() *gtk.Scale {
 		scale := gtk.NewScale(orientation, nil)
 		scale.ConnectChangeValue(&callback.RangeChangeValueCallback)
 		return scale
+	})
+}
+
+func ShortcutController() gtkbindings.ShortcutController {
+	return managedObject("ShortcutController", func() *gtk.ShortcutController {
+		controller := gtk.NewShortcutController()
+		return controller
 	})
 }
 

@@ -10,6 +10,14 @@ import (
 
 //go:generate go run codeberg.org/dergs/tonearm/pkg/schwifty/gen Picture *gtk.Picture gtk
 
+func (f Picture) CanShrink(b bool) Picture {
+	return func() *gtk.Picture {
+		picture := f()
+		picture.SetCanShrink(b)
+		return picture
+	}
+}
+
 func (f Picture) BindPaintable(state *state.State[Paintable]) Picture {
 	return func() *gtk.Picture {
 		var callbackId string

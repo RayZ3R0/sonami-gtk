@@ -35,6 +35,14 @@ func (f Grid) ConnectDestroy(cb func(gtk.Widget)) Grid {
 	}
 }
 
+func (f Grid) ConnectHide(cb func(gtk.Widget)) Grid {
+	return func() *gtk.Grid {
+		widget := f()
+		callback.HandleCallback(widget.Object, "hide", cb)
+		return widget
+	}
+}
+
 func (f Grid) ConnectMap(cb func(gtk.Widget)) Grid {
 	return func() *gtk.Grid {
 		widget := f()
@@ -51,6 +59,14 @@ func (f Grid) ConnectRealize(cb func(gtk.Widget)) Grid {
 	}
 }
 
+func (f Grid) ConnectShow(cb func(gtk.Widget)) Grid {
+	return func() *gtk.Grid {
+		widget := f()
+		callback.HandleCallback(widget.Object, "show", cb)
+		return widget
+	}
+}
+
 func (f Grid) ConnectUnmap(cb func(gtk.Widget)) Grid {
 	return func() *gtk.Grid {
 		widget := f()
@@ -63,6 +79,14 @@ func (f Grid) ConnectUnrealize(cb func(gtk.Widget)) Grid {
 	return func() *gtk.Grid {
 		widget := f()
 		callback.HandleCallback(widget.Object, "unrealize", cb)
+		return widget
+	}
+}
+
+func (f Grid) Controller(controller *gtk.EventController) Grid {
+	return func() *gtk.Grid {
+		widget := f()
+		widget.AddController(controller)
 		return widget
 	}
 }

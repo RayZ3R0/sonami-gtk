@@ -35,6 +35,14 @@ func (f AspectFrame) ConnectDestroy(cb func(gtk.Widget)) AspectFrame {
 	}
 }
 
+func (f AspectFrame) ConnectHide(cb func(gtk.Widget)) AspectFrame {
+	return func() *gtk.AspectFrame {
+		widget := f()
+		callback.HandleCallback(widget.Object, "hide", cb)
+		return widget
+	}
+}
+
 func (f AspectFrame) ConnectMap(cb func(gtk.Widget)) AspectFrame {
 	return func() *gtk.AspectFrame {
 		widget := f()
@@ -51,6 +59,14 @@ func (f AspectFrame) ConnectRealize(cb func(gtk.Widget)) AspectFrame {
 	}
 }
 
+func (f AspectFrame) ConnectShow(cb func(gtk.Widget)) AspectFrame {
+	return func() *gtk.AspectFrame {
+		widget := f()
+		callback.HandleCallback(widget.Object, "show", cb)
+		return widget
+	}
+}
+
 func (f AspectFrame) ConnectUnmap(cb func(gtk.Widget)) AspectFrame {
 	return func() *gtk.AspectFrame {
 		widget := f()
@@ -63,6 +79,14 @@ func (f AspectFrame) ConnectUnrealize(cb func(gtk.Widget)) AspectFrame {
 	return func() *gtk.AspectFrame {
 		widget := f()
 		callback.HandleCallback(widget.Object, "unrealize", cb)
+		return widget
+	}
+}
+
+func (f AspectFrame) Controller(controller *gtk.EventController) AspectFrame {
+	return func() *gtk.AspectFrame {
+		widget := f()
+		widget.AddController(controller)
 		return widget
 	}
 }

@@ -33,6 +33,14 @@ func (f TEMPLATE_TYPE) ConnectDestroy(cb func(gtk.Widget)) TEMPLATE_TYPE {
 	}
 }
 
+func (f TEMPLATE_TYPE) ConnectHide(cb func(gtk.Widget)) TEMPLATE_TYPE {
+	return func() TEMPLATE_BASE_TYPE {
+		widget := f()
+		callback.HandleCallback(widget.Object, "hide", cb)
+		return widget
+	}
+}
+
 func (f TEMPLATE_TYPE) ConnectMap(cb func(gtk.Widget)) TEMPLATE_TYPE {
 	return func() TEMPLATE_BASE_TYPE {
 		widget := f()
@@ -49,6 +57,14 @@ func (f TEMPLATE_TYPE) ConnectRealize(cb func(gtk.Widget)) TEMPLATE_TYPE {
 	}
 }
 
+func (f TEMPLATE_TYPE) ConnectShow(cb func(gtk.Widget)) TEMPLATE_TYPE {
+	return func() TEMPLATE_BASE_TYPE {
+		widget := f()
+		callback.HandleCallback(widget.Object, "show", cb)
+		return widget
+	}
+}
+
 func (f TEMPLATE_TYPE) ConnectUnmap(cb func(gtk.Widget)) TEMPLATE_TYPE {
 	return func() TEMPLATE_BASE_TYPE {
 		widget := f()
@@ -61,6 +77,14 @@ func (f TEMPLATE_TYPE) ConnectUnrealize(cb func(gtk.Widget)) TEMPLATE_TYPE {
 	return func() TEMPLATE_BASE_TYPE {
 		widget := f()
 		callback.HandleCallback(widget.Object, "unrealize", cb)
+		return widget
+	}
+}
+
+func (f TEMPLATE_TYPE) Controller(controller *gtk.EventController) TEMPLATE_TYPE {
+	return func() TEMPLATE_BASE_TYPE {
+		widget := f()
+		widget.AddController(controller)
 		return widget
 	}
 }

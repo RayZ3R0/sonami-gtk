@@ -15,6 +15,7 @@ import (
 	"github.com/jwijenbergh/puregotk/v4/gobject"
 	"github.com/jwijenbergh/puregotk/v4/gtk"
 
+	"codeberg.org/dergs/tonearm/internal/ui/components"
 	_ "codeberg.org/dergs/tonearm/internal/ui/routes"
 )
 
@@ -82,9 +83,17 @@ func (w *Window) build() *gtk.Widget {
 	w.AddAction(sidebarAction)
 	w.GetApplication().SetAccelsForAction("win.toggle-sidebar", []string{"<Ctrl>B", "F9"})
 
-	toastLayout := adw.NewToastOverlay()
-	toastLayout.SetChild(&layout.Widget)
+	mediaViewerOverlay := gtk.NewOverlay()
+	mediaViewerOverlay.SetChild(&layout.Widget)
 	layout.Unref()
+
+	viewer := components.GetMediaViewer().ToGTK()
+	mediaViewerOverlay.AddOverlay(viewer)
+	viewer.Unref()
+
+	toastLayout := adw.NewToastOverlay()
+	toastLayout.SetChild(&mediaViewerOverlay.Widget)
+	mediaViewerOverlay.Unref()
 
 	notifications.OnToast.On(func(title string) bool {
 		schwifty.OnMainThreadOncePure(func() {

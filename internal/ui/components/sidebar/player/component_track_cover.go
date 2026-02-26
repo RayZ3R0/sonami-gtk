@@ -2,6 +2,7 @@ package player
 
 import (
 	"log/slog"
+	"math"
 
 	"codeberg.org/dergs/tonearm/internal/player"
 	"codeberg.org/dergs/tonearm/internal/resources"
@@ -16,20 +17,22 @@ import (
 	"github.com/jwijenbergh/puregotk/v4/gtk"
 )
 
-var coverState = state.New[schwifty.Paintable](nil)
+var (
+	coverState = state.New[schwifty.Paintable](nil)
+)
 
 func init() {
 	player.TrackChanged.On(func(trackInfo tonearm.Track) bool {
 		if trackInfo != nil {
-			coverUrl := trackInfo.Cover(320)
+			coverUrl := trackInfo.Cover(math.MaxInt)
 			if coverUrl == "" {
-				slog.Error("Failed to load cover URL")
+				slog.Error("Failed to load hi-res cover URL")
 				return signals.Continue
 			}
 
 			texture, err := injector.MustInject[*imgutil.ImgUtil]().LoadCropped(coverUrl)
 			if err != nil {
-				slog.Error("failed to load track cover", "error", err)
+				slog.Error("failed to load hi-res track cover", "error", err)
 				return signals.Continue
 			}
 			coverState.SetValue(texture)
@@ -45,6 +48,13 @@ func trackCover() schwifty.Picture {
 		Picture().
 			FromPaintable(resources.MissingAlbum()).
 			BindPaintable(coverState).HExpand(true).
-			HAlign(gtk.AlignCenterValue),
+			HAlign(gtk.AlignCenterValue).
+			ConnectConstruct(func(p *gtk.Picture) {
+				controller := gtk.NewGestureClick()
+				controller.ConnectPressed(new(func(gtk.GestureClick, int, float64, float64) {
+					components.GetMediaViewer().ShowFile(coverState.Value())
+				}))
+				p.AddController(&controller.EventController)
+			}),
 	)
 }

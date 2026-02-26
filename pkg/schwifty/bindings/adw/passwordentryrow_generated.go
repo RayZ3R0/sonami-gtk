@@ -36,6 +36,14 @@ func (f PasswordEntryRow) ConnectDestroy(cb func(gtk.Widget)) PasswordEntryRow {
 	}
 }
 
+func (f PasswordEntryRow) ConnectHide(cb func(gtk.Widget)) PasswordEntryRow {
+	return func() *adw.PasswordEntryRow {
+		widget := f()
+		callback.HandleCallback(widget.Object, "hide", cb)
+		return widget
+	}
+}
+
 func (f PasswordEntryRow) ConnectMap(cb func(gtk.Widget)) PasswordEntryRow {
 	return func() *adw.PasswordEntryRow {
 		widget := f()
@@ -52,6 +60,14 @@ func (f PasswordEntryRow) ConnectRealize(cb func(gtk.Widget)) PasswordEntryRow {
 	}
 }
 
+func (f PasswordEntryRow) ConnectShow(cb func(gtk.Widget)) PasswordEntryRow {
+	return func() *adw.PasswordEntryRow {
+		widget := f()
+		callback.HandleCallback(widget.Object, "show", cb)
+		return widget
+	}
+}
+
 func (f PasswordEntryRow) ConnectUnmap(cb func(gtk.Widget)) PasswordEntryRow {
 	return func() *adw.PasswordEntryRow {
 		widget := f()
@@ -64,6 +80,14 @@ func (f PasswordEntryRow) ConnectUnrealize(cb func(gtk.Widget)) PasswordEntryRow
 	return func() *adw.PasswordEntryRow {
 		widget := f()
 		callback.HandleCallback(widget.Object, "unrealize", cb)
+		return widget
+	}
+}
+
+func (f PasswordEntryRow) Controller(controller *gtk.EventController) PasswordEntryRow {
+	return func() *adw.PasswordEntryRow {
+		widget := f()
+		widget.AddController(controller)
 		return widget
 	}
 }

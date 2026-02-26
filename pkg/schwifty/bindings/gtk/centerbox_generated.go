@@ -35,6 +35,14 @@ func (f CenterBox) ConnectDestroy(cb func(gtk.Widget)) CenterBox {
 	}
 }
 
+func (f CenterBox) ConnectHide(cb func(gtk.Widget)) CenterBox {
+	return func() *gtk.CenterBox {
+		widget := f()
+		callback.HandleCallback(widget.Object, "hide", cb)
+		return widget
+	}
+}
+
 func (f CenterBox) ConnectMap(cb func(gtk.Widget)) CenterBox {
 	return func() *gtk.CenterBox {
 		widget := f()
@@ -51,6 +59,14 @@ func (f CenterBox) ConnectRealize(cb func(gtk.Widget)) CenterBox {
 	}
 }
 
+func (f CenterBox) ConnectShow(cb func(gtk.Widget)) CenterBox {
+	return func() *gtk.CenterBox {
+		widget := f()
+		callback.HandleCallback(widget.Object, "show", cb)
+		return widget
+	}
+}
+
 func (f CenterBox) ConnectUnmap(cb func(gtk.Widget)) CenterBox {
 	return func() *gtk.CenterBox {
 		widget := f()
@@ -63,6 +79,14 @@ func (f CenterBox) ConnectUnrealize(cb func(gtk.Widget)) CenterBox {
 	return func() *gtk.CenterBox {
 		widget := f()
 		callback.HandleCallback(widget.Object, "unrealize", cb)
+		return widget
+	}
+}
+
+func (f CenterBox) Controller(controller *gtk.EventController) CenterBox {
+	return func() *gtk.CenterBox {
+		widget := f()
+		widget.AddController(controller)
 		return widget
 	}
 }
