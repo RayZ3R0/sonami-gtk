@@ -4,9 +4,13 @@ import (
 	"log/slog"
 	"strings"
 	"time"
+
+	sidebarnav "codeberg.org/dergs/tonearm/internal/ui/sidebar/navigation"
 )
 
 var logger = slog.With("module", "router")
+
+var SidebarNavPrefix = "sidebar:"
 
 func Navigate(path string) {
 	navigate(strings.TrimPrefix(path, "tidal://"), false)
@@ -15,6 +19,11 @@ func Navigate(path string) {
 func navigate(path string, offRecord bool) {
 	if history.IsCurrentlyOn(path) && !offRecord {
 		logger.Debug("skipped navigation as we are already on the same page")
+		return
+	}
+
+	if param, found := strings.CutPrefix(path, SidebarNavPrefix); found {
+		sidebarnav.Navigation.Notify(sidebarnav.Path(param))
 		return
 	}
 

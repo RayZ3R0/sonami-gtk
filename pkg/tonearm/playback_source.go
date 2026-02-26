@@ -7,6 +7,7 @@ const (
 	SourceTypeTrack    SourceType = "track"
 	SourceTypeArtist   SourceType = "artist"
 	SourceTypePlaylist SourceType = "playlist"
+	SourceTypeQueue    SourceType = "queue"
 	SourceTypeUnknown  SourceType = "unknown"
 )
 

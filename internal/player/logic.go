@@ -7,6 +7,7 @@ import (
 	"codeberg.org/dergs/tonearm/internal/player/queue"
 	"codeberg.org/dergs/tonearm/internal/settings"
 	"codeberg.org/dergs/tonearm/internal/signals"
+	"codeberg.org/dergs/tonearm/pkg/tonearm"
 	"github.com/go-gst/go-gst/gst"
 )
 
@@ -39,6 +40,7 @@ func playNextTrack() {
 		return
 	}
 
+	userQueueHasTracks := len(UserQueue.Entries().CurrentValue()) > 0
 	nextTrack := getNextTrackFromQueue(false)
 	if nextTrack != nil {
 		logger.Info("playing next track", "track_id", nextTrack.ID())
@@ -46,6 +48,12 @@ func playNextTrack() {
 			setLoadingState()
 		}
 		playTrack(nextTrack)
+
+		if userQueueHasTracks {
+			SourceChanged.Notify(func(oldValue tonearm.PlaybackSource) tonearm.PlaybackSource {
+				return UserQueueSource
+			})
+		}
 
 		history.Push(&HistoryEntry{
 			TrackID: nextTrack.ID(),

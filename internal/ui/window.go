@@ -116,16 +116,3 @@ func (w *Window) buildContentLayout() *gtk.Widget {
 
 	return &toolbarView.Widget
 }
-
-func (w *Window) buildSidebarLayout() *gtk.Widget {
-	toolbarView := adw.NewToolbarView()
-	toolbarView.AddTopBar(w.buildSidebarHeader())
-	viewStack := w.buildSidebar()()
-	toolbarView.SetContent(&viewStack.Widget)
-
-	toolbarView.AddBottomBar(CenterBox().
-		CenterWidget(w.buildSidebarFooter(viewStack)).
-		HMargin(7).VMargin(6).ToGTK())
-	toolbarView.SetBottomBarStyle(adw.ToolbarFlatValue)
-	return &toolbarView.Widget
-}

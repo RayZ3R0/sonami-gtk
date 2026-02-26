@@ -8,7 +8,7 @@ import (
 	"codeberg.org/dergs/tonearm/internal/gettext"
 	"codeberg.org/dergs/tonearm/internal/player"
 	"codeberg.org/dergs/tonearm/internal/signals"
-	"codeberg.org/dergs/tonearm/internal/ui/components/sidebar"
+	sidebar "codeberg.org/dergs/tonearm/internal/ui/sidebar/components"
 	"codeberg.org/dergs/tonearm/pkg/schwifty"
 	"codeberg.org/dergs/tonearm/pkg/schwifty/state"
 	. "codeberg.org/dergs/tonearm/pkg/schwifty/syntax"

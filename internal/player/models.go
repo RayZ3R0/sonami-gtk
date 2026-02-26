@@ -1,7 +1,12 @@
 package player
 
 import (
+	"fmt"
 	"time"
+
+	"codeberg.org/dergs/tonearm/internal/router"
+	"codeberg.org/dergs/tonearm/internal/ui/sidebar/navigation"
+	"codeberg.org/dergs/tonearm/pkg/tonearm"
 )
 
 type RepeatMode int
@@ -62,4 +67,24 @@ type StreamQuality struct {
 
 	// SampleRate is the sample rate in Hz if the codec is FLAC, otherwise 0.
 	SampleRate int
+}
+
+var UserQueueSource = userQueueSource{}
+
+type userQueueSource struct{}
+
+func (u userQueueSource) Cover(preferredSize int) string {
+	return ""
+}
+
+func (u userQueueSource) Route() string {
+	return fmt.Sprintf("%s%s", router.SidebarNavPrefix, navigation.PathQueue)
+}
+
+func (u userQueueSource) Title() string {
+	return "Your Queue"
+}
+
+func (u userQueueSource) SourceType() tonearm.SourceType {
+	return tonearm.SourceTypeQueue
 }
