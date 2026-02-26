@@ -24,20 +24,18 @@ var (
 func init() {
 	player.TrackChanged.On(func(trackInfo tonearm.Track) bool {
 		if trackInfo != nil {
-			go func() {
-				coverUrl := trackInfo.Cover(math.MaxInt)
-				if coverUrl == "" {
-					slog.Error("Failed to load hi-res cover URL")
-					return
-				}
+			coverUrl := trackInfo.Cover(math.MaxInt)
+			if coverUrl == "" {
+				slog.Error("Failed to load hi-res cover URL")
+				return signals.Continue
+			}
 
-				texture, err := injector.MustInject[*imgutil.ImgUtil]().LoadCropped(coverUrl)
-				if err != nil {
-					slog.Error("failed to load hi-res track cover", "error", err)
-					return
-				}
-				coverState.SetValue(texture)
-			}()
+			texture, err := injector.MustInject[*imgutil.ImgUtil]().LoadCropped(coverUrl)
+			if err != nil {
+				slog.Error("failed to load hi-res track cover", "error", err)
+				return signals.Continue
+			}
+			coverState.SetValue(texture)
 		} else {
 			coverState.SetValue(resources.MissingAlbum())
 		}
