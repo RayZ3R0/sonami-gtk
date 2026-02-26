@@ -19,7 +19,6 @@ import (
 
 var (
 	coverState = state.New[schwifty.Paintable](nil)
-	coverHiRes schwifty.Paintable
 )
 
 func init() {
@@ -37,21 +36,8 @@ func init() {
 					slog.Error("failed to load hi-res track cover", "error", err)
 					return
 				}
-				coverHiRes = texture
+				coverState.SetValue(texture)
 			}()
-
-			coverUrl := trackInfo.Cover(320)
-			if coverUrl == "" {
-				slog.Error("Failed to load cover URL")
-				return signals.Continue
-			}
-
-			texture, err := injector.MustInject[*imgutil.ImgUtil]().LoadCropped(coverUrl)
-			if err != nil {
-				slog.Error("failed to load track cover", "error", err)
-				return signals.Continue
-			}
-			coverState.SetValue(texture)
 		} else {
 			coverState.SetValue(resources.MissingAlbum())
 		}
@@ -68,7 +54,7 @@ func trackCover() schwifty.Picture {
 			ConnectConstruct(func(p *gtk.Picture) {
 				controller := gtk.NewGestureClick()
 				controller.ConnectPressed(new(func(gtk.GestureClick, int, float64, float64) {
-					components.GetMediaViewer().ShowFile(coverHiRes)
+					components.GetMediaViewer().ShowFile(coverState.Value())
 				}))
 				p.AddController(&controller.EventController)
 			}),
