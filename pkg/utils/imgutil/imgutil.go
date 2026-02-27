@@ -2,6 +2,7 @@ package imgutil
 
 import (
 	"codeberg.org/dergs/tonearm/pkg/schwifty"
+	"codeberg.org/dergs/tonearm/pkg/schwifty/tracking"
 	"codeberg.org/dergs/tonearm/pkg/schwifty/utils/weak"
 	"codeberg.org/dergs/tonearm/pkg/utils/cacheutil"
 	"github.com/jwijenbergh/puregotk/v4/gtk"
@@ -37,6 +38,7 @@ func (i *ImgUtil) LoadIntoImageCropped(url string, image *gtk.Image) {
 		}
 		cropped := Crop(texture)
 		texture = nil
+		tracking.SetFinalizer("Texture", cropped)
 
 		schwifty.OnMainThreadOnce(func(u uintptr) {
 			ref.Use(func(widget *gtk.Widget) {
