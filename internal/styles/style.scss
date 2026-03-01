@@ -137,5 +137,9 @@ checkbutton.space-2 check {
 }
 
 box.mediaviewer {
-    background-color: rgba(0, 0, 0, 0.95);
+    background-color: rgba(255, 255, 255, 0.95);
+
+    @media (prefers-color-scheme: dark) {
+        background-color: rgba(0, 0, 0, 0.95);
+    }
 }
