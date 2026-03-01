@@ -22,9 +22,13 @@ type Label = gtk.Label
 
 type MenuButton = gtk.MenuButton
 
+type Overlay = gtk.Overlay
+
 type Paintable = gtk.Paintable
 
 type Picture = gtk.Picture
+
+type ProgressBar = gtk.ProgressBar
 
 type Popover = gtk.Popover
 

@@ -95,6 +95,20 @@ func MenuButton() gtkbindings.MenuButton {
 	})
 }
 
+func Overlay(child any) gtkbindings.Overlay {
+	return managedWidget("Overlay", func() *gtk.Overlay {
+		overlay := gtk.NewOverlay()
+		overlay.SetChild(gtkbindings.ResolveWidget(child))
+		return overlay
+	})
+}
+
+func ProgressBar() gtkbindings.ProgressBar {
+	return managedWidget("ProgressBar", func() *gtk.ProgressBar {
+		return gtk.NewProgressBar()
+	})
+}
+
 func Picture() gtkbindings.Picture {
 	return managedWidget("Picture", func() *gtk.Picture {
 		return gtk.NewPicture()
