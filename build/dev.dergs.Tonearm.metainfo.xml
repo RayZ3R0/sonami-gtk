@@ -46,6 +46,32 @@
   <url type="contact">https://matrix.to/#/%23tonearm:derg.social</url>
 
   <releases>
+    <release version="1.4.0" date="2026-03-01">
+        <url type="details">https://codeberg.org/dergs/Tonearm/releases/tag/v1.4.0</url>
+        <description>
+            <p>Bug Fixes:</p>
+            <ul>
+                <li>Fixed a large amount of memory leaks and crashes</li>
+                <li>Fixed a bug where Tonearm would prefer cropping an image over one with the correct aspect ratio</li>
+                <li>Fixed a bug where Tonearm would crash when aborting the sign-in attempt to Last.fm</li>
+                <li>Fixed a bug where shuffle would not get deactivated properly</li>
+                <li
+                    >Fixed a bug where disabling volume normalization would not properly playback the raw audio received from TIDAL</li>
+            </ul>
+            <p>Improvements:</p>
+            <ul>
+                <li>Added "View Artist" and "View Album" buttons to the track list</li>
+                <li>Added a "Go to Artist" button to the album page</li>
+                <li>Added support for most keybinds supported by TIDAL desktop</li>
+                <li>Detailed playback information is now available by right-clicking on the quality label</li>
+                <li>It is now possible to add an entire album or playlist to the queue</li>
+                <li>It is now possible to play all tracks in your collection</li>
+                <li>Some labels now adapt to the state of the element they are describing</li>
+                <li>The currently playing album cover can now be opened in a media viewer</li>
+                <li>The page headers &amp; tracklist are now adaptive, allowing for smaller window sizes</li>
+            </ul>
+        </description>
+    </release>
     <release version="1.3.1" date="2026-02-15">
         <url type="details">https://codeberg.org/dergs/Tonearm/releases/tag/v1.3.1</url>
         <description>
