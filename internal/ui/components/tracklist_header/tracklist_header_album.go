@@ -17,7 +17,7 @@ import (
 	"github.com/jwijenbergh/puregotk/v4/gtk"
 )
 
-func secondaryControlsAlbum(album tonearm.Album) schwifty.Box {
+func secondaryControlsAlbum(album tonearm.Album, popover *gtk.PopoverMenu) schwifty.Box {
 	favoriteButton := favouritebutton.FavouriteButton(appState.AlbumsCache, album.ID())
 	var artistButton any
 	if artists := album.Artists(); len(artists) > 1 {
@@ -41,10 +41,10 @@ func secondaryControlsAlbum(album tonearm.Album) schwifty.Box {
 			ActionName("win.route.artist").
 			ActionTargetValue(glib.NewVariantString(artist.ID()))()
 	}
-	return componentSecondaryControls(album, artistButton, favoriteButton)
+	return componentSecondaryControls(album, popover, artistButton, favoriteButton)
 }
 
-func NewAlbum(album tonearm.Album, playFunc func(), shuffleFunc func()) schwifty.Box {
+func NewAlbum(album tonearm.Album, playFunc func(), shuffleFunc func()) schwifty.Widget {
 	coverUrl := album.Cover(154)
 	title := album.Title()
 	releaseDate := album.ReleasedAt().Format("2006")
@@ -62,5 +62,5 @@ func NewAlbum(album tonearm.Album, playFunc func(), shuffleFunc func()) schwifty
 	popover := gtk.NewPopoverMenuFromModel(&menu.MenuModel)
 	tracking.SetFinalizer("Popover", popover)
 
-	return template(coverUrl, title, releaseDate+" • "+artists, "\n"+description+"\n", componentControls(playFunc, shuffleFunc, popover), secondaryControlsAlbum(album))
+	return template(coverUrl, title, releaseDate+" • "+artists, "\n"+description+"\n", componentControls(playFunc, shuffleFunc), secondaryControlsAlbum(album, popover))
 }

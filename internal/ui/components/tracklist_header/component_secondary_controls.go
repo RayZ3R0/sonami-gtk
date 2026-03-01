@@ -10,7 +10,7 @@ import (
 	"github.com/jwijenbergh/puregotk/v4/gtk"
 )
 
-func componentSecondaryControls(shareable tonearm.Shareable, buttons ...any) schwifty.Box {
+func componentSecondaryControls(shareable tonearm.Shareable, popover *gtk.PopoverMenu, buttons ...any) schwifty.Box {
 	buttons = append(buttons, Button().
 		TooltipText(gettext.Get("Copy URL")).
 		IconName("share-alt-symbolic").
@@ -23,7 +23,13 @@ func componentSecondaryControls(shareable tonearm.Shareable, buttons ...any) sch
 
 			clipboard.SetText(shareable.URL())
 			notifications.OnToast.Notify(gettext.Get("Copied URL to clipboard"))
-		}))
+		}),
+		MenuButton().
+			TooltipText(gettext.Get("More…")).
+			Popover(popover).
+			WithCSSClass("flat").
+			WithCSSClass("circular").
+			IconName("view-more-symbolic"))
 	return HStack(
 		buttons...,
 	).Spacing(12).HAlign(gtk.AlignEndValue).HExpand(true).VAlign(gtk.AlignCenterValue)
