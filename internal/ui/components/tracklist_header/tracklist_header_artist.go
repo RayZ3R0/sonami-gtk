@@ -14,12 +14,12 @@ import (
 	"github.com/jwijenbergh/puregotk/v4/gtk"
 )
 
-func secondaryControlsArtist(artist tonearm.Artist) schwifty.Box {
+func secondaryControlsArtist(artist tonearm.Artist, popover *gtk.PopoverMenu) schwifty.Box {
 	favoriteButton := favouritebutton.FavouriteButton(appState.ArtistsCache, artist.ID())
-	return componentSecondaryControls(artist, favoriteButton)
+	return componentSecondaryControls(artist, popover, favoriteButton)
 }
 
-func NewArtist(artist tonearm.Artist, playFunc func(), shuffleFunc func()) schwifty.Box {
+func NewArtist(artist tonearm.Artist, playFunc func(), shuffleFunc func()) schwifty.Widget {
 	coverUrl := artist.Cover(154)
 	title := artist.Title()
 	fans := gettext.GetN("%d Fan", "%d Fans", artist.FollowerCount(), artist.FollowerCount())
@@ -35,5 +35,5 @@ func NewArtist(artist tonearm.Artist, playFunc func(), shuffleFunc func()) schwi
 	popover := gtk.NewPopoverMenuFromModel(&menu.MenuModel)
 	tracking.SetFinalizer("Popover", popover)
 
-	return template(coverUrl, title, fans, artist.Description(), componentControls(playFunc, shuffleFunc, popover), secondaryControlsArtist(artist))
+	return template(coverUrl, title, fans, artist.Description(), componentControls(playFunc, shuffleFunc), secondaryControlsArtist(artist, popover))
 }

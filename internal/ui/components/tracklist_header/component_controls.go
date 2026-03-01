@@ -7,7 +7,7 @@ import (
 	"github.com/jwijenbergh/puregotk/v4/gtk"
 )
 
-func componentControls(playFunc func(), shuffleFunc func(), popover *gtk.PopoverMenu) schwifty.Box {
+func componentControls(playFunc func(), shuffleFunc func()) schwifty.Box {
 	return HStack(
 		Button().
 			TooltipText(gettext.Get("Shuffle Album")).
@@ -26,11 +26,5 @@ func componentControls(playFunc func(), shuffleFunc func(), popover *gtk.Popover
 			ConnectClicked(func(b gtk.Button) {
 				playFunc()
 			}),
-		MenuButton().
-			TooltipText(gettext.Get("More…")).
-			Popover(popover).
-			WithCSSClass("flat").
-			WithCSSClass("circular").
-			IconName("view-more-symbolic"),
 	).Spacing(12).HAlign(gtk.AlignEndValue).HExpand(true)
 }

@@ -15,11 +15,11 @@ type shareablePlaybackSource interface {
 	tonearm.Shareable
 }
 
-func secondaryControlsCollection(playbackSource shareablePlaybackSource) schwifty.Box {
-	return componentSecondaryControls(playbackSource)
+func secondaryControlsCollection(playbackSource shareablePlaybackSource, popover *gtk.PopoverMenu) schwifty.Box {
+	return componentSecondaryControls(playbackSource, popover)
 }
 
-func NewCollection(playbackSource shareablePlaybackSource, playFunc func(), shuffleFunc func()) schwifty.Box {
+func NewCollection(playbackSource shareablePlaybackSource, playFunc func(), shuffleFunc func()) schwifty.Widget {
 	coverUrl := playbackSource.Cover(154)
 	title := playbackSource.Title()
 	subtitle := gettext.Get("My Collection")
@@ -35,5 +35,5 @@ func NewCollection(playbackSource shareablePlaybackSource, playFunc func(), shuf
 	popover := gtk.NewPopoverMenuFromModel(&menu.MenuModel)
 	tracking.SetFinalizer("Popover", popover)
 
-	return template(coverUrl, title, subtitle, "", componentControls(playFunc, shuffleFunc, popover), secondaryControlsCollection(playbackSource))
+	return template(coverUrl, title, subtitle, "", componentControls(playFunc, shuffleFunc), secondaryControlsCollection(playbackSource, popover))
 }

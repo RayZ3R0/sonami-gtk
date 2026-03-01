@@ -15,7 +15,7 @@ import (
 	"github.com/jwijenbergh/puregotk/v4/gtk"
 )
 
-func secondaryControlsPlaylist(playlist tonearm.Playlist) schwifty.Box {
+func secondaryControlsPlaylist(playlist tonearm.Playlist, popover *gtk.PopoverMenu) schwifty.Box {
 	var appCache appState.FavouriteCache
 	if playlist.IsMix() {
 		appCache = appState.MixesCache
@@ -23,14 +23,17 @@ func secondaryControlsPlaylist(playlist tonearm.Playlist) schwifty.Box {
 		appCache = appState.PlaylistsCache
 	}
 	favoriteButton := favouritebutton.FavouriteButton(appCache, playlist.ID())
-	return componentSecondaryControls(playlist, favoriteButton)
+	return componentSecondaryControls(playlist, popover, favoriteButton)
 }
 
-func NewPlaylist(playlist tonearm.Playlist, playFunc func(), shuffleFunc func()) schwifty.Box {
+func NewPlaylist(playlist tonearm.Playlist, playFunc func(), shuffleFunc func()) schwifty.Widget {
 	coverUrl := playlist.Cover(154)
 	title := playlist.Title()
 	releaseDate := playlist.CreatedAt().Format("2006")
-	creator := playlist.Creator().Title()
+	creator := "TIDAL"
+	if c := playlist.Creator(); c != nil {
+		creator = c.Title()
+	}
 	var description string
 	if playlist.IsMix() {
 		description = gettext.Get("Personal Mix")
@@ -49,5 +52,5 @@ func NewPlaylist(playlist tonearm.Playlist, playFunc func(), shuffleFunc func())
 	popover := gtk.NewPopoverMenuFromModel(&menu.MenuModel)
 	tracking.SetFinalizer("Popover", popover)
 
-	return template(coverUrl, title, releaseDate+" • "+creator, "\n"+description+"\n", componentControls(playFunc, shuffleFunc, popover), secondaryControlsPlaylist(playlist))
+	return template(coverUrl, title, releaseDate+" • "+creator, "\n"+description+"\n", componentControls(playFunc, shuffleFunc), secondaryControlsPlaylist(playlist, popover))
 }
