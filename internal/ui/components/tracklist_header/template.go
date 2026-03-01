@@ -69,7 +69,7 @@ func layoutDesktop(description string) *adw.Layout {
 
 func layoutMobile(description string) *adw.Layout {
 	child := VStack(
-		ManagedWidget(&adw.NewLayoutSlot("cover").Widget).HExpand(false),
+		ManagedWidget(&adw.NewLayoutSlot("cover").Widget).HAlign(gtk.AlignCenterValue),
 		VStack(
 			ManagedWidget(&adw.NewLayoutSlot("title").Widget).HAlign(gtk.AlignCenterValue),
 			ManagedWidget(&adw.NewLayoutSlot("subtitle").Widget).HAlign(gtk.AlignCenterValue),
