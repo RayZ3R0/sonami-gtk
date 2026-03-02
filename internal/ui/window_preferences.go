@@ -12,8 +12,8 @@ import (
 	adwbindings "codeberg.org/dergs/tonearm/pkg/schwifty/bindings/adw"
 	. "codeberg.org/dergs/tonearm/pkg/schwifty/syntax"
 	"codeberg.org/dergs/tonearm/pkg/schwifty/utils/weak"
-	"github.com/jwijenbergh/puregotk/v4/adw"
-	"github.com/jwijenbergh/puregotk/v4/gtk"
+	"codeberg.org/puregotk/puregotk/v4/adw"
+	"codeberg.org/puregotk/puregotk/v4/gtk"
 )
 
 func buildPreferencesGeneral(dialog *adw.PreferencesDialog) adwbindings.PreferencesPage {
@@ -68,8 +68,8 @@ func buildPreferencesPlayback(*adw.PreferencesDialog) adwbindings.PreferencesPag
 				Title(gettext.Get("Preferred Replay Gain")).
 				Subtitle(gettext.Get("Choose whether Tonearm should prefer album replay gain, track replay gain or decide automatically")).
 				Model(gtk.NewStringList(settings.ReplayGainModeStrings())).
-				Selected(uint(settings.Playback().ReplayGainMode())).
-				ConnectSelectionChanged(func(a uint) {
+				Selected(uint32(settings.Playback().ReplayGainMode())).
+				ConnectSelectionChanged(func(a uint32) {
 					settings.Playback().SetReplayGainMode(settings.ReplayGainMode(a))
 				}),
 		).Title(gettext.Get("Playback")).Description(gettext.Get("Configure the behaviour of Tonearm regarding playback")),

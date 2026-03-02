@@ -16,8 +16,8 @@ import (
 	"codeberg.org/dergs/tonearm/pkg/tidalapi"
 	v1 "codeberg.org/dergs/tonearm/pkg/tidalapi/models/v1"
 	"codeberg.org/dergs/tonearm/pkg/tonearm"
-	"github.com/jwijenbergh/puregotk/v4/gdk"
-	"github.com/jwijenbergh/puregotk/v4/gtk"
+	"codeberg.org/puregotk/puregotk/v4/gdk"
+	"codeberg.org/puregotk/puregotk/v4/gtk"
 )
 
 var (
@@ -211,7 +211,7 @@ func trackTimeline() schwifty.Widget {
 
 				click := gtk.NewGestureClick()
 				click.SetButton(3)
-				click.ConnectPressed(new(func(click gtk.GestureClick, nPress int, x, y float64) {
+				click.ConnectPressed(new(func(click gtk.GestureClick, nPress int32, x, y float64) {
 					toggleQualityLabel()
 				}))
 				mb.AddController(&click.EventController)
@@ -235,8 +235,8 @@ func trackTimeline() schwifty.Widget {
 
 				keyCtrl := gtk.NewEventControllerKey()
 				keyCtrl.SetPropagationPhase(gtk.PhaseCaptureValue)
-				keyCtrl.ConnectKeyPressed(new(func(ctrl gtk.EventControllerKey, keyval uint, keycode uint, state gdk.ModifierType) bool {
-					switch int(keyval) {
+				keyCtrl.ConnectKeyPressed(new(func(ctrl gtk.EventControllerKey, keyval uint32, keycode uint32, state gdk.ModifierType) bool {
+					switch int32(keyval) {
 					case gdk.KEY_space, gdk.KEY_KP_Space:
 						toggleQualityLabel()
 						return gdk.EVENT_STOP

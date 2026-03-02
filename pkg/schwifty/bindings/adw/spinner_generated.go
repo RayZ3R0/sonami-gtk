@@ -4,9 +4,9 @@ import (
 	"codeberg.org/dergs/tonearm/pkg/schwifty/callback"
 	"codeberg.org/dergs/tonearm/pkg/schwifty/state"
 	"codeberg.org/dergs/tonearm/pkg/schwifty/utils/weak"
+	"codeberg.org/puregotk/puregotk/v4/adw"
+	"codeberg.org/puregotk/puregotk/v4/gtk"
 	"fmt"
-	"github.com/jwijenbergh/puregotk/v4/adw"
-	"github.com/jwijenbergh/puregotk/v4/gtk"
 )
 
 
@@ -124,7 +124,7 @@ func (f Spinner) HExpand(expand bool) Spinner {
 	}
 }
 
-func (f Spinner) HMargin(horizontal int) Spinner {
+func (f Spinner) HMargin(horizontal int32) Spinner {
 	return func() *adw.Spinner {
 		widget := f()
 		widget.SetMarginEnd(horizontal)
@@ -133,7 +133,7 @@ func (f Spinner) HMargin(horizontal int) Spinner {
 	}
 }
 
-func (f Spinner) Margin(margin int) Spinner {
+func (f Spinner) Margin(margin int32) Spinner {
 	return func() *adw.Spinner {
 		widget := f()
 		widget.SetMarginBottom(margin)
@@ -144,7 +144,7 @@ func (f Spinner) Margin(margin int) Spinner {
 	}
 }
 
-func (f Spinner) MarginBottom(bottom int) Spinner {
+func (f Spinner) MarginBottom(bottom int32) Spinner {
 	return func() *adw.Spinner {
 		widget := f()
 		widget.SetMarginBottom(bottom)
@@ -152,7 +152,7 @@ func (f Spinner) MarginBottom(bottom int) Spinner {
 	}
 }
 
-func (f Spinner) MarginEnd(end int) Spinner {
+func (f Spinner) MarginEnd(end int32) Spinner {
 	return func() *adw.Spinner {
 		widget := f()
 		widget.SetMarginEnd(end)
@@ -160,7 +160,7 @@ func (f Spinner) MarginEnd(end int) Spinner {
 	}
 }
 
-func (f Spinner) MarginStart(start int) Spinner {
+func (f Spinner) MarginStart(start int32) Spinner {
 	return func() *adw.Spinner {
 		widget := f()
 		widget.SetMarginStart(start)
@@ -168,7 +168,7 @@ func (f Spinner) MarginStart(start int) Spinner {
 	}
 }
 
-func (f Spinner) MarginTop(top int) Spinner {
+func (f Spinner) MarginTop(top int32) Spinner {
 	return func() *adw.Spinner {
 		widget := f()
 		widget.SetMarginTop(top)
@@ -200,7 +200,7 @@ func (f Spinner) Sensitive(sensitive bool) Spinner {
 	}
 }
 
-func (f Spinner) SizeRequest(width, height int) Spinner {
+func (f Spinner) SizeRequest(width, height int32) Spinner {
 	return func() *adw.Spinner {
 		widget := f()
 		widget.SetSizeRequest(width, height)
@@ -237,7 +237,7 @@ func (f Spinner) Visible(visible bool) Spinner {
 	}
 }
 
-func (f Spinner) VMargin(vertical int) Spinner {
+func (f Spinner) VMargin(vertical int32) Spinner {
 	return func() *adw.Spinner {
 		widget := f()
 		widget.SetMarginTop(vertical)
@@ -315,7 +315,7 @@ func (f Spinner) CSSWithCallback(cb func(elementName string) string) Spinner {
 		provider := gtk.NewCssProvider()
 		return f.ConnectConstruct(func(t *adw.Spinner) {
 			provider.LoadFromString(cb(t.GetCssName()))
-			t.GetStyleContext().AddProvider(provider, uint(gtk.STYLE_PROVIDER_PRIORITY_APPLICATION))
+			t.GetStyleContext().AddProvider(provider, uint32(gtk.STYLE_PROVIDER_PRIORITY_APPLICATION))
 		}).ConnectDestroy(func(w gtk.Widget) {
 			w.GetStyleContext().RemoveProvider(provider)
 			provider.Unref()
@@ -418,13 +418,13 @@ func (f Spinner) BindVisible(state *state.State[bool]) Spinner {
 	}
 }
 
-func (f Spinner) BindHMargin(state *state.State[int]) Spinner {
+func (f Spinner) BindHMargin(state *state.State[int32]) Spinner {
 	return func() *adw.Spinner {
 		var callbackId string
 		var ref weak.WidgetRef
 		return f.ConnectRealize(func(w gtk.Widget) {
 			ref = weak.NewWidgetRef(&w)
-			callbackId = state.AddCallback(func(newValue int) {
+			callbackId = state.AddCallback(func(newValue int32) {
 				callback.OnMainThreadOncePure(func() {
 					if obj := ref.Get(); obj != nil {
 						defer obj.Unref()
@@ -439,13 +439,13 @@ func (f Spinner) BindHMargin(state *state.State[int]) Spinner {
 	}
 }
 
-func (f Spinner) BindMargin(state *state.State[int]) Spinner {
+func (f Spinner) BindMargin(state *state.State[int32]) Spinner {
 	return func() *adw.Spinner {
 		var callbackId string
 		var ref weak.WidgetRef
 		return f.ConnectRealize(func(w gtk.Widget) {
 			ref = weak.NewWidgetRef(&w)
-			callbackId = state.AddCallback(func(newValue int) {
+			callbackId = state.AddCallback(func(newValue int32) {
 				callback.OnMainThreadOncePure(func() {
 					if obj := ref.Get(); obj != nil {
 						defer obj.Unref()
@@ -462,13 +462,13 @@ func (f Spinner) BindMargin(state *state.State[int]) Spinner {
 	}
 }
 
-func (f Spinner) BindMarginBottom(state *state.State[int]) Spinner {
+func (f Spinner) BindMarginBottom(state *state.State[int32]) Spinner {
 	return func() *adw.Spinner {
 		var callbackId string
 		var ref weak.WidgetRef
 		return f.ConnectRealize(func(w gtk.Widget) {
 			ref = weak.NewWidgetRef(&w)
-			callbackId = state.AddCallback(func(newValue int) {
+			callbackId = state.AddCallback(func(newValue int32) {
 				callback.OnMainThreadOncePure(func() {
 					if obj := ref.Get(); obj != nil {
 						defer obj.Unref()
@@ -482,13 +482,13 @@ func (f Spinner) BindMarginBottom(state *state.State[int]) Spinner {
 	}
 }
 
-func (f Spinner) BindMarginEnd(state *state.State[int]) Spinner {
+func (f Spinner) BindMarginEnd(state *state.State[int32]) Spinner {
 	return func() *adw.Spinner {
 		var callbackId string
 		var ref weak.WidgetRef
 		return f.ConnectRealize(func(w gtk.Widget) {
 			ref = weak.NewWidgetRef(&w)
-			callbackId = state.AddCallback(func(newValue int) {
+			callbackId = state.AddCallback(func(newValue int32) {
 				callback.OnMainThreadOncePure(func() {
 					if obj := ref.Get(); obj != nil {
 						defer obj.Unref()
@@ -502,13 +502,13 @@ func (f Spinner) BindMarginEnd(state *state.State[int]) Spinner {
 	}
 }
 
-func (f Spinner) BindMarginStart(state *state.State[int]) Spinner {
+func (f Spinner) BindMarginStart(state *state.State[int32]) Spinner {
 	return func() *adw.Spinner {
 		var callbackId string
 		var ref weak.WidgetRef
 		return f.ConnectRealize(func(w gtk.Widget) {
 			ref = weak.NewWidgetRef(&w)
-			callbackId = state.AddCallback(func(newValue int) {
+			callbackId = state.AddCallback(func(newValue int32) {
 				callback.OnMainThreadOncePure(func() {
 					if obj := ref.Get(); obj != nil {
 						defer obj.Unref()
@@ -522,13 +522,13 @@ func (f Spinner) BindMarginStart(state *state.State[int]) Spinner {
 	}
 }
 
-func (f Spinner) BindMarginTop(state *state.State[int]) Spinner {
+func (f Spinner) BindMarginTop(state *state.State[int32]) Spinner {
 	return func() *adw.Spinner {
 		var callbackId string
 		var ref weak.WidgetRef
 		return f.ConnectRealize(func(w gtk.Widget) {
 			ref = weak.NewWidgetRef(&w)
-			callbackId = state.AddCallback(func(newValue int) {
+			callbackId = state.AddCallback(func(newValue int32) {
 				callback.OnMainThreadOncePure(func() {
 					if obj := ref.Get(); obj != nil {
 						defer obj.Unref()

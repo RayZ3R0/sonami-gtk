@@ -1,6 +1,6 @@
 package callback
 
-import "github.com/jwijenbergh/puregotk/v4/gtk"
+import "codeberg.org/puregotk/puregotk/v4/gtk"
 
 var (
 	ScrolledWindowEdgeReachedCallback = func(widget gtk.ScrolledWindow, positionType gtk.PositionType) {

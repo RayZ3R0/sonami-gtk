@@ -4,8 +4,8 @@ import (
 	"codeberg.org/dergs/tonearm/pkg/schwifty/callback"
 	"codeberg.org/dergs/tonearm/pkg/schwifty/state"
 	"codeberg.org/dergs/tonearm/pkg/schwifty/utils/weak"
+	"codeberg.org/puregotk/puregotk/v4/gtk"
 	"fmt"
-	"github.com/jwijenbergh/puregotk/v4/gtk"
 )
 
 
@@ -123,7 +123,7 @@ func (f SearchEntry) HExpand(expand bool) SearchEntry {
 	}
 }
 
-func (f SearchEntry) HMargin(horizontal int) SearchEntry {
+func (f SearchEntry) HMargin(horizontal int32) SearchEntry {
 	return func() *gtk.SearchEntry {
 		widget := f()
 		widget.SetMarginEnd(horizontal)
@@ -132,7 +132,7 @@ func (f SearchEntry) HMargin(horizontal int) SearchEntry {
 	}
 }
 
-func (f SearchEntry) Margin(margin int) SearchEntry {
+func (f SearchEntry) Margin(margin int32) SearchEntry {
 	return func() *gtk.SearchEntry {
 		widget := f()
 		widget.SetMarginBottom(margin)
@@ -143,7 +143,7 @@ func (f SearchEntry) Margin(margin int) SearchEntry {
 	}
 }
 
-func (f SearchEntry) MarginBottom(bottom int) SearchEntry {
+func (f SearchEntry) MarginBottom(bottom int32) SearchEntry {
 	return func() *gtk.SearchEntry {
 		widget := f()
 		widget.SetMarginBottom(bottom)
@@ -151,7 +151,7 @@ func (f SearchEntry) MarginBottom(bottom int) SearchEntry {
 	}
 }
 
-func (f SearchEntry) MarginEnd(end int) SearchEntry {
+func (f SearchEntry) MarginEnd(end int32) SearchEntry {
 	return func() *gtk.SearchEntry {
 		widget := f()
 		widget.SetMarginEnd(end)
@@ -159,7 +159,7 @@ func (f SearchEntry) MarginEnd(end int) SearchEntry {
 	}
 }
 
-func (f SearchEntry) MarginStart(start int) SearchEntry {
+func (f SearchEntry) MarginStart(start int32) SearchEntry {
 	return func() *gtk.SearchEntry {
 		widget := f()
 		widget.SetMarginStart(start)
@@ -167,7 +167,7 @@ func (f SearchEntry) MarginStart(start int) SearchEntry {
 	}
 }
 
-func (f SearchEntry) MarginTop(top int) SearchEntry {
+func (f SearchEntry) MarginTop(top int32) SearchEntry {
 	return func() *gtk.SearchEntry {
 		widget := f()
 		widget.SetMarginTop(top)
@@ -199,7 +199,7 @@ func (f SearchEntry) Sensitive(sensitive bool) SearchEntry {
 	}
 }
 
-func (f SearchEntry) SizeRequest(width, height int) SearchEntry {
+func (f SearchEntry) SizeRequest(width, height int32) SearchEntry {
 	return func() *gtk.SearchEntry {
 		widget := f()
 		widget.SetSizeRequest(width, height)
@@ -236,7 +236,7 @@ func (f SearchEntry) Visible(visible bool) SearchEntry {
 	}
 }
 
-func (f SearchEntry) VMargin(vertical int) SearchEntry {
+func (f SearchEntry) VMargin(vertical int32) SearchEntry {
 	return func() *gtk.SearchEntry {
 		widget := f()
 		widget.SetMarginTop(vertical)
@@ -314,7 +314,7 @@ func (f SearchEntry) CSSWithCallback(cb func(elementName string) string) SearchE
 		provider := gtk.NewCssProvider()
 		return f.ConnectConstruct(func(t *gtk.SearchEntry) {
 			provider.LoadFromString(cb(t.GetCssName()))
-			t.GetStyleContext().AddProvider(provider, uint(gtk.STYLE_PROVIDER_PRIORITY_APPLICATION))
+			t.GetStyleContext().AddProvider(provider, uint32(gtk.STYLE_PROVIDER_PRIORITY_APPLICATION))
 		}).ConnectDestroy(func(w gtk.Widget) {
 			w.GetStyleContext().RemoveProvider(provider)
 			provider.Unref()
@@ -417,13 +417,13 @@ func (f SearchEntry) BindVisible(state *state.State[bool]) SearchEntry {
 	}
 }
 
-func (f SearchEntry) BindHMargin(state *state.State[int]) SearchEntry {
+func (f SearchEntry) BindHMargin(state *state.State[int32]) SearchEntry {
 	return func() *gtk.SearchEntry {
 		var callbackId string
 		var ref weak.WidgetRef
 		return f.ConnectRealize(func(w gtk.Widget) {
 			ref = weak.NewWidgetRef(&w)
-			callbackId = state.AddCallback(func(newValue int) {
+			callbackId = state.AddCallback(func(newValue int32) {
 				callback.OnMainThreadOncePure(func() {
 					if obj := ref.Get(); obj != nil {
 						defer obj.Unref()
@@ -438,13 +438,13 @@ func (f SearchEntry) BindHMargin(state *state.State[int]) SearchEntry {
 	}
 }
 
-func (f SearchEntry) BindMargin(state *state.State[int]) SearchEntry {
+func (f SearchEntry) BindMargin(state *state.State[int32]) SearchEntry {
 	return func() *gtk.SearchEntry {
 		var callbackId string
 		var ref weak.WidgetRef
 		return f.ConnectRealize(func(w gtk.Widget) {
 			ref = weak.NewWidgetRef(&w)
-			callbackId = state.AddCallback(func(newValue int) {
+			callbackId = state.AddCallback(func(newValue int32) {
 				callback.OnMainThreadOncePure(func() {
 					if obj := ref.Get(); obj != nil {
 						defer obj.Unref()
@@ -461,13 +461,13 @@ func (f SearchEntry) BindMargin(state *state.State[int]) SearchEntry {
 	}
 }
 
-func (f SearchEntry) BindMarginBottom(state *state.State[int]) SearchEntry {
+func (f SearchEntry) BindMarginBottom(state *state.State[int32]) SearchEntry {
 	return func() *gtk.SearchEntry {
 		var callbackId string
 		var ref weak.WidgetRef
 		return f.ConnectRealize(func(w gtk.Widget) {
 			ref = weak.NewWidgetRef(&w)
-			callbackId = state.AddCallback(func(newValue int) {
+			callbackId = state.AddCallback(func(newValue int32) {
 				callback.OnMainThreadOncePure(func() {
 					if obj := ref.Get(); obj != nil {
 						defer obj.Unref()
@@ -481,13 +481,13 @@ func (f SearchEntry) BindMarginBottom(state *state.State[int]) SearchEntry {
 	}
 }
 
-func (f SearchEntry) BindMarginEnd(state *state.State[int]) SearchEntry {
+func (f SearchEntry) BindMarginEnd(state *state.State[int32]) SearchEntry {
 	return func() *gtk.SearchEntry {
 		var callbackId string
 		var ref weak.WidgetRef
 		return f.ConnectRealize(func(w gtk.Widget) {
 			ref = weak.NewWidgetRef(&w)
-			callbackId = state.AddCallback(func(newValue int) {
+			callbackId = state.AddCallback(func(newValue int32) {
 				callback.OnMainThreadOncePure(func() {
 					if obj := ref.Get(); obj != nil {
 						defer obj.Unref()
@@ -501,13 +501,13 @@ func (f SearchEntry) BindMarginEnd(state *state.State[int]) SearchEntry {
 	}
 }
 
-func (f SearchEntry) BindMarginStart(state *state.State[int]) SearchEntry {
+func (f SearchEntry) BindMarginStart(state *state.State[int32]) SearchEntry {
 	return func() *gtk.SearchEntry {
 		var callbackId string
 		var ref weak.WidgetRef
 		return f.ConnectRealize(func(w gtk.Widget) {
 			ref = weak.NewWidgetRef(&w)
-			callbackId = state.AddCallback(func(newValue int) {
+			callbackId = state.AddCallback(func(newValue int32) {
 				callback.OnMainThreadOncePure(func() {
 					if obj := ref.Get(); obj != nil {
 						defer obj.Unref()
@@ -521,13 +521,13 @@ func (f SearchEntry) BindMarginStart(state *state.State[int]) SearchEntry {
 	}
 }
 
-func (f SearchEntry) BindMarginTop(state *state.State[int]) SearchEntry {
+func (f SearchEntry) BindMarginTop(state *state.State[int32]) SearchEntry {
 	return func() *gtk.SearchEntry {
 		var callbackId string
 		var ref weak.WidgetRef
 		return f.ConnectRealize(func(w gtk.Widget) {
 			ref = weak.NewWidgetRef(&w)
-			callbackId = state.AddCallback(func(newValue int) {
+			callbackId = state.AddCallback(func(newValue int32) {
 				callback.OnMainThreadOncePure(func() {
 					if obj := ref.Get(); obj != nil {
 						defer obj.Unref()

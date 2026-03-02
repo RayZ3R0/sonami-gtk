@@ -9,16 +9,16 @@ import (
 //
 // Instead we handle the malloc / free ourselves and use the C bindings directly to manage the memory.
 
-//go:linkname xWeakRefInit github.com/jwijenbergh/puregotk/v4/gobject.xWeakRefInit
+//go:linkname xWeakRefInit codeberg.org/puregotk/puregotk/v4/gobject.xWeakRefInit
 var xWeakRefInit func(uintptr, uintptr)
 
-//go:linkname xWeakRefClear github.com/jwijenbergh/puregotk/v4/gobject.xWeakRefClear
+//go:linkname xWeakRefClear codeberg.org/puregotk/puregotk/v4/gobject.xWeakRefClear
 var xWeakRefClear func(uintptr)
 
-//go:linkname xWeakRefGet github.com/jwijenbergh/puregotk/v4/gobject.xWeakRefGet
+//go:linkname xWeakRefGet codeberg.org/puregotk/puregotk/v4/gobject.xWeakRefGet
 var xWeakRefGet func(uintptr) uintptr
 
-//go:linkname xWeakRefSet github.com/jwijenbergh/puregotk/v4/gobject.xWeakRefSet
+//go:linkname xWeakRefSet codeberg.org/puregotk/puregotk/v4/gobject.xWeakRefSet
 var xWeakRefSet func(uintptr, uintptr)
 
 type weakRef[T gObject, Result gObject] interface {

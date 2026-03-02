@@ -21,11 +21,11 @@ import (
 	modelopenapi "codeberg.org/dergs/tonearm/pkg/tidalapi/models/openapi"
 	modelv2 "codeberg.org/dergs/tonearm/pkg/tidalapi/models/v2"
 	"codeberg.org/dergs/tonearm/pkg/tonearm"
+	"codeberg.org/puregotk/puregotk/v4/adw"
+	"codeberg.org/puregotk/puregotk/v4/gio"
+	"codeberg.org/puregotk/puregotk/v4/glib"
+	"codeberg.org/puregotk/puregotk/v4/gtk"
 	"github.com/infinytum/injector"
-	"github.com/jwijenbergh/puregotk/v4/adw"
-	"github.com/jwijenbergh/puregotk/v4/gio"
-	"github.com/jwijenbergh/puregotk/v4/glib"
-	"github.com/jwijenbergh/puregotk/v4/gtk"
 )
 
 func (w *Window) installActions() {
@@ -344,7 +344,7 @@ func (w *Window) installMouseClickHandler() {
 	gestureController := gtk.NewGestureClick()
 	gestureController.SetButton(0)
 	gestureController.SetPropagationPhase(gtk.PhaseCaptureValue)
-	gestureController.ConnectPressed(new(func(controller gtk.GestureClick, nPress int, x float64, y float64) {
+	gestureController.ConnectPressed(new(func(controller gtk.GestureClick, nPress int32, x float64, y float64) {
 		switch controller.GetCurrentButton() {
 		case MouseButtonBack:
 			// Back button

@@ -8,8 +8,8 @@ import (
 	"codeberg.org/dergs/tonearm/internal/ui/components"
 	. "codeberg.org/dergs/tonearm/pkg/schwifty/syntax"
 	"codeberg.org/dergs/tonearm/pkg/tidalapi"
+	"codeberg.org/puregotk/puregotk/v4/gtk"
 	"github.com/infinytum/injector"
-	"github.com/jwijenbergh/puregotk/v4/gtk"
 )
 
 func init() {

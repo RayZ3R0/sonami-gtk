@@ -4,9 +4,9 @@ import (
 	"codeberg.org/dergs/tonearm/pkg/schwifty/callback"
 	"codeberg.org/dergs/tonearm/pkg/schwifty/state"
 	"codeberg.org/dergs/tonearm/pkg/schwifty/utils/weak"
+	"codeberg.org/puregotk/puregotk/v4/adw"
+	"codeberg.org/puregotk/puregotk/v4/gtk"
 	"fmt"
-	"github.com/jwijenbergh/puregotk/v4/adw"
-	"github.com/jwijenbergh/puregotk/v4/gtk"
 )
 
 
@@ -124,7 +124,7 @@ func (f ButtonRow) HExpand(expand bool) ButtonRow {
 	}
 }
 
-func (f ButtonRow) HMargin(horizontal int) ButtonRow {
+func (f ButtonRow) HMargin(horizontal int32) ButtonRow {
 	return func() *adw.ButtonRow {
 		widget := f()
 		widget.SetMarginEnd(horizontal)
@@ -133,7 +133,7 @@ func (f ButtonRow) HMargin(horizontal int) ButtonRow {
 	}
 }
 
-func (f ButtonRow) Margin(margin int) ButtonRow {
+func (f ButtonRow) Margin(margin int32) ButtonRow {
 	return func() *adw.ButtonRow {
 		widget := f()
 		widget.SetMarginBottom(margin)
@@ -144,7 +144,7 @@ func (f ButtonRow) Margin(margin int) ButtonRow {
 	}
 }
 
-func (f ButtonRow) MarginBottom(bottom int) ButtonRow {
+func (f ButtonRow) MarginBottom(bottom int32) ButtonRow {
 	return func() *adw.ButtonRow {
 		widget := f()
 		widget.SetMarginBottom(bottom)
@@ -152,7 +152,7 @@ func (f ButtonRow) MarginBottom(bottom int) ButtonRow {
 	}
 }
 
-func (f ButtonRow) MarginEnd(end int) ButtonRow {
+func (f ButtonRow) MarginEnd(end int32) ButtonRow {
 	return func() *adw.ButtonRow {
 		widget := f()
 		widget.SetMarginEnd(end)
@@ -160,7 +160,7 @@ func (f ButtonRow) MarginEnd(end int) ButtonRow {
 	}
 }
 
-func (f ButtonRow) MarginStart(start int) ButtonRow {
+func (f ButtonRow) MarginStart(start int32) ButtonRow {
 	return func() *adw.ButtonRow {
 		widget := f()
 		widget.SetMarginStart(start)
@@ -168,7 +168,7 @@ func (f ButtonRow) MarginStart(start int) ButtonRow {
 	}
 }
 
-func (f ButtonRow) MarginTop(top int) ButtonRow {
+func (f ButtonRow) MarginTop(top int32) ButtonRow {
 	return func() *adw.ButtonRow {
 		widget := f()
 		widget.SetMarginTop(top)
@@ -200,7 +200,7 @@ func (f ButtonRow) Sensitive(sensitive bool) ButtonRow {
 	}
 }
 
-func (f ButtonRow) SizeRequest(width, height int) ButtonRow {
+func (f ButtonRow) SizeRequest(width, height int32) ButtonRow {
 	return func() *adw.ButtonRow {
 		widget := f()
 		widget.SetSizeRequest(width, height)
@@ -237,7 +237,7 @@ func (f ButtonRow) Visible(visible bool) ButtonRow {
 	}
 }
 
-func (f ButtonRow) VMargin(vertical int) ButtonRow {
+func (f ButtonRow) VMargin(vertical int32) ButtonRow {
 	return func() *adw.ButtonRow {
 		widget := f()
 		widget.SetMarginTop(vertical)
@@ -315,7 +315,7 @@ func (f ButtonRow) CSSWithCallback(cb func(elementName string) string) ButtonRow
 		provider := gtk.NewCssProvider()
 		return f.ConnectConstruct(func(t *adw.ButtonRow) {
 			provider.LoadFromString(cb(t.GetCssName()))
-			t.GetStyleContext().AddProvider(provider, uint(gtk.STYLE_PROVIDER_PRIORITY_APPLICATION))
+			t.GetStyleContext().AddProvider(provider, uint32(gtk.STYLE_PROVIDER_PRIORITY_APPLICATION))
 		}).ConnectDestroy(func(w gtk.Widget) {
 			w.GetStyleContext().RemoveProvider(provider)
 			provider.Unref()
@@ -418,13 +418,13 @@ func (f ButtonRow) BindVisible(state *state.State[bool]) ButtonRow {
 	}
 }
 
-func (f ButtonRow) BindHMargin(state *state.State[int]) ButtonRow {
+func (f ButtonRow) BindHMargin(state *state.State[int32]) ButtonRow {
 	return func() *adw.ButtonRow {
 		var callbackId string
 		var ref weak.WidgetRef
 		return f.ConnectRealize(func(w gtk.Widget) {
 			ref = weak.NewWidgetRef(&w)
-			callbackId = state.AddCallback(func(newValue int) {
+			callbackId = state.AddCallback(func(newValue int32) {
 				callback.OnMainThreadOncePure(func() {
 					if obj := ref.Get(); obj != nil {
 						defer obj.Unref()
@@ -439,13 +439,13 @@ func (f ButtonRow) BindHMargin(state *state.State[int]) ButtonRow {
 	}
 }
 
-func (f ButtonRow) BindMargin(state *state.State[int]) ButtonRow {
+func (f ButtonRow) BindMargin(state *state.State[int32]) ButtonRow {
 	return func() *adw.ButtonRow {
 		var callbackId string
 		var ref weak.WidgetRef
 		return f.ConnectRealize(func(w gtk.Widget) {
 			ref = weak.NewWidgetRef(&w)
-			callbackId = state.AddCallback(func(newValue int) {
+			callbackId = state.AddCallback(func(newValue int32) {
 				callback.OnMainThreadOncePure(func() {
 					if obj := ref.Get(); obj != nil {
 						defer obj.Unref()
@@ -462,13 +462,13 @@ func (f ButtonRow) BindMargin(state *state.State[int]) ButtonRow {
 	}
 }
 
-func (f ButtonRow) BindMarginBottom(state *state.State[int]) ButtonRow {
+func (f ButtonRow) BindMarginBottom(state *state.State[int32]) ButtonRow {
 	return func() *adw.ButtonRow {
 		var callbackId string
 		var ref weak.WidgetRef
 		return f.ConnectRealize(func(w gtk.Widget) {
 			ref = weak.NewWidgetRef(&w)
-			callbackId = state.AddCallback(func(newValue int) {
+			callbackId = state.AddCallback(func(newValue int32) {
 				callback.OnMainThreadOncePure(func() {
 					if obj := ref.Get(); obj != nil {
 						defer obj.Unref()
@@ -482,13 +482,13 @@ func (f ButtonRow) BindMarginBottom(state *state.State[int]) ButtonRow {
 	}
 }
 
-func (f ButtonRow) BindMarginEnd(state *state.State[int]) ButtonRow {
+func (f ButtonRow) BindMarginEnd(state *state.State[int32]) ButtonRow {
 	return func() *adw.ButtonRow {
 		var callbackId string
 		var ref weak.WidgetRef
 		return f.ConnectRealize(func(w gtk.Widget) {
 			ref = weak.NewWidgetRef(&w)
-			callbackId = state.AddCallback(func(newValue int) {
+			callbackId = state.AddCallback(func(newValue int32) {
 				callback.OnMainThreadOncePure(func() {
 					if obj := ref.Get(); obj != nil {
 						defer obj.Unref()
@@ -502,13 +502,13 @@ func (f ButtonRow) BindMarginEnd(state *state.State[int]) ButtonRow {
 	}
 }
 
-func (f ButtonRow) BindMarginStart(state *state.State[int]) ButtonRow {
+func (f ButtonRow) BindMarginStart(state *state.State[int32]) ButtonRow {
 	return func() *adw.ButtonRow {
 		var callbackId string
 		var ref weak.WidgetRef
 		return f.ConnectRealize(func(w gtk.Widget) {
 			ref = weak.NewWidgetRef(&w)
-			callbackId = state.AddCallback(func(newValue int) {
+			callbackId = state.AddCallback(func(newValue int32) {
 				callback.OnMainThreadOncePure(func() {
 					if obj := ref.Get(); obj != nil {
 						defer obj.Unref()
@@ -522,13 +522,13 @@ func (f ButtonRow) BindMarginStart(state *state.State[int]) ButtonRow {
 	}
 }
 
-func (f ButtonRow) BindMarginTop(state *state.State[int]) ButtonRow {
+func (f ButtonRow) BindMarginTop(state *state.State[int32]) ButtonRow {
 	return func() *adw.ButtonRow {
 		var callbackId string
 		var ref weak.WidgetRef
 		return f.ConnectRealize(func(w gtk.Widget) {
 			ref = weak.NewWidgetRef(&w)
-			callbackId = state.AddCallback(func(newValue int) {
+			callbackId = state.AddCallback(func(newValue int32) {
 				callback.OnMainThreadOncePure(func() {
 					if obj := ref.Get(); obj != nil {
 						defer obj.Unref()

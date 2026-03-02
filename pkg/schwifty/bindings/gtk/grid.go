@@ -1,10 +1,10 @@
 package gtk
 
-import "github.com/jwijenbergh/puregotk/v4/gtk"
+import "codeberg.org/puregotk/puregotk/v4/gtk"
 
 //go:generate go run codeberg.org/dergs/tonearm/pkg/schwifty/gen Grid *gtk.Grid gtk
 
-func (f Grid) Attach(child any, column int, row int, width int, height int) Grid {
+func (f Grid) Attach(child any, column int32, row int32, width int32, height int32) Grid {
 	return func() *gtk.Grid {
 		grid := f()
 		grid.Attach(ResolveWidget(child), column, row, width, height)

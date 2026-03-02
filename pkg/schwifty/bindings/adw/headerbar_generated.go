@@ -4,9 +4,9 @@ import (
 	"codeberg.org/dergs/tonearm/pkg/schwifty/callback"
 	"codeberg.org/dergs/tonearm/pkg/schwifty/state"
 	"codeberg.org/dergs/tonearm/pkg/schwifty/utils/weak"
+	"codeberg.org/puregotk/puregotk/v4/adw"
+	"codeberg.org/puregotk/puregotk/v4/gtk"
 	"fmt"
-	"github.com/jwijenbergh/puregotk/v4/adw"
-	"github.com/jwijenbergh/puregotk/v4/gtk"
 )
 
 
@@ -124,7 +124,7 @@ func (f HeaderBar) HExpand(expand bool) HeaderBar {
 	}
 }
 
-func (f HeaderBar) HMargin(horizontal int) HeaderBar {
+func (f HeaderBar) HMargin(horizontal int32) HeaderBar {
 	return func() *adw.HeaderBar {
 		widget := f()
 		widget.SetMarginEnd(horizontal)
@@ -133,7 +133,7 @@ func (f HeaderBar) HMargin(horizontal int) HeaderBar {
 	}
 }
 
-func (f HeaderBar) Margin(margin int) HeaderBar {
+func (f HeaderBar) Margin(margin int32) HeaderBar {
 	return func() *adw.HeaderBar {
 		widget := f()
 		widget.SetMarginBottom(margin)
@@ -144,7 +144,7 @@ func (f HeaderBar) Margin(margin int) HeaderBar {
 	}
 }
 
-func (f HeaderBar) MarginBottom(bottom int) HeaderBar {
+func (f HeaderBar) MarginBottom(bottom int32) HeaderBar {
 	return func() *adw.HeaderBar {
 		widget := f()
 		widget.SetMarginBottom(bottom)
@@ -152,7 +152,7 @@ func (f HeaderBar) MarginBottom(bottom int) HeaderBar {
 	}
 }
 
-func (f HeaderBar) MarginEnd(end int) HeaderBar {
+func (f HeaderBar) MarginEnd(end int32) HeaderBar {
 	return func() *adw.HeaderBar {
 		widget := f()
 		widget.SetMarginEnd(end)
@@ -160,7 +160,7 @@ func (f HeaderBar) MarginEnd(end int) HeaderBar {
 	}
 }
 
-func (f HeaderBar) MarginStart(start int) HeaderBar {
+func (f HeaderBar) MarginStart(start int32) HeaderBar {
 	return func() *adw.HeaderBar {
 		widget := f()
 		widget.SetMarginStart(start)
@@ -168,7 +168,7 @@ func (f HeaderBar) MarginStart(start int) HeaderBar {
 	}
 }
 
-func (f HeaderBar) MarginTop(top int) HeaderBar {
+func (f HeaderBar) MarginTop(top int32) HeaderBar {
 	return func() *adw.HeaderBar {
 		widget := f()
 		widget.SetMarginTop(top)
@@ -200,7 +200,7 @@ func (f HeaderBar) Sensitive(sensitive bool) HeaderBar {
 	}
 }
 
-func (f HeaderBar) SizeRequest(width, height int) HeaderBar {
+func (f HeaderBar) SizeRequest(width, height int32) HeaderBar {
 	return func() *adw.HeaderBar {
 		widget := f()
 		widget.SetSizeRequest(width, height)
@@ -237,7 +237,7 @@ func (f HeaderBar) Visible(visible bool) HeaderBar {
 	}
 }
 
-func (f HeaderBar) VMargin(vertical int) HeaderBar {
+func (f HeaderBar) VMargin(vertical int32) HeaderBar {
 	return func() *adw.HeaderBar {
 		widget := f()
 		widget.SetMarginTop(vertical)
@@ -315,7 +315,7 @@ func (f HeaderBar) CSSWithCallback(cb func(elementName string) string) HeaderBar
 		provider := gtk.NewCssProvider()
 		return f.ConnectConstruct(func(t *adw.HeaderBar) {
 			provider.LoadFromString(cb(t.GetCssName()))
-			t.GetStyleContext().AddProvider(provider, uint(gtk.STYLE_PROVIDER_PRIORITY_APPLICATION))
+			t.GetStyleContext().AddProvider(provider, uint32(gtk.STYLE_PROVIDER_PRIORITY_APPLICATION))
 		}).ConnectDestroy(func(w gtk.Widget) {
 			w.GetStyleContext().RemoveProvider(provider)
 			provider.Unref()
@@ -418,13 +418,13 @@ func (f HeaderBar) BindVisible(state *state.State[bool]) HeaderBar {
 	}
 }
 
-func (f HeaderBar) BindHMargin(state *state.State[int]) HeaderBar {
+func (f HeaderBar) BindHMargin(state *state.State[int32]) HeaderBar {
 	return func() *adw.HeaderBar {
 		var callbackId string
 		var ref weak.WidgetRef
 		return f.ConnectRealize(func(w gtk.Widget) {
 			ref = weak.NewWidgetRef(&w)
-			callbackId = state.AddCallback(func(newValue int) {
+			callbackId = state.AddCallback(func(newValue int32) {
 				callback.OnMainThreadOncePure(func() {
 					if obj := ref.Get(); obj != nil {
 						defer obj.Unref()
@@ -439,13 +439,13 @@ func (f HeaderBar) BindHMargin(state *state.State[int]) HeaderBar {
 	}
 }
 
-func (f HeaderBar) BindMargin(state *state.State[int]) HeaderBar {
+func (f HeaderBar) BindMargin(state *state.State[int32]) HeaderBar {
 	return func() *adw.HeaderBar {
 		var callbackId string
 		var ref weak.WidgetRef
 		return f.ConnectRealize(func(w gtk.Widget) {
 			ref = weak.NewWidgetRef(&w)
-			callbackId = state.AddCallback(func(newValue int) {
+			callbackId = state.AddCallback(func(newValue int32) {
 				callback.OnMainThreadOncePure(func() {
 					if obj := ref.Get(); obj != nil {
 						defer obj.Unref()
@@ -462,13 +462,13 @@ func (f HeaderBar) BindMargin(state *state.State[int]) HeaderBar {
 	}
 }
 
-func (f HeaderBar) BindMarginBottom(state *state.State[int]) HeaderBar {
+func (f HeaderBar) BindMarginBottom(state *state.State[int32]) HeaderBar {
 	return func() *adw.HeaderBar {
 		var callbackId string
 		var ref weak.WidgetRef
 		return f.ConnectRealize(func(w gtk.Widget) {
 			ref = weak.NewWidgetRef(&w)
-			callbackId = state.AddCallback(func(newValue int) {
+			callbackId = state.AddCallback(func(newValue int32) {
 				callback.OnMainThreadOncePure(func() {
 					if obj := ref.Get(); obj != nil {
 						defer obj.Unref()
@@ -482,13 +482,13 @@ func (f HeaderBar) BindMarginBottom(state *state.State[int]) HeaderBar {
 	}
 }
 
-func (f HeaderBar) BindMarginEnd(state *state.State[int]) HeaderBar {
+func (f HeaderBar) BindMarginEnd(state *state.State[int32]) HeaderBar {
 	return func() *adw.HeaderBar {
 		var callbackId string
 		var ref weak.WidgetRef
 		return f.ConnectRealize(func(w gtk.Widget) {
 			ref = weak.NewWidgetRef(&w)
-			callbackId = state.AddCallback(func(newValue int) {
+			callbackId = state.AddCallback(func(newValue int32) {
 				callback.OnMainThreadOncePure(func() {
 					if obj := ref.Get(); obj != nil {
 						defer obj.Unref()
@@ -502,13 +502,13 @@ func (f HeaderBar) BindMarginEnd(state *state.State[int]) HeaderBar {
 	}
 }
 
-func (f HeaderBar) BindMarginStart(state *state.State[int]) HeaderBar {
+func (f HeaderBar) BindMarginStart(state *state.State[int32]) HeaderBar {
 	return func() *adw.HeaderBar {
 		var callbackId string
 		var ref weak.WidgetRef
 		return f.ConnectRealize(func(w gtk.Widget) {
 			ref = weak.NewWidgetRef(&w)
-			callbackId = state.AddCallback(func(newValue int) {
+			callbackId = state.AddCallback(func(newValue int32) {
 				callback.OnMainThreadOncePure(func() {
 					if obj := ref.Get(); obj != nil {
 						defer obj.Unref()
@@ -522,13 +522,13 @@ func (f HeaderBar) BindMarginStart(state *state.State[int]) HeaderBar {
 	}
 }
 
-func (f HeaderBar) BindMarginTop(state *state.State[int]) HeaderBar {
+func (f HeaderBar) BindMarginTop(state *state.State[int32]) HeaderBar {
 	return func() *adw.HeaderBar {
 		var callbackId string
 		var ref weak.WidgetRef
 		return f.ConnectRealize(func(w gtk.Widget) {
 			ref = weak.NewWidgetRef(&w)
-			callbackId = state.AddCallback(func(newValue int) {
+			callbackId = state.AddCallback(func(newValue int32) {
 				callback.OnMainThreadOncePure(func() {
 					if obj := ref.Get(); obj != nil {
 						defer obj.Unref()

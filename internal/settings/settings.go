@@ -5,7 +5,7 @@ import (
 	"codeberg.org/dergs/tonearm/pkg/schwifty/callback"
 	"codeberg.org/dergs/tonearm/pkg/schwifty/tracking"
 	"codeberg.org/dergs/tonearm/pkg/utils/cutil"
-	"github.com/jwijenbergh/puregotk/v4/gio"
+	"codeberg.org/puregotk/puregotk/v4/gio"
 )
 
 //go:generate glib-compile-schemas .

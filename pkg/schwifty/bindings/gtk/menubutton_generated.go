@@ -4,8 +4,8 @@ import (
 	"codeberg.org/dergs/tonearm/pkg/schwifty/callback"
 	"codeberg.org/dergs/tonearm/pkg/schwifty/state"
 	"codeberg.org/dergs/tonearm/pkg/schwifty/utils/weak"
+	"codeberg.org/puregotk/puregotk/v4/gtk"
 	"fmt"
-	"github.com/jwijenbergh/puregotk/v4/gtk"
 )
 
 
@@ -123,7 +123,7 @@ func (f MenuButton) HExpand(expand bool) MenuButton {
 	}
 }
 
-func (f MenuButton) HMargin(horizontal int) MenuButton {
+func (f MenuButton) HMargin(horizontal int32) MenuButton {
 	return func() *gtk.MenuButton {
 		widget := f()
 		widget.SetMarginEnd(horizontal)
@@ -132,7 +132,7 @@ func (f MenuButton) HMargin(horizontal int) MenuButton {
 	}
 }
 
-func (f MenuButton) Margin(margin int) MenuButton {
+func (f MenuButton) Margin(margin int32) MenuButton {
 	return func() *gtk.MenuButton {
 		widget := f()
 		widget.SetMarginBottom(margin)
@@ -143,7 +143,7 @@ func (f MenuButton) Margin(margin int) MenuButton {
 	}
 }
 
-func (f MenuButton) MarginBottom(bottom int) MenuButton {
+func (f MenuButton) MarginBottom(bottom int32) MenuButton {
 	return func() *gtk.MenuButton {
 		widget := f()
 		widget.SetMarginBottom(bottom)
@@ -151,7 +151,7 @@ func (f MenuButton) MarginBottom(bottom int) MenuButton {
 	}
 }
 
-func (f MenuButton) MarginEnd(end int) MenuButton {
+func (f MenuButton) MarginEnd(end int32) MenuButton {
 	return func() *gtk.MenuButton {
 		widget := f()
 		widget.SetMarginEnd(end)
@@ -159,7 +159,7 @@ func (f MenuButton) MarginEnd(end int) MenuButton {
 	}
 }
 
-func (f MenuButton) MarginStart(start int) MenuButton {
+func (f MenuButton) MarginStart(start int32) MenuButton {
 	return func() *gtk.MenuButton {
 		widget := f()
 		widget.SetMarginStart(start)
@@ -167,7 +167,7 @@ func (f MenuButton) MarginStart(start int) MenuButton {
 	}
 }
 
-func (f MenuButton) MarginTop(top int) MenuButton {
+func (f MenuButton) MarginTop(top int32) MenuButton {
 	return func() *gtk.MenuButton {
 		widget := f()
 		widget.SetMarginTop(top)
@@ -199,7 +199,7 @@ func (f MenuButton) Sensitive(sensitive bool) MenuButton {
 	}
 }
 
-func (f MenuButton) SizeRequest(width, height int) MenuButton {
+func (f MenuButton) SizeRequest(width, height int32) MenuButton {
 	return func() *gtk.MenuButton {
 		widget := f()
 		widget.SetSizeRequest(width, height)
@@ -236,7 +236,7 @@ func (f MenuButton) Visible(visible bool) MenuButton {
 	}
 }
 
-func (f MenuButton) VMargin(vertical int) MenuButton {
+func (f MenuButton) VMargin(vertical int32) MenuButton {
 	return func() *gtk.MenuButton {
 		widget := f()
 		widget.SetMarginTop(vertical)
@@ -314,7 +314,7 @@ func (f MenuButton) CSSWithCallback(cb func(elementName string) string) MenuButt
 		provider := gtk.NewCssProvider()
 		return f.ConnectConstruct(func(t *gtk.MenuButton) {
 			provider.LoadFromString(cb(t.GetCssName()))
-			t.GetStyleContext().AddProvider(provider, uint(gtk.STYLE_PROVIDER_PRIORITY_APPLICATION))
+			t.GetStyleContext().AddProvider(provider, uint32(gtk.STYLE_PROVIDER_PRIORITY_APPLICATION))
 		}).ConnectDestroy(func(w gtk.Widget) {
 			w.GetStyleContext().RemoveProvider(provider)
 			provider.Unref()
@@ -417,13 +417,13 @@ func (f MenuButton) BindVisible(state *state.State[bool]) MenuButton {
 	}
 }
 
-func (f MenuButton) BindHMargin(state *state.State[int]) MenuButton {
+func (f MenuButton) BindHMargin(state *state.State[int32]) MenuButton {
 	return func() *gtk.MenuButton {
 		var callbackId string
 		var ref weak.WidgetRef
 		return f.ConnectRealize(func(w gtk.Widget) {
 			ref = weak.NewWidgetRef(&w)
-			callbackId = state.AddCallback(func(newValue int) {
+			callbackId = state.AddCallback(func(newValue int32) {
 				callback.OnMainThreadOncePure(func() {
 					if obj := ref.Get(); obj != nil {
 						defer obj.Unref()
@@ -438,13 +438,13 @@ func (f MenuButton) BindHMargin(state *state.State[int]) MenuButton {
 	}
 }
 
-func (f MenuButton) BindMargin(state *state.State[int]) MenuButton {
+func (f MenuButton) BindMargin(state *state.State[int32]) MenuButton {
 	return func() *gtk.MenuButton {
 		var callbackId string
 		var ref weak.WidgetRef
 		return f.ConnectRealize(func(w gtk.Widget) {
 			ref = weak.NewWidgetRef(&w)
-			callbackId = state.AddCallback(func(newValue int) {
+			callbackId = state.AddCallback(func(newValue int32) {
 				callback.OnMainThreadOncePure(func() {
 					if obj := ref.Get(); obj != nil {
 						defer obj.Unref()
@@ -461,13 +461,13 @@ func (f MenuButton) BindMargin(state *state.State[int]) MenuButton {
 	}
 }
 
-func (f MenuButton) BindMarginBottom(state *state.State[int]) MenuButton {
+func (f MenuButton) BindMarginBottom(state *state.State[int32]) MenuButton {
 	return func() *gtk.MenuButton {
 		var callbackId string
 		var ref weak.WidgetRef
 		return f.ConnectRealize(func(w gtk.Widget) {
 			ref = weak.NewWidgetRef(&w)
-			callbackId = state.AddCallback(func(newValue int) {
+			callbackId = state.AddCallback(func(newValue int32) {
 				callback.OnMainThreadOncePure(func() {
 					if obj := ref.Get(); obj != nil {
 						defer obj.Unref()
@@ -481,13 +481,13 @@ func (f MenuButton) BindMarginBottom(state *state.State[int]) MenuButton {
 	}
 }
 
-func (f MenuButton) BindMarginEnd(state *state.State[int]) MenuButton {
+func (f MenuButton) BindMarginEnd(state *state.State[int32]) MenuButton {
 	return func() *gtk.MenuButton {
 		var callbackId string
 		var ref weak.WidgetRef
 		return f.ConnectRealize(func(w gtk.Widget) {
 			ref = weak.NewWidgetRef(&w)
-			callbackId = state.AddCallback(func(newValue int) {
+			callbackId = state.AddCallback(func(newValue int32) {
 				callback.OnMainThreadOncePure(func() {
 					if obj := ref.Get(); obj != nil {
 						defer obj.Unref()
@@ -501,13 +501,13 @@ func (f MenuButton) BindMarginEnd(state *state.State[int]) MenuButton {
 	}
 }
 
-func (f MenuButton) BindMarginStart(state *state.State[int]) MenuButton {
+func (f MenuButton) BindMarginStart(state *state.State[int32]) MenuButton {
 	return func() *gtk.MenuButton {
 		var callbackId string
 		var ref weak.WidgetRef
 		return f.ConnectRealize(func(w gtk.Widget) {
 			ref = weak.NewWidgetRef(&w)
-			callbackId = state.AddCallback(func(newValue int) {
+			callbackId = state.AddCallback(func(newValue int32) {
 				callback.OnMainThreadOncePure(func() {
 					if obj := ref.Get(); obj != nil {
 						defer obj.Unref()
@@ -521,13 +521,13 @@ func (f MenuButton) BindMarginStart(state *state.State[int]) MenuButton {
 	}
 }
 
-func (f MenuButton) BindMarginTop(state *state.State[int]) MenuButton {
+func (f MenuButton) BindMarginTop(state *state.State[int32]) MenuButton {
 	return func() *gtk.MenuButton {
 		var callbackId string
 		var ref weak.WidgetRef
 		return f.ConnectRealize(func(w gtk.Widget) {
 			ref = weak.NewWidgetRef(&w)
-			callbackId = state.AddCallback(func(newValue int) {
+			callbackId = state.AddCallback(func(newValue int32) {
 				callback.OnMainThreadOncePure(func() {
 					if obj := ref.Get(); obj != nil {
 						defer obj.Unref()

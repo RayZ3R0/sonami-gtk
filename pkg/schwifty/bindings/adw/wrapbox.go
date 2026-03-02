@@ -2,7 +2,7 @@ package adw
 
 import (
 	"codeberg.org/dergs/tonearm/pkg/schwifty/bindings/gtk"
-	"github.com/jwijenbergh/puregotk/v4/adw"
+	"codeberg.org/puregotk/puregotk/v4/adw"
 )
 
 //go:generate go run codeberg.org/dergs/tonearm/pkg/schwifty/gen WrapBox *adw.WrapBox adw
@@ -15,7 +15,7 @@ func (f WrapBox) Append(child any) WrapBox {
 	}
 }
 
-func (f WrapBox) ChildSpacing(spacing int) WrapBox {
+func (f WrapBox) ChildSpacing(spacing int32) WrapBox {
 	return func() *adw.WrapBox {
 		wrap := f()
 		wrap.SetChildSpacing(spacing)
@@ -39,7 +39,7 @@ func (f WrapBox) JustifyLastLine(justify bool) WrapBox {
 	}
 }
 
-func (f WrapBox) LineSpacing(spacing int) WrapBox {
+func (f WrapBox) LineSpacing(spacing int32) WrapBox {
 	return func() *adw.WrapBox {
 		wrap := f()
 		wrap.SetLineSpacing(spacing)

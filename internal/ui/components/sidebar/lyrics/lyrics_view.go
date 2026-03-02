@@ -9,9 +9,9 @@ import (
 	"codeberg.org/dergs/tonearm/pkg/schwifty"
 	"codeberg.org/dergs/tonearm/pkg/schwifty/state"
 	. "codeberg.org/dergs/tonearm/pkg/schwifty/syntax"
-	"github.com/jwijenbergh/puregotk/v4/gdk"
-	"github.com/jwijenbergh/puregotk/v4/graphene"
-	"github.com/jwijenbergh/puregotk/v4/gtk"
+	"codeberg.org/puregotk/puregotk/v4/gdk"
+	"codeberg.org/puregotk/puregotk/v4/graphene"
+	"codeberg.org/puregotk/puregotk/v4/gtk"
 )
 
 var (
@@ -33,8 +33,8 @@ var lyricsView = g.Lazy(func() (w *gtk.ScrolledWindow) {
 	w.AddController(&scrollController.EventController)
 
 	keyController := gtk.NewEventControllerKey()
-	keyController.ConnectKeyPressed(new(func(controller gtk.EventControllerKey, a, b uint, c gdk.ModifierType) bool {
-		if slices.Contains([]uint{
+	keyController.ConnectKeyPressed(new(func(controller gtk.EventControllerKey, a, b uint32, c gdk.ModifierType) bool {
+		if slices.Contains([]uint32{
 			23,  // Tab
 			110, // Home
 			111, // Up

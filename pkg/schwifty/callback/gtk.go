@@ -1,8 +1,8 @@
 package callback
 
 import (
-	"github.com/jwijenbergh/puregotk/v4/gdk"
-	"github.com/jwijenbergh/puregotk/v4/gtk"
+	"codeberg.org/puregotk/puregotk/v4/gdk"
+	"codeberg.org/puregotk/puregotk/v4/gtk"
 )
 
 var (
@@ -78,7 +78,7 @@ var (
 		return false
 	}
 
-	ListViewActivate = func(listView gtk.ListView, index uint) {
+	ListViewActivate = func(listView gtk.ListView, index uint32) {
 		CallbackHandler[any](listView.Object, "activate", listView, index)
 	}
 )

@@ -4,8 +4,8 @@ import (
 	"codeberg.org/dergs/tonearm/pkg/schwifty/callback"
 	"codeberg.org/dergs/tonearm/pkg/schwifty/state"
 	"codeberg.org/dergs/tonearm/pkg/schwifty/utils/weak"
+	"codeberg.org/puregotk/puregotk/v4/gtk"
 	"fmt"
-	"github.com/jwijenbergh/puregotk/v4/gtk"
 )
 
 
@@ -35,6 +35,14 @@ func (f ProgressBar) ConnectDestroy(cb func(gtk.Widget)) ProgressBar {
 	}
 }
 
+func (f ProgressBar) ConnectHide(cb func(gtk.Widget)) ProgressBar {
+	return func() *gtk.ProgressBar {
+		widget := f()
+		callback.HandleCallback(widget.Object, "hide", cb)
+		return widget
+	}
+}
+
 func (f ProgressBar) ConnectMap(cb func(gtk.Widget)) ProgressBar {
 	return func() *gtk.ProgressBar {
 		widget := f()
@@ -51,6 +59,14 @@ func (f ProgressBar) ConnectRealize(cb func(gtk.Widget)) ProgressBar {
 	}
 }
 
+func (f ProgressBar) ConnectShow(cb func(gtk.Widget)) ProgressBar {
+	return func() *gtk.ProgressBar {
+		widget := f()
+		callback.HandleCallback(widget.Object, "show", cb)
+		return widget
+	}
+}
+
 func (f ProgressBar) ConnectUnmap(cb func(gtk.Widget)) ProgressBar {
 	return func() *gtk.ProgressBar {
 		widget := f()
@@ -63,6 +79,14 @@ func (f ProgressBar) ConnectUnrealize(cb func(gtk.Widget)) ProgressBar {
 	return func() *gtk.ProgressBar {
 		widget := f()
 		callback.HandleCallback(widget.Object, "unrealize", cb)
+		return widget
+	}
+}
+
+func (f ProgressBar) Controller(controller *gtk.EventController) ProgressBar {
+	return func() *gtk.ProgressBar {
+		widget := f()
+		widget.AddController(controller)
 		return widget
 	}
 }
@@ -99,7 +123,7 @@ func (f ProgressBar) HExpand(expand bool) ProgressBar {
 	}
 }
 
-func (f ProgressBar) HMargin(horizontal int) ProgressBar {
+func (f ProgressBar) HMargin(horizontal int32) ProgressBar {
 	return func() *gtk.ProgressBar {
 		widget := f()
 		widget.SetMarginEnd(horizontal)
@@ -108,7 +132,7 @@ func (f ProgressBar) HMargin(horizontal int) ProgressBar {
 	}
 }
 
-func (f ProgressBar) Margin(margin int) ProgressBar {
+func (f ProgressBar) Margin(margin int32) ProgressBar {
 	return func() *gtk.ProgressBar {
 		widget := f()
 		widget.SetMarginBottom(margin)
@@ -119,7 +143,7 @@ func (f ProgressBar) Margin(margin int) ProgressBar {
 	}
 }
 
-func (f ProgressBar) MarginBottom(bottom int) ProgressBar {
+func (f ProgressBar) MarginBottom(bottom int32) ProgressBar {
 	return func() *gtk.ProgressBar {
 		widget := f()
 		widget.SetMarginBottom(bottom)
@@ -127,7 +151,7 @@ func (f ProgressBar) MarginBottom(bottom int) ProgressBar {
 	}
 }
 
-func (f ProgressBar) MarginEnd(end int) ProgressBar {
+func (f ProgressBar) MarginEnd(end int32) ProgressBar {
 	return func() *gtk.ProgressBar {
 		widget := f()
 		widget.SetMarginEnd(end)
@@ -135,7 +159,7 @@ func (f ProgressBar) MarginEnd(end int) ProgressBar {
 	}
 }
 
-func (f ProgressBar) MarginStart(start int) ProgressBar {
+func (f ProgressBar) MarginStart(start int32) ProgressBar {
 	return func() *gtk.ProgressBar {
 		widget := f()
 		widget.SetMarginStart(start)
@@ -143,7 +167,7 @@ func (f ProgressBar) MarginStart(start int) ProgressBar {
 	}
 }
 
-func (f ProgressBar) MarginTop(top int) ProgressBar {
+func (f ProgressBar) MarginTop(top int32) ProgressBar {
 	return func() *gtk.ProgressBar {
 		widget := f()
 		widget.SetMarginTop(top)
@@ -175,7 +199,7 @@ func (f ProgressBar) Sensitive(sensitive bool) ProgressBar {
 	}
 }
 
-func (f ProgressBar) SizeRequest(width, height int) ProgressBar {
+func (f ProgressBar) SizeRequest(width, height int32) ProgressBar {
 	return func() *gtk.ProgressBar {
 		widget := f()
 		widget.SetSizeRequest(width, height)
@@ -212,7 +236,7 @@ func (f ProgressBar) Visible(visible bool) ProgressBar {
 	}
 }
 
-func (f ProgressBar) VMargin(vertical int) ProgressBar {
+func (f ProgressBar) VMargin(vertical int32) ProgressBar {
 	return func() *gtk.ProgressBar {
 		widget := f()
 		widget.SetMarginTop(vertical)
@@ -290,7 +314,7 @@ func (f ProgressBar) CSSWithCallback(cb func(elementName string) string) Progres
 		provider := gtk.NewCssProvider()
 		return f.ConnectConstruct(func(t *gtk.ProgressBar) {
 			provider.LoadFromString(cb(t.GetCssName()))
-			t.GetStyleContext().AddProvider(provider, uint(gtk.STYLE_PROVIDER_PRIORITY_APPLICATION))
+			t.GetStyleContext().AddProvider(provider, uint32(gtk.STYLE_PROVIDER_PRIORITY_APPLICATION))
 		}).ConnectDestroy(func(w gtk.Widget) {
 			w.GetStyleContext().RemoveProvider(provider)
 			provider.Unref()
@@ -376,9 +400,9 @@ func (f ProgressBar) VPadding(padding int) ProgressBar {
 func (f ProgressBar) BindVisible(state *state.State[bool]) ProgressBar {
 	return func() *gtk.ProgressBar {
 		var callbackId string
-		var ref weak.WidgetRef
-		return f.ConnectRealize(func(w gtk.Widget) {
-			ref = weak.NewWidgetRef(&w)
+		var ref weak.ObjectRef
+		return f.ConnectConstruct(func(w *gtk.ProgressBar) {
+			ref = weak.NewObjectRef(&w.Widget)
 			callbackId = state.AddCallback(func(newValue bool) {
 				callback.OnMainThreadOncePure(func() {
 					if obj := ref.Get(); obj != nil {
@@ -387,19 +411,19 @@ func (f ProgressBar) BindVisible(state *state.State[bool]) ProgressBar {
 					}
 				})
 			})
-		}).ConnectUnrealize(func(w gtk.Widget) {
+		}).ConnectDestroy(func(w gtk.Widget) {
 			state.RemoveCallback(callbackId)
 		})()
 	}
 }
 
-func (f ProgressBar) BindHMargin(state *state.State[int]) ProgressBar {
+func (f ProgressBar) BindHMargin(state *state.State[int32]) ProgressBar {
 	return func() *gtk.ProgressBar {
 		var callbackId string
 		var ref weak.WidgetRef
 		return f.ConnectRealize(func(w gtk.Widget) {
 			ref = weak.NewWidgetRef(&w)
-			callbackId = state.AddCallback(func(newValue int) {
+			callbackId = state.AddCallback(func(newValue int32) {
 				callback.OnMainThreadOncePure(func() {
 					if obj := ref.Get(); obj != nil {
 						defer obj.Unref()
@@ -414,13 +438,13 @@ func (f ProgressBar) BindHMargin(state *state.State[int]) ProgressBar {
 	}
 }
 
-func (f ProgressBar) BindMargin(state *state.State[int]) ProgressBar {
+func (f ProgressBar) BindMargin(state *state.State[int32]) ProgressBar {
 	return func() *gtk.ProgressBar {
 		var callbackId string
 		var ref weak.WidgetRef
 		return f.ConnectRealize(func(w gtk.Widget) {
 			ref = weak.NewWidgetRef(&w)
-			callbackId = state.AddCallback(func(newValue int) {
+			callbackId = state.AddCallback(func(newValue int32) {
 				callback.OnMainThreadOncePure(func() {
 					if obj := ref.Get(); obj != nil {
 						defer obj.Unref()
@@ -437,13 +461,13 @@ func (f ProgressBar) BindMargin(state *state.State[int]) ProgressBar {
 	}
 }
 
-func (f ProgressBar) BindMarginBottom(state *state.State[int]) ProgressBar {
+func (f ProgressBar) BindMarginBottom(state *state.State[int32]) ProgressBar {
 	return func() *gtk.ProgressBar {
 		var callbackId string
 		var ref weak.WidgetRef
 		return f.ConnectRealize(func(w gtk.Widget) {
 			ref = weak.NewWidgetRef(&w)
-			callbackId = state.AddCallback(func(newValue int) {
+			callbackId = state.AddCallback(func(newValue int32) {
 				callback.OnMainThreadOncePure(func() {
 					if obj := ref.Get(); obj != nil {
 						defer obj.Unref()
@@ -457,13 +481,13 @@ func (f ProgressBar) BindMarginBottom(state *state.State[int]) ProgressBar {
 	}
 }
 
-func (f ProgressBar) BindMarginEnd(state *state.State[int]) ProgressBar {
+func (f ProgressBar) BindMarginEnd(state *state.State[int32]) ProgressBar {
 	return func() *gtk.ProgressBar {
 		var callbackId string
 		var ref weak.WidgetRef
 		return f.ConnectRealize(func(w gtk.Widget) {
 			ref = weak.NewWidgetRef(&w)
-			callbackId = state.AddCallback(func(newValue int) {
+			callbackId = state.AddCallback(func(newValue int32) {
 				callback.OnMainThreadOncePure(func() {
 					if obj := ref.Get(); obj != nil {
 						defer obj.Unref()
@@ -477,13 +501,13 @@ func (f ProgressBar) BindMarginEnd(state *state.State[int]) ProgressBar {
 	}
 }
 
-func (f ProgressBar) BindMarginStart(state *state.State[int]) ProgressBar {
+func (f ProgressBar) BindMarginStart(state *state.State[int32]) ProgressBar {
 	return func() *gtk.ProgressBar {
 		var callbackId string
 		var ref weak.WidgetRef
 		return f.ConnectRealize(func(w gtk.Widget) {
 			ref = weak.NewWidgetRef(&w)
-			callbackId = state.AddCallback(func(newValue int) {
+			callbackId = state.AddCallback(func(newValue int32) {
 				callback.OnMainThreadOncePure(func() {
 					if obj := ref.Get(); obj != nil {
 						defer obj.Unref()
@@ -497,13 +521,13 @@ func (f ProgressBar) BindMarginStart(state *state.State[int]) ProgressBar {
 	}
 }
 
-func (f ProgressBar) BindMarginTop(state *state.State[int]) ProgressBar {
+func (f ProgressBar) BindMarginTop(state *state.State[int32]) ProgressBar {
 	return func() *gtk.ProgressBar {
 		var callbackId string
 		var ref weak.WidgetRef
 		return f.ConnectRealize(func(w gtk.Widget) {
 			ref = weak.NewWidgetRef(&w)
-			callbackId = state.AddCallback(func(newValue int) {
+			callbackId = state.AddCallback(func(newValue int32) {
 				callback.OnMainThreadOncePure(func() {
 					if obj := ref.Get(); obj != nil {
 						defer obj.Unref()

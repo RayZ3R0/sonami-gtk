@@ -6,8 +6,8 @@ import (
 	"codeberg.org/dergs/tonearm/pkg/schwifty/callback"
 	"codeberg.org/dergs/tonearm/pkg/schwifty/state"
 	"codeberg.org/dergs/tonearm/pkg/schwifty/utils/weak"
-	"github.com/jwijenbergh/puregotk/v4/gtk"
-	"github.com/jwijenbergh/puregotk/v4/pango"
+	"codeberg.org/puregotk/puregotk/v4/gtk"
+	"codeberg.org/puregotk/puregotk/v4/pango"
 )
 
 //go:generate go run codeberg.org/dergs/tonearm/pkg/schwifty/gen Label *gtk.Label gtk
@@ -125,7 +125,7 @@ func (f Label) BindText(state *state.State[string]) Label {
 	}
 }
 
-func (f Label) Lines(lines int) Label {
+func (f Label) Lines(lines int32) Label {
 	return func() *gtk.Label {
 		widget := f()
 		widget.SetLines(lines)
@@ -133,7 +133,7 @@ func (f Label) Lines(lines int) Label {
 	}
 }
 
-func (f Label) MaxWidthChars(chars int) Label {
+func (f Label) MaxWidthChars(chars int32) Label {
 	return func() *gtk.Label {
 		widget := f()
 		widget.SetMaxWidthChars(chars)

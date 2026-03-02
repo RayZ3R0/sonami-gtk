@@ -3,12 +3,12 @@ package tracklist
 import (
 	. "codeberg.org/dergs/tonearm/pkg/schwifty/syntax"
 	"codeberg.org/dergs/tonearm/pkg/tonearm"
-	"github.com/jwijenbergh/puregotk/v4/gtk"
+	"codeberg.org/puregotk/puregotk/v4/gtk"
 )
 
-type buttonColumnCallback func(trackID string, position, column int)
+type buttonColumnCallback func(trackID string, position int, column int32)
 
-func customButtonColumn(trackId string, grid *gtk.Grid, position int, column int, onClick buttonColumnCallback) int {
+func customButtonColumn(trackId string, grid *gtk.Grid, position int, column int32, onClick buttonColumnCallback) int {
 	grid.Attach(
 		Button().
 			ConnectClicked(func(b gtk.Button) {
@@ -24,7 +24,7 @@ func customButtonColumn(trackId string, grid *gtk.Grid, position int, column int
 	return 0
 }
 
-func customWidgetButtonColumn(trackId string, grid *gtk.Grid, position int, column int, button func(trackID string, position, column int) *gtk.Widget) int {
+func customWidgetButtonColumn(trackId string, grid *gtk.Grid, position int, column int32, button func(trackID string, position int, column int32) *gtk.Widget) int {
 	grid.Attach(
 		HStack(
 			button(trackId, position, column),
@@ -41,7 +41,7 @@ func customWidgetButtonColumn(trackId string, grid *gtk.Grid, position int, colu
 }
 
 func CustomButtonColumn(onClick buttonColumnCallback) ColumnFunc {
-	return func(track tonearm.Track, grid *gtk.Grid, position int, column int) int {
+	return func(track tonearm.Track, grid *gtk.Grid, position int, column int32) int {
 		if track == nil {
 			grid.Attach(
 				Box(gtk.OrientationHorizontalValue).ToGTK(),
@@ -56,8 +56,8 @@ func CustomButtonColumn(onClick buttonColumnCallback) ColumnFunc {
 	}
 }
 
-func CustomWidgetButtonColumn(button func(string, int, int) *gtk.Widget) ColumnFunc {
-	return func(track tonearm.Track, grid *gtk.Grid, position int, column int) int {
+func CustomWidgetButtonColumn(button func(string, int, int32) *gtk.Widget) ColumnFunc {
+	return func(track tonearm.Track, grid *gtk.Grid, position int, column int32) int {
 		if track == nil {
 			grid.Attach(
 				Box(gtk.OrientationHorizontalValue).ToGTK(),
@@ -72,8 +72,8 @@ func CustomWidgetButtonColumn(button func(string, int, int) *gtk.Widget) ColumnF
 	}
 }
 
-func ExpandCustomButtonColumn(additionalWidth int, onClick buttonColumnCallback) ColumnFunc {
-	return func(track tonearm.Track, grid *gtk.Grid, position, column int) int {
+func ExpandCustomButtonColumn(additionalWidth int32, onClick buttonColumnCallback) ColumnFunc {
+	return func(track tonearm.Track, grid *gtk.Grid, position int, column int32) int {
 		return CustomButtonColumn(onClick)(track, grid, position, column+additionalWidth)
 	}
 }

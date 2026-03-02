@@ -4,11 +4,11 @@ import (
 	"codeberg.org/dergs/tonearm/internal/gettext"
 	"codeberg.org/dergs/tonearm/internal/signals"
 	"codeberg.org/dergs/tonearm/pkg/schwifty/callback"
-	"github.com/jwijenbergh/puregotk/v4/gio"
-	"github.com/jwijenbergh/puregotk/v4/gobject"
+	"codeberg.org/puregotk/puregotk/v4/gio"
+	"codeberg.org/puregotk/puregotk/v4/gobject"
 )
 
-type ReplayGainMode int
+type ReplayGainMode int32
 
 const (
 	// NEVER change the values of existing modes
@@ -70,5 +70,5 @@ func (p *PlaybackSettings) ReplayGainMode() ReplayGainMode {
 }
 
 func (p *PlaybackSettings) SetReplayGainMode(mode ReplayGainMode) {
-	p.settings.SetInt("replay-gain-mode", int(mode))
+	p.settings.SetInt("replay-gain-mode", int32(mode))
 }

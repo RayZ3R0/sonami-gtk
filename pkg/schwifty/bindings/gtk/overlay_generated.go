@@ -4,8 +4,8 @@ import (
 	"codeberg.org/dergs/tonearm/pkg/schwifty/callback"
 	"codeberg.org/dergs/tonearm/pkg/schwifty/state"
 	"codeberg.org/dergs/tonearm/pkg/schwifty/utils/weak"
+	"codeberg.org/puregotk/puregotk/v4/gtk"
 	"fmt"
-	"github.com/jwijenbergh/puregotk/v4/gtk"
 )
 
 
@@ -35,6 +35,14 @@ func (f Overlay) ConnectDestroy(cb func(gtk.Widget)) Overlay {
 	}
 }
 
+func (f Overlay) ConnectHide(cb func(gtk.Widget)) Overlay {
+	return func() *gtk.Overlay {
+		widget := f()
+		callback.HandleCallback(widget.Object, "hide", cb)
+		return widget
+	}
+}
+
 func (f Overlay) ConnectMap(cb func(gtk.Widget)) Overlay {
 	return func() *gtk.Overlay {
 		widget := f()
@@ -51,6 +59,14 @@ func (f Overlay) ConnectRealize(cb func(gtk.Widget)) Overlay {
 	}
 }
 
+func (f Overlay) ConnectShow(cb func(gtk.Widget)) Overlay {
+	return func() *gtk.Overlay {
+		widget := f()
+		callback.HandleCallback(widget.Object, "show", cb)
+		return widget
+	}
+}
+
 func (f Overlay) ConnectUnmap(cb func(gtk.Widget)) Overlay {
 	return func() *gtk.Overlay {
 		widget := f()
@@ -63,6 +79,14 @@ func (f Overlay) ConnectUnrealize(cb func(gtk.Widget)) Overlay {
 	return func() *gtk.Overlay {
 		widget := f()
 		callback.HandleCallback(widget.Object, "unrealize", cb)
+		return widget
+	}
+}
+
+func (f Overlay) Controller(controller *gtk.EventController) Overlay {
+	return func() *gtk.Overlay {
+		widget := f()
+		widget.AddController(controller)
 		return widget
 	}
 }
@@ -99,7 +123,7 @@ func (f Overlay) HExpand(expand bool) Overlay {
 	}
 }
 
-func (f Overlay) HMargin(horizontal int) Overlay {
+func (f Overlay) HMargin(horizontal int32) Overlay {
 	return func() *gtk.Overlay {
 		widget := f()
 		widget.SetMarginEnd(horizontal)
@@ -108,7 +132,7 @@ func (f Overlay) HMargin(horizontal int) Overlay {
 	}
 }
 
-func (f Overlay) Margin(margin int) Overlay {
+func (f Overlay) Margin(margin int32) Overlay {
 	return func() *gtk.Overlay {
 		widget := f()
 		widget.SetMarginBottom(margin)
@@ -119,7 +143,7 @@ func (f Overlay) Margin(margin int) Overlay {
 	}
 }
 
-func (f Overlay) MarginBottom(bottom int) Overlay {
+func (f Overlay) MarginBottom(bottom int32) Overlay {
 	return func() *gtk.Overlay {
 		widget := f()
 		widget.SetMarginBottom(bottom)
@@ -127,7 +151,7 @@ func (f Overlay) MarginBottom(bottom int) Overlay {
 	}
 }
 
-func (f Overlay) MarginEnd(end int) Overlay {
+func (f Overlay) MarginEnd(end int32) Overlay {
 	return func() *gtk.Overlay {
 		widget := f()
 		widget.SetMarginEnd(end)
@@ -135,7 +159,7 @@ func (f Overlay) MarginEnd(end int) Overlay {
 	}
 }
 
-func (f Overlay) MarginStart(start int) Overlay {
+func (f Overlay) MarginStart(start int32) Overlay {
 	return func() *gtk.Overlay {
 		widget := f()
 		widget.SetMarginStart(start)
@@ -143,7 +167,7 @@ func (f Overlay) MarginStart(start int) Overlay {
 	}
 }
 
-func (f Overlay) MarginTop(top int) Overlay {
+func (f Overlay) MarginTop(top int32) Overlay {
 	return func() *gtk.Overlay {
 		widget := f()
 		widget.SetMarginTop(top)
@@ -175,7 +199,7 @@ func (f Overlay) Sensitive(sensitive bool) Overlay {
 	}
 }
 
-func (f Overlay) SizeRequest(width, height int) Overlay {
+func (f Overlay) SizeRequest(width, height int32) Overlay {
 	return func() *gtk.Overlay {
 		widget := f()
 		widget.SetSizeRequest(width, height)
@@ -212,7 +236,7 @@ func (f Overlay) Visible(visible bool) Overlay {
 	}
 }
 
-func (f Overlay) VMargin(vertical int) Overlay {
+func (f Overlay) VMargin(vertical int32) Overlay {
 	return func() *gtk.Overlay {
 		widget := f()
 		widget.SetMarginTop(vertical)
@@ -290,7 +314,7 @@ func (f Overlay) CSSWithCallback(cb func(elementName string) string) Overlay {
 		provider := gtk.NewCssProvider()
 		return f.ConnectConstruct(func(t *gtk.Overlay) {
 			provider.LoadFromString(cb(t.GetCssName()))
-			t.GetStyleContext().AddProvider(provider, uint(gtk.STYLE_PROVIDER_PRIORITY_APPLICATION))
+			t.GetStyleContext().AddProvider(provider, uint32(gtk.STYLE_PROVIDER_PRIORITY_APPLICATION))
 		}).ConnectDestroy(func(w gtk.Widget) {
 			w.GetStyleContext().RemoveProvider(provider)
 			provider.Unref()
@@ -376,9 +400,9 @@ func (f Overlay) VPadding(padding int) Overlay {
 func (f Overlay) BindVisible(state *state.State[bool]) Overlay {
 	return func() *gtk.Overlay {
 		var callbackId string
-		var ref weak.WidgetRef
-		return f.ConnectRealize(func(w gtk.Widget) {
-			ref = weak.NewWidgetRef(&w)
+		var ref weak.ObjectRef
+		return f.ConnectConstruct(func(w *gtk.Overlay) {
+			ref = weak.NewObjectRef(&w.Widget)
 			callbackId = state.AddCallback(func(newValue bool) {
 				callback.OnMainThreadOncePure(func() {
 					if obj := ref.Get(); obj != nil {
@@ -387,19 +411,19 @@ func (f Overlay) BindVisible(state *state.State[bool]) Overlay {
 					}
 				})
 			})
-		}).ConnectUnrealize(func(w gtk.Widget) {
+		}).ConnectDestroy(func(w gtk.Widget) {
 			state.RemoveCallback(callbackId)
 		})()
 	}
 }
 
-func (f Overlay) BindHMargin(state *state.State[int]) Overlay {
+func (f Overlay) BindHMargin(state *state.State[int32]) Overlay {
 	return func() *gtk.Overlay {
 		var callbackId string
 		var ref weak.WidgetRef
 		return f.ConnectRealize(func(w gtk.Widget) {
 			ref = weak.NewWidgetRef(&w)
-			callbackId = state.AddCallback(func(newValue int) {
+			callbackId = state.AddCallback(func(newValue int32) {
 				callback.OnMainThreadOncePure(func() {
 					if obj := ref.Get(); obj != nil {
 						defer obj.Unref()
@@ -414,13 +438,13 @@ func (f Overlay) BindHMargin(state *state.State[int]) Overlay {
 	}
 }
 
-func (f Overlay) BindMargin(state *state.State[int]) Overlay {
+func (f Overlay) BindMargin(state *state.State[int32]) Overlay {
 	return func() *gtk.Overlay {
 		var callbackId string
 		var ref weak.WidgetRef
 		return f.ConnectRealize(func(w gtk.Widget) {
 			ref = weak.NewWidgetRef(&w)
-			callbackId = state.AddCallback(func(newValue int) {
+			callbackId = state.AddCallback(func(newValue int32) {
 				callback.OnMainThreadOncePure(func() {
 					if obj := ref.Get(); obj != nil {
 						defer obj.Unref()
@@ -437,13 +461,13 @@ func (f Overlay) BindMargin(state *state.State[int]) Overlay {
 	}
 }
 
-func (f Overlay) BindMarginBottom(state *state.State[int]) Overlay {
+func (f Overlay) BindMarginBottom(state *state.State[int32]) Overlay {
 	return func() *gtk.Overlay {
 		var callbackId string
 		var ref weak.WidgetRef
 		return f.ConnectRealize(func(w gtk.Widget) {
 			ref = weak.NewWidgetRef(&w)
-			callbackId = state.AddCallback(func(newValue int) {
+			callbackId = state.AddCallback(func(newValue int32) {
 				callback.OnMainThreadOncePure(func() {
 					if obj := ref.Get(); obj != nil {
 						defer obj.Unref()
@@ -457,13 +481,13 @@ func (f Overlay) BindMarginBottom(state *state.State[int]) Overlay {
 	}
 }
 
-func (f Overlay) BindMarginEnd(state *state.State[int]) Overlay {
+func (f Overlay) BindMarginEnd(state *state.State[int32]) Overlay {
 	return func() *gtk.Overlay {
 		var callbackId string
 		var ref weak.WidgetRef
 		return f.ConnectRealize(func(w gtk.Widget) {
 			ref = weak.NewWidgetRef(&w)
-			callbackId = state.AddCallback(func(newValue int) {
+			callbackId = state.AddCallback(func(newValue int32) {
 				callback.OnMainThreadOncePure(func() {
 					if obj := ref.Get(); obj != nil {
 						defer obj.Unref()
@@ -477,13 +501,13 @@ func (f Overlay) BindMarginEnd(state *state.State[int]) Overlay {
 	}
 }
 
-func (f Overlay) BindMarginStart(state *state.State[int]) Overlay {
+func (f Overlay) BindMarginStart(state *state.State[int32]) Overlay {
 	return func() *gtk.Overlay {
 		var callbackId string
 		var ref weak.WidgetRef
 		return f.ConnectRealize(func(w gtk.Widget) {
 			ref = weak.NewWidgetRef(&w)
-			callbackId = state.AddCallback(func(newValue int) {
+			callbackId = state.AddCallback(func(newValue int32) {
 				callback.OnMainThreadOncePure(func() {
 					if obj := ref.Get(); obj != nil {
 						defer obj.Unref()
@@ -497,13 +521,13 @@ func (f Overlay) BindMarginStart(state *state.State[int]) Overlay {
 	}
 }
 
-func (f Overlay) BindMarginTop(state *state.State[int]) Overlay {
+func (f Overlay) BindMarginTop(state *state.State[int32]) Overlay {
 	return func() *gtk.Overlay {
 		var callbackId string
 		var ref weak.WidgetRef
 		return f.ConnectRealize(func(w gtk.Widget) {
 			ref = weak.NewWidgetRef(&w)
-			callbackId = state.AddCallback(func(newValue int) {
+			callbackId = state.AddCallback(func(newValue int32) {
 				callback.OnMainThreadOncePure(func() {
 					if obj := ref.Get(); obj != nil {
 						defer obj.Unref()

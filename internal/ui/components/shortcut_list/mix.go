@@ -3,7 +3,7 @@ package shortcut_list
 import (
 	"codeberg.org/dergs/tonearm/pkg/schwifty"
 	v2 "codeberg.org/dergs/tonearm/pkg/tidalapi/models/v2"
-	"github.com/jwijenbergh/puregotk/v4/glib"
+	"codeberg.org/puregotk/puregotk/v4/glib"
 )
 
 func newMix(id string, title string, subtitle string, coverUrl string) schwifty.Button {

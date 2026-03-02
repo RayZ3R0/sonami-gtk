@@ -2,7 +2,7 @@ package schwifty
 
 import (
 	"codeberg.org/dergs/tonearm/pkg/schwifty/callback"
-	"github.com/jwijenbergh/puregotk/v4/gtk"
+	"codeberg.org/puregotk/puregotk/v4/gtk"
 )
 
 type TEMPLATE_BASE_TYPE struct{ gtk.Widget }
@@ -121,7 +121,7 @@ func (f TEMPLATE_TYPE) HExpand(expand bool) TEMPLATE_TYPE {
 	}
 }
 
-func (f TEMPLATE_TYPE) HMargin(horizontal int) TEMPLATE_TYPE {
+func (f TEMPLATE_TYPE) HMargin(horizontal int32) TEMPLATE_TYPE {
 	return func() TEMPLATE_BASE_TYPE {
 		widget := f()
 		widget.SetMarginEnd(horizontal)
@@ -130,7 +130,7 @@ func (f TEMPLATE_TYPE) HMargin(horizontal int) TEMPLATE_TYPE {
 	}
 }
 
-func (f TEMPLATE_TYPE) Margin(margin int) TEMPLATE_TYPE {
+func (f TEMPLATE_TYPE) Margin(margin int32) TEMPLATE_TYPE {
 	return func() TEMPLATE_BASE_TYPE {
 		widget := f()
 		widget.SetMarginBottom(margin)
@@ -141,7 +141,7 @@ func (f TEMPLATE_TYPE) Margin(margin int) TEMPLATE_TYPE {
 	}
 }
 
-func (f TEMPLATE_TYPE) MarginBottom(bottom int) TEMPLATE_TYPE {
+func (f TEMPLATE_TYPE) MarginBottom(bottom int32) TEMPLATE_TYPE {
 	return func() TEMPLATE_BASE_TYPE {
 		widget := f()
 		widget.SetMarginBottom(bottom)
@@ -149,7 +149,7 @@ func (f TEMPLATE_TYPE) MarginBottom(bottom int) TEMPLATE_TYPE {
 	}
 }
 
-func (f TEMPLATE_TYPE) MarginEnd(end int) TEMPLATE_TYPE {
+func (f TEMPLATE_TYPE) MarginEnd(end int32) TEMPLATE_TYPE {
 	return func() TEMPLATE_BASE_TYPE {
 		widget := f()
 		widget.SetMarginEnd(end)
@@ -157,7 +157,7 @@ func (f TEMPLATE_TYPE) MarginEnd(end int) TEMPLATE_TYPE {
 	}
 }
 
-func (f TEMPLATE_TYPE) MarginStart(start int) TEMPLATE_TYPE {
+func (f TEMPLATE_TYPE) MarginStart(start int32) TEMPLATE_TYPE {
 	return func() TEMPLATE_BASE_TYPE {
 		widget := f()
 		widget.SetMarginStart(start)
@@ -165,7 +165,7 @@ func (f TEMPLATE_TYPE) MarginStart(start int) TEMPLATE_TYPE {
 	}
 }
 
-func (f TEMPLATE_TYPE) MarginTop(top int) TEMPLATE_TYPE {
+func (f TEMPLATE_TYPE) MarginTop(top int32) TEMPLATE_TYPE {
 	return func() TEMPLATE_BASE_TYPE {
 		widget := f()
 		widget.SetMarginTop(top)
@@ -197,7 +197,7 @@ func (f TEMPLATE_TYPE) Sensitive(sensitive bool) TEMPLATE_TYPE {
 	}
 }
 
-func (f TEMPLATE_TYPE) SizeRequest(width, height int) TEMPLATE_TYPE {
+func (f TEMPLATE_TYPE) SizeRequest(width, height int32) TEMPLATE_TYPE {
 	return func() TEMPLATE_BASE_TYPE {
 		widget := f()
 		widget.SetSizeRequest(width, height)
@@ -234,7 +234,7 @@ func (f TEMPLATE_TYPE) Visible(visible bool) TEMPLATE_TYPE {
 	}
 }
 
-func (f TEMPLATE_TYPE) VMargin(vertical int) TEMPLATE_TYPE {
+func (f TEMPLATE_TYPE) VMargin(vertical int32) TEMPLATE_TYPE {
 	return func() TEMPLATE_BASE_TYPE {
 		widget := f()
 		widget.SetMarginTop(vertical)

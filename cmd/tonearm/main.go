@@ -20,10 +20,10 @@ import (
 	"codeberg.org/dergs/tonearm/internal/ui"
 	"codeberg.org/dergs/tonearm/pkg/schwifty/tracking"
 	"codeberg.org/dergs/tonearm/pkg/utils/imgutil"
+	"codeberg.org/puregotk/puregotk/v4/adw"
+	"codeberg.org/puregotk/puregotk/v4/gio"
+	"codeberg.org/puregotk/puregotk/v4/gtk"
 	"github.com/infinytum/injector"
-	"github.com/jwijenbergh/puregotk/v4/adw"
-	"github.com/jwijenbergh/puregotk/v4/gio"
-	"github.com/jwijenbergh/puregotk/v4/gtk"
 )
 
 func init() {
@@ -48,9 +48,9 @@ func main() {
 		return imgutil.NewImgUtil(app.GetApplicationId())
 	})
 
-	if code := app.Run(len(os.Args), os.Args); code > 0 {
+	if code := app.Run(int32(len(os.Args)), os.Args); code > 0 {
 		app.Quit()
-		os.Exit(code)
+		os.Exit(int(code))
 	}
 }
 
@@ -76,7 +76,7 @@ func onActivate(_ gio.Application) {
 
 var isActive bool
 
-func onCommandLine(app gio.Application, ptr uintptr) int {
+func onCommandLine(app gio.Application, ptr uintptr) int32 {
 	cmd := gio.ApplicationCommandLineNewFromInternalPtr(ptr)
 	args := cmd.GetArguments(nil)
 	if !isActive {

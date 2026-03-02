@@ -3,8 +3,8 @@ package syntax
 import (
 	gtkbindings "codeberg.org/dergs/tonearm/pkg/schwifty/bindings/gtk"
 	"codeberg.org/dergs/tonearm/pkg/schwifty/callback"
-	"github.com/jwijenbergh/puregotk/v4/gdk"
-	"github.com/jwijenbergh/puregotk/v4/gtk"
+	"codeberg.org/puregotk/puregotk/v4/gdk"
+	"codeberg.org/puregotk/puregotk/v4/gtk"
 )
 
 func AspectFrame(child any) gtkbindings.AspectFrame {

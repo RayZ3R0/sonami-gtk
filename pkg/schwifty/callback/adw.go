@@ -2,7 +2,7 @@ package callback
 
 import (
 	"codeberg.org/dergs/tonearm/pkg/utils/cutil"
-	"github.com/jwijenbergh/puregotk/v4/adw"
+	"codeberg.org/puregotk/puregotk/v4/adw"
 )
 
 var (

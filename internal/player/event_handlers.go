@@ -10,14 +10,14 @@ import (
 	v1 "codeberg.org/dergs/tonearm/pkg/tidalapi/models/v1"
 	tracksv1 "codeberg.org/dergs/tonearm/pkg/tidalapi/v1/tracks"
 	"codeberg.org/dergs/tonearm/pkg/tonearm"
+	"codeberg.org/puregotk/puregotk/v4/glib"
 	"github.com/go-gst/go-gst/gst"
 	"github.com/infinytum/injector"
-	"github.com/jwijenbergh/puregotk/v4/glib"
 )
 
 const UpdateInterval = 250 * time.Millisecond
 
-var updateRunnerSourceHandle uint
+var updateRunnerSourceHandle uint32
 var didQueueGaplessPlayback bool
 var disableGaplessPlayback bool
 
@@ -246,7 +246,7 @@ func startUpdateRunner() {
 	if updateRunnerSourceHandle != 0 {
 		return
 	}
-	updateRunnerSourceHandle = glib.TimeoutAdd(uint(UpdateInterval.Milliseconds()), &onUpdateTick, 0)
+	updateRunnerSourceHandle = glib.TimeoutAdd(uint32(UpdateInterval.Milliseconds()), &onUpdateTick, 0)
 	logger.Debug("started playbin update runner", "source_handle", updateRunnerSourceHandle)
 }
 

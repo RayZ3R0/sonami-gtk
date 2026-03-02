@@ -4,8 +4,8 @@ import (
 	"codeberg.org/dergs/tonearm/pkg/schwifty/callback"
 	"codeberg.org/dergs/tonearm/pkg/schwifty/state"
 	"codeberg.org/dergs/tonearm/pkg/schwifty/utils/weak"
+	"codeberg.org/puregotk/puregotk/v4/gtk"
 	"fmt"
-	"github.com/jwijenbergh/puregotk/v4/gtk"
 )
 
 
@@ -123,7 +123,7 @@ func (f Scale) HExpand(expand bool) Scale {
 	}
 }
 
-func (f Scale) HMargin(horizontal int) Scale {
+func (f Scale) HMargin(horizontal int32) Scale {
 	return func() *gtk.Scale {
 		widget := f()
 		widget.SetMarginEnd(horizontal)
@@ -132,7 +132,7 @@ func (f Scale) HMargin(horizontal int) Scale {
 	}
 }
 
-func (f Scale) Margin(margin int) Scale {
+func (f Scale) Margin(margin int32) Scale {
 	return func() *gtk.Scale {
 		widget := f()
 		widget.SetMarginBottom(margin)
@@ -143,7 +143,7 @@ func (f Scale) Margin(margin int) Scale {
 	}
 }
 
-func (f Scale) MarginBottom(bottom int) Scale {
+func (f Scale) MarginBottom(bottom int32) Scale {
 	return func() *gtk.Scale {
 		widget := f()
 		widget.SetMarginBottom(bottom)
@@ -151,7 +151,7 @@ func (f Scale) MarginBottom(bottom int) Scale {
 	}
 }
 
-func (f Scale) MarginEnd(end int) Scale {
+func (f Scale) MarginEnd(end int32) Scale {
 	return func() *gtk.Scale {
 		widget := f()
 		widget.SetMarginEnd(end)
@@ -159,7 +159,7 @@ func (f Scale) MarginEnd(end int) Scale {
 	}
 }
 
-func (f Scale) MarginStart(start int) Scale {
+func (f Scale) MarginStart(start int32) Scale {
 	return func() *gtk.Scale {
 		widget := f()
 		widget.SetMarginStart(start)
@@ -167,7 +167,7 @@ func (f Scale) MarginStart(start int) Scale {
 	}
 }
 
-func (f Scale) MarginTop(top int) Scale {
+func (f Scale) MarginTop(top int32) Scale {
 	return func() *gtk.Scale {
 		widget := f()
 		widget.SetMarginTop(top)
@@ -199,7 +199,7 @@ func (f Scale) Sensitive(sensitive bool) Scale {
 	}
 }
 
-func (f Scale) SizeRequest(width, height int) Scale {
+func (f Scale) SizeRequest(width, height int32) Scale {
 	return func() *gtk.Scale {
 		widget := f()
 		widget.SetSizeRequest(width, height)
@@ -236,7 +236,7 @@ func (f Scale) Visible(visible bool) Scale {
 	}
 }
 
-func (f Scale) VMargin(vertical int) Scale {
+func (f Scale) VMargin(vertical int32) Scale {
 	return func() *gtk.Scale {
 		widget := f()
 		widget.SetMarginTop(vertical)
@@ -314,7 +314,7 @@ func (f Scale) CSSWithCallback(cb func(elementName string) string) Scale {
 		provider := gtk.NewCssProvider()
 		return f.ConnectConstruct(func(t *gtk.Scale) {
 			provider.LoadFromString(cb(t.GetCssName()))
-			t.GetStyleContext().AddProvider(provider, uint(gtk.STYLE_PROVIDER_PRIORITY_APPLICATION))
+			t.GetStyleContext().AddProvider(provider, uint32(gtk.STYLE_PROVIDER_PRIORITY_APPLICATION))
 		}).ConnectDestroy(func(w gtk.Widget) {
 			w.GetStyleContext().RemoveProvider(provider)
 			provider.Unref()
@@ -417,13 +417,13 @@ func (f Scale) BindVisible(state *state.State[bool]) Scale {
 	}
 }
 
-func (f Scale) BindHMargin(state *state.State[int]) Scale {
+func (f Scale) BindHMargin(state *state.State[int32]) Scale {
 	return func() *gtk.Scale {
 		var callbackId string
 		var ref weak.WidgetRef
 		return f.ConnectRealize(func(w gtk.Widget) {
 			ref = weak.NewWidgetRef(&w)
-			callbackId = state.AddCallback(func(newValue int) {
+			callbackId = state.AddCallback(func(newValue int32) {
 				callback.OnMainThreadOncePure(func() {
 					if obj := ref.Get(); obj != nil {
 						defer obj.Unref()
@@ -438,13 +438,13 @@ func (f Scale) BindHMargin(state *state.State[int]) Scale {
 	}
 }
 
-func (f Scale) BindMargin(state *state.State[int]) Scale {
+func (f Scale) BindMargin(state *state.State[int32]) Scale {
 	return func() *gtk.Scale {
 		var callbackId string
 		var ref weak.WidgetRef
 		return f.ConnectRealize(func(w gtk.Widget) {
 			ref = weak.NewWidgetRef(&w)
-			callbackId = state.AddCallback(func(newValue int) {
+			callbackId = state.AddCallback(func(newValue int32) {
 				callback.OnMainThreadOncePure(func() {
 					if obj := ref.Get(); obj != nil {
 						defer obj.Unref()
@@ -461,13 +461,13 @@ func (f Scale) BindMargin(state *state.State[int]) Scale {
 	}
 }
 
-func (f Scale) BindMarginBottom(state *state.State[int]) Scale {
+func (f Scale) BindMarginBottom(state *state.State[int32]) Scale {
 	return func() *gtk.Scale {
 		var callbackId string
 		var ref weak.WidgetRef
 		return f.ConnectRealize(func(w gtk.Widget) {
 			ref = weak.NewWidgetRef(&w)
-			callbackId = state.AddCallback(func(newValue int) {
+			callbackId = state.AddCallback(func(newValue int32) {
 				callback.OnMainThreadOncePure(func() {
 					if obj := ref.Get(); obj != nil {
 						defer obj.Unref()
@@ -481,13 +481,13 @@ func (f Scale) BindMarginBottom(state *state.State[int]) Scale {
 	}
 }
 
-func (f Scale) BindMarginEnd(state *state.State[int]) Scale {
+func (f Scale) BindMarginEnd(state *state.State[int32]) Scale {
 	return func() *gtk.Scale {
 		var callbackId string
 		var ref weak.WidgetRef
 		return f.ConnectRealize(func(w gtk.Widget) {
 			ref = weak.NewWidgetRef(&w)
-			callbackId = state.AddCallback(func(newValue int) {
+			callbackId = state.AddCallback(func(newValue int32) {
 				callback.OnMainThreadOncePure(func() {
 					if obj := ref.Get(); obj != nil {
 						defer obj.Unref()
@@ -501,13 +501,13 @@ func (f Scale) BindMarginEnd(state *state.State[int]) Scale {
 	}
 }
 
-func (f Scale) BindMarginStart(state *state.State[int]) Scale {
+func (f Scale) BindMarginStart(state *state.State[int32]) Scale {
 	return func() *gtk.Scale {
 		var callbackId string
 		var ref weak.WidgetRef
 		return f.ConnectRealize(func(w gtk.Widget) {
 			ref = weak.NewWidgetRef(&w)
-			callbackId = state.AddCallback(func(newValue int) {
+			callbackId = state.AddCallback(func(newValue int32) {
 				callback.OnMainThreadOncePure(func() {
 					if obj := ref.Get(); obj != nil {
 						defer obj.Unref()
@@ -521,13 +521,13 @@ func (f Scale) BindMarginStart(state *state.State[int]) Scale {
 	}
 }
 
-func (f Scale) BindMarginTop(state *state.State[int]) Scale {
+func (f Scale) BindMarginTop(state *state.State[int32]) Scale {
 	return func() *gtk.Scale {
 		var callbackId string
 		var ref weak.WidgetRef
 		return f.ConnectRealize(func(w gtk.Widget) {
 			ref = weak.NewWidgetRef(&w)
-			callbackId = state.AddCallback(func(newValue int) {
+			callbackId = state.AddCallback(func(newValue int32) {
 				callback.OnMainThreadOncePure(func() {
 					if obj := ref.Get(); obj != nil {
 						defer obj.Unref()

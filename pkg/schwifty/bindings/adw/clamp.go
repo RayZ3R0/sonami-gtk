@@ -2,8 +2,8 @@ package adw
 
 import (
 	gtkbindings "codeberg.org/dergs/tonearm/pkg/schwifty/bindings/gtk"
-	"github.com/jwijenbergh/puregotk/v4/adw"
-	"github.com/jwijenbergh/puregotk/v4/gtk"
+	"codeberg.org/puregotk/puregotk/v4/adw"
+	"codeberg.org/puregotk/puregotk/v4/gtk"
 )
 
 //go:generate go run codeberg.org/dergs/tonearm/pkg/schwifty/gen Clamp *adw.Clamp adw
@@ -16,7 +16,7 @@ func (f Clamp) Child(widget any) Clamp {
 	}
 }
 
-func (f Clamp) MaximumSize(size int) Clamp {
+func (f Clamp) MaximumSize(size int32) Clamp {
 	return func() *adw.Clamp {
 		clamp := f()
 		clamp.SetMaximumSize(size)
@@ -32,7 +32,7 @@ func (f Clamp) Orientation(orientation gtk.Orientation) Clamp {
 	}
 }
 
-func (f Clamp) TighteningThreshold(threshold int) Clamp {
+func (f Clamp) TighteningThreshold(threshold int32) Clamp {
 	return func() *adw.Clamp {
 		widget := f()
 		widget.SetTighteningThreshold(threshold)

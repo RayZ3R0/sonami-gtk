@@ -2,7 +2,7 @@ package components
 
 import (
 	"codeberg.org/dergs/tonearm/pkg/schwifty"
-	"github.com/jwijenbergh/puregotk/v4/gtk"
+	"codeberg.org/puregotk/puregotk/v4/gtk"
 )
 
 func SquirclePicture(picture schwifty.Picture) schwifty.Picture {

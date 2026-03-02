@@ -5,8 +5,8 @@ import (
 	adwbindings "codeberg.org/dergs/tonearm/pkg/schwifty/bindings/adw"
 	gtkbindings "codeberg.org/dergs/tonearm/pkg/schwifty/bindings/gtk"
 	"codeberg.org/dergs/tonearm/pkg/schwifty/callback"
-	"github.com/jwijenbergh/puregotk/v4/adw"
-	"github.com/jwijenbergh/puregotk/v4/gtk"
+	"codeberg.org/puregotk/puregotk/v4/adw"
+	"codeberg.org/puregotk/puregotk/v4/gtk"
 )
 
 func ActionRow() adwbindings.ActionRow {
@@ -141,7 +141,7 @@ func Spinner() adwbindings.Spinner {
 	})
 }
 
-func SpinRow(adjustment *gtk.Adjustment, climbRate float64, digits uint) adwbindings.SpinRow {
+func SpinRow(adjustment *gtk.Adjustment, climbRate float64, digits uint32) adwbindings.SpinRow {
 	return managedWidget("SpinRow", func() *adw.SpinRow {
 		return adw.NewSpinRow(adjustment, climbRate, digits)
 	})

@@ -4,7 +4,7 @@ import (
 	"reflect"
 
 	"codeberg.org/dergs/tonearm/pkg/schwifty/callback"
-	"github.com/jwijenbergh/puregotk/v4/gtk"
+	"codeberg.org/puregotk/puregotk/v4/gtk"
 )
 
 //go:generate go run codeberg.org/dergs/tonearm/pkg/schwifty/gen Widget *WrappedWidget gtk
@@ -24,18 +24,18 @@ type Widgetable[T any] interface {
 	FocusOnClick(focusOnClick bool) T
 	HAlign(align gtk.Align) T
 	HExpand(expand bool) T
-	HMargin(horizontal int) T
-	Margin(margin int) T
-	MarginBottom(bottom int) T
-	MarginEnd(end int) T
-	MarginStart(start int) T
-	MarginTop(top int) T
+	HMargin(horizontal int32) T
+	Margin(margin int32) T
+	MarginBottom(bottom int32) T
+	MarginEnd(end int32) T
+	MarginStart(start int32) T
+	MarginTop(top int32) T
 	Opacity(opacity float64) T
 	Overflow(overflow gtk.Overflow) T
 	VAlign(align gtk.Align) T
 	VExpand(expand bool) T
 	Visible(visible bool) T
-	VMargin(vertical int) T
+	VMargin(vertical int32) T
 }
 
 func ResolveWidget(value any) *gtk.Widget {

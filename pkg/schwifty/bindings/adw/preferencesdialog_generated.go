@@ -4,9 +4,9 @@ import (
 	"codeberg.org/dergs/tonearm/pkg/schwifty/callback"
 	"codeberg.org/dergs/tonearm/pkg/schwifty/state"
 	"codeberg.org/dergs/tonearm/pkg/schwifty/utils/weak"
+	"codeberg.org/puregotk/puregotk/v4/adw"
+	"codeberg.org/puregotk/puregotk/v4/gtk"
 	"fmt"
-	"github.com/jwijenbergh/puregotk/v4/adw"
-	"github.com/jwijenbergh/puregotk/v4/gtk"
 )
 
 
@@ -124,7 +124,7 @@ func (f PreferencesDialog) HExpand(expand bool) PreferencesDialog {
 	}
 }
 
-func (f PreferencesDialog) HMargin(horizontal int) PreferencesDialog {
+func (f PreferencesDialog) HMargin(horizontal int32) PreferencesDialog {
 	return func() *adw.PreferencesDialog {
 		widget := f()
 		widget.SetMarginEnd(horizontal)
@@ -133,7 +133,7 @@ func (f PreferencesDialog) HMargin(horizontal int) PreferencesDialog {
 	}
 }
 
-func (f PreferencesDialog) Margin(margin int) PreferencesDialog {
+func (f PreferencesDialog) Margin(margin int32) PreferencesDialog {
 	return func() *adw.PreferencesDialog {
 		widget := f()
 		widget.SetMarginBottom(margin)
@@ -144,7 +144,7 @@ func (f PreferencesDialog) Margin(margin int) PreferencesDialog {
 	}
 }
 
-func (f PreferencesDialog) MarginBottom(bottom int) PreferencesDialog {
+func (f PreferencesDialog) MarginBottom(bottom int32) PreferencesDialog {
 	return func() *adw.PreferencesDialog {
 		widget := f()
 		widget.SetMarginBottom(bottom)
@@ -152,7 +152,7 @@ func (f PreferencesDialog) MarginBottom(bottom int) PreferencesDialog {
 	}
 }
 
-func (f PreferencesDialog) MarginEnd(end int) PreferencesDialog {
+func (f PreferencesDialog) MarginEnd(end int32) PreferencesDialog {
 	return func() *adw.PreferencesDialog {
 		widget := f()
 		widget.SetMarginEnd(end)
@@ -160,7 +160,7 @@ func (f PreferencesDialog) MarginEnd(end int) PreferencesDialog {
 	}
 }
 
-func (f PreferencesDialog) MarginStart(start int) PreferencesDialog {
+func (f PreferencesDialog) MarginStart(start int32) PreferencesDialog {
 	return func() *adw.PreferencesDialog {
 		widget := f()
 		widget.SetMarginStart(start)
@@ -168,7 +168,7 @@ func (f PreferencesDialog) MarginStart(start int) PreferencesDialog {
 	}
 }
 
-func (f PreferencesDialog) MarginTop(top int) PreferencesDialog {
+func (f PreferencesDialog) MarginTop(top int32) PreferencesDialog {
 	return func() *adw.PreferencesDialog {
 		widget := f()
 		widget.SetMarginTop(top)
@@ -200,7 +200,7 @@ func (f PreferencesDialog) Sensitive(sensitive bool) PreferencesDialog {
 	}
 }
 
-func (f PreferencesDialog) SizeRequest(width, height int) PreferencesDialog {
+func (f PreferencesDialog) SizeRequest(width, height int32) PreferencesDialog {
 	return func() *adw.PreferencesDialog {
 		widget := f()
 		widget.SetSizeRequest(width, height)
@@ -237,7 +237,7 @@ func (f PreferencesDialog) Visible(visible bool) PreferencesDialog {
 	}
 }
 
-func (f PreferencesDialog) VMargin(vertical int) PreferencesDialog {
+func (f PreferencesDialog) VMargin(vertical int32) PreferencesDialog {
 	return func() *adw.PreferencesDialog {
 		widget := f()
 		widget.SetMarginTop(vertical)
@@ -315,7 +315,7 @@ func (f PreferencesDialog) CSSWithCallback(cb func(elementName string) string) P
 		provider := gtk.NewCssProvider()
 		return f.ConnectConstruct(func(t *adw.PreferencesDialog) {
 			provider.LoadFromString(cb(t.GetCssName()))
-			t.GetStyleContext().AddProvider(provider, uint(gtk.STYLE_PROVIDER_PRIORITY_APPLICATION))
+			t.GetStyleContext().AddProvider(provider, uint32(gtk.STYLE_PROVIDER_PRIORITY_APPLICATION))
 		}).ConnectDestroy(func(w gtk.Widget) {
 			w.GetStyleContext().RemoveProvider(provider)
 			provider.Unref()
@@ -418,13 +418,13 @@ func (f PreferencesDialog) BindVisible(state *state.State[bool]) PreferencesDial
 	}
 }
 
-func (f PreferencesDialog) BindHMargin(state *state.State[int]) PreferencesDialog {
+func (f PreferencesDialog) BindHMargin(state *state.State[int32]) PreferencesDialog {
 	return func() *adw.PreferencesDialog {
 		var callbackId string
 		var ref weak.WidgetRef
 		return f.ConnectRealize(func(w gtk.Widget) {
 			ref = weak.NewWidgetRef(&w)
-			callbackId = state.AddCallback(func(newValue int) {
+			callbackId = state.AddCallback(func(newValue int32) {
 				callback.OnMainThreadOncePure(func() {
 					if obj := ref.Get(); obj != nil {
 						defer obj.Unref()
@@ -439,13 +439,13 @@ func (f PreferencesDialog) BindHMargin(state *state.State[int]) PreferencesDialo
 	}
 }
 
-func (f PreferencesDialog) BindMargin(state *state.State[int]) PreferencesDialog {
+func (f PreferencesDialog) BindMargin(state *state.State[int32]) PreferencesDialog {
 	return func() *adw.PreferencesDialog {
 		var callbackId string
 		var ref weak.WidgetRef
 		return f.ConnectRealize(func(w gtk.Widget) {
 			ref = weak.NewWidgetRef(&w)
-			callbackId = state.AddCallback(func(newValue int) {
+			callbackId = state.AddCallback(func(newValue int32) {
 				callback.OnMainThreadOncePure(func() {
 					if obj := ref.Get(); obj != nil {
 						defer obj.Unref()
@@ -462,13 +462,13 @@ func (f PreferencesDialog) BindMargin(state *state.State[int]) PreferencesDialog
 	}
 }
 
-func (f PreferencesDialog) BindMarginBottom(state *state.State[int]) PreferencesDialog {
+func (f PreferencesDialog) BindMarginBottom(state *state.State[int32]) PreferencesDialog {
 	return func() *adw.PreferencesDialog {
 		var callbackId string
 		var ref weak.WidgetRef
 		return f.ConnectRealize(func(w gtk.Widget) {
 			ref = weak.NewWidgetRef(&w)
-			callbackId = state.AddCallback(func(newValue int) {
+			callbackId = state.AddCallback(func(newValue int32) {
 				callback.OnMainThreadOncePure(func() {
 					if obj := ref.Get(); obj != nil {
 						defer obj.Unref()
@@ -482,13 +482,13 @@ func (f PreferencesDialog) BindMarginBottom(state *state.State[int]) Preferences
 	}
 }
 
-func (f PreferencesDialog) BindMarginEnd(state *state.State[int]) PreferencesDialog {
+func (f PreferencesDialog) BindMarginEnd(state *state.State[int32]) PreferencesDialog {
 	return func() *adw.PreferencesDialog {
 		var callbackId string
 		var ref weak.WidgetRef
 		return f.ConnectRealize(func(w gtk.Widget) {
 			ref = weak.NewWidgetRef(&w)
-			callbackId = state.AddCallback(func(newValue int) {
+			callbackId = state.AddCallback(func(newValue int32) {
 				callback.OnMainThreadOncePure(func() {
 					if obj := ref.Get(); obj != nil {
 						defer obj.Unref()
@@ -502,13 +502,13 @@ func (f PreferencesDialog) BindMarginEnd(state *state.State[int]) PreferencesDia
 	}
 }
 
-func (f PreferencesDialog) BindMarginStart(state *state.State[int]) PreferencesDialog {
+func (f PreferencesDialog) BindMarginStart(state *state.State[int32]) PreferencesDialog {
 	return func() *adw.PreferencesDialog {
 		var callbackId string
 		var ref weak.WidgetRef
 		return f.ConnectRealize(func(w gtk.Widget) {
 			ref = weak.NewWidgetRef(&w)
-			callbackId = state.AddCallback(func(newValue int) {
+			callbackId = state.AddCallback(func(newValue int32) {
 				callback.OnMainThreadOncePure(func() {
 					if obj := ref.Get(); obj != nil {
 						defer obj.Unref()
@@ -522,13 +522,13 @@ func (f PreferencesDialog) BindMarginStart(state *state.State[int]) PreferencesD
 	}
 }
 
-func (f PreferencesDialog) BindMarginTop(state *state.State[int]) PreferencesDialog {
+func (f PreferencesDialog) BindMarginTop(state *state.State[int32]) PreferencesDialog {
 	return func() *adw.PreferencesDialog {
 		var callbackId string
 		var ref weak.WidgetRef
 		return f.ConnectRealize(func(w gtk.Widget) {
 			ref = weak.NewWidgetRef(&w)
-			callbackId = state.AddCallback(func(newValue int) {
+			callbackId = state.AddCallback(func(newValue int32) {
 				callback.OnMainThreadOncePure(func() {
 					if obj := ref.Get(); obj != nil {
 						defer obj.Unref()

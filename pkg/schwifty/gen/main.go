@@ -42,7 +42,7 @@ func main() {
 
 	additionalImports := []string{}
 	if strings.Contains(baseType, "adw.") {
-		additionalImports = append(additionalImports, "\"github.com/jwijenbergh/puregotk/v4/adw\"")
+		additionalImports = append(additionalImports, "\"codeberg.org/puregotk/puregotk/v4/adw\"")
 	}
 
 	parsedTemplates := make([]string, len(templateList))

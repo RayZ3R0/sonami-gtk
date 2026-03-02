@@ -7,8 +7,8 @@ import (
 	"codeberg.org/dergs/tonearm/internal/router"
 	"codeberg.org/dergs/tonearm/pkg/schwifty"
 	v2 "codeberg.org/dergs/tonearm/pkg/tidalapi/models/v2"
+	"codeberg.org/puregotk/puregotk/v4/gtk"
 	"github.com/infinytum/injector"
-	"github.com/jwijenbergh/puregotk/v4/gtk"
 )
 
 func newDeepLink(id string, name string, external bool, url string, coverUrl string) schwifty.Button {

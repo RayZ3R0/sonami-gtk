@@ -1,6 +1,6 @@
 package callback
 
-import "github.com/jwijenbergh/puregotk/v4/gtk"
+import "codeberg.org/puregotk/puregotk/v4/gtk"
 
 var (
 	DestroyCallback = func(widget gtk.Widget) {

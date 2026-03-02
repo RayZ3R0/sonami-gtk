@@ -4,9 +4,9 @@ import (
 	"codeberg.org/dergs/tonearm/pkg/schwifty/callback"
 	"codeberg.org/dergs/tonearm/pkg/schwifty/state"
 	"codeberg.org/dergs/tonearm/pkg/schwifty/utils/weak"
+	"codeberg.org/puregotk/puregotk/v4/adw"
+	"codeberg.org/puregotk/puregotk/v4/gtk"
 	"fmt"
-	"github.com/jwijenbergh/puregotk/v4/adw"
-	"github.com/jwijenbergh/puregotk/v4/gtk"
 )
 
 
@@ -124,7 +124,7 @@ func (f StatusPage) HExpand(expand bool) StatusPage {
 	}
 }
 
-func (f StatusPage) HMargin(horizontal int) StatusPage {
+func (f StatusPage) HMargin(horizontal int32) StatusPage {
 	return func() *adw.StatusPage {
 		widget := f()
 		widget.SetMarginEnd(horizontal)
@@ -133,7 +133,7 @@ func (f StatusPage) HMargin(horizontal int) StatusPage {
 	}
 }
 
-func (f StatusPage) Margin(margin int) StatusPage {
+func (f StatusPage) Margin(margin int32) StatusPage {
 	return func() *adw.StatusPage {
 		widget := f()
 		widget.SetMarginBottom(margin)
@@ -144,7 +144,7 @@ func (f StatusPage) Margin(margin int) StatusPage {
 	}
 }
 
-func (f StatusPage) MarginBottom(bottom int) StatusPage {
+func (f StatusPage) MarginBottom(bottom int32) StatusPage {
 	return func() *adw.StatusPage {
 		widget := f()
 		widget.SetMarginBottom(bottom)
@@ -152,7 +152,7 @@ func (f StatusPage) MarginBottom(bottom int) StatusPage {
 	}
 }
 
-func (f StatusPage) MarginEnd(end int) StatusPage {
+func (f StatusPage) MarginEnd(end int32) StatusPage {
 	return func() *adw.StatusPage {
 		widget := f()
 		widget.SetMarginEnd(end)
@@ -160,7 +160,7 @@ func (f StatusPage) MarginEnd(end int) StatusPage {
 	}
 }
 
-func (f StatusPage) MarginStart(start int) StatusPage {
+func (f StatusPage) MarginStart(start int32) StatusPage {
 	return func() *adw.StatusPage {
 		widget := f()
 		widget.SetMarginStart(start)
@@ -168,7 +168,7 @@ func (f StatusPage) MarginStart(start int) StatusPage {
 	}
 }
 
-func (f StatusPage) MarginTop(top int) StatusPage {
+func (f StatusPage) MarginTop(top int32) StatusPage {
 	return func() *adw.StatusPage {
 		widget := f()
 		widget.SetMarginTop(top)
@@ -200,7 +200,7 @@ func (f StatusPage) Sensitive(sensitive bool) StatusPage {
 	}
 }
 
-func (f StatusPage) SizeRequest(width, height int) StatusPage {
+func (f StatusPage) SizeRequest(width, height int32) StatusPage {
 	return func() *adw.StatusPage {
 		widget := f()
 		widget.SetSizeRequest(width, height)
@@ -237,7 +237,7 @@ func (f StatusPage) Visible(visible bool) StatusPage {
 	}
 }
 
-func (f StatusPage) VMargin(vertical int) StatusPage {
+func (f StatusPage) VMargin(vertical int32) StatusPage {
 	return func() *adw.StatusPage {
 		widget := f()
 		widget.SetMarginTop(vertical)
@@ -315,7 +315,7 @@ func (f StatusPage) CSSWithCallback(cb func(elementName string) string) StatusPa
 		provider := gtk.NewCssProvider()
 		return f.ConnectConstruct(func(t *adw.StatusPage) {
 			provider.LoadFromString(cb(t.GetCssName()))
-			t.GetStyleContext().AddProvider(provider, uint(gtk.STYLE_PROVIDER_PRIORITY_APPLICATION))
+			t.GetStyleContext().AddProvider(provider, uint32(gtk.STYLE_PROVIDER_PRIORITY_APPLICATION))
 		}).ConnectDestroy(func(w gtk.Widget) {
 			w.GetStyleContext().RemoveProvider(provider)
 			provider.Unref()
@@ -418,13 +418,13 @@ func (f StatusPage) BindVisible(state *state.State[bool]) StatusPage {
 	}
 }
 
-func (f StatusPage) BindHMargin(state *state.State[int]) StatusPage {
+func (f StatusPage) BindHMargin(state *state.State[int32]) StatusPage {
 	return func() *adw.StatusPage {
 		var callbackId string
 		var ref weak.WidgetRef
 		return f.ConnectRealize(func(w gtk.Widget) {
 			ref = weak.NewWidgetRef(&w)
-			callbackId = state.AddCallback(func(newValue int) {
+			callbackId = state.AddCallback(func(newValue int32) {
 				callback.OnMainThreadOncePure(func() {
 					if obj := ref.Get(); obj != nil {
 						defer obj.Unref()
@@ -439,13 +439,13 @@ func (f StatusPage) BindHMargin(state *state.State[int]) StatusPage {
 	}
 }
 
-func (f StatusPage) BindMargin(state *state.State[int]) StatusPage {
+func (f StatusPage) BindMargin(state *state.State[int32]) StatusPage {
 	return func() *adw.StatusPage {
 		var callbackId string
 		var ref weak.WidgetRef
 		return f.ConnectRealize(func(w gtk.Widget) {
 			ref = weak.NewWidgetRef(&w)
-			callbackId = state.AddCallback(func(newValue int) {
+			callbackId = state.AddCallback(func(newValue int32) {
 				callback.OnMainThreadOncePure(func() {
 					if obj := ref.Get(); obj != nil {
 						defer obj.Unref()
@@ -462,13 +462,13 @@ func (f StatusPage) BindMargin(state *state.State[int]) StatusPage {
 	}
 }
 
-func (f StatusPage) BindMarginBottom(state *state.State[int]) StatusPage {
+func (f StatusPage) BindMarginBottom(state *state.State[int32]) StatusPage {
 	return func() *adw.StatusPage {
 		var callbackId string
 		var ref weak.WidgetRef
 		return f.ConnectRealize(func(w gtk.Widget) {
 			ref = weak.NewWidgetRef(&w)
-			callbackId = state.AddCallback(func(newValue int) {
+			callbackId = state.AddCallback(func(newValue int32) {
 				callback.OnMainThreadOncePure(func() {
 					if obj := ref.Get(); obj != nil {
 						defer obj.Unref()
@@ -482,13 +482,13 @@ func (f StatusPage) BindMarginBottom(state *state.State[int]) StatusPage {
 	}
 }
 
-func (f StatusPage) BindMarginEnd(state *state.State[int]) StatusPage {
+func (f StatusPage) BindMarginEnd(state *state.State[int32]) StatusPage {
 	return func() *adw.StatusPage {
 		var callbackId string
 		var ref weak.WidgetRef
 		return f.ConnectRealize(func(w gtk.Widget) {
 			ref = weak.NewWidgetRef(&w)
-			callbackId = state.AddCallback(func(newValue int) {
+			callbackId = state.AddCallback(func(newValue int32) {
 				callback.OnMainThreadOncePure(func() {
 					if obj := ref.Get(); obj != nil {
 						defer obj.Unref()
@@ -502,13 +502,13 @@ func (f StatusPage) BindMarginEnd(state *state.State[int]) StatusPage {
 	}
 }
 
-func (f StatusPage) BindMarginStart(state *state.State[int]) StatusPage {
+func (f StatusPage) BindMarginStart(state *state.State[int32]) StatusPage {
 	return func() *adw.StatusPage {
 		var callbackId string
 		var ref weak.WidgetRef
 		return f.ConnectRealize(func(w gtk.Widget) {
 			ref = weak.NewWidgetRef(&w)
-			callbackId = state.AddCallback(func(newValue int) {
+			callbackId = state.AddCallback(func(newValue int32) {
 				callback.OnMainThreadOncePure(func() {
 					if obj := ref.Get(); obj != nil {
 						defer obj.Unref()
@@ -522,13 +522,13 @@ func (f StatusPage) BindMarginStart(state *state.State[int]) StatusPage {
 	}
 }
 
-func (f StatusPage) BindMarginTop(state *state.State[int]) StatusPage {
+func (f StatusPage) BindMarginTop(state *state.State[int32]) StatusPage {
 	return func() *adw.StatusPage {
 		var callbackId string
 		var ref weak.WidgetRef
 		return f.ConnectRealize(func(w gtk.Widget) {
 			ref = weak.NewWidgetRef(&w)
-			callbackId = state.AddCallback(func(newValue int) {
+			callbackId = state.AddCallback(func(newValue int32) {
 				callback.OnMainThreadOncePure(func() {
 					if obj := ref.Get(); obj != nil {
 						defer obj.Unref()

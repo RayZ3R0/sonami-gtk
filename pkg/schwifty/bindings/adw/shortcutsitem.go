@@ -1,7 +1,7 @@
 package adw
 
 import (
-	"github.com/jwijenbergh/puregotk/v4/adw"
+	"codeberg.org/puregotk/puregotk/v4/adw"
 )
 
 type ShortcutsItem func() *adw.ShortcutsItem

@@ -2,9 +2,9 @@ package components
 
 import (
 	"codeberg.org/dergs/tonearm/internal/gettext"
-	. "codeberg.org/dergs/tonearm/pkg/schwifty/syntax"
-	"github.com/jwijenbergh/puregotk/v4/gtk"
 	"codeberg.org/dergs/tonearm/pkg/schwifty"
+	. "codeberg.org/dergs/tonearm/pkg/schwifty/syntax"
+	"codeberg.org/puregotk/puregotk/v4/gtk"
 )
 
 func AuthRequired(description string) schwifty.StatusPage {

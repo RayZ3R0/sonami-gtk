@@ -2,7 +2,7 @@ package adw
 
 import (
 	"codeberg.org/dergs/tonearm/pkg/schwifty/bindings"
-	"github.com/jwijenbergh/puregotk/v4/adw"
+	"codeberg.org/puregotk/puregotk/v4/adw"
 )
 
 type ShortcutsSection func() *adw.ShortcutsSection

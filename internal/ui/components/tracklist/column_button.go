@@ -3,11 +3,11 @@ package tracklist
 import (
 	. "codeberg.org/dergs/tonearm/pkg/schwifty/syntax"
 	"codeberg.org/dergs/tonearm/pkg/tonearm"
-	"github.com/jwijenbergh/puregotk/v4/glib"
-	"github.com/jwijenbergh/puregotk/v4/gtk"
+	"codeberg.org/puregotk/puregotk/v4/glib"
+	"codeberg.org/puregotk/puregotk/v4/gtk"
 )
 
-func ButtonColumn(track tonearm.Track, grid *gtk.Grid, position int, column int) int {
+func ButtonColumn(track tonearm.Track, grid *gtk.Grid, position int, column int32) int {
 	grid.Attach(
 		Button().
 			ActionName("win.player.play-track").
@@ -22,8 +22,8 @@ func ButtonColumn(track tonearm.Track, grid *gtk.Grid, position int, column int)
 	return 0
 }
 
-func ExpandButtonColumn(additionalWidth int) ColumnFunc {
-	return func(track tonearm.Track, grid *gtk.Grid, position, column int) int {
+func ExpandButtonColumn(additionalWidth int32) ColumnFunc {
+	return func(track tonearm.Track, grid *gtk.Grid, position int, column int32) int {
 		return ButtonColumn(track, grid, position, column+additionalWidth)
 	}
 }

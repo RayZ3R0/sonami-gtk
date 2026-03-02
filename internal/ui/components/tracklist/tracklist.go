@@ -16,15 +16,15 @@ import (
 	"codeberg.org/dergs/tonearm/pkg/schwifty/tracking"
 	"codeberg.org/dergs/tonearm/pkg/schwifty/utils/weak"
 	"codeberg.org/dergs/tonearm/pkg/tonearm"
-	"github.com/jwijenbergh/puregotk/v4/adw"
-	"github.com/jwijenbergh/puregotk/v4/gdk"
-	"github.com/jwijenbergh/puregotk/v4/gio"
-	"github.com/jwijenbergh/puregotk/v4/gobject"
-	"github.com/jwijenbergh/puregotk/v4/graphene"
-	"github.com/jwijenbergh/puregotk/v4/gtk"
+	"codeberg.org/puregotk/puregotk/v4/adw"
+	"codeberg.org/puregotk/puregotk/v4/gdk"
+	"codeberg.org/puregotk/puregotk/v4/gio"
+	"codeberg.org/puregotk/puregotk/v4/gobject"
+	"codeberg.org/puregotk/puregotk/v4/graphene"
+	"codeberg.org/puregotk/puregotk/v4/gtk"
 )
 
-type ColumnFunc func(track tonearm.Track, grid *gtk.Grid, position int, column int) int
+type ColumnFunc func(track tonearm.Track, grid *gtk.Grid, position int, column int32) int
 
 type TrackList struct {
 	schwifty.Widget
@@ -60,12 +60,12 @@ func (t *TrackList) BindTracks(state *state.State[[]tonearm.Track]) {
 				t.store.Append(&gtk.NewStringObject("").Object)
 			} else if t.trackList[i] != newTrack {
 				t.trackList[i] = newTrack
-				t.store.Splice(uint(i), 1, []gobject.Object{gtk.NewStringObject("").Object}, 1)
+				t.store.Splice(uint32(i), 1, []gobject.Object{gtk.NewStringObject("").Object}, 1)
 			}
 		}
 		for i := len(t.trackList) - 1; i+1 > len(newValue); i-- {
 			t.trackList = t.trackList[:i]
-			t.store.Remove(uint(i))
+			t.store.Remove(uint32(i))
 		}
 	})
 	t.ConnectDestroy(func(w gtk.Widget) {
@@ -167,10 +167,10 @@ func (t *TrackList) onSetup(_ gtk.SignalListItemFactory, listItem *gtk.ListItem)
 					content.GetValue(&value)
 
 					t.trackList = append(t.trackList[:t.movingTargetIndex], t.trackList[t.movingTargetIndex+1:]...)
-					t.store.Remove(uint(t.movingTargetIndex))
+					t.store.Remove(uint32(t.movingTargetIndex))
 
 					t.trackList = append(t.trackList[:t.movingSourceIndex], append([]tonearm.Track{t.trackBeingMoved}, t.trackList[t.movingSourceIndex:]...)...)
-					t.store.Insert(uint(t.movingSourceIndex), &gtk.NewStringObject("").Object)
+					t.store.Insert(uint32(t.movingSourceIndex), &gtk.NewStringObject("").Object)
 
 					t.movingSourceIndex = -1
 					t.movingTargetIndex = -1
@@ -222,7 +222,7 @@ func NewTrackList(columnFuncs ...ColumnFunc) *TrackList {
 	listView.SetOrientation(gtk.OrientationVerticalValue)
 
 	listView.ConnectActivate(&callback.ListViewActivate)
-	callback.HandleCallback(listView.Object, "activate", func(_ gtk.ListView, index uint) {
+	callback.HandleCallback(listView.Object, "activate", func(_ gtk.ListView, index uint32) {
 		track := tracklist.trackList[index]
 		tracklist.clickHandler(track, int(index))
 	})
@@ -250,12 +250,12 @@ func NewTrackList(columnFuncs ...ColumnFunc) *TrackList {
 						}
 						trackList := slices.Clone(tracklist.trackList)
 						if tracklist.movingTargetIndex != -1 {
-							tracklist.store.Remove(uint(tracklist.movingTargetIndex))
+							tracklist.store.Remove(uint32(tracklist.movingTargetIndex))
 							trackList = append(tracklist.trackList[:tracklist.movingTargetIndex], tracklist.trackList[tracklist.movingTargetIndex+1:]...)
 						}
 
 						tracklist.trackList = append(trackList[:i], append([]tonearm.Track{tracklist.trackBeingMoved}, trackList[i:]...)...)
-						tracklist.store.Insert(uint(i), &gtk.NewStringObject("").Object)
+						tracklist.store.Insert(uint32(i), &gtk.NewStringObject("").Object)
 
 						tracklist.movingTargetIndex = i
 					}

@@ -10,8 +10,8 @@ import (
 	"codeberg.org/dergs/tonearm/pkg/tidalapi"
 	modelopenapi "codeberg.org/dergs/tonearm/pkg/tidalapi/models/openapi"
 	"codeberg.org/dergs/tonearm/pkg/tonearm"
+	"codeberg.org/puregotk/puregotk/v4/gtk"
 	"github.com/infinytum/injector"
-	"github.com/jwijenbergh/puregotk/v4/gtk"
 )
 
 func init() {

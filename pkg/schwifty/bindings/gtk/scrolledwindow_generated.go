@@ -4,8 +4,8 @@ import (
 	"codeberg.org/dergs/tonearm/pkg/schwifty/callback"
 	"codeberg.org/dergs/tonearm/pkg/schwifty/state"
 	"codeberg.org/dergs/tonearm/pkg/schwifty/utils/weak"
+	"codeberg.org/puregotk/puregotk/v4/gtk"
 	"fmt"
-	"github.com/jwijenbergh/puregotk/v4/gtk"
 )
 
 
@@ -123,7 +123,7 @@ func (f ScrolledWindow) HExpand(expand bool) ScrolledWindow {
 	}
 }
 
-func (f ScrolledWindow) HMargin(horizontal int) ScrolledWindow {
+func (f ScrolledWindow) HMargin(horizontal int32) ScrolledWindow {
 	return func() *gtk.ScrolledWindow {
 		widget := f()
 		widget.SetMarginEnd(horizontal)
@@ -132,7 +132,7 @@ func (f ScrolledWindow) HMargin(horizontal int) ScrolledWindow {
 	}
 }
 
-func (f ScrolledWindow) Margin(margin int) ScrolledWindow {
+func (f ScrolledWindow) Margin(margin int32) ScrolledWindow {
 	return func() *gtk.ScrolledWindow {
 		widget := f()
 		widget.SetMarginBottom(margin)
@@ -143,7 +143,7 @@ func (f ScrolledWindow) Margin(margin int) ScrolledWindow {
 	}
 }
 
-func (f ScrolledWindow) MarginBottom(bottom int) ScrolledWindow {
+func (f ScrolledWindow) MarginBottom(bottom int32) ScrolledWindow {
 	return func() *gtk.ScrolledWindow {
 		widget := f()
 		widget.SetMarginBottom(bottom)
@@ -151,7 +151,7 @@ func (f ScrolledWindow) MarginBottom(bottom int) ScrolledWindow {
 	}
 }
 
-func (f ScrolledWindow) MarginEnd(end int) ScrolledWindow {
+func (f ScrolledWindow) MarginEnd(end int32) ScrolledWindow {
 	return func() *gtk.ScrolledWindow {
 		widget := f()
 		widget.SetMarginEnd(end)
@@ -159,7 +159,7 @@ func (f ScrolledWindow) MarginEnd(end int) ScrolledWindow {
 	}
 }
 
-func (f ScrolledWindow) MarginStart(start int) ScrolledWindow {
+func (f ScrolledWindow) MarginStart(start int32) ScrolledWindow {
 	return func() *gtk.ScrolledWindow {
 		widget := f()
 		widget.SetMarginStart(start)
@@ -167,7 +167,7 @@ func (f ScrolledWindow) MarginStart(start int) ScrolledWindow {
 	}
 }
 
-func (f ScrolledWindow) MarginTop(top int) ScrolledWindow {
+func (f ScrolledWindow) MarginTop(top int32) ScrolledWindow {
 	return func() *gtk.ScrolledWindow {
 		widget := f()
 		widget.SetMarginTop(top)
@@ -199,7 +199,7 @@ func (f ScrolledWindow) Sensitive(sensitive bool) ScrolledWindow {
 	}
 }
 
-func (f ScrolledWindow) SizeRequest(width, height int) ScrolledWindow {
+func (f ScrolledWindow) SizeRequest(width, height int32) ScrolledWindow {
 	return func() *gtk.ScrolledWindow {
 		widget := f()
 		widget.SetSizeRequest(width, height)
@@ -236,7 +236,7 @@ func (f ScrolledWindow) Visible(visible bool) ScrolledWindow {
 	}
 }
 
-func (f ScrolledWindow) VMargin(vertical int) ScrolledWindow {
+func (f ScrolledWindow) VMargin(vertical int32) ScrolledWindow {
 	return func() *gtk.ScrolledWindow {
 		widget := f()
 		widget.SetMarginTop(vertical)
@@ -314,7 +314,7 @@ func (f ScrolledWindow) CSSWithCallback(cb func(elementName string) string) Scro
 		provider := gtk.NewCssProvider()
 		return f.ConnectConstruct(func(t *gtk.ScrolledWindow) {
 			provider.LoadFromString(cb(t.GetCssName()))
-			t.GetStyleContext().AddProvider(provider, uint(gtk.STYLE_PROVIDER_PRIORITY_APPLICATION))
+			t.GetStyleContext().AddProvider(provider, uint32(gtk.STYLE_PROVIDER_PRIORITY_APPLICATION))
 		}).ConnectDestroy(func(w gtk.Widget) {
 			w.GetStyleContext().RemoveProvider(provider)
 			provider.Unref()
@@ -417,13 +417,13 @@ func (f ScrolledWindow) BindVisible(state *state.State[bool]) ScrolledWindow {
 	}
 }
 
-func (f ScrolledWindow) BindHMargin(state *state.State[int]) ScrolledWindow {
+func (f ScrolledWindow) BindHMargin(state *state.State[int32]) ScrolledWindow {
 	return func() *gtk.ScrolledWindow {
 		var callbackId string
 		var ref weak.WidgetRef
 		return f.ConnectRealize(func(w gtk.Widget) {
 			ref = weak.NewWidgetRef(&w)
-			callbackId = state.AddCallback(func(newValue int) {
+			callbackId = state.AddCallback(func(newValue int32) {
 				callback.OnMainThreadOncePure(func() {
 					if obj := ref.Get(); obj != nil {
 						defer obj.Unref()
@@ -438,13 +438,13 @@ func (f ScrolledWindow) BindHMargin(state *state.State[int]) ScrolledWindow {
 	}
 }
 
-func (f ScrolledWindow) BindMargin(state *state.State[int]) ScrolledWindow {
+func (f ScrolledWindow) BindMargin(state *state.State[int32]) ScrolledWindow {
 	return func() *gtk.ScrolledWindow {
 		var callbackId string
 		var ref weak.WidgetRef
 		return f.ConnectRealize(func(w gtk.Widget) {
 			ref = weak.NewWidgetRef(&w)
-			callbackId = state.AddCallback(func(newValue int) {
+			callbackId = state.AddCallback(func(newValue int32) {
 				callback.OnMainThreadOncePure(func() {
 					if obj := ref.Get(); obj != nil {
 						defer obj.Unref()
@@ -461,13 +461,13 @@ func (f ScrolledWindow) BindMargin(state *state.State[int]) ScrolledWindow {
 	}
 }
 
-func (f ScrolledWindow) BindMarginBottom(state *state.State[int]) ScrolledWindow {
+func (f ScrolledWindow) BindMarginBottom(state *state.State[int32]) ScrolledWindow {
 	return func() *gtk.ScrolledWindow {
 		var callbackId string
 		var ref weak.WidgetRef
 		return f.ConnectRealize(func(w gtk.Widget) {
 			ref = weak.NewWidgetRef(&w)
-			callbackId = state.AddCallback(func(newValue int) {
+			callbackId = state.AddCallback(func(newValue int32) {
 				callback.OnMainThreadOncePure(func() {
 					if obj := ref.Get(); obj != nil {
 						defer obj.Unref()
@@ -481,13 +481,13 @@ func (f ScrolledWindow) BindMarginBottom(state *state.State[int]) ScrolledWindow
 	}
 }
 
-func (f ScrolledWindow) BindMarginEnd(state *state.State[int]) ScrolledWindow {
+func (f ScrolledWindow) BindMarginEnd(state *state.State[int32]) ScrolledWindow {
 	return func() *gtk.ScrolledWindow {
 		var callbackId string
 		var ref weak.WidgetRef
 		return f.ConnectRealize(func(w gtk.Widget) {
 			ref = weak.NewWidgetRef(&w)
-			callbackId = state.AddCallback(func(newValue int) {
+			callbackId = state.AddCallback(func(newValue int32) {
 				callback.OnMainThreadOncePure(func() {
 					if obj := ref.Get(); obj != nil {
 						defer obj.Unref()
@@ -501,13 +501,13 @@ func (f ScrolledWindow) BindMarginEnd(state *state.State[int]) ScrolledWindow {
 	}
 }
 
-func (f ScrolledWindow) BindMarginStart(state *state.State[int]) ScrolledWindow {
+func (f ScrolledWindow) BindMarginStart(state *state.State[int32]) ScrolledWindow {
 	return func() *gtk.ScrolledWindow {
 		var callbackId string
 		var ref weak.WidgetRef
 		return f.ConnectRealize(func(w gtk.Widget) {
 			ref = weak.NewWidgetRef(&w)
-			callbackId = state.AddCallback(func(newValue int) {
+			callbackId = state.AddCallback(func(newValue int32) {
 				callback.OnMainThreadOncePure(func() {
 					if obj := ref.Get(); obj != nil {
 						defer obj.Unref()
@@ -521,13 +521,13 @@ func (f ScrolledWindow) BindMarginStart(state *state.State[int]) ScrolledWindow 
 	}
 }
 
-func (f ScrolledWindow) BindMarginTop(state *state.State[int]) ScrolledWindow {
+func (f ScrolledWindow) BindMarginTop(state *state.State[int32]) ScrolledWindow {
 	return func() *gtk.ScrolledWindow {
 		var callbackId string
 		var ref weak.WidgetRef
 		return f.ConnectRealize(func(w gtk.Widget) {
 			ref = weak.NewWidgetRef(&w)
-			callbackId = state.AddCallback(func(newValue int) {
+			callbackId = state.AddCallback(func(newValue int32) {
 				callback.OnMainThreadOncePure(func() {
 					if obj := ref.Get(); obj != nil {
 						defer obj.Unref()
