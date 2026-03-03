@@ -2,7 +2,7 @@ package gtk
 
 import (
 	"codeberg.org/dergs/tonearm/pkg/schwifty/callback"
-	"github.com/jwijenbergh/puregotk/v4/gtk"
+	"codeberg.org/puregotk/puregotk/v4/gtk"
 )
 
 type ShortcutController func() *gtk.ShortcutController

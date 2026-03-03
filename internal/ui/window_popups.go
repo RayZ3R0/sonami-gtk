@@ -5,8 +5,8 @@ import (
 	"codeberg.org/dergs/tonearm/internal/secrets"
 	"codeberg.org/dergs/tonearm/internal/settings"
 	. "codeberg.org/dergs/tonearm/pkg/schwifty/syntax"
-	"github.com/jwijenbergh/puregotk/v4/adw"
-	"github.com/jwijenbergh/puregotk/v4/gtk"
+	"codeberg.org/puregotk/puregotk/v4/adw"
+	"codeberg.org/puregotk/puregotk/v4/gtk"
 )
 
 func (w *Window) PresentSecretServiceError(err *secrets.ServiceError) {

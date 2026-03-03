@@ -5,11 +5,11 @@ import (
 
 	. "codeberg.org/dergs/tonearm/pkg/schwifty/syntax"
 	"codeberg.org/dergs/tonearm/pkg/tonearm"
-	"github.com/jwijenbergh/puregotk/v4/gtk"
-	"github.com/jwijenbergh/puregotk/v4/pango"
+	"codeberg.org/puregotk/puregotk/v4/gtk"
+	"codeberg.org/puregotk/puregotk/v4/pango"
 )
 
-func ArtistsColumn(track tonearm.Track, grid *gtk.Grid, position int, column int) int {
+func ArtistsColumn(track tonearm.Track, grid *gtk.Grid, position int, column int32) int {
 	grid.Attach(
 		Label(strings.Join(track.Artists().Names(), ", ")).
 			HAlign(gtk.AlignStartValue).

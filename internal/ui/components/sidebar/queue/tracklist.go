@@ -12,7 +12,7 @@ import (
 	"codeberg.org/dergs/tonearm/pkg/schwifty/state"
 	. "codeberg.org/dergs/tonearm/pkg/schwifty/syntax"
 	"codeberg.org/dergs/tonearm/pkg/tonearm"
-	"github.com/jwijenbergh/puregotk/v4/gtk"
+	"codeberg.org/puregotk/puregotk/v4/gtk"
 )
 
 var (
@@ -45,7 +45,7 @@ func init() {
 func makeQueueTracklist(q queue.Queue, queueState *state.State[[]tonearm.Track]) *tracklist.TrackList {
 	trackList := tracklist.NewTrackList(
 		tracklist.CoverColumn, tracklist.TitleAlbumColumn,
-		tracklist.CustomWidgetButtonColumn(func(_ string, position, _ int) *gtk.Widget {
+		tracklist.CustomWidgetButtonColumn(func(_ string, position int, _ int32) *gtk.Widget {
 			return Button().
 				TooltipText(gettext.Get("Remove Track from Queue")).
 				IconName("user-trash-symbolic").

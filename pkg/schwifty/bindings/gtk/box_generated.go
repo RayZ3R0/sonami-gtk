@@ -4,8 +4,8 @@ import (
 	"codeberg.org/dergs/tonearm/pkg/schwifty/callback"
 	"codeberg.org/dergs/tonearm/pkg/schwifty/state"
 	"codeberg.org/dergs/tonearm/pkg/schwifty/utils/weak"
+	"codeberg.org/puregotk/puregotk/v4/gtk"
 	"fmt"
-	"github.com/jwijenbergh/puregotk/v4/gtk"
 )
 
 
@@ -123,7 +123,7 @@ func (f Box) HExpand(expand bool) Box {
 	}
 }
 
-func (f Box) HMargin(horizontal int) Box {
+func (f Box) HMargin(horizontal int32) Box {
 	return func() *gtk.Box {
 		widget := f()
 		widget.SetMarginEnd(horizontal)
@@ -132,7 +132,7 @@ func (f Box) HMargin(horizontal int) Box {
 	}
 }
 
-func (f Box) Margin(margin int) Box {
+func (f Box) Margin(margin int32) Box {
 	return func() *gtk.Box {
 		widget := f()
 		widget.SetMarginBottom(margin)
@@ -143,7 +143,7 @@ func (f Box) Margin(margin int) Box {
 	}
 }
 
-func (f Box) MarginBottom(bottom int) Box {
+func (f Box) MarginBottom(bottom int32) Box {
 	return func() *gtk.Box {
 		widget := f()
 		widget.SetMarginBottom(bottom)
@@ -151,7 +151,7 @@ func (f Box) MarginBottom(bottom int) Box {
 	}
 }
 
-func (f Box) MarginEnd(end int) Box {
+func (f Box) MarginEnd(end int32) Box {
 	return func() *gtk.Box {
 		widget := f()
 		widget.SetMarginEnd(end)
@@ -159,7 +159,7 @@ func (f Box) MarginEnd(end int) Box {
 	}
 }
 
-func (f Box) MarginStart(start int) Box {
+func (f Box) MarginStart(start int32) Box {
 	return func() *gtk.Box {
 		widget := f()
 		widget.SetMarginStart(start)
@@ -167,7 +167,7 @@ func (f Box) MarginStart(start int) Box {
 	}
 }
 
-func (f Box) MarginTop(top int) Box {
+func (f Box) MarginTop(top int32) Box {
 	return func() *gtk.Box {
 		widget := f()
 		widget.SetMarginTop(top)
@@ -199,7 +199,7 @@ func (f Box) Sensitive(sensitive bool) Box {
 	}
 }
 
-func (f Box) SizeRequest(width, height int) Box {
+func (f Box) SizeRequest(width, height int32) Box {
 	return func() *gtk.Box {
 		widget := f()
 		widget.SetSizeRequest(width, height)
@@ -236,7 +236,7 @@ func (f Box) Visible(visible bool) Box {
 	}
 }
 
-func (f Box) VMargin(vertical int) Box {
+func (f Box) VMargin(vertical int32) Box {
 	return func() *gtk.Box {
 		widget := f()
 		widget.SetMarginTop(vertical)
@@ -314,7 +314,7 @@ func (f Box) CSSWithCallback(cb func(elementName string) string) Box {
 		provider := gtk.NewCssProvider()
 		return f.ConnectConstruct(func(t *gtk.Box) {
 			provider.LoadFromString(cb(t.GetCssName()))
-			t.GetStyleContext().AddProvider(provider, uint(gtk.STYLE_PROVIDER_PRIORITY_APPLICATION))
+			t.GetStyleContext().AddProvider(provider, uint32(gtk.STYLE_PROVIDER_PRIORITY_APPLICATION))
 		}).ConnectDestroy(func(w gtk.Widget) {
 			w.GetStyleContext().RemoveProvider(provider)
 			provider.Unref()
@@ -417,13 +417,13 @@ func (f Box) BindVisible(state *state.State[bool]) Box {
 	}
 }
 
-func (f Box) BindHMargin(state *state.State[int]) Box {
+func (f Box) BindHMargin(state *state.State[int32]) Box {
 	return func() *gtk.Box {
 		var callbackId string
 		var ref weak.WidgetRef
 		return f.ConnectRealize(func(w gtk.Widget) {
 			ref = weak.NewWidgetRef(&w)
-			callbackId = state.AddCallback(func(newValue int) {
+			callbackId = state.AddCallback(func(newValue int32) {
 				callback.OnMainThreadOncePure(func() {
 					if obj := ref.Get(); obj != nil {
 						defer obj.Unref()
@@ -438,13 +438,13 @@ func (f Box) BindHMargin(state *state.State[int]) Box {
 	}
 }
 
-func (f Box) BindMargin(state *state.State[int]) Box {
+func (f Box) BindMargin(state *state.State[int32]) Box {
 	return func() *gtk.Box {
 		var callbackId string
 		var ref weak.WidgetRef
 		return f.ConnectRealize(func(w gtk.Widget) {
 			ref = weak.NewWidgetRef(&w)
-			callbackId = state.AddCallback(func(newValue int) {
+			callbackId = state.AddCallback(func(newValue int32) {
 				callback.OnMainThreadOncePure(func() {
 					if obj := ref.Get(); obj != nil {
 						defer obj.Unref()
@@ -461,13 +461,13 @@ func (f Box) BindMargin(state *state.State[int]) Box {
 	}
 }
 
-func (f Box) BindMarginBottom(state *state.State[int]) Box {
+func (f Box) BindMarginBottom(state *state.State[int32]) Box {
 	return func() *gtk.Box {
 		var callbackId string
 		var ref weak.WidgetRef
 		return f.ConnectRealize(func(w gtk.Widget) {
 			ref = weak.NewWidgetRef(&w)
-			callbackId = state.AddCallback(func(newValue int) {
+			callbackId = state.AddCallback(func(newValue int32) {
 				callback.OnMainThreadOncePure(func() {
 					if obj := ref.Get(); obj != nil {
 						defer obj.Unref()
@@ -481,13 +481,13 @@ func (f Box) BindMarginBottom(state *state.State[int]) Box {
 	}
 }
 
-func (f Box) BindMarginEnd(state *state.State[int]) Box {
+func (f Box) BindMarginEnd(state *state.State[int32]) Box {
 	return func() *gtk.Box {
 		var callbackId string
 		var ref weak.WidgetRef
 		return f.ConnectRealize(func(w gtk.Widget) {
 			ref = weak.NewWidgetRef(&w)
-			callbackId = state.AddCallback(func(newValue int) {
+			callbackId = state.AddCallback(func(newValue int32) {
 				callback.OnMainThreadOncePure(func() {
 					if obj := ref.Get(); obj != nil {
 						defer obj.Unref()
@@ -501,13 +501,13 @@ func (f Box) BindMarginEnd(state *state.State[int]) Box {
 	}
 }
 
-func (f Box) BindMarginStart(state *state.State[int]) Box {
+func (f Box) BindMarginStart(state *state.State[int32]) Box {
 	return func() *gtk.Box {
 		var callbackId string
 		var ref weak.WidgetRef
 		return f.ConnectRealize(func(w gtk.Widget) {
 			ref = weak.NewWidgetRef(&w)
-			callbackId = state.AddCallback(func(newValue int) {
+			callbackId = state.AddCallback(func(newValue int32) {
 				callback.OnMainThreadOncePure(func() {
 					if obj := ref.Get(); obj != nil {
 						defer obj.Unref()
@@ -521,13 +521,13 @@ func (f Box) BindMarginStart(state *state.State[int]) Box {
 	}
 }
 
-func (f Box) BindMarginTop(state *state.State[int]) Box {
+func (f Box) BindMarginTop(state *state.State[int32]) Box {
 	return func() *gtk.Box {
 		var callbackId string
 		var ref weak.WidgetRef
 		return f.ConnectRealize(func(w gtk.Widget) {
 			ref = weak.NewWidgetRef(&w)
-			callbackId = state.AddCallback(func(newValue int) {
+			callbackId = state.AddCallback(func(newValue int32) {
 				callback.OnMainThreadOncePure(func() {
 					if obj := ref.Get(); obj != nil {
 						defer obj.Unref()

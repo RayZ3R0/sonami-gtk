@@ -3,7 +3,7 @@ package callback
 import (
 	"sync"
 
-	"github.com/jwijenbergh/puregotk/v4/glib"
+	"codeberg.org/puregotk/puregotk/v4/glib"
 )
 
 var callbackIdPool = NewIntPool()
@@ -38,7 +38,7 @@ var mainLoopHandler = glib.SourceFunc(func(ptr uintptr) bool {
 	return shouldContinue
 })
 
-func OnMainThread(callback MainThreadCallback, params uintptr) uint {
+func OnMainThread(callback MainThreadCallback, params uintptr) uint32 {
 	if glib.MainContextDefault().IsOwner() {
 		callback(params)
 		return 0
@@ -47,18 +47,18 @@ func OnMainThread(callback MainThreadCallback, params uintptr) uint {
 	return ScheduleOnMainThread(callback, params)
 }
 
-func OnMainThreadOnce(cb func(u uintptr), param uintptr) uint {
+func OnMainThreadOnce(cb func(u uintptr), param uintptr) uint32 {
 	return OnMainThread(func(u uintptr) bool {
 		cb(param)
 		return glib.SOURCE_REMOVE
 	}, param)
 }
 
-func OnMainThreadOncePure(cb func()) uint {
+func OnMainThreadOncePure(cb func()) uint32 {
 	return OnMainThreadOnce(func(uintptr) { cb() }, 0)
 }
 
-func ScheduleOnMainThread(callback MainThreadCallback, params uintptr) uint {
+func ScheduleOnMainThread(callback MainThreadCallback, params uintptr) uint32 {
 	id := uintptr(callbackIdPool.Get())
 	mainThreadCallbacksLock.Lock()
 	mainThreadCallbacks[id] = MainThreadCallbackEntry{
@@ -70,14 +70,14 @@ func ScheduleOnMainThread(callback MainThreadCallback, params uintptr) uint {
 	return glib.IdleAdd(&mainLoopHandler, id)
 }
 
-func ScheduleOnMainThreadOnce(cb func(u uintptr), param uintptr) uint {
+func ScheduleOnMainThreadOnce(cb func(u uintptr), param uintptr) uint32 {
 	return ScheduleOnMainThread(func(u uintptr) bool {
 		cb(param)
 		return glib.SOURCE_REMOVE
 	}, param)
 }
 
-func ScheduleOnMainThreadOncePure(cb func()) uint {
+func ScheduleOnMainThreadOncePure(cb func()) uint32 {
 	return ScheduleOnMainThreadOnce(func(uintptr) { cb() }, 0)
 }
 

@@ -4,9 +4,9 @@ import (
 	"codeberg.org/dergs/tonearm/pkg/schwifty/callback"
 	"codeberg.org/dergs/tonearm/pkg/schwifty/state"
 	"codeberg.org/dergs/tonearm/pkg/schwifty/utils/weak"
+	"codeberg.org/puregotk/puregotk/v4/adw"
+	"codeberg.org/puregotk/puregotk/v4/gtk"
 	"fmt"
-	"github.com/jwijenbergh/puregotk/v4/adw"
-	"github.com/jwijenbergh/puregotk/v4/gtk"
 )
 
 
@@ -124,7 +124,7 @@ func (f ViewStack) HExpand(expand bool) ViewStack {
 	}
 }
 
-func (f ViewStack) HMargin(horizontal int) ViewStack {
+func (f ViewStack) HMargin(horizontal int32) ViewStack {
 	return func() *adw.ViewStack {
 		widget := f()
 		widget.SetMarginEnd(horizontal)
@@ -133,7 +133,7 @@ func (f ViewStack) HMargin(horizontal int) ViewStack {
 	}
 }
 
-func (f ViewStack) Margin(margin int) ViewStack {
+func (f ViewStack) Margin(margin int32) ViewStack {
 	return func() *adw.ViewStack {
 		widget := f()
 		widget.SetMarginBottom(margin)
@@ -144,7 +144,7 @@ func (f ViewStack) Margin(margin int) ViewStack {
 	}
 }
 
-func (f ViewStack) MarginBottom(bottom int) ViewStack {
+func (f ViewStack) MarginBottom(bottom int32) ViewStack {
 	return func() *adw.ViewStack {
 		widget := f()
 		widget.SetMarginBottom(bottom)
@@ -152,7 +152,7 @@ func (f ViewStack) MarginBottom(bottom int) ViewStack {
 	}
 }
 
-func (f ViewStack) MarginEnd(end int) ViewStack {
+func (f ViewStack) MarginEnd(end int32) ViewStack {
 	return func() *adw.ViewStack {
 		widget := f()
 		widget.SetMarginEnd(end)
@@ -160,7 +160,7 @@ func (f ViewStack) MarginEnd(end int) ViewStack {
 	}
 }
 
-func (f ViewStack) MarginStart(start int) ViewStack {
+func (f ViewStack) MarginStart(start int32) ViewStack {
 	return func() *adw.ViewStack {
 		widget := f()
 		widget.SetMarginStart(start)
@@ -168,7 +168,7 @@ func (f ViewStack) MarginStart(start int) ViewStack {
 	}
 }
 
-func (f ViewStack) MarginTop(top int) ViewStack {
+func (f ViewStack) MarginTop(top int32) ViewStack {
 	return func() *adw.ViewStack {
 		widget := f()
 		widget.SetMarginTop(top)
@@ -200,7 +200,7 @@ func (f ViewStack) Sensitive(sensitive bool) ViewStack {
 	}
 }
 
-func (f ViewStack) SizeRequest(width, height int) ViewStack {
+func (f ViewStack) SizeRequest(width, height int32) ViewStack {
 	return func() *adw.ViewStack {
 		widget := f()
 		widget.SetSizeRequest(width, height)
@@ -237,7 +237,7 @@ func (f ViewStack) Visible(visible bool) ViewStack {
 	}
 }
 
-func (f ViewStack) VMargin(vertical int) ViewStack {
+func (f ViewStack) VMargin(vertical int32) ViewStack {
 	return func() *adw.ViewStack {
 		widget := f()
 		widget.SetMarginTop(vertical)
@@ -315,7 +315,7 @@ func (f ViewStack) CSSWithCallback(cb func(elementName string) string) ViewStack
 		provider := gtk.NewCssProvider()
 		return f.ConnectConstruct(func(t *adw.ViewStack) {
 			provider.LoadFromString(cb(t.GetCssName()))
-			t.GetStyleContext().AddProvider(provider, uint(gtk.STYLE_PROVIDER_PRIORITY_APPLICATION))
+			t.GetStyleContext().AddProvider(provider, uint32(gtk.STYLE_PROVIDER_PRIORITY_APPLICATION))
 		}).ConnectDestroy(func(w gtk.Widget) {
 			w.GetStyleContext().RemoveProvider(provider)
 			provider.Unref()
@@ -418,13 +418,13 @@ func (f ViewStack) BindVisible(state *state.State[bool]) ViewStack {
 	}
 }
 
-func (f ViewStack) BindHMargin(state *state.State[int]) ViewStack {
+func (f ViewStack) BindHMargin(state *state.State[int32]) ViewStack {
 	return func() *adw.ViewStack {
 		var callbackId string
 		var ref weak.WidgetRef
 		return f.ConnectRealize(func(w gtk.Widget) {
 			ref = weak.NewWidgetRef(&w)
-			callbackId = state.AddCallback(func(newValue int) {
+			callbackId = state.AddCallback(func(newValue int32) {
 				callback.OnMainThreadOncePure(func() {
 					if obj := ref.Get(); obj != nil {
 						defer obj.Unref()
@@ -439,13 +439,13 @@ func (f ViewStack) BindHMargin(state *state.State[int]) ViewStack {
 	}
 }
 
-func (f ViewStack) BindMargin(state *state.State[int]) ViewStack {
+func (f ViewStack) BindMargin(state *state.State[int32]) ViewStack {
 	return func() *adw.ViewStack {
 		var callbackId string
 		var ref weak.WidgetRef
 		return f.ConnectRealize(func(w gtk.Widget) {
 			ref = weak.NewWidgetRef(&w)
-			callbackId = state.AddCallback(func(newValue int) {
+			callbackId = state.AddCallback(func(newValue int32) {
 				callback.OnMainThreadOncePure(func() {
 					if obj := ref.Get(); obj != nil {
 						defer obj.Unref()
@@ -462,13 +462,13 @@ func (f ViewStack) BindMargin(state *state.State[int]) ViewStack {
 	}
 }
 
-func (f ViewStack) BindMarginBottom(state *state.State[int]) ViewStack {
+func (f ViewStack) BindMarginBottom(state *state.State[int32]) ViewStack {
 	return func() *adw.ViewStack {
 		var callbackId string
 		var ref weak.WidgetRef
 		return f.ConnectRealize(func(w gtk.Widget) {
 			ref = weak.NewWidgetRef(&w)
-			callbackId = state.AddCallback(func(newValue int) {
+			callbackId = state.AddCallback(func(newValue int32) {
 				callback.OnMainThreadOncePure(func() {
 					if obj := ref.Get(); obj != nil {
 						defer obj.Unref()
@@ -482,13 +482,13 @@ func (f ViewStack) BindMarginBottom(state *state.State[int]) ViewStack {
 	}
 }
 
-func (f ViewStack) BindMarginEnd(state *state.State[int]) ViewStack {
+func (f ViewStack) BindMarginEnd(state *state.State[int32]) ViewStack {
 	return func() *adw.ViewStack {
 		var callbackId string
 		var ref weak.WidgetRef
 		return f.ConnectRealize(func(w gtk.Widget) {
 			ref = weak.NewWidgetRef(&w)
-			callbackId = state.AddCallback(func(newValue int) {
+			callbackId = state.AddCallback(func(newValue int32) {
 				callback.OnMainThreadOncePure(func() {
 					if obj := ref.Get(); obj != nil {
 						defer obj.Unref()
@@ -502,13 +502,13 @@ func (f ViewStack) BindMarginEnd(state *state.State[int]) ViewStack {
 	}
 }
 
-func (f ViewStack) BindMarginStart(state *state.State[int]) ViewStack {
+func (f ViewStack) BindMarginStart(state *state.State[int32]) ViewStack {
 	return func() *adw.ViewStack {
 		var callbackId string
 		var ref weak.WidgetRef
 		return f.ConnectRealize(func(w gtk.Widget) {
 			ref = weak.NewWidgetRef(&w)
-			callbackId = state.AddCallback(func(newValue int) {
+			callbackId = state.AddCallback(func(newValue int32) {
 				callback.OnMainThreadOncePure(func() {
 					if obj := ref.Get(); obj != nil {
 						defer obj.Unref()
@@ -522,13 +522,13 @@ func (f ViewStack) BindMarginStart(state *state.State[int]) ViewStack {
 	}
 }
 
-func (f ViewStack) BindMarginTop(state *state.State[int]) ViewStack {
+func (f ViewStack) BindMarginTop(state *state.State[int32]) ViewStack {
 	return func() *adw.ViewStack {
 		var callbackId string
 		var ref weak.WidgetRef
 		return f.ConnectRealize(func(w gtk.Widget) {
 			ref = weak.NewWidgetRef(&w)
-			callbackId = state.AddCallback(func(newValue int) {
+			callbackId = state.AddCallback(func(newValue int32) {
 				callback.OnMainThreadOncePure(func() {
 					if obj := ref.Get(); obj != nil {
 						defer obj.Unref()

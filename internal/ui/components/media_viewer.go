@@ -6,11 +6,11 @@ import (
 	"codeberg.org/dergs/tonearm/pkg/schwifty"
 	. "codeberg.org/dergs/tonearm/pkg/schwifty/syntax"
 	"codeberg.org/dergs/tonearm/pkg/schwifty/utils/weak"
-	"github.com/jwijenbergh/puregotk/v4/adw"
-	"github.com/jwijenbergh/puregotk/v4/gdk"
-	"github.com/jwijenbergh/puregotk/v4/gio"
-	"github.com/jwijenbergh/puregotk/v4/gsk"
-	"github.com/jwijenbergh/puregotk/v4/gtk"
+	"codeberg.org/puregotk/puregotk/v4/adw"
+	"codeberg.org/puregotk/puregotk/v4/gdk"
+	"codeberg.org/puregotk/puregotk/v4/gio"
+	"codeberg.org/puregotk/puregotk/v4/gsk"
+	"codeberg.org/puregotk/puregotk/v4/gtk"
 )
 
 type MediaViewer struct {
@@ -19,7 +19,7 @@ type MediaViewer struct {
 	backButton *gtk.Button
 
 	zoomLevel    float64
-	baseW, baseH int
+	baseW, baseH int32
 
 	media *gdk.Texture
 }
@@ -40,7 +40,7 @@ func GetMediaViewer() *MediaViewer {
 	mediaViewer = &MediaViewer{}
 
 	clickGesture := gtk.NewGestureClick()
-	clickGesture.ConnectPressed(new(func(_ gtk.GestureClick, _ int, _ float64, _ float64) {
+	clickGesture.ConnectPressed(new(func(_ gtk.GestureClick, _ int32, _ float64, _ float64) {
 		mediaViewer.Hide()
 	}))
 
@@ -72,7 +72,7 @@ func GetMediaViewer() *MediaViewer {
 	// --- Double-click on picture to reset zoom ---
 	dblClick := gtk.NewGestureClick()
 	dblClick.SetButton(1)
-	dblClick.ConnectPressed(new(func(gesture gtk.GestureClick, nPress int, _, _ float64) {
+	dblClick.ConnectPressed(new(func(gesture gtk.GestureClick, nPress int32, _, _ float64) {
 		gesture.SetState(gtk.EventSequenceClaimedValue)
 		if nPress == 2 {
 			mediaViewer.resetZoom()
@@ -223,7 +223,7 @@ func (mv *MediaViewer) Hide() {
 		mv.revealer.SetRevealChild(false)
 	})
 
-	time.AfterFunc(time.Duration(mv.revealer.GetTransitionDuration()*uint(time.Millisecond)), func() {
+	time.AfterFunc(time.Duration(mv.revealer.GetTransitionDuration()*uint32(time.Millisecond)), func() {
 		schwifty.OnMainThreadOncePure(func() {
 			mv.revealer.SetVisible(false)
 		})
@@ -266,8 +266,8 @@ func (mv *MediaViewer) setZoom(level float64) {
 		<-c
 	}
 
-	w := int(float64(mv.baseW) * mv.zoomLevel)
-	h := int(float64(mv.baseH) * mv.zoomLevel)
+	w := int32(float64(mv.baseW) * mv.zoomLevel)
+	h := int32(float64(mv.baseH) * mv.zoomLevel)
 	schwifty.OnMainThreadOncePure(func() {
 		mv.picture.SetSizeRequest(w, h)
 	})

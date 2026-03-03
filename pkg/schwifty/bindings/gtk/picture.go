@@ -4,8 +4,8 @@ import (
 	"codeberg.org/dergs/tonearm/pkg/schwifty/callback"
 	"codeberg.org/dergs/tonearm/pkg/schwifty/state"
 	"codeberg.org/dergs/tonearm/pkg/schwifty/utils/weak"
-	"github.com/jwijenbergh/puregotk/v4/gdk"
-	"github.com/jwijenbergh/puregotk/v4/gtk"
+	"codeberg.org/puregotk/puregotk/v4/gdk"
+	"codeberg.org/puregotk/puregotk/v4/gtk"
 )
 
 //go:generate go run codeberg.org/dergs/tonearm/pkg/schwifty/gen Picture *gtk.Picture gtk

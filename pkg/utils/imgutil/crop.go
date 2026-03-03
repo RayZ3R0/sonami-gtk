@@ -3,14 +3,14 @@ package imgutil
 import (
 	"math"
 
-	"github.com/jwijenbergh/puregotk/v4/gdk"
+	"codeberg.org/puregotk/puregotk/v4/gdk"
 )
 
 func Crop(texture *gdk.Texture) *gdk.Texture {
 	texture.Ref()
 	defer texture.Unref()
 
-	size := int(math.Min(float64(texture.GetIntrinsicWidth()), float64(texture.GetIntrinsicHeight())))
+	size := int32(math.Min(float64(texture.GetIntrinsicWidth()), float64(texture.GetIntrinsicHeight())))
 	src_x := (texture.GetIntrinsicWidth() - size) / 2
 	src_y := (texture.GetIntrinsicHeight() - size) / 2
 

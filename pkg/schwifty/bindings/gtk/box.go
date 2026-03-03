@@ -1,6 +1,6 @@
 package gtk
 
-import "github.com/jwijenbergh/puregotk/v4/gtk"
+import "codeberg.org/puregotk/puregotk/v4/gtk"
 
 //go:generate go run codeberg.org/dergs/tonearm/pkg/schwifty/gen Box *gtk.Box gtk
 
@@ -20,7 +20,7 @@ func (f Box) Orientation(orientation gtk.Orientation) Box {
 	}
 }
 
-func (f Box) Spacing(spacing int) Box {
+func (f Box) Spacing(spacing int32) Box {
 	return func() *gtk.Box {
 		box := f()
 		box.SetSpacing(spacing)

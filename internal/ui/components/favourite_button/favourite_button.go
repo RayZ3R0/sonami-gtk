@@ -12,8 +12,8 @@ import (
 	gtkbindings "codeberg.org/dergs/tonearm/pkg/schwifty/bindings/gtk"
 	. "codeberg.org/dergs/tonearm/pkg/schwifty/syntax"
 	"codeberg.org/dergs/tonearm/pkg/schwifty/utils/weak"
-	"github.com/jwijenbergh/puregotk/v4/adw"
-	"github.com/jwijenbergh/puregotk/v4/gtk"
+	"codeberg.org/puregotk/puregotk/v4/adw"
+	"codeberg.org/puregotk/puregotk/v4/gtk"
 )
 
 var logger = slog.With("module", "ui/components", "component", "FavouriteButton")

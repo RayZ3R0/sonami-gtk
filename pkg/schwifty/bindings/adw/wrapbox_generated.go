@@ -4,9 +4,9 @@ import (
 	"codeberg.org/dergs/tonearm/pkg/schwifty/callback"
 	"codeberg.org/dergs/tonearm/pkg/schwifty/state"
 	"codeberg.org/dergs/tonearm/pkg/schwifty/utils/weak"
+	"codeberg.org/puregotk/puregotk/v4/adw"
+	"codeberg.org/puregotk/puregotk/v4/gtk"
 	"fmt"
-	"github.com/jwijenbergh/puregotk/v4/adw"
-	"github.com/jwijenbergh/puregotk/v4/gtk"
 )
 
 
@@ -124,7 +124,7 @@ func (f WrapBox) HExpand(expand bool) WrapBox {
 	}
 }
 
-func (f WrapBox) HMargin(horizontal int) WrapBox {
+func (f WrapBox) HMargin(horizontal int32) WrapBox {
 	return func() *adw.WrapBox {
 		widget := f()
 		widget.SetMarginEnd(horizontal)
@@ -133,7 +133,7 @@ func (f WrapBox) HMargin(horizontal int) WrapBox {
 	}
 }
 
-func (f WrapBox) Margin(margin int) WrapBox {
+func (f WrapBox) Margin(margin int32) WrapBox {
 	return func() *adw.WrapBox {
 		widget := f()
 		widget.SetMarginBottom(margin)
@@ -144,7 +144,7 @@ func (f WrapBox) Margin(margin int) WrapBox {
 	}
 }
 
-func (f WrapBox) MarginBottom(bottom int) WrapBox {
+func (f WrapBox) MarginBottom(bottom int32) WrapBox {
 	return func() *adw.WrapBox {
 		widget := f()
 		widget.SetMarginBottom(bottom)
@@ -152,7 +152,7 @@ func (f WrapBox) MarginBottom(bottom int) WrapBox {
 	}
 }
 
-func (f WrapBox) MarginEnd(end int) WrapBox {
+func (f WrapBox) MarginEnd(end int32) WrapBox {
 	return func() *adw.WrapBox {
 		widget := f()
 		widget.SetMarginEnd(end)
@@ -160,7 +160,7 @@ func (f WrapBox) MarginEnd(end int) WrapBox {
 	}
 }
 
-func (f WrapBox) MarginStart(start int) WrapBox {
+func (f WrapBox) MarginStart(start int32) WrapBox {
 	return func() *adw.WrapBox {
 		widget := f()
 		widget.SetMarginStart(start)
@@ -168,7 +168,7 @@ func (f WrapBox) MarginStart(start int) WrapBox {
 	}
 }
 
-func (f WrapBox) MarginTop(top int) WrapBox {
+func (f WrapBox) MarginTop(top int32) WrapBox {
 	return func() *adw.WrapBox {
 		widget := f()
 		widget.SetMarginTop(top)
@@ -200,7 +200,7 @@ func (f WrapBox) Sensitive(sensitive bool) WrapBox {
 	}
 }
 
-func (f WrapBox) SizeRequest(width, height int) WrapBox {
+func (f WrapBox) SizeRequest(width, height int32) WrapBox {
 	return func() *adw.WrapBox {
 		widget := f()
 		widget.SetSizeRequest(width, height)
@@ -237,7 +237,7 @@ func (f WrapBox) Visible(visible bool) WrapBox {
 	}
 }
 
-func (f WrapBox) VMargin(vertical int) WrapBox {
+func (f WrapBox) VMargin(vertical int32) WrapBox {
 	return func() *adw.WrapBox {
 		widget := f()
 		widget.SetMarginTop(vertical)
@@ -315,7 +315,7 @@ func (f WrapBox) CSSWithCallback(cb func(elementName string) string) WrapBox {
 		provider := gtk.NewCssProvider()
 		return f.ConnectConstruct(func(t *adw.WrapBox) {
 			provider.LoadFromString(cb(t.GetCssName()))
-			t.GetStyleContext().AddProvider(provider, uint(gtk.STYLE_PROVIDER_PRIORITY_APPLICATION))
+			t.GetStyleContext().AddProvider(provider, uint32(gtk.STYLE_PROVIDER_PRIORITY_APPLICATION))
 		}).ConnectDestroy(func(w gtk.Widget) {
 			w.GetStyleContext().RemoveProvider(provider)
 			provider.Unref()
@@ -418,13 +418,13 @@ func (f WrapBox) BindVisible(state *state.State[bool]) WrapBox {
 	}
 }
 
-func (f WrapBox) BindHMargin(state *state.State[int]) WrapBox {
+func (f WrapBox) BindHMargin(state *state.State[int32]) WrapBox {
 	return func() *adw.WrapBox {
 		var callbackId string
 		var ref weak.WidgetRef
 		return f.ConnectRealize(func(w gtk.Widget) {
 			ref = weak.NewWidgetRef(&w)
-			callbackId = state.AddCallback(func(newValue int) {
+			callbackId = state.AddCallback(func(newValue int32) {
 				callback.OnMainThreadOncePure(func() {
 					if obj := ref.Get(); obj != nil {
 						defer obj.Unref()
@@ -439,13 +439,13 @@ func (f WrapBox) BindHMargin(state *state.State[int]) WrapBox {
 	}
 }
 
-func (f WrapBox) BindMargin(state *state.State[int]) WrapBox {
+func (f WrapBox) BindMargin(state *state.State[int32]) WrapBox {
 	return func() *adw.WrapBox {
 		var callbackId string
 		var ref weak.WidgetRef
 		return f.ConnectRealize(func(w gtk.Widget) {
 			ref = weak.NewWidgetRef(&w)
-			callbackId = state.AddCallback(func(newValue int) {
+			callbackId = state.AddCallback(func(newValue int32) {
 				callback.OnMainThreadOncePure(func() {
 					if obj := ref.Get(); obj != nil {
 						defer obj.Unref()
@@ -462,13 +462,13 @@ func (f WrapBox) BindMargin(state *state.State[int]) WrapBox {
 	}
 }
 
-func (f WrapBox) BindMarginBottom(state *state.State[int]) WrapBox {
+func (f WrapBox) BindMarginBottom(state *state.State[int32]) WrapBox {
 	return func() *adw.WrapBox {
 		var callbackId string
 		var ref weak.WidgetRef
 		return f.ConnectRealize(func(w gtk.Widget) {
 			ref = weak.NewWidgetRef(&w)
-			callbackId = state.AddCallback(func(newValue int) {
+			callbackId = state.AddCallback(func(newValue int32) {
 				callback.OnMainThreadOncePure(func() {
 					if obj := ref.Get(); obj != nil {
 						defer obj.Unref()
@@ -482,13 +482,13 @@ func (f WrapBox) BindMarginBottom(state *state.State[int]) WrapBox {
 	}
 }
 
-func (f WrapBox) BindMarginEnd(state *state.State[int]) WrapBox {
+func (f WrapBox) BindMarginEnd(state *state.State[int32]) WrapBox {
 	return func() *adw.WrapBox {
 		var callbackId string
 		var ref weak.WidgetRef
 		return f.ConnectRealize(func(w gtk.Widget) {
 			ref = weak.NewWidgetRef(&w)
-			callbackId = state.AddCallback(func(newValue int) {
+			callbackId = state.AddCallback(func(newValue int32) {
 				callback.OnMainThreadOncePure(func() {
 					if obj := ref.Get(); obj != nil {
 						defer obj.Unref()
@@ -502,13 +502,13 @@ func (f WrapBox) BindMarginEnd(state *state.State[int]) WrapBox {
 	}
 }
 
-func (f WrapBox) BindMarginStart(state *state.State[int]) WrapBox {
+func (f WrapBox) BindMarginStart(state *state.State[int32]) WrapBox {
 	return func() *adw.WrapBox {
 		var callbackId string
 		var ref weak.WidgetRef
 		return f.ConnectRealize(func(w gtk.Widget) {
 			ref = weak.NewWidgetRef(&w)
-			callbackId = state.AddCallback(func(newValue int) {
+			callbackId = state.AddCallback(func(newValue int32) {
 				callback.OnMainThreadOncePure(func() {
 					if obj := ref.Get(); obj != nil {
 						defer obj.Unref()
@@ -522,13 +522,13 @@ func (f WrapBox) BindMarginStart(state *state.State[int]) WrapBox {
 	}
 }
 
-func (f WrapBox) BindMarginTop(state *state.State[int]) WrapBox {
+func (f WrapBox) BindMarginTop(state *state.State[int32]) WrapBox {
 	return func() *adw.WrapBox {
 		var callbackId string
 		var ref weak.WidgetRef
 		return f.ConnectRealize(func(w gtk.Widget) {
 			ref = weak.NewWidgetRef(&w)
-			callbackId = state.AddCallback(func(newValue int) {
+			callbackId = state.AddCallback(func(newValue int32) {
 				callback.OnMainThreadOncePure(func() {
 					if obj := ref.Get(); obj != nil {
 						defer obj.Unref()

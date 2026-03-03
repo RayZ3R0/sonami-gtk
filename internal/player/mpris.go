@@ -9,9 +9,9 @@ import (
 	"codeberg.org/dergs/tonearm/internal/signals"
 	"codeberg.org/dergs/tonearm/pkg/mpris"
 	"codeberg.org/dergs/tonearm/pkg/tonearm"
+	"codeberg.org/puregotk/puregotk/v4/adw"
 	"github.com/godbus/dbus/v5"
 	"github.com/infinytum/injector"
-	"github.com/jwijenbergh/puregotk/v4/adw"
 )
 
 var mprisServer = g.Lazy(func() *mpris.Server {

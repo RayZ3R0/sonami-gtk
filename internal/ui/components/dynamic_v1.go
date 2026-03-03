@@ -17,7 +17,7 @@ import (
 	"codeberg.org/dergs/tonearm/pkg/tidalapi/helper"
 	v1 "codeberg.org/dergs/tonearm/pkg/tidalapi/models/v1"
 	modelv2 "codeberg.org/dergs/tonearm/pkg/tidalapi/models/v2"
-	"github.com/jwijenbergh/puregotk/v4/gtk"
+	"codeberg.org/puregotk/puregotk/v4/gtk"
 )
 
 func ForModule(module v1.Module) schwifty.BaseWidgetable {

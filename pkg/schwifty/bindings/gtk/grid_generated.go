@@ -4,8 +4,8 @@ import (
 	"codeberg.org/dergs/tonearm/pkg/schwifty/callback"
 	"codeberg.org/dergs/tonearm/pkg/schwifty/state"
 	"codeberg.org/dergs/tonearm/pkg/schwifty/utils/weak"
+	"codeberg.org/puregotk/puregotk/v4/gtk"
 	"fmt"
-	"github.com/jwijenbergh/puregotk/v4/gtk"
 )
 
 
@@ -123,7 +123,7 @@ func (f Grid) HExpand(expand bool) Grid {
 	}
 }
 
-func (f Grid) HMargin(horizontal int) Grid {
+func (f Grid) HMargin(horizontal int32) Grid {
 	return func() *gtk.Grid {
 		widget := f()
 		widget.SetMarginEnd(horizontal)
@@ -132,7 +132,7 @@ func (f Grid) HMargin(horizontal int) Grid {
 	}
 }
 
-func (f Grid) Margin(margin int) Grid {
+func (f Grid) Margin(margin int32) Grid {
 	return func() *gtk.Grid {
 		widget := f()
 		widget.SetMarginBottom(margin)
@@ -143,7 +143,7 @@ func (f Grid) Margin(margin int) Grid {
 	}
 }
 
-func (f Grid) MarginBottom(bottom int) Grid {
+func (f Grid) MarginBottom(bottom int32) Grid {
 	return func() *gtk.Grid {
 		widget := f()
 		widget.SetMarginBottom(bottom)
@@ -151,7 +151,7 @@ func (f Grid) MarginBottom(bottom int) Grid {
 	}
 }
 
-func (f Grid) MarginEnd(end int) Grid {
+func (f Grid) MarginEnd(end int32) Grid {
 	return func() *gtk.Grid {
 		widget := f()
 		widget.SetMarginEnd(end)
@@ -159,7 +159,7 @@ func (f Grid) MarginEnd(end int) Grid {
 	}
 }
 
-func (f Grid) MarginStart(start int) Grid {
+func (f Grid) MarginStart(start int32) Grid {
 	return func() *gtk.Grid {
 		widget := f()
 		widget.SetMarginStart(start)
@@ -167,7 +167,7 @@ func (f Grid) MarginStart(start int) Grid {
 	}
 }
 
-func (f Grid) MarginTop(top int) Grid {
+func (f Grid) MarginTop(top int32) Grid {
 	return func() *gtk.Grid {
 		widget := f()
 		widget.SetMarginTop(top)
@@ -199,7 +199,7 @@ func (f Grid) Sensitive(sensitive bool) Grid {
 	}
 }
 
-func (f Grid) SizeRequest(width, height int) Grid {
+func (f Grid) SizeRequest(width, height int32) Grid {
 	return func() *gtk.Grid {
 		widget := f()
 		widget.SetSizeRequest(width, height)
@@ -236,7 +236,7 @@ func (f Grid) Visible(visible bool) Grid {
 	}
 }
 
-func (f Grid) VMargin(vertical int) Grid {
+func (f Grid) VMargin(vertical int32) Grid {
 	return func() *gtk.Grid {
 		widget := f()
 		widget.SetMarginTop(vertical)
@@ -314,7 +314,7 @@ func (f Grid) CSSWithCallback(cb func(elementName string) string) Grid {
 		provider := gtk.NewCssProvider()
 		return f.ConnectConstruct(func(t *gtk.Grid) {
 			provider.LoadFromString(cb(t.GetCssName()))
-			t.GetStyleContext().AddProvider(provider, uint(gtk.STYLE_PROVIDER_PRIORITY_APPLICATION))
+			t.GetStyleContext().AddProvider(provider, uint32(gtk.STYLE_PROVIDER_PRIORITY_APPLICATION))
 		}).ConnectDestroy(func(w gtk.Widget) {
 			w.GetStyleContext().RemoveProvider(provider)
 			provider.Unref()
@@ -417,13 +417,13 @@ func (f Grid) BindVisible(state *state.State[bool]) Grid {
 	}
 }
 
-func (f Grid) BindHMargin(state *state.State[int]) Grid {
+func (f Grid) BindHMargin(state *state.State[int32]) Grid {
 	return func() *gtk.Grid {
 		var callbackId string
 		var ref weak.WidgetRef
 		return f.ConnectRealize(func(w gtk.Widget) {
 			ref = weak.NewWidgetRef(&w)
-			callbackId = state.AddCallback(func(newValue int) {
+			callbackId = state.AddCallback(func(newValue int32) {
 				callback.OnMainThreadOncePure(func() {
 					if obj := ref.Get(); obj != nil {
 						defer obj.Unref()
@@ -438,13 +438,13 @@ func (f Grid) BindHMargin(state *state.State[int]) Grid {
 	}
 }
 
-func (f Grid) BindMargin(state *state.State[int]) Grid {
+func (f Grid) BindMargin(state *state.State[int32]) Grid {
 	return func() *gtk.Grid {
 		var callbackId string
 		var ref weak.WidgetRef
 		return f.ConnectRealize(func(w gtk.Widget) {
 			ref = weak.NewWidgetRef(&w)
-			callbackId = state.AddCallback(func(newValue int) {
+			callbackId = state.AddCallback(func(newValue int32) {
 				callback.OnMainThreadOncePure(func() {
 					if obj := ref.Get(); obj != nil {
 						defer obj.Unref()
@@ -461,13 +461,13 @@ func (f Grid) BindMargin(state *state.State[int]) Grid {
 	}
 }
 
-func (f Grid) BindMarginBottom(state *state.State[int]) Grid {
+func (f Grid) BindMarginBottom(state *state.State[int32]) Grid {
 	return func() *gtk.Grid {
 		var callbackId string
 		var ref weak.WidgetRef
 		return f.ConnectRealize(func(w gtk.Widget) {
 			ref = weak.NewWidgetRef(&w)
-			callbackId = state.AddCallback(func(newValue int) {
+			callbackId = state.AddCallback(func(newValue int32) {
 				callback.OnMainThreadOncePure(func() {
 					if obj := ref.Get(); obj != nil {
 						defer obj.Unref()
@@ -481,13 +481,13 @@ func (f Grid) BindMarginBottom(state *state.State[int]) Grid {
 	}
 }
 
-func (f Grid) BindMarginEnd(state *state.State[int]) Grid {
+func (f Grid) BindMarginEnd(state *state.State[int32]) Grid {
 	return func() *gtk.Grid {
 		var callbackId string
 		var ref weak.WidgetRef
 		return f.ConnectRealize(func(w gtk.Widget) {
 			ref = weak.NewWidgetRef(&w)
-			callbackId = state.AddCallback(func(newValue int) {
+			callbackId = state.AddCallback(func(newValue int32) {
 				callback.OnMainThreadOncePure(func() {
 					if obj := ref.Get(); obj != nil {
 						defer obj.Unref()
@@ -501,13 +501,13 @@ func (f Grid) BindMarginEnd(state *state.State[int]) Grid {
 	}
 }
 
-func (f Grid) BindMarginStart(state *state.State[int]) Grid {
+func (f Grid) BindMarginStart(state *state.State[int32]) Grid {
 	return func() *gtk.Grid {
 		var callbackId string
 		var ref weak.WidgetRef
 		return f.ConnectRealize(func(w gtk.Widget) {
 			ref = weak.NewWidgetRef(&w)
-			callbackId = state.AddCallback(func(newValue int) {
+			callbackId = state.AddCallback(func(newValue int32) {
 				callback.OnMainThreadOncePure(func() {
 					if obj := ref.Get(); obj != nil {
 						defer obj.Unref()
@@ -521,13 +521,13 @@ func (f Grid) BindMarginStart(state *state.State[int]) Grid {
 	}
 }
 
-func (f Grid) BindMarginTop(state *state.State[int]) Grid {
+func (f Grid) BindMarginTop(state *state.State[int32]) Grid {
 	return func() *gtk.Grid {
 		var callbackId string
 		var ref weak.WidgetRef
 		return f.ConnectRealize(func(w gtk.Widget) {
 			ref = weak.NewWidgetRef(&w)
-			callbackId = state.AddCallback(func(newValue int) {
+			callbackId = state.AddCallback(func(newValue int32) {
 				callback.OnMainThreadOncePure(func() {
 					if obj := ref.Get(); obj != nil {
 						defer obj.Unref()

@@ -4,9 +4,9 @@ import (
 	"codeberg.org/dergs/tonearm/pkg/schwifty/callback"
 	"codeberg.org/dergs/tonearm/pkg/schwifty/state"
 	"codeberg.org/dergs/tonearm/pkg/schwifty/utils/weak"
+	"codeberg.org/puregotk/puregotk/v4/adw"
+	"codeberg.org/puregotk/puregotk/v4/gtk"
 	"fmt"
-	"github.com/jwijenbergh/puregotk/v4/adw"
-	"github.com/jwijenbergh/puregotk/v4/gtk"
 )
 
 
@@ -124,7 +124,7 @@ func (f AlertDialog) HExpand(expand bool) AlertDialog {
 	}
 }
 
-func (f AlertDialog) HMargin(horizontal int) AlertDialog {
+func (f AlertDialog) HMargin(horizontal int32) AlertDialog {
 	return func() *adw.AlertDialog {
 		widget := f()
 		widget.SetMarginEnd(horizontal)
@@ -133,7 +133,7 @@ func (f AlertDialog) HMargin(horizontal int) AlertDialog {
 	}
 }
 
-func (f AlertDialog) Margin(margin int) AlertDialog {
+func (f AlertDialog) Margin(margin int32) AlertDialog {
 	return func() *adw.AlertDialog {
 		widget := f()
 		widget.SetMarginBottom(margin)
@@ -144,7 +144,7 @@ func (f AlertDialog) Margin(margin int) AlertDialog {
 	}
 }
 
-func (f AlertDialog) MarginBottom(bottom int) AlertDialog {
+func (f AlertDialog) MarginBottom(bottom int32) AlertDialog {
 	return func() *adw.AlertDialog {
 		widget := f()
 		widget.SetMarginBottom(bottom)
@@ -152,7 +152,7 @@ func (f AlertDialog) MarginBottom(bottom int) AlertDialog {
 	}
 }
 
-func (f AlertDialog) MarginEnd(end int) AlertDialog {
+func (f AlertDialog) MarginEnd(end int32) AlertDialog {
 	return func() *adw.AlertDialog {
 		widget := f()
 		widget.SetMarginEnd(end)
@@ -160,7 +160,7 @@ func (f AlertDialog) MarginEnd(end int) AlertDialog {
 	}
 }
 
-func (f AlertDialog) MarginStart(start int) AlertDialog {
+func (f AlertDialog) MarginStart(start int32) AlertDialog {
 	return func() *adw.AlertDialog {
 		widget := f()
 		widget.SetMarginStart(start)
@@ -168,7 +168,7 @@ func (f AlertDialog) MarginStart(start int) AlertDialog {
 	}
 }
 
-func (f AlertDialog) MarginTop(top int) AlertDialog {
+func (f AlertDialog) MarginTop(top int32) AlertDialog {
 	return func() *adw.AlertDialog {
 		widget := f()
 		widget.SetMarginTop(top)
@@ -200,7 +200,7 @@ func (f AlertDialog) Sensitive(sensitive bool) AlertDialog {
 	}
 }
 
-func (f AlertDialog) SizeRequest(width, height int) AlertDialog {
+func (f AlertDialog) SizeRequest(width, height int32) AlertDialog {
 	return func() *adw.AlertDialog {
 		widget := f()
 		widget.SetSizeRequest(width, height)
@@ -237,7 +237,7 @@ func (f AlertDialog) Visible(visible bool) AlertDialog {
 	}
 }
 
-func (f AlertDialog) VMargin(vertical int) AlertDialog {
+func (f AlertDialog) VMargin(vertical int32) AlertDialog {
 	return func() *adw.AlertDialog {
 		widget := f()
 		widget.SetMarginTop(vertical)
@@ -315,7 +315,7 @@ func (f AlertDialog) CSSWithCallback(cb func(elementName string) string) AlertDi
 		provider := gtk.NewCssProvider()
 		return f.ConnectConstruct(func(t *adw.AlertDialog) {
 			provider.LoadFromString(cb(t.GetCssName()))
-			t.GetStyleContext().AddProvider(provider, uint(gtk.STYLE_PROVIDER_PRIORITY_APPLICATION))
+			t.GetStyleContext().AddProvider(provider, uint32(gtk.STYLE_PROVIDER_PRIORITY_APPLICATION))
 		}).ConnectDestroy(func(w gtk.Widget) {
 			w.GetStyleContext().RemoveProvider(provider)
 			provider.Unref()
@@ -418,13 +418,13 @@ func (f AlertDialog) BindVisible(state *state.State[bool]) AlertDialog {
 	}
 }
 
-func (f AlertDialog) BindHMargin(state *state.State[int]) AlertDialog {
+func (f AlertDialog) BindHMargin(state *state.State[int32]) AlertDialog {
 	return func() *adw.AlertDialog {
 		var callbackId string
 		var ref weak.WidgetRef
 		return f.ConnectRealize(func(w gtk.Widget) {
 			ref = weak.NewWidgetRef(&w)
-			callbackId = state.AddCallback(func(newValue int) {
+			callbackId = state.AddCallback(func(newValue int32) {
 				callback.OnMainThreadOncePure(func() {
 					if obj := ref.Get(); obj != nil {
 						defer obj.Unref()
@@ -439,13 +439,13 @@ func (f AlertDialog) BindHMargin(state *state.State[int]) AlertDialog {
 	}
 }
 
-func (f AlertDialog) BindMargin(state *state.State[int]) AlertDialog {
+func (f AlertDialog) BindMargin(state *state.State[int32]) AlertDialog {
 	return func() *adw.AlertDialog {
 		var callbackId string
 		var ref weak.WidgetRef
 		return f.ConnectRealize(func(w gtk.Widget) {
 			ref = weak.NewWidgetRef(&w)
-			callbackId = state.AddCallback(func(newValue int) {
+			callbackId = state.AddCallback(func(newValue int32) {
 				callback.OnMainThreadOncePure(func() {
 					if obj := ref.Get(); obj != nil {
 						defer obj.Unref()
@@ -462,13 +462,13 @@ func (f AlertDialog) BindMargin(state *state.State[int]) AlertDialog {
 	}
 }
 
-func (f AlertDialog) BindMarginBottom(state *state.State[int]) AlertDialog {
+func (f AlertDialog) BindMarginBottom(state *state.State[int32]) AlertDialog {
 	return func() *adw.AlertDialog {
 		var callbackId string
 		var ref weak.WidgetRef
 		return f.ConnectRealize(func(w gtk.Widget) {
 			ref = weak.NewWidgetRef(&w)
-			callbackId = state.AddCallback(func(newValue int) {
+			callbackId = state.AddCallback(func(newValue int32) {
 				callback.OnMainThreadOncePure(func() {
 					if obj := ref.Get(); obj != nil {
 						defer obj.Unref()
@@ -482,13 +482,13 @@ func (f AlertDialog) BindMarginBottom(state *state.State[int]) AlertDialog {
 	}
 }
 
-func (f AlertDialog) BindMarginEnd(state *state.State[int]) AlertDialog {
+func (f AlertDialog) BindMarginEnd(state *state.State[int32]) AlertDialog {
 	return func() *adw.AlertDialog {
 		var callbackId string
 		var ref weak.WidgetRef
 		return f.ConnectRealize(func(w gtk.Widget) {
 			ref = weak.NewWidgetRef(&w)
-			callbackId = state.AddCallback(func(newValue int) {
+			callbackId = state.AddCallback(func(newValue int32) {
 				callback.OnMainThreadOncePure(func() {
 					if obj := ref.Get(); obj != nil {
 						defer obj.Unref()
@@ -502,13 +502,13 @@ func (f AlertDialog) BindMarginEnd(state *state.State[int]) AlertDialog {
 	}
 }
 
-func (f AlertDialog) BindMarginStart(state *state.State[int]) AlertDialog {
+func (f AlertDialog) BindMarginStart(state *state.State[int32]) AlertDialog {
 	return func() *adw.AlertDialog {
 		var callbackId string
 		var ref weak.WidgetRef
 		return f.ConnectRealize(func(w gtk.Widget) {
 			ref = weak.NewWidgetRef(&w)
-			callbackId = state.AddCallback(func(newValue int) {
+			callbackId = state.AddCallback(func(newValue int32) {
 				callback.OnMainThreadOncePure(func() {
 					if obj := ref.Get(); obj != nil {
 						defer obj.Unref()
@@ -522,13 +522,13 @@ func (f AlertDialog) BindMarginStart(state *state.State[int]) AlertDialog {
 	}
 }
 
-func (f AlertDialog) BindMarginTop(state *state.State[int]) AlertDialog {
+func (f AlertDialog) BindMarginTop(state *state.State[int32]) AlertDialog {
 	return func() *adw.AlertDialog {
 		var callbackId string
 		var ref weak.WidgetRef
 		return f.ConnectRealize(func(w gtk.Widget) {
 			ref = weak.NewWidgetRef(&w)
-			callbackId = state.AddCallback(func(newValue int) {
+			callbackId = state.AddCallback(func(newValue int32) {
 				callback.OnMainThreadOncePure(func() {
 					if obj := ref.Get(); obj != nil {
 						defer obj.Unref()

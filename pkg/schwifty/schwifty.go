@@ -13,15 +13,15 @@ var (
 	shouldLogLifecycle = false
 )
 
-func OnMainThread(cb callback.MainThreadCallback, param uintptr) uint {
+func OnMainThread(cb callback.MainThreadCallback, param uintptr) uint32 {
 	return callback.OnMainThread(cb, param)
 }
 
-func OnMainThreadOnce(cb func(u uintptr), param uintptr) uint {
+func OnMainThreadOnce(cb func(u uintptr), param uintptr) uint32 {
 	return callback.OnMainThreadOnce(cb, param)
 }
 
-func OnMainThreadOncePure(cb func()) uint {
+func OnMainThreadOncePure(cb func()) uint32 {
 	return OnMainThreadOnce(func(uintptr) { cb() }, 0)
 }
 

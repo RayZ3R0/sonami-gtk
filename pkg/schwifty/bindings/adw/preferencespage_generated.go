@@ -4,9 +4,9 @@ import (
 	"codeberg.org/dergs/tonearm/pkg/schwifty/callback"
 	"codeberg.org/dergs/tonearm/pkg/schwifty/state"
 	"codeberg.org/dergs/tonearm/pkg/schwifty/utils/weak"
+	"codeberg.org/puregotk/puregotk/v4/adw"
+	"codeberg.org/puregotk/puregotk/v4/gtk"
 	"fmt"
-	"github.com/jwijenbergh/puregotk/v4/adw"
-	"github.com/jwijenbergh/puregotk/v4/gtk"
 )
 
 
@@ -124,7 +124,7 @@ func (f PreferencesPage) HExpand(expand bool) PreferencesPage {
 	}
 }
 
-func (f PreferencesPage) HMargin(horizontal int) PreferencesPage {
+func (f PreferencesPage) HMargin(horizontal int32) PreferencesPage {
 	return func() *adw.PreferencesPage {
 		widget := f()
 		widget.SetMarginEnd(horizontal)
@@ -133,7 +133,7 @@ func (f PreferencesPage) HMargin(horizontal int) PreferencesPage {
 	}
 }
 
-func (f PreferencesPage) Margin(margin int) PreferencesPage {
+func (f PreferencesPage) Margin(margin int32) PreferencesPage {
 	return func() *adw.PreferencesPage {
 		widget := f()
 		widget.SetMarginBottom(margin)
@@ -144,7 +144,7 @@ func (f PreferencesPage) Margin(margin int) PreferencesPage {
 	}
 }
 
-func (f PreferencesPage) MarginBottom(bottom int) PreferencesPage {
+func (f PreferencesPage) MarginBottom(bottom int32) PreferencesPage {
 	return func() *adw.PreferencesPage {
 		widget := f()
 		widget.SetMarginBottom(bottom)
@@ -152,7 +152,7 @@ func (f PreferencesPage) MarginBottom(bottom int) PreferencesPage {
 	}
 }
 
-func (f PreferencesPage) MarginEnd(end int) PreferencesPage {
+func (f PreferencesPage) MarginEnd(end int32) PreferencesPage {
 	return func() *adw.PreferencesPage {
 		widget := f()
 		widget.SetMarginEnd(end)
@@ -160,7 +160,7 @@ func (f PreferencesPage) MarginEnd(end int) PreferencesPage {
 	}
 }
 
-func (f PreferencesPage) MarginStart(start int) PreferencesPage {
+func (f PreferencesPage) MarginStart(start int32) PreferencesPage {
 	return func() *adw.PreferencesPage {
 		widget := f()
 		widget.SetMarginStart(start)
@@ -168,7 +168,7 @@ func (f PreferencesPage) MarginStart(start int) PreferencesPage {
 	}
 }
 
-func (f PreferencesPage) MarginTop(top int) PreferencesPage {
+func (f PreferencesPage) MarginTop(top int32) PreferencesPage {
 	return func() *adw.PreferencesPage {
 		widget := f()
 		widget.SetMarginTop(top)
@@ -200,7 +200,7 @@ func (f PreferencesPage) Sensitive(sensitive bool) PreferencesPage {
 	}
 }
 
-func (f PreferencesPage) SizeRequest(width, height int) PreferencesPage {
+func (f PreferencesPage) SizeRequest(width, height int32) PreferencesPage {
 	return func() *adw.PreferencesPage {
 		widget := f()
 		widget.SetSizeRequest(width, height)
@@ -237,7 +237,7 @@ func (f PreferencesPage) Visible(visible bool) PreferencesPage {
 	}
 }
 
-func (f PreferencesPage) VMargin(vertical int) PreferencesPage {
+func (f PreferencesPage) VMargin(vertical int32) PreferencesPage {
 	return func() *adw.PreferencesPage {
 		widget := f()
 		widget.SetMarginTop(vertical)
@@ -315,7 +315,7 @@ func (f PreferencesPage) CSSWithCallback(cb func(elementName string) string) Pre
 		provider := gtk.NewCssProvider()
 		return f.ConnectConstruct(func(t *adw.PreferencesPage) {
 			provider.LoadFromString(cb(t.GetCssName()))
-			t.GetStyleContext().AddProvider(provider, uint(gtk.STYLE_PROVIDER_PRIORITY_APPLICATION))
+			t.GetStyleContext().AddProvider(provider, uint32(gtk.STYLE_PROVIDER_PRIORITY_APPLICATION))
 		}).ConnectDestroy(func(w gtk.Widget) {
 			w.GetStyleContext().RemoveProvider(provider)
 			provider.Unref()
@@ -418,13 +418,13 @@ func (f PreferencesPage) BindVisible(state *state.State[bool]) PreferencesPage {
 	}
 }
 
-func (f PreferencesPage) BindHMargin(state *state.State[int]) PreferencesPage {
+func (f PreferencesPage) BindHMargin(state *state.State[int32]) PreferencesPage {
 	return func() *adw.PreferencesPage {
 		var callbackId string
 		var ref weak.WidgetRef
 		return f.ConnectRealize(func(w gtk.Widget) {
 			ref = weak.NewWidgetRef(&w)
-			callbackId = state.AddCallback(func(newValue int) {
+			callbackId = state.AddCallback(func(newValue int32) {
 				callback.OnMainThreadOncePure(func() {
 					if obj := ref.Get(); obj != nil {
 						defer obj.Unref()
@@ -439,13 +439,13 @@ func (f PreferencesPage) BindHMargin(state *state.State[int]) PreferencesPage {
 	}
 }
 
-func (f PreferencesPage) BindMargin(state *state.State[int]) PreferencesPage {
+func (f PreferencesPage) BindMargin(state *state.State[int32]) PreferencesPage {
 	return func() *adw.PreferencesPage {
 		var callbackId string
 		var ref weak.WidgetRef
 		return f.ConnectRealize(func(w gtk.Widget) {
 			ref = weak.NewWidgetRef(&w)
-			callbackId = state.AddCallback(func(newValue int) {
+			callbackId = state.AddCallback(func(newValue int32) {
 				callback.OnMainThreadOncePure(func() {
 					if obj := ref.Get(); obj != nil {
 						defer obj.Unref()
@@ -462,13 +462,13 @@ func (f PreferencesPage) BindMargin(state *state.State[int]) PreferencesPage {
 	}
 }
 
-func (f PreferencesPage) BindMarginBottom(state *state.State[int]) PreferencesPage {
+func (f PreferencesPage) BindMarginBottom(state *state.State[int32]) PreferencesPage {
 	return func() *adw.PreferencesPage {
 		var callbackId string
 		var ref weak.WidgetRef
 		return f.ConnectRealize(func(w gtk.Widget) {
 			ref = weak.NewWidgetRef(&w)
-			callbackId = state.AddCallback(func(newValue int) {
+			callbackId = state.AddCallback(func(newValue int32) {
 				callback.OnMainThreadOncePure(func() {
 					if obj := ref.Get(); obj != nil {
 						defer obj.Unref()
@@ -482,13 +482,13 @@ func (f PreferencesPage) BindMarginBottom(state *state.State[int]) PreferencesPa
 	}
 }
 
-func (f PreferencesPage) BindMarginEnd(state *state.State[int]) PreferencesPage {
+func (f PreferencesPage) BindMarginEnd(state *state.State[int32]) PreferencesPage {
 	return func() *adw.PreferencesPage {
 		var callbackId string
 		var ref weak.WidgetRef
 		return f.ConnectRealize(func(w gtk.Widget) {
 			ref = weak.NewWidgetRef(&w)
-			callbackId = state.AddCallback(func(newValue int) {
+			callbackId = state.AddCallback(func(newValue int32) {
 				callback.OnMainThreadOncePure(func() {
 					if obj := ref.Get(); obj != nil {
 						defer obj.Unref()
@@ -502,13 +502,13 @@ func (f PreferencesPage) BindMarginEnd(state *state.State[int]) PreferencesPage 
 	}
 }
 
-func (f PreferencesPage) BindMarginStart(state *state.State[int]) PreferencesPage {
+func (f PreferencesPage) BindMarginStart(state *state.State[int32]) PreferencesPage {
 	return func() *adw.PreferencesPage {
 		var callbackId string
 		var ref weak.WidgetRef
 		return f.ConnectRealize(func(w gtk.Widget) {
 			ref = weak.NewWidgetRef(&w)
-			callbackId = state.AddCallback(func(newValue int) {
+			callbackId = state.AddCallback(func(newValue int32) {
 				callback.OnMainThreadOncePure(func() {
 					if obj := ref.Get(); obj != nil {
 						defer obj.Unref()
@@ -522,13 +522,13 @@ func (f PreferencesPage) BindMarginStart(state *state.State[int]) PreferencesPag
 	}
 }
 
-func (f PreferencesPage) BindMarginTop(state *state.State[int]) PreferencesPage {
+func (f PreferencesPage) BindMarginTop(state *state.State[int32]) PreferencesPage {
 	return func() *adw.PreferencesPage {
 		var callbackId string
 		var ref weak.WidgetRef
 		return f.ConnectRealize(func(w gtk.Widget) {
 			ref = weak.NewWidgetRef(&w)
-			callbackId = state.AddCallback(func(newValue int) {
+			callbackId = state.AddCallback(func(newValue int32) {
 				callback.OnMainThreadOncePure(func() {
 					if obj := ref.Get(); obj != nil {
 						defer obj.Unref()

@@ -6,11 +6,11 @@ import (
 	. "codeberg.org/dergs/tonearm/pkg/schwifty/syntax"
 	"codeberg.org/dergs/tonearm/pkg/tonearm"
 	"codeberg.org/dergs/tonearm/pkg/utils/imgutil"
+	"codeberg.org/puregotk/puregotk/v4/gtk"
 	"github.com/infinytum/injector"
-	"github.com/jwijenbergh/puregotk/v4/gtk"
 )
 
-func CoverColumn(track tonearm.Track, grid *gtk.Grid, position int, column int) int {
+func CoverColumn(track tonearm.Track, grid *gtk.Grid, position int, column int32) int {
 	grid.Attach(
 		Image().
 			FromPaintable(resources.MissingAlbum()).

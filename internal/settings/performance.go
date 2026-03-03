@@ -1,8 +1,8 @@
 package settings
 
 import (
-	"github.com/jwijenbergh/puregotk/v4/gio"
-	"github.com/jwijenbergh/puregotk/v4/gobject"
+	"codeberg.org/puregotk/puregotk/v4/gio"
+	"codeberg.org/puregotk/puregotk/v4/gobject"
 )
 
 type PerformanceSettings struct {
@@ -41,7 +41,7 @@ func (p *PerformanceSettings) AllowTracklistImages() bool {
 	return p.settings.GetBoolean("allow-tracklist-images")
 }
 
-func (p *PerformanceSettings) MaxRouterHistorySize() int {
+func (p *PerformanceSettings) MaxRouterHistorySize() int32 {
 	return p.settings.GetInt("max-router-history-size")
 }
 

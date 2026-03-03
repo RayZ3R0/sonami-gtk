@@ -115,7 +115,7 @@ You can bring Tonearm to even more people by helping us translate it into their 
 ## Acknowledgements
 The following projects and resources served as inspiration or were helpful during the development of Tonearm.
 - [High Tide](https://github.com/Nokse22/high-tide/) for the original design of the player in the sidebar
-- [puregotk](https://github.com/jwijenbergh/puregotk) for making this project possible with only minimal CGO bindings
+- [puregotk](https://codeberg.org/puregotk/puregotk) for making this project possible with only minimal CGO bindings
 - [TIDAL](https://tidal.com/) for the overall page designs, which we adapted for GTK
 
 

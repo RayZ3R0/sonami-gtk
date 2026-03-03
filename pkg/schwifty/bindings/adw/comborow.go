@@ -2,9 +2,9 @@ package adw
 
 import (
 	"codeberg.org/dergs/tonearm/pkg/schwifty/callback"
-	"github.com/jwijenbergh/puregotk/v4/adw"
-	"github.com/jwijenbergh/puregotk/v4/gio"
-	"github.com/jwijenbergh/puregotk/v4/gobject"
+	"codeberg.org/puregotk/puregotk/v4/adw"
+	"codeberg.org/puregotk/puregotk/v4/gio"
+	"codeberg.org/puregotk/puregotk/v4/gobject"
 )
 
 var (
@@ -15,10 +15,10 @@ var (
 
 //go:generate go run codeberg.org/dergs/tonearm/pkg/schwifty/gen ComboRow *adw.ComboRow adw
 
-func (f ComboRow) ConnectSelectionChanged(cb func(uint)) ComboRow {
+func (f ComboRow) ConnectSelectionChanged(cb func(uint32)) ComboRow {
 	return func() *adw.ComboRow {
 		row := f()
-		var selection uint
+		var selection uint32
 		callback.HandleCallback(row.Object, "notify", func(comboRow *adw.ComboRow) {
 			newValue := comboRow.GetSelected()
 			if newValue != selection {
@@ -38,7 +38,7 @@ func (f ComboRow) Model(model gio.ListModel) ComboRow {
 	}
 }
 
-func (f ComboRow) Selected(index uint) ComboRow {
+func (f ComboRow) Selected(index uint32) ComboRow {
 	return func() *adw.ComboRow {
 		row := f()
 		row.SetSelected(index)

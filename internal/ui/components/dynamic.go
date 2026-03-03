@@ -12,7 +12,7 @@ import (
 	"codeberg.org/dergs/tonearm/pkg/schwifty/syntax"
 	. "codeberg.org/dergs/tonearm/pkg/schwifty/syntax"
 	modelv2 "codeberg.org/dergs/tonearm/pkg/tidalapi/models/v2"
-	"github.com/jwijenbergh/puregotk/v4/gtk"
+	"codeberg.org/puregotk/puregotk/v4/gtk"
 )
 
 var logger = slog.With("module", "components")

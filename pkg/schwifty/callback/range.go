@@ -1,6 +1,6 @@
 package callback
 
-import "github.com/jwijenbergh/puregotk/v4/gtk"
+import "codeberg.org/puregotk/puregotk/v4/gtk"
 
 var (
 	RangeChangeValueCallback = func(widget gtk.Range, scrollType gtk.ScrollType, value float64) bool {

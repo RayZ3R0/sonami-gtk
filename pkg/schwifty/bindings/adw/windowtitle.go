@@ -1,6 +1,6 @@
 package adw
 
-import "github.com/jwijenbergh/puregotk/v4/adw"
+import "codeberg.org/puregotk/puregotk/v4/adw"
 
 //go:generate go run codeberg.org/dergs/tonearm/pkg/schwifty/gen WindowTitle *adw.WindowTitle adw
 

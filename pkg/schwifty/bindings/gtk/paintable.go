@@ -1,8 +1,8 @@
 package gtk
 
 import (
-	"github.com/jwijenbergh/puregotk/v4/gdk"
-	"github.com/jwijenbergh/puregotk/v4/gobject"
+	"codeberg.org/puregotk/puregotk/v4/gdk"
+	"codeberg.org/puregotk/puregotk/v4/gobject"
 )
 
 type Paintable interface {

@@ -5,7 +5,7 @@ import (
 	"time"
 
 	"codeberg.org/dergs/tonearm/internal/settings"
-	"github.com/jwijenbergh/puregotk/v4/gtk"
+	"codeberg.org/puregotk/puregotk/v4/gtk"
 )
 
 var history = &History{
@@ -66,7 +66,7 @@ func (h *History) Push(entry *HistoryEntry) {
 	defer HistoryUpdated.Notify(h)
 
 	if h.Current != nil {
-		if len(h.Entries) >= settings.Performance().MaxRouterHistorySize() {
+		if int32(len(h.Entries)) >= settings.Performance().MaxRouterHistorySize() {
 			h.Entries = h.Entries[1:]
 		}
 

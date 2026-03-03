@@ -4,8 +4,8 @@ import (
 	"codeberg.org/dergs/tonearm/pkg/schwifty/callback"
 	"codeberg.org/dergs/tonearm/pkg/schwifty/state"
 	"codeberg.org/dergs/tonearm/pkg/schwifty/utils/weak"
+	"codeberg.org/puregotk/puregotk/v4/gtk"
 	"fmt"
-	"github.com/jwijenbergh/puregotk/v4/gtk"
 )
 
 
@@ -123,7 +123,7 @@ func (f Picture) HExpand(expand bool) Picture {
 	}
 }
 
-func (f Picture) HMargin(horizontal int) Picture {
+func (f Picture) HMargin(horizontal int32) Picture {
 	return func() *gtk.Picture {
 		widget := f()
 		widget.SetMarginEnd(horizontal)
@@ -132,7 +132,7 @@ func (f Picture) HMargin(horizontal int) Picture {
 	}
 }
 
-func (f Picture) Margin(margin int) Picture {
+func (f Picture) Margin(margin int32) Picture {
 	return func() *gtk.Picture {
 		widget := f()
 		widget.SetMarginBottom(margin)
@@ -143,7 +143,7 @@ func (f Picture) Margin(margin int) Picture {
 	}
 }
 
-func (f Picture) MarginBottom(bottom int) Picture {
+func (f Picture) MarginBottom(bottom int32) Picture {
 	return func() *gtk.Picture {
 		widget := f()
 		widget.SetMarginBottom(bottom)
@@ -151,7 +151,7 @@ func (f Picture) MarginBottom(bottom int) Picture {
 	}
 }
 
-func (f Picture) MarginEnd(end int) Picture {
+func (f Picture) MarginEnd(end int32) Picture {
 	return func() *gtk.Picture {
 		widget := f()
 		widget.SetMarginEnd(end)
@@ -159,7 +159,7 @@ func (f Picture) MarginEnd(end int) Picture {
 	}
 }
 
-func (f Picture) MarginStart(start int) Picture {
+func (f Picture) MarginStart(start int32) Picture {
 	return func() *gtk.Picture {
 		widget := f()
 		widget.SetMarginStart(start)
@@ -167,7 +167,7 @@ func (f Picture) MarginStart(start int) Picture {
 	}
 }
 
-func (f Picture) MarginTop(top int) Picture {
+func (f Picture) MarginTop(top int32) Picture {
 	return func() *gtk.Picture {
 		widget := f()
 		widget.SetMarginTop(top)
@@ -199,7 +199,7 @@ func (f Picture) Sensitive(sensitive bool) Picture {
 	}
 }
 
-func (f Picture) SizeRequest(width, height int) Picture {
+func (f Picture) SizeRequest(width, height int32) Picture {
 	return func() *gtk.Picture {
 		widget := f()
 		widget.SetSizeRequest(width, height)
@@ -236,7 +236,7 @@ func (f Picture) Visible(visible bool) Picture {
 	}
 }
 
-func (f Picture) VMargin(vertical int) Picture {
+func (f Picture) VMargin(vertical int32) Picture {
 	return func() *gtk.Picture {
 		widget := f()
 		widget.SetMarginTop(vertical)
@@ -314,7 +314,7 @@ func (f Picture) CSSWithCallback(cb func(elementName string) string) Picture {
 		provider := gtk.NewCssProvider()
 		return f.ConnectConstruct(func(t *gtk.Picture) {
 			provider.LoadFromString(cb(t.GetCssName()))
-			t.GetStyleContext().AddProvider(provider, uint(gtk.STYLE_PROVIDER_PRIORITY_APPLICATION))
+			t.GetStyleContext().AddProvider(provider, uint32(gtk.STYLE_PROVIDER_PRIORITY_APPLICATION))
 		}).ConnectDestroy(func(w gtk.Widget) {
 			w.GetStyleContext().RemoveProvider(provider)
 			provider.Unref()
@@ -417,13 +417,13 @@ func (f Picture) BindVisible(state *state.State[bool]) Picture {
 	}
 }
 
-func (f Picture) BindHMargin(state *state.State[int]) Picture {
+func (f Picture) BindHMargin(state *state.State[int32]) Picture {
 	return func() *gtk.Picture {
 		var callbackId string
 		var ref weak.WidgetRef
 		return f.ConnectRealize(func(w gtk.Widget) {
 			ref = weak.NewWidgetRef(&w)
-			callbackId = state.AddCallback(func(newValue int) {
+			callbackId = state.AddCallback(func(newValue int32) {
 				callback.OnMainThreadOncePure(func() {
 					if obj := ref.Get(); obj != nil {
 						defer obj.Unref()
@@ -438,13 +438,13 @@ func (f Picture) BindHMargin(state *state.State[int]) Picture {
 	}
 }
 
-func (f Picture) BindMargin(state *state.State[int]) Picture {
+func (f Picture) BindMargin(state *state.State[int32]) Picture {
 	return func() *gtk.Picture {
 		var callbackId string
 		var ref weak.WidgetRef
 		return f.ConnectRealize(func(w gtk.Widget) {
 			ref = weak.NewWidgetRef(&w)
-			callbackId = state.AddCallback(func(newValue int) {
+			callbackId = state.AddCallback(func(newValue int32) {
 				callback.OnMainThreadOncePure(func() {
 					if obj := ref.Get(); obj != nil {
 						defer obj.Unref()
@@ -461,13 +461,13 @@ func (f Picture) BindMargin(state *state.State[int]) Picture {
 	}
 }
 
-func (f Picture) BindMarginBottom(state *state.State[int]) Picture {
+func (f Picture) BindMarginBottom(state *state.State[int32]) Picture {
 	return func() *gtk.Picture {
 		var callbackId string
 		var ref weak.WidgetRef
 		return f.ConnectRealize(func(w gtk.Widget) {
 			ref = weak.NewWidgetRef(&w)
-			callbackId = state.AddCallback(func(newValue int) {
+			callbackId = state.AddCallback(func(newValue int32) {
 				callback.OnMainThreadOncePure(func() {
 					if obj := ref.Get(); obj != nil {
 						defer obj.Unref()
@@ -481,13 +481,13 @@ func (f Picture) BindMarginBottom(state *state.State[int]) Picture {
 	}
 }
 
-func (f Picture) BindMarginEnd(state *state.State[int]) Picture {
+func (f Picture) BindMarginEnd(state *state.State[int32]) Picture {
 	return func() *gtk.Picture {
 		var callbackId string
 		var ref weak.WidgetRef
 		return f.ConnectRealize(func(w gtk.Widget) {
 			ref = weak.NewWidgetRef(&w)
-			callbackId = state.AddCallback(func(newValue int) {
+			callbackId = state.AddCallback(func(newValue int32) {
 				callback.OnMainThreadOncePure(func() {
 					if obj := ref.Get(); obj != nil {
 						defer obj.Unref()
@@ -501,13 +501,13 @@ func (f Picture) BindMarginEnd(state *state.State[int]) Picture {
 	}
 }
 
-func (f Picture) BindMarginStart(state *state.State[int]) Picture {
+func (f Picture) BindMarginStart(state *state.State[int32]) Picture {
 	return func() *gtk.Picture {
 		var callbackId string
 		var ref weak.WidgetRef
 		return f.ConnectRealize(func(w gtk.Widget) {
 			ref = weak.NewWidgetRef(&w)
-			callbackId = state.AddCallback(func(newValue int) {
+			callbackId = state.AddCallback(func(newValue int32) {
 				callback.OnMainThreadOncePure(func() {
 					if obj := ref.Get(); obj != nil {
 						defer obj.Unref()
@@ -521,13 +521,13 @@ func (f Picture) BindMarginStart(state *state.State[int]) Picture {
 	}
 }
 
-func (f Picture) BindMarginTop(state *state.State[int]) Picture {
+func (f Picture) BindMarginTop(state *state.State[int32]) Picture {
 	return func() *gtk.Picture {
 		var callbackId string
 		var ref weak.WidgetRef
 		return f.ConnectRealize(func(w gtk.Widget) {
 			ref = weak.NewWidgetRef(&w)
-			callbackId = state.AddCallback(func(newValue int) {
+			callbackId = state.AddCallback(func(newValue int32) {
 				callback.OnMainThreadOncePure(func() {
 					if obj := ref.Get(); obj != nil {
 						defer obj.Unref()

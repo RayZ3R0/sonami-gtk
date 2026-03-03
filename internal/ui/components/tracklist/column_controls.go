@@ -10,9 +10,9 @@ import (
 	favouritebutton "codeberg.org/dergs/tonearm/internal/ui/components/favourite_button"
 	. "codeberg.org/dergs/tonearm/pkg/schwifty/syntax"
 	"codeberg.org/dergs/tonearm/pkg/tonearm"
-	"github.com/jwijenbergh/puregotk/v4/gio"
-	"github.com/jwijenbergh/puregotk/v4/glib"
-	"github.com/jwijenbergh/puregotk/v4/gtk"
+	"codeberg.org/puregotk/puregotk/v4/gio"
+	"codeberg.org/puregotk/puregotk/v4/glib"
+	"codeberg.org/puregotk/puregotk/v4/gtk"
 )
 
 var logger = slog.With("module", "components/tracklist")
@@ -22,7 +22,7 @@ type lightArtist struct {
 	ID   string
 }
 
-func controlsColumn(trackId, albumId string, artistId []lightArtist, grid *gtk.Grid, position int, column int) int {
+func controlsColumn(trackId, albumId string, artistId []lightArtist, grid *gtk.Grid, position int, column int32) int {
 	model := gio.NewMenu()
 
 	item := gio.NewMenuItem(gettext.Get("Navigate to Album"), "win.route.album")
@@ -84,7 +84,7 @@ func controlsColumn(trackId, albumId string, artistId []lightArtist, grid *gtk.G
 	return 1
 }
 
-func ControlsColumn(track tonearm.Track, grid *gtk.Grid, position int, column int) int {
+func ControlsColumn(track tonearm.Track, grid *gtk.Grid, position int, column int32) int {
 	if track == nil {
 		grid.Attach(
 			Box(gtk.OrientationHorizontalValue).ToGTK(),

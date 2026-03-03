@@ -3,13 +3,13 @@ module codeberg.org/dergs/tonearm
 go 1.26.0
 
 require (
+	codeberg.org/puregotk/puregotk v0.0.0-20260226083027-5647eb6a2bba
 	github.com/Marlliton/slogpretty v0.1.3
 	github.com/go-gst/go-gst v1.4.0
 	github.com/godbus/dbus/v5 v5.2.2
 	github.com/google/uuid v1.6.0
 	github.com/infinytum/injector v0.0.3
 	github.com/jeandeaual/go-locale v0.0.0-20250612000132-0ef82f21eade
-	github.com/jwijenbergh/puregotk v0.0.0-20251201161753-28ec1479c381
 	github.com/leonelquinteros/gotext v1.7.2
 	github.com/lescuer97/go-libsecret v0.0.0-20251130160347-067b741bcf5a
 	github.com/qjebbs/go-jsons v1.0.0-alpha.4
@@ -20,12 +20,12 @@ require (
 )
 
 require (
+	codeberg.org/puregotk/purego v0.0.0-20260224095105-2513c838cb80 // indirect
 	github.com/fogleman/gg v1.3.0 // indirect
 	github.com/go-gst/go-glib v1.4.0 // indirect
 	github.com/golang/freetype v0.0.0-20170609003504-e2365dfdc4a0 // indirect
 	github.com/google/go-querystring v1.1.0 // indirect
 	github.com/infinytum/structures v0.0.1 // indirect
-	github.com/jwijenbergh/purego v0.0.0-20251017112123-b71757b9ba42 // indirect
 	github.com/mattn/go-pointer v0.0.1 // indirect
 	github.com/pkg/errors v0.9.1 // indirect
 	github.com/stretchr/testify v1.11.1 // indirect

@@ -4,9 +4,9 @@ import (
 	"codeberg.org/dergs/tonearm/pkg/schwifty/callback"
 	"codeberg.org/dergs/tonearm/pkg/schwifty/state"
 	"codeberg.org/dergs/tonearm/pkg/schwifty/utils/weak"
-	"github.com/jwijenbergh/puregotk/v4/gdk"
-	"github.com/jwijenbergh/puregotk/v4/gdkpixbuf"
-	"github.com/jwijenbergh/puregotk/v4/gtk"
+	"codeberg.org/puregotk/puregotk/v4/gdk"
+	"codeberg.org/puregotk/puregotk/v4/gdkpixbuf"
+	"codeberg.org/puregotk/puregotk/v4/gtk"
 )
 
 //go:generate go run codeberg.org/dergs/tonearm/pkg/schwifty/gen Image *gtk.Image gtk
@@ -107,7 +107,7 @@ func (f Image) FromResource(resource string) Image {
 	}
 }
 
-func (f Image) PixelSize(size int) Image {
+func (f Image) PixelSize(size int32) Image {
 	return func() *gtk.Image {
 		image := f()
 		image.SetPixelSize(size)

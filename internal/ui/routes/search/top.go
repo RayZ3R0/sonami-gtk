@@ -10,7 +10,7 @@ import (
 	"codeberg.org/dergs/tonearm/pkg/schwifty"
 	. "codeberg.org/dergs/tonearm/pkg/schwifty/syntax"
 	modelopenapi "codeberg.org/dergs/tonearm/pkg/tidalapi/models/openapi"
-	"github.com/jwijenbergh/puregotk/v4/gtk"
+	"codeberg.org/puregotk/puregotk/v4/gtk"
 )
 
 func TopHits(searchResults *modelopenapi.SearchResult) schwifty.Box {

@@ -1,13 +1,13 @@
 package gtk
 
 import (
-	"fmt"
-
 	"codeberg.org/dergs/tonearm/pkg/schwifty/callback"
 	"codeberg.org/dergs/tonearm/pkg/schwifty/state"
 	"codeberg.org/dergs/tonearm/pkg/schwifty/utils/weak"
-	"github.com/jwijenbergh/puregotk/v4/gtk"
+	"codeberg.org/puregotk/puregotk/v4/gtk"
+	"fmt"
 )
+
 
 type Revealer func() *gtk.Revealer
 
@@ -123,7 +123,7 @@ func (f Revealer) HExpand(expand bool) Revealer {
 	}
 }
 
-func (f Revealer) HMargin(horizontal int) Revealer {
+func (f Revealer) HMargin(horizontal int32) Revealer {
 	return func() *gtk.Revealer {
 		widget := f()
 		widget.SetMarginEnd(horizontal)
@@ -132,7 +132,7 @@ func (f Revealer) HMargin(horizontal int) Revealer {
 	}
 }
 
-func (f Revealer) Margin(margin int) Revealer {
+func (f Revealer) Margin(margin int32) Revealer {
 	return func() *gtk.Revealer {
 		widget := f()
 		widget.SetMarginBottom(margin)
@@ -143,7 +143,7 @@ func (f Revealer) Margin(margin int) Revealer {
 	}
 }
 
-func (f Revealer) MarginBottom(bottom int) Revealer {
+func (f Revealer) MarginBottom(bottom int32) Revealer {
 	return func() *gtk.Revealer {
 		widget := f()
 		widget.SetMarginBottom(bottom)
@@ -151,7 +151,7 @@ func (f Revealer) MarginBottom(bottom int) Revealer {
 	}
 }
 
-func (f Revealer) MarginEnd(end int) Revealer {
+func (f Revealer) MarginEnd(end int32) Revealer {
 	return func() *gtk.Revealer {
 		widget := f()
 		widget.SetMarginEnd(end)
@@ -159,7 +159,7 @@ func (f Revealer) MarginEnd(end int) Revealer {
 	}
 }
 
-func (f Revealer) MarginStart(start int) Revealer {
+func (f Revealer) MarginStart(start int32) Revealer {
 	return func() *gtk.Revealer {
 		widget := f()
 		widget.SetMarginStart(start)
@@ -167,7 +167,7 @@ func (f Revealer) MarginStart(start int) Revealer {
 	}
 }
 
-func (f Revealer) MarginTop(top int) Revealer {
+func (f Revealer) MarginTop(top int32) Revealer {
 	return func() *gtk.Revealer {
 		widget := f()
 		widget.SetMarginTop(top)
@@ -199,7 +199,7 @@ func (f Revealer) Sensitive(sensitive bool) Revealer {
 	}
 }
 
-func (f Revealer) SizeRequest(width, height int) Revealer {
+func (f Revealer) SizeRequest(width, height int32) Revealer {
 	return func() *gtk.Revealer {
 		widget := f()
 		widget.SetSizeRequest(width, height)
@@ -236,7 +236,7 @@ func (f Revealer) Visible(visible bool) Revealer {
 	}
 }
 
-func (f Revealer) VMargin(vertical int) Revealer {
+func (f Revealer) VMargin(vertical int32) Revealer {
 	return func() *gtk.Revealer {
 		widget := f()
 		widget.SetMarginTop(vertical)
@@ -244,6 +244,8 @@ func (f Revealer) VMargin(vertical int) Revealer {
 		return widget
 	}
 }
+
+
 
 func (f Revealer) Background(color string) Revealer {
 	return func() *gtk.Revealer {
@@ -273,8 +275,8 @@ func (f Revealer) BindCSSClass(state *state.State[string]) Revealer {
 	return func() *gtk.Revealer {
 		var callbackId string
 		var ref weak.WidgetRef
-		return f.ConnectConstruct(func(w *gtk.Revealer) {
-			ref = weak.NewWidgetRef(&w.Widget)
+		return f.ConnectRealize(func(w gtk.Widget) {
+			ref = weak.NewWidgetRef(&w)
 			callbackId = state.AddCallback(func(newValue string) {
 				oldValue := state.Value()
 				callback.OnMainThreadOncePure(func() {
@@ -290,7 +292,7 @@ func (f Revealer) BindCSSClass(state *state.State[string]) Revealer {
 					}
 				})
 			})
-		}).ConnectDestroy(func(w gtk.Widget) {
+		}).ConnectUnrealize(func(w gtk.Widget) {
 			state.RemoveCallback(callbackId)
 		})()
 	}
@@ -312,7 +314,7 @@ func (f Revealer) CSSWithCallback(cb func(elementName string) string) Revealer {
 		provider := gtk.NewCssProvider()
 		return f.ConnectConstruct(func(t *gtk.Revealer) {
 			provider.LoadFromString(cb(t.GetCssName()))
-			t.GetStyleContext().AddProvider(provider, uint(gtk.STYLE_PROVIDER_PRIORITY_APPLICATION))
+			t.GetStyleContext().AddProvider(provider, uint32(gtk.STYLE_PROVIDER_PRIORITY_APPLICATION))
 		}).ConnectDestroy(func(w gtk.Widget) {
 			w.GetStyleContext().RemoveProvider(provider)
 			provider.Unref()
@@ -393,12 +395,14 @@ func (f Revealer) VPadding(padding int) Revealer {
 	}
 }
 
+
+
 func (f Revealer) BindVisible(state *state.State[bool]) Revealer {
 	return func() *gtk.Revealer {
 		var callbackId string
-		var ref weak.WidgetRef
+		var ref weak.ObjectRef
 		return f.ConnectConstruct(func(w *gtk.Revealer) {
-			ref = weak.NewWidgetRef(&w.Widget)
+			ref = weak.NewObjectRef(&w.Widget)
 			callbackId = state.AddCallback(func(newValue bool) {
 				callback.OnMainThreadOncePure(func() {
 					if obj := ref.Get(); obj != nil {
@@ -413,13 +417,13 @@ func (f Revealer) BindVisible(state *state.State[bool]) Revealer {
 	}
 }
 
-func (f Revealer) BindHMargin(state *state.State[int]) Revealer {
+func (f Revealer) BindHMargin(state *state.State[int32]) Revealer {
 	return func() *gtk.Revealer {
 		var callbackId string
 		var ref weak.WidgetRef
-		return f.ConnectConstruct(func(w *gtk.Revealer) {
-			ref = weak.NewWidgetRef(&w.Widget)
-			callbackId = state.AddCallback(func(newValue int) {
+		return f.ConnectRealize(func(w gtk.Widget) {
+			ref = weak.NewWidgetRef(&w)
+			callbackId = state.AddCallback(func(newValue int32) {
 				callback.OnMainThreadOncePure(func() {
 					if obj := ref.Get(); obj != nil {
 						defer obj.Unref()
@@ -428,19 +432,19 @@ func (f Revealer) BindHMargin(state *state.State[int]) Revealer {
 					}
 				})
 			})
-		}).ConnectDestroy(func(w gtk.Widget) {
+		}).ConnectUnrealize(func(w gtk.Widget) {
 			state.RemoveCallback(callbackId)
 		})()
 	}
 }
 
-func (f Revealer) BindMargin(state *state.State[int]) Revealer {
+func (f Revealer) BindMargin(state *state.State[int32]) Revealer {
 	return func() *gtk.Revealer {
 		var callbackId string
 		var ref weak.WidgetRef
-		return f.ConnectConstruct(func(w *gtk.Revealer) {
-			ref = weak.NewWidgetRef(&w.Widget)
-			callbackId = state.AddCallback(func(newValue int) {
+		return f.ConnectRealize(func(w gtk.Widget) {
+			ref = weak.NewWidgetRef(&w)
+			callbackId = state.AddCallback(func(newValue int32) {
 				callback.OnMainThreadOncePure(func() {
 					if obj := ref.Get(); obj != nil {
 						defer obj.Unref()
@@ -451,19 +455,19 @@ func (f Revealer) BindMargin(state *state.State[int]) Revealer {
 					}
 				})
 			})
-		}).ConnectDestroy(func(gtk.Widget) {
+		}).ConnectUnrealize(func(gtk.Widget) {
 			state.RemoveCallback(callbackId)
 		})()
 	}
 }
 
-func (f Revealer) BindMarginBottom(state *state.State[int]) Revealer {
+func (f Revealer) BindMarginBottom(state *state.State[int32]) Revealer {
 	return func() *gtk.Revealer {
 		var callbackId string
 		var ref weak.WidgetRef
-		return f.ConnectConstruct(func(w *gtk.Revealer) {
-			ref = weak.NewWidgetRef(&w.Widget)
-			callbackId = state.AddCallback(func(newValue int) {
+		return f.ConnectRealize(func(w gtk.Widget) {
+			ref = weak.NewWidgetRef(&w)
+			callbackId = state.AddCallback(func(newValue int32) {
 				callback.OnMainThreadOncePure(func() {
 					if obj := ref.Get(); obj != nil {
 						defer obj.Unref()
@@ -471,19 +475,19 @@ func (f Revealer) BindMarginBottom(state *state.State[int]) Revealer {
 					}
 				})
 			})
-		}).ConnectDestroy(func(w gtk.Widget) {
+		}).ConnectUnrealize(func(w gtk.Widget) {
 			state.RemoveCallback(callbackId)
 		})()
 	}
 }
 
-func (f Revealer) BindMarginEnd(state *state.State[int]) Revealer {
+func (f Revealer) BindMarginEnd(state *state.State[int32]) Revealer {
 	return func() *gtk.Revealer {
 		var callbackId string
 		var ref weak.WidgetRef
-		return f.ConnectConstruct(func(w *gtk.Revealer) {
-			ref = weak.NewWidgetRef(&w.Widget)
-			callbackId = state.AddCallback(func(newValue int) {
+		return f.ConnectRealize(func(w gtk.Widget) {
+			ref = weak.NewWidgetRef(&w)
+			callbackId = state.AddCallback(func(newValue int32) {
 				callback.OnMainThreadOncePure(func() {
 					if obj := ref.Get(); obj != nil {
 						defer obj.Unref()
@@ -491,19 +495,19 @@ func (f Revealer) BindMarginEnd(state *state.State[int]) Revealer {
 					}
 				})
 			})
-		}).ConnectDestroy(func(w gtk.Widget) {
+		}).ConnectUnrealize(func(w gtk.Widget) {
 			state.RemoveCallback(callbackId)
 		})()
 	}
 }
 
-func (f Revealer) BindMarginStart(state *state.State[int]) Revealer {
+func (f Revealer) BindMarginStart(state *state.State[int32]) Revealer {
 	return func() *gtk.Revealer {
 		var callbackId string
 		var ref weak.WidgetRef
-		return f.ConnectConstruct(func(w *gtk.Revealer) {
-			ref = weak.NewWidgetRef(&w.Widget)
-			callbackId = state.AddCallback(func(newValue int) {
+		return f.ConnectRealize(func(w gtk.Widget) {
+			ref = weak.NewWidgetRef(&w)
+			callbackId = state.AddCallback(func(newValue int32) {
 				callback.OnMainThreadOncePure(func() {
 					if obj := ref.Get(); obj != nil {
 						defer obj.Unref()
@@ -511,19 +515,19 @@ func (f Revealer) BindMarginStart(state *state.State[int]) Revealer {
 					}
 				})
 			})
-		}).ConnectDestroy(func(w gtk.Widget) {
+		}).ConnectUnrealize(func(w gtk.Widget) {
 			state.RemoveCallback(callbackId)
 		})()
 	}
 }
 
-func (f Revealer) BindMarginTop(state *state.State[int]) Revealer {
+func (f Revealer) BindMarginTop(state *state.State[int32]) Revealer {
 	return func() *gtk.Revealer {
 		var callbackId string
 		var ref weak.WidgetRef
-		return f.ConnectConstruct(func(w *gtk.Revealer) {
-			ref = weak.NewWidgetRef(&w.Widget)
-			callbackId = state.AddCallback(func(newValue int) {
+		return f.ConnectRealize(func(w gtk.Widget) {
+			ref = weak.NewWidgetRef(&w)
+			callbackId = state.AddCallback(func(newValue int32) {
 				callback.OnMainThreadOncePure(func() {
 					if obj := ref.Get(); obj != nil {
 						defer obj.Unref()
@@ -531,7 +535,7 @@ func (f Revealer) BindMarginTop(state *state.State[int]) Revealer {
 					}
 				})
 			})
-		}).ConnectDestroy(func(w gtk.Widget) {
+		}).ConnectUnrealize(func(w gtk.Widget) {
 			state.RemoveCallback(callbackId)
 		})()
 	}
@@ -541,8 +545,8 @@ func (f Revealer) BindSensitive(state *state.State[bool]) Revealer {
 	return func() *gtk.Revealer {
 		var callbackId string
 		var ref weak.WidgetRef
-		return f.ConnectConstruct(func(w *gtk.Revealer) {
-			ref = weak.NewWidgetRef(&w.Widget)
+		return f.ConnectRealize(func(w gtk.Widget) {
+			ref = weak.NewWidgetRef(&w)
 			callbackId = state.AddCallback(func(newValue bool) {
 				callback.OnMainThreadOncePure(func() {
 					if obj := ref.Get(); obj != nil {
@@ -551,7 +555,7 @@ func (f Revealer) BindSensitive(state *state.State[bool]) Revealer {
 					}
 				})
 			})
-		}).ConnectDestroy(func(w gtk.Widget) {
+		}).ConnectUnrealize(func(w gtk.Widget) {
 			state.RemoveCallback(callbackId)
 		})()
 	}

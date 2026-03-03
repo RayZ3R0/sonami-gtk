@@ -4,9 +4,9 @@ import (
 	"codeberg.org/dergs/tonearm/pkg/schwifty/callback"
 	"codeberg.org/dergs/tonearm/pkg/schwifty/state"
 	"codeberg.org/dergs/tonearm/pkg/schwifty/utils/weak"
+	"codeberg.org/puregotk/puregotk/v4/adw"
+	"codeberg.org/puregotk/puregotk/v4/gtk"
 	"fmt"
-	"github.com/jwijenbergh/puregotk/v4/adw"
-	"github.com/jwijenbergh/puregotk/v4/gtk"
 )
 
 
@@ -124,7 +124,7 @@ func (f Bin) HExpand(expand bool) Bin {
 	}
 }
 
-func (f Bin) HMargin(horizontal int) Bin {
+func (f Bin) HMargin(horizontal int32) Bin {
 	return func() *adw.Bin {
 		widget := f()
 		widget.SetMarginEnd(horizontal)
@@ -133,7 +133,7 @@ func (f Bin) HMargin(horizontal int) Bin {
 	}
 }
 
-func (f Bin) Margin(margin int) Bin {
+func (f Bin) Margin(margin int32) Bin {
 	return func() *adw.Bin {
 		widget := f()
 		widget.SetMarginBottom(margin)
@@ -144,7 +144,7 @@ func (f Bin) Margin(margin int) Bin {
 	}
 }
 
-func (f Bin) MarginBottom(bottom int) Bin {
+func (f Bin) MarginBottom(bottom int32) Bin {
 	return func() *adw.Bin {
 		widget := f()
 		widget.SetMarginBottom(bottom)
@@ -152,7 +152,7 @@ func (f Bin) MarginBottom(bottom int) Bin {
 	}
 }
 
-func (f Bin) MarginEnd(end int) Bin {
+func (f Bin) MarginEnd(end int32) Bin {
 	return func() *adw.Bin {
 		widget := f()
 		widget.SetMarginEnd(end)
@@ -160,7 +160,7 @@ func (f Bin) MarginEnd(end int) Bin {
 	}
 }
 
-func (f Bin) MarginStart(start int) Bin {
+func (f Bin) MarginStart(start int32) Bin {
 	return func() *adw.Bin {
 		widget := f()
 		widget.SetMarginStart(start)
@@ -168,7 +168,7 @@ func (f Bin) MarginStart(start int) Bin {
 	}
 }
 
-func (f Bin) MarginTop(top int) Bin {
+func (f Bin) MarginTop(top int32) Bin {
 	return func() *adw.Bin {
 		widget := f()
 		widget.SetMarginTop(top)
@@ -200,7 +200,7 @@ func (f Bin) Sensitive(sensitive bool) Bin {
 	}
 }
 
-func (f Bin) SizeRequest(width, height int) Bin {
+func (f Bin) SizeRequest(width, height int32) Bin {
 	return func() *adw.Bin {
 		widget := f()
 		widget.SetSizeRequest(width, height)
@@ -237,7 +237,7 @@ func (f Bin) Visible(visible bool) Bin {
 	}
 }
 
-func (f Bin) VMargin(vertical int) Bin {
+func (f Bin) VMargin(vertical int32) Bin {
 	return func() *adw.Bin {
 		widget := f()
 		widget.SetMarginTop(vertical)
@@ -315,7 +315,7 @@ func (f Bin) CSSWithCallback(cb func(elementName string) string) Bin {
 		provider := gtk.NewCssProvider()
 		return f.ConnectConstruct(func(t *adw.Bin) {
 			provider.LoadFromString(cb(t.GetCssName()))
-			t.GetStyleContext().AddProvider(provider, uint(gtk.STYLE_PROVIDER_PRIORITY_APPLICATION))
+			t.GetStyleContext().AddProvider(provider, uint32(gtk.STYLE_PROVIDER_PRIORITY_APPLICATION))
 		}).ConnectDestroy(func(w gtk.Widget) {
 			w.GetStyleContext().RemoveProvider(provider)
 			provider.Unref()
@@ -418,13 +418,13 @@ func (f Bin) BindVisible(state *state.State[bool]) Bin {
 	}
 }
 
-func (f Bin) BindHMargin(state *state.State[int]) Bin {
+func (f Bin) BindHMargin(state *state.State[int32]) Bin {
 	return func() *adw.Bin {
 		var callbackId string
 		var ref weak.WidgetRef
 		return f.ConnectRealize(func(w gtk.Widget) {
 			ref = weak.NewWidgetRef(&w)
-			callbackId = state.AddCallback(func(newValue int) {
+			callbackId = state.AddCallback(func(newValue int32) {
 				callback.OnMainThreadOncePure(func() {
 					if obj := ref.Get(); obj != nil {
 						defer obj.Unref()
@@ -439,13 +439,13 @@ func (f Bin) BindHMargin(state *state.State[int]) Bin {
 	}
 }
 
-func (f Bin) BindMargin(state *state.State[int]) Bin {
+func (f Bin) BindMargin(state *state.State[int32]) Bin {
 	return func() *adw.Bin {
 		var callbackId string
 		var ref weak.WidgetRef
 		return f.ConnectRealize(func(w gtk.Widget) {
 			ref = weak.NewWidgetRef(&w)
-			callbackId = state.AddCallback(func(newValue int) {
+			callbackId = state.AddCallback(func(newValue int32) {
 				callback.OnMainThreadOncePure(func() {
 					if obj := ref.Get(); obj != nil {
 						defer obj.Unref()
@@ -462,13 +462,13 @@ func (f Bin) BindMargin(state *state.State[int]) Bin {
 	}
 }
 
-func (f Bin) BindMarginBottom(state *state.State[int]) Bin {
+func (f Bin) BindMarginBottom(state *state.State[int32]) Bin {
 	return func() *adw.Bin {
 		var callbackId string
 		var ref weak.WidgetRef
 		return f.ConnectRealize(func(w gtk.Widget) {
 			ref = weak.NewWidgetRef(&w)
-			callbackId = state.AddCallback(func(newValue int) {
+			callbackId = state.AddCallback(func(newValue int32) {
 				callback.OnMainThreadOncePure(func() {
 					if obj := ref.Get(); obj != nil {
 						defer obj.Unref()
@@ -482,13 +482,13 @@ func (f Bin) BindMarginBottom(state *state.State[int]) Bin {
 	}
 }
 
-func (f Bin) BindMarginEnd(state *state.State[int]) Bin {
+func (f Bin) BindMarginEnd(state *state.State[int32]) Bin {
 	return func() *adw.Bin {
 		var callbackId string
 		var ref weak.WidgetRef
 		return f.ConnectRealize(func(w gtk.Widget) {
 			ref = weak.NewWidgetRef(&w)
-			callbackId = state.AddCallback(func(newValue int) {
+			callbackId = state.AddCallback(func(newValue int32) {
 				callback.OnMainThreadOncePure(func() {
 					if obj := ref.Get(); obj != nil {
 						defer obj.Unref()
@@ -502,13 +502,13 @@ func (f Bin) BindMarginEnd(state *state.State[int]) Bin {
 	}
 }
 
-func (f Bin) BindMarginStart(state *state.State[int]) Bin {
+func (f Bin) BindMarginStart(state *state.State[int32]) Bin {
 	return func() *adw.Bin {
 		var callbackId string
 		var ref weak.WidgetRef
 		return f.ConnectRealize(func(w gtk.Widget) {
 			ref = weak.NewWidgetRef(&w)
-			callbackId = state.AddCallback(func(newValue int) {
+			callbackId = state.AddCallback(func(newValue int32) {
 				callback.OnMainThreadOncePure(func() {
 					if obj := ref.Get(); obj != nil {
 						defer obj.Unref()
@@ -522,13 +522,13 @@ func (f Bin) BindMarginStart(state *state.State[int]) Bin {
 	}
 }
 
-func (f Bin) BindMarginTop(state *state.State[int]) Bin {
+func (f Bin) BindMarginTop(state *state.State[int32]) Bin {
 	return func() *adw.Bin {
 		var callbackId string
 		var ref weak.WidgetRef
 		return f.ConnectRealize(func(w gtk.Widget) {
 			ref = weak.NewWidgetRef(&w)
-			callbackId = state.AddCallback(func(newValue int) {
+			callbackId = state.AddCallback(func(newValue int32) {
 				callback.OnMainThreadOncePure(func() {
 					if obj := ref.Get(); obj != nil {
 						defer obj.Unref()

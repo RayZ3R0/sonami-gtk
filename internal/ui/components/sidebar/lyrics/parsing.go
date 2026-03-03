@@ -14,8 +14,8 @@ import (
 	"codeberg.org/dergs/tonearm/pkg/schwifty/utils/weak"
 	"codeberg.org/dergs/tonearm/pkg/tidalapi"
 	"codeberg.org/dergs/tonearm/pkg/tidalapi/models/openapi"
+	"codeberg.org/puregotk/puregotk/v4/gtk"
 	"github.com/infinytum/injector"
-	"github.com/jwijenbergh/puregotk/v4/gtk"
 )
 
 func getLyrics(ID string) (lyrics string, isTimestamped bool, err error) {

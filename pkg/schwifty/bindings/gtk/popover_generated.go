@@ -4,8 +4,8 @@ import (
 	"codeberg.org/dergs/tonearm/pkg/schwifty/callback"
 	"codeberg.org/dergs/tonearm/pkg/schwifty/state"
 	"codeberg.org/dergs/tonearm/pkg/schwifty/utils/weak"
+	"codeberg.org/puregotk/puregotk/v4/gtk"
 	"fmt"
-	"github.com/jwijenbergh/puregotk/v4/gtk"
 )
 
 
@@ -123,7 +123,7 @@ func (f Popover) HExpand(expand bool) Popover {
 	}
 }
 
-func (f Popover) HMargin(horizontal int) Popover {
+func (f Popover) HMargin(horizontal int32) Popover {
 	return func() *gtk.Popover {
 		widget := f()
 		widget.SetMarginEnd(horizontal)
@@ -132,7 +132,7 @@ func (f Popover) HMargin(horizontal int) Popover {
 	}
 }
 
-func (f Popover) Margin(margin int) Popover {
+func (f Popover) Margin(margin int32) Popover {
 	return func() *gtk.Popover {
 		widget := f()
 		widget.SetMarginBottom(margin)
@@ -143,7 +143,7 @@ func (f Popover) Margin(margin int) Popover {
 	}
 }
 
-func (f Popover) MarginBottom(bottom int) Popover {
+func (f Popover) MarginBottom(bottom int32) Popover {
 	return func() *gtk.Popover {
 		widget := f()
 		widget.SetMarginBottom(bottom)
@@ -151,7 +151,7 @@ func (f Popover) MarginBottom(bottom int) Popover {
 	}
 }
 
-func (f Popover) MarginEnd(end int) Popover {
+func (f Popover) MarginEnd(end int32) Popover {
 	return func() *gtk.Popover {
 		widget := f()
 		widget.SetMarginEnd(end)
@@ -159,7 +159,7 @@ func (f Popover) MarginEnd(end int) Popover {
 	}
 }
 
-func (f Popover) MarginStart(start int) Popover {
+func (f Popover) MarginStart(start int32) Popover {
 	return func() *gtk.Popover {
 		widget := f()
 		widget.SetMarginStart(start)
@@ -167,7 +167,7 @@ func (f Popover) MarginStart(start int) Popover {
 	}
 }
 
-func (f Popover) MarginTop(top int) Popover {
+func (f Popover) MarginTop(top int32) Popover {
 	return func() *gtk.Popover {
 		widget := f()
 		widget.SetMarginTop(top)
@@ -199,7 +199,7 @@ func (f Popover) Sensitive(sensitive bool) Popover {
 	}
 }
 
-func (f Popover) SizeRequest(width, height int) Popover {
+func (f Popover) SizeRequest(width, height int32) Popover {
 	return func() *gtk.Popover {
 		widget := f()
 		widget.SetSizeRequest(width, height)
@@ -236,7 +236,7 @@ func (f Popover) Visible(visible bool) Popover {
 	}
 }
 
-func (f Popover) VMargin(vertical int) Popover {
+func (f Popover) VMargin(vertical int32) Popover {
 	return func() *gtk.Popover {
 		widget := f()
 		widget.SetMarginTop(vertical)
@@ -314,7 +314,7 @@ func (f Popover) CSSWithCallback(cb func(elementName string) string) Popover {
 		provider := gtk.NewCssProvider()
 		return f.ConnectConstruct(func(t *gtk.Popover) {
 			provider.LoadFromString(cb(t.GetCssName()))
-			t.GetStyleContext().AddProvider(provider, uint(gtk.STYLE_PROVIDER_PRIORITY_APPLICATION))
+			t.GetStyleContext().AddProvider(provider, uint32(gtk.STYLE_PROVIDER_PRIORITY_APPLICATION))
 		}).ConnectDestroy(func(w gtk.Widget) {
 			w.GetStyleContext().RemoveProvider(provider)
 			provider.Unref()
@@ -417,13 +417,13 @@ func (f Popover) BindVisible(state *state.State[bool]) Popover {
 	}
 }
 
-func (f Popover) BindHMargin(state *state.State[int]) Popover {
+func (f Popover) BindHMargin(state *state.State[int32]) Popover {
 	return func() *gtk.Popover {
 		var callbackId string
 		var ref weak.WidgetRef
 		return f.ConnectRealize(func(w gtk.Widget) {
 			ref = weak.NewWidgetRef(&w)
-			callbackId = state.AddCallback(func(newValue int) {
+			callbackId = state.AddCallback(func(newValue int32) {
 				callback.OnMainThreadOncePure(func() {
 					if obj := ref.Get(); obj != nil {
 						defer obj.Unref()
@@ -438,13 +438,13 @@ func (f Popover) BindHMargin(state *state.State[int]) Popover {
 	}
 }
 
-func (f Popover) BindMargin(state *state.State[int]) Popover {
+func (f Popover) BindMargin(state *state.State[int32]) Popover {
 	return func() *gtk.Popover {
 		var callbackId string
 		var ref weak.WidgetRef
 		return f.ConnectRealize(func(w gtk.Widget) {
 			ref = weak.NewWidgetRef(&w)
-			callbackId = state.AddCallback(func(newValue int) {
+			callbackId = state.AddCallback(func(newValue int32) {
 				callback.OnMainThreadOncePure(func() {
 					if obj := ref.Get(); obj != nil {
 						defer obj.Unref()
@@ -461,13 +461,13 @@ func (f Popover) BindMargin(state *state.State[int]) Popover {
 	}
 }
 
-func (f Popover) BindMarginBottom(state *state.State[int]) Popover {
+func (f Popover) BindMarginBottom(state *state.State[int32]) Popover {
 	return func() *gtk.Popover {
 		var callbackId string
 		var ref weak.WidgetRef
 		return f.ConnectRealize(func(w gtk.Widget) {
 			ref = weak.NewWidgetRef(&w)
-			callbackId = state.AddCallback(func(newValue int) {
+			callbackId = state.AddCallback(func(newValue int32) {
 				callback.OnMainThreadOncePure(func() {
 					if obj := ref.Get(); obj != nil {
 						defer obj.Unref()
@@ -481,13 +481,13 @@ func (f Popover) BindMarginBottom(state *state.State[int]) Popover {
 	}
 }
 
-func (f Popover) BindMarginEnd(state *state.State[int]) Popover {
+func (f Popover) BindMarginEnd(state *state.State[int32]) Popover {
 	return func() *gtk.Popover {
 		var callbackId string
 		var ref weak.WidgetRef
 		return f.ConnectRealize(func(w gtk.Widget) {
 			ref = weak.NewWidgetRef(&w)
-			callbackId = state.AddCallback(func(newValue int) {
+			callbackId = state.AddCallback(func(newValue int32) {
 				callback.OnMainThreadOncePure(func() {
 					if obj := ref.Get(); obj != nil {
 						defer obj.Unref()
@@ -501,13 +501,13 @@ func (f Popover) BindMarginEnd(state *state.State[int]) Popover {
 	}
 }
 
-func (f Popover) BindMarginStart(state *state.State[int]) Popover {
+func (f Popover) BindMarginStart(state *state.State[int32]) Popover {
 	return func() *gtk.Popover {
 		var callbackId string
 		var ref weak.WidgetRef
 		return f.ConnectRealize(func(w gtk.Widget) {
 			ref = weak.NewWidgetRef(&w)
-			callbackId = state.AddCallback(func(newValue int) {
+			callbackId = state.AddCallback(func(newValue int32) {
 				callback.OnMainThreadOncePure(func() {
 					if obj := ref.Get(); obj != nil {
 						defer obj.Unref()
@@ -521,13 +521,13 @@ func (f Popover) BindMarginStart(state *state.State[int]) Popover {
 	}
 }
 
-func (f Popover) BindMarginTop(state *state.State[int]) Popover {
+func (f Popover) BindMarginTop(state *state.State[int32]) Popover {
 	return func() *gtk.Popover {
 		var callbackId string
 		var ref weak.WidgetRef
 		return f.ConnectRealize(func(w gtk.Widget) {
 			ref = weak.NewWidgetRef(&w)
-			callbackId = state.AddCallback(func(newValue int) {
+			callbackId = state.AddCallback(func(newValue int32) {
 				callback.OnMainThreadOncePure(func() {
 					if obj := ref.Get(); obj != nil {
 						defer obj.Unref()

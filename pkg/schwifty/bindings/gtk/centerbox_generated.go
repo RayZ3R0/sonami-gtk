@@ -4,8 +4,8 @@ import (
 	"codeberg.org/dergs/tonearm/pkg/schwifty/callback"
 	"codeberg.org/dergs/tonearm/pkg/schwifty/state"
 	"codeberg.org/dergs/tonearm/pkg/schwifty/utils/weak"
+	"codeberg.org/puregotk/puregotk/v4/gtk"
 	"fmt"
-	"github.com/jwijenbergh/puregotk/v4/gtk"
 )
 
 
@@ -123,7 +123,7 @@ func (f CenterBox) HExpand(expand bool) CenterBox {
 	}
 }
 
-func (f CenterBox) HMargin(horizontal int) CenterBox {
+func (f CenterBox) HMargin(horizontal int32) CenterBox {
 	return func() *gtk.CenterBox {
 		widget := f()
 		widget.SetMarginEnd(horizontal)
@@ -132,7 +132,7 @@ func (f CenterBox) HMargin(horizontal int) CenterBox {
 	}
 }
 
-func (f CenterBox) Margin(margin int) CenterBox {
+func (f CenterBox) Margin(margin int32) CenterBox {
 	return func() *gtk.CenterBox {
 		widget := f()
 		widget.SetMarginBottom(margin)
@@ -143,7 +143,7 @@ func (f CenterBox) Margin(margin int) CenterBox {
 	}
 }
 
-func (f CenterBox) MarginBottom(bottom int) CenterBox {
+func (f CenterBox) MarginBottom(bottom int32) CenterBox {
 	return func() *gtk.CenterBox {
 		widget := f()
 		widget.SetMarginBottom(bottom)
@@ -151,7 +151,7 @@ func (f CenterBox) MarginBottom(bottom int) CenterBox {
 	}
 }
 
-func (f CenterBox) MarginEnd(end int) CenterBox {
+func (f CenterBox) MarginEnd(end int32) CenterBox {
 	return func() *gtk.CenterBox {
 		widget := f()
 		widget.SetMarginEnd(end)
@@ -159,7 +159,7 @@ func (f CenterBox) MarginEnd(end int) CenterBox {
 	}
 }
 
-func (f CenterBox) MarginStart(start int) CenterBox {
+func (f CenterBox) MarginStart(start int32) CenterBox {
 	return func() *gtk.CenterBox {
 		widget := f()
 		widget.SetMarginStart(start)
@@ -167,7 +167,7 @@ func (f CenterBox) MarginStart(start int) CenterBox {
 	}
 }
 
-func (f CenterBox) MarginTop(top int) CenterBox {
+func (f CenterBox) MarginTop(top int32) CenterBox {
 	return func() *gtk.CenterBox {
 		widget := f()
 		widget.SetMarginTop(top)
@@ -199,7 +199,7 @@ func (f CenterBox) Sensitive(sensitive bool) CenterBox {
 	}
 }
 
-func (f CenterBox) SizeRequest(width, height int) CenterBox {
+func (f CenterBox) SizeRequest(width, height int32) CenterBox {
 	return func() *gtk.CenterBox {
 		widget := f()
 		widget.SetSizeRequest(width, height)
@@ -236,7 +236,7 @@ func (f CenterBox) Visible(visible bool) CenterBox {
 	}
 }
 
-func (f CenterBox) VMargin(vertical int) CenterBox {
+func (f CenterBox) VMargin(vertical int32) CenterBox {
 	return func() *gtk.CenterBox {
 		widget := f()
 		widget.SetMarginTop(vertical)
@@ -314,7 +314,7 @@ func (f CenterBox) CSSWithCallback(cb func(elementName string) string) CenterBox
 		provider := gtk.NewCssProvider()
 		return f.ConnectConstruct(func(t *gtk.CenterBox) {
 			provider.LoadFromString(cb(t.GetCssName()))
-			t.GetStyleContext().AddProvider(provider, uint(gtk.STYLE_PROVIDER_PRIORITY_APPLICATION))
+			t.GetStyleContext().AddProvider(provider, uint32(gtk.STYLE_PROVIDER_PRIORITY_APPLICATION))
 		}).ConnectDestroy(func(w gtk.Widget) {
 			w.GetStyleContext().RemoveProvider(provider)
 			provider.Unref()
@@ -417,13 +417,13 @@ func (f CenterBox) BindVisible(state *state.State[bool]) CenterBox {
 	}
 }
 
-func (f CenterBox) BindHMargin(state *state.State[int]) CenterBox {
+func (f CenterBox) BindHMargin(state *state.State[int32]) CenterBox {
 	return func() *gtk.CenterBox {
 		var callbackId string
 		var ref weak.WidgetRef
 		return f.ConnectRealize(func(w gtk.Widget) {
 			ref = weak.NewWidgetRef(&w)
-			callbackId = state.AddCallback(func(newValue int) {
+			callbackId = state.AddCallback(func(newValue int32) {
 				callback.OnMainThreadOncePure(func() {
 					if obj := ref.Get(); obj != nil {
 						defer obj.Unref()
@@ -438,13 +438,13 @@ func (f CenterBox) BindHMargin(state *state.State[int]) CenterBox {
 	}
 }
 
-func (f CenterBox) BindMargin(state *state.State[int]) CenterBox {
+func (f CenterBox) BindMargin(state *state.State[int32]) CenterBox {
 	return func() *gtk.CenterBox {
 		var callbackId string
 		var ref weak.WidgetRef
 		return f.ConnectRealize(func(w gtk.Widget) {
 			ref = weak.NewWidgetRef(&w)
-			callbackId = state.AddCallback(func(newValue int) {
+			callbackId = state.AddCallback(func(newValue int32) {
 				callback.OnMainThreadOncePure(func() {
 					if obj := ref.Get(); obj != nil {
 						defer obj.Unref()
@@ -461,13 +461,13 @@ func (f CenterBox) BindMargin(state *state.State[int]) CenterBox {
 	}
 }
 
-func (f CenterBox) BindMarginBottom(state *state.State[int]) CenterBox {
+func (f CenterBox) BindMarginBottom(state *state.State[int32]) CenterBox {
 	return func() *gtk.CenterBox {
 		var callbackId string
 		var ref weak.WidgetRef
 		return f.ConnectRealize(func(w gtk.Widget) {
 			ref = weak.NewWidgetRef(&w)
-			callbackId = state.AddCallback(func(newValue int) {
+			callbackId = state.AddCallback(func(newValue int32) {
 				callback.OnMainThreadOncePure(func() {
 					if obj := ref.Get(); obj != nil {
 						defer obj.Unref()
@@ -481,13 +481,13 @@ func (f CenterBox) BindMarginBottom(state *state.State[int]) CenterBox {
 	}
 }
 
-func (f CenterBox) BindMarginEnd(state *state.State[int]) CenterBox {
+func (f CenterBox) BindMarginEnd(state *state.State[int32]) CenterBox {
 	return func() *gtk.CenterBox {
 		var callbackId string
 		var ref weak.WidgetRef
 		return f.ConnectRealize(func(w gtk.Widget) {
 			ref = weak.NewWidgetRef(&w)
-			callbackId = state.AddCallback(func(newValue int) {
+			callbackId = state.AddCallback(func(newValue int32) {
 				callback.OnMainThreadOncePure(func() {
 					if obj := ref.Get(); obj != nil {
 						defer obj.Unref()
@@ -501,13 +501,13 @@ func (f CenterBox) BindMarginEnd(state *state.State[int]) CenterBox {
 	}
 }
 
-func (f CenterBox) BindMarginStart(state *state.State[int]) CenterBox {
+func (f CenterBox) BindMarginStart(state *state.State[int32]) CenterBox {
 	return func() *gtk.CenterBox {
 		var callbackId string
 		var ref weak.WidgetRef
 		return f.ConnectRealize(func(w gtk.Widget) {
 			ref = weak.NewWidgetRef(&w)
-			callbackId = state.AddCallback(func(newValue int) {
+			callbackId = state.AddCallback(func(newValue int32) {
 				callback.OnMainThreadOncePure(func() {
 					if obj := ref.Get(); obj != nil {
 						defer obj.Unref()
@@ -521,13 +521,13 @@ func (f CenterBox) BindMarginStart(state *state.State[int]) CenterBox {
 	}
 }
 
-func (f CenterBox) BindMarginTop(state *state.State[int]) CenterBox {
+func (f CenterBox) BindMarginTop(state *state.State[int32]) CenterBox {
 	return func() *gtk.CenterBox {
 		var callbackId string
 		var ref weak.WidgetRef
 		return f.ConnectRealize(func(w gtk.Widget) {
 			ref = weak.NewWidgetRef(&w)
-			callbackId = state.AddCallback(func(newValue int) {
+			callbackId = state.AddCallback(func(newValue int32) {
 				callback.OnMainThreadOncePure(func() {
 					if obj := ref.Get(); obj != nil {
 						defer obj.Unref()

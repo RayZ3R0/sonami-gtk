@@ -6,7 +6,7 @@ import (
 
 	"codeberg.org/dergs/tonearm/pkg/schwifty/callback"
 	"codeberg.org/dergs/tonearm/pkg/schwifty/utils/weak"
-	"github.com/jwijenbergh/puregotk/v4/gobject"
+	"codeberg.org/puregotk/puregotk/v4/gobject"
 )
 
 var (

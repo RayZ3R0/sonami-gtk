@@ -13,8 +13,8 @@ import (
 	. "codeberg.org/dergs/tonearm/pkg/schwifty/syntax"
 	"codeberg.org/dergs/tonearm/pkg/tonearm"
 	"codeberg.org/dergs/tonearm/pkg/utils/imgutil"
+	"codeberg.org/puregotk/puregotk/v4/gtk"
 	"github.com/infinytum/injector"
-	"github.com/jwijenbergh/puregotk/v4/gtk"
 )
 
 var (
@@ -51,7 +51,7 @@ func trackCover() schwifty.Picture {
 			HAlign(gtk.AlignCenterValue).
 			ConnectConstruct(func(p *gtk.Picture) {
 				controller := gtk.NewGestureClick()
-				controller.ConnectPressed(new(func(gtk.GestureClick, int, float64, float64) {
+				controller.ConnectPressed(new(func(gtk.GestureClick, int32, float64, float64) {
 					components.GetMediaViewer().ShowFile(coverState.Value())
 				}))
 				p.AddController(&controller.EventController)

@@ -4,8 +4,8 @@ import (
 	"codeberg.org/dergs/tonearm/pkg/schwifty/callback"
 	"codeberg.org/dergs/tonearm/pkg/schwifty/state"
 	"codeberg.org/dergs/tonearm/pkg/schwifty/utils/weak"
+	"codeberg.org/puregotk/puregotk/v4/gtk"
 	"fmt"
-	"github.com/jwijenbergh/puregotk/v4/gtk"
 )
 
 
@@ -123,7 +123,7 @@ func (f AspectFrame) HExpand(expand bool) AspectFrame {
 	}
 }
 
-func (f AspectFrame) HMargin(horizontal int) AspectFrame {
+func (f AspectFrame) HMargin(horizontal int32) AspectFrame {
 	return func() *gtk.AspectFrame {
 		widget := f()
 		widget.SetMarginEnd(horizontal)
@@ -132,7 +132,7 @@ func (f AspectFrame) HMargin(horizontal int) AspectFrame {
 	}
 }
 
-func (f AspectFrame) Margin(margin int) AspectFrame {
+func (f AspectFrame) Margin(margin int32) AspectFrame {
 	return func() *gtk.AspectFrame {
 		widget := f()
 		widget.SetMarginBottom(margin)
@@ -143,7 +143,7 @@ func (f AspectFrame) Margin(margin int) AspectFrame {
 	}
 }
 
-func (f AspectFrame) MarginBottom(bottom int) AspectFrame {
+func (f AspectFrame) MarginBottom(bottom int32) AspectFrame {
 	return func() *gtk.AspectFrame {
 		widget := f()
 		widget.SetMarginBottom(bottom)
@@ -151,7 +151,7 @@ func (f AspectFrame) MarginBottom(bottom int) AspectFrame {
 	}
 }
 
-func (f AspectFrame) MarginEnd(end int) AspectFrame {
+func (f AspectFrame) MarginEnd(end int32) AspectFrame {
 	return func() *gtk.AspectFrame {
 		widget := f()
 		widget.SetMarginEnd(end)
@@ -159,7 +159,7 @@ func (f AspectFrame) MarginEnd(end int) AspectFrame {
 	}
 }
 
-func (f AspectFrame) MarginStart(start int) AspectFrame {
+func (f AspectFrame) MarginStart(start int32) AspectFrame {
 	return func() *gtk.AspectFrame {
 		widget := f()
 		widget.SetMarginStart(start)
@@ -167,7 +167,7 @@ func (f AspectFrame) MarginStart(start int) AspectFrame {
 	}
 }
 
-func (f AspectFrame) MarginTop(top int) AspectFrame {
+func (f AspectFrame) MarginTop(top int32) AspectFrame {
 	return func() *gtk.AspectFrame {
 		widget := f()
 		widget.SetMarginTop(top)
@@ -199,7 +199,7 @@ func (f AspectFrame) Sensitive(sensitive bool) AspectFrame {
 	}
 }
 
-func (f AspectFrame) SizeRequest(width, height int) AspectFrame {
+func (f AspectFrame) SizeRequest(width, height int32) AspectFrame {
 	return func() *gtk.AspectFrame {
 		widget := f()
 		widget.SetSizeRequest(width, height)
@@ -236,7 +236,7 @@ func (f AspectFrame) Visible(visible bool) AspectFrame {
 	}
 }
 
-func (f AspectFrame) VMargin(vertical int) AspectFrame {
+func (f AspectFrame) VMargin(vertical int32) AspectFrame {
 	return func() *gtk.AspectFrame {
 		widget := f()
 		widget.SetMarginTop(vertical)
@@ -314,7 +314,7 @@ func (f AspectFrame) CSSWithCallback(cb func(elementName string) string) AspectF
 		provider := gtk.NewCssProvider()
 		return f.ConnectConstruct(func(t *gtk.AspectFrame) {
 			provider.LoadFromString(cb(t.GetCssName()))
-			t.GetStyleContext().AddProvider(provider, uint(gtk.STYLE_PROVIDER_PRIORITY_APPLICATION))
+			t.GetStyleContext().AddProvider(provider, uint32(gtk.STYLE_PROVIDER_PRIORITY_APPLICATION))
 		}).ConnectDestroy(func(w gtk.Widget) {
 			w.GetStyleContext().RemoveProvider(provider)
 			provider.Unref()
@@ -417,13 +417,13 @@ func (f AspectFrame) BindVisible(state *state.State[bool]) AspectFrame {
 	}
 }
 
-func (f AspectFrame) BindHMargin(state *state.State[int]) AspectFrame {
+func (f AspectFrame) BindHMargin(state *state.State[int32]) AspectFrame {
 	return func() *gtk.AspectFrame {
 		var callbackId string
 		var ref weak.WidgetRef
 		return f.ConnectRealize(func(w gtk.Widget) {
 			ref = weak.NewWidgetRef(&w)
-			callbackId = state.AddCallback(func(newValue int) {
+			callbackId = state.AddCallback(func(newValue int32) {
 				callback.OnMainThreadOncePure(func() {
 					if obj := ref.Get(); obj != nil {
 						defer obj.Unref()
@@ -438,13 +438,13 @@ func (f AspectFrame) BindHMargin(state *state.State[int]) AspectFrame {
 	}
 }
 
-func (f AspectFrame) BindMargin(state *state.State[int]) AspectFrame {
+func (f AspectFrame) BindMargin(state *state.State[int32]) AspectFrame {
 	return func() *gtk.AspectFrame {
 		var callbackId string
 		var ref weak.WidgetRef
 		return f.ConnectRealize(func(w gtk.Widget) {
 			ref = weak.NewWidgetRef(&w)
-			callbackId = state.AddCallback(func(newValue int) {
+			callbackId = state.AddCallback(func(newValue int32) {
 				callback.OnMainThreadOncePure(func() {
 					if obj := ref.Get(); obj != nil {
 						defer obj.Unref()
@@ -461,13 +461,13 @@ func (f AspectFrame) BindMargin(state *state.State[int]) AspectFrame {
 	}
 }
 
-func (f AspectFrame) BindMarginBottom(state *state.State[int]) AspectFrame {
+func (f AspectFrame) BindMarginBottom(state *state.State[int32]) AspectFrame {
 	return func() *gtk.AspectFrame {
 		var callbackId string
 		var ref weak.WidgetRef
 		return f.ConnectRealize(func(w gtk.Widget) {
 			ref = weak.NewWidgetRef(&w)
-			callbackId = state.AddCallback(func(newValue int) {
+			callbackId = state.AddCallback(func(newValue int32) {
 				callback.OnMainThreadOncePure(func() {
 					if obj := ref.Get(); obj != nil {
 						defer obj.Unref()
@@ -481,13 +481,13 @@ func (f AspectFrame) BindMarginBottom(state *state.State[int]) AspectFrame {
 	}
 }
 
-func (f AspectFrame) BindMarginEnd(state *state.State[int]) AspectFrame {
+func (f AspectFrame) BindMarginEnd(state *state.State[int32]) AspectFrame {
 	return func() *gtk.AspectFrame {
 		var callbackId string
 		var ref weak.WidgetRef
 		return f.ConnectRealize(func(w gtk.Widget) {
 			ref = weak.NewWidgetRef(&w)
-			callbackId = state.AddCallback(func(newValue int) {
+			callbackId = state.AddCallback(func(newValue int32) {
 				callback.OnMainThreadOncePure(func() {
 					if obj := ref.Get(); obj != nil {
 						defer obj.Unref()
@@ -501,13 +501,13 @@ func (f AspectFrame) BindMarginEnd(state *state.State[int]) AspectFrame {
 	}
 }
 
-func (f AspectFrame) BindMarginStart(state *state.State[int]) AspectFrame {
+func (f AspectFrame) BindMarginStart(state *state.State[int32]) AspectFrame {
 	return func() *gtk.AspectFrame {
 		var callbackId string
 		var ref weak.WidgetRef
 		return f.ConnectRealize(func(w gtk.Widget) {
 			ref = weak.NewWidgetRef(&w)
-			callbackId = state.AddCallback(func(newValue int) {
+			callbackId = state.AddCallback(func(newValue int32) {
 				callback.OnMainThreadOncePure(func() {
 					if obj := ref.Get(); obj != nil {
 						defer obj.Unref()
@@ -521,13 +521,13 @@ func (f AspectFrame) BindMarginStart(state *state.State[int]) AspectFrame {
 	}
 }
 
-func (f AspectFrame) BindMarginTop(state *state.State[int]) AspectFrame {
+func (f AspectFrame) BindMarginTop(state *state.State[int32]) AspectFrame {
 	return func() *gtk.AspectFrame {
 		var callbackId string
 		var ref weak.WidgetRef
 		return f.ConnectRealize(func(w gtk.Widget) {
 			ref = weak.NewWidgetRef(&w)
-			callbackId = state.AddCallback(func(newValue int) {
+			callbackId = state.AddCallback(func(newValue int32) {
 				callback.OnMainThreadOncePure(func() {
 					if obj := ref.Get(); obj != nil {
 						defer obj.Unref()

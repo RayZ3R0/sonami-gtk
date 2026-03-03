@@ -5,8 +5,8 @@ import (
 	"regexp"
 
 	"codeberg.org/dergs/tonearm/internal/gettext"
-	"github.com/jwijenbergh/puregotk/v4/adw"
-	"github.com/jwijenbergh/puregotk/v4/gtk"
+	"codeberg.org/puregotk/puregotk/v4/adw"
+	"codeberg.org/puregotk/puregotk/v4/gtk"
 )
 
 var (
@@ -140,7 +140,7 @@ func (w *Window) PresentAbout() {
 	about.AddLegalSection("UUID (google/uuid)", "© 2009, 2014 Google Inc. https://github.com/google/uuid", gtk.LicenseBsd3Value, "")
 	about.AddLegalSection("Dependency Injector (infinytum/injector)", "© 2022 Infinytum https://github.com/infinytum/injector", gtk.LicenseUnknownValue, "")
 	about.AddLegalSection("System Locale Detection (jeandeaual/go-locale)", "© 2020 Alexis Jeandeau https://github.com/jeandeaual/go-locale", gtk.LicenseMitX11Value, "")
-	about.AddLegalSection("GTK4 / Libadwaita Bindings (jwijenbergh/puregotk)", "© 2022 Kyle McGough https://github.com/jwijenbergh/puregotk", gtk.LicenseMitX11Value, "")
+	about.AddLegalSection("GTK4 / Libadwaita Bindings (jwijenbergh/puregotk)", "© 2022 Kyle McGough https://codeberg.org/puregotk/puregotk", gtk.LicenseMitX11Value, "")
 	about.AddLegalSection("Libsecret (lescuer97/go-libsecret)", "© 2025 Leonardo Escuer https://github.com/lescuer97/go-libsecret", gtk.LicenseMitX11Value, "")
 	about.AddLegalSection("JSON Merger (qjebbs/go-jsons)", "© 2022 Jebbs https://github.com/qjebbs/go-jsons", gtk.LicenseMitX11Value, "")
 	about.AddLegalSection("ISO8601 Duration Parser (osodev/duration)", "© 2023 Jeroen Wijenbergh https://github.com/sosodev/duration", gtk.LicenseMitX11Value, "")
