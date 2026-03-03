@@ -67,7 +67,7 @@
           pname = "tonearm";
           version = "1.3.1";
           src = pkgs.lib.cleanSource ./.;
-          vendorHash = "sha256-/pUSUfOt5heiObZNQRlZjN1a+j9JocB43F9072pyLjw=";
+          vendorHash = "sha256-jwv80SkHVPqsWdIsVyFEw1J+8kOpg38gObYgtxnlv6o=";
 
           ldflags = [
             "-X \"codeberg.org/dergs/tonearm/internal/ui.Commit=${(if (self ? rev) then self.rev else "")}\""
