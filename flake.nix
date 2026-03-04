@@ -65,7 +65,7 @@
 
         packages.tonearm = pkgs.buildGoModule.override { go = pkgs.go_1_26; } (finalAttrs: {
           pname = "tonearm";
-          version = "1.3.1";
+          version = "1.4.0";
           src = pkgs.lib.cleanSource ./.;
           vendorHash = "sha256-jwv80SkHVPqsWdIsVyFEw1J+8kOpg38gObYgtxnlv6o=";
 
@@ -80,12 +80,12 @@
             gst_all_1.gst-plugins-base
             gst_all_1.gst-plugins-good
             gst_all_1.gst-plugins-bad
+            gtk4
             libsecret
           ];
           doCheck = false;
           nativeBuildInputs = with pkgs; [
             pkg-config
-            gtk4
             copyDesktopItems
             makeWrapper
             wrapGAppsHook4
