@@ -22,6 +22,23 @@ var didQueueGaplessPlayback bool
 var disableGaplessPlayback bool
 
 func onAboutToFinish(_ *gst.Element) {
+	logger := logger.With("event", "aboutToFinish").WithGroup("aboutToFinish")
+	count := 0
+	for {
+		if !didQueueGaplessPlayback {
+			break
+		}
+
+		if count > 5 {
+			logger.Warn("Previous gapless transition hasn't completed in 10 seconds. Enqueueing new track anyway.")
+			break
+		}
+
+		count++
+		logger.Debug("Previous gapless transition has not completed yet, sleeping...", "count", count)
+		time.Sleep(1 * time.Second)
+	}
+
 	if RepeatModeChanged.CurrentValue() == RepeatModeTrack {
 		return
 	}
