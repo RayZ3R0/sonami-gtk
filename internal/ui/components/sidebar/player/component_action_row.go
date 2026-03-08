@@ -194,7 +194,6 @@ func actionRow() schwifty.Box {
 			Popover(controlsVolumeSlider()).
 			IconName("speakers-symbolic").
 			WithCSSClass("flat"),
-		favouriteButton(),
 		Button().
 			TooltipText(gettext.Get("Navigate to Album")).
 			IconName("cd-symbolic").

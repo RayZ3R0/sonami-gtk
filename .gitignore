@@ -5,3 +5,13 @@ __debug_bin*
 repo/
 *.flatpak
 /tonearm
+
+
+
+
+
+
+
+
+hifi/
+dev.sh

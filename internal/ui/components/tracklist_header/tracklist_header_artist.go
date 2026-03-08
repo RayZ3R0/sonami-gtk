@@ -5,7 +5,7 @@ import (
 
 	"codeberg.org/dergs/tonearm/internal/gettext"
 	appState "codeberg.org/dergs/tonearm/internal/state"
-	favouritebutton "codeberg.org/dergs/tonearm/internal/ui/components/favourite_button"
+	// favouritebutton "codeberg.org/dergs/tonearm/internal/ui/components/favourite_button" // deferred: local favourites
 	"codeberg.org/dergs/tonearm/pkg/schwifty"
 	"codeberg.org/dergs/tonearm/pkg/schwifty/tracking"
 	"codeberg.org/dergs/tonearm/pkg/tonearm"
@@ -15,8 +15,9 @@ import (
 )
 
 func secondaryControlsArtist(artist tonearm.Artist, popover *gtk.PopoverMenu) schwifty.Box {
-	favoriteButton := favouritebutton.FavouriteButton(appState.ArtistsCache, artist.ID())
-	return componentSecondaryControls(artist, popover, favoriteButton)
+	// Favourite button deferred — see hifi/deferred_features.md
+	_ = appState.ArtistsCache
+	return componentSecondaryControls(artist, popover, nil)
 }
 
 func NewArtist(artist tonearm.Artist, playFunc func(), shuffleFunc func()) schwifty.Widget {

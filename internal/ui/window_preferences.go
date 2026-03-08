@@ -264,11 +264,26 @@ func buildPreferencesScrobbling(dialog *adw.PreferencesDialog) adwbindings.Prefe
 	).Title(gettext.Get("Scrobbling")).IconName("podcast-symbolic")
 }
 
+func buildPreferencesStreaming(*adw.PreferencesDialog) adwbindings.PreferencesPage {
+	return PreferencesPage(
+		PreferencesGroup(
+			EntryRow().
+				Title(gettext.Get("Instances URL")).
+				ConnectConstruct(func(sr *adw.EntryRow) {
+					settings.Streaming().BindInstancesURL(&sr.Object, "text")
+				}),
+		).
+			Title(gettext.Get("Streaming API")).
+			Description(gettext.Get("Paste the URL of your streaming instances JSON. A restart is required after changing this setting.")),
+	).Title(gettext.Get("Streaming")).IconName("network-server-symbolic")
+}
+
 func (w *Window) PresentPreferences() {
 	dialog := PreferencesDialog()()
 
 	dialog.Add(buildPreferencesGeneral(dialog)())
 	dialog.Add(buildPreferencesPlayback(dialog)())
+	dialog.Add(buildPreferencesStreaming(dialog)())
 	dialog.Add(buildPreferencesPerformance(dialog)())
 	dialog.Add(buildPreferencesScrobbling(dialog)())
 

@@ -11,7 +11,7 @@ import (
 	"codeberg.org/dergs/tonearm/internal/ui/components/horizontal_list"
 	"codeberg.org/dergs/tonearm/internal/ui/components/media_card"
 	"codeberg.org/dergs/tonearm/internal/ui/components/tracklist"
-	"codeberg.org/dergs/tonearm/internal/ui/routes/my_collection"
+	// "codeberg.org/dergs/tonearm/internal/ui/routes/my_collection"
 	. "codeberg.org/dergs/tonearm/pkg/schwifty/syntax"
 	"codeberg.org/dergs/tonearm/pkg/tidalapi"
 	"codeberg.org/puregotk/puregotk/v4/gtk"
@@ -19,11 +19,13 @@ import (
 )
 
 func init() {
-	router.Register("my-collection", MyCollection)
-	router.Register("my-collection/albums", my_collection.Albums)
-	router.Register("my-collection/artists", my_collection.Artists)
-	router.Register("my-collection/playlists", my_collection.Playlists)
-	router.Register("my-collection/tracks", my_collection.Tracks)
+	// My Collection routes disabled in account-free mode — requires a real Tidal user account.
+	// See hifi/deferred_features.md for details.
+	// router.Register("my-collection", MyCollection)
+	// router.Register("my-collection/albums", my_collection.Albums)
+	// router.Register("my-collection/artists", my_collection.Artists)
+	// router.Register("my-collection/playlists", my_collection.Playlists)
+	// router.Register("my-collection/tracks", my_collection.Tracks)
 }
 
 func MyCollection() *router.Response {

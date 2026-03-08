@@ -23,7 +23,9 @@ import (
 )
 
 func init() {
-	router.Register("feed", Feed)
+	// Feed route disabled in account-free mode — requires a real Tidal user account.
+	// See hifi/deferred_features.md for details.
+	// router.Register("feed", Feed)
 }
 
 func makeEntry(widgets ...any) schwifty.Button {

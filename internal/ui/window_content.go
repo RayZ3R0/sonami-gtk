@@ -21,15 +21,9 @@ func (w *Window) buildContentHeader() *gtk.Widget {
 	exploreButton.Icon("compass2-symbolic")
 	exploreButton.TooltipText(gettext.Get("Navigate to Explore"))
 
-	collectionButton := components.NewRouteButton("my-collection", true)
-	collectionButton.Title(gettext.Get("Collection"))
-	collectionButton.Icon("library-symbolic")
-	collectionButton.TooltipText(gettext.Get("Navigate to Collection"))
-
 	defaultToolbar := HStack(
 		homeButton,
 		exploreButton,
-		collectionButton,
 	).Spacing(3)()
 
 	// We never want to delete the default toolbar. NEVER.
