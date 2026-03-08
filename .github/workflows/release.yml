@@ -10,17 +10,17 @@ permissions:
 
 jobs:
   # ─────────────────────────────────────────────
-  # Linux: build binary tarball + Flatpak bundle
+  # Linux: native binary tarball
   # ─────────────────────────────────────────────
-  linux:
-    name: Build (Linux x86_64)
+  linux-binary:
+    name: Build binary (Linux x86_64)
     runs-on: ubuntu-24.04
 
     steps:
       - name: Checkout
         uses: actions/checkout@v4
         with:
-          fetch-depth: 0 # needed for git describe in ldflags
+          fetch-depth: 0
 
       - name: Install system dependencies
         run: |
@@ -46,12 +46,12 @@ jobs:
       - name: Resolve version info
         id: ver
         run: |
-          TAG="${GITHUB_REF_NAME}"                    # e.g. v1.5.0
-          VERSION="${TAG#v}"                          # strip leading 'v'
+          TAG="${GITHUB_REF_NAME}"
+          VERSION="${TAG#v}"
           COMMIT="$(git rev-parse --short=7 HEAD)"
-          echo "tag=${TAG}"       >> "$GITHUB_OUTPUT"
+          echo "tag=${TAG}"         >> "$GITHUB_OUTPUT"
           echo "version=${VERSION}" >> "$GITHUB_OUTPUT"
-          echo "commit=${COMMIT}" >> "$GITHUB_OUTPUT"
+          echo "commit=${COMMIT}"   >> "$GITHUB_OUTPUT"
 
       - name: Build binary
         env:
@@ -104,104 +104,62 @@ jobs:
 
           tar -czf "${BUNDLE}.tar.gz" "$BUNDLE"
 
-      - name: Build Flatpak
-        run: |
-          sudo apt-get install -y flatpak flatpak-builder
-          flatpak remote-add --user --if-not-exists flathub \
-            https://flathub.org/repo/flathub.flatpakrepo
-          flatpak install --user -y flathub \
-            org.gnome.Platform//49 org.gnome.Sdk//49 \
-            org.freedesktop.Sdk.Extension.golang//24.08
-          flatpak-builder --user --repo=repo \
-            --install-deps-from=flathub \
-            --force-clean --default-branch=master \
-            flatpak_app build/flatpak/dev.dergs.Tonearm.yaml
-          flatpak build-bundle repo dev.dergs.Tonearm.flatpak \
-            --runtime-repo=https://flathub.org/repo/flathub.flatpakrepo \
-            --arch=x86_64 dev.dergs.Tonearm master
-
-      - name: Upload Linux artifacts
+      - name: Upload tarball
         uses: actions/upload-artifact@v4
         with:
-          name: linux-artifacts
-          path: |
-            tonearm-${{ steps.ver.outputs.tag }}-linux-x86_64.tar.gz
-            dev.dergs.Tonearm.flatpak
+          name: linux-binary
+          path: "tonearm-${{ steps.ver.outputs.tag }}-linux-x86_64.tar.gz"
 
   # ─────────────────────────────────────────────
-  # Windows: build + DLL-bundled zip
+  # Linux: Flatpak bundle (using upstream container)
   # ─────────────────────────────────────────────
-  windows:
-    name: Build (Windows x86_64)
-    runs-on: windows-latest
-
-    defaults:
-      run:
-        shell: msys2 {0}
+  linux-flatpak:
+    name: Build Flatpak (Linux x86_64)
+    runs-on: ubuntu-latest
+    container:
+      image: ghcr.io/flathub-infra/flatpak-github-actions:gnome-49
+      options: --privileged
 
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+
+      - name: Add Flathub repo
+        run: flatpak remote-add --user --if-not-exists flathub https://flathub.org/repo/flathub.flatpakrepo
+
+      - name: Cache Flatpak builder
+        uses: actions/cache@v4
         with:
-          fetch-depth: 0
+          path: ~/.local/share/flatpak
+          key: flatpak-builder-${{ hashFiles('build/flatpak/dev.dergs.Tonearm.yaml', 'build/flatpak/go.mod.yml') }}
+          restore-keys: |
+            flatpak-builder-
 
-      - name: Setup MSYS2
-        uses: msys2/setup-msys2@v2
-        with:
-          msystem: UCRT64
-          update: true
-          install: >-
-            git
-            mingw-w64-ucrt-x86_64-go
-            mingw-w64-ucrt-x86_64-pkg-config
-            mingw-w64-ucrt-x86_64-gtk4
-            mingw-w64-ucrt-x86_64-libadwaita
-            mingw-w64-ucrt-x86_64-gstreamer
-            mingw-w64-ucrt-x86_64-gst-plugins-base
-            mingw-w64-ucrt-x86_64-gst-plugins-good
-            mingw-w64-ucrt-x86_64-gst-plugins-bad
-            mingw-w64-ucrt-x86_64-librsvg
-            mingw-w64-ucrt-x86_64-glib2
-
-      - name: Resolve version info
-        id: ver
+      - name: Build Flatpak
         run: |
-          TAG="${GITHUB_REF_NAME}"
-          VERSION="${TAG#v}"
-          COMMIT="$(git rev-parse --short=7 HEAD)"
-          echo "tag=${TAG}"         >> "$GITHUB_OUTPUT"
-          echo "version=${VERSION}" >> "$GITHUB_OUTPUT"
-          echo "commit=${COMMIT}"   >> "$GITHUB_OUTPUT"
+          flatpak-builder --user --repo=repo --disable-rofiles-fuse \
+            --install-deps-from=flathub \
+            --force-clean --default-branch=master \
+            flatpak_app build/flatpak/dev.dergs.Tonearm.yaml
 
-      - name: Build binary
-        env:
-          CGO_ENABLED: "1"
-          # PUREGOTK_LIB_FOLDER tells puregotk where to find GTK4/Adwaita DLLs
-          PUREGOTK_LIB_FOLDER: /ucrt64/lib
+      - name: Create bundle
         run: |
-          go build \
-            -ldflags="-s -w \
-              -X 'codeberg.org/dergs/tonearm/internal/ui.Version=${{ steps.ver.outputs.version }}' \
-              -X 'codeberg.org/dergs/tonearm/internal/ui.Commit=${{ steps.ver.outputs.commit }}'" \
-            -trimpath \
-            -o tonearm.exe \
-            ./cmd/tonearm
+          flatpak build-bundle repo dev.dergs.Tonearm.flatpak \
+            --runtime-repo=https://flathub.org/repo/flathub.flatpakrepo \
+            --arch=x86_64 dev.dergs.Tonearm master
 
-      - name: Bundle Windows ZIP
-        run: bash scripts/bundle-windows.sh "${{ steps.ver.outputs.tag }}"
-
-      - name: Upload Windows artifact
+      - name: Upload Flatpak
         uses: actions/upload-artifact@v4
         with:
-          name: windows-artifacts
-          path: "tonearm-${{ steps.ver.outputs.tag }}-windows-x86_64.zip"
+          name: linux-flatpak
+          path: dev.dergs.Tonearm.flatpak
 
   # ─────────────────────────────────────────────
   # Publish GitHub Release
   # ─────────────────────────────────────────────
   release:
     name: Publish Release
-    needs: [linux, windows]
+    needs: [linux-binary, linux-flatpak]
     runs-on: ubuntu-24.04
 
     steps:
@@ -216,5 +174,4 @@ jobs:
           generate_release_notes: true
           files: |
             tonearm-*.tar.gz
-            tonearm-*.zip
             dev.dergs.Tonearm.flatpak
