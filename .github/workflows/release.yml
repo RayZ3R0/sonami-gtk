@@ -1,0 +1,220 @@
+name: Release
+
+on:
+  push:
+    tags:
+      - "v*"
+
+permissions:
+  contents: write
+
+jobs:
+  # ─────────────────────────────────────────────
+  # Linux: build binary tarball + Flatpak bundle
+  # ─────────────────────────────────────────────
+  linux:
+    name: Build (Linux x86_64)
+    runs-on: ubuntu-24.04
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0 # needed for git describe in ldflags
+
+      - name: Install system dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y --no-install-recommends \
+            pkg-config \
+            libgtk-4-dev \
+            libadwaita-1-dev \
+            libsecret-1-dev \
+            libgstreamer1.0-dev \
+            libgstreamer-plugins-base1.0-dev \
+            gstreamer1.0-plugins-good \
+            gstreamer1.0-plugins-bad \
+            libglib2.0-bin \
+            librsvg2-bin
+
+      - name: Install Go
+        uses: actions/setup-go@v5
+        with:
+          go-version: "1.26.x"
+          cache: true
+
+      - name: Resolve version info
+        id: ver
+        run: |
+          TAG="${GITHUB_REF_NAME}"                    # e.g. v1.5.0
+          VERSION="${TAG#v}"                          # strip leading 'v'
+          COMMIT="$(git rev-parse --short=7 HEAD)"
+          echo "tag=${TAG}"       >> "$GITHUB_OUTPUT"
+          echo "version=${VERSION}" >> "$GITHUB_OUTPUT"
+          echo "commit=${COMMIT}" >> "$GITHUB_OUTPUT"
+
+      - name: Build binary
+        env:
+          CGO_ENABLED: "1"
+          GOOS: linux
+          GOARCH: amd64
+        run: |
+          go build \
+            -ldflags="-s -w \
+              -X 'codeberg.org/dergs/tonearm/internal/ui.Version=${{ steps.ver.outputs.version }}' \
+              -X 'codeberg.org/dergs/tonearm/internal/ui.Commit=${{ steps.ver.outputs.commit }}'" \
+            -trimpath \
+            -o tonearm \
+            ./cmd/tonearm
+
+      - name: Compile GSettings schemas
+        run: glib-compile-schemas internal/settings/
+
+      - name: Bundle tarball
+        run: |
+          TAG="${{ steps.ver.outputs.tag }}"
+          BUNDLE="tonearm-${TAG}-linux-x86_64"
+          mkdir -p "$BUNDLE/share/icons/hicolor/scalable/apps"
+          mkdir -p "$BUNDLE/share/icons/hicolor/128x128/apps"
+          mkdir -p "$BUNDLE/share/icons/hicolor/symbolic/apps"
+          mkdir -p "$BUNDLE/share/applications"
+          mkdir -p "$BUNDLE/share/glib-2.0/schemas"
+          mkdir -p "$BUNDLE/share/metainfo"
+
+          cp tonearm "$BUNDLE/"
+          cp build/dev.dergs.Tonearm.desktop "$BUNDLE/share/applications/"
+          cp build/dev.dergs.Tonearm.metainfo.xml "$BUNDLE/share/metainfo/"
+          cp internal/icons/hicolor/scalable/apps/dev.dergs.Tonearm.svg \
+              "$BUNDLE/share/icons/hicolor/scalable/apps/"
+          cp internal/icons/hicolor/128x128/apps/dev.dergs.Tonearm.png \
+              "$BUNDLE/share/icons/hicolor/128x128/apps/"
+          cp internal/icons/hicolor/symbolic/apps/dev.dergs.Tonearm-symbolic.svg \
+              "$BUNDLE/share/icons/hicolor/symbolic/apps/"
+          cp internal/settings/dev.dergs.Tonearm.gschema.xml \
+              "$BUNDLE/share/glib-2.0/schemas/"
+
+          cat > "$BUNDLE/README.txt" << 'EOF'
+          Tonearm — Linux portable build
+          ================================
+          Run ./tonearm to launch.
+
+          For a proper system install, copy the contents of share/ into
+          /usr/local/share/ and run: glib-compile-schemas /usr/local/share/glib-2.0/schemas/
+          EOF
+
+          tar -czf "${BUNDLE}.tar.gz" "$BUNDLE"
+
+      - name: Build Flatpak
+        run: |
+          sudo apt-get install -y flatpak flatpak-builder
+          flatpak remote-add --user --if-not-exists flathub \
+            https://flathub.org/repo/flathub.flatpakrepo
+          flatpak install --user -y flathub \
+            org.gnome.Platform//49 org.gnome.Sdk//49 \
+            org.freedesktop.Sdk.Extension.golang//24.08
+          flatpak-builder --user --repo=repo \
+            --install-deps-from=flathub \
+            --force-clean --default-branch=master \
+            flatpak_app build/flatpak/dev.dergs.Tonearm.yaml
+          flatpak build-bundle repo dev.dergs.Tonearm.flatpak \
+            --runtime-repo=https://flathub.org/repo/flathub.flatpakrepo \
+            --arch=x86_64 dev.dergs.Tonearm master
+
+      - name: Upload Linux artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: linux-artifacts
+          path: |
+            tonearm-${{ steps.ver.outputs.tag }}-linux-x86_64.tar.gz
+            dev.dergs.Tonearm.flatpak
+
+  # ─────────────────────────────────────────────
+  # Windows: build + DLL-bundled zip
+  # ─────────────────────────────────────────────
+  windows:
+    name: Build (Windows x86_64)
+    runs-on: windows-latest
+
+    defaults:
+      run:
+        shell: msys2 {0}
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Setup MSYS2
+        uses: msys2/setup-msys2@v2
+        with:
+          msystem: UCRT64
+          update: true
+          install: >-
+            git
+            mingw-w64-ucrt-x86_64-go
+            mingw-w64-ucrt-x86_64-pkg-config
+            mingw-w64-ucrt-x86_64-gtk4
+            mingw-w64-ucrt-x86_64-libadwaita
+            mingw-w64-ucrt-x86_64-gstreamer
+            mingw-w64-ucrt-x86_64-gst-plugins-base
+            mingw-w64-ucrt-x86_64-gst-plugins-good
+            mingw-w64-ucrt-x86_64-gst-plugins-bad
+            mingw-w64-ucrt-x86_64-librsvg
+            mingw-w64-ucrt-x86_64-glib2
+
+      - name: Resolve version info
+        id: ver
+        run: |
+          TAG="${GITHUB_REF_NAME}"
+          VERSION="${TAG#v}"
+          COMMIT="$(git rev-parse --short=7 HEAD)"
+          echo "tag=${TAG}"         >> "$GITHUB_OUTPUT"
+          echo "version=${VERSION}" >> "$GITHUB_OUTPUT"
+          echo "commit=${COMMIT}"   >> "$GITHUB_OUTPUT"
+
+      - name: Build binary
+        env:
+          CGO_ENABLED: "1"
+          # PUREGOTK_LIB_FOLDER tells puregotk where to find GTK4/Adwaita DLLs
+          PUREGOTK_LIB_FOLDER: /ucrt64/lib
+        run: |
+          go build \
+            -ldflags="-s -w \
+              -X 'codeberg.org/dergs/tonearm/internal/ui.Version=${{ steps.ver.outputs.version }}' \
+              -X 'codeberg.org/dergs/tonearm/internal/ui.Commit=${{ steps.ver.outputs.commit }}'" \
+            -trimpath \
+            -o tonearm.exe \
+            ./cmd/tonearm
+
+      - name: Bundle Windows ZIP
+        run: bash scripts/bundle-windows.sh "${{ steps.ver.outputs.tag }}"
+
+      - name: Upload Windows artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: windows-artifacts
+          path: "tonearm-${{ steps.ver.outputs.tag }}-windows-x86_64.zip"
+
+  # ─────────────────────────────────────────────
+  # Publish GitHub Release
+  # ─────────────────────────────────────────────
+  release:
+    name: Publish Release
+    needs: [linux, windows]
+    runs-on: ubuntu-24.04
+
+    steps:
+      - name: Download all artifacts
+        uses: actions/download-artifact@v4
+        with:
+          merge-multiple: true
+
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v2
+        with:
+          generate_release_notes: true
+          files: |
+            tonearm-*.tar.gz
+            tonearm-*.zip
+            dev.dergs.Tonearm.flatpak
