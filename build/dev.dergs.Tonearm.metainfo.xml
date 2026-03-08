@@ -46,6 +46,12 @@
   <url type="contact">https://matrix.to/#/%23tonearm:derg.social</url>
 
   <releases>
+    <release version="1.5.1" date="2026-03-08">
+        <url type="details">https://codeberg.org/dergs/Tonearm/releases/tag/v1.5.1</url>
+        <description>
+            <p>Changes in this release.</p>
+        </description>
+    </release>
     <release version="1.5.0" date="2026-03-08">
         <url type="details">https://codeberg.org/dergs/Tonearm/releases/tag/v1.5.0</url>
         <description>
