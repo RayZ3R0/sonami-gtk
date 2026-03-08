@@ -3,7 +3,6 @@ package main
 import (
 	"log/slog"
 	"os"
-	"strings"
 
 	_ "codeberg.org/dergs/tonearm/internal/log"
 
@@ -15,7 +14,6 @@ import (
 
 	"codeberg.org/dergs/tonearm/internal/player"
 	"codeberg.org/dergs/tonearm/internal/router"
-	"codeberg.org/dergs/tonearm/internal/secrets"
 	"codeberg.org/dergs/tonearm/internal/settings"
 	"codeberg.org/dergs/tonearm/internal/ui"
 	"codeberg.org/dergs/tonearm/pkg/schwifty/tracking"
@@ -57,6 +55,7 @@ func main() {
 func onActivate(_ gio.Application) {
 	window := ui.NewWindow(app)
 	window.Present()
+	window.MaybePresentWelcome()
 	window.ConnectCloseRequest(new(func(w gtk.Window) bool {
 		// Only allow running in background if there is a track playing,
 		// so that the user can bring the app back up with MPRIS
@@ -66,12 +65,6 @@ func onActivate(_ gio.Application) {
 		}
 		return false
 	}))
-
-	if err := secrets.Healthcheck(); err != nil {
-		slog.Error("Secret service health check failed", "title", err.Title, "body", err.Body, "fatal", err.Fatal)
-		window.PresentSecretServiceError(err)
-	}
-
 }
 
 var isActive bool
@@ -88,12 +81,7 @@ func onCommandLine(app gio.Application, ptr uintptr) int32 {
 	}
 
 	if len(args) == 2 {
-		url := args[1]
-		if after, ok := strings.CutPrefix(url, "tidal://track/"); ok {
-			player.PlayTrackID(after)
-		} else {
-			router.Navigate(url)
-		}
+		router.Navigate(args[1])
 	}
 	return 0
 }

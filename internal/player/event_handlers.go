@@ -8,7 +8,6 @@ import (
 	"codeberg.org/dergs/tonearm/internal/signals"
 	"codeberg.org/dergs/tonearm/pkg/tidalapi"
 	v1 "codeberg.org/dergs/tonearm/pkg/tidalapi/models/v1"
-	tracksv1 "codeberg.org/dergs/tonearm/pkg/tidalapi/v1/tracks"
 	"codeberg.org/dergs/tonearm/pkg/tonearm"
 	"codeberg.org/puregotk/puregotk/v4/glib"
 	"github.com/go-gst/go-gst/gst"
@@ -32,12 +31,10 @@ func onAboutToFinish(_ *gst.Element) {
 
 	nextTrack := getNextTrackFromQueue(true)
 	if nextTrack != nil {
-		playbackInfo, err := injector.MustInject[*tidalapi.TidalAPI]().V1.Tracks.PlaybackInfo(
+		playbackInfo, err := injector.MustInject[*tidalapi.StreamResolver]().Resolve(
 			context.Background(),
 			nextTrack.ID(),
-			tracksv1.PlaybackInfoOptions{
-				AudioQuality: settings.Player().GetAudioQuality(),
-			},
+			settings.Player().GetAudioQuality(),
 		)
 		if err != nil {
 			logger.Error("failed to get playback info", "error", err)

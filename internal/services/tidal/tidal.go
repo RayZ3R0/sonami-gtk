@@ -6,6 +6,7 @@ import (
 
 	"codeberg.org/dergs/tonearm/internal/secrets"
 	"codeberg.org/dergs/tonearm/internal/services/tidal/openapi"
+	"codeberg.org/dergs/tonearm/internal/settings"
 	v1 "codeberg.org/dergs/tonearm/internal/services/tidal/v1"
 	v2 "codeberg.org/dergs/tonearm/internal/services/tidal/v2"
 	"codeberg.org/dergs/tonearm/pkg/tidalapi"
@@ -32,6 +33,25 @@ func init() {
 		}
 		slog.Info("Discovered country code", "countryCode", countryCode)
 		return tidalapi.NewClient(countryCode, secrets.NewTokenAuthStrategy())
+	})
+
+	// Initialize the endpoint manager for the account-free streaming API.
+	// The URL is user-provided via Preferences → Streaming.
+	injector.DeferredSingleton(func() *tidalapi.EndpointManager {
+		instancesURL := settings.Streaming().GetInstancesURL()
+		em := tidalapi.NewEndpointManager(instancesURL)
+		if instancesURL == "" {
+			slog.Warn("No streaming instances URL configured — playback will be unavailable until configured in Preferences → Streaming")
+			return em
+		}
+		if err := em.Initialize(context.Background()); err != nil {
+			slog.Error("Failed to initialize endpoint manager", "error", err)
+		}
+		return em
+	})
+
+	injector.DeferredSingleton(func(em *tidalapi.EndpointManager) *tidalapi.StreamResolver {
+		return tidalapi.NewStreamResolver(em)
 	})
 }
 

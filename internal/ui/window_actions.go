@@ -10,18 +10,11 @@ import (
 	"codeberg.org/dergs/tonearm/internal/notifications"
 	"codeberg.org/dergs/tonearm/internal/player"
 	"codeberg.org/dergs/tonearm/internal/router"
-	"codeberg.org/dergs/tonearm/internal/secrets"
-	"codeberg.org/dergs/tonearm/internal/services/tidal/openapi"
 	v2 "codeberg.org/dergs/tonearm/internal/services/tidal/v2"
 	"codeberg.org/dergs/tonearm/internal/settings"
-	"codeberg.org/dergs/tonearm/internal/ui/components/linking"
-	"codeberg.org/dergs/tonearm/pkg/schwifty"
 	"codeberg.org/dergs/tonearm/pkg/tidalapi"
-	"codeberg.org/dergs/tonearm/pkg/tidalapi/auth"
-	modelopenapi "codeberg.org/dergs/tonearm/pkg/tidalapi/models/openapi"
 	modelv2 "codeberg.org/dergs/tonearm/pkg/tidalapi/models/v2"
 	"codeberg.org/dergs/tonearm/pkg/tonearm"
-	"codeberg.org/puregotk/puregotk/v4/adw"
 	"codeberg.org/puregotk/puregotk/v4/gio"
 	"codeberg.org/puregotk/puregotk/v4/glib"
 	"codeberg.org/puregotk/puregotk/v4/gtk"
@@ -218,45 +211,6 @@ func (w *Window) installActions() {
 
 				player.AddTracklistToUserQueue(topTracks)
 			}()
-		case "my_collection":
-			logger := logger.With("object_type", "my_collection").WithGroup("my_collection")
-			switch parts[1] {
-			case "tracks":
-				tidal := injector.MustInject[*tidalapi.TidalAPI]()
-				go func() {
-					userId := secrets.UserID()
-					if userId == "" {
-						logger.Warn("user not logged in, ignoring action")
-						return
-					}
-
-					paginator := openapi.NewPaginator(
-						tidal.OpenAPI.V2.UserCollections.Tracks,
-						userId,
-						func(r *modelopenapi.Response[[]modelopenapi.Relationship]) []tonearm.Track {
-							results := r.Included.Tracks(r.Data...)
-							tracks := make([]tonearm.Track, len(results))
-							for i, track := range results {
-								tracks[i] = openapi.NewTrack(track)
-							}
-							return tracks
-						},
-						"tracks.artists",
-						"tracks.albums.coverArt",
-					)
-
-					tracks, err := paginator.GetAll()
-					if err != nil {
-						logger.Error("failed to get tracks", "error", err)
-						return
-					}
-
-					player.AddTracklistToUserQueue(tracks)
-				}()
-			default:
-				logger.Error("unknown object type to add to queue", "type", parts[0])
-				return
-			}
 		default:
 			logger.Error("unknown object type to add to queue", "type", parts[0])
 			return
@@ -293,39 +247,6 @@ func (w *Window) installActions() {
 	}))
 	w.AddAction(routeArtistAction)
 
-	signInAction := gio.NewSimpleAction("sign-in", nil)
-	signInAction.ConnectActivate(new(func(action gio.SimpleAction, parameter uintptr) {
-		go func() {
-			var dialog *adw.AlertDialog
-			resp, err := tidalapi.StartDeviceLinking(func(dlc *auth.DeviceLinkingChallenge, cancel context.CancelFunc) {
-				schwifty.OnMainThreadOnce(func(u uintptr) {
-					dialog = linking.NewLinking(&w.Window, dlc.UserCode, dlc.VerificationUriComplete, cancel)()
-					dialog.Present(&w.Widget)
-				}, 0)
-			})
-			defer dialog.ForceClose()
-			if err != nil {
-				notifications.OnToast.Notify(gettext.Get("Sign in failed or aborted"))
-				return
-			}
-			secrets.SetRefreshToken(resp.RefreshToken)
-			notifications.OnToast.Notify(gettext.Get("Signed in as %s", resp.User.Email))
-			router.Refresh()
-		}()
-	}))
-	w.AddAction(signInAction)
-
-	signOutAction := gio.NewSimpleAction("sign-out", nil)
-	signOutAction.ConnectActivate(new(func(action gio.SimpleAction, parameter uintptr) {
-		go func() {
-			secrets.DeleteRefreshToken()
-			notifications.OnToast.Notify(gettext.Get("Signed out"))
-			router.Refresh()
-		}()
-	}))
-	w.AddAction(signOutAction)
-	// TIDAL uses CTRL + L for sign out
-	w.GetApplication().SetAccelsForAction("win.sign-out", []string{"<Ctrl>l"})
 
 	setAsDefaultAction := gio.NewSimpleAction("set-as-default", nil)
 	setAsDefaultAction.ConnectActivate(new(func(action gio.SimpleAction, parameter uintptr) {

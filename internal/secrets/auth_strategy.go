@@ -1,74 +1,21 @@
 package secrets
 
 import (
-	"encoding/json"
-	"fmt"
 	"net/http"
-	"net/url"
-	"strings"
-	"time"
 )
 
-type AuthStrategy struct {
-	cachedToken string
-	tokenExpiry time.Time
-}
+type AuthStrategy struct{}
 
 func NewTokenAuthStrategy() *AuthStrategy {
 	return &AuthStrategy{}
 }
 
+// GetToken is a no-op in account-free mode. No OAuth tokens are needed.
 func (s *AuthStrategy) GetToken(clientID, clientSecret string) (string, error) {
-	if s.cachedToken != "" && time.Now().Before(s.tokenExpiry) {
-		return s.cachedToken, nil
-	}
-
-	formValues := url.Values{
-		"client_id":     []string{clientID},
-		"client_secret": []string{clientSecret},
-		"grant_type":    []string{"refresh_token"},
-		"refresh_token": []string{GetRefreshToken()},
-	}
-	req, err := http.NewRequest(http.MethodPost, "https://auth.tidal.com/v1/oauth2/token", strings.NewReader(formValues.Encode()))
-	if err != nil {
-		return "", err
-	}
-	req.Header.Set("Content-Type", "application/x-www-form-urlencoded")
-
-	resp, err := http.DefaultClient.Do(req)
-	if err != nil {
-		return "", err
-	}
-	defer resp.Body.Close()
-
-	if resp.StatusCode != http.StatusOK {
-		return "", fmt.Errorf("failed to get token: %s", resp.Status)
-	}
-
-	var tokenResponse struct {
-		AccessToken string `json:"access_token"`
-		ExpiresIn   int    `json:"expires_in"`
-	}
-
-	if err := json.NewDecoder(resp.Body).Decode(&tokenResponse); err != nil {
-		return "", err
-	}
-
-	s.cachedToken = tokenResponse.AccessToken
-	s.tokenExpiry = time.Now().Add(time.Duration(tokenResponse.ExpiresIn) * time.Second)
-
-	return tokenResponse.AccessToken, nil
+	return "", nil
 }
 
+// Authenticate is a no-op in account-free mode. No Authorization header is set.
 func (s *AuthStrategy) Authenticate(req *http.Request, clientID, clientSecret string) error {
-	if !HasRefreshToken() {
-		return nil
-	}
-
-	token, err := s.GetToken(clientID, clientSecret)
-	if err != nil {
-		return err
-	}
-	req.Header.Set("Authorization", fmt.Sprintf("Bearer %s", token))
 	return nil
 }

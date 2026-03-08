@@ -1,7 +1,6 @@
 package player
 
 import (
-	"fmt"
 	"os"
 	"time"
 
@@ -106,7 +105,7 @@ func init() {
 			"xesam:album":   trackInfo.Album().Title(),
 			"xesam:artist":  artistNames,
 			"xesam:title":   trackInfo.Title(),
-			"xesam:url":     fmt.Sprintf("https://tidal.com/track/%s", trackInfo.ID()),
+			"xesam:url":     trackInfo.URL(),
 		})
 
 		return signals.Continue

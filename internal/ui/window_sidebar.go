@@ -3,7 +3,6 @@ package ui
 import (
 	"codeberg.org/dergs/tonearm/internal/gettext"
 	"codeberg.org/dergs/tonearm/internal/router"
-	"codeberg.org/dergs/tonearm/internal/secrets"
 	"codeberg.org/dergs/tonearm/internal/signals"
 	"codeberg.org/dergs/tonearm/internal/ui/components"
 	"codeberg.org/dergs/tonearm/internal/ui/components/sidebar/lyrics"
@@ -28,22 +27,11 @@ func (w *Window) buildSidebarHeader() *gtk.Widget {
 	})
 
 	mainMenu := gio.NewMenu()
-	mainMenu.Append(gettext.Get("Sign In…"), "win.sign-in")
 	mainMenu.Append(gettext.Get("Set as Default Page"), "win.set-as-default")
 	mainMenu.Append(gettext.Get("Keyboard Shortcuts"), "app.shortcuts")
 	mainMenu.Append(gettext.Get("Preferences"), "app.preferences")
 	mainMenu.Append(gettext.Get("About Tonearm"), "app.about")
 	mainMenu.Append(gettext.Get("Quit"), "app.quit")
-
-	secrets.SignedInChanged.On(func(signedIn bool) bool {
-		mainMenu.Remove(0)
-		if signedIn {
-			mainMenu.Insert(0, gettext.Get("Sign Out"), "win.sign-out")
-		} else {
-			mainMenu.Insert(0, gettext.Get("Sign In…"), "win.sign-in")
-		}
-		return signals.Continue
-	})
 
 	return HeaderBar().
 		TitleWidget(Widget(&windowTitle.Widget)).
@@ -65,7 +53,6 @@ func (w *Window) buildSidebarHeader() *gtk.Widget {
 				w.AddAction(menuAction)
 				w.GetApplication().SetAccelsForAction("win.main-menu", []string{"F10"})
 			}),
-			components.NewRouteButton("feed", false).Icon("bell-outline-symbolic").TooltipText(gettext.Get("Feed")),
 		).
 		ToGTK()
 }

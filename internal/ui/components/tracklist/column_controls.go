@@ -6,8 +6,8 @@ import (
 
 	"codeberg.org/dergs/tonearm/internal/g"
 	"codeberg.org/dergs/tonearm/internal/gettext"
-	"codeberg.org/dergs/tonearm/internal/state"
-	favouritebutton "codeberg.org/dergs/tonearm/internal/ui/components/favourite_button"
+	// "codeberg.org/dergs/tonearm/internal/state"           // deferred: local favourites
+	// favouritebutton "codeberg.org/dergs/tonearm/internal/ui/components/favourite_button" // deferred
 	. "codeberg.org/dergs/tonearm/pkg/schwifty/syntax"
 	"codeberg.org/dergs/tonearm/pkg/tonearm"
 	"codeberg.org/puregotk/puregotk/v4/gio"
@@ -52,9 +52,6 @@ func controlsColumn(trackId, albumId string, artistId []lightArtist, grid *gtk.G
 
 	grid.Attach(
 		HStack(
-			favouritebutton.FavouriteButton(state.TracksCache, trackId).
-				HAlign(gtk.AlignCenterValue).
-				VAlign(gtk.AlignCenterValue),
 			Button().
 				TooltipText(gettext.Get("Add to Queue")).
 				IconName("queue-symbolic").

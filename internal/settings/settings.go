@@ -52,6 +52,12 @@ var Scrobbling = g.Lazy(func() *ScrobblingSettings {
 	}
 })
 
+var Streaming = g.Lazy(func() *StreamingSettings {
+	return &StreamingSettings{
+		finalize(gio.NewSettings("dev.dergs.Tonearm.streaming")),
+	}
+})
+
 func finalize(settings *gio.Settings) *gio.Settings {
 	tracking.SetFinalizer("Settings", settings)
 	return settings

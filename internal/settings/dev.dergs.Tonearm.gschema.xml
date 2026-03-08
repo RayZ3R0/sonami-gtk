@@ -122,4 +122,13 @@
         </key>
 
     </schema>
+
+	<!-- Streaming -->
+	<schema id="dev.dergs.Tonearm.streaming" path="/dev/dergs/Tonearm/streaming/">
+		<key name="instances-url" type="s">
+			<default>''</default>
+			<summary>Instances URL</summary>
+			<description>URL pointing to a JSON file listing available streaming API instances</description>
+		</key>
+	</schema>
 </schemalist>

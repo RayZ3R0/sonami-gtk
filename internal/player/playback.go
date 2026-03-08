@@ -9,14 +9,13 @@ import (
 	"codeberg.org/dergs/tonearm/internal/settings"
 	"codeberg.org/dergs/tonearm/pkg/tidalapi"
 	v1 "codeberg.org/dergs/tonearm/pkg/tidalapi/models/v1"
-	tracksv1 "codeberg.org/dergs/tonearm/pkg/tidalapi/v1/tracks"
 	"codeberg.org/dergs/tonearm/pkg/tonearm"
 	"github.com/go-gst/go-gst/gst"
 	"github.com/infinytum/injector"
 )
 
 func playTrack(track tonearm.Track) error {
-	tidal, err := injector.Inject[*tidalapi.TidalAPI]()
+	streamResolver, err := injector.Inject[*tidalapi.StreamResolver]()
 	if err != nil {
 		return err
 	}
@@ -40,12 +39,10 @@ func playTrack(track tonearm.Track) error {
 	if !didQueueGaplessPlayback {
 
 		logger.Debug("fetching playback info for track", "track_id", track.ID())
-		playbackInfo, err := tidal.V1.Tracks.PlaybackInfo(
+		playbackInfo, err := streamResolver.Resolve(
 			context.Background(),
 			track.ID(),
-			tracksv1.PlaybackInfoOptions{
-				AudioQuality: settings.Player().GetAudioQuality(),
-			},
+			settings.Player().GetAudioQuality(),
 		)
 		if err != nil {
 			logger.Error("unable to fetch playback info for track", "error", err)
