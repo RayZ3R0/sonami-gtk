@@ -65,7 +65,7 @@
 
         packages.tonearm = pkgs.buildGoModule.override { go = pkgs.go_1_26; } (finalAttrs: {
           pname = "sonami";
-          version = "1.5.3";
+          version = "1.5.4";
           src = pkgs.lib.cleanSource ./.;
           vendorHash = "sha256-jwv80SkHVPqsWdIsVyFEw1J+8kOpg38gObYgtxnlv6o=";
 
