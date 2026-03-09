@@ -1,4 +1,4 @@
-package tonearm
+package sonami
 
 type Paginator[T any] interface {
 	// IsConsumed checks if the paginator has reached the end of the items.

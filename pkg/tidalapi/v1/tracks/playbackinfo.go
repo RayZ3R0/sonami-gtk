@@ -6,8 +6,8 @@ import (
 	"fmt"
 	"net/http"
 
-	"codeberg.org/dergs/tonearm/pkg/tidalapi/helper"
-	v1 "codeberg.org/dergs/tonearm/pkg/tidalapi/models/v1"
+	"github.com/RayZ3R0/sonami-gtk/pkg/tidalapi/helper"
+	v1 "github.com/RayZ3R0/sonami-gtk/pkg/tidalapi/models/v1"
 )
 
 type PlaybackInfoOptions struct {

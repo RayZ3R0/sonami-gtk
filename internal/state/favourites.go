@@ -6,10 +6,10 @@ import (
 	"sync"
 	"time"
 
-	"codeberg.org/dergs/tonearm/internal/secrets"
-	"codeberg.org/dergs/tonearm/pkg/tidalapi"
-	v1 "codeberg.org/dergs/tonearm/pkg/tidalapi/models/v1"
-	v2 "codeberg.org/dergs/tonearm/pkg/tidalapi/models/v2"
+	"github.com/RayZ3R0/sonami-gtk/internal/secrets"
+	"github.com/RayZ3R0/sonami-gtk/pkg/tidalapi"
+	v1 "github.com/RayZ3R0/sonami-gtk/pkg/tidalapi/models/v1"
+	v2 "github.com/RayZ3R0/sonami-gtk/pkg/tidalapi/models/v2"
 	"github.com/infinytum/injector"
 )
 

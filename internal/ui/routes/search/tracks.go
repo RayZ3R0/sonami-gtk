@@ -1,15 +1,15 @@
 package search
 
 import (
-	"codeberg.org/dergs/tonearm/internal/gettext"
-	"codeberg.org/dergs/tonearm/internal/router"
-	"codeberg.org/dergs/tonearm/internal/services/tidal/openapi"
-	"codeberg.org/dergs/tonearm/internal/ui/components/tracklist"
-	"codeberg.org/dergs/tonearm/internal/ui/pages"
-	"codeberg.org/dergs/tonearm/pkg/schwifty"
-	"codeberg.org/dergs/tonearm/pkg/tidalapi"
-	modelopenapi "codeberg.org/dergs/tonearm/pkg/tidalapi/models/openapi"
-	"codeberg.org/dergs/tonearm/pkg/tonearm"
+	"github.com/RayZ3R0/sonami-gtk/internal/gettext"
+	"github.com/RayZ3R0/sonami-gtk/internal/router"
+	"github.com/RayZ3R0/sonami-gtk/internal/services/tidal/openapi"
+	"github.com/RayZ3R0/sonami-gtk/internal/ui/components/tracklist"
+	"github.com/RayZ3R0/sonami-gtk/internal/ui/pages"
+	"github.com/RayZ3R0/sonami-gtk/pkg/schwifty"
+	"github.com/RayZ3R0/sonami-gtk/pkg/tidalapi"
+	modelopenapi "github.com/RayZ3R0/sonami-gtk/pkg/tidalapi/models/openapi"
+	"github.com/RayZ3R0/sonami-gtk/pkg/sonami"
 	"codeberg.org/puregotk/puregotk/v4/gtk"
 	"github.com/infinytum/injector"
 )
@@ -21,9 +21,9 @@ func init() {
 func tracks(query string) *router.Response {
 	tidal := injector.MustInject[*tidalapi.TidalAPI]()
 
-	paginator := openapi.NewPaginator(tidal.OpenAPI.V2.SearchResults.Tracks, query, func(r *modelopenapi.Response[[]modelopenapi.Relationship]) []tonearm.Track {
+	paginator := openapi.NewPaginator(tidal.OpenAPI.V2.SearchResults.Tracks, query, func(r *modelopenapi.Response[[]modelopenapi.Relationship]) []sonami.Track {
 		results := r.Included.Tracks(r.Data...)
-		tracks := make([]tonearm.Track, len(results))
+		tracks := make([]sonami.Track, len(results))
 		for i, track := range results {
 			tracks[i] = openapi.NewTrack(track)
 		}

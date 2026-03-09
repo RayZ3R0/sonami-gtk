@@ -4,9 +4,9 @@ import (
 	"strconv"
 	"time"
 
-	"codeberg.org/dergs/tonearm/internal/player/queue"
-	"codeberg.org/dergs/tonearm/internal/settings"
-	"codeberg.org/dergs/tonearm/internal/signals"
+	"github.com/RayZ3R0/sonami-gtk/internal/player/queue"
+	"github.com/RayZ3R0/sonami-gtk/internal/settings"
+	"github.com/RayZ3R0/sonami-gtk/internal/signals"
 	"github.com/go-gst/go-gst/gst"
 )
 

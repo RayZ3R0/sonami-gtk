@@ -37,7 +37,7 @@ jobs:
         run: |
           TAG="${GITHUB_REF_NAME}"
           VERSION="${TAG#v}"
-          TARBALL_URL="https://github.com/${{ github.repository }}/releases/download/${TAG}/tonearm-${TAG}-linux-x86_64.tar.gz"
+          TARBALL_URL="https://github.com/${{ github.repository }}/releases/download/${TAG}/sonami-gtk-${TAG}-linux-x86_64.tar.gz"
 
           echo "==> Downloading tarball to compute sha256..."
           curl -fSL -o tarball.tar.gz "$TARBALL_URL"
@@ -82,14 +82,14 @@ jobs:
           git config --global user.email "rayz3r0@users.noreply.github.com"
 
           # Clone existing AUR repo, or initialise a new one
-          if git clone ssh://aur@aur.archlinux.org/tonearm-bin.git /tmp/aur-repo 2>/dev/null; then
+          if git clone ssh://aur@aur.archlinux.org/sonami-gtk-bin.git /tmp/aur-repo 2>/dev/null; then
             echo "==> Cloned existing AUR repo"
           else
             echo "==> AUR repo doesn't exist yet, creating fresh"
             mkdir -p /tmp/aur-repo
             cd /tmp/aur-repo
             git init
-            git remote add origin ssh://aur@aur.archlinux.org/tonearm-bin.git
+            git remote add origin ssh://aur@aur.archlinux.org/sonami-gtk-bin.git
             cd -
           fi
 

@@ -1,7 +1,7 @@
 package imgutil
 
 import (
-	"codeberg.org/dergs/tonearm/pkg/schwifty/tracking"
+	"github.com/RayZ3R0/sonami-gtk/pkg/schwifty/tracking"
 	"codeberg.org/puregotk/puregotk/v4/gdk"
 	"codeberg.org/puregotk/puregotk/v4/glib"
 )

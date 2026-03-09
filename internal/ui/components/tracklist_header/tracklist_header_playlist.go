@@ -3,19 +3,19 @@ package tracklist_header
 import (
 	"fmt"
 
-	"codeberg.org/dergs/tonearm/internal/gettext"
-	appState "codeberg.org/dergs/tonearm/internal/state"
-	// favouritebutton "codeberg.org/dergs/tonearm/internal/ui/components/favourite_button" // deferred: local favourites
-	"codeberg.org/dergs/tonearm/pkg/schwifty"
-	"codeberg.org/dergs/tonearm/pkg/schwifty/tracking"
-	"codeberg.org/dergs/tonearm/pkg/tidalapi"
-	"codeberg.org/dergs/tonearm/pkg/tonearm"
+	"github.com/RayZ3R0/sonami-gtk/internal/gettext"
+	appState "github.com/RayZ3R0/sonami-gtk/internal/state"
+	// favouritebutton "github.com/RayZ3R0/sonami-gtk/internal/ui/components/favourite_button" // deferred: local favourites
+	"github.com/RayZ3R0/sonami-gtk/pkg/schwifty"
+	"github.com/RayZ3R0/sonami-gtk/pkg/schwifty/tracking"
+	"github.com/RayZ3R0/sonami-gtk/pkg/tidalapi"
+	"github.com/RayZ3R0/sonami-gtk/pkg/sonami"
 	"codeberg.org/puregotk/puregotk/v4/gio"
 	"codeberg.org/puregotk/puregotk/v4/glib"
 	"codeberg.org/puregotk/puregotk/v4/gtk"
 )
 
-func secondaryControlsPlaylist(playlist tonearm.Playlist, popover *gtk.PopoverMenu) schwifty.Box {
+func secondaryControlsPlaylist(playlist sonami.Playlist, popover *gtk.PopoverMenu) schwifty.Box {
 	// Favourite button deferred — see hifi/deferred_features.md
 	// Keeping cache refs for future local-DB implementation:
 	_ = appState.MixesCache
@@ -23,7 +23,7 @@ func secondaryControlsPlaylist(playlist tonearm.Playlist, popover *gtk.PopoverMe
 	return componentSecondaryControls(playlist, popover, nil)
 }
 
-func NewPlaylist(playlist tonearm.Playlist, playFunc func(), shuffleFunc func()) schwifty.Widget {
+func NewPlaylist(playlist sonami.Playlist, playFunc func(), shuffleFunc func()) schwifty.Widget {
 	coverUrl := playlist.Cover(154)
 	title := playlist.Title()
 	releaseDate := playlist.CreatedAt().Format("2006")

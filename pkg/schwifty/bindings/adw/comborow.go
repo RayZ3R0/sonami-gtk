@@ -1,7 +1,7 @@
 package adw
 
 import (
-	"codeberg.org/dergs/tonearm/pkg/schwifty/callback"
+	"github.com/RayZ3R0/sonami-gtk/pkg/schwifty/callback"
 	"codeberg.org/puregotk/puregotk/v4/adw"
 	"codeberg.org/puregotk/puregotk/v4/gio"
 	"codeberg.org/puregotk/puregotk/v4/gobject"
@@ -13,7 +13,7 @@ var (
 	}
 )
 
-//go:generate go run codeberg.org/dergs/tonearm/pkg/schwifty/gen ComboRow *adw.ComboRow adw
+//go:generate go run github.com/RayZ3R0/sonami-gtk/pkg/schwifty/gen ComboRow *adw.ComboRow adw
 
 func (f ComboRow) ConnectSelectionChanged(cb func(uint32)) ComboRow {
 	return func() *adw.ComboRow {

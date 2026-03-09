@@ -4,17 +4,17 @@ import (
 	"os"
 	"time"
 
-	"codeberg.org/dergs/tonearm/internal/g"
-	"codeberg.org/dergs/tonearm/internal/signals"
-	"codeberg.org/dergs/tonearm/pkg/mpris"
-	"codeberg.org/dergs/tonearm/pkg/tonearm"
+	"github.com/RayZ3R0/sonami-gtk/internal/g"
+	"github.com/RayZ3R0/sonami-gtk/internal/signals"
+	"github.com/RayZ3R0/sonami-gtk/pkg/mpris"
+	"github.com/RayZ3R0/sonami-gtk/pkg/sonami"
 	"codeberg.org/puregotk/puregotk/v4/adw"
 	"github.com/godbus/dbus/v5"
 	"github.com/infinytum/injector"
 )
 
 var mprisServer = g.Lazy(func() *mpris.Server {
-	mprisServer := mpris.NewMprisServer("org.mpris.MediaPlayer2.dev.dergs.Tonearm", "dev.dergs.Tonearm", "Tonearm")
+	mprisServer := mpris.NewMprisServer("org.mpris.MediaPlayer2.io.github.rayz3r0.SonamiGtk", "io.github.rayz3r0.SonamiGtk", "Sonami")
 	mprisServer.OnPause(Pause)
 	mprisServer.OnPlayPause(PlayPause)
 	mprisServer.OnPlay(Play)
@@ -83,7 +83,7 @@ func init() {
 		return signals.Continue
 	})
 
-	TrackChanged.On(func(trackInfo tonearm.Track) bool {
+	TrackChanged.On(func(trackInfo sonami.Track) bool {
 		if trackInfo == nil {
 			mprisServer().SetTrackMetadata(map[string]any{})
 			mprisServer().Disconnect()

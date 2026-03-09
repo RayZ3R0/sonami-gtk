@@ -1,4 +1,4 @@
-module codeberg.org/dergs/tonearm
+module github.com/RayZ3R0/sonami-gtk
 
 go 1.26.0
 

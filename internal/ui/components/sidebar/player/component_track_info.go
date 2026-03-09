@@ -3,13 +3,13 @@ package player
 import (
 	"strings"
 
-	"codeberg.org/dergs/tonearm/internal/gettext"
-	"codeberg.org/dergs/tonearm/internal/player"
-	"codeberg.org/dergs/tonearm/internal/signals"
-	"codeberg.org/dergs/tonearm/pkg/schwifty"
-	"codeberg.org/dergs/tonearm/pkg/schwifty/state"
-	. "codeberg.org/dergs/tonearm/pkg/schwifty/syntax"
-	"codeberg.org/dergs/tonearm/pkg/tonearm"
+	"github.com/RayZ3R0/sonami-gtk/internal/gettext"
+	"github.com/RayZ3R0/sonami-gtk/internal/player"
+	"github.com/RayZ3R0/sonami-gtk/internal/signals"
+	"github.com/RayZ3R0/sonami-gtk/pkg/schwifty"
+	"github.com/RayZ3R0/sonami-gtk/pkg/schwifty/state"
+	. "github.com/RayZ3R0/sonami-gtk/pkg/schwifty/syntax"
+	"github.com/RayZ3R0/sonami-gtk/pkg/sonami"
 	"codeberg.org/puregotk/puregotk/v4/gtk"
 	"codeberg.org/puregotk/puregotk/v4/pango"
 )
@@ -18,13 +18,13 @@ var titleState = state.NewStateful("")
 var artistState = state.NewStateful("")
 
 func init() {
-	player.TrackChanged.On(func(trackInfo tonearm.Track) bool {
+	player.TrackChanged.On(func(trackInfo sonami.Track) bool {
 		schwifty.OnMainThreadOncePure(func() {
 			if trackInfo == nil {
 				titleState.SetValue(gettext.Get("No Track"))
 				artistState.SetValue(gettext.Get("No Artist"))
 			} else {
-				titleState.SetValue(tonearm.FormatTitle(trackInfo))
+				titleState.SetValue(sonami.FormatTitle(trackInfo))
 				artistState.SetValue(strings.Join(trackInfo.Artists().Names(), ", "))
 			}
 		})

@@ -1,8 +1,8 @@
 package v2
 
 import (
-	v2 "codeberg.org/dergs/tonearm/pkg/tidalapi/models/v2"
-	"codeberg.org/dergs/tonearm/pkg/tonearm"
+	v2 "github.com/RayZ3R0/sonami-gtk/pkg/tidalapi/models/v2"
+	"github.com/RayZ3R0/sonami-gtk/pkg/sonami"
 )
 
 var playlistLogger = logger.With("type", "Playlist").WithGroup("playlist")
@@ -15,7 +15,7 @@ func (p Playlist) Count() int {
 	return p.PlaylistItemData.NumberOfTracks
 }
 
-func (p Playlist) Creator() tonearm.ArtistInfo {
+func (p Playlist) Creator() sonami.ArtistInfo {
 	if p.PlaylistItemData.Creator.ID == 0 {
 		return nil
 	}
@@ -27,6 +27,6 @@ func (p Playlist) Creator() tonearm.ArtistInfo {
 	})
 }
 
-func NewPlaylist(playlist v2.PlaylistItemData) tonearm.Playlist {
+func NewPlaylist(playlist v2.PlaylistItemData) sonami.Playlist {
 	return &Playlist{PlaylistInfo{playlist}}
 }

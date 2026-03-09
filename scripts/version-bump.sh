@@ -30,7 +30,7 @@ NEW_VERSION="${NEW_VERSION#v}"
     || die "Version must follow X.Y.Z format (got: ${NEW_VERSION})"
 
 FLAKE="flake.nix"
-METAINFO="build/dev.dergs.Tonearm.metainfo.xml"
+METAINFO="build/io.github.rayz3r0.SonamiGtk.metainfo.xml"
 TODAY="$(date +%Y-%m-%d)"
 
 cd "$(git rev-parse --show-toplevel)"
@@ -62,7 +62,7 @@ grep -q "version = \"${NEW_VERSION}\"" "$FLAKE" \
 echo "==> Updating ${METAINFO}"
 
 NEW_ENTRY="    <release version=\"${NEW_VERSION}\" date=\"${TODAY}\">
-        <url type=\"details\">https://codeberg.org/dergs/Tonearm/releases/tag/v${NEW_VERSION}</url>
+        <url type=\"details\">https://github.com/RayZ3R0/sonami-gtk/releases/tag/v${NEW_VERSION}</url>
         <description>
             <p>Changes in this release.</p>
         </description>

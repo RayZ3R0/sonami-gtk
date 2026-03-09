@@ -3,9 +3,9 @@ package v1
 import (
 	"strconv"
 
-	"codeberg.org/dergs/tonearm/pkg/tidalapi"
-	v1 "codeberg.org/dergs/tonearm/pkg/tidalapi/models/v1"
-	"codeberg.org/dergs/tonearm/pkg/tonearm"
+	"github.com/RayZ3R0/sonami-gtk/pkg/tidalapi"
+	v1 "github.com/RayZ3R0/sonami-gtk/pkg/tidalapi/models/v1"
+	"github.com/RayZ3R0/sonami-gtk/pkg/sonami"
 )
 
 var artistInfoLogger = logger.With("type", "ArtistInfo").WithGroup("artist_info")
@@ -36,8 +36,8 @@ func (a ArtistInfo) Route() string {
 	return "artist/" + a.ID()
 }
 
-func (a ArtistInfo) SourceType() tonearm.SourceType {
-	return tonearm.SourceTypeArtist
+func (a ArtistInfo) SourceType() sonami.SourceType {
+	return sonami.SourceTypeArtist
 }
 
 func (a ArtistInfo) Title() string {
@@ -48,6 +48,6 @@ func (a ArtistInfo) URL() string {
 	return "https://tidal.com/artist/" + a.ID()
 }
 
-func NewArtistInfo(artist v1.Artist) tonearm.ArtistInfo {
+func NewArtistInfo(artist v1.Artist) sonami.ArtistInfo {
 	return &ArtistInfo{artist}
 }

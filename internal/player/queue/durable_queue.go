@@ -7,18 +7,18 @@ import (
 	"slices"
 	"sync"
 
-	"codeberg.org/dergs/tonearm/internal/signals"
-	"codeberg.org/dergs/tonearm/pkg/tonearm"
+	"github.com/RayZ3R0/sonami-gtk/internal/signals"
+	"github.com/RayZ3R0/sonami-gtk/pkg/sonami"
 )
 
 type durableQueue struct {
 	sync.RWMutex
 	queue Queue
 
-	source *signals.StatefulSignal[[]tonearm.Track]
+	source *signals.StatefulSignal[[]sonami.Track]
 }
 
-func (q *durableQueue) Append(track tonearm.Track) {
+func (q *durableQueue) Append(track sonami.Track) {
 	if q.Contains(track.ID()) {
 		return
 	}
@@ -26,7 +26,7 @@ func (q *durableQueue) Append(track tonearm.Track) {
 	q.Lock()
 	defer q.Unlock()
 
-	q.source.Notify(func(oldValue []tonearm.Track) []tonearm.Track {
+	q.source.Notify(func(oldValue []sonami.Track) []sonami.Track {
 		return append(oldValue, track)
 	})
 	q.queue.Append(track)
@@ -36,8 +36,8 @@ func (q *durableQueue) Clear() {
 	q.Lock()
 	defer q.Unlock()
 
-	q.source.Notify(func(oldValue []tonearm.Track) []tonearm.Track {
-		return []tonearm.Track{}
+	q.source.Notify(func(oldValue []sonami.Track) []sonami.Track {
+		return []sonami.Track{}
 	})
 	q.queue.Clear()
 }
@@ -54,11 +54,11 @@ func (q *durableQueue) Contains(trackID string) bool {
 	return false
 }
 
-func (q *durableQueue) Entries() *signals.StatefulSignal[[]tonearm.Track] {
+func (q *durableQueue) Entries() *signals.StatefulSignal[[]sonami.Track] {
 	return q.queue.Entries()
 }
 
-func (q *durableQueue) Get(index int) tonearm.Track {
+func (q *durableQueue) Get(index int) sonami.Track {
 	q.RLock()
 	defer q.RUnlock()
 	return q.queue.Get(index)
@@ -73,7 +73,7 @@ func (q *durableQueue) indexOf(trackID string) int {
 	return -1
 }
 
-func (q *durableQueue) Insert(track tonearm.Track, index int) error {
+func (q *durableQueue) Insert(track sonami.Track, index int) error {
 	if q.Contains(track.ID()) {
 		return nil
 	}
@@ -85,13 +85,13 @@ func (q *durableQueue) Insert(track tonearm.Track, index int) error {
 	defer close(errChan)
 
 	sourceIndex := q.indexOf(track.ID())
-	q.source.Notify(func(oldValue []tonearm.Track) []tonearm.Track {
+	q.source.Notify(func(oldValue []sonami.Track) []sonami.Track {
 		if sourceIndex < 0 || sourceIndex > len(oldValue) {
 			errChan <- fmt.Errorf("invalid index, must be between 0 and %d", len(oldValue))
 			return oldValue
 		}
 		errChan <- nil
-		return append(oldValue[:sourceIndex], append([]tonearm.Track{track}, oldValue[sourceIndex:]...)...)
+		return append(oldValue[:sourceIndex], append([]sonami.Track{track}, oldValue[sourceIndex:]...)...)
 	})
 	if err := <-errChan; err != nil {
 		return err
@@ -100,19 +100,19 @@ func (q *durableQueue) Insert(track tonearm.Track, index int) error {
 	return q.queue.Insert(track, index)
 }
 
-func (q *durableQueue) Peek() tonearm.Track {
+func (q *durableQueue) Peek() sonami.Track {
 	q.RLock()
 	defer q.RUnlock()
 	return q.queue.Peek()
 }
 
-func (q *durableQueue) Pop() tonearm.Track {
+func (q *durableQueue) Pop() sonami.Track {
 	q.RLock()
 	defer q.RUnlock()
 	return q.queue.Pop()
 }
 
-func (q *durableQueue) Prepend(track tonearm.Track) {
+func (q *durableQueue) Prepend(track sonami.Track) {
 	if q.Contains(track.ID()) {
 		return
 	}
@@ -120,8 +120,8 @@ func (q *durableQueue) Prepend(track tonearm.Track) {
 	q.Lock()
 	defer q.Unlock()
 
-	q.source.Notify(func(oldValue []tonearm.Track) []tonearm.Track {
-		return append([]tonearm.Track{track}, oldValue...)
+	q.source.Notify(func(oldValue []sonami.Track) []sonami.Track {
+		return append([]sonami.Track{track}, oldValue...)
 	})
 	q.queue.Prepend(track)
 }
@@ -139,7 +139,7 @@ func (q *durableQueue) RemoveAt(index int) error {
 	}
 
 	sourceIndex := q.indexOf(track.ID())
-	q.source.Notify(func(oldValue []tonearm.Track) []tonearm.Track {
+	q.source.Notify(func(oldValue []sonami.Track) []sonami.Track {
 		if sourceIndex < 0 || sourceIndex >= len(oldValue) {
 			errChan <- fmt.Errorf("invalid index, must be between 0 and %d", len(oldValue))
 			return oldValue
@@ -169,11 +169,11 @@ func (q *durableQueue) Restore(currentTrackID string) {
 	q.queue.Set(sourceTracks[offset:])
 }
 
-func (q *durableQueue) Set(tracks []tonearm.Track) {
+func (q *durableQueue) Set(tracks []sonami.Track) {
 	q.Lock()
 	defer q.Unlock()
 
-	q.source.Notify(func(oldValue []tonearm.Track) []tonearm.Track {
+	q.source.Notify(func(oldValue []sonami.Track) []sonami.Track {
 		return slices.Clone(tracks)
 	})
 	q.queue.Set(tracks)
@@ -196,7 +196,7 @@ func (q *durableQueue) Shuffle(currentTrackID string) {
 		if trackOffset+1 < len(sourceTracks) {
 			sourceTracks = append(sourceTracks[:trackOffset], sourceTracks[trackOffset+1:]...)
 		} else {
-			sourceTracks = []tonearm.Track{}
+			sourceTracks = []sonami.Track{}
 		}
 	}
 
@@ -206,7 +206,7 @@ func (q *durableQueue) Shuffle(currentTrackID string) {
 	q.queue.Set(sourceTracks)
 }
 
-func (q *durableQueue) Skip(n int) ([]tonearm.Track, error) {
+func (q *durableQueue) Skip(n int) ([]sonami.Track, error) {
 	q.Lock()
 	defer q.Unlock()
 	return q.queue.Skip(n)
@@ -215,6 +215,6 @@ func (q *durableQueue) Skip(n int) ([]tonearm.Track, error) {
 func NewDurableQueue() DurableQueue {
 	return &durableQueue{
 		queue:  NewQueue(),
-		source: signals.NewStatefulSignal([]tonearm.Track{}),
+		source: signals.NewStatefulSignal([]sonami.Track{}),
 	}
 }

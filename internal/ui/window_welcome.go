@@ -1,10 +1,10 @@
 package ui
 
 import (
-	"codeberg.org/dergs/tonearm/internal/gettext"
-	"codeberg.org/dergs/tonearm/internal/settings"
 	"codeberg.org/puregotk/puregotk/v4/adw"
 	"codeberg.org/puregotk/puregotk/v4/gtk"
+	"github.com/RayZ3R0/sonami-gtk/internal/gettext"
+	"github.com/RayZ3R0/sonami-gtk/internal/settings"
 )
 
 // MaybePresentWelcome shows a welcome dialog if the streaming instances URL
@@ -17,7 +17,7 @@ func (w *Window) MaybePresentWelcome() bool {
 	}
 
 	dialog := adw.NewAlertDialog(
-		gettext.Get("Welcome to Tonearm"),
+		gettext.Get("Welcome to Sonami"),
 		gettext.Get("To enable music playback, you need to provide a streaming instances URL.\n\nPaste the URL of your instances JSON below to get started. You can change this later in Preferences → Streaming."),
 	)
 

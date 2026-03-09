@@ -11,8 +11,8 @@ import (
 //go:embed locales
 var locales embed.FS
 
-//go:generate go run codeberg.org/dergs/tonearm/internal/gettext/gen locales/tonearm.pot
-//go:generate find locales -name "*.po" -exec msgmerge -U -N --backup=off {} locales/tonearm.pot ;
+//go:generate go run github.com/RayZ3R0/sonami-gtk/internal/gettext/gen locales/sonami-gtk.pot
+//go:generate find locales -name "*.po" -exec msgmerge -U -N --backup=off {} locales/sonami-gtk.pot ;
 var locale *gotext.Locale
 
 func init() {

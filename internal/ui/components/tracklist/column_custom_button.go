@@ -1,8 +1,8 @@
 package tracklist
 
 import (
-	. "codeberg.org/dergs/tonearm/pkg/schwifty/syntax"
-	"codeberg.org/dergs/tonearm/pkg/tonearm"
+	. "github.com/RayZ3R0/sonami-gtk/pkg/schwifty/syntax"
+	"github.com/RayZ3R0/sonami-gtk/pkg/sonami"
 	"codeberg.org/puregotk/puregotk/v4/gtk"
 )
 
@@ -41,7 +41,7 @@ func customWidgetButtonColumn(trackId string, grid *gtk.Grid, position int, colu
 }
 
 func CustomButtonColumn(onClick buttonColumnCallback) ColumnFunc {
-	return func(track tonearm.Track, grid *gtk.Grid, position int, column int32) int {
+	return func(track sonami.Track, grid *gtk.Grid, position int, column int32) int {
 		if track == nil {
 			grid.Attach(
 				Box(gtk.OrientationHorizontalValue).ToGTK(),
@@ -57,7 +57,7 @@ func CustomButtonColumn(onClick buttonColumnCallback) ColumnFunc {
 }
 
 func CustomWidgetButtonColumn(button func(string, int, int32) *gtk.Widget) ColumnFunc {
-	return func(track tonearm.Track, grid *gtk.Grid, position int, column int32) int {
+	return func(track sonami.Track, grid *gtk.Grid, position int, column int32) int {
 		if track == nil {
 			grid.Attach(
 				Box(gtk.OrientationHorizontalValue).ToGTK(),
@@ -73,7 +73,7 @@ func CustomWidgetButtonColumn(button func(string, int, int32) *gtk.Widget) Colum
 }
 
 func ExpandCustomButtonColumn(additionalWidth int32, onClick buttonColumnCallback) ColumnFunc {
-	return func(track tonearm.Track, grid *gtk.Grid, position int, column int32) int {
+	return func(track sonami.Track, grid *gtk.Grid, position int, column int32) int {
 		return CustomButtonColumn(onClick)(track, grid, position, column+additionalWidth)
 	}
 }

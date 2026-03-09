@@ -1,15 +1,15 @@
 package search
 
 import (
-	"codeberg.org/dergs/tonearm/internal/gettext"
-	"codeberg.org/dergs/tonearm/internal/services/tidal/openapi"
-	"codeberg.org/dergs/tonearm/internal/ui/components"
-	"codeberg.org/dergs/tonearm/internal/ui/components/horizontal_list"
-	"codeberg.org/dergs/tonearm/internal/ui/components/media_card"
-	"codeberg.org/dergs/tonearm/internal/ui/components/tracklist"
-	"codeberg.org/dergs/tonearm/pkg/schwifty"
-	. "codeberg.org/dergs/tonearm/pkg/schwifty/syntax"
-	modelopenapi "codeberg.org/dergs/tonearm/pkg/tidalapi/models/openapi"
+	"github.com/RayZ3R0/sonami-gtk/internal/gettext"
+	"github.com/RayZ3R0/sonami-gtk/internal/services/tidal/openapi"
+	"github.com/RayZ3R0/sonami-gtk/internal/ui/components"
+	"github.com/RayZ3R0/sonami-gtk/internal/ui/components/horizontal_list"
+	"github.com/RayZ3R0/sonami-gtk/internal/ui/components/media_card"
+	"github.com/RayZ3R0/sonami-gtk/internal/ui/components/tracklist"
+	"github.com/RayZ3R0/sonami-gtk/pkg/schwifty"
+	. "github.com/RayZ3R0/sonami-gtk/pkg/schwifty/syntax"
+	modelopenapi "github.com/RayZ3R0/sonami-gtk/pkg/tidalapi/models/openapi"
 	"codeberg.org/puregotk/puregotk/v4/gtk"
 )
 

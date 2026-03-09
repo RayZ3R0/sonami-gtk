@@ -1,10 +1,10 @@
 package imgutil
 
 import (
-	"codeberg.org/dergs/tonearm/pkg/schwifty"
-	"codeberg.org/dergs/tonearm/pkg/schwifty/tracking"
-	"codeberg.org/dergs/tonearm/pkg/schwifty/utils/weak"
-	"codeberg.org/dergs/tonearm/pkg/utils/cacheutil"
+	"github.com/RayZ3R0/sonami-gtk/pkg/schwifty"
+	"github.com/RayZ3R0/sonami-gtk/pkg/schwifty/tracking"
+	"github.com/RayZ3R0/sonami-gtk/pkg/schwifty/utils/weak"
+	"github.com/RayZ3R0/sonami-gtk/pkg/utils/cacheutil"
 	"codeberg.org/puregotk/puregotk/v4/gtk"
 )
 

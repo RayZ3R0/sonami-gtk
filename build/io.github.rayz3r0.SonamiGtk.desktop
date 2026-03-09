@@ -1,9 +1,9 @@
 [Desktop Entry]
 Categories=Audio;AudioVideo;Music;GNOME;GTK
-Comment=Tonearm is a GTK client for TIDAL written in GoLang.
-Exec=tonearm %u
-Icon=dev.dergs.Tonearm
+Comment=Sonami is a GTK client for TIDAL written in GoLang.
+Exec=sonami %u
+Icon=io.github.rayz3r0.SonamiGtk
 MimeType=x-scheme-handler/tidal
-Name=Tonearm
+Name=Sonami
 Type=Application
 Version=1.5

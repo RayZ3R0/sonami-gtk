@@ -61,11 +61,11 @@ jobs:
         run: |
           go build \
             -ldflags="-s -w \
-              -X 'codeberg.org/dergs/tonearm/internal/ui.Version=${{ steps.ver.outputs.version }}' \
-              -X 'codeberg.org/dergs/tonearm/internal/ui.Commit=${{ steps.ver.outputs.commit }}'" \
+              -X 'github.com/RayZ3R0/sonami-gtk/internal/ui.Version=${{ steps.ver.outputs.version }}' \
+              -X 'github.com/RayZ3R0/sonami-gtk/internal/ui.Commit=${{ steps.ver.outputs.commit }}'" \
             -trimpath \
-            -o tonearm \
-            ./cmd/tonearm
+            -o sonami \
+            ./cmd/sonami
 
       - name: Compile GSettings schemas
         run: glib-compile-schemas internal/settings/
@@ -73,7 +73,7 @@ jobs:
       - name: Bundle tarball
         run: |
           TAG="${{ steps.ver.outputs.tag }}"
-          BUNDLE="tonearm-${TAG}-linux-x86_64"
+          BUNDLE="sonami-gtk-${TAG}-linux-x86_64"
           mkdir -p "$BUNDLE/share/icons/hicolor/scalable/apps"
           mkdir -p "$BUNDLE/share/icons/hicolor/128x128/apps"
           mkdir -p "$BUNDLE/share/icons/hicolor/symbolic/apps"
@@ -81,22 +81,22 @@ jobs:
           mkdir -p "$BUNDLE/share/glib-2.0/schemas"
           mkdir -p "$BUNDLE/share/metainfo"
 
-          cp tonearm "$BUNDLE/"
-          cp build/dev.dergs.Tonearm.desktop "$BUNDLE/share/applications/"
-          cp build/dev.dergs.Tonearm.metainfo.xml "$BUNDLE/share/metainfo/"
-          cp internal/icons/hicolor/scalable/apps/dev.dergs.Tonearm.svg \
+          cp sonami "$BUNDLE/"
+          cp build/io.github.rayz3r0.SonamiGtk.desktop "$BUNDLE/share/applications/"
+          cp build/io.github.rayz3r0.SonamiGtk.metainfo.xml "$BUNDLE/share/metainfo/"
+          cp internal/icons/hicolor/scalable/apps/io.github.rayz3r0.SonamiGtk.svg \
               "$BUNDLE/share/icons/hicolor/scalable/apps/"
-          cp internal/icons/hicolor/128x128/apps/dev.dergs.Tonearm.png \
+          cp internal/icons/hicolor/128x128/apps/io.github.rayz3r0.SonamiGtk.png \
               "$BUNDLE/share/icons/hicolor/128x128/apps/"
-          cp internal/icons/hicolor/symbolic/apps/dev.dergs.Tonearm-symbolic.svg \
+          cp internal/icons/hicolor/symbolic/apps/io.github.rayz3r0.SonamiGtk-symbolic.svg \
               "$BUNDLE/share/icons/hicolor/symbolic/apps/"
-          cp internal/settings/dev.dergs.Tonearm.gschema.xml \
+          cp internal/settings/io.github.rayz3r0.SonamiGtk.gschema.xml \
               "$BUNDLE/share/glib-2.0/schemas/"
 
           cat > "$BUNDLE/README.txt" << 'EOF'
-          Tonearm — Linux portable build
+          Sonami — Linux portable build
           ================================
-          Run ./tonearm to launch.
+          Run ./sonami to launch.
 
           For a proper system install, copy the contents of share/ into
           /usr/local/share/ and run: glib-compile-schemas /usr/local/share/glib-2.0/schemas/
@@ -108,7 +108,7 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: linux-binary
-          path: "tonearm-${{ steps.ver.outputs.tag }}-linux-x86_64.tar.gz"
+          path: "sonami-gtk-${{ steps.ver.outputs.tag }}-linux-x86_64.tar.gz"
 
   # ─────────────────────────────────────────────
   # Linux: Flatpak bundle (using upstream container)
@@ -131,7 +131,7 @@ jobs:
         uses: actions/cache@v4
         with:
           path: ~/.local/share/flatpak
-          key: flatpak-builder-${{ hashFiles('build/flatpak/dev.dergs.Tonearm.yaml', 'build/flatpak/go.mod.yml') }}
+          key: flatpak-builder-${{ hashFiles('build/flatpak/io.github.rayz3r0.SonamiGtk.yaml', 'build/flatpak/go.mod.yml') }}
           restore-keys: |
             flatpak-builder-
 
@@ -140,19 +140,19 @@ jobs:
           flatpak-builder --user --repo=repo --disable-rofiles-fuse \
             --install-deps-from=flathub \
             --force-clean --default-branch=master \
-            flatpak_app build/flatpak/dev.dergs.Tonearm.yaml
+            flatpak_app build/flatpak/io.github.rayz3r0.SonamiGtk.yaml
 
       - name: Create bundle
         run: |
-          flatpak build-bundle repo dev.dergs.Tonearm.flatpak \
+          flatpak build-bundle repo io.github.rayz3r0.SonamiGtk.flatpak \
             --runtime-repo=https://flathub.org/repo/flathub.flatpakrepo \
-            --arch=x86_64 dev.dergs.Tonearm master
+            --arch=x86_64 io.github.rayz3r0.SonamiGtk master
 
       - name: Upload Flatpak
         uses: actions/upload-artifact@v4
         with:
           name: linux-flatpak
-          path: dev.dergs.Tonearm.flatpak
+          path: io.github.rayz3r0.SonamiGtk.flatpak
 
   # ─────────────────────────────────────────────
   # Publish GitHub Release
@@ -173,5 +173,5 @@ jobs:
         with:
           generate_release_notes: true
           files: |
-            tonearm-*.tar.gz
-            dev.dergs.Tonearm.flatpak
+            sonami-gtk-*.tar.gz
+            io.github.rayz3r0.SonamiGtk.flatpak

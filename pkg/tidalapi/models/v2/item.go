@@ -6,7 +6,7 @@ import (
 	"log/slog"
 	"strconv"
 
-	"codeberg.org/dergs/tonearm/pkg/tidalapi/helper"
+	"github.com/RayZ3R0/sonami-gtk/pkg/tidalapi/helper"
 )
 
 type baseItem struct {

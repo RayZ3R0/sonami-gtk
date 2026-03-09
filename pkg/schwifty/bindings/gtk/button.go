@@ -1,14 +1,14 @@
 package gtk
 
 import (
-	"codeberg.org/dergs/tonearm/pkg/schwifty/callback"
-	"codeberg.org/dergs/tonearm/pkg/schwifty/state"
-	"codeberg.org/dergs/tonearm/pkg/schwifty/utils/weak"
+	"github.com/RayZ3R0/sonami-gtk/pkg/schwifty/callback"
+	"github.com/RayZ3R0/sonami-gtk/pkg/schwifty/state"
+	"github.com/RayZ3R0/sonami-gtk/pkg/schwifty/utils/weak"
 	"codeberg.org/puregotk/puregotk/v4/glib"
 	"codeberg.org/puregotk/puregotk/v4/gtk"
 )
 
-//go:generate go run codeberg.org/dergs/tonearm/pkg/schwifty/gen Button *gtk.Button gtk
+//go:generate go run github.com/RayZ3R0/sonami-gtk/pkg/schwifty/gen Button *gtk.Button gtk
 
 func (f Button) ActionName(actionName string) Button {
 	return func() *gtk.Button {

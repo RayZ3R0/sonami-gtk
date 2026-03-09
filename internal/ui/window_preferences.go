@@ -4,16 +4,16 @@ import (
 	"fmt"
 	"log/slog"
 
-	"codeberg.org/dergs/tonearm/internal/features/scrobbling"
-	"codeberg.org/dergs/tonearm/internal/gettext"
-	"codeberg.org/dergs/tonearm/internal/settings"
-	"codeberg.org/dergs/tonearm/internal/signals"
-	"codeberg.org/dergs/tonearm/pkg/schwifty"
-	adwbindings "codeberg.org/dergs/tonearm/pkg/schwifty/bindings/adw"
-	. "codeberg.org/dergs/tonearm/pkg/schwifty/syntax"
-	"codeberg.org/dergs/tonearm/pkg/schwifty/utils/weak"
 	"codeberg.org/puregotk/puregotk/v4/adw"
 	"codeberg.org/puregotk/puregotk/v4/gtk"
+	"github.com/RayZ3R0/sonami-gtk/internal/features/scrobbling"
+	"github.com/RayZ3R0/sonami-gtk/internal/gettext"
+	"github.com/RayZ3R0/sonami-gtk/internal/settings"
+	"github.com/RayZ3R0/sonami-gtk/internal/signals"
+	"github.com/RayZ3R0/sonami-gtk/pkg/schwifty"
+	adwbindings "github.com/RayZ3R0/sonami-gtk/pkg/schwifty/bindings/adw"
+	. "github.com/RayZ3R0/sonami-gtk/pkg/schwifty/syntax"
+	"github.com/RayZ3R0/sonami-gtk/pkg/schwifty/utils/weak"
 )
 
 func buildPreferencesGeneral(dialog *adw.PreferencesDialog) adwbindings.PreferencesPage {
@@ -21,13 +21,13 @@ func buildPreferencesGeneral(dialog *adw.PreferencesDialog) adwbindings.Preferen
 		PreferencesGroup(
 			SwitchRow().
 				Title(gettext.Get("Allow Background Activity")).
-				Subtitle(gettext.Get("Allow Tonearm to run in the background by hiding the player window instead of quitting the application")).
+				Subtitle(gettext.Get("Allow Sonami to run in the background by hiding the player window instead of quitting the application")).
 				ConnectConstruct(func(sr *adw.SwitchRow) {
 					settings.General().BindRunInBackground(&sr.Object, "active")
 				}),
 		).
 			Title(gettext.Get("Background Activity")).
-			Description(gettext.Get("Configure the behaviour of Tonearm when running in the background")),
+			Description(gettext.Get("Configure the behaviour of Sonami when running in the background")),
 		PreferencesGroup(
 			EntryRow().
 				Title(gettext.Get("Default Page")).
@@ -45,7 +45,7 @@ func buildPreferencesGeneral(dialog *adw.PreferencesDialog) adwbindings.Preferen
 				}),
 		).
 			Title(gettext.Get("Navigation Behaviour")).
-			Description(gettext.Get("Configure the behaviour of Tonearm when navigating between pages")),
+			Description(gettext.Get("Configure the behaviour of Sonami when navigating between pages")),
 	).Title(gettext.Get("General")).IconName("settings-symbolic")
 }
 
@@ -54,7 +54,7 @@ func buildPreferencesPlayback(*adw.PreferencesDialog) adwbindings.PreferencesPag
 		PreferencesGroup(
 			SwitchRow().
 				Title(gettext.Get("Enable Autoplay")).
-				Subtitle(gettext.Get("Allow Tonearm to start a mix with the current playing song when you're at the end of an album/queue")).
+				Subtitle(gettext.Get("Allow Sonami to start a mix with the current playing song when you're at the end of an album/queue")).
 				ConnectConstruct(func(sr *adw.SwitchRow) {
 					settings.Playback().BindAllowAutoplay(&sr.Object, "active")
 				}),
@@ -66,13 +66,13 @@ func buildPreferencesPlayback(*adw.PreferencesDialog) adwbindings.PreferencesPag
 				}),
 			ComboRow().
 				Title(gettext.Get("Preferred Replay Gain")).
-				Subtitle(gettext.Get("Choose whether Tonearm should prefer album replay gain, track replay gain or decide automatically")).
+				Subtitle(gettext.Get("Choose whether Sonami should prefer album replay gain, track replay gain or decide automatically")).
 				Model(gtk.NewStringList(settings.ReplayGainModeStrings())).
 				Selected(uint32(settings.Playback().ReplayGainMode())).
 				ConnectSelectionChanged(func(a uint32) {
 					settings.Playback().SetReplayGainMode(settings.ReplayGainMode(a))
 				}),
-		).Title(gettext.Get("Playback")).Description(gettext.Get("Configure the behaviour of Tonearm regarding playback")),
+		).Title(gettext.Get("Playback")).Description(gettext.Get("Configure the behaviour of Sonami regarding playback")),
 	).Title(gettext.Get("Playback")).IconName("media-playback-start-symbolic")
 }
 
@@ -81,29 +81,29 @@ func buildPreferencesPerformance(*adw.PreferencesDialog) adwbindings.Preferences
 		PreferencesGroup(
 			SwitchRow().
 				Title(gettext.Get("Allow Media Card Images")).
-				Subtitle(gettext.Get("Allow Tonearm to load images for media card buttons")).
+				Subtitle(gettext.Get("Allow Sonami to load images for media card buttons")).
 				ConnectConstruct(func(sr *adw.SwitchRow) {
 					settings.Performance().BindAllowMediaCardImages(&sr.Object, "active")
 				}),
 			SwitchRow().
 				Title(gettext.Get("Allow Shortcut Images")).
-				Subtitle(gettext.Get("Allow Tonearm to load images for shortcut buttons")).
+				Subtitle(gettext.Get("Allow Sonami to load images for shortcut buttons")).
 				ConnectConstruct(func(sr *adw.SwitchRow) {
 					settings.Performance().BindAllowShortcutImages(&sr.Object, "active")
 				}),
 			SwitchRow().
 				Title(gettext.Get("Allow Tracklist Images")).
-				Subtitle(gettext.Get("Allow Tonearm to load images for tracklists with the cover column")).
+				Subtitle(gettext.Get("Allow Sonami to load images for tracklists with the cover column")).
 				ConnectConstruct(func(sr *adw.SwitchRow) {
 					settings.Performance().BindAllowTracklistImages(&sr.Object, "active")
 				}),
 			SwitchRow().
 				Title(gettext.Get("Cache Images")).
-				Subtitle(gettext.Get("Allow Tonearm to temporarily store images on the file system to improve performance and reduce network traffic")).
+				Subtitle(gettext.Get("Allow Sonami to temporarily store images on the file system to improve performance and reduce network traffic")).
 				ConnectConstruct(func(sr *adw.SwitchRow) {
 					settings.Performance().BindCacheImages(&sr.Object, "active")
 				}),
-		).Title(gettext.Get("Images")).Description(gettext.Get("Configure the behaviour of Tonearm regarding images")),
+		).Title(gettext.Get("Images")).Description(gettext.Get("Configure the behaviour of Sonami regarding images")),
 	).Title(gettext.Get("Performance")).IconName("speedometer5-symbolic")
 }
 
@@ -115,7 +115,7 @@ func buildPreferencesScrobbling(dialog *adw.PreferencesDialog) adwbindings.Prefe
 		PreferencesGroup(
 			SwitchRow().
 				Title(gettext.Get("Enable ListenBrainz")).
-				Subtitle(gettext.Get("Allow Tonearm to send scrobbling data to ListenBrainz")).
+				Subtitle(gettext.Get("Allow Sonami to send scrobbling data to ListenBrainz")).
 				ConnectConstruct(func(sr *adw.SwitchRow) {
 					settings.Scrobbling().BindEnableListenBrainz(&sr.Object, "active")
 				}),
@@ -131,11 +131,11 @@ func buildPreferencesScrobbling(dialog *adw.PreferencesDialog) adwbindings.Prefe
 				}),
 		).
 			Title("ListenBrainz").
-			Description(gettext.Get("Configure Tonearm to send scrobbling data to ListenBrainz")),
+			Description(gettext.Get("Configure Sonami to send scrobbling data to ListenBrainz")),
 		PreferencesGroup(
 			SwitchRow().
 				Title(gettext.Get("Enable Last.fm")).
-				Subtitle(gettext.Get("Allow Tonearm to send scrobbling data to Last.fm")).
+				Subtitle(gettext.Get("Allow Sonami to send scrobbling data to Last.fm")).
 				ConnectConstruct(func(sr *adw.SwitchRow) {
 					settings.Scrobbling().BindEnableLastFM(&sr.Object, "active")
 				}),
@@ -260,7 +260,7 @@ func buildPreferencesScrobbling(dialog *adw.PreferencesDialog) adwbindings.Prefe
 				),
 		).
 			Title("Last.fm").
-			Description(gettext.Get("Configure Tonearm to send scrobbling data to Last.fm")),
+			Description(gettext.Get("Configure Sonami to send scrobbling data to Last.fm")),
 	).Title(gettext.Get("Scrobbling")).IconName("podcast-symbolic")
 }
 

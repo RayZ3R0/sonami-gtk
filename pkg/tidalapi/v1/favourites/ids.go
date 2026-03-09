@@ -6,7 +6,7 @@ import (
 	"fmt"
 	"net/http"
 
-	v1 "codeberg.org/dergs/tonearm/pkg/tidalapi/models/v1"
+	v1 "github.com/RayZ3R0/sonami-gtk/pkg/tidalapi/models/v1"
 )
 
 func (f *Favourites) IDsWithCache(ctx context.Context, userID string, ifNoneMatch string) (list *v1.FavouritesIdLists, etag string, notModified bool, err error) {

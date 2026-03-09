@@ -1,4 +1,4 @@
-package tonearm
+package sonami
 
 type Shareable interface {
 	// URL returns the shareable URL for the object

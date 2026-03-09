@@ -7,7 +7,7 @@ import (
 	"fmt"
 	"log/slog"
 
-	v1 "codeberg.org/dergs/tonearm/pkg/tidalapi/models/v1"
+	v1 "github.com/RayZ3R0/sonami-gtk/pkg/tidalapi/models/v1"
 )
 
 var streamLogger = slog.With("module", "stream_resolver")

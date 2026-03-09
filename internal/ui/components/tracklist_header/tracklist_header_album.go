@@ -4,20 +4,20 @@ import (
 	"fmt"
 	"strings"
 
-	"codeberg.org/dergs/tonearm/internal/gettext"
-	appState "codeberg.org/dergs/tonearm/internal/state"
-	// favouritebutton "codeberg.org/dergs/tonearm/internal/ui/components/favourite_button" // deferred: local favourites
-	"codeberg.org/dergs/tonearm/pkg/schwifty"
-	. "codeberg.org/dergs/tonearm/pkg/schwifty/syntax"
-	"codeberg.org/dergs/tonearm/pkg/schwifty/tracking"
-	"codeberg.org/dergs/tonearm/pkg/tidalapi"
-	"codeberg.org/dergs/tonearm/pkg/tonearm"
+	"github.com/RayZ3R0/sonami-gtk/internal/gettext"
+	appState "github.com/RayZ3R0/sonami-gtk/internal/state"
+	// favouritebutton "github.com/RayZ3R0/sonami-gtk/internal/ui/components/favourite_button" // deferred: local favourites
+	"github.com/RayZ3R0/sonami-gtk/pkg/schwifty"
+	. "github.com/RayZ3R0/sonami-gtk/pkg/schwifty/syntax"
+	"github.com/RayZ3R0/sonami-gtk/pkg/schwifty/tracking"
+	"github.com/RayZ3R0/sonami-gtk/pkg/tidalapi"
+	"github.com/RayZ3R0/sonami-gtk/pkg/sonami"
 	"codeberg.org/puregotk/puregotk/v4/gio"
 	"codeberg.org/puregotk/puregotk/v4/glib"
 	"codeberg.org/puregotk/puregotk/v4/gtk"
 )
 
-func secondaryControlsAlbum(album tonearm.Album, popover *gtk.PopoverMenu) schwifty.Box {
+func secondaryControlsAlbum(album sonami.Album, popover *gtk.PopoverMenu) schwifty.Box {
 	var artistButton any
 	if artists := album.Artists(); len(artists) > 1 {
 		menu := gio.NewMenu()
@@ -45,7 +45,7 @@ func secondaryControlsAlbum(album tonearm.Album, popover *gtk.PopoverMenu) schwi
 	return componentSecondaryControls(album, popover, artistButton, nil)
 }
 
-func NewAlbum(album tonearm.Album, playFunc func(), shuffleFunc func()) schwifty.Widget {
+func NewAlbum(album sonami.Album, playFunc func(), shuffleFunc func()) schwifty.Widget {
 	coverUrl := album.Cover(154)
 	title := album.Title()
 	releaseDate := album.ReleasedAt().Format("2006")

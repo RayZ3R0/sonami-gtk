@@ -4,8 +4,8 @@ import (
 	"reflect"
 	"runtime"
 
-	"codeberg.org/dergs/tonearm/pkg/schwifty/callback"
-	"codeberg.org/dergs/tonearm/pkg/schwifty/utils/weak"
+	"github.com/RayZ3R0/sonami-gtk/pkg/schwifty/callback"
+	"github.com/RayZ3R0/sonami-gtk/pkg/schwifty/utils/weak"
 	"codeberg.org/puregotk/puregotk/v4/gobject"
 )
 

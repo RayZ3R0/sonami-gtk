@@ -6,7 +6,7 @@ import (
 	"fmt"
 	"net/http"
 
-	v2 "codeberg.org/dergs/tonearm/pkg/tidalapi/models/v2"
+	v2 "github.com/RayZ3R0/sonami-gtk/pkg/tidalapi/models/v2"
 )
 
 func (f *Feed) Static(ctx context.Context) (*v2.Page, error) {

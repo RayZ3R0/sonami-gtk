@@ -1,14 +1,14 @@
 package services
 
 import (
-	"codeberg.org/dergs/tonearm/internal/services/tidal"
-	"codeberg.org/dergs/tonearm/pkg/tidalapi"
-	"codeberg.org/dergs/tonearm/pkg/tonearm"
+	"github.com/RayZ3R0/sonami-gtk/internal/services/tidal"
+	"github.com/RayZ3R0/sonami-gtk/pkg/tidalapi"
+	"github.com/RayZ3R0/sonami-gtk/pkg/sonami"
 	"github.com/infinytum/injector"
 )
 
 func init() {
-	injector.DeferredSingleton(func(api *tidalapi.TidalAPI) tonearm.Service {
+	injector.DeferredSingleton(func(api *tidalapi.TidalAPI) sonami.Service {
 		return tidal.NewTidal(api)
 	})
 }

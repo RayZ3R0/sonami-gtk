@@ -1,8 +1,8 @@
 package shortcut_list
 
 import (
-	"codeberg.org/dergs/tonearm/pkg/schwifty"
-	v2 "codeberg.org/dergs/tonearm/pkg/tidalapi/models/v2"
+	"github.com/RayZ3R0/sonami-gtk/pkg/schwifty"
+	v2 "github.com/RayZ3R0/sonami-gtk/pkg/tidalapi/models/v2"
 	"codeberg.org/puregotk/puregotk/v4/glib"
 )
 

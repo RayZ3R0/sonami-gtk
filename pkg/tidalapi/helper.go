@@ -5,7 +5,7 @@ import (
 	"strings"
 	"time"
 
-	"codeberg.org/dergs/tonearm/pkg/tidalapi/models/openapi"
+	"github.com/RayZ3R0/sonami-gtk/pkg/tidalapi/models/openapi"
 )
 
 func ImageURL(id string) string {

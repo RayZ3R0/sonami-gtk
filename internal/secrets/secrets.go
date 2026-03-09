@@ -3,7 +3,7 @@ package secrets
 import (
 	"errors"
 
-	"codeberg.org/dergs/tonearm/internal/g"
+	"github.com/RayZ3R0/sonami-gtk/internal/g"
 )
 
 var (

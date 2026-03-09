@@ -3,7 +3,7 @@ package router
 import (
 	"time"
 
-	"codeberg.org/dergs/tonearm/pkg/schwifty"
+	"github.com/RayZ3R0/sonami-gtk/pkg/schwifty"
 )
 
 type Response struct {

@@ -3,7 +3,7 @@ package internal
 import (
 	"net/http"
 
-	"codeberg.org/dergs/tonearm/pkg/tidalapi/auth"
+	"github.com/RayZ3R0/sonami-gtk/pkg/tidalapi/auth"
 )
 
 type Client struct {

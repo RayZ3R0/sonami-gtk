@@ -5,14 +5,14 @@ package secrets
 import (
 	"strings"
 
-	"codeberg.org/dergs/tonearm/internal/gettext"
+	"github.com/RayZ3R0/sonami-gtk/internal/gettext"
 	golibsecret "github.com/lescuer97/go-libsecret"
 )
 
 var schema *golibsecret.Schema
 
 func init() {
-	s, err := golibsecret.NewSchema("dev.dergs.Tonearm", golibsecret.SchemaFlagsNone, map[string]golibsecret.SchemaAttributeType{
+	s, err := golibsecret.NewSchema("io.github.rayz3r0.SonamiGtk", golibsecret.SchemaFlagsNone, map[string]golibsecret.SchemaAttributeType{
 		"key": golibsecret.SchemaAttributeString,
 	})
 	if err != nil {
@@ -37,7 +37,7 @@ func (s *serviceLinux) Available() *ServiceError {
 	if strings.Contains(err.Error(), "name is not activatable") || strings.Contains(err.Error(), "ServiceUnknown") {
 		return &ServiceError{
 			Title: gettext.Get("Secret Service Unavailable"),
-			Body:  gettext.Get("No secret service provider is available.\n\nTonearm will not be able to store any authentication-related data and you will not be able to sign in.\n\nPlease install a secret service provider such as GNOME Keyring or KDE Wallet."),
+			Body:  gettext.Get("No secret service provider is available.\n\nSonami will not be able to store any authentication-related data and you will not be able to sign in.\n\nPlease install a secret service provider such as GNOME Keyring or KDE Wallet."),
 			Fatal: false,
 		}
 	}
@@ -45,7 +45,7 @@ func (s *serviceLinux) Available() *ServiceError {
 	if strings.Contains(err.Error(), "user interaction failed") {
 		return &ServiceError{
 			Title: gettext.Get("Secret Service Issue"),
-			Body:  gettext.Get("Your secret service provider was found, but refused to interact with Tonearm.\n\nThis could because you cancelled a prompt or, if you are using a Flatpak, the provider not implementing the XDG Secret Portal service.\n\nTonearm will not be able to store any authentication-related data and you will not be able to sign in."),
+			Body:  gettext.Get("Your secret service provider was found, but refused to interact with Sonami.\n\nThis could because you cancelled a prompt or, if you are using a Flatpak, the provider not implementing the XDG Secret Portal service.\n\nSonami will not be able to store any authentication-related data and you will not be able to sign in."),
 			Fatal: false,
 		}
 	}

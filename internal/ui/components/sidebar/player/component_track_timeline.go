@@ -3,19 +3,19 @@ package player
 import (
 	"fmt"
 
-	"codeberg.org/dergs/tonearm/internal/g"
-	"codeberg.org/dergs/tonearm/internal/gettext"
-	"codeberg.org/dergs/tonearm/internal/notifications"
-	"codeberg.org/dergs/tonearm/internal/player"
-	"codeberg.org/dergs/tonearm/internal/settings"
-	"codeberg.org/dergs/tonearm/internal/signals"
-	"codeberg.org/dergs/tonearm/pkg/schwifty"
-	"codeberg.org/dergs/tonearm/pkg/schwifty/state"
-	. "codeberg.org/dergs/tonearm/pkg/schwifty/syntax"
-	"codeberg.org/dergs/tonearm/pkg/schwifty/utils/weak"
-	"codeberg.org/dergs/tonearm/pkg/tidalapi"
-	v1 "codeberg.org/dergs/tonearm/pkg/tidalapi/models/v1"
-	"codeberg.org/dergs/tonearm/pkg/tonearm"
+	"github.com/RayZ3R0/sonami-gtk/internal/g"
+	"github.com/RayZ3R0/sonami-gtk/internal/gettext"
+	"github.com/RayZ3R0/sonami-gtk/internal/notifications"
+	"github.com/RayZ3R0/sonami-gtk/internal/player"
+	"github.com/RayZ3R0/sonami-gtk/internal/settings"
+	"github.com/RayZ3R0/sonami-gtk/internal/signals"
+	"github.com/RayZ3R0/sonami-gtk/pkg/schwifty"
+	"github.com/RayZ3R0/sonami-gtk/pkg/schwifty/state"
+	. "github.com/RayZ3R0/sonami-gtk/pkg/schwifty/syntax"
+	"github.com/RayZ3R0/sonami-gtk/pkg/schwifty/utils/weak"
+	"github.com/RayZ3R0/sonami-gtk/pkg/tidalapi"
+	v1 "github.com/RayZ3R0/sonami-gtk/pkg/tidalapi/models/v1"
+	"github.com/RayZ3R0/sonami-gtk/pkg/sonami"
 	"codeberg.org/puregotk/puregotk/v4/gdk"
 	"codeberg.org/puregotk/puregotk/v4/gtk"
 )
@@ -33,7 +33,7 @@ var (
 )
 
 func init() {
-	player.TrackChanged.On(func(trackInfo tonearm.Track) bool {
+	player.TrackChanged.On(func(trackInfo sonami.Track) bool {
 		schwifty.OnMainThreadOncePure(func() {
 			if trackInfo == nil {
 				durationState.SetValue("00:00")

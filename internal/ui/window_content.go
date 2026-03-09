@@ -1,12 +1,12 @@
 package ui
 
 import (
-	"codeberg.org/dergs/tonearm/internal/gettext"
-	"codeberg.org/dergs/tonearm/internal/router"
-	"codeberg.org/dergs/tonearm/internal/signals"
-	"codeberg.org/dergs/tonearm/internal/ui/components"
-	"codeberg.org/dergs/tonearm/pkg/schwifty"
-	. "codeberg.org/dergs/tonearm/pkg/schwifty/syntax"
+	"github.com/RayZ3R0/sonami-gtk/internal/gettext"
+	"github.com/RayZ3R0/sonami-gtk/internal/router"
+	"github.com/RayZ3R0/sonami-gtk/internal/signals"
+	"github.com/RayZ3R0/sonami-gtk/internal/ui/components"
+	"github.com/RayZ3R0/sonami-gtk/pkg/schwifty"
+	. "github.com/RayZ3R0/sonami-gtk/pkg/schwifty/syntax"
 	"codeberg.org/puregotk/puregotk/v4/gtk"
 )
 

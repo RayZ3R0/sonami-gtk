@@ -4,8 +4,8 @@ import (
 	"context"
 	"fmt"
 
-	v1 "codeberg.org/dergs/tonearm/pkg/tidalapi/models/v1"
-	"codeberg.org/dergs/tonearm/pkg/tonearm"
+	v1 "github.com/RayZ3R0/sonami-gtk/pkg/tidalapi/models/v1"
+	"github.com/RayZ3R0/sonami-gtk/pkg/sonami"
 )
 
 type PaginatedV1Func[Intermediary any] func(ctx context.Context, resourceID string, opts *v1.ItemsOptions) (*v1.PaginatedResponse[Intermediary], error)
@@ -21,7 +21,7 @@ type paginatorV1[Intermediary any, Output any] struct {
 	items []Output
 }
 
-func NewPaginatorV1[Intermediary any, Output any](resource PaginatedV1Func[Intermediary], resourceID string, resolver PaginatedV1Resolver[Intermediary, Output], included ...string) tonearm.Paginator[Output] {
+func NewPaginatorV1[Intermediary any, Output any](resource PaginatedV1Func[Intermediary], resourceID string, resolver PaginatedV1Resolver[Intermediary, Output], included ...string) sonami.Paginator[Output] {
 	return &paginatorV1[Intermediary, Output]{
 		resolver:   resolver,
 		resource:   resource,

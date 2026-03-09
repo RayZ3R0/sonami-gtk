@@ -1,4 +1,4 @@
-package tonearm
+package sonami
 
 import "time"
 

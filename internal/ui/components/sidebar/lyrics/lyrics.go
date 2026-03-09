@@ -5,15 +5,15 @@ import (
 	"runtime"
 	"time"
 
-	"codeberg.org/dergs/tonearm/internal/gettext"
-	"codeberg.org/dergs/tonearm/internal/player"
-	"codeberg.org/dergs/tonearm/internal/signals"
-	"codeberg.org/dergs/tonearm/internal/ui/components/sidebar"
-	"codeberg.org/dergs/tonearm/pkg/schwifty"
-	"codeberg.org/dergs/tonearm/pkg/schwifty/state"
-	. "codeberg.org/dergs/tonearm/pkg/schwifty/syntax"
-	"codeberg.org/dergs/tonearm/pkg/schwifty/utils/weak"
-	"codeberg.org/dergs/tonearm/pkg/tonearm"
+	"github.com/RayZ3R0/sonami-gtk/internal/gettext"
+	"github.com/RayZ3R0/sonami-gtk/internal/player"
+	"github.com/RayZ3R0/sonami-gtk/internal/signals"
+	"github.com/RayZ3R0/sonami-gtk/internal/ui/components/sidebar"
+	"github.com/RayZ3R0/sonami-gtk/pkg/schwifty"
+	"github.com/RayZ3R0/sonami-gtk/pkg/schwifty/state"
+	. "github.com/RayZ3R0/sonami-gtk/pkg/schwifty/syntax"
+	"github.com/RayZ3R0/sonami-gtk/pkg/schwifty/utils/weak"
+	"github.com/RayZ3R0/sonami-gtk/pkg/sonami"
 	"codeberg.org/puregotk/puregotk/v4/gtk"
 )
 
@@ -61,7 +61,7 @@ func (s lyricsStatus) ToGTK() *gtk.Widget {
 }
 
 func init() {
-	player.TrackChanged.OnLazy(func(trackInfo tonearm.Track) bool {
+	player.TrackChanged.OnLazy(func(trackInfo sonami.Track) bool {
 		adj := lyricsView().GetVadjustment()
 		defer adj.Unref()
 		adj.SetValue(0)
@@ -104,7 +104,7 @@ func init() {
 func NewLyricsPanel() schwifty.Box {
 	trackLoaded := state.NewStateful(false)
 
-	player.TrackChanged.On(func(t tonearm.Track) bool {
+	player.TrackChanged.On(func(t sonami.Track) bool {
 		trackLoaded.SetValue(t != nil)
 		return signals.Continue
 	})

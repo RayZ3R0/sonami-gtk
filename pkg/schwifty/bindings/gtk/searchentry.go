@@ -1,11 +1,11 @@
 package gtk
 
 import (
-	"codeberg.org/dergs/tonearm/pkg/schwifty/callback"
+	"github.com/RayZ3R0/sonami-gtk/pkg/schwifty/callback"
 	"codeberg.org/puregotk/puregotk/v4/gtk"
 )
 
-//go:generate go run codeberg.org/dergs/tonearm/pkg/schwifty/gen SearchEntry *gtk.SearchEntry gtk
+//go:generate go run github.com/RayZ3R0/sonami-gtk/pkg/schwifty/gen SearchEntry *gtk.SearchEntry gtk
 
 func (f SearchEntry) ConnectActivate(cb func(gtk.SearchEntry)) SearchEntry {
 	return func() *gtk.SearchEntry {

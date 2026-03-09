@@ -4,12 +4,12 @@ import (
 	"fmt"
 	"log/slog"
 
-	"codeberg.org/dergs/tonearm/internal/g"
-	"codeberg.org/dergs/tonearm/internal/gettext"
-	// "codeberg.org/dergs/tonearm/internal/state"           // deferred: local favourites
-	// favouritebutton "codeberg.org/dergs/tonearm/internal/ui/components/favourite_button" // deferred
-	. "codeberg.org/dergs/tonearm/pkg/schwifty/syntax"
-	"codeberg.org/dergs/tonearm/pkg/tonearm"
+	"github.com/RayZ3R0/sonami-gtk/internal/g"
+	"github.com/RayZ3R0/sonami-gtk/internal/gettext"
+	// "github.com/RayZ3R0/sonami-gtk/internal/state"           // deferred: local favourites
+	// favouritebutton "github.com/RayZ3R0/sonami-gtk/internal/ui/components/favourite_button" // deferred
+	. "github.com/RayZ3R0/sonami-gtk/pkg/schwifty/syntax"
+	"github.com/RayZ3R0/sonami-gtk/pkg/sonami"
 	"codeberg.org/puregotk/puregotk/v4/gio"
 	"codeberg.org/puregotk/puregotk/v4/glib"
 	"codeberg.org/puregotk/puregotk/v4/gtk"
@@ -81,7 +81,7 @@ func controlsColumn(trackId, albumId string, artistId []lightArtist, grid *gtk.G
 	return 1
 }
 
-func ControlsColumn(track tonearm.Track, grid *gtk.Grid, position int, column int32) int {
+func ControlsColumn(track sonami.Track, grid *gtk.Grid, position int, column int32) int {
 	if track == nil {
 		grid.Attach(
 			Box(gtk.OrientationHorizontalValue).ToGTK(),
@@ -97,7 +97,7 @@ func ControlsColumn(track tonearm.Track, grid *gtk.Grid, position int, column in
 		track.Album().ID(),
 		g.Map(
 			track.Artists(),
-			func(artist tonearm.ArtistInfo) lightArtist {
+			func(artist sonami.ArtistInfo) lightArtist {
 				return lightArtist{
 					Name: artist.Title(),
 					ID:   artist.ID(),

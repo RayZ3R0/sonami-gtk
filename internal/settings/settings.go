@@ -1,10 +1,10 @@
 package settings
 
 import (
-	"codeberg.org/dergs/tonearm/internal/g"
-	"codeberg.org/dergs/tonearm/pkg/schwifty/callback"
-	"codeberg.org/dergs/tonearm/pkg/schwifty/tracking"
-	"codeberg.org/dergs/tonearm/pkg/utils/cutil"
+	"github.com/RayZ3R0/sonami-gtk/internal/g"
+	"github.com/RayZ3R0/sonami-gtk/pkg/schwifty/callback"
+	"github.com/RayZ3R0/sonami-gtk/pkg/schwifty/tracking"
+	"github.com/RayZ3R0/sonami-gtk/pkg/utils/cutil"
 	"codeberg.org/puregotk/puregotk/v4/gio"
 )
 
@@ -18,12 +18,12 @@ var (
 
 var General = g.Lazy(func() *GeneralSettings {
 	return &GeneralSettings{
-		finalize(gio.NewSettings("dev.dergs.Tonearm")),
+		finalize(gio.NewSettings("io.github.rayz3r0.SonamiGtk")),
 	}
 })
 
 var Playback = g.Lazy(func() *PlaybackSettings {
-	settings := gio.NewSettings("dev.dergs.Tonearm.playback")
+	settings := gio.NewSettings("io.github.rayz3r0.SonamiGtk.playback")
 	settings.ConnectChanged(&GioSettingsChangedCallback)
 	tracking.Track(settings.GoPointer(), "Settings")
 	return &PlaybackSettings{
@@ -33,12 +33,12 @@ var Playback = g.Lazy(func() *PlaybackSettings {
 
 var Performance = g.Lazy(func() *PerformanceSettings {
 	return &PerformanceSettings{
-		finalize(gio.NewSettings("dev.dergs.Tonearm.performance")),
+		finalize(gio.NewSettings("io.github.rayz3r0.SonamiGtk.performance")),
 	}
 })
 
 var Player = g.Lazy(func() *PlayerSettings {
-	settings := gio.NewSettings("dev.dergs.Tonearm.player")
+	settings := gio.NewSettings("io.github.rayz3r0.SonamiGtk.player")
 	settings.ConnectChanged(&GioSettingsChangedCallback)
 	tracking.Track(settings.GoPointer(), "Settings")
 	return &PlayerSettings{
@@ -48,13 +48,13 @@ var Player = g.Lazy(func() *PlayerSettings {
 
 var Scrobbling = g.Lazy(func() *ScrobblingSettings {
 	return &ScrobblingSettings{
-		finalize(gio.NewSettings("dev.dergs.Tonearm.scrobbling")),
+		finalize(gio.NewSettings("io.github.rayz3r0.SonamiGtk.scrobbling")),
 	}
 })
 
 var Streaming = g.Lazy(func() *StreamingSettings {
 	return &StreamingSettings{
-		finalize(gio.NewSettings("dev.dergs.Tonearm.streaming")),
+		finalize(gio.NewSettings("io.github.rayz3r0.SonamiGtk.streaming")),
 	}
 })
 

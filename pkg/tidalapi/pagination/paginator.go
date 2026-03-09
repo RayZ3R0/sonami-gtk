@@ -4,7 +4,7 @@ import (
 	"context"
 	"fmt"
 
-	"codeberg.org/dergs/tonearm/pkg/tidalapi/models/openapi"
+	"github.com/RayZ3R0/sonami-gtk/pkg/tidalapi/models/openapi"
 )
 
 type Paginated func(context.Context, string, string, ...string) (*openapi.Response[[]openapi.Relationship], error)

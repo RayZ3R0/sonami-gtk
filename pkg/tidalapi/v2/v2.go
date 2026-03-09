@@ -1,11 +1,11 @@
 package v2
 
 import (
-	"codeberg.org/dergs/tonearm/pkg/tidalapi/internal"
-	"codeberg.org/dergs/tonearm/pkg/tidalapi/v2/artist"
-	"codeberg.org/dergs/tonearm/pkg/tidalapi/v2/favourites"
-	"codeberg.org/dergs/tonearm/pkg/tidalapi/v2/feed"
-	"codeberg.org/dergs/tonearm/pkg/tidalapi/v2/home"
+	"github.com/RayZ3R0/sonami-gtk/pkg/tidalapi/internal"
+	"github.com/RayZ3R0/sonami-gtk/pkg/tidalapi/v2/artist"
+	"github.com/RayZ3R0/sonami-gtk/pkg/tidalapi/v2/favourites"
+	"github.com/RayZ3R0/sonami-gtk/pkg/tidalapi/v2/feed"
+	"github.com/RayZ3R0/sonami-gtk/pkg/tidalapi/v2/home"
 )
 
 type V2 struct {

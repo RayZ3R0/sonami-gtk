@@ -7,7 +7,7 @@ import (
 	"io"
 	"net/http"
 
-	"codeberg.org/dergs/tonearm/internal/settings"
+	"github.com/RayZ3R0/sonami-gtk/internal/settings"
 )
 
 func (i *ImgUtil) fetch(url string) ([]byte, error) {

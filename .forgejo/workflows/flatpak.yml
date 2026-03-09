@@ -24,7 +24,7 @@ jobs:
         uses: https://code.forgejo.org/actions/cache@v4
         with:
           path: ~/.local/share/flatpak
-          key: flatpak-builder-${{ hashFiles('build/flatpak/dev.dergs.Tonearm.yaml', 'build/flatpak/go.mod.yml') }}
+          key: flatpak-builder-${{ hashFiles('build/flatpak/dev.dergs.Sonami.yaml', 'build/flatpak/go.mod.yml') }}
           restore-keys: |
             flatpak-builder-
 
@@ -33,17 +33,17 @@ jobs:
           flatpak-builder --user --repo=repo --disable-rofiles-fuse \
             --install-deps-from=flathub \
             --force-clean --default-branch=master \
-            flatpak_app build/flatpak/dev.dergs.Tonearm.yaml
+            flatpak_app build/flatpak/dev.dergs.Sonami.yaml
 
       - name: Create bundle
         run: |
-          flatpak build-bundle repo dev.dergs.Tonearm.flatpak \
+          flatpak build-bundle repo dev.dergs.Sonami.flatpak \
             --runtime-repo=https://flathub.org/repo/flathub.flatpakrepo \
-            --arch=x86_64 dev.dergs.Tonearm master
+            --arch=x86_64 dev.dergs.Sonami master
 
       - name: Upload artifact
         uses: https://code.forgejo.org/forgejo/upload-artifact@v4
         with:
-          name: dev.dergs.Tonearm-x86_64.flatpak
-          path: dev.dergs.Tonearm.flatpak
+          name: dev.dergs.Sonami-x86_64.flatpak
+          path: dev.dergs.Sonami.flatpak
           retention-days: ${{ github.ref == 'refs/heads/main' && 7 || 3 }}

@@ -3,14 +3,14 @@ package gtk
 import (
 	"sync"
 
-	"codeberg.org/dergs/tonearm/internal/signals"
-	"codeberg.org/dergs/tonearm/pkg/schwifty/callback"
-	"codeberg.org/dergs/tonearm/pkg/schwifty/state"
-	"codeberg.org/dergs/tonearm/pkg/schwifty/utils/weak"
+	"github.com/RayZ3R0/sonami-gtk/internal/signals"
+	"github.com/RayZ3R0/sonami-gtk/pkg/schwifty/callback"
+	"github.com/RayZ3R0/sonami-gtk/pkg/schwifty/state"
+	"github.com/RayZ3R0/sonami-gtk/pkg/schwifty/utils/weak"
 	"codeberg.org/puregotk/puregotk/v4/gtk"
 )
 
-//go:generate go run codeberg.org/dergs/tonearm/pkg/schwifty/gen ScrolledWindow *gtk.ScrolledWindow gtk
+//go:generate go run github.com/RayZ3R0/sonami-gtk/pkg/schwifty/gen ScrolledWindow *gtk.ScrolledWindow gtk
 
 func (f ScrolledWindow) BindChild(state *state.State[any]) ScrolledWindow {
 	return func() *gtk.ScrolledWindow {

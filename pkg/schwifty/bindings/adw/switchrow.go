@@ -2,7 +2,7 @@ package adw
 
 import "codeberg.org/puregotk/puregotk/v4/adw"
 
-//go:generate go run codeberg.org/dergs/tonearm/pkg/schwifty/gen SwitchRow *adw.SwitchRow adw
+//go:generate go run github.com/RayZ3R0/sonami-gtk/pkg/schwifty/gen SwitchRow *adw.SwitchRow adw
 
 func (f SwitchRow) Subtitle(subtitle string) SwitchRow {
 	return func() *adw.SwitchRow {

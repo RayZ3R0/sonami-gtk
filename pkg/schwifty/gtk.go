@@ -1,6 +1,6 @@
 package schwifty
 
-import "codeberg.org/dergs/tonearm/pkg/schwifty/bindings/gtk"
+import "github.com/RayZ3R0/sonami-gtk/pkg/schwifty/bindings/gtk"
 
 type AspectFrame = gtk.AspectFrame
 

@@ -3,11 +3,11 @@ package gtk
 import (
 	"reflect"
 
-	"codeberg.org/dergs/tonearm/pkg/schwifty/callback"
+	"github.com/RayZ3R0/sonami-gtk/pkg/schwifty/callback"
 	"codeberg.org/puregotk/puregotk/v4/gtk"
 )
 
-//go:generate go run codeberg.org/dergs/tonearm/pkg/schwifty/gen Widget *WrappedWidget gtk
+//go:generate go run github.com/RayZ3R0/sonami-gtk/pkg/schwifty/gen Widget *WrappedWidget gtk
 type WrappedWidget struct {
 	gtk.Widget
 }

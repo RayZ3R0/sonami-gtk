@@ -1,7 +1,7 @@
 package adw
 
 import (
-	"codeberg.org/dergs/tonearm/pkg/schwifty/bindings"
+	"github.com/RayZ3R0/sonami-gtk/pkg/schwifty/bindings"
 	"codeberg.org/puregotk/puregotk/v4/adw"
 )
 

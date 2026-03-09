@@ -1,8 +1,8 @@
 package openapi
 
 import (
-	"codeberg.org/dergs/tonearm/pkg/tidalapi/models/openapi"
-	"codeberg.org/dergs/tonearm/pkg/tonearm"
+	"github.com/RayZ3R0/sonami-gtk/pkg/tidalapi/models/openapi"
+	"github.com/RayZ3R0/sonami-gtk/pkg/sonami"
 )
 
 var artistInfoLogger = logger.With("type", "ArtistInfo").WithGroup("artist_info")
@@ -32,8 +32,8 @@ func (a ArtistInfo) Route() string {
 	return "artist/" + a.ID()
 }
 
-func (a ArtistInfo) SourceType() tonearm.SourceType {
-	return tonearm.SourceTypeArtist
+func (a ArtistInfo) SourceType() sonami.SourceType {
+	return sonami.SourceTypeArtist
 }
 
 func (a ArtistInfo) Title() string {
@@ -44,6 +44,6 @@ func (a ArtistInfo) URL() string {
 	return "https://tidal.com/artist/" + a.ID()
 }
 
-func NewArtistInfo(artist openapi.Artist) tonearm.ArtistInfo {
+func NewArtistInfo(artist openapi.Artist) sonami.ArtistInfo {
 	return &ArtistInfo{artist}
 }

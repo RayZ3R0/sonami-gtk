@@ -1,8 +1,8 @@
 package openapi
 
 import (
-	"codeberg.org/dergs/tonearm/pkg/tidalapi/internal"
-	v2 "codeberg.org/dergs/tonearm/pkg/tidalapi/openapi/v2"
+	"github.com/RayZ3R0/sonami-gtk/pkg/tidalapi/internal"
+	v2 "github.com/RayZ3R0/sonami-gtk/pkg/tidalapi/openapi/v2"
 )
 
 type OpenAPI struct {

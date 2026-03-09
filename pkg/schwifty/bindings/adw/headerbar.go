@@ -1,15 +1,15 @@
 package adw
 
 import (
-	gtkbindings "codeberg.org/dergs/tonearm/pkg/schwifty/bindings/gtk"
-	"codeberg.org/dergs/tonearm/pkg/schwifty/callback"
-	"codeberg.org/dergs/tonearm/pkg/schwifty/state"
-	"codeberg.org/dergs/tonearm/pkg/schwifty/utils/weak"
+	gtkbindings "github.com/RayZ3R0/sonami-gtk/pkg/schwifty/bindings/gtk"
+	"github.com/RayZ3R0/sonami-gtk/pkg/schwifty/callback"
+	"github.com/RayZ3R0/sonami-gtk/pkg/schwifty/state"
+	"github.com/RayZ3R0/sonami-gtk/pkg/schwifty/utils/weak"
 	"codeberg.org/puregotk/puregotk/v4/adw"
 	"codeberg.org/puregotk/puregotk/v4/gtk"
 )
 
-//go:generate go run codeberg.org/dergs/tonearm/pkg/schwifty/gen HeaderBar *adw.HeaderBar adw
+//go:generate go run github.com/RayZ3R0/sonami-gtk/pkg/schwifty/gen HeaderBar *adw.HeaderBar adw
 
 func (f HeaderBar) BindDecorationLayout(state *state.State[string]) HeaderBar {
 	return func() *adw.HeaderBar {

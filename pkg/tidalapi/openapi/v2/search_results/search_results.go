@@ -1,6 +1,6 @@
 package search_results
 
-import "codeberg.org/dergs/tonearm/pkg/tidalapi/internal"
+import "github.com/RayZ3R0/sonami-gtk/pkg/tidalapi/internal"
 
 type SearchResults struct {
 	client *internal.Client

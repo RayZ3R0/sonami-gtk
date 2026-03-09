@@ -7,8 +7,8 @@ import (
 	"net/http"
 	"strings"
 
-	"codeberg.org/dergs/tonearm/internal/settings"
-	"codeberg.org/dergs/tonearm/pkg/tonearm"
+	"github.com/RayZ3R0/sonami-gtk/internal/settings"
+	"github.com/RayZ3R0/sonami-gtk/pkg/sonami"
 )
 
 type listenBrainzListenType string
@@ -26,7 +26,7 @@ func init() {
 	Scrobblers = append(Scrobblers, &ListenBrainzScrobbler)
 }
 
-func (scrobbler *ListenBrainzScrobblerType) NowPlaying(track tonearm.Track) {
+func (scrobbler *ListenBrainzScrobblerType) NowPlaying(track sonami.Track) {
 	scrobbler.makeRequest(scrobbler.generateRequest(track, listenBrainzListenTypePlayingNow))
 }
 
@@ -85,7 +85,7 @@ func (scrobbler *ListenBrainzScrobblerType) IsConfigured() bool {
 	return true
 }
 
-func (scrobbler *ListenBrainzScrobblerType) generateRequest(track tonearm.Track, listenType listenBrainzListenType) listenBrainzRequest {
+func (scrobbler *ListenBrainzScrobblerType) generateRequest(track sonami.Track, listenType listenBrainzListenType) listenBrainzRequest {
 	return listenBrainzRequest{
 		ListenType: listenType,
 		Payload: []listenBrainzPayload{
@@ -94,10 +94,10 @@ func (scrobbler *ListenBrainzScrobblerType) generateRequest(track tonearm.Track,
 					TrackName:  track.Title(),
 					ArtistName: strings.Join(track.Artists().Names(), ", "),
 					AdditionalInfo: listenBrainzAdditionalInfo{
-						MediaPlayer:      "Tonearm",
+						MediaPlayer:      "Sonami",
 						MusicService:     "tidal.com",
 						OriginURL:        track.URL(),
-						SubmissionClient: "Tonearm",
+						SubmissionClient: "Sonami",
 						DurationMs:       int(track.Duration().Milliseconds()),
 					},
 				},

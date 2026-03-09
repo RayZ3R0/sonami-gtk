@@ -1,12 +1,12 @@
 package adw
 
 import (
-	"codeberg.org/dergs/tonearm/pkg/schwifty/bindings"
-	"codeberg.org/dergs/tonearm/pkg/schwifty/bindings/gtk"
+	"github.com/RayZ3R0/sonami-gtk/pkg/schwifty/bindings"
+	"github.com/RayZ3R0/sonami-gtk/pkg/schwifty/bindings/gtk"
 	"codeberg.org/puregotk/puregotk/v4/adw"
 )
 
-//go:generate go run codeberg.org/dergs/tonearm/pkg/schwifty/gen ShortcutsDialog *adw.ShortcutsDialog adw
+//go:generate go run github.com/RayZ3R0/sonami-gtk/pkg/schwifty/gen ShortcutsDialog *adw.ShortcutsDialog adw
 
 func (f ShortcutsDialog) Add(child any) ShortcutsDialog {
 	return func() *adw.ShortcutsDialog {

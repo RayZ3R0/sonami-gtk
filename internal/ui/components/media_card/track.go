@@ -3,12 +3,12 @@ package media_card
 import (
 	"strings"
 
-	"codeberg.org/dergs/tonearm/pkg/schwifty"
-	"codeberg.org/dergs/tonearm/pkg/tonearm"
+	"github.com/RayZ3R0/sonami-gtk/pkg/schwifty"
+	"github.com/RayZ3R0/sonami-gtk/pkg/sonami"
 	"codeberg.org/puregotk/puregotk/v4/glib"
 )
 
-func NewTrack(track tonearm.Track) schwifty.Button {
+func NewTrack(track sonami.Track) schwifty.Button {
 	return Card(
 		track.Title(),
 		SubTitle(strings.Join(track.Artists().Names(), ", ")),

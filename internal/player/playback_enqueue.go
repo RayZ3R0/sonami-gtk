@@ -6,8 +6,8 @@ import (
 	"fmt"
 	"os"
 
-	"codeberg.org/dergs/tonearm/internal/settings"
-	v1 "codeberg.org/dergs/tonearm/pkg/tidalapi/models/v1"
+	"github.com/RayZ3R0/sonami-gtk/internal/settings"
+	v1 "github.com/RayZ3R0/sonami-gtk/pkg/tidalapi/models/v1"
 )
 
 var (

@@ -6,15 +6,15 @@ import (
 	"strings"
 	"unsafe"
 
-	"codeberg.org/dergs/tonearm/internal/gettext"
-	"codeberg.org/dergs/tonearm/internal/notifications"
-	"codeberg.org/dergs/tonearm/internal/player"
-	"codeberg.org/dergs/tonearm/internal/router"
-	v2 "codeberg.org/dergs/tonearm/internal/services/tidal/v2"
-	"codeberg.org/dergs/tonearm/internal/settings"
-	"codeberg.org/dergs/tonearm/pkg/tidalapi"
-	modelv2 "codeberg.org/dergs/tonearm/pkg/tidalapi/models/v2"
-	"codeberg.org/dergs/tonearm/pkg/tonearm"
+	"github.com/RayZ3R0/sonami-gtk/internal/gettext"
+	"github.com/RayZ3R0/sonami-gtk/internal/notifications"
+	"github.com/RayZ3R0/sonami-gtk/internal/player"
+	"github.com/RayZ3R0/sonami-gtk/internal/router"
+	v2 "github.com/RayZ3R0/sonami-gtk/internal/services/tidal/v2"
+	"github.com/RayZ3R0/sonami-gtk/internal/settings"
+	"github.com/RayZ3R0/sonami-gtk/pkg/tidalapi"
+	modelv2 "github.com/RayZ3R0/sonami-gtk/pkg/tidalapi/models/v2"
+	"github.com/RayZ3R0/sonami-gtk/pkg/sonami"
 	"codeberg.org/puregotk/puregotk/v4/gio"
 	"codeberg.org/puregotk/puregotk/v4/glib"
 	"codeberg.org/puregotk/puregotk/v4/gtk"
@@ -152,7 +152,7 @@ func (w *Window) installActions() {
 		case "track":
 			player.AddTrackToUserQueue(id)
 		case "album":
-			service := injector.MustInject[tonearm.Service]()
+			service := injector.MustInject[sonami.Service]()
 			go func() {
 				paginator, err := service.GetAlbumTracks(id)
 				if err != nil {
@@ -169,7 +169,7 @@ func (w *Window) installActions() {
 				player.AddTracklistToUserQueue(tracks)
 			}()
 		case "playlist":
-			service := injector.MustInject[tonearm.Service]()
+			service := injector.MustInject[sonami.Service]()
 			go func() {
 				paginator, err := service.GetPlaylistTracks(id)
 				if err != nil {
@@ -202,7 +202,7 @@ func (w *Window) installActions() {
 					}
 				}
 
-				var topTracks []tonearm.Track
+				var topTracks []sonami.Track
 				for _, legacyTopTrackItem := range module.Items {
 					if legacyTopTrackItem.Type == modelv2.ItemTypeTrack {
 						topTracks = append(topTracks, v2.NewTrack(*legacyTopTrackItem.Data.Track))

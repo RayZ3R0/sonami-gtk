@@ -5,15 +5,15 @@ import (
 	"strings"
 	"time"
 
-	"codeberg.org/dergs/tonearm/internal/features/scrobbling/lastfm"
-	"codeberg.org/dergs/tonearm/internal/gettext"
-	"codeberg.org/dergs/tonearm/internal/settings"
-	"codeberg.org/dergs/tonearm/pkg/schwifty"
-	"codeberg.org/dergs/tonearm/pkg/tonearm"
+	"github.com/RayZ3R0/sonami-gtk/internal/features/scrobbling/lastfm"
+	"github.com/RayZ3R0/sonami-gtk/internal/gettext"
+	"github.com/RayZ3R0/sonami-gtk/internal/settings"
+	"github.com/RayZ3R0/sonami-gtk/pkg/schwifty"
+	"github.com/RayZ3R0/sonami-gtk/pkg/sonami"
 
-	adwbindings "codeberg.org/dergs/tonearm/pkg/schwifty/bindings/adw"
-	. "codeberg.org/dergs/tonearm/pkg/schwifty/syntax"
-	"codeberg.org/dergs/tonearm/pkg/schwifty/utils/weak"
+	adwbindings "github.com/RayZ3R0/sonami-gtk/pkg/schwifty/bindings/adw"
+	. "github.com/RayZ3R0/sonami-gtk/pkg/schwifty/syntax"
+	"github.com/RayZ3R0/sonami-gtk/pkg/schwifty/utils/weak"
 	"codeberg.org/puregotk/puregotk/v4/adw"
 	"codeberg.org/puregotk/puregotk/v4/gtk"
 	"github.com/infinytum/injector"
@@ -149,7 +149,7 @@ func (scrobbler *LastFm) GetName() string {
 	return "Last.fm"
 }
 
-func (scrobbler *LastFm) NowPlaying(track tonearm.Track) {
+func (scrobbler *LastFm) NowPlaying(track sonami.Track) {
 	if !scrobbler.IsConfigured() {
 		return
 	}

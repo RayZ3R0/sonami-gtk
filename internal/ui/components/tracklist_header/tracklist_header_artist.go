@@ -3,24 +3,24 @@ package tracklist_header
 import (
 	"fmt"
 
-	"codeberg.org/dergs/tonearm/internal/gettext"
-	appState "codeberg.org/dergs/tonearm/internal/state"
-	// favouritebutton "codeberg.org/dergs/tonearm/internal/ui/components/favourite_button" // deferred: local favourites
-	"codeberg.org/dergs/tonearm/pkg/schwifty"
-	"codeberg.org/dergs/tonearm/pkg/schwifty/tracking"
-	"codeberg.org/dergs/tonearm/pkg/tonearm"
+	"github.com/RayZ3R0/sonami-gtk/internal/gettext"
+	appState "github.com/RayZ3R0/sonami-gtk/internal/state"
+	// favouritebutton "github.com/RayZ3R0/sonami-gtk/internal/ui/components/favourite_button" // deferred: local favourites
+	"github.com/RayZ3R0/sonami-gtk/pkg/schwifty"
+	"github.com/RayZ3R0/sonami-gtk/pkg/schwifty/tracking"
+	"github.com/RayZ3R0/sonami-gtk/pkg/sonami"
 	"codeberg.org/puregotk/puregotk/v4/gio"
 	"codeberg.org/puregotk/puregotk/v4/glib"
 	"codeberg.org/puregotk/puregotk/v4/gtk"
 )
 
-func secondaryControlsArtist(artist tonearm.Artist, popover *gtk.PopoverMenu) schwifty.Box {
+func secondaryControlsArtist(artist sonami.Artist, popover *gtk.PopoverMenu) schwifty.Box {
 	// Favourite button deferred — see hifi/deferred_features.md
 	_ = appState.ArtistsCache
 	return componentSecondaryControls(artist, popover, nil)
 }
 
-func NewArtist(artist tonearm.Artist, playFunc func(), shuffleFunc func()) schwifty.Widget {
+func NewArtist(artist sonami.Artist, playFunc func(), shuffleFunc func()) schwifty.Widget {
 	coverUrl := artist.Cover(154)
 	title := artist.Title()
 	fans := gettext.GetN("%d Fan", "%d Fans", artist.FollowerCount(), artist.FollowerCount())

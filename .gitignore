@@ -4,6 +4,8 @@ __debug_bin*
 .flatpak-builder/
 repo/
 *.flatpak
+/sonami-gtk
+/sonami
 /tonearm
 
 

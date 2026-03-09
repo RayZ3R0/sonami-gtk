@@ -1,6 +1,6 @@
 package favourites
 
-import "codeberg.org/dergs/tonearm/pkg/tidalapi/internal"
+import "github.com/RayZ3R0/sonami-gtk/pkg/tidalapi/internal"
 
 type Favourites struct {
 	client *internal.Client

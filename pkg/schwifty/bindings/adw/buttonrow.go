@@ -2,7 +2,7 @@ package adw
 
 import "codeberg.org/puregotk/puregotk/v4/adw"
 
-//go:generate go run codeberg.org/dergs/tonearm/pkg/schwifty/gen ButtonRow *adw.ButtonRow adw
+//go:generate go run github.com/RayZ3R0/sonami-gtk/pkg/schwifty/gen ButtonRow *adw.ButtonRow adw
 
 func (f ButtonRow) Title(title string) ButtonRow {
 	return func() *adw.ButtonRow {

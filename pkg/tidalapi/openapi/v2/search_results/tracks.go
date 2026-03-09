@@ -8,7 +8,7 @@ import (
 	"net/url"
 	"strings"
 
-	"codeberg.org/dergs/tonearm/pkg/tidalapi/models/openapi"
+	"github.com/RayZ3R0/sonami-gtk/pkg/tidalapi/models/openapi"
 )
 
 func (p *SearchResults) Tracks(ctx context.Context, query string, cursor string, include ...string) (*openapi.Response[[]openapi.Relationship], error) {

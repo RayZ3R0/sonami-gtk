@@ -1,8 +1,8 @@
 package openapi
 
 import (
-	"codeberg.org/dergs/tonearm/internal/gettext"
-	"codeberg.org/dergs/tonearm/pkg/tonearm"
+	"github.com/RayZ3R0/sonami-gtk/internal/gettext"
+	"github.com/RayZ3R0/sonami-gtk/pkg/sonami"
 )
 
 type MyTracksInfo struct{}
@@ -19,8 +19,8 @@ func (m MyTracksInfo) Title() string {
 	return gettext.Get("My Tracks")
 }
 
-func (m MyTracksInfo) SourceType() tonearm.SourceType {
-	return tonearm.SourceTypePlaylist
+func (m MyTracksInfo) SourceType() sonami.SourceType {
+	return sonami.SourceTypePlaylist
 }
 
 func (m MyTracksInfo) URL() string {

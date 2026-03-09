@@ -1,13 +1,13 @@
 package ui
 
 import (
-	"codeberg.org/dergs/tonearm/internal/g"
-	"codeberg.org/dergs/tonearm/internal/notifications"
-	"codeberg.org/dergs/tonearm/internal/router"
-	"codeberg.org/dergs/tonearm/internal/settings"
-	"codeberg.org/dergs/tonearm/internal/signals"
-	"codeberg.org/dergs/tonearm/pkg/schwifty"
-	. "codeberg.org/dergs/tonearm/pkg/schwifty/syntax"
+	"github.com/RayZ3R0/sonami-gtk/internal/g"
+	"github.com/RayZ3R0/sonami-gtk/internal/notifications"
+	"github.com/RayZ3R0/sonami-gtk/internal/router"
+	"github.com/RayZ3R0/sonami-gtk/internal/settings"
+	"github.com/RayZ3R0/sonami-gtk/internal/signals"
+	"github.com/RayZ3R0/sonami-gtk/pkg/schwifty"
+	. "github.com/RayZ3R0/sonami-gtk/pkg/schwifty/syntax"
 	"codeberg.org/puregotk/puregotk/v4/adw"
 	"codeberg.org/puregotk/puregotk/v4/gio"
 	"codeberg.org/puregotk/puregotk/v4/glib"
@@ -15,8 +15,8 @@ import (
 	"codeberg.org/puregotk/puregotk/v4/gtk"
 	"github.com/infinytum/injector"
 
-	"codeberg.org/dergs/tonearm/internal/ui/components"
-	_ "codeberg.org/dergs/tonearm/internal/ui/routes"
+	"github.com/RayZ3R0/sonami-gtk/internal/ui/components"
+	_ "github.com/RayZ3R0/sonami-gtk/internal/ui/routes"
 )
 
 type Window struct {
@@ -44,7 +44,7 @@ func NewWindow(app *adw.Application) *Window {
 	window.installMouseClickHandler()
 
 	window.SetContent(window.build())
-	window.SetTitle("Tonearm")
+	window.SetTitle("Sonami")
 	window.SetIconName("logo-symbolic")
 	window.SetDefaultSize(settings.General().GetWindowWidth(), settings.General().GetWindowHeight())
 	// For some reason the bindings do not allow to specify which property

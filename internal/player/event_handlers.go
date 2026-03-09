@@ -4,11 +4,11 @@ import (
 	"context"
 	"time"
 
-	"codeberg.org/dergs/tonearm/internal/settings"
-	"codeberg.org/dergs/tonearm/internal/signals"
-	"codeberg.org/dergs/tonearm/pkg/tidalapi"
-	v1 "codeberg.org/dergs/tonearm/pkg/tidalapi/models/v1"
-	"codeberg.org/dergs/tonearm/pkg/tonearm"
+	"github.com/RayZ3R0/sonami-gtk/internal/settings"
+	"github.com/RayZ3R0/sonami-gtk/internal/signals"
+	"github.com/RayZ3R0/sonami-gtk/pkg/tidalapi"
+	v1 "github.com/RayZ3R0/sonami-gtk/pkg/tidalapi/models/v1"
+	"github.com/RayZ3R0/sonami-gtk/pkg/sonami"
 	"codeberg.org/puregotk/puregotk/v4/glib"
 	"github.com/go-gst/go-gst/gst"
 	"github.com/infinytum/injector"
@@ -48,7 +48,7 @@ func onAboutToFinish(_ *gst.Element) {
 		didQueueGaplessPlayback = true
 
 		// One-Shot Handler to update the track quality
-		TrackChanged.OnLazy(func(t tonearm.Track) bool {
+		TrackChanged.OnLazy(func(t sonami.Track) bool {
 			logger.Debug("triggered one-shot handler to propagate gapless playback quality")
 			PlaybackQualityChanged.Notify(func(oldValue v1.AudioQuality) v1.AudioQuality {
 				return playbackInfo.AudioQuality

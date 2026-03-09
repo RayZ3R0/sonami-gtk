@@ -1,10 +1,10 @@
 package shortcut_list
 
 import (
-	"codeberg.org/dergs/tonearm/internal/gettext"
-	"codeberg.org/dergs/tonearm/pkg/schwifty"
-	"codeberg.org/dergs/tonearm/pkg/tidalapi"
-	v2 "codeberg.org/dergs/tonearm/pkg/tidalapi/models/v2"
+	"github.com/RayZ3R0/sonami-gtk/internal/gettext"
+	"github.com/RayZ3R0/sonami-gtk/pkg/schwifty"
+	"github.com/RayZ3R0/sonami-gtk/pkg/tidalapi"
+	v2 "github.com/RayZ3R0/sonami-gtk/pkg/tidalapi/models/v2"
 	"codeberg.org/puregotk/puregotk/v4/glib"
 )
 

@@ -1,14 +1,14 @@
 package media_card
 
 import (
-	"codeberg.org/dergs/tonearm/internal/gettext"
-	"codeberg.org/dergs/tonearm/pkg/schwifty"
-	. "codeberg.org/dergs/tonearm/pkg/schwifty/syntax"
-	"codeberg.org/dergs/tonearm/pkg/tonearm"
+	"github.com/RayZ3R0/sonami-gtk/internal/gettext"
+	"github.com/RayZ3R0/sonami-gtk/pkg/schwifty"
+	. "github.com/RayZ3R0/sonami-gtk/pkg/schwifty/syntax"
+	"github.com/RayZ3R0/sonami-gtk/pkg/sonami"
 	"codeberg.org/puregotk/puregotk/v4/glib"
 )
 
-func NewPlaylist(playlist tonearm.Playlist) schwifty.Button {
+func NewPlaylist(playlist sonami.Playlist) schwifty.Button {
 	creatorName := "TIDAL"
 	if creator := playlist.Creator(); creator != nil {
 		creatorName = creator.Title()

@@ -3,7 +3,7 @@ package player
 import (
 	"sync"
 
-	"codeberg.org/dergs/tonearm/internal/signals"
+	"github.com/RayZ3R0/sonami-gtk/internal/signals"
 )
 
 var history = &History{

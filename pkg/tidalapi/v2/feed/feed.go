@@ -6,8 +6,8 @@ import (
 	"fmt"
 	"net/http"
 
-	"codeberg.org/dergs/tonearm/pkg/tidalapi/internal"
-	"codeberg.org/dergs/tonearm/pkg/tidalapi/models/v2/feed"
+	"github.com/RayZ3R0/sonami-gtk/pkg/tidalapi/internal"
+	"github.com/RayZ3R0/sonami-gtk/pkg/tidalapi/models/v2/feed"
 )
 
 type Feed struct {

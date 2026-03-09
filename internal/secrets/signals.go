@@ -1,8 +1,8 @@
 package secrets
 
 import (
-	"codeberg.org/dergs/tonearm/internal/signals"
-	"codeberg.org/dergs/tonearm/pkg/schwifty/state"
+	"github.com/RayZ3R0/sonami-gtk/internal/signals"
+	"github.com/RayZ3R0/sonami-gtk/pkg/schwifty/state"
 )
 
 // SignedInChanged and SignedInState are always true in account-free mode.

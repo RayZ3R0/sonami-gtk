@@ -1,8 +1,8 @@
 package tracklist
 
 import (
-	. "codeberg.org/dergs/tonearm/pkg/schwifty/syntax"
-	"codeberg.org/dergs/tonearm/pkg/tonearm"
+	. "github.com/RayZ3R0/sonami-gtk/pkg/schwifty/syntax"
+	"github.com/RayZ3R0/sonami-gtk/pkg/sonami"
 	"codeberg.org/puregotk/puregotk/v4/gtk"
 )
 
@@ -19,7 +19,7 @@ func groupedColumn(columns []any, width int32, grid *gtk.Grid, row int32, column
 }
 
 func GroupedColumn(width int32, align gtk.Align, columns ...ColumnFunc) ColumnFunc {
-	return func(track tonearm.Track, grid *gtk.Grid, position int, column int32) int {
+	return func(track sonami.Track, grid *gtk.Grid, position int, column int32) int {
 		subGrid := gtk.NewGrid()
 		subGrid.SetValign(gtk.AlignCenterValue)
 		subGrid.SetHalign(align)

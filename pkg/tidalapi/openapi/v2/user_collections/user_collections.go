@@ -1,6 +1,6 @@
 package user_collections
 
-import "codeberg.org/dergs/tonearm/pkg/tidalapi/internal"
+import "github.com/RayZ3R0/sonami-gtk/pkg/tidalapi/internal"
 
 type UserCollections struct {
 	client *internal.Client

@@ -1,13 +1,13 @@
 package v2
 
 import (
-	"codeberg.org/dergs/tonearm/pkg/tidalapi/internal"
-	"codeberg.org/dergs/tonearm/pkg/tidalapi/openapi/v2/albums"
-	"codeberg.org/dergs/tonearm/pkg/tidalapi/openapi/v2/artists"
-	"codeberg.org/dergs/tonearm/pkg/tidalapi/openapi/v2/playlists"
-	"codeberg.org/dergs/tonearm/pkg/tidalapi/openapi/v2/search_results"
-	"codeberg.org/dergs/tonearm/pkg/tidalapi/openapi/v2/tracks"
-	"codeberg.org/dergs/tonearm/pkg/tidalapi/openapi/v2/user_collections"
+	"github.com/RayZ3R0/sonami-gtk/pkg/tidalapi/internal"
+	"github.com/RayZ3R0/sonami-gtk/pkg/tidalapi/openapi/v2/albums"
+	"github.com/RayZ3R0/sonami-gtk/pkg/tidalapi/openapi/v2/artists"
+	"github.com/RayZ3R0/sonami-gtk/pkg/tidalapi/openapi/v2/playlists"
+	"github.com/RayZ3R0/sonami-gtk/pkg/tidalapi/openapi/v2/search_results"
+	"github.com/RayZ3R0/sonami-gtk/pkg/tidalapi/openapi/v2/tracks"
+	"github.com/RayZ3R0/sonami-gtk/pkg/tidalapi/openapi/v2/user_collections"
 )
 
 type V2 struct {

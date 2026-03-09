@@ -4,10 +4,10 @@ import (
 	"fmt"
 	"log/slog"
 
-	"codeberg.org/dergs/tonearm/internal/g"
-	"codeberg.org/dergs/tonearm/internal/settings"
-	v1 "codeberg.org/dergs/tonearm/pkg/tidalapi/models/v1"
-	"codeberg.org/dergs/tonearm/pkg/tonearm"
+	"github.com/RayZ3R0/sonami-gtk/internal/g"
+	"github.com/RayZ3R0/sonami-gtk/internal/settings"
+	v1 "github.com/RayZ3R0/sonami-gtk/pkg/tidalapi/models/v1"
+	"github.com/RayZ3R0/sonami-gtk/pkg/sonami"
 	"github.com/go-gst/go-gst/gst"
 )
 
@@ -130,7 +130,7 @@ func calculateAlbumMode() bool {
 		return mode == settings.ReplayGainModeAlbum
 	}
 
-	if source.SourceType() == tonearm.SourceTypeAlbum {
+	if source.SourceType() == sonami.SourceTypeAlbum {
 		return mode != settings.ReplayGainModeTrack
 	} else {
 		return mode == settings.ReplayGainModeAlbum

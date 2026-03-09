@@ -1,10 +1,10 @@
 package player
 
 import (
-	"codeberg.org/dergs/tonearm/internal/settings"
-	"codeberg.org/dergs/tonearm/internal/signals"
-	v1 "codeberg.org/dergs/tonearm/pkg/tidalapi/models/v1"
-	"codeberg.org/dergs/tonearm/pkg/tonearm"
+	"github.com/RayZ3R0/sonami-gtk/internal/settings"
+	"github.com/RayZ3R0/sonami-gtk/internal/signals"
+	v1 "github.com/RayZ3R0/sonami-gtk/pkg/tidalapi/models/v1"
+	"github.com/RayZ3R0/sonami-gtk/pkg/sonami"
 )
 
 // Holds the current audio stream quality.
@@ -38,7 +38,7 @@ var RepeatModeChanged = signals.NewStatefulSignal[RepeatMode](RepeatModeNone)
 // The value is 0 if shuffle mode is disabled.
 var ShuffleStateChanged = signals.NewStatefulSignal[bool](false)
 
-var SourceChanged = signals.NewStatefulSignal[tonearm.PlaybackSource](nil)
+var SourceChanged = signals.NewStatefulSignal[sonami.PlaybackSource](nil)
 
 // Holds the relevant information about the currently playing or last played track.
 // This can be nil if no track is currently playing. This is especially the case when
@@ -46,7 +46,7 @@ var SourceChanged = signals.NewStatefulSignal[tonearm.PlaybackSource](nil)
 //
 // The signal fires after the new track information has been retrieved from the TIDAL API
 // but always before the track starts playing.
-var TrackChanged = signals.NewStatefulSignal[tonearm.Track](nil)
+var TrackChanged = signals.NewStatefulSignal[sonami.Track](nil)
 
 // Holds the current volume of the player as reported by playbin
 //

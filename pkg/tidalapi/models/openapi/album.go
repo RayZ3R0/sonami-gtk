@@ -3,7 +3,7 @@ package openapi
 import (
 	"encoding/json"
 
-	"codeberg.org/dergs/tonearm/pkg/tidalapi/helper"
+	"github.com/RayZ3R0/sonami-gtk/pkg/tidalapi/helper"
 )
 
 type Album Response[AlbumData]

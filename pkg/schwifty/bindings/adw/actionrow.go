@@ -1,12 +1,12 @@
 package adw
 
 import (
-	"codeberg.org/dergs/tonearm/pkg/schwifty/bindings/gtk"
-	"codeberg.org/dergs/tonearm/pkg/schwifty/callback"
+	"github.com/RayZ3R0/sonami-gtk/pkg/schwifty/bindings/gtk"
+	"github.com/RayZ3R0/sonami-gtk/pkg/schwifty/callback"
 	"codeberg.org/puregotk/puregotk/v4/adw"
 )
 
-//go:generate go run codeberg.org/dergs/tonearm/pkg/schwifty/gen ActionRow *adw.ActionRow adw
+//go:generate go run github.com/RayZ3R0/sonami-gtk/pkg/schwifty/gen ActionRow *adw.ActionRow adw
 
 func (f ActionRow) Title(title string) ActionRow {
 	return func() *adw.ActionRow {

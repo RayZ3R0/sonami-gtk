@@ -3,25 +3,25 @@ package queue
 import (
 	"slices"
 
-	"codeberg.org/dergs/tonearm/internal/gettext"
-	"codeberg.org/dergs/tonearm/internal/player"
-	"codeberg.org/dergs/tonearm/internal/player/queue"
-	"codeberg.org/dergs/tonearm/internal/signals"
-	"codeberg.org/dergs/tonearm/internal/ui/components/tracklist"
-	"codeberg.org/dergs/tonearm/pkg/schwifty"
-	"codeberg.org/dergs/tonearm/pkg/schwifty/state"
-	. "codeberg.org/dergs/tonearm/pkg/schwifty/syntax"
-	"codeberg.org/dergs/tonearm/pkg/tonearm"
+	"github.com/RayZ3R0/sonami-gtk/internal/gettext"
+	"github.com/RayZ3R0/sonami-gtk/internal/player"
+	"github.com/RayZ3R0/sonami-gtk/internal/player/queue"
+	"github.com/RayZ3R0/sonami-gtk/internal/signals"
+	"github.com/RayZ3R0/sonami-gtk/internal/ui/components/tracklist"
+	"github.com/RayZ3R0/sonami-gtk/pkg/schwifty"
+	"github.com/RayZ3R0/sonami-gtk/pkg/schwifty/state"
+	. "github.com/RayZ3R0/sonami-gtk/pkg/schwifty/syntax"
+	"github.com/RayZ3R0/sonami-gtk/pkg/sonami"
 	"codeberg.org/puregotk/puregotk/v4/gtk"
 )
 
 var (
-	baseQueueState = state.NewStateful([]tonearm.Track{})
-	userQueueState = state.NewStateful([]tonearm.Track{})
+	baseQueueState = state.NewStateful([]sonami.Track{})
+	userQueueState = state.NewStateful([]sonami.Track{})
 )
 
 func init() {
-	player.BaseQueue.Entries().On(func(tracks []tonearm.Track) bool {
+	player.BaseQueue.Entries().On(func(tracks []sonami.Track) bool {
 		schwifty.OnMainThreadOnce(func(u uintptr) {
 			baseQueueState.SetValue(tracks)
 			filledState := queueFilledState.Value()
@@ -30,7 +30,7 @@ func init() {
 		}, 0)
 		return signals.Continue
 	})
-	player.UserQueue.Entries().On(func(tracks []tonearm.Track) bool {
+	player.UserQueue.Entries().On(func(tracks []sonami.Track) bool {
 		schwifty.OnMainThreadOnce(func(u uintptr) {
 			userQueueState.SetValue(tracks)
 			filledState := queueFilledState.Value()
@@ -42,7 +42,7 @@ func init() {
 
 }
 
-func makeQueueTracklist(q queue.Queue, queueState *state.State[[]tonearm.Track]) *tracklist.TrackList {
+func makeQueueTracklist(q queue.Queue, queueState *state.State[[]sonami.Track]) *tracklist.TrackList {
 	trackList := tracklist.NewTrackList(
 		tracklist.CoverColumn, tracklist.TitleAlbumColumn,
 		tracklist.CustomWidgetButtonColumn(func(_ string, position int, _ int32) *gtk.Widget {
@@ -58,17 +58,17 @@ func makeQueueTracklist(q queue.Queue, queueState *state.State[[]tonearm.Track])
 		}),
 	)
 
-	trackList.SetClickHandler(func(track tonearm.Track, position int) {
+	trackList.SetClickHandler(func(track sonami.Track, position int) {
 		go player.SkipThroughQueue(q, position)
 	})
 
 	trackList.BindTracks(queueState)
 
-	trackList.SetReorderCallback(func(sourceIndex, targetIndex int, track tonearm.Track) {
-		q.Entries().Notify(func(oldValue []tonearm.Track) []tonearm.Track {
+	trackList.SetReorderCallback(func(sourceIndex, targetIndex int, track sonami.Track) {
+		q.Entries().Notify(func(oldValue []sonami.Track) []sonami.Track {
 			q := slices.Clone(oldValue)
 			q = append(q[:sourceIndex], q[sourceIndex+1:]...)
-			q = append(q[:targetIndex], append([]tonearm.Track{track}, q[targetIndex:]...)...)
+			q = append(q[:targetIndex], append([]sonami.Track{track}, q[targetIndex:]...)...)
 			return q
 		})
 	})

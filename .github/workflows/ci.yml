@@ -38,4 +38,4 @@ jobs:
       - name: go build
         env:
           CGO_ENABLED: "1"
-        run: go build -v ./cmd/tonearm
+        run: go build -v ./cmd/sonami

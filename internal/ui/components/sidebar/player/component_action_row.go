@@ -5,19 +5,19 @@ import (
 	"slices"
 	"strconv"
 
-	"codeberg.org/dergs/tonearm/internal/gettext"
-	"codeberg.org/dergs/tonearm/internal/notifications"
-	"codeberg.org/dergs/tonearm/internal/player"
-	"codeberg.org/dergs/tonearm/internal/router"
-	"codeberg.org/dergs/tonearm/internal/secrets"
-	"codeberg.org/dergs/tonearm/internal/signals"
-	appState "codeberg.org/dergs/tonearm/internal/state"
-	"codeberg.org/dergs/tonearm/pkg/schwifty"
-	"codeberg.org/dergs/tonearm/pkg/schwifty/state"
-	. "codeberg.org/dergs/tonearm/pkg/schwifty/syntax"
-	"codeberg.org/dergs/tonearm/pkg/schwifty/utils/weak"
-	"codeberg.org/dergs/tonearm/pkg/tidalapi"
-	"codeberg.org/dergs/tonearm/pkg/tonearm"
+	"github.com/RayZ3R0/sonami-gtk/internal/gettext"
+	"github.com/RayZ3R0/sonami-gtk/internal/notifications"
+	"github.com/RayZ3R0/sonami-gtk/internal/player"
+	"github.com/RayZ3R0/sonami-gtk/internal/router"
+	"github.com/RayZ3R0/sonami-gtk/internal/secrets"
+	"github.com/RayZ3R0/sonami-gtk/internal/signals"
+	appState "github.com/RayZ3R0/sonami-gtk/internal/state"
+	"github.com/RayZ3R0/sonami-gtk/pkg/schwifty"
+	"github.com/RayZ3R0/sonami-gtk/pkg/schwifty/state"
+	. "github.com/RayZ3R0/sonami-gtk/pkg/schwifty/syntax"
+	"github.com/RayZ3R0/sonami-gtk/pkg/schwifty/utils/weak"
+	"github.com/RayZ3R0/sonami-gtk/pkg/tidalapi"
+	"github.com/RayZ3R0/sonami-gtk/pkg/sonami"
 	"codeberg.org/puregotk/puregotk/v4/adw"
 	"codeberg.org/puregotk/puregotk/v4/gdk"
 	"codeberg.org/puregotk/puregotk/v4/gio"
@@ -43,7 +43,7 @@ var (
 )
 
 func init() {
-	player.TrackChanged.OnLazy(func(t tonearm.Track) bool {
+	player.TrackChanged.OnLazy(func(t sonami.Track) bool {
 		isTrackLoadedState.SetValue(t != nil)
 
 		if t != nil {
@@ -82,7 +82,7 @@ func favouriteButton() schwifty.Button {
 		return signals.Continue
 	})
 
-	player.TrackChanged.On(func(t tonearm.Track) bool {
+	player.TrackChanged.On(func(t sonami.Track) bool {
 		isSensitive.SetValue(t != nil && secrets.SignedInChanged.CurrentValue())
 		isLoading.Set(true)
 		defer isLoading.Set(false)

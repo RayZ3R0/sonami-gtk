@@ -1,12 +1,12 @@
 package player
 
 import (
-	"codeberg.org/dergs/tonearm/pkg/tonearm"
+	"github.com/RayZ3R0/sonami-gtk/pkg/sonami"
 	"github.com/infinytum/injector"
 )
 
 func playAlbum(albumId string, shuffle bool, startingPosition int) error {
-	service, err := injector.Inject[tonearm.Service]()
+	service, err := injector.Inject[sonami.Service]()
 	if err != nil {
 		return err
 	}
@@ -34,7 +34,7 @@ func playAlbum(albumId string, shuffle bool, startingPosition int) error {
 
 	// The tracklist has successfully started playing, we can now notify subscribers
 	// where the playback originated from.
-	SourceChanged.Notify(func(oldValue tonearm.PlaybackSource) tonearm.PlaybackSource {
+	SourceChanged.Notify(func(oldValue sonami.PlaybackSource) sonami.PlaybackSource {
 		return album
 	})
 
@@ -42,7 +42,7 @@ func playAlbum(albumId string, shuffle bool, startingPosition int) error {
 }
 
 func playPlaylist(playlistId string, shuffle bool, startingPosition int) error {
-	service, err := injector.Inject[tonearm.Service]()
+	service, err := injector.Inject[sonami.Service]()
 	if err != nil {
 		return err
 	}
@@ -70,21 +70,21 @@ func playPlaylist(playlistId string, shuffle bool, startingPosition int) error {
 
 	// The tracklist has successfully started playing, we can now notify subscribers
 	// where the playback originated from.
-	SourceChanged.Notify(func(oldValue tonearm.PlaybackSource) tonearm.PlaybackSource {
+	SourceChanged.Notify(func(oldValue sonami.PlaybackSource) sonami.PlaybackSource {
 		return playlist
 	})
 
 	return nil
 }
 
-func playTracklist(tracks []tonearm.Track, shuffle bool, startingPosition int) (tonearm.Track, error) {
+func playTracklist(tracks []sonami.Track, shuffle bool, startingPosition int) (sonami.Track, error) {
 	// When a tracklist change is initiated, all queues are cleared
 	clearQueues()
 
 	// We want to notify everyone that we have stopped playing whatever was currently playing
 	// as the current queue has just been invalidated
 	Stop()
-	TrackChanged.Notify(func(oldValue tonearm.Track) tonearm.Track {
+	TrackChanged.Notify(func(oldValue sonami.Track) sonami.Track {
 		return nil
 	})
 

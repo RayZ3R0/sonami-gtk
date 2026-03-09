@@ -1,10 +1,10 @@
 package syntax
 
 import (
-	"codeberg.org/dergs/tonearm/pkg/schwifty/bindings"
-	adwbindings "codeberg.org/dergs/tonearm/pkg/schwifty/bindings/adw"
-	gtkbindings "codeberg.org/dergs/tonearm/pkg/schwifty/bindings/gtk"
-	"codeberg.org/dergs/tonearm/pkg/schwifty/callback"
+	"github.com/RayZ3R0/sonami-gtk/pkg/schwifty/bindings"
+	adwbindings "github.com/RayZ3R0/sonami-gtk/pkg/schwifty/bindings/adw"
+	gtkbindings "github.com/RayZ3R0/sonami-gtk/pkg/schwifty/bindings/gtk"
+	"github.com/RayZ3R0/sonami-gtk/pkg/schwifty/callback"
 	"codeberg.org/puregotk/puregotk/v4/adw"
 	"codeberg.org/puregotk/puregotk/v4/gtk"
 )

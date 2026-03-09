@@ -4,15 +4,15 @@ import (
 	"log/slog"
 	"math"
 
-	"codeberg.org/dergs/tonearm/internal/player"
-	"codeberg.org/dergs/tonearm/internal/resources"
-	"codeberg.org/dergs/tonearm/internal/signals"
-	"codeberg.org/dergs/tonearm/internal/ui/components"
-	"codeberg.org/dergs/tonearm/pkg/schwifty"
-	"codeberg.org/dergs/tonearm/pkg/schwifty/state"
-	. "codeberg.org/dergs/tonearm/pkg/schwifty/syntax"
-	"codeberg.org/dergs/tonearm/pkg/tonearm"
-	"codeberg.org/dergs/tonearm/pkg/utils/imgutil"
+	"github.com/RayZ3R0/sonami-gtk/internal/player"
+	"github.com/RayZ3R0/sonami-gtk/internal/resources"
+	"github.com/RayZ3R0/sonami-gtk/internal/signals"
+	"github.com/RayZ3R0/sonami-gtk/internal/ui/components"
+	"github.com/RayZ3R0/sonami-gtk/pkg/schwifty"
+	"github.com/RayZ3R0/sonami-gtk/pkg/schwifty/state"
+	. "github.com/RayZ3R0/sonami-gtk/pkg/schwifty/syntax"
+	"github.com/RayZ3R0/sonami-gtk/pkg/sonami"
+	"github.com/RayZ3R0/sonami-gtk/pkg/utils/imgutil"
 	"codeberg.org/puregotk/puregotk/v4/gtk"
 	"github.com/infinytum/injector"
 )
@@ -22,7 +22,7 @@ var (
 )
 
 func init() {
-	player.TrackChanged.On(func(trackInfo tonearm.Track) bool {
+	player.TrackChanged.On(func(trackInfo sonami.Track) bool {
 		if trackInfo != nil {
 			coverUrl := trackInfo.Cover(math.MaxInt)
 			if coverUrl == "" {

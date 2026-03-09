@@ -1,11 +1,11 @@
 package adw
 
 import (
-	"codeberg.org/dergs/tonearm/pkg/schwifty/bindings/gtk"
+	"github.com/RayZ3R0/sonami-gtk/pkg/schwifty/bindings/gtk"
 	"codeberg.org/puregotk/puregotk/v4/adw"
 )
 
-//go:generate go run codeberg.org/dergs/tonearm/pkg/schwifty/gen WrapBox *adw.WrapBox adw
+//go:generate go run github.com/RayZ3R0/sonami-gtk/pkg/schwifty/gen WrapBox *adw.WrapBox adw
 
 func (f WrapBox) Append(child any) WrapBox {
 	return func() *adw.WrapBox {

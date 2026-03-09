@@ -4,17 +4,17 @@ import (
 	"log/slog"
 	"unsafe"
 
-	"codeberg.org/dergs/tonearm/internal/signals"
-	"codeberg.org/dergs/tonearm/internal/ui/components"
-	"codeberg.org/dergs/tonearm/internal/ui/components/tracklist"
-	"codeberg.org/dergs/tonearm/pkg/schwifty"
-	. "codeberg.org/dergs/tonearm/pkg/schwifty/syntax"
-	"codeberg.org/dergs/tonearm/pkg/tonearm"
+	"github.com/RayZ3R0/sonami-gtk/internal/signals"
+	"github.com/RayZ3R0/sonami-gtk/internal/ui/components"
+	"github.com/RayZ3R0/sonami-gtk/internal/ui/components/tracklist"
+	"github.com/RayZ3R0/sonami-gtk/pkg/schwifty"
+	. "github.com/RayZ3R0/sonami-gtk/pkg/schwifty/syntax"
+	"github.com/RayZ3R0/sonami-gtk/pkg/sonami"
 	"codeberg.org/puregotk/puregotk/v4/gtk"
 )
 
 func NewPaginatedTracklistPage(
-	paginator tonearm.Paginator[tonearm.Track],
+	paginator sonami.Paginator[sonami.Track],
 	styleFactory func(*tracklist.TrackList) schwifty.BaseWidgetable,
 	columns ...tracklist.ColumnFunc,
 ) (schwifty.ScrolledWindow, error) {

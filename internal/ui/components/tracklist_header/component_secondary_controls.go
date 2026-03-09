@@ -1,16 +1,16 @@
 package tracklist_header
 
 import (
-	"codeberg.org/dergs/tonearm/internal/gettext"
-	"codeberg.org/dergs/tonearm/internal/notifications"
-	"codeberg.org/dergs/tonearm/pkg/schwifty"
-	. "codeberg.org/dergs/tonearm/pkg/schwifty/syntax"
-	"codeberg.org/dergs/tonearm/pkg/tonearm"
+	"github.com/RayZ3R0/sonami-gtk/internal/gettext"
+	"github.com/RayZ3R0/sonami-gtk/internal/notifications"
+	"github.com/RayZ3R0/sonami-gtk/pkg/schwifty"
+	. "github.com/RayZ3R0/sonami-gtk/pkg/schwifty/syntax"
+	"github.com/RayZ3R0/sonami-gtk/pkg/sonami"
 	"codeberg.org/puregotk/puregotk/v4/gdk"
 	"codeberg.org/puregotk/puregotk/v4/gtk"
 )
 
-func componentSecondaryControls(shareable tonearm.Shareable, popover *gtk.PopoverMenu, buttons ...any) schwifty.Box {
+func componentSecondaryControls(shareable sonami.Shareable, popover *gtk.PopoverMenu, buttons ...any) schwifty.Box {
 	buttons = append(buttons, Button().
 		TooltipText(gettext.Get("Copy URL")).
 		IconName("share-alt-symbolic").

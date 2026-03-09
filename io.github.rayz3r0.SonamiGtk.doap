@@ -7,18 +7,18 @@
     xmlns="http://usefulinc.com/ns/doap#"
 >
 
-    <name>Tonearm</name>
+    <name>Sonami</name>
     <shortdesc xml:lang="en">An unofficial native GTK4 / Adwaita music streaming client for TIDAL</shortdesc>
 
-    <homepage rdf:resource="https://codeberg.org/dergs/Tonearm" />
-    <download-page rdf:resource="https://codeberg.org/dergs/Tonearm" />
-    <bug-database rdf:resource="https://codeberg.org/dergs/Tonearm/issues" />
+    <homepage rdf:resource="https://codeberg.org/dergs/Sonami" />
+    <download-page rdf:resource="https://codeberg.org/dergs/Sonami" />
+    <bug-database rdf:resource="https://codeberg.org/dergs/Sonami/issues" />
 
     <programming-language>Golang</programming-language>
 
     <maintainer>
         <foaf:Person>
-        <foaf:name>Nila The Dragon</foaf:name>
+        <foaf:name>RayZ3R0</foaf:name>
         </foaf:Person>
     </maintainer>
 

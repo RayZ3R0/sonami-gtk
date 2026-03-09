@@ -1,15 +1,15 @@
 package search
 
 import (
-	"codeberg.org/dergs/tonearm/internal/gettext"
-	"codeberg.org/dergs/tonearm/internal/router"
-	"codeberg.org/dergs/tonearm/internal/services/tidal/openapi"
-	"codeberg.org/dergs/tonearm/internal/ui/components/media_card"
-	"codeberg.org/dergs/tonearm/internal/ui/pages"
-	"codeberg.org/dergs/tonearm/pkg/schwifty"
-	"codeberg.org/dergs/tonearm/pkg/tidalapi"
-	modelopenapi "codeberg.org/dergs/tonearm/pkg/tidalapi/models/openapi"
-	"codeberg.org/dergs/tonearm/pkg/tidalapi/pagination"
+	"github.com/RayZ3R0/sonami-gtk/internal/gettext"
+	"github.com/RayZ3R0/sonami-gtk/internal/router"
+	"github.com/RayZ3R0/sonami-gtk/internal/services/tidal/openapi"
+	"github.com/RayZ3R0/sonami-gtk/internal/ui/components/media_card"
+	"github.com/RayZ3R0/sonami-gtk/internal/ui/pages"
+	"github.com/RayZ3R0/sonami-gtk/pkg/schwifty"
+	"github.com/RayZ3R0/sonami-gtk/pkg/tidalapi"
+	modelopenapi "github.com/RayZ3R0/sonami-gtk/pkg/tidalapi/models/openapi"
+	"github.com/RayZ3R0/sonami-gtk/pkg/tidalapi/pagination"
 	"github.com/infinytum/injector"
 )
 

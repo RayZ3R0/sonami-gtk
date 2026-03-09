@@ -4,9 +4,9 @@ import (
 	"log/slog"
 	"time"
 
-	"codeberg.org/dergs/tonearm/internal/player"
-	"codeberg.org/dergs/tonearm/internal/signals"
-	"codeberg.org/dergs/tonearm/pkg/tonearm"
+	"github.com/RayZ3R0/sonami-gtk/internal/player"
+	"github.com/RayZ3R0/sonami-gtk/internal/signals"
+	"github.com/RayZ3R0/sonami-gtk/pkg/sonami"
 )
 
 var logger = slog.With("module", "scrobbler")
@@ -14,20 +14,20 @@ var logger = slog.With("module", "scrobbler")
 var Scrobblers []Scrobbler
 
 type Scrobbler interface {
-	NowPlaying(tonearm.Track)
+	NowPlaying(sonami.Track)
 	Scrobble(*ScrobbleEvent)
 	IsConfigured() bool
 	GetName() string
 }
 
 type ScrobbleEvent struct {
-	Track      tonearm.Track
+	Track      sonami.Track
 	ListenedAt time.Time
 }
 
 func init() {
 	var scrobbleClock *Clock
-	player.TrackChanged.On(func(t tonearm.Track) bool {
+	player.TrackChanged.On(func(t sonami.Track) bool {
 		if t == nil {
 			return signals.Continue
 		}

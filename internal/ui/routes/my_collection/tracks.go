@@ -3,21 +3,21 @@ package my_collection
 import (
 	"log/slog"
 
-	"codeberg.org/dergs/tonearm/internal/gettext"
-	"codeberg.org/dergs/tonearm/internal/notifications"
-	"codeberg.org/dergs/tonearm/internal/player"
-	"codeberg.org/dergs/tonearm/internal/router"
-	"codeberg.org/dergs/tonearm/internal/secrets"
-	"codeberg.org/dergs/tonearm/internal/services/tidal/openapi"
-	"codeberg.org/dergs/tonearm/internal/ui/components"
-	"codeberg.org/dergs/tonearm/internal/ui/components/tracklist"
-	"codeberg.org/dergs/tonearm/internal/ui/components/tracklist_header"
-	"codeberg.org/dergs/tonearm/internal/ui/pages"
-	"codeberg.org/dergs/tonearm/pkg/schwifty"
-	. "codeberg.org/dergs/tonearm/pkg/schwifty/syntax"
-	"codeberg.org/dergs/tonearm/pkg/tidalapi"
-	modelopenapi "codeberg.org/dergs/tonearm/pkg/tidalapi/models/openapi"
-	"codeberg.org/dergs/tonearm/pkg/tonearm"
+	"github.com/RayZ3R0/sonami-gtk/internal/gettext"
+	"github.com/RayZ3R0/sonami-gtk/internal/notifications"
+	"github.com/RayZ3R0/sonami-gtk/internal/player"
+	"github.com/RayZ3R0/sonami-gtk/internal/router"
+	"github.com/RayZ3R0/sonami-gtk/internal/secrets"
+	"github.com/RayZ3R0/sonami-gtk/internal/services/tidal/openapi"
+	"github.com/RayZ3R0/sonami-gtk/internal/ui/components"
+	"github.com/RayZ3R0/sonami-gtk/internal/ui/components/tracklist"
+	"github.com/RayZ3R0/sonami-gtk/internal/ui/components/tracklist_header"
+	"github.com/RayZ3R0/sonami-gtk/internal/ui/pages"
+	"github.com/RayZ3R0/sonami-gtk/pkg/schwifty"
+	. "github.com/RayZ3R0/sonami-gtk/pkg/schwifty/syntax"
+	"github.com/RayZ3R0/sonami-gtk/pkg/tidalapi"
+	modelopenapi "github.com/RayZ3R0/sonami-gtk/pkg/tidalapi/models/openapi"
+	"github.com/RayZ3R0/sonami-gtk/pkg/sonami"
 	"codeberg.org/puregotk/puregotk/v4/gio"
 	"codeberg.org/puregotk/puregotk/v4/glib"
 	"codeberg.org/puregotk/puregotk/v4/gtk"
@@ -35,9 +35,9 @@ func Tracks() *router.Response {
 	}
 
 	tidal := injector.MustInject[*tidalapi.TidalAPI]()
-	paginator := openapi.NewPaginator(tidal.OpenAPI.V2.UserCollections.Tracks, userId, func(r *modelopenapi.Response[[]modelopenapi.Relationship]) []tonearm.Track {
+	paginator := openapi.NewPaginator(tidal.OpenAPI.V2.UserCollections.Tracks, userId, func(r *modelopenapi.Response[[]modelopenapi.Relationship]) []sonami.Track {
 		results := r.Included.Tracks(r.Data...)
-		tracks := make([]tonearm.Track, len(results))
+		tracks := make([]sonami.Track, len(results))
 		for i, track := range results {
 			tracks[i] = openapi.NewTrack(track)
 		}

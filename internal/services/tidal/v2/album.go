@@ -1,8 +1,8 @@
 package v2
 
 import (
-	v2 "codeberg.org/dergs/tonearm/pkg/tidalapi/models/v2"
-	"codeberg.org/dergs/tonearm/pkg/tonearm"
+	v2 "github.com/RayZ3R0/sonami-gtk/pkg/tidalapi/models/v2"
+	"github.com/RayZ3R0/sonami-gtk/pkg/sonami"
 )
 
 var albumLogger = logger.With("type", "Album").WithGroup("album")
@@ -11,8 +11,8 @@ type Album struct {
 	AlbumInfo
 }
 
-func (a *Album) Artists() tonearm.ArtistInfos {
-	artists := make(tonearm.ArtistInfos, 0)
+func (a *Album) Artists() sonami.ArtistInfos {
+	artists := make(sonami.ArtistInfos, 0)
 	for _, artist := range a.AlbumItemData.Artists {
 		artists = append(artists, NewArtistInfo(artist))
 	}
@@ -25,6 +25,6 @@ func (a AlbumInfo) Count() int {
 	return -1
 }
 
-func NewAlbum(album v2.AlbumItemData) tonearm.Album {
+func NewAlbum(album v2.AlbumItemData) sonami.Album {
 	return &Album{AlbumInfo{album}}
 }

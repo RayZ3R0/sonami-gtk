@@ -9,8 +9,8 @@ import (
 	"net/url"
 	"strings"
 
-	"codeberg.org/dergs/tonearm/pkg/tidalapi/internal"
-	v2 "codeberg.org/dergs/tonearm/pkg/tidalapi/models/v2"
+	"github.com/RayZ3R0/sonami-gtk/pkg/tidalapi/internal"
+	v2 "github.com/RayZ3R0/sonami-gtk/pkg/tidalapi/models/v2"
 )
 
 type FavouriteMixes struct {

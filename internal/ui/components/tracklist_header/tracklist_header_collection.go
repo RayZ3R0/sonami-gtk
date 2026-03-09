@@ -1,18 +1,18 @@
 package tracklist_header
 
 import (
-	"codeberg.org/dergs/tonearm/internal/gettext"
-	"codeberg.org/dergs/tonearm/pkg/schwifty"
-	"codeberg.org/dergs/tonearm/pkg/schwifty/tracking"
-	"codeberg.org/dergs/tonearm/pkg/tonearm"
+	"github.com/RayZ3R0/sonami-gtk/internal/gettext"
+	"github.com/RayZ3R0/sonami-gtk/pkg/schwifty"
+	"github.com/RayZ3R0/sonami-gtk/pkg/schwifty/tracking"
+	"github.com/RayZ3R0/sonami-gtk/pkg/sonami"
 	"codeberg.org/puregotk/puregotk/v4/gio"
 	"codeberg.org/puregotk/puregotk/v4/glib"
 	"codeberg.org/puregotk/puregotk/v4/gtk"
 )
 
 type shareablePlaybackSource interface {
-	tonearm.PlaybackSource
-	tonearm.Shareable
+	sonami.PlaybackSource
+	sonami.Shareable
 }
 
 func secondaryControlsCollection(playbackSource shareablePlaybackSource, popover *gtk.PopoverMenu) schwifty.Box {

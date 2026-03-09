@@ -6,16 +6,16 @@ import (
 	"sync"
 	"unsafe"
 
-	"codeberg.org/dergs/tonearm/internal/player"
-	"codeberg.org/dergs/tonearm/internal/signals"
-	"codeberg.org/dergs/tonearm/pkg/schwifty"
-	"codeberg.org/dergs/tonearm/pkg/schwifty/callback"
-	"codeberg.org/dergs/tonearm/pkg/schwifty/factory"
-	"codeberg.org/dergs/tonearm/pkg/schwifty/state"
-	. "codeberg.org/dergs/tonearm/pkg/schwifty/syntax"
-	"codeberg.org/dergs/tonearm/pkg/schwifty/tracking"
-	"codeberg.org/dergs/tonearm/pkg/schwifty/utils/weak"
-	"codeberg.org/dergs/tonearm/pkg/tonearm"
+	"github.com/RayZ3R0/sonami-gtk/internal/player"
+	"github.com/RayZ3R0/sonami-gtk/internal/signals"
+	"github.com/RayZ3R0/sonami-gtk/pkg/schwifty"
+	"github.com/RayZ3R0/sonami-gtk/pkg/schwifty/callback"
+	"github.com/RayZ3R0/sonami-gtk/pkg/schwifty/factory"
+	"github.com/RayZ3R0/sonami-gtk/pkg/schwifty/state"
+	. "github.com/RayZ3R0/sonami-gtk/pkg/schwifty/syntax"
+	"github.com/RayZ3R0/sonami-gtk/pkg/schwifty/tracking"
+	"github.com/RayZ3R0/sonami-gtk/pkg/schwifty/utils/weak"
+	"github.com/RayZ3R0/sonami-gtk/pkg/sonami"
 	"codeberg.org/puregotk/puregotk/v4/adw"
 	"codeberg.org/puregotk/puregotk/v4/gdk"
 	"codeberg.org/puregotk/puregotk/v4/gio"
@@ -24,7 +24,7 @@ import (
 	"codeberg.org/puregotk/puregotk/v4/gtk"
 )
 
-type ColumnFunc func(track tonearm.Track, grid *gtk.Grid, position int, column int32) int
+type ColumnFunc func(track sonami.Track, grid *gtk.Grid, position int, column int32) int
 
 type TrackList struct {
 	schwifty.Widget
@@ -33,24 +33,24 @@ type TrackList struct {
 	lock        sync.Mutex
 	sizeGroups  []*gtk.SizeGroup
 	store       *gio.ListStore
-	trackList   []tonearm.Track
+	trackList   []sonami.Track
 
-	clickHandler func(track tonearm.Track, position int)
+	clickHandler func(track sonami.Track, position int)
 
-	trackBeingMoved   tonearm.Track
+	trackBeingMoved   sonami.Track
 	movingSourceIndex int
 	movingTargetIndex int
 	reorderable       *state.State[bool]
-	reorderCallback   func(sourceIndex, targetIndex int, track tonearm.Track)
+	reorderCallback   func(sourceIndex, targetIndex int, track sonami.Track)
 }
 
-func (t *TrackList) AddTrack(track tonearm.Track) {
+func (t *TrackList) AddTrack(track sonami.Track) {
 	t.trackList = append(t.trackList, track)
 	t.store.Append(&gtk.NewStringObject("").Object)
 }
 
-func (t *TrackList) BindTracks(state *state.State[[]tonearm.Track]) {
-	id := state.AddCallback(func(newValue []tonearm.Track) {
+func (t *TrackList) BindTracks(state *state.State[[]sonami.Track]) {
+	id := state.AddCallback(func(newValue []sonami.Track) {
 		t.lock.Lock()
 		defer t.lock.Unlock()
 
@@ -75,14 +75,14 @@ func (t *TrackList) BindTracks(state *state.State[[]tonearm.Track]) {
 
 func (t *TrackList) Clear() {
 	t.store.RemoveAll()
-	t.trackList = make([]tonearm.Track, 0)
+	t.trackList = make([]sonami.Track, 0)
 }
 
-func (t *TrackList) SetClickHandler(cb func(track tonearm.Track, position int)) {
+func (t *TrackList) SetClickHandler(cb func(track sonami.Track, position int)) {
 	t.clickHandler = cb
 }
 
-func (t *TrackList) SetReorderCallback(cb func(sourceIndex, targetIndex int, track tonearm.Track)) {
+func (t *TrackList) SetReorderCallback(cb func(sourceIndex, targetIndex int, track sonami.Track)) {
 	t.reorderCallback = cb
 	t.reorderable.SetValue(cb != nil)
 }
@@ -94,7 +94,7 @@ func (t *TrackList) onBind(_ gtk.SignalListItemFactory, listItem *gtk.ListItem) 
 
 	body := HStack().ConnectRealize(func(b gtk.Widget) {
 		var ref = weak.NewWidgetRef(&b)
-		player.TrackChanged.On(func(t tonearm.Track) bool {
+		player.TrackChanged.On(func(t sonami.Track) bool {
 			return signals.ContinueIf(
 				ref.Use(func(obj *gtk.Widget) {
 					if t != nil && track.ID() == t.ID() {
@@ -169,7 +169,7 @@ func (t *TrackList) onSetup(_ gtk.SignalListItemFactory, listItem *gtk.ListItem)
 					t.trackList = append(t.trackList[:t.movingTargetIndex], t.trackList[t.movingTargetIndex+1:]...)
 					t.store.Remove(uint32(t.movingTargetIndex))
 
-					t.trackList = append(t.trackList[:t.movingSourceIndex], append([]tonearm.Track{t.trackBeingMoved}, t.trackList[t.movingSourceIndex:]...)...)
+					t.trackList = append(t.trackList[:t.movingSourceIndex], append([]sonami.Track{t.trackBeingMoved}, t.trackList[t.movingSourceIndex:]...)...)
 					t.store.Insert(uint32(t.movingSourceIndex), &gtk.NewStringObject("").Object)
 
 					t.movingSourceIndex = -1
@@ -196,8 +196,8 @@ func NewTrackList(columnFuncs ...ColumnFunc) *TrackList {
 		columnFuncs: columnFuncs,
 		sizeGroups:  []*gtk.SizeGroup{},
 		store:       store,
-		trackList:   make([]tonearm.Track, 0),
-		clickHandler: func(track tonearm.Track, position int) {
+		trackList:   make([]sonami.Track, 0),
+		clickHandler: func(track sonami.Track, position int) {
 			player.PlayTrack(track)
 		},
 
@@ -254,7 +254,7 @@ func NewTrackList(columnFuncs ...ColumnFunc) *TrackList {
 							trackList = append(tracklist.trackList[:tracklist.movingTargetIndex], tracklist.trackList[tracklist.movingTargetIndex+1:]...)
 						}
 
-						tracklist.trackList = append(trackList[:i], append([]tonearm.Track{tracklist.trackBeingMoved}, trackList[i:]...)...)
+						tracklist.trackList = append(trackList[:i], append([]sonami.Track{tracklist.trackBeingMoved}, trackList[i:]...)...)
 						tracklist.store.Insert(uint32(i), &gtk.NewStringObject("").Object)
 
 						tracklist.movingTargetIndex = i

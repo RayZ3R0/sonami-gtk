@@ -4,8 +4,8 @@ import (
 	"slices"
 	"time"
 
-	"codeberg.org/dergs/tonearm/pkg/tidalapi/models/openapi"
-	"codeberg.org/dergs/tonearm/pkg/tonearm"
+	"github.com/RayZ3R0/sonami-gtk/pkg/tidalapi/models/openapi"
+	"github.com/RayZ3R0/sonami-gtk/pkg/sonami"
 )
 
 type TrackInfo struct {
@@ -36,6 +36,6 @@ func (t TrackInfo) Version() string {
 	return t.Data.Attributes.Version
 }
 
-func NewTrackInfo(item openapi.Track) tonearm.TrackInfo {
+func NewTrackInfo(item openapi.Track) sonami.TrackInfo {
 	return &TrackInfo{item}
 }

@@ -4,9 +4,9 @@ import (
 	"fmt"
 	"regexp"
 
-	"codeberg.org/dergs/tonearm/internal/gettext"
 	"codeberg.org/puregotk/puregotk/v4/adw"
 	"codeberg.org/puregotk/puregotk/v4/gtk"
+	"github.com/RayZ3R0/sonami-gtk/internal/gettext"
 )
 
 var (
@@ -20,7 +20,7 @@ func isStable() bool {
 
 	if Commit == "" {
 		// If no commit is available.
-		// This happens if the app is run with `go run ./cmd/tonearm`.
+		// This happens if the app is run with `go run ./cmd/sonami`.
 
 		return false
 	} else if ok, _ := regexp.MatchString(`^.*-\d+-g[0-9a-f]{7}$`, Commit); ok {
@@ -67,7 +67,7 @@ func getVersionNumber() string {
 
 		if Commit == "" {
 			// If no commit is available.
-			// This happens if the app is run with `go run ./cmd/tonearm`.
+			// This happens if the app is run with `go run ./cmd/sonami`.
 
 			return "local"
 		} else if ok, _ := regexp.MatchString(`^.*-\d+-g[0-9a-f]{7}$`, Commit); ok {
@@ -122,18 +122,19 @@ func (w *Window) PresentAbout() {
 
 	about := adw.NewAboutDialog()
 	about.SetApplicationIcon("logo")
-	about.SetApplicationName("Tonearm")
+	about.SetApplicationName("Sonami")
 	about.SetVersion(getVersionNumber())
 	about.SetLicenseType(gtk.LicenseGpl30Value)
 	about.SetDevelopers([]string{
+		"RayZ3R0 https://github.com/RayZ3R0",
 		"Nila The Dragon https://github.com/NilaTheDragon",
 		"Dråfølin https://github.com/Drafolin",
 	})
 	about.SetTranslatorCredits(gettext.Get("translator-credits"))
-	about.SetCopyright("© 2026 Nila The Dragon")
-	about.SetWebsite("https://dergs.dev/projects/tonearm")
-	about.SetIssueUrl("https://codeberg.org/dergs/Tonearm/issues")
-	about.SetSupportUrl("https://matrix.to/#/%23tonearm:derg.social")
+	about.SetCopyright("© 2026 RayZ3R0")
+	about.SetWebsite("https://github.com/RayZ3R0/sonami-gtk")
+	about.SetIssueUrl("https://github.com/RayZ3R0/sonami-gtk/issues")
+	about.SetSupportUrl("https://matrix.to/#/%23z3r0:synapse.godementia.quest")
 
 	about.AddLegalSection("GStreamer Bindings (go-gst/go-gst)", "© 2020 https://github.com/go-gst/go-gst", gtk.LicenseLgpl30Value, "")
 	about.AddLegalSection("DBus Client (godbus/dbus)", "© 2020 Georg Reinke https://github.com/godbus/dbus", gtk.LicenseBsdValue, "")

@@ -2,7 +2,7 @@ package gtk
 
 import "codeberg.org/puregotk/puregotk/v4/gtk"
 
-//go:generate go run codeberg.org/dergs/tonearm/pkg/schwifty/gen Box *gtk.Box gtk
+//go:generate go run github.com/RayZ3R0/sonami-gtk/pkg/schwifty/gen Box *gtk.Box gtk
 
 func (f Box) Append(child any) Box {
 	return func() *gtk.Box {

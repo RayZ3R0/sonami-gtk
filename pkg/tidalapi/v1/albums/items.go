@@ -7,7 +7,7 @@ import (
 	"net/http"
 	"net/url"
 
-	v1 "codeberg.org/dergs/tonearm/pkg/tidalapi/models/v1"
+	v1 "github.com/RayZ3R0/sonami-gtk/pkg/tidalapi/models/v1"
 )
 
 func (p *Albums) Items(ctx context.Context, albumId string, opts *v1.ItemsOptions) (*v1.PaginatedResponse[v1.AlbumItem], error) {

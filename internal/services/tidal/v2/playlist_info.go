@@ -3,9 +3,9 @@ package v2
 import (
 	"time"
 
-	"codeberg.org/dergs/tonearm/pkg/tidalapi"
-	v2 "codeberg.org/dergs/tonearm/pkg/tidalapi/models/v2"
-	"codeberg.org/dergs/tonearm/pkg/tonearm"
+	"github.com/RayZ3R0/sonami-gtk/pkg/tidalapi"
+	v2 "github.com/RayZ3R0/sonami-gtk/pkg/tidalapi/models/v2"
+	"github.com/RayZ3R0/sonami-gtk/pkg/sonami"
 )
 
 var playlistInfoLogger = logger.With("type", "PlaylistInfo").WithGroup("playlist_info")
@@ -49,8 +49,8 @@ func (p PlaylistInfo) Route() string {
 	return "playlist/" + p.ID()
 }
 
-func (p PlaylistInfo) SourceType() tonearm.SourceType {
-	return tonearm.SourceTypePlaylist
+func (p PlaylistInfo) SourceType() sonami.SourceType {
+	return sonami.SourceTypePlaylist
 }
 
 func (p PlaylistInfo) Title() string {
@@ -61,6 +61,6 @@ func (p PlaylistInfo) URL() string {
 	return "https://tidal.com/playlist/" + p.ID()
 }
 
-func NewPlaylistInfo(playlist v2.PlaylistItemData) tonearm.PlaylistInfo {
+func NewPlaylistInfo(playlist v2.PlaylistItemData) sonami.PlaylistInfo {
 	return &PlaylistInfo{playlist}
 }

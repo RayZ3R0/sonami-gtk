@@ -7,7 +7,7 @@ import (
 	"net/http"
 	"strings"
 
-	"codeberg.org/dergs/tonearm/pkg/tidalapi/models/openapi"
+	"github.com/RayZ3R0/sonami-gtk/pkg/tidalapi/models/openapi"
 )
 
 func (p *Playlists) Items(ctx context.Context, uuid string, cursor string, include ...string) (*openapi.Response[[]openapi.Relationship], error) {

@@ -1,6 +1,6 @@
 package router
 
-import "codeberg.org/dergs/tonearm/internal/signals"
+import "github.com/RayZ3R0/sonami-gtk/internal/signals"
 
 // HistoryUpdated is a signal that is emitted when the router updates the history.
 // The history parameter is the new history that the router is updating.

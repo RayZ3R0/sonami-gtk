@@ -3,8 +3,8 @@ package openapi
 import (
 	"time"
 
-	"codeberg.org/dergs/tonearm/pkg/tidalapi/models/openapi"
-	"codeberg.org/dergs/tonearm/pkg/tonearm"
+	"github.com/RayZ3R0/sonami-gtk/pkg/tidalapi/models/openapi"
+	"github.com/RayZ3R0/sonami-gtk/pkg/sonami"
 )
 
 var albumInfoLogger = logger.With("type", "AlbumInfo").WithGroup("album_info")
@@ -42,8 +42,8 @@ func (a AlbumInfo) Route() string {
 	return "album/" + a.ID()
 }
 
-func (a AlbumInfo) SourceType() tonearm.SourceType {
-	return tonearm.SourceTypeAlbum
+func (a AlbumInfo) SourceType() sonami.SourceType {
+	return sonami.SourceTypeAlbum
 }
 
 func (a AlbumInfo) Title() string {
@@ -54,6 +54,6 @@ func (a AlbumInfo) URL() string {
 	return "https://tidal.com/album/" + a.ID()
 }
 
-func NewAlbumInfo(album openapi.Album) tonearm.AlbumInfo {
+func NewAlbumInfo(album openapi.Album) sonami.AlbumInfo {
 	return &AlbumInfo{album}
 }

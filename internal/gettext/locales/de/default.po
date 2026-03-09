@@ -11,8 +11,8 @@ msgstr ""
 "POT-Creation-Date: 2026-02-17 19:04+0100\n"
 "PO-Revision-Date: 2026-02-17 20:13+0000\n"
 "Last-Translator: NilaTheDragon <nilathedragon@noreply.codeberg.org>\n"
-"Language-Team: German <https://translate.codeberg.org/projects/tonearm/"
-"tonearm/de/>\n"
+"Language-Team: German <https://translate.codeberg.org/projects/sonami/"
+"sonami/de/>\n"
 "Language: de\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -43,8 +43,8 @@ msgid "%s and %s"
 msgstr "%s und %s"
 
 #: internal/ui/window_sidebar.go:33
-msgid "About Tonearm"
-msgstr "Über Tonearm"
+msgid "About Sonami"
+msgstr "Über Sonami"
 
 #: internal/ui/routes/album.go:102
 msgid "Add Album to Queue"
@@ -95,45 +95,45 @@ msgid "Allow Shortcut Images"
 msgstr "Bilder bei Verknüpfungen"
 
 #: internal/ui/window_preferences.go:85
-msgid "Allow Tonearm to load images for media card buttons"
+msgid "Allow Sonami to load images for media card buttons"
 msgstr "Das Laden von Bildern bei Media Cards erlauben"
 
 #: internal/ui/window_preferences.go:91
-msgid "Allow Tonearm to load images for shortcut buttons"
+msgid "Allow Sonami to load images for shortcut buttons"
 msgstr "Das Laden von Bildern bei Verknüpfungen erlauben"
 
 #: internal/ui/window_preferences.go:97
-msgid "Allow Tonearm to load images for tracklists with the cover column"
+msgid "Allow Sonami to load images for tracklists with the cover column"
 msgstr "Das Laden von Bildern in der Titelliste erlauben"
 
 #: internal/ui/window_preferences.go:25
 msgid ""
-"Allow Tonearm to run in the background by hiding the player window instead "
+"Allow Sonami to run in the background by hiding the player window instead "
 "of quitting the application"
-msgstr "Erlaube Tonearm im Hintergrund weiter zu laufen"
+msgstr "Erlaube Sonami im Hintergrund weiter zu laufen"
 
 #: internal/ui/window_preferences.go:139
-msgid "Allow Tonearm to send scrobbling data to Last.fm"
-msgstr "Erlaube Tonearm Scrobbling Daten an Last.fm zu senden"
+msgid "Allow Sonami to send scrobbling data to Last.fm"
+msgstr "Erlaube Sonami Scrobbling Daten an Last.fm zu senden"
 
 #: internal/ui/window_preferences.go:119
-msgid "Allow Tonearm to send scrobbling data to ListenBrainz"
-msgstr "Erlaube Tonearm Scrobbling Daten an ListenBrainz zu senden"
+msgid "Allow Sonami to send scrobbling data to ListenBrainz"
+msgstr "Erlaube Sonami Scrobbling Daten an ListenBrainz zu senden"
 
 #: internal/ui/window_preferences.go:58
 msgid ""
-"Allow Tonearm to start a mix with the current playing song when you're at "
+"Allow Sonami to start a mix with the current playing song when you're at "
 "the end of an album/queue"
 msgstr ""
-"Erlaube Tonearm das Titel-Radio des aktuellen Titels abzuspielen, sobald du "
+"Erlaube Sonami das Titel-Radio des aktuellen Titels abzuspielen, sobald du "
 "das Ende der Warteschlange erreicht hast"
 
 #: internal/ui/window_preferences.go:103
 msgid ""
-"Allow Tonearm to temporarily store images on the file system to improve "
+"Allow Sonami to temporarily store images on the file system to improve "
 "performance and reduce network traffic"
 msgstr ""
-"Erlaube Tonearm Bilder auf deinem Computer zwischenzuspeichern um die "
+"Erlaube Sonami Bilder auf deinem Computer zwischenzuspeichern um die "
 "Leistung zu verbessern und den Netzwerkverkehr zu reduzieren"
 
 #: internal/ui/window_preferences.go:96
@@ -231,10 +231,10 @@ msgstr "Anmeldevorgang abbrechen"
 
 #: internal/ui/window_preferences.go:70
 msgid ""
-"Choose whether Tonearm should prefer album replay gain, track replay gain or "
+"Choose whether Sonami should prefer album replay gain, track replay gain or "
 "decide automatically"
 msgstr ""
-"Wähle, ob Tonearm Album-ReplayGain, Track-ReplayGain bevorzugen oder "
+"Wähle, ob Sonami Album-ReplayGain, Track-ReplayGain bevorzugen oder "
 "automatisch entscheiden soll"
 
 #: internal/ui/window_shortcuts.go:11
@@ -246,28 +246,28 @@ msgid "Collection"
 msgstr "Sammlung"
 
 #: internal/ui/window_preferences.go:264
-msgid "Configure Tonearm to send scrobbling data to Last.fm"
-msgstr "Tonearm konfigurieren, um Scrobbling-Daten an Last.fm zu senden"
+msgid "Configure Sonami to send scrobbling data to Last.fm"
+msgstr "Sonami konfigurieren, um Scrobbling-Daten an Last.fm zu senden"
 
 #: internal/ui/window_preferences.go:135
-msgid "Configure Tonearm to send scrobbling data to ListenBrainz"
-msgstr "Konfiguriere Tonearm um Scrobbling Daten an ListenBrainz zu senden"
+msgid "Configure Sonami to send scrobbling data to ListenBrainz"
+msgstr "Konfiguriere Sonami um Scrobbling Daten an ListenBrainz zu senden"
 
 #: internal/ui/window_preferences.go:107
-msgid "Configure the behaviour of Tonearm regarding images"
-msgstr "Entscheide welche Bilder Tonearm laden soll"
+msgid "Configure the behaviour of Sonami regarding images"
+msgstr "Entscheide welche Bilder Sonami laden soll"
 
 #: internal/ui/window_preferences.go:76
-msgid "Configure the behaviour of Tonearm regarding playback"
-msgstr "Entscheide wie Tonearm sich bei der Wiedergabe verhalten soll"
+msgid "Configure the behaviour of Sonami regarding playback"
+msgstr "Entscheide wie Sonami sich bei der Wiedergabe verhalten soll"
 
 #: internal/ui/window_preferences.go:49
-msgid "Configure the behaviour of Tonearm when navigating between pages"
-msgstr "Entscheide wie Tonearm sich bei der Navigation verhalten soll"
+msgid "Configure the behaviour of Sonami when navigating between pages"
+msgstr "Entscheide wie Sonami sich bei der Navigation verhalten soll"
 
 #: internal/ui/window_preferences.go:31
-msgid "Configure the behaviour of Tonearm when running in the background"
-msgstr "Entscheide wie Tonearm sich im Hintergrund verhalten soll"
+msgid "Configure the behaviour of Sonami when running in the background"
+msgstr "Entscheide wie Sonami sich im Hintergrund verhalten soll"
 
 #: internal/ui/window_popups.go:28
 msgid "Continue"
@@ -578,14 +578,14 @@ msgstr "Für diesen Titel ist kein Mix verfügbar"
 msgid ""
 "No secret service provider is available.\n"
 "\n"
-"Tonearm will not be able to store any authentication-related data and you "
+"Sonami will not be able to store any authentication-related data and you "
 "will not be able to sign in.\n"
 "\n"
 "Please install a secret service provider such as GNOME Keyring or KDE Wallet."
 msgstr ""
 "Es konnte keine Secret Service Implementation gefunden werden.\n"
 "\n"
-"Tonearm wird keine Anmeldedaten abspeichern können und jeglicher "
+"Sonami wird keine Anmeldedaten abspeichern können und jeglicher "
 "Anmeldeversuch wird fehlschlagen.\n"
 "\n"
 "Bitte installiere eine Secret Service Implementation wie zum Beispiel GNOME "
@@ -907,22 +907,22 @@ msgstr ""
 #: internal/secrets/service_linux.go:48
 msgid ""
 "Your secret service provider was found, but refused to interact with "
-"Tonearm.\n"
+"Sonami.\n"
 "\n"
 "This could because you cancelled a prompt or, if you are using a Flatpak, "
 "the provider not implementing the XDG Secret Portal service.\n"
 "\n"
-"Tonearm will not be able to store any authentication-related data and you "
+"Sonami will not be able to store any authentication-related data and you "
 "will not be able to sign in."
 msgstr ""
 "Eine Secret Service Implementation wurde gefunden, diese lehnte jedoch "
-"jegliche Kommunikation mit Tonearm ab.\n"
+"jegliche Kommunikation mit Sonami ab.\n"
 "\n"
 "Dies kann passieren wenn ein Popup zum Entsperren des Keyrings geschlossen "
 "wird oder, falls ein Flatpak verwendet wird, die Implementation den XDG "
 "Secret Portal Dienst nicht unterstützt.\n"
 "\n"
-"Tonearm wird keine Anmeldedaten abspeichern können und jeglicher "
+"Sonami wird keine Anmeldedaten abspeichern können und jeglicher "
 "Anmeldeversuch wird fehlschlagen."
 
 #: internal/ui/window_about.go:132

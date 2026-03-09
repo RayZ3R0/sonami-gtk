@@ -1,12 +1,12 @@
 package adw
 
 import (
-	gtkbindings "codeberg.org/dergs/tonearm/pkg/schwifty/bindings/gtk"
+	gtkbindings "github.com/RayZ3R0/sonami-gtk/pkg/schwifty/bindings/gtk"
 	"codeberg.org/puregotk/puregotk/v4/adw"
 	"codeberg.org/puregotk/puregotk/v4/gtk"
 )
 
-//go:generate go run codeberg.org/dergs/tonearm/pkg/schwifty/gen Clamp *adw.Clamp adw
+//go:generate go run github.com/RayZ3R0/sonami-gtk/pkg/schwifty/gen Clamp *adw.Clamp adw
 
 func (f Clamp) Child(widget any) Clamp {
 	return func() *adw.Clamp {

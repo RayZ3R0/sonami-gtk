@@ -1,11 +1,11 @@
 package adw
 
 import (
-	gtkbindings "codeberg.org/dergs/tonearm/pkg/schwifty/bindings/gtk"
+	gtkbindings "github.com/RayZ3R0/sonami-gtk/pkg/schwifty/bindings/gtk"
 	"codeberg.org/puregotk/puregotk/v4/adw"
 )
 
-//go:generate go run codeberg.org/dergs/tonearm/pkg/schwifty/gen StatusPage *adw.StatusPage adw
+//go:generate go run github.com/RayZ3R0/sonami-gtk/pkg/schwifty/gen StatusPage *adw.StatusPage adw
 
 func (f StatusPage) Description(description string) StatusPage {
 	return func() *adw.StatusPage {

@@ -1,12 +1,12 @@
 package adw
 
 import (
-	"codeberg.org/dergs/tonearm/pkg/schwifty/bindings"
-	"codeberg.org/dergs/tonearm/pkg/schwifty/bindings/gtk"
+	"github.com/RayZ3R0/sonami-gtk/pkg/schwifty/bindings"
+	"github.com/RayZ3R0/sonami-gtk/pkg/schwifty/bindings/gtk"
 	"codeberg.org/puregotk/puregotk/v4/adw"
 )
 
-//go:generate go run codeberg.org/dergs/tonearm/pkg/schwifty/gen PreferencesDialog *adw.PreferencesDialog adw
+//go:generate go run github.com/RayZ3R0/sonami-gtk/pkg/schwifty/gen PreferencesDialog *adw.PreferencesDialog adw
 
 func (f PreferencesDialog) Add(child any) PreferencesDialog {
 	return func() *adw.PreferencesDialog {

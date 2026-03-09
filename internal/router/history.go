@@ -4,7 +4,7 @@ import (
 	"sync"
 	"time"
 
-	"codeberg.org/dergs/tonearm/internal/settings"
+	"github.com/RayZ3R0/sonami-gtk/internal/settings"
 	"codeberg.org/puregotk/puregotk/v4/gtk"
 )
 

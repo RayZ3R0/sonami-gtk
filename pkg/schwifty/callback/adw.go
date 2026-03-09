@@ -1,7 +1,7 @@
 package callback
 
 import (
-	"codeberg.org/dergs/tonearm/pkg/utils/cutil"
+	"github.com/RayZ3R0/sonami-gtk/pkg/utils/cutil"
 	"codeberg.org/puregotk/puregotk/v4/adw"
 )
 

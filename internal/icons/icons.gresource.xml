@@ -1,9 +1,9 @@
 <?xml version='1.0' encoding='utf-8' ?>
 <gresources>
-  <gresource prefix="/dev/dergs/Tonearm/icons/scalable/apps/">
-    <file alias="logo.svg">hicolor/scalable/apps/dev.dergs.Tonearm.svg</file>
+  <gresource prefix="/io/github/rayz3r0/SonamiGtk/icons/scalable/apps/">
+    <file alias="logo.svg">hicolor/scalable/apps/io.github.rayz3r0.SonamiGtk.svg</file>
   </gresource>
-  <gresource prefix="/dev/dergs/Tonearm/icons/scalable/actions/">
+  <gresource prefix="/io/github/rayz3r0/SonamiGtk/icons/scalable/actions/">
   <file alias="arrow-circular-top-right-symbolic.svg">scalable/actions/arrow-circular-top-right-symbolic.svg</file>
   <file alias="bell-outline-symbolic.svg">scalable/actions/bell-outline-symbolic.svg</file>
   <file alias="cd-symbolic.svg">scalable/actions/cd-symbolic.svg</file>
@@ -45,13 +45,13 @@
   <file alias="speedometer5-symbolic.svg">scalable/actions/speedometer5-symbolic.svg</file>
   <file alias="user-trash-symbolic.svg">scalable/actions/user-trash-symbolic.svg</file>
   </gresource>
-  <gresource prefix="/dev/dergs/Tonearm/icons/scalable/state/">
+  <gresource prefix="/io/github/rayz3r0/SonamiGtk/icons/scalable/state/">
     <file alias="missing-album.svg">scalable/state/missing-album.svg</file>
   </gresource>
-  <gresource prefix="/dev/dergs/Tonearm/icons/hicolor/512x512/state/">
+  <gresource prefix="/io/github/rayz3r0/SonamiGtk/icons/hicolor/512x512/state/">
     <file alias="missing-album.png">hicolor/512x512/state/missing-album.png</file>
   </gresource>
-  <gresource prefix="/dev/dergs/Tonearm/icons/symbolic/apps/">
-    <file alias="logo-symbolic.svg">hicolor/symbolic/apps/dev.dergs.Tonearm-symbolic.svg</file>
+  <gresource prefix="/io/github/rayz3r0/SonamiGtk/icons/symbolic/apps/">
+    <file alias="logo-symbolic.svg">hicolor/symbolic/apps/io.github.rayz3r0.SonamiGtk-symbolic.svg</file>
   </gresource>
 </gresources>

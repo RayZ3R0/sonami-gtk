@@ -6,11 +6,11 @@ import (
 	"strconv"
 	"time"
 
-	"codeberg.org/dergs/tonearm/internal/settings"
-	"codeberg.org/dergs/tonearm/internal/signals"
-	"codeberg.org/dergs/tonearm/pkg/tidalapi"
-	v2 "codeberg.org/dergs/tonearm/pkg/tidalapi/models/v2"
-	"codeberg.org/dergs/tonearm/pkg/tonearm"
+	"github.com/RayZ3R0/sonami-gtk/internal/settings"
+	"github.com/RayZ3R0/sonami-gtk/internal/signals"
+	"github.com/RayZ3R0/sonami-gtk/pkg/tidalapi"
+	v2 "github.com/RayZ3R0/sonami-gtk/pkg/tidalapi/models/v2"
+	"github.com/RayZ3R0/sonami-gtk/pkg/sonami"
 	"github.com/go-gst/go-gst/gst"
 	"github.com/infinytum/injector"
 )
@@ -92,7 +92,7 @@ func AddTrackToUserQueue(trackId string) error {
 	return nil
 }
 
-func AddTracklistToUserQueue(tracklist []tonearm.Track) error {
+func AddTracklistToUserQueue(tracklist []sonami.Track) error {
 	for _, track := range tracklist {
 		UserQueue.Append(track)
 	}
@@ -120,7 +120,7 @@ func PlayTrackID(trackId string) error {
 		return err
 	}
 
-	SourceChanged.Notify(func(oldValue tonearm.PlaybackSource) tonearm.PlaybackSource {
+	SourceChanged.Notify(func(oldValue sonami.PlaybackSource) sonami.PlaybackSource {
 		return track
 	})
 
@@ -131,7 +131,7 @@ func PlayTrackID(trackId string) error {
 	return nil
 }
 
-func PlayTrack(track tonearm.Track) error {
+func PlayTrack(track sonami.Track) error {
 	setLoadingState()
 
 	clearQueues()
@@ -140,7 +140,7 @@ func PlayTrack(track tonearm.Track) error {
 		return err
 	}
 
-	SourceChanged.Notify(func(oldValue tonearm.PlaybackSource) tonearm.PlaybackSource {
+	SourceChanged.Notify(func(oldValue sonami.PlaybackSource) sonami.PlaybackSource {
 		return track
 	})
 
@@ -151,14 +151,14 @@ func PlayTrack(track tonearm.Track) error {
 	return nil
 }
 
-func PlayTracklist(source tonearm.PlaybackSource, tracklist []tonearm.Track, shuffle bool, position int) error {
+func PlayTracklist(source sonami.PlaybackSource, tracklist []sonami.Track, shuffle bool, position int) error {
 	setLoadingState()
 	if _, err := playTracklist(tracklist, shuffle, position); err != nil {
 		resetLoadingState()
 		return err
 	}
 
-	SourceChanged.Notify(func(oldValue tonearm.PlaybackSource) tonearm.PlaybackSource {
+	SourceChanged.Notify(func(oldValue sonami.PlaybackSource) sonami.PlaybackSource {
 		return source
 	})
 	return nil
@@ -181,7 +181,7 @@ func PlayArtistTopSongs(artistId string, shuffle bool, position int) error {
 		return err
 	}
 
-	service, err := injector.Inject[tonearm.Service]()
+	service, err := injector.Inject[sonami.Service]()
 	if err != nil {
 		resetLoadingState()
 		return err
@@ -207,7 +207,7 @@ func PlayArtistTopSongs(artistId string, shuffle bool, position int) error {
 		}
 	}
 
-	var topTracks []tonearm.Track
+	var topTracks []sonami.Track
 
 	for _, legacyTopTrackItem := range module.Items {
 		if legacyTopTrackItem.Type == v2.ItemTypeTrack {
@@ -223,7 +223,7 @@ func PlayArtistTopSongs(artistId string, shuffle bool, position int) error {
 	_, err = playTracklist(topTracks, shuffle, position)
 
 	if err == nil {
-		SourceChanged.Notify(func(oldValue tonearm.PlaybackSource) tonearm.PlaybackSource {
+		SourceChanged.Notify(func(oldValue sonami.PlaybackSource) sonami.PlaybackSource {
 			return artistInfo
 		})
 	}

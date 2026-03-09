@@ -4,8 +4,8 @@ import (
 	"strconv"
 	"time"
 
-	v1 "codeberg.org/dergs/tonearm/pkg/tidalapi/models/v1"
-	"codeberg.org/dergs/tonearm/pkg/tonearm"
+	v1 "github.com/RayZ3R0/sonami-gtk/pkg/tidalapi/models/v1"
+	"github.com/RayZ3R0/sonami-gtk/pkg/sonami"
 )
 
 type TrackInfo struct {
@@ -36,6 +36,6 @@ func (t TrackInfo) Version() string {
 	return t.AlbumItem.Version
 }
 
-func NewTrackInfo(item v1.AlbumItem) tonearm.TrackInfo {
+func NewTrackInfo(item v1.AlbumItem) sonami.TrackInfo {
 	return &TrackInfo{AlbumItem: item}
 }

@@ -3,8 +3,8 @@ package schwifty
 import (
 	"log/slog"
 
-	"codeberg.org/dergs/tonearm/pkg/schwifty/callback"
-	"codeberg.org/dergs/tonearm/pkg/schwifty/tracking"
+	"github.com/RayZ3R0/sonami-gtk/pkg/schwifty/callback"
+	"github.com/RayZ3R0/sonami-gtk/pkg/schwifty/tracking"
 )
 
 var logger = slog.With("library", "schwifty")

@@ -8,7 +8,7 @@ import (
 )
 
 func init() {
-	if os.Getenv("TONEARM_DEBUG") == "1" {
+	if os.Getenv("SONAMI_DEBUG") == "1" {
 		handler := slogpretty.New(os.Stdout, &slogpretty.Options{
 			Level:      slog.LevelDebug,
 			Colorful:   true,                         // Enable colors. Default is true

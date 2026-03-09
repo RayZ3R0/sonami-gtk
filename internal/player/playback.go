@@ -4,23 +4,23 @@ import (
 	"context"
 	"errors"
 
-	"codeberg.org/dergs/tonearm/internal/gettext"
-	"codeberg.org/dergs/tonearm/internal/notifications"
-	"codeberg.org/dergs/tonearm/internal/settings"
-	"codeberg.org/dergs/tonearm/pkg/tidalapi"
-	v1 "codeberg.org/dergs/tonearm/pkg/tidalapi/models/v1"
-	"codeberg.org/dergs/tonearm/pkg/tonearm"
+	"github.com/RayZ3R0/sonami-gtk/internal/gettext"
+	"github.com/RayZ3R0/sonami-gtk/internal/notifications"
+	"github.com/RayZ3R0/sonami-gtk/internal/settings"
+	"github.com/RayZ3R0/sonami-gtk/pkg/tidalapi"
+	v1 "github.com/RayZ3R0/sonami-gtk/pkg/tidalapi/models/v1"
+	"github.com/RayZ3R0/sonami-gtk/pkg/sonami"
 	"github.com/go-gst/go-gst/gst"
 	"github.com/infinytum/injector"
 )
 
-func playTrack(track tonearm.Track) error {
+func playTrack(track sonami.Track) error {
 	streamResolver, err := injector.Inject[*tidalapi.StreamResolver]()
 	if err != nil {
 		return err
 	}
 
-	TrackChanged.Notify(func(oldState tonearm.Track) tonearm.Track {
+	TrackChanged.Notify(func(oldState sonami.Track) sonami.Track {
 		return track
 	})
 

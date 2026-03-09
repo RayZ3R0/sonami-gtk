@@ -3,7 +3,7 @@ package player
 import (
 	"fmt"
 
-	"codeberg.org/dergs/tonearm/pkg/tonearm"
+	"github.com/RayZ3R0/sonami-gtk/pkg/sonami"
 	"github.com/infinytum/injector"
 )
 
@@ -12,13 +12,13 @@ func clearQueues() {
 	BaseQueue.Clear()
 }
 
-func getNextTrackFromQueue(peek bool) tonearm.Track {
+func getNextTrackFromQueue(peek bool) sonami.Track {
 	verb := "pop"
 	if peek {
 		verb = "peek"
 	}
 	logger.Debug(fmt.Sprintf("attempting to %s next track from user queue", verb))
-	var nextTrack tonearm.Track
+	var nextTrack sonami.Track
 	if peek {
 		nextTrack = UserQueue.Peek()
 	} else {
@@ -53,8 +53,8 @@ func getNextTrackFromQueue(peek bool) tonearm.Track {
 	return nil
 }
 
-func resolveTrack(trackId string) (tonearm.Track, error) {
-	service, err := injector.Inject[tonearm.Service]()
+func resolveTrack(trackId string) (sonami.Track, error) {
+	service, err := injector.Inject[sonami.Service]()
 	if err != nil {
 		return nil, err
 	}

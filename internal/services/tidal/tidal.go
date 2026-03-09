@@ -4,15 +4,15 @@ import (
 	"context"
 	"log/slog"
 
-	"codeberg.org/dergs/tonearm/internal/secrets"
-	"codeberg.org/dergs/tonearm/internal/services/tidal/openapi"
-	"codeberg.org/dergs/tonearm/internal/settings"
-	v1 "codeberg.org/dergs/tonearm/internal/services/tidal/v1"
-	v2 "codeberg.org/dergs/tonearm/internal/services/tidal/v2"
-	"codeberg.org/dergs/tonearm/pkg/tidalapi"
-	modelopenapi "codeberg.org/dergs/tonearm/pkg/tidalapi/models/openapi"
-	modelv1 "codeberg.org/dergs/tonearm/pkg/tidalapi/models/v1"
-	"codeberg.org/dergs/tonearm/pkg/tonearm"
+	"github.com/RayZ3R0/sonami-gtk/internal/secrets"
+	"github.com/RayZ3R0/sonami-gtk/internal/services/tidal/openapi"
+	"github.com/RayZ3R0/sonami-gtk/internal/settings"
+	v1 "github.com/RayZ3R0/sonami-gtk/internal/services/tidal/v1"
+	v2 "github.com/RayZ3R0/sonami-gtk/internal/services/tidal/v2"
+	"github.com/RayZ3R0/sonami-gtk/pkg/tidalapi"
+	modelopenapi "github.com/RayZ3R0/sonami-gtk/pkg/tidalapi/models/openapi"
+	modelv1 "github.com/RayZ3R0/sonami-gtk/pkg/tidalapi/models/v1"
+	"github.com/RayZ3R0/sonami-gtk/pkg/sonami"
 	"github.com/infinytum/injector"
 )
 
@@ -59,7 +59,7 @@ type Tidal struct {
 	API *tidalapi.TidalAPI
 }
 
-func (t *Tidal) GetAlbum(id string) (tonearm.Album, error) {
+func (t *Tidal) GetAlbum(id string) (sonami.Album, error) {
 	album, err := t.API.OpenAPI.V2.Albums.Album(context.Background(), id, "artists.profileArt", "coverArt")
 	if err != nil {
 		return nil, err
@@ -68,7 +68,7 @@ func (t *Tidal) GetAlbum(id string) (tonearm.Album, error) {
 	return openapi.NewAlbum(*album), nil
 }
 
-func (t *Tidal) GetAlbumInfo(id string) (tonearm.AlbumInfo, error) {
+func (t *Tidal) GetAlbumInfo(id string) (sonami.AlbumInfo, error) {
 	album, err := t.API.OpenAPI.V2.Albums.Album(context.Background(), id, "coverArt")
 	if err != nil {
 		return nil, err
@@ -77,14 +77,14 @@ func (t *Tidal) GetAlbumInfo(id string) (tonearm.AlbumInfo, error) {
 	return openapi.NewAlbumInfo(*album), nil
 }
 
-func (t *Tidal) GetAlbumTracks(id string) (tonearm.Paginator[tonearm.Track], error) {
+func (t *Tidal) GetAlbumTracks(id string) (sonami.Paginator[sonami.Track], error) {
 	albumInfo, err := t.GetAlbumInfo(id)
 	if err != nil {
 		return nil, err
 	}
 
-	paginator := v1.NewPaginatorV1(t.API.V1.Albums.Items, id, func(pr *modelv1.PaginatedResponse[modelv1.AlbumItem]) []tonearm.Track {
-		items := make([]tonearm.Track, len(pr.Items))
+	paginator := v1.NewPaginatorV1(t.API.V1.Albums.Items, id, func(pr *modelv1.PaginatedResponse[modelv1.AlbumItem]) []sonami.Track {
+		items := make([]sonami.Track, len(pr.Items))
 		for i, item := range pr.Items {
 			items[i] = v1.NewTrack(item.Item, albumInfo)
 		}
@@ -93,7 +93,7 @@ func (t *Tidal) GetAlbumTracks(id string) (tonearm.Paginator[tonearm.Track], err
 	return paginator, nil
 }
 
-func (t *Tidal) GetArtist(id string) (tonearm.Artist, error) {
+func (t *Tidal) GetArtist(id string) (sonami.Artist, error) {
 	artistPage, err := t.API.V2.Artist.Artist(context.Background(), id)
 	if err != nil {
 		return nil, err
@@ -102,7 +102,7 @@ func (t *Tidal) GetArtist(id string) (tonearm.Artist, error) {
 	return v2.NewArtist(*artistPage), nil
 }
 
-func (t *Tidal) GetArtistInfo(id string) (tonearm.ArtistInfo, error) {
+func (t *Tidal) GetArtistInfo(id string) (sonami.ArtistInfo, error) {
 	artist, err := t.API.OpenAPI.V2.Artists.Artist(context.Background(), id, "profileArt")
 	if err != nil {
 		return nil, err
@@ -111,7 +111,7 @@ func (t *Tidal) GetArtistInfo(id string) (tonearm.ArtistInfo, error) {
 	return openapi.NewArtistInfo(*artist), nil
 }
 
-func (t *Tidal) GetPlaylist(id string) (tonearm.Playlist, error) {
+func (t *Tidal) GetPlaylist(id string) (sonami.Playlist, error) {
 	playlist, err := t.API.OpenAPI.V2.Playlists.Playlist(context.Background(), id, "coverArt", "ownerProfiles.profileArt")
 	if err != nil {
 		return nil, err
@@ -120,7 +120,7 @@ func (t *Tidal) GetPlaylist(id string) (tonearm.Playlist, error) {
 	return openapi.NewPlaylist(*playlist), nil
 }
 
-func (t *Tidal) GetPlaylistInfo(id string) (tonearm.PlaylistInfo, error) {
+func (t *Tidal) GetPlaylistInfo(id string) (sonami.PlaylistInfo, error) {
 	playlist, err := t.API.OpenAPI.V2.Playlists.Playlist(context.Background(), id, "coverArt")
 	if err != nil {
 		return nil, err
@@ -129,10 +129,10 @@ func (t *Tidal) GetPlaylistInfo(id string) (tonearm.PlaylistInfo, error) {
 	return openapi.NewPlaylist(*playlist), nil
 }
 
-func (t *Tidal) GetPlaylistTracks(id string) (tonearm.Paginator[tonearm.Track], error) {
-	paginator := openapi.NewPaginator(t.API.OpenAPI.V2.Playlists.Items, id, func(r *modelopenapi.Response[[]modelopenapi.Relationship]) []tonearm.Track {
+func (t *Tidal) GetPlaylistTracks(id string) (sonami.Paginator[sonami.Track], error) {
+	paginator := openapi.NewPaginator(t.API.OpenAPI.V2.Playlists.Items, id, func(r *modelopenapi.Response[[]modelopenapi.Relationship]) []sonami.Track {
 		results := r.Included.Tracks(r.Data...)
-		tracks := make([]tonearm.Track, len(results))
+		tracks := make([]sonami.Track, len(results))
 		for i, track := range results {
 			tracks[i] = openapi.NewTrack(track)
 		}
@@ -141,7 +141,7 @@ func (t *Tidal) GetPlaylistTracks(id string) (tonearm.Paginator[tonearm.Track], 
 	return paginator, nil
 }
 
-func (t *Tidal) GetTrack(id string) (tonearm.Track, error) {
+func (t *Tidal) GetTrack(id string) (sonami.Track, error) {
 	track, err := t.API.OpenAPI.V2.Tracks.Track(context.Background(), id, "albums.coverArt", "artists.profileArt")
 	if err != nil {
 		return nil, err
@@ -150,6 +150,6 @@ func (t *Tidal) GetTrack(id string) (tonearm.Track, error) {
 	return openapi.NewTrack(*track), nil
 }
 
-func NewTidal(api *tidalapi.TidalAPI) tonearm.Service {
+func NewTidal(api *tidalapi.TidalAPI) sonami.Service {
 	return &Tidal{API: api}
 }

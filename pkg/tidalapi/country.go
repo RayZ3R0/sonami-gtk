@@ -6,7 +6,7 @@ import (
 	"fmt"
 	"net/http"
 
-	"codeberg.org/dergs/tonearm/pkg/tidalapi/internal"
+	"github.com/RayZ3R0/sonami-gtk/pkg/tidalapi/internal"
 )
 
 type countryCodeResponse struct {

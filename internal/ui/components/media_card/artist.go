@@ -1,13 +1,13 @@
 package media_card
 
 import (
-	"codeberg.org/dergs/tonearm/pkg/schwifty"
-	. "codeberg.org/dergs/tonearm/pkg/schwifty/syntax"
-	"codeberg.org/dergs/tonearm/pkg/tonearm"
+	"github.com/RayZ3R0/sonami-gtk/pkg/schwifty"
+	. "github.com/RayZ3R0/sonami-gtk/pkg/schwifty/syntax"
+	"github.com/RayZ3R0/sonami-gtk/pkg/sonami"
 	"codeberg.org/puregotk/puregotk/v4/glib"
 )
 
-func NewArtist(artist tonearm.ArtistInfo) schwifty.Button {
+func NewArtist(artist sonami.ArtistInfo) schwifty.Button {
 	return Card(
 		artist.Title(),
 		HStack(),

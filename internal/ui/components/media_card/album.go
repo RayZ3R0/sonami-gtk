@@ -3,13 +3,13 @@ package media_card
 import (
 	"strings"
 
-	"codeberg.org/dergs/tonearm/pkg/schwifty"
-	. "codeberg.org/dergs/tonearm/pkg/schwifty/syntax"
-	"codeberg.org/dergs/tonearm/pkg/tonearm"
+	"github.com/RayZ3R0/sonami-gtk/pkg/schwifty"
+	. "github.com/RayZ3R0/sonami-gtk/pkg/schwifty/syntax"
+	"github.com/RayZ3R0/sonami-gtk/pkg/sonami"
 	"codeberg.org/puregotk/puregotk/v4/glib"
 )
 
-func NewAlbum(album tonearm.Album) schwifty.Button {
+func NewAlbum(album sonami.Album) schwifty.Button {
 	return Card(
 		album.Title(),
 		VStack(

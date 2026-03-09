@@ -3,8 +3,8 @@ package openapi
 import (
 	"fmt"
 
-	"codeberg.org/dergs/tonearm/pkg/tidalapi/models/openapi"
-	"codeberg.org/dergs/tonearm/pkg/tonearm"
+	"github.com/RayZ3R0/sonami-gtk/pkg/tidalapi/models/openapi"
+	"github.com/RayZ3R0/sonami-gtk/pkg/sonami"
 )
 
 var trackLogger = logger.With("type", "Track").WithGroup("track")
@@ -13,7 +13,7 @@ type Track struct {
 	TrackInfo
 }
 
-func (t Track) Album() tonearm.AlbumInfo {
+func (t Track) Album() sonami.AlbumInfo {
 	albums := t.Included.Albums(t.Data.Relationships.Albums.Data...)
 
 	for _, album := range albums {
@@ -22,10 +22,10 @@ func (t Track) Album() tonearm.AlbumInfo {
 	return nil
 }
 
-func (t Track) Artists() tonearm.ArtistInfos {
+func (t Track) Artists() sonami.ArtistInfos {
 	artworks := t.Included.Artists(t.Data.Relationships.Artists.Data...)
 
-	artists := make(tonearm.ArtistInfos, 0)
+	artists := make(sonami.ArtistInfos, 0)
 	for _, artist := range artworks {
 		artists = append(artists, NewArtistInfo(artist))
 	}
@@ -40,10 +40,10 @@ func (t Track) Route() string {
 	return fmt.Sprintf("album/%s", t.Album().ID())
 }
 
-func (t Track) SourceType() tonearm.SourceType {
-	return tonearm.SourceTypeTrack
+func (t Track) SourceType() sonami.SourceType {
+	return sonami.SourceTypeTrack
 }
 
-func NewTrack(item openapi.Track) tonearm.Track {
+func NewTrack(item openapi.Track) sonami.Track {
 	return &Track{TrackInfo{item}}
 }

@@ -3,21 +3,21 @@ package v1
 import (
 	"fmt"
 
-	v1 "codeberg.org/dergs/tonearm/pkg/tidalapi/models/v1"
-	"codeberg.org/dergs/tonearm/pkg/tonearm"
+	v1 "github.com/RayZ3R0/sonami-gtk/pkg/tidalapi/models/v1"
+	"github.com/RayZ3R0/sonami-gtk/pkg/sonami"
 )
 
 type Track struct {
 	TrackInfo
-	album tonearm.AlbumInfo
+	album sonami.AlbumInfo
 }
 
-func (t Track) Album() tonearm.AlbumInfo {
+func (t Track) Album() sonami.AlbumInfo {
 	return t.album
 }
 
-func (t Track) Artists() tonearm.ArtistInfos {
-	artists := make(tonearm.ArtistInfos, len(t.AlbumItem.Artists))
+func (t Track) Artists() sonami.ArtistInfos {
+	artists := make(sonami.ArtistInfos, len(t.AlbumItem.Artists))
 	for i, artist := range t.AlbumItem.Artists {
 		artists[i] = NewArtistInfo(artist)
 	}
@@ -32,10 +32,10 @@ func (t Track) Route() string {
 	return fmt.Sprintf("album/%s", t.Album().ID())
 }
 
-func (t Track) SourceType() tonearm.SourceType {
-	return tonearm.SourceTypeTrack
+func (t Track) SourceType() sonami.SourceType {
+	return sonami.SourceTypeTrack
 }
 
-func NewTrack(item v1.AlbumItem, album tonearm.AlbumInfo) tonearm.Track {
+func NewTrack(item v1.AlbumItem, album sonami.AlbumInfo) sonami.Track {
 	return &Track{TrackInfo{AlbumItem: item}, album}
 }

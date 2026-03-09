@@ -2,7 +2,7 @@ package adw
 
 import "codeberg.org/puregotk/puregotk/v4/adw"
 
-//go:generate go run codeberg.org/dergs/tonearm/pkg/schwifty/gen PasswordEntryRow *adw.PasswordEntryRow adw
+//go:generate go run github.com/RayZ3R0/sonami-gtk/pkg/schwifty/gen PasswordEntryRow *adw.PasswordEntryRow adw
 
 func (f PasswordEntryRow) Title(title string) PasswordEntryRow {
 	return func() *adw.PasswordEntryRow {

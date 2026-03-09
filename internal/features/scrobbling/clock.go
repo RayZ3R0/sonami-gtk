@@ -4,12 +4,12 @@ import (
 	"context"
 	"time"
 
-	"codeberg.org/dergs/tonearm/pkg/tonearm"
+	"github.com/RayZ3R0/sonami-gtk/pkg/sonami"
 )
 
 type Clock struct {
 	counter   int
-	track     tonearm.Track
+	track     sonami.Track
 	isRunning bool
 	startedAt time.Time
 
@@ -73,7 +73,7 @@ func (c *Clock) Stop() {
 	c.cancelFunc()
 }
 
-func newClock(track tonearm.Track) *Clock {
+func newClock(track sonami.Track) *Clock {
 	return &Clock{
 		track:     track,
 		startedAt: time.Now(),

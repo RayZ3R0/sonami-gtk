@@ -3,14 +3,14 @@ package gtk
 import (
 	"fmt"
 
-	"codeberg.org/dergs/tonearm/pkg/schwifty/callback"
-	"codeberg.org/dergs/tonearm/pkg/schwifty/state"
-	"codeberg.org/dergs/tonearm/pkg/schwifty/utils/weak"
+	"github.com/RayZ3R0/sonami-gtk/pkg/schwifty/callback"
+	"github.com/RayZ3R0/sonami-gtk/pkg/schwifty/state"
+	"github.com/RayZ3R0/sonami-gtk/pkg/schwifty/utils/weak"
 	"codeberg.org/puregotk/puregotk/v4/gtk"
 	"codeberg.org/puregotk/puregotk/v4/pango"
 )
 
-//go:generate go run codeberg.org/dergs/tonearm/pkg/schwifty/gen Label *gtk.Label gtk
+//go:generate go run github.com/RayZ3R0/sonami-gtk/pkg/schwifty/gen Label *gtk.Label gtk
 
 func (f Label) Color(color string) Label {
 	return func() *gtk.Label {

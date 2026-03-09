@@ -1,19 +1,19 @@
 package routes
 
 import (
-	"codeberg.org/dergs/tonearm/internal/gettext"
-	"codeberg.org/dergs/tonearm/internal/notifications"
-	"codeberg.org/dergs/tonearm/internal/player"
-	"codeberg.org/dergs/tonearm/internal/router"
-	"codeberg.org/dergs/tonearm/internal/signals"
-	"codeberg.org/dergs/tonearm/internal/ui/components"
-	"codeberg.org/dergs/tonearm/internal/ui/components/tracklist"
-	"codeberg.org/dergs/tonearm/internal/ui/components/tracklist_header"
-	"codeberg.org/dergs/tonearm/internal/ui/pages"
-	"codeberg.org/dergs/tonearm/pkg/schwifty"
-	"codeberg.org/dergs/tonearm/pkg/schwifty/state"
-	. "codeberg.org/dergs/tonearm/pkg/schwifty/syntax"
-	"codeberg.org/dergs/tonearm/pkg/tonearm"
+	"github.com/RayZ3R0/sonami-gtk/internal/gettext"
+	"github.com/RayZ3R0/sonami-gtk/internal/notifications"
+	"github.com/RayZ3R0/sonami-gtk/internal/player"
+	"github.com/RayZ3R0/sonami-gtk/internal/router"
+	"github.com/RayZ3R0/sonami-gtk/internal/signals"
+	"github.com/RayZ3R0/sonami-gtk/internal/ui/components"
+	"github.com/RayZ3R0/sonami-gtk/internal/ui/components/tracklist"
+	"github.com/RayZ3R0/sonami-gtk/internal/ui/components/tracklist_header"
+	"github.com/RayZ3R0/sonami-gtk/internal/ui/pages"
+	"github.com/RayZ3R0/sonami-gtk/pkg/schwifty"
+	"github.com/RayZ3R0/sonami-gtk/pkg/schwifty/state"
+	. "github.com/RayZ3R0/sonami-gtk/pkg/schwifty/syntax"
+	"github.com/RayZ3R0/sonami-gtk/pkg/sonami"
 	"codeberg.org/puregotk/puregotk/v4/gtk"
 	"github.com/infinytum/injector"
 )
@@ -30,7 +30,7 @@ func init() {
 }
 
 func Playlist(playlistID string) *router.Response {
-	service, err := injector.Inject[tonearm.Service]()
+	service, err := injector.Inject[sonami.Service]()
 	if err != nil {
 		return router.FromError(gettext.Get("Playlist"), err)
 	}
@@ -46,7 +46,7 @@ func Playlist(playlistID string) *router.Response {
 	}
 
 	page, err := pages.NewPaginatedTracklistPage(trackPaginator, func(tl *tracklist.TrackList) schwifty.BaseWidgetable {
-		tl.SetClickHandler(func(track tonearm.Track, position int) {
+		tl.SetClickHandler(func(track sonami.Track, position int) {
 			go func() {
 				if err := player.PlayPlaylist(playlistID, false, position); err != nil {
 					notifications.OnToast.Notify(gettext.Get("An error occurred while playing the track"))

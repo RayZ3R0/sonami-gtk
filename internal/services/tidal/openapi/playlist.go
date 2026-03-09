@@ -1,8 +1,8 @@
 package openapi
 
 import (
-	"codeberg.org/dergs/tonearm/pkg/tidalapi/models/openapi"
-	"codeberg.org/dergs/tonearm/pkg/tonearm"
+	"github.com/RayZ3R0/sonami-gtk/pkg/tidalapi/models/openapi"
+	"github.com/RayZ3R0/sonami-gtk/pkg/sonami"
 )
 
 var playlistLogger = logger.With("type", "Playlist").WithGroup("playlist")
@@ -15,7 +15,7 @@ func (p Playlist) Count() int {
 	return p.Data.Attributes.NumberOfItems
 }
 
-func (p Playlist) Creator() tonearm.ArtistInfo {
+func (p Playlist) Creator() sonami.ArtistInfo {
 	artists := p.Included.Artists(p.Data.Relationships.OwnerProfiles.Data...)
 
 	if len(artists) == 0 {
@@ -24,6 +24,6 @@ func (p Playlist) Creator() tonearm.ArtistInfo {
 	return NewArtistInfo(artists[0])
 }
 
-func NewPlaylist(playlist openapi.Playlist) tonearm.Playlist {
+func NewPlaylist(playlist openapi.Playlist) sonami.Playlist {
 	return &Playlist{PlaylistInfo{playlist}}
 }

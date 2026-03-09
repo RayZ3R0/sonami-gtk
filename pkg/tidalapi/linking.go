@@ -3,8 +3,8 @@ package tidalapi
 import (
 	"context"
 
-	"codeberg.org/dergs/tonearm/pkg/tidalapi/auth"
-	"codeberg.org/dergs/tonearm/pkg/tidalapi/internal"
+	"github.com/RayZ3R0/sonami-gtk/pkg/tidalapi/auth"
+	"github.com/RayZ3R0/sonami-gtk/pkg/tidalapi/internal"
 )
 
 func StartDeviceLinking(cb func(*auth.DeviceLinkingChallenge, context.CancelFunc)) (*auth.TokenResponse, error) {

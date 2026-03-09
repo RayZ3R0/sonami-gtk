@@ -1,16 +1,16 @@
 package tracklist
 
 import (
-	"codeberg.org/dergs/tonearm/internal/resources"
-	"codeberg.org/dergs/tonearm/internal/settings"
-	. "codeberg.org/dergs/tonearm/pkg/schwifty/syntax"
-	"codeberg.org/dergs/tonearm/pkg/tonearm"
-	"codeberg.org/dergs/tonearm/pkg/utils/imgutil"
+	"github.com/RayZ3R0/sonami-gtk/internal/resources"
+	"github.com/RayZ3R0/sonami-gtk/internal/settings"
+	. "github.com/RayZ3R0/sonami-gtk/pkg/schwifty/syntax"
+	"github.com/RayZ3R0/sonami-gtk/pkg/sonami"
+	"github.com/RayZ3R0/sonami-gtk/pkg/utils/imgutil"
 	"codeberg.org/puregotk/puregotk/v4/gtk"
 	"github.com/infinytum/injector"
 )
 
-func CoverColumn(track tonearm.Track, grid *gtk.Grid, position int, column int32) int {
+func CoverColumn(track sonami.Track, grid *gtk.Grid, position int, column int32) int {
 	grid.Attach(
 		Image().
 			FromPaintable(resources.MissingAlbum()).

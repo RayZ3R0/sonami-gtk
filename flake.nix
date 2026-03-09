@@ -64,14 +64,14 @@
         };
 
         packages.tonearm = pkgs.buildGoModule.override { go = pkgs.go_1_26; } (finalAttrs: {
-          pname = "tonearm";
+          pname = "sonami";
           version = "1.5.1";
           src = pkgs.lib.cleanSource ./.;
           vendorHash = "sha256-jwv80SkHVPqsWdIsVyFEw1J+8kOpg38gObYgtxnlv6o=";
 
           ldflags = [
-            "-X \"codeberg.org/dergs/tonearm/internal/ui.Commit=${(if (self ? rev) then self.rev else "")}\""
-            "-X \"codeberg.org/dergs/tonearm/internal/ui.Version=${finalAttrs.version}\""
+            "-X \"codeberg.org/dergs/sonami/internal/ui.Commit=${(if (self ? rev) then self.rev else "")}\""
+            "-X \"codeberg.org/dergs/sonami/internal/ui.Version=${finalAttrs.version}\""
           ];
 
           buildInputs = with pkgs; [
@@ -92,14 +92,14 @@
           ];
 
           subPackages = [
-            "cmd/tonearm"
+            "cmd/sonami"
           ];
 
           desktopItems = [
             (pkgs.makeDesktopItem {
-              name = "dev.dergs.Tonearm";
+              name = "io.github.rayz3r0.SonamiGtk";
               exec = "tonearm %u";
-              icon = "dev.dergs.Tonearm";
+              icon = "io.github.rayz3r0.SonamiGtk";
               comment = "Tonearm is a GTK client for TIDAL written in GoLang.";
               desktopName = "Tonearm";
               mimeTypes = [
@@ -116,14 +116,14 @@
           ];
 
           postInstall = ''
-            wrapProgram $out/bin/tonearm \
+            wrapProgram $out/bin/sonami \
               --prefix GST_PLUGIN_PATH : "$GST_PLUGIN_SYSTEM_PATH_1_0" \
               --set-default PUREGOTK_LIB_FOLDER ${libraryPath}/lib \
               ''${gappsWrapperArgs[@]}
-            install -Dm644 internal/icons/hicolor/scalable/apps/dev.dergs.Tonearm.svg -t $out/share/icons/hicolor/scalable/apps
-            install -Dm644 internal/icons/hicolor/128x128/apps/dev.dergs.Tonearm.png -t $out/share/icons/hicolor/128x128/apps
-            install -Dm644 internal/icons/hicolor/symbolic/apps/dev.dergs.Tonearm-symbolic.svg -t $out/share/icons/hicolor/symbolic/apps
-            install -Dm644 internal/settings/dev.dergs.Tonearm.gschema.xml -t $out/share/glib-2.0/schemas
+            install -Dm644 internal/icons/hicolor/scalable/apps/io.github.rayz3r0.SonamiGtk.svg -t $out/share/icons/hicolor/scalable/apps
+            install -Dm644 internal/icons/hicolor/128x128/apps/io.github.rayz3r0.SonamiGtk.png -t $out/share/icons/hicolor/128x128/apps
+            install -Dm644 internal/icons/hicolor/symbolic/apps/io.github.rayz3r0.SonamiGtk-symbolic.svg -t $out/share/icons/hicolor/symbolic/apps
+            install -Dm644 internal/settings/io.github.rayz3r0.SonamiGtk.gschema.xml -t $out/share/glib-2.0/schemas
             glib-compile-schemas $out/share/glib-2.0/schemas
           '';
 
@@ -135,7 +135,7 @@
               drafolin
               nilathedragon
             ];
-            mainProgram = "tonearm";
+            mainProgram = "sonami";
           };
         });
 
