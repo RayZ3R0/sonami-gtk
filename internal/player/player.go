@@ -69,7 +69,11 @@ func setLoadingState() {
 }
 
 func resetLoadingState() {
-	playbin.SetState(stateBeforeLoading)
+	if stateBeforeLoading != gst.VoidPending {
+		playbin.SetState(stateBeforeLoading)
+		stateBeforeLoading = gst.VoidPending
+	}
+
 	PlaybackStateChanged.Notify(func(oldValue *PlaybackState) *PlaybackState {
 		oldValue.Loading = false
 		return oldValue
