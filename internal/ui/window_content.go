@@ -1,13 +1,13 @@
 package ui
 
 import (
+	"codeberg.org/puregotk/puregotk/v4/gtk"
 	"github.com/RayZ3R0/sonami-gtk/internal/gettext"
 	"github.com/RayZ3R0/sonami-gtk/internal/router"
 	"github.com/RayZ3R0/sonami-gtk/internal/signals"
 	"github.com/RayZ3R0/sonami-gtk/internal/ui/components"
 	"github.com/RayZ3R0/sonami-gtk/pkg/schwifty"
 	. "github.com/RayZ3R0/sonami-gtk/pkg/schwifty/syntax"
-	"codeberg.org/puregotk/puregotk/v4/gtk"
 )
 
 func (w *Window) buildContentHeader() *gtk.Widget {
@@ -21,9 +21,15 @@ func (w *Window) buildContentHeader() *gtk.Widget {
 	exploreButton.Icon("compass2-symbolic")
 	exploreButton.TooltipText(gettext.Get("Navigate to Explore"))
 
+	collectionButton := components.NewRouteButton("my-collection", true)
+	collectionButton.Title(gettext.Get("My Collection"))
+	collectionButton.Icon("heart-outline-thick-symbolic")
+	collectionButton.TooltipText(gettext.Get("Navigate to My Collection"))
+
 	defaultToolbar := HStack(
 		homeButton,
 		exploreButton,
+		collectionButton,
 	).Spacing(3)()
 
 	// We never want to delete the default toolbar. NEVER.

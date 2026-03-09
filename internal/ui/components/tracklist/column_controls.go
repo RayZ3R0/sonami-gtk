@@ -4,15 +4,15 @@ import (
 	"fmt"
 	"log/slog"
 
-	"github.com/RayZ3R0/sonami-gtk/internal/g"
-	"github.com/RayZ3R0/sonami-gtk/internal/gettext"
-	// "github.com/RayZ3R0/sonami-gtk/internal/state"           // deferred: local favourites
-	// favouritebutton "github.com/RayZ3R0/sonami-gtk/internal/ui/components/favourite_button" // deferred
-	. "github.com/RayZ3R0/sonami-gtk/pkg/schwifty/syntax"
-	"github.com/RayZ3R0/sonami-gtk/pkg/sonami"
 	"codeberg.org/puregotk/puregotk/v4/gio"
 	"codeberg.org/puregotk/puregotk/v4/glib"
 	"codeberg.org/puregotk/puregotk/v4/gtk"
+	"github.com/RayZ3R0/sonami-gtk/internal/g"
+	"github.com/RayZ3R0/sonami-gtk/internal/gettext"
+	"github.com/RayZ3R0/sonami-gtk/internal/state"
+	favouritebutton "github.com/RayZ3R0/sonami-gtk/internal/ui/components/favourite_button"
+	. "github.com/RayZ3R0/sonami-gtk/pkg/schwifty/syntax"
+	"github.com/RayZ3R0/sonami-gtk/pkg/sonami"
 )
 
 var logger = slog.With("module", "components/tracklist")
@@ -52,6 +52,7 @@ func controlsColumn(trackId, albumId string, artistId []lightArtist, grid *gtk.G
 
 	grid.Attach(
 		HStack(
+			favouritebutton.FavouriteButton(state.TracksCache, trackId),
 			Button().
 				TooltipText(gettext.Get("Add to Queue")).
 				IconName("queue-symbolic").

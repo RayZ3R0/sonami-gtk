@@ -3,24 +3,24 @@ package tracklist_header
 import (
 	"fmt"
 
-	"github.com/RayZ3R0/sonami-gtk/internal/gettext"
-	appState "github.com/RayZ3R0/sonami-gtk/internal/state"
-	// favouritebutton "github.com/RayZ3R0/sonami-gtk/internal/ui/components/favourite_button" // deferred: local favourites
-	"github.com/RayZ3R0/sonami-gtk/pkg/schwifty"
-	"github.com/RayZ3R0/sonami-gtk/pkg/schwifty/tracking"
-	"github.com/RayZ3R0/sonami-gtk/pkg/tidalapi"
-	"github.com/RayZ3R0/sonami-gtk/pkg/sonami"
 	"codeberg.org/puregotk/puregotk/v4/gio"
 	"codeberg.org/puregotk/puregotk/v4/glib"
 	"codeberg.org/puregotk/puregotk/v4/gtk"
+	"github.com/RayZ3R0/sonami-gtk/internal/gettext"
+	appState "github.com/RayZ3R0/sonami-gtk/internal/state"
+	favouritebutton "github.com/RayZ3R0/sonami-gtk/internal/ui/components/favourite_button"
+	"github.com/RayZ3R0/sonami-gtk/pkg/schwifty"
+	"github.com/RayZ3R0/sonami-gtk/pkg/schwifty/tracking"
+	"github.com/RayZ3R0/sonami-gtk/pkg/sonami"
+	"github.com/RayZ3R0/sonami-gtk/pkg/tidalapi"
 )
 
 func secondaryControlsPlaylist(playlist sonami.Playlist, popover *gtk.PopoverMenu) schwifty.Box {
-	// Favourite button deferred — see hifi/deferred_features.md
-	// Keeping cache refs for future local-DB implementation:
-	_ = appState.MixesCache
-	_ = appState.PlaylistsCache
-	return componentSecondaryControls(playlist, popover, nil)
+	var cache = appState.PlaylistsCache
+	if playlist.IsMix() {
+		cache = appState.MixesCache
+	}
+	return componentSecondaryControls(playlist, popover, favouritebutton.FavouriteButton(cache, playlist.ID()))
 }
 
 func NewPlaylist(playlist sonami.Playlist, playFunc func(), shuffleFunc func()) schwifty.Widget {

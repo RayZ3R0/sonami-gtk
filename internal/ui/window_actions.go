@@ -6,18 +6,19 @@ import (
 	"strings"
 	"unsafe"
 
+	"codeberg.org/puregotk/puregotk/v4/gio"
+	"codeberg.org/puregotk/puregotk/v4/glib"
+	"codeberg.org/puregotk/puregotk/v4/gtk"
 	"github.com/RayZ3R0/sonami-gtk/internal/gettext"
 	"github.com/RayZ3R0/sonami-gtk/internal/notifications"
 	"github.com/RayZ3R0/sonami-gtk/internal/player"
 	"github.com/RayZ3R0/sonami-gtk/internal/router"
 	v2 "github.com/RayZ3R0/sonami-gtk/internal/services/tidal/v2"
 	"github.com/RayZ3R0/sonami-gtk/internal/settings"
+	appState "github.com/RayZ3R0/sonami-gtk/internal/state"
+	"github.com/RayZ3R0/sonami-gtk/pkg/sonami"
 	"github.com/RayZ3R0/sonami-gtk/pkg/tidalapi"
 	modelv2 "github.com/RayZ3R0/sonami-gtk/pkg/tidalapi/models/v2"
-	"github.com/RayZ3R0/sonami-gtk/pkg/sonami"
-	"codeberg.org/puregotk/puregotk/v4/gio"
-	"codeberg.org/puregotk/puregotk/v4/glib"
-	"codeberg.org/puregotk/puregotk/v4/gtk"
 	"github.com/infinytum/injector"
 )
 
@@ -211,6 +212,28 @@ func (w *Window) installActions() {
 
 				player.AddTracklistToUserQueue(topTracks)
 			}()
+		case "my_collection":
+			if id != "tracks" {
+				logger.Error("unknown my_collection sub-type", "id", id)
+				return
+			}
+			service := injector.MustInject[sonami.Service]()
+			go func() {
+				trackIDs, err := appState.TracksCache.Get()
+				if err != nil {
+					logger.Error("failed to get liked tracks", "error", err)
+					return
+				}
+				tracks := make([]sonami.Track, 0, len(*trackIDs))
+				for _, tid := range *trackIDs {
+					t, err := service.GetTrack(tid)
+					if err != nil {
+						continue
+					}
+					tracks = append(tracks, t)
+				}
+				player.AddTracklistToUserQueue(tracks)
+			}()
 		default:
 			logger.Error("unknown object type to add to queue", "type", parts[0])
 			return
@@ -246,7 +269,6 @@ func (w *Window) installActions() {
 		router.Navigate("artist/" + variant.GetString(nil))
 	}))
 	w.AddAction(routeArtistAction)
-
 
 	setAsDefaultAction := gio.NewSimpleAction("set-as-default", nil)
 	setAsDefaultAction.ConnectActivate(new(func(action gio.SimpleAction, parameter uintptr) {

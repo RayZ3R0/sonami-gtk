@@ -4,17 +4,17 @@ import (
 	"fmt"
 	"strings"
 
-	"github.com/RayZ3R0/sonami-gtk/internal/gettext"
-	appState "github.com/RayZ3R0/sonami-gtk/internal/state"
-	// favouritebutton "github.com/RayZ3R0/sonami-gtk/internal/ui/components/favourite_button" // deferred: local favourites
-	"github.com/RayZ3R0/sonami-gtk/pkg/schwifty"
-	. "github.com/RayZ3R0/sonami-gtk/pkg/schwifty/syntax"
-	"github.com/RayZ3R0/sonami-gtk/pkg/schwifty/tracking"
-	"github.com/RayZ3R0/sonami-gtk/pkg/tidalapi"
-	"github.com/RayZ3R0/sonami-gtk/pkg/sonami"
 	"codeberg.org/puregotk/puregotk/v4/gio"
 	"codeberg.org/puregotk/puregotk/v4/glib"
 	"codeberg.org/puregotk/puregotk/v4/gtk"
+	"github.com/RayZ3R0/sonami-gtk/internal/gettext"
+	appState "github.com/RayZ3R0/sonami-gtk/internal/state"
+	favouritebutton "github.com/RayZ3R0/sonami-gtk/internal/ui/components/favourite_button"
+	"github.com/RayZ3R0/sonami-gtk/pkg/schwifty"
+	. "github.com/RayZ3R0/sonami-gtk/pkg/schwifty/syntax"
+	"github.com/RayZ3R0/sonami-gtk/pkg/schwifty/tracking"
+	"github.com/RayZ3R0/sonami-gtk/pkg/sonami"
+	"github.com/RayZ3R0/sonami-gtk/pkg/tidalapi"
 )
 
 func secondaryControlsAlbum(album sonami.Album, popover *gtk.PopoverMenu) schwifty.Box {
@@ -40,9 +40,7 @@ func secondaryControlsAlbum(album sonami.Album, popover *gtk.PopoverMenu) schwif
 			ActionName("win.route.artist").
 			ActionTargetValue(glib.NewVariantString(artist.ID()))()
 	}
-	// Favourite button deferred — see hifi/deferred_features.md
-	_ = appState.AlbumsCache
-	return componentSecondaryControls(album, popover, artistButton, nil)
+	return componentSecondaryControls(album, popover, artistButton, favouritebutton.FavouriteButton(appState.AlbumsCache, album.ID()))
 }
 
 func NewAlbum(album sonami.Album, playFunc func(), shuffleFunc func()) schwifty.Widget {
