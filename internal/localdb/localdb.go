@@ -80,6 +80,22 @@ func migrate(db *sql.DB) error {
 			added_at TEXT NOT NULL DEFAULT (strftime('%Y-%m-%dT%H:%M:%fZ', 'now')),
 			PRIMARY KEY (type, id)
 		)`,
+		// v2: local playlists
+		`CREATE TABLE IF NOT EXISTS local_playlists (
+			id         TEXT PRIMARY KEY,
+			name       TEXT NOT NULL,
+			created_at TEXT NOT NULL DEFAULT (strftime('%Y-%m-%dT%H:%M:%fZ', 'now'))
+		)`,
+		// v3: local playlist tracks
+		`CREATE TABLE IF NOT EXISTS local_playlist_tracks (
+			playlist_id TEXT NOT NULL,
+			track_id    TEXT NOT NULL,
+			position    INTEGER NOT NULL DEFAULT 0,
+			added_at    TEXT NOT NULL DEFAULT (strftime('%Y-%m-%dT%H:%M:%fZ', 'now')),
+			PRIMARY KEY (playlist_id, track_id)
+		)`,
+		// v4: add cover_url to local playlists
+		`ALTER TABLE local_playlists ADD COLUMN cover_url TEXT NOT NULL DEFAULT ''`,
 	}
 
 	for i := version; i < len(migrations); i++ {

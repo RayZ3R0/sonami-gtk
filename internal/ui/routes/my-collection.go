@@ -5,6 +5,7 @@ import (
 
 	"codeberg.org/puregotk/puregotk/v4/gtk"
 	"github.com/RayZ3R0/sonami-gtk/internal/gettext"
+	"github.com/RayZ3R0/sonami-gtk/internal/localdb"
 	"github.com/RayZ3R0/sonami-gtk/internal/router"
 	"github.com/RayZ3R0/sonami-gtk/internal/state"
 	"github.com/RayZ3R0/sonami-gtk/internal/ui/components"
@@ -99,6 +100,13 @@ func MyCollection() *router.Response {
 		return router.FromError(gettext.Get("My Collection"), err)
 	}
 
+	// Local playlists are a fast DB-only operation — fetch synchronously before goroutines.
+	localPlaylists, _ := localdb.GetAllPlaylists()
+	maxTidalPlaylists := 8 - len(localPlaylists)
+	if maxTidalPlaylists < 0 {
+		maxTidalPlaylists = 0
+	}
+
 	// Fetch up to 8 items per section in parallel across sections.
 	var (
 		albums    []sonami.Album
@@ -119,7 +127,7 @@ func MyCollection() *router.Response {
 	}()
 	go func() {
 		defer wg.Done()
-		playlists = fetchN(*playlistIDs, 8, service.GetPlaylist)
+		playlists = fetchN(*playlistIDs, maxTidalPlaylists, service.GetPlaylist)
 	}()
 	go func() {
 		defer wg.Done()
@@ -155,12 +163,18 @@ func MyCollection() *router.Response {
 		body = body.Append(albumList)
 	}
 
-	// Playlists section.
-	if len(playlists) > 0 {
+	// Playlists section (local user-created playlists first, then Tidal-saved).
+	hasLocalPlaylists := len(localPlaylists) > 0
+	hasPlaylists := hasLocalPlaylists || len(playlists) > 0
+	if hasPlaylists {
 		playlistList := horizontal_list.NewHorizontalList(gettext.Get("Playlists")).
 			SetPageMargin(40)
-		if len(*playlistIDs) > 8 {
+		totalPlaylists := len(localPlaylists) + len(*playlistIDs)
+		if totalPlaylists > 8 {
 			playlistList.SetViewAllRoute("my-collection/playlists")
+		}
+		for _, lp := range localPlaylists {
+			playlistList.Append(media_card.NewLocalPlaylist(lp))
 		}
 		for _, playlist := range playlists {
 			playlistList.Append(media_card.NewPlaylist(playlist))
@@ -188,7 +202,7 @@ func MyCollection() *router.Response {
 	}
 
 	// Empty state: all sections are empty.
-	if len(albums) == 0 && len(artists) == 0 && len(playlists) == 0 && len(tracks) == 0 {
+	if len(albums) == 0 && len(artists) == 0 && !hasPlaylists && len(tracks) == 0 {
 		return &router.Response{
 			PageTitle: gettext.Get("My Collection"),
 			View: StatusPage().

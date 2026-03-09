@@ -22,7 +22,7 @@ type lightArtist struct {
 	ID   string
 }
 
-func controlsColumn(trackId, albumId string, artistId []lightArtist, grid *gtk.Grid, position int, column int32) int {
+func controlsColumn(trackId, albumId string, coverURL string, artistId []lightArtist, grid *gtk.Grid, position int, column int32) int {
 	model := gio.NewMenu()
 
 	item := gio.NewMenuItem(gettext.Get("Navigate to Album"), "win.route.album")
@@ -46,6 +46,11 @@ func controlsColumn(trackId, albumId string, artistId []lightArtist, grid *gtk.G
 		model.AppendItem(item)
 		item.Unref()
 	}
+
+	addToPlaylistItem := gio.NewMenuItem(gettext.Get("Add to Playlist…"), "win.localplaylist.add-track")
+	addToPlaylistItem.SetActionAndTargetValue("win.localplaylist.add-track", glib.NewVariantString(trackId+"\t"+coverURL))
+	model.AppendItem(addToPlaylistItem)
+	addToPlaylistItem.Unref()
 
 	popover := gtk.NewPopoverMenuFromModel(&model.MenuModel)
 	model.Unref()
@@ -96,6 +101,7 @@ func ControlsColumn(track sonami.Track, grid *gtk.Grid, position int, column int
 	return controlsColumn(
 		track.ID(),
 		track.Album().ID(),
+		track.Cover(172),
 		g.Map(
 			track.Artists(),
 			func(artist sonami.ArtistInfo) lightArtist {

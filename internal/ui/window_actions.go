@@ -10,6 +10,7 @@ import (
 	"codeberg.org/puregotk/puregotk/v4/glib"
 	"codeberg.org/puregotk/puregotk/v4/gtk"
 	"github.com/RayZ3R0/sonami-gtk/internal/gettext"
+	"github.com/RayZ3R0/sonami-gtk/internal/localdb"
 	"github.com/RayZ3R0/sonami-gtk/internal/notifications"
 	"github.com/RayZ3R0/sonami-gtk/internal/player"
 	"github.com/RayZ3R0/sonami-gtk/internal/router"
@@ -212,6 +213,24 @@ func (w *Window) installActions() {
 
 				player.AddTracklistToUserQueue(topTracks)
 			}()
+		case "local_playlist":
+			go func() {
+				trackIDs, err := localdb.GetPlaylistTrackIDs(id)
+				if err != nil {
+					logger.Error("failed to get local playlist tracks", "playlist_id", id, "error", err)
+					return
+				}
+				service := injector.MustInject[sonami.Service]()
+				tracks := make([]sonami.Track, 0, len(trackIDs))
+				for _, tid := range trackIDs {
+					t, err := service.GetTrack(tid)
+					if err != nil {
+						continue
+					}
+					tracks = append(tracks, t)
+				}
+				player.AddTracklistToUserQueue(tracks)
+			}()
 		case "my_collection":
 			if id != "tracks" {
 				logger.Error("unknown my_collection sub-type", "id", id)
@@ -269,6 +288,26 @@ func (w *Window) installActions() {
 		router.Navigate("artist/" + variant.GetString(nil))
 	}))
 	w.AddAction(routeArtistAction)
+
+	routeLocalPlaylistAction := gio.NewSimpleAction("route.local-playlist", glib.NewVariantType("s"))
+	routeLocalPlaylistAction.ConnectActivate(new(func(action gio.SimpleAction, parameter uintptr) {
+		variant := (*glib.Variant)(unsafe.Pointer(parameter))
+		router.Navigate("local-playlist/" + variant.GetString(nil))
+	}))
+	w.AddAction(routeLocalPlaylistAction)
+
+	addToPlaylistAction := gio.NewSimpleAction("localplaylist.add-track", glib.NewVariantType("s"))
+	addToPlaylistAction.ConnectActivate(new(func(action gio.SimpleAction, parameter uintptr) {
+		variant := (*glib.Variant)(unsafe.Pointer(parameter))
+		parts := strings.SplitN(variant.GetString(nil), "\t", 2)
+		trackID := parts[0]
+		coverURL := ""
+		if len(parts) > 1 {
+			coverURL = parts[1]
+		}
+		w.presentAddToPlaylistDialog(trackID, coverURL)
+	}))
+	w.AddAction(addToPlaylistAction)
 
 	setAsDefaultAction := gio.NewSimpleAction("set-as-default", nil)
 	setAsDefaultAction.ConnectActivate(new(func(action gio.SimpleAction, parameter uintptr) {
