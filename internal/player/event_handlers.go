@@ -48,7 +48,7 @@ func onAboutToFinish(_ *gst.Element) {
 	}
 
 	nextTrack := getNextTrackFromQueue(true)
-	if nextTrack != nil {
+	if nextTrack != nil && nextTrack.IsStreamable() {
 		playbackInfo, err := injector.MustInject[*tidalapi.TidalAPI]().V1.Tracks.PlaybackInfo(
 			context.Background(),
 			nextTrack.ID(),
