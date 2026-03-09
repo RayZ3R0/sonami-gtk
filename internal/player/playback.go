@@ -7,9 +7,9 @@ import (
 	"github.com/RayZ3R0/sonami-gtk/internal/gettext"
 	"github.com/RayZ3R0/sonami-gtk/internal/notifications"
 	"github.com/RayZ3R0/sonami-gtk/internal/settings"
+	"github.com/RayZ3R0/sonami-gtk/pkg/sonami"
 	"github.com/RayZ3R0/sonami-gtk/pkg/tidalapi"
 	v1 "github.com/RayZ3R0/sonami-gtk/pkg/tidalapi/models/v1"
-	"github.com/RayZ3R0/sonami-gtk/pkg/sonami"
 	"github.com/go-gst/go-gst/gst"
 	"github.com/infinytum/injector"
 )
@@ -30,31 +30,31 @@ func playTrack(track sonami.Track) error {
 		return &newState
 	})
 
+	if didQueueGaplessPlayback {
+		// In case the user switched track during a gapless transition, we want to make sure the player does not get stuck in a gapless playback loop
+		didQueueGaplessPlayback = false
+		logger.Debug("gapless playback detected, not enqueueing track again")
+		resetLoadingState()
+		return nil
+	}
+
 	if !track.IsStreamable() {
 		notifications.OnToast.Notify(gettext.Get("Track not available for streaming, skipping to next track"))
 		Next()
 		return errors.New("track not available for streaming")
 	}
 
-	if !didQueueGaplessPlayback {
-
-		logger.Debug("fetching playback info for track", "track_id", track.ID())
-		playbackInfo, err := streamResolver.Resolve(
-			context.Background(),
-			track.ID(),
-			settings.Player().GetAudioQuality(),
-		)
-		if err != nil {
-			logger.Error("unable to fetch playback info for track", "error", err)
-			return err
-		}
-		return play(playbackInfo)
+	logger.Debug("fetching playback info for track", "track_id", track.ID())
+	playbackInfo, err := streamResolver.Resolve(
+		context.Background(),
+		track.ID(),
+		settings.Player().GetAudioQuality(),
+	)
+	if err != nil {
+		logger.Error("unable to fetch playback info for track", "error", err)
+		return err
 	}
-	// In case the user switched track during a gapless transition, we want to make sure the player does not get stuck in a gapless playback loop
-	didQueueGaplessPlayback = false
-	logger.Debug("gapless playback detected, not enqueueing track again")
-	resetLoadingState()
-	return nil
+	return play(playbackInfo)
 }
 
 func play(playbackInfo *v1.PlaybackInfo) error {

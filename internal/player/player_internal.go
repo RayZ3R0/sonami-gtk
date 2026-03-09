@@ -1,6 +1,8 @@
 package player
 
 import (
+	"github.com/RayZ3R0/sonami-gtk/internal/gettext"
+	"github.com/RayZ3R0/sonami-gtk/internal/notifications"
 	"github.com/RayZ3R0/sonami-gtk/pkg/sonami"
 	"github.com/infinytum/injector"
 )
@@ -106,6 +108,12 @@ func playTracklist(tracks []sonami.Track, shuffle bool, startingPosition int) (s
 	// Now we need to kick-off playback by fetching the next track from the queue
 	// and starting playback.
 	nextTrack := getNextTrackFromQueue(false)
+
+	for nextTrack != nil && !nextTrack.IsStreamable() {
+		notifications.OnToast.Notify(gettext.Get("Track not available for streaming, skipping to next track"))
+		nextTrack = getNextTrackFromQueue(false)
+	}
+
 	if nextTrack != nil {
 		logger.Info("starting tracklist playback", "track_id", nextTrack.ID())
 		if err := playTrack(nextTrack); err != nil {
