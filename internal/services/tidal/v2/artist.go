@@ -1,9 +1,13 @@
 package v2
 
 import (
-	v2 "github.com/RayZ3R0/sonami-gtk/pkg/tidalapi/models/v2"
+	"regexp"
+
 	"github.com/RayZ3R0/sonami-gtk/pkg/sonami"
+	v2 "github.com/RayZ3R0/sonami-gtk/pkg/tidalapi/models/v2"
 )
+
+var wimpLinkRegex = regexp.MustCompile(`\[wimpLink\s+artistId="[^"]*"\]([^[]*)\[/wimpLink\]`)
 
 type Artist struct {
 	ArtistInfo
@@ -11,7 +15,7 @@ type Artist struct {
 }
 
 func (a *Artist) Description() string {
-	return a.ArtistPage.Header.Biography.Text
+	return wimpLinkRegex.ReplaceAllString(a.ArtistPage.Header.Biography.Text, "$1")
 }
 
 func (a Artist) FollowerCount() int {

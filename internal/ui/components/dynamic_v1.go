@@ -4,6 +4,7 @@ import (
 	"strings"
 	"time"
 
+	"codeberg.org/puregotk/puregotk/v4/gtk"
 	"github.com/RayZ3R0/sonami-gtk/internal/gettext"
 	"github.com/RayZ3R0/sonami-gtk/internal/router"
 	v2 "github.com/RayZ3R0/sonami-gtk/internal/services/tidal/v2"
@@ -17,13 +18,11 @@ import (
 	"github.com/RayZ3R0/sonami-gtk/pkg/tidalapi/helper"
 	v1 "github.com/RayZ3R0/sonami-gtk/pkg/tidalapi/models/v1"
 	modelv2 "github.com/RayZ3R0/sonami-gtk/pkg/tidalapi/models/v2"
-	"codeberg.org/puregotk/puregotk/v4/gtk"
 )
 
 func ForModule(module v1.Module) schwifty.BaseWidgetable {
 	switch module.Type {
 	case v1.ModuleTypeVideoList:
-		// TODO: Implement video lists
 		return HStack()
 	case v1.ModuleTypeFeaturedPromotions:
 		list := horizontal_list.NewHorizontalList(module.Title)
