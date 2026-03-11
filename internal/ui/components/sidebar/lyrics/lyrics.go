@@ -5,6 +5,7 @@ import (
 	"runtime"
 	"time"
 
+	"codeberg.org/puregotk/puregotk/v4/gtk"
 	"github.com/RayZ3R0/sonami-gtk/internal/gettext"
 	"github.com/RayZ3R0/sonami-gtk/internal/player"
 	"github.com/RayZ3R0/sonami-gtk/internal/signals"
@@ -14,7 +15,6 @@ import (
 	. "github.com/RayZ3R0/sonami-gtk/pkg/schwifty/syntax"
 	"github.com/RayZ3R0/sonami-gtk/pkg/schwifty/utils/weak"
 	"github.com/RayZ3R0/sonami-gtk/pkg/sonami"
-	"codeberg.org/puregotk/puregotk/v4/gtk"
 )
 
 var (
@@ -80,7 +80,7 @@ func init() {
 			return signals.Continue
 		}
 
-		lyrics, isTimestamped, err := getLyrics(trackInfo.ID())
+		lyrics, isTimestamped, err := getLyrics(trackInfo)
 		if err != nil {
 			logger.Error("Error while fetching lyrics", "error", err)
 			lyricsPanel.SetValue(lyricsStatusError)

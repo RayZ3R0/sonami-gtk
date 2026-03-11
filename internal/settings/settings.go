@@ -58,6 +58,12 @@ var Discord = g.Lazy(func() *DiscordSettings {
 	}
 })
 
+var Lyrics = g.Lazy(func() *LyricsSettings {
+	return &LyricsSettings{
+		finalize(gio.NewSettings("io.github.rayz3r0.SonamiGtk.lyrics")),
+	}
+})
+
 var Streaming = g.Lazy(func() *StreamingSettings {
 	return &StreamingSettings{
 		finalize(gio.NewSettings("io.github.rayz3r0.SonamiGtk.streaming")),

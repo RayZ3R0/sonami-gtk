@@ -123,6 +123,19 @@
 
     </schema>
 
+	<!-- Lyrics -->
+	<schema id="io.github.rayz3r0.SonamiGtk.lyrics" path="/io/github/rayz3r0/SonamiGtk/lyrics/">
+		<key name="provider" type="s">
+			<default>'tidal'</default>
+			<summary>Lyrics Provider</summary>
+			<description>The source to use when fetching lyrics</description>
+			<choices>
+				<choice value='tidal'/>
+				<choice value='netease'/>
+			</choices>
+		</key>
+	</schema>
+
 	<!-- Discord -->
 	<schema id="io.github.rayz3r0.SonamiGtk.discord" path="/io/github/rayz3r0/SonamiGtk/discord/">
 		<key name="enable-rich-presence" type="b">

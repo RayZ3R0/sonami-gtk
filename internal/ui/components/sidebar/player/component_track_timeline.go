@@ -3,6 +3,8 @@ package player
 import (
 	"fmt"
 
+	"codeberg.org/puregotk/puregotk/v4/gdk"
+	"codeberg.org/puregotk/puregotk/v4/gtk"
 	"github.com/RayZ3R0/sonami-gtk/internal/g"
 	"github.com/RayZ3R0/sonami-gtk/internal/gettext"
 	"github.com/RayZ3R0/sonami-gtk/internal/notifications"
@@ -13,11 +15,9 @@ import (
 	"github.com/RayZ3R0/sonami-gtk/pkg/schwifty/state"
 	. "github.com/RayZ3R0/sonami-gtk/pkg/schwifty/syntax"
 	"github.com/RayZ3R0/sonami-gtk/pkg/schwifty/utils/weak"
+	"github.com/RayZ3R0/sonami-gtk/pkg/sonami"
 	"github.com/RayZ3R0/sonami-gtk/pkg/tidalapi"
 	v1 "github.com/RayZ3R0/sonami-gtk/pkg/tidalapi/models/v1"
-	"github.com/RayZ3R0/sonami-gtk/pkg/sonami"
-	"codeberg.org/puregotk/puregotk/v4/gdk"
-	"codeberg.org/puregotk/puregotk/v4/gtk"
 )
 
 var (
@@ -159,9 +159,77 @@ func toggleQualityLabel() {
 	}
 }
 
-func trackTimeline() schwifty.Widget {
-	overlay := gtk.NewOverlay()
-	overlay.SetChild(VStack(
+func trackTimeline() schwifty.Box {
+	var ref weak.WidgetRef
+	popover := Popover(
+		VStack(
+			makeQualitySelectEntry(v1.AudioQualityLossy, "low", "Low (96 kbps)", "96 kbps AAC", &ref),
+			makeQualitySelectEntry(v1.AudioQualityHighRes, "low", "Low (320 kbps)", "320 kbps AAC", &ref),
+			makeQualitySelectEntry(v1.AudioQualityLossless, "high", "High", "16-bit 44.1kHz FLAC", &ref),
+			makeQualitySelectEntry(v1.AudioQualityHighResLossless, "max", "Max", "24-bit 192kHz FLAC", &ref),
+		).
+			WithCSSClass("selector").
+			Spacing(8),
+	)()
+	ref = weak.NewWidgetRef(popover)
+
+	qualityBtn := MenuButton().
+		WithCSSClass("quality-selector").
+		Child(
+			Label("").
+				WithCSSClass("caption-heading").
+				BindText(playbackQualityText).
+				BindCSSClass(playbackQualityClass).
+				CornerRadius(10).
+				HPadding(8).
+				VPadding(4).
+				HAlign(gtk.AlignCenterValue).
+				VAlign(gtk.AlignCenterValue),
+		).
+		ConnectConstruct(func(mb *gtk.MenuButton) {
+			ref := weak.NewWidgetRef(mb)
+
+			click := gtk.NewGestureClick()
+			click.SetButton(3)
+			click.ConnectPressed(new(func(click gtk.GestureClick, nPress int32, x, y float64) {
+				toggleQualityLabel()
+			}))
+			mb.AddController(&click.EventController)
+
+			longPress := gtk.NewGestureLongPress()
+			var longPressed bool
+			longPress.ConnectPressed(new(func(gtk.GestureLongPress, float64, float64) {
+				longPressed = true
+				toggleQualityLabel()
+			}))
+			longPress.ConnectEnd(new(func(gtk.Gesture, uintptr) {
+				if longPressed {
+					ref.Use(func(obj *gtk.Widget) {
+						mb := gtk.MenuButtonNewFromInternalPtr(obj.Ptr)
+						mb.SetActive(false)
+					})
+				}
+				longPressed = false
+			}))
+			mb.AddController(&longPress.EventController)
+
+			keyCtrl := gtk.NewEventControllerKey()
+			keyCtrl.SetPropagationPhase(gtk.PhaseCaptureValue)
+			keyCtrl.ConnectKeyPressed(new(func(ctrl gtk.EventControllerKey, keyval uint32, keycode uint32, state gdk.ModifierType) bool {
+				switch int32(keyval) {
+				case gdk.KEY_space, gdk.KEY_KP_Space:
+					toggleQualityLabel()
+					return gdk.EVENT_STOP
+				}
+
+				return gdk.EVENT_PROPAGATE
+			}))
+			mb.AddController(&keyCtrl.EventController)
+		}).
+		Popover(popover).
+		VAlign(gtk.AlignCenterValue)
+
+	return VStack(
 		Scale(gtk.OrientationHorizontalValue).
 			BindSensitive(isControllableState).
 			BindValue(timelineSliderState).
@@ -177,81 +245,9 @@ func trackTimeline() schwifty.Widget {
 		HStack(
 			Label("").BindText(positionState),
 			Spacer().VExpand(false),
+			qualityBtn,
+			Spacer().VExpand(false),
 			Label("").BindText(durationState),
-		),
-	).MarginBottom(2).ToGTK())
-
-	var ref weak.WidgetRef
-	popover := Popover(
-		VStack(
-			makeQualitySelectEntry(v1.AudioQualityLossy, "low", "Low (96 kbps)", "96 kbps AAC", &ref),
-			makeQualitySelectEntry(v1.AudioQualityHighRes, "low", "Low (320 kbps)", "320 kbps AAC", &ref),
-			makeQualitySelectEntry(v1.AudioQualityLossless, "high", "High", "16-bit 44.1kHz FLAC", &ref),
-			makeQualitySelectEntry(v1.AudioQualityHighResLossless, "max", "Max", "24-bit 192kHz FLAC", &ref),
-		).
-			WithCSSClass("selector").
-			Spacing(8),
-	)()
-	ref = weak.NewWidgetRef(popover)
-
-	overlay.AddOverlay(
-		MenuButton().
-			WithCSSClass("quality-selector").
-			Child(
-				Label("").
-					WithCSSClass("caption-heading").
-					BindText(playbackQualityText).
-					BindCSSClass(playbackQualityClass).
-					CornerRadius(10).
-					HPadding(8).
-					VPadding(4),
-			).
-			ConnectConstruct(func(mb *gtk.MenuButton) {
-				ref := weak.NewWidgetRef(mb)
-
-				click := gtk.NewGestureClick()
-				click.SetButton(3)
-				click.ConnectPressed(new(func(click gtk.GestureClick, nPress int32, x, y float64) {
-					toggleQualityLabel()
-				}))
-				mb.AddController(&click.EventController)
-
-				longPress := gtk.NewGestureLongPress()
-				var longPressed bool
-				longPress.ConnectPressed(new(func(gtk.GestureLongPress, float64, float64) {
-					longPressed = true
-					toggleQualityLabel()
-				}))
-				longPress.ConnectEnd(new(func(gtk.Gesture, uintptr) {
-					if longPressed {
-						ref.Use(func(obj *gtk.Widget) {
-							mb := gtk.MenuButtonNewFromInternalPtr(obj.Ptr)
-							mb.SetActive(false)
-						})
-					}
-					longPressed = false
-				}))
-				mb.AddController(&longPress.EventController)
-
-				keyCtrl := gtk.NewEventControllerKey()
-				keyCtrl.SetPropagationPhase(gtk.PhaseCaptureValue)
-				keyCtrl.ConnectKeyPressed(new(func(ctrl gtk.EventControllerKey, keyval uint32, keycode uint32, state gdk.ModifierType) bool {
-					switch int32(keyval) {
-					case gdk.KEY_space, gdk.KEY_KP_Space:
-						toggleQualityLabel()
-						return gdk.EVENT_STOP
-					}
-
-					return gdk.EVENT_PROPAGATE // propagate unhandled keys
-				}))
-				mb.AddController(&keyCtrl.EventController)
-			}).
-			Popover(popover).
-			HExpand(false).
-			VAlign(gtk.AlignEndValue).
-			HAlign(gtk.AlignCenterValue).
-			ToGTK(),
+		).MarginBottom(2),
 	)
-
-	return ManagedWidget(&overlay.Widget)
 }

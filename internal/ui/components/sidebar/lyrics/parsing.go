@@ -7,18 +7,30 @@ import (
 	"strings"
 	"time"
 
+	"codeberg.org/puregotk/puregotk/v4/gtk"
 	"github.com/RayZ3R0/sonami-gtk/internal/player"
+	"github.com/RayZ3R0/sonami-gtk/internal/settings"
 	"github.com/RayZ3R0/sonami-gtk/internal/signals"
 	"github.com/RayZ3R0/sonami-gtk/pkg/schwifty"
 	. "github.com/RayZ3R0/sonami-gtk/pkg/schwifty/syntax"
 	"github.com/RayZ3R0/sonami-gtk/pkg/schwifty/utils/weak"
+	"github.com/RayZ3R0/sonami-gtk/pkg/sonami"
 	"github.com/RayZ3R0/sonami-gtk/pkg/tidalapi"
 	"github.com/RayZ3R0/sonami-gtk/pkg/tidalapi/models/openapi"
-	"codeberg.org/puregotk/puregotk/v4/gtk"
 	"github.com/infinytum/injector"
 )
 
-func getLyrics(ID string) (lyrics string, isTimestamped bool, err error) {
+func getLyrics(track sonami.Track) (lyrics string, isTimestamped bool, err error) {
+	switch settings.Lyrics().Provider() {
+	case settings.LyricsProviderNetEase:
+		lyrics, isTimestamped, err = getNetEaseLyrics(track)
+	default:
+		lyrics, isTimestamped, err = getTidalLyrics(track.ID())
+	}
+	return
+}
+
+func getTidalLyrics(ID string) (lyrics string, isTimestamped bool, err error) {
 	tidal := injector.MustInject[*tidalapi.TidalAPI]()
 	var track *openapi.Track
 	track, err = tidal.OpenAPI.V2.Tracks.Track(context.Background(), ID, "lyrics")

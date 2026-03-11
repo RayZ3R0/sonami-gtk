@@ -107,11 +107,21 @@ func buildPreferencesPerformance(*adw.PreferencesDialog) adwbindings.Preferences
 	).Title(gettext.Get("Performance")).IconName("speedometer5-symbolic")
 }
 
-func buildPreferencesScrobbling(dialog *adw.PreferencesDialog) adwbindings.PreferencesPage {
+func buildPreferencesIntegrations(dialog *adw.PreferencesDialog) adwbindings.PreferencesPage {
 	dialogRef := weak.NewWidgetRef(dialog)
 	isLastFmLoggedIn := signals.NewStatefulSignal(settings.Scrobbling().LastFMToken() != "")
 
 	return PreferencesPage(
+		PreferencesGroup(
+			SwitchRow().
+				Title(gettext.Get("Enable Discord Rich Presence")).
+				Subtitle(gettext.Get("Display the currently playing track in Discord with a live progress bar")).
+				ConnectConstruct(func(sr *adw.SwitchRow) {
+					settings.Discord().BindEnableRichPresence(&sr.Object, "active")
+				}),
+		).
+			Title("Discord").
+			Description(gettext.Get("Configure Sonami's Discord integration")),
 		PreferencesGroup(
 			SwitchRow().
 				Title(gettext.Get("Enable ListenBrainz")).
@@ -261,7 +271,7 @@ func buildPreferencesScrobbling(dialog *adw.PreferencesDialog) adwbindings.Prefe
 		).
 			Title("Last.fm").
 			Description(gettext.Get("Configure Sonami to send scrobbling data to Last.fm")),
-	).Title(gettext.Get("Scrobbling")).IconName("podcast-symbolic")
+	).Title(gettext.Get("Integrations")).IconName("podcast-symbolic")
 }
 
 func buildPreferencesStreaming(*adw.PreferencesDialog) adwbindings.PreferencesPage {
@@ -278,19 +288,21 @@ func buildPreferencesStreaming(*adw.PreferencesDialog) adwbindings.PreferencesPa
 	).Title(gettext.Get("Streaming")).IconName("network-server-symbolic")
 }
 
-func buildPreferencesDiscord(*adw.PreferencesDialog) adwbindings.PreferencesPage {
+func buildPreferencesLyrics(*adw.PreferencesDialog) adwbindings.PreferencesPage {
 	return PreferencesPage(
 		PreferencesGroup(
-			SwitchRow().
-				Title(gettext.Get("Enable Rich Presence")).
-				Subtitle(gettext.Get("Display the currently playing track in Discord with a live progress bar")).
-				ConnectConstruct(func(sr *adw.SwitchRow) {
-					settings.Discord().BindEnableRichPresence(&sr.Object, "active")
+			ComboRow().
+				Title(gettext.Get("Lyrics Provider")).
+				Subtitle(gettext.Get("Source for fetching lyrics. Takes effect on the next track.")).
+				Model(gtk.NewStringList(settings.LyricsProviderStrings)).
+				Selected(settings.Lyrics().ProviderIndex()).
+				ConnectSelectionChanged(func(i uint32) {
+					settings.Lyrics().SetProviderByIndex(i)
 				}),
 		).
-			Title(gettext.Get("Discord")).
-			Description(gettext.Get("Configure Sonami's Discord integration")),
-	).Title("Discord").IconName("chat-symbolic")
+			Title(gettext.Get("Provider")).
+			Description(gettext.Get("Configure where Sonami fetches lyrics from")),
+	).Title(gettext.Get("Lyrics")).IconName("chat-bubble-text-symbolic")
 }
 
 func (w *Window) PresentPreferences() {
@@ -300,8 +312,8 @@ func (w *Window) PresentPreferences() {
 	dialog.Add(buildPreferencesPlayback(dialog)())
 	dialog.Add(buildPreferencesStreaming(dialog)())
 	dialog.Add(buildPreferencesPerformance(dialog)())
-	dialog.Add(buildPreferencesScrobbling(dialog)())
-	dialog.Add(buildPreferencesDiscord(dialog)())
+	dialog.Add(buildPreferencesIntegrations(dialog)())
+	dialog.Add(buildPreferencesLyrics(dialog)())
 
 	dialog.Present(&w.Widget)
 }
