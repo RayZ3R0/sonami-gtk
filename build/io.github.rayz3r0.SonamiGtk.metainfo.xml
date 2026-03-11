@@ -46,6 +46,12 @@
   <url type="contact">https://matrix.to/#/%23z3r0:synapse.godementia.quest</url>
 
   <releases>
+    <release version="1.5.7" date="2026-03-12">
+        <url type="details">https://github.com/RayZ3R0/sonami-gtk/releases/tag/v1.5.7</url>
+        <description>
+            <p>Changes in this release.</p>
+        </description>
+    </release>
     <release version="1.5.6" date="2026-03-12">
         <url type="details">https://github.com/RayZ3R0/sonami-gtk/releases/tag/v1.5.6</url>
         <description>
