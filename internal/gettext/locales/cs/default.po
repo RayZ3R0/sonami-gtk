@@ -45,8 +45,8 @@ msgid "%s and %s"
 msgstr "%s a %s"
 
 #: internal/ui/window_sidebar.go:33
-msgid "About Tonearm"
-msgstr "O Tonearm"
+msgid "About Sonami"
+msgstr "O Sonami"
 
 #: internal/ui/routes/album.go:102
 msgid "Add Album to Queue"
@@ -97,41 +97,41 @@ msgid "Allow Shortcut Images"
 msgstr "Povolit Obrázky Zástupců"
 
 #: internal/ui/window_preferences.go:85
-msgid "Allow Tonearm to load images for media card buttons"
-msgstr "Povolit Tonearm načíst obrázky pro tlačítka paměťové karty"
+msgid "Allow Sonami to load images for media card buttons"
+msgstr "Povolit Sonami načíst obrázky pro tlačítka paměťové karty"
 
 #: internal/ui/window_preferences.go:91
-msgid "Allow Tonearm to load images for shortcut buttons"
-msgstr "Povolit Tonearm načíst obrázky pro tlačítka zástupců"
+msgid "Allow Sonami to load images for shortcut buttons"
+msgstr "Povolit Sonami načíst obrázky pro tlačítka zástupců"
 
 #: internal/ui/window_preferences.go:97
-msgid "Allow Tonearm to load images for tracklists with the cover column"
-msgstr "Povolit Tonearm načíst obrázky pro seznamy skladeb se sloupcem krytu"
+msgid "Allow Sonami to load images for tracklists with the cover column"
+msgstr "Povolit Sonami načíst obrázky pro seznamy skladeb se sloupcem krytu"
 
 #: internal/ui/window_preferences.go:25
-msgid "Allow Tonearm to run in the background by hiding the player window instead of quitting the application"
+msgid "Allow Sonami to run in the background by hiding the player window instead of quitting the application"
 msgstr ""
-"Nechte Tonearm běžet na pozadí skrytím okna přehrávače místo ukončení "
+"Nechte Sonami běžet na pozadí skrytím okna přehrávače místo ukončení "
 "aplikace"
 
 #: internal/ui/window_preferences.go:139
-msgid "Allow Tonearm to send scrobbling data to Last.fm"
-msgstr "Povolit Tonearm odesílat data scrobbling do Last.fm"
+msgid "Allow Sonami to send scrobbling data to Last.fm"
+msgstr "Povolit Sonami odesílat data scrobbling do Last.fm"
 
 #: internal/ui/window_preferences.go:119
-msgid "Allow Tonearm to send scrobbling data to ListenBrainz"
-msgstr "Povolit Tonearm odesílat data scrobbling do ListenBrainz"
+msgid "Allow Sonami to send scrobbling data to ListenBrainz"
+msgstr "Povolit Sonami odesílat data scrobbling do ListenBrainz"
 
 #: internal/ui/window_preferences.go:58
-msgid "Allow Tonearm to start a mix with the current playing song when you're at the end of an album/queue"
+msgid "Allow Sonami to start a mix with the current playing song when you're at the end of an album/queue"
 msgstr ""
-"Nechte Tonearm zahájit mix s aktuální přehrávanou skladbou, když jste na "
+"Nechte Sonami zahájit mix s aktuální přehrávanou skladbou, když jste na "
 "konci alba / fronty"
 
 #: internal/ui/window_preferences.go:103
-msgid "Allow Tonearm to temporarily store images on the file system to improve performance and reduce network traffic"
+msgid "Allow Sonami to temporarily store images on the file system to improve performance and reduce network traffic"
 msgstr ""
-"Povolte Tonearm dočasně ukládat obrázky do systému souborů, abyste zlepšili "
+"Povolte Sonami dočasně ukládat obrázky do systému souborů, abyste zlepšili "
 "výkon a snížili síťový provoz"
 
 #: internal/ui/window_preferences.go:96
@@ -226,9 +226,9 @@ msgid "Cancel Login"
 msgstr "Zrušit Přihlášení"
 
 #: internal/ui/window_preferences.go:70
-msgid "Choose whether Tonearm should prefer album replay gain, track replay gain or decide automatically"
+msgid "Choose whether Sonami should prefer album replay gain, track replay gain or decide automatically"
 msgstr ""
-"Zvolte, zda Tonearm by měl preferovat album replay gain, track replay gain "
+"Zvolte, zda Sonami by měl preferovat album replay gain, track replay gain "
 "nebo rozhodnout automaticky"
 
 #: internal/ui/window_shortcuts.go:11
@@ -240,29 +240,29 @@ msgid "Collection"
 msgstr "Sbírka"
 
 #: internal/ui/window_preferences.go:264
-msgid "Configure Tonearm to send scrobbling data to Last.fm"
-msgstr "Nakonfigurujte Tonearm pro odesílání dat scrobbling do Last.fm"
+msgid "Configure Sonami to send scrobbling data to Last.fm"
+msgstr "Nakonfigurujte Sonami pro odesílání dat scrobbling do Last.fm"
 
 #: internal/ui/window_preferences.go:135
-msgid "Configure Tonearm to send scrobbling data to ListenBrainz"
+msgid "Configure Sonami to send scrobbling data to ListenBrainz"
 msgstr ""
-"Nakonfigurujte Tonearm pro odesílání scrobblingových dat do ListenBrainz"
+"Nakonfigurujte Sonami pro odesílání scrobblingových dat do ListenBrainz"
 
 #: internal/ui/window_preferences.go:107
-msgid "Configure the behaviour of Tonearm regarding images"
-msgstr "Nakonfigurujte chování Tonearm týkající se obrázků"
+msgid "Configure the behaviour of Sonami regarding images"
+msgstr "Nakonfigurujte chování Sonami týkající se obrázků"
 
 #: internal/ui/window_preferences.go:76
-msgid "Configure the behaviour of Tonearm regarding playback"
-msgstr "Nakonfigurujte chování Tonearm ohledně přehrávání"
+msgid "Configure the behaviour of Sonami regarding playback"
+msgstr "Nakonfigurujte chování Sonami ohledně přehrávání"
 
 #: internal/ui/window_preferences.go:49
-msgid "Configure the behaviour of Tonearm when navigating between pages"
-msgstr "Nakonfigurujte chování Tonearm při navigaci mezi stránkami"
+msgid "Configure the behaviour of Sonami when navigating between pages"
+msgstr "Nakonfigurujte chování Sonami při navigaci mezi stránkami"
 
 #: internal/ui/window_preferences.go:31
-msgid "Configure the behaviour of Tonearm when running in the background"
-msgstr "Nakonfigurujte chování Tonearm při běhu na pozadí"
+msgid "Configure the behaviour of Sonami when running in the background"
+msgstr "Nakonfigurujte chování Sonami při běhu na pozadí"
 
 #: internal/ui/window_popups.go:28
 msgid "Continue"
@@ -564,13 +564,13 @@ msgstr "Pro aktuální skladbu nebyl nalezen žádný mix"
 msgid ""
 "No secret service provider is available.\n"
 "\n"
-"Tonearm will not be able to store any authentication-related data and you will not be able to sign in.\n"
+"Sonami will not be able to store any authentication-related data and you will not be able to sign in.\n"
 "\n"
 "Please install a secret service provider such as GNOME Keyring or KDE Wallet."
 msgstr ""
 "Není k dispozici žádný poskytovatel tajných služeb.\n"
 "\n"
-"Tonearm nebude moci ukládat žádná data související s ověřováním a nebudete "
+"Sonami nebude moci ukládat žádná data související s ověřováním a nebudete "
 "se moci přihlásit.\n"
 "\n"
 "Nainstalujte si prosím poskytovatele tajných služeb, jako je klíčenka GNOME "
@@ -884,19 +884,19 @@ msgstr "Odkazující stránku můžete také otevřít pomocí tlačítka níže
 
 #: internal/secrets/service_linux.go:48
 msgid ""
-"Your secret service provider was found, but refused to interact with Tonearm.\n"
+"Your secret service provider was found, but refused to interact with Sonami.\n"
 "\n"
 "This could because you cancelled a prompt or, if you are using a Flatpak, the provider not implementing the XDG Secret Portal service.\n"
 "\n"
-"Tonearm will not be able to store any authentication-related data and you will not be able to sign in."
+"Sonami will not be able to store any authentication-related data and you will not be able to sign in."
 msgstr ""
 "Váš poskytovatel tajných služeb byl nalezen, ale odmítl komunikovat S "
-"Tonearm.\n"
+"Sonami.\n"
 "\n"
 "Mohlo by to být proto, že jste zrušili výzvu nebo, pokud používáte Flatpak, "
 "poskytovatel neimplementuje službu tajného portálu XDG.\n"
 "\n"
-"Tonearm nebude moci ukládat žádná data související s ověřováním a nebudete "
+"Sonami nebude moci ukládat žádná data související s ověřováním a nebudete "
 "se moci přihlásit."
 
 #: internal/ui/window_about.go:132
