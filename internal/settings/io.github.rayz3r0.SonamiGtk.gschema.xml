@@ -123,6 +123,15 @@
 
     </schema>
 
+	<!-- Discord -->
+	<schema id="io.github.rayz3r0.SonamiGtk.discord" path="/io/github/rayz3r0/SonamiGtk/discord/">
+		<key name="enable-rich-presence" type="b">
+			<default>false</default>
+			<summary>Enable Discord Rich Presence</summary>
+			<description>Whether the application will display the currently playing track in Discord</description>
+		</key>
+	</schema>
+
 	<!-- Streaming -->
 	<schema id="io.github.rayz3r0.SonamiGtk.streaming" path="/io/github/rayz3r0/SonamiGtk/streaming/">
 		<key name="instances-url" type="s">

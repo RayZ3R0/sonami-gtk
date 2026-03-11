@@ -1,11 +1,11 @@
 package settings
 
 import (
+	"codeberg.org/puregotk/puregotk/v4/gio"
 	"github.com/RayZ3R0/sonami-gtk/internal/g"
 	"github.com/RayZ3R0/sonami-gtk/pkg/schwifty/callback"
 	"github.com/RayZ3R0/sonami-gtk/pkg/schwifty/tracking"
 	"github.com/RayZ3R0/sonami-gtk/pkg/utils/cutil"
-	"codeberg.org/puregotk/puregotk/v4/gio"
 )
 
 //go:generate glib-compile-schemas .
@@ -49,6 +49,12 @@ var Player = g.Lazy(func() *PlayerSettings {
 var Scrobbling = g.Lazy(func() *ScrobblingSettings {
 	return &ScrobblingSettings{
 		finalize(gio.NewSettings("io.github.rayz3r0.SonamiGtk.scrobbling")),
+	}
+})
+
+var Discord = g.Lazy(func() *DiscordSettings {
+	return &DiscordSettings{
+		finalize(gio.NewSettings("io.github.rayz3r0.SonamiGtk.discord")),
 	}
 })
 

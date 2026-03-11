@@ -278,6 +278,21 @@ func buildPreferencesStreaming(*adw.PreferencesDialog) adwbindings.PreferencesPa
 	).Title(gettext.Get("Streaming")).IconName("network-server-symbolic")
 }
 
+func buildPreferencesDiscord(*adw.PreferencesDialog) adwbindings.PreferencesPage {
+	return PreferencesPage(
+		PreferencesGroup(
+			SwitchRow().
+				Title(gettext.Get("Enable Rich Presence")).
+				Subtitle(gettext.Get("Display the currently playing track in Discord with a live progress bar")).
+				ConnectConstruct(func(sr *adw.SwitchRow) {
+					settings.Discord().BindEnableRichPresence(&sr.Object, "active")
+				}),
+		).
+			Title(gettext.Get("Discord")).
+			Description(gettext.Get("Configure Sonami's Discord integration")),
+	).Title("Discord").IconName("chat-symbolic")
+}
+
 func (w *Window) PresentPreferences() {
 	dialog := PreferencesDialog()()
 
@@ -286,6 +301,7 @@ func (w *Window) PresentPreferences() {
 	dialog.Add(buildPreferencesStreaming(dialog)())
 	dialog.Add(buildPreferencesPerformance(dialog)())
 	dialog.Add(buildPreferencesScrobbling(dialog)())
+	dialog.Add(buildPreferencesDiscord(dialog)())
 
 	dialog.Present(&w.Widget)
 }

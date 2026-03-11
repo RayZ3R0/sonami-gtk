@@ -9,18 +9,19 @@ import (
 	_ "github.com/RayZ3R0/sonami-gtk/internal/icons"
 	_ "github.com/RayZ3R0/sonami-gtk/internal/styles"
 
+	_ "github.com/RayZ3R0/sonami-gtk/internal/features/discord"
 	_ "github.com/RayZ3R0/sonami-gtk/internal/features/scrobbling"
 	_ "github.com/RayZ3R0/sonami-gtk/internal/services"
 
+	"codeberg.org/puregotk/puregotk/v4/adw"
+	"codeberg.org/puregotk/puregotk/v4/gio"
+	"codeberg.org/puregotk/puregotk/v4/gtk"
 	"github.com/RayZ3R0/sonami-gtk/internal/player"
 	"github.com/RayZ3R0/sonami-gtk/internal/router"
 	"github.com/RayZ3R0/sonami-gtk/internal/settings"
 	"github.com/RayZ3R0/sonami-gtk/internal/ui"
 	"github.com/RayZ3R0/sonami-gtk/pkg/schwifty/tracking"
 	"github.com/RayZ3R0/sonami-gtk/pkg/utils/imgutil"
-	"codeberg.org/puregotk/puregotk/v4/adw"
-	"codeberg.org/puregotk/puregotk/v4/gio"
-	"codeberg.org/puregotk/puregotk/v4/gtk"
 	"github.com/infinytum/injector"
 )
 
