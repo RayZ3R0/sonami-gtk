@@ -3,6 +3,7 @@ package components
 import (
 	"log/slog"
 
+	"codeberg.org/puregotk/puregotk/v4/gtk"
 	v2 "github.com/RayZ3R0/sonami-gtk/internal/services/tidal/v2"
 	"github.com/RayZ3R0/sonami-gtk/internal/ui/components/horizontal_list"
 	"github.com/RayZ3R0/sonami-gtk/internal/ui/components/media_card"
@@ -12,7 +13,6 @@ import (
 	"github.com/RayZ3R0/sonami-gtk/pkg/schwifty/syntax"
 	. "github.com/RayZ3R0/sonami-gtk/pkg/schwifty/syntax"
 	modelv2 "github.com/RayZ3R0/sonami-gtk/pkg/tidalapi/models/v2"
-	"codeberg.org/puregotk/puregotk/v4/gtk"
 )
 
 var logger = slog.With("module", "components")
@@ -51,6 +51,8 @@ func ForPageItem(pageItem modelv2.PageItem) schwifty.BaseWidgetable {
 				list.Append(media_card.NewTrack(v2.NewTrack(*item.Data.Track)))
 			} else if item.Type == modelv2.ItemTypeDeepLink {
 				list.Append(media_card.NewLegacyDeeplink(item.Data.DeepLink))
+			} else if item.Type == modelv2.ItemTypeVideo || item.Type == modelv2.ItemTypeArtistLink {
+				continue
 			} else {
 				list.Append(HStack(
 					Label("Unsupported\n"+string(item.Type)).
@@ -99,6 +101,9 @@ func ForPageItem(pageItem modelv2.PageItem) schwifty.BaseWidgetable {
 			}
 		}
 		return list.HMargin(50)
+	case modelv2.ItemTypeVideo, modelv2.ItemTypeArtistLink, modelv2.ItemTypeTrackCredits,
+		modelv2.ItemTypeLinksList, modelv2.ItemTypeArtistTrackCreditsCard:
+		return HStack()
 	default:
 		logger.Warn("Unsupported item type", "type", pageItem.Type)
 		return HStack(

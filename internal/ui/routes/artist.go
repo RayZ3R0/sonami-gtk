@@ -3,7 +3,9 @@ package routes
 import (
 	"context"
 	"log/slog"
+	"strings"
 
+	"codeberg.org/puregotk/puregotk/v4/gtk"
 	"github.com/RayZ3R0/sonami-gtk/internal/gettext"
 	"github.com/RayZ3R0/sonami-gtk/internal/notifications"
 	"github.com/RayZ3R0/sonami-gtk/internal/player"
@@ -11,9 +13,8 @@ import (
 	"github.com/RayZ3R0/sonami-gtk/internal/ui/components"
 	"github.com/RayZ3R0/sonami-gtk/internal/ui/components/tracklist_header"
 	. "github.com/RayZ3R0/sonami-gtk/pkg/schwifty/syntax"
-	"github.com/RayZ3R0/sonami-gtk/pkg/tidalapi"
 	"github.com/RayZ3R0/sonami-gtk/pkg/sonami"
-	"codeberg.org/puregotk/puregotk/v4/gtk"
+	"github.com/RayZ3R0/sonami-gtk/pkg/tidalapi"
 	"github.com/infinytum/injector"
 )
 
@@ -42,6 +43,9 @@ func Artist(artistId string) *router.Response {
 
 	body := VStack().Spacing(25).VMargin(20)
 	for _, item := range artistPage.Items {
+		if strings.Contains(strings.ToLower(item.Title), "video") {
+			continue
+		}
 		body = body.Append(components.ForPageItem(item))
 	}
 

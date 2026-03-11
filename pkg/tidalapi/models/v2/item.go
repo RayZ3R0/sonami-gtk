@@ -59,6 +59,9 @@ func (i *Item) MarshalJSON() ([]byte, error) {
 		} else {
 			i.RawData = raw
 		}
+	case ItemTypeVideo, ItemTypeArtistLink, ItemTypeTrackCredits,
+		ItemTypeLinksList, ItemTypeArtistTrackCreditsCard:
+		// Skip unsupported types
 	default:
 		return nil, fmt.Errorf("Unknown item type %s", i.Type)
 	}
@@ -99,6 +102,9 @@ func (i *Item) UnmarshalJSON(data []byte) error {
 		if err := json.Unmarshal(i.baseItem.RawData, &i.Data.Album); err != nil {
 			return err
 		}
+	case ItemTypeVideo, ItemTypeArtistLink, ItemTypeTrackCredits,
+		ItemTypeLinksList, ItemTypeArtistTrackCreditsCard:
+		// Skip unsupported types silently
 	default:
 		slog.Error("Unknown item type", "item_type", i.Type)
 	}
