@@ -53,6 +53,16 @@ func ComboRow() adwbindings.ComboRow {
 	})
 }
 
+func ExpanderRow(rows ...any) adwbindings.ExpanderRow {
+	return managedWidget("ExpanderRow", func() *adw.ExpanderRow {
+		expanderRow := adw.NewExpanderRow()
+		for _, row := range rows {
+			expanderRow.AddRow(gtkbindings.ResolveWidget(row))
+		}
+		return expanderRow
+	})
+}
+
 func EntryRow() adwbindings.EntryRow {
 	return managedWidget("EntryRow", func() *adw.EntryRow {
 		return adw.NewEntryRow()
