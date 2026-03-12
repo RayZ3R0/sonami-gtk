@@ -5,6 +5,11 @@ import (
 	"slices"
 	"strconv"
 
+	"codeberg.org/puregotk/puregotk/v4/adw"
+	"codeberg.org/puregotk/puregotk/v4/gdk"
+	"codeberg.org/puregotk/puregotk/v4/gio"
+	"codeberg.org/puregotk/puregotk/v4/glib"
+	"codeberg.org/puregotk/puregotk/v4/gtk"
 	"github.com/RayZ3R0/sonami-gtk/internal/gettext"
 	"github.com/RayZ3R0/sonami-gtk/internal/notifications"
 	"github.com/RayZ3R0/sonami-gtk/internal/player"
@@ -16,13 +21,8 @@ import (
 	"github.com/RayZ3R0/sonami-gtk/pkg/schwifty/state"
 	. "github.com/RayZ3R0/sonami-gtk/pkg/schwifty/syntax"
 	"github.com/RayZ3R0/sonami-gtk/pkg/schwifty/utils/weak"
-	"github.com/RayZ3R0/sonami-gtk/pkg/tidalapi"
 	"github.com/RayZ3R0/sonami-gtk/pkg/sonami"
-	"codeberg.org/puregotk/puregotk/v4/adw"
-	"codeberg.org/puregotk/puregotk/v4/gdk"
-	"codeberg.org/puregotk/puregotk/v4/gio"
-	"codeberg.org/puregotk/puregotk/v4/glib"
-	"codeberg.org/puregotk/puregotk/v4/gtk"
+	"github.com/RayZ3R0/sonami-gtk/pkg/tidalapi"
 	"github.com/infinytum/injector"
 )
 
@@ -187,6 +187,27 @@ func favouriteButton() schwifty.Button {
 		BindSensitive(isSensitive)
 }
 
+func addToPlaylistButton() schwifty.Button {
+	return Button().
+		TooltipText(gettext.Get("Add to Playlist")).
+		IconName("music-queue-symbolic").
+		WithCSSClass("flat").
+		BindSensitive(isTrackLoadedState).
+		ConnectClicked(func(b gtk.Button) {
+			track := player.TrackChanged.CurrentValue()
+			if track == nil {
+				return
+			}
+
+			coverURL := ""
+			if album := track.Album(); album != nil {
+				coverURL = album.Cover(80)
+			}
+
+			b.Widget.ActivateActionVariant("win.localplaylist.add-track", glib.NewVariantString(track.ID()+"\t"+coverURL))
+		})
+}
+
 func actionRow() schwifty.Box {
 	return HStack(
 		MenuButton().
@@ -249,5 +270,7 @@ func actionRow() schwifty.Box {
 				clipboard.SetText(player.TrackChanged.CurrentValue().URL() + "?u")
 				notifications.OnToast.Notify(gettext.Get("Copied track URL to clipboard"))
 			}),
+		favouriteButton(),
+		addToPlaylistButton(),
 	).HAlign(gtk.AlignCenterValue).Spacing(15).CSS("box { margin-top: -8px; margin-bottom: -8px; }")
 }
