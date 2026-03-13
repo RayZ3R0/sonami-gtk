@@ -1,14 +1,15 @@
 package player
 
 import (
+	"math"
 	"os"
 	"time"
 
+	"codeberg.org/puregotk/puregotk/v4/adw"
 	"github.com/RayZ3R0/sonami-gtk/internal/g"
 	"github.com/RayZ3R0/sonami-gtk/internal/signals"
 	"github.com/RayZ3R0/sonami-gtk/pkg/mpris"
 	"github.com/RayZ3R0/sonami-gtk/pkg/sonami"
-	"codeberg.org/puregotk/puregotk/v4/adw"
 	"github.com/godbus/dbus/v5"
 	"github.com/infinytum/injector"
 )
@@ -100,7 +101,7 @@ func init() {
 
 		mprisServer().SetTrackMetadata(map[string]any{
 			"mpris:trackid": dbus.ObjectPath("/org/mpris/MediaPlayer2/TrackList/Track" + trackInfo.ID()),
-			"mpris:artUrl":  trackInfo.Album().Cover(-1),
+			"mpris:artUrl":  trackInfo.Cover(math.MaxInt),
 			"mpris:length":  trackInfo.Duration().Microseconds(),
 			"xesam:album":   trackInfo.Album().Title(),
 			"xesam:artist":  artistNames,

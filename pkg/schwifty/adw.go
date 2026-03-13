@@ -14,6 +14,8 @@ type ComboRow = adw.ComboRow
 
 type EntryRow = adw.EntryRow
 
+type ExpanderRow = adw.ExpanderRow
+
 type HeaderBar = adw.HeaderBar
 
 type PasswordEntryRow = adw.PasswordEntryRow

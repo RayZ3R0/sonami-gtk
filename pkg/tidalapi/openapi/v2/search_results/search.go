@@ -8,11 +8,12 @@ import (
 	"net/url"
 	"strings"
 
+	"github.com/RayZ3R0/sonami-gtk/internal/settings"
 	"github.com/RayZ3R0/sonami-gtk/pkg/tidalapi/models/openapi"
 )
 
 func (s *SearchResults) Search(ctx context.Context, query string, include ...string) (*openapi.SearchResult, error) {
-	req, err := http.NewRequestWithContext(ctx, http.MethodGet, fmt.Sprintf("https://openapi.tidal.com/v2/searchResults/%s", url.QueryEscape(query)), nil)
+	req, err := http.NewRequestWithContext(ctx, http.MethodGet, fmt.Sprintf("%s/v2/searchResults/%s", settings.ServiceTidal().OpenAPIBaseURL(), url.QueryEscape(query)), nil)
 	if err != nil {
 		return nil, err
 	}

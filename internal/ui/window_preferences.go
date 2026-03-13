@@ -46,6 +46,34 @@ func buildPreferencesGeneral(dialog *adw.PreferencesDialog) adwbindings.Preferen
 		).
 			Title(gettext.Get("Navigation Behaviour")).
 			Description(gettext.Get("Configure the behaviour of Sonami when navigating between pages")),
+		PreferencesGroup(
+			ExpanderRow(
+				EntryRow().
+					Title(gettext.Get("API Base URL")).
+					ConnectConstruct(func(sr *adw.EntryRow) {
+						settings.ServiceTidal().BindAPIBaseURL(&sr.Object, "text")
+					}),
+				EntryRow().
+					Title(gettext.Get("Auth Base URL")).
+					ConnectConstruct(func(sr *adw.EntryRow) {
+						settings.ServiceTidal().BindAuthBaseURL(&sr.Object, "text")
+					}),
+				EntryRow().
+					Title(gettext.Get("OpenAPI Base URL")).
+					ConnectConstruct(func(sr *adw.EntryRow) {
+						settings.ServiceTidal().BindOpenAPIBaseURL(&sr.Object, "text")
+					}),
+				EntryRow().
+					Title(gettext.Get("Resources Base URL")).
+					ConnectConstruct(func(sr *adw.EntryRow) {
+						settings.ServiceTidal().BindResourcesBaseURL(&sr.Object, "text")
+					}),
+			).
+				Title(gettext.Get("Base URLs")).
+				Subtitle(gettext.Get("Configure the base URLs for TIDAL")),
+		).
+			Title(gettext.Get("TIDAL Settings")).
+			Description(gettext.Get("TIDAL-specific settings for advanced users")),
 	).Title(gettext.Get("General")).IconName("settings-symbolic")
 }
 

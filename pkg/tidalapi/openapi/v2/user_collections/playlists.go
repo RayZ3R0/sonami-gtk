@@ -7,11 +7,12 @@ import (
 	"net/http"
 	"strings"
 
+	"github.com/RayZ3R0/sonami-gtk/internal/settings"
 	"github.com/RayZ3R0/sonami-gtk/pkg/tidalapi/models/openapi"
 )
 
 func (p *UserCollections) Playlists(ctx context.Context, id string, cursor string, include ...string) (*openapi.Response[[]openapi.Relationship], error) {
-	req, err := http.NewRequestWithContext(ctx, http.MethodGet, fmt.Sprintf("https://openapi.tidal.com/v2/userCollections/%s/relationships/playlists", id), nil)
+	req, err := http.NewRequestWithContext(ctx, http.MethodGet, fmt.Sprintf("%s/v2/userCollections/%s/relationships/playlists", settings.ServiceTidal().OpenAPIBaseURL(), id), nil)
 	if err != nil {
 		return nil, err
 	}

@@ -7,14 +7,14 @@ import (
 	"strings"
 	"time"
 
-	"github.com/RayZ3R0/sonami-gtk/internal/gettext"
-	"github.com/RayZ3R0/sonami-gtk/internal/resources"
-	"github.com/RayZ3R0/sonami-gtk/pkg/schwifty"
-	. "github.com/RayZ3R0/sonami-gtk/pkg/schwifty/syntax"
 	"codeberg.org/puregotk/puregotk/v4/adw"
 	"codeberg.org/puregotk/puregotk/v4/gdk"
 	"codeberg.org/puregotk/puregotk/v4/glib"
 	"codeberg.org/puregotk/puregotk/v4/gtk"
+	"github.com/RayZ3R0/sonami-gtk/internal/gettext"
+	"github.com/RayZ3R0/sonami-gtk/internal/resources"
+	"github.com/RayZ3R0/sonami-gtk/pkg/schwifty"
+	. "github.com/RayZ3R0/sonami-gtk/pkg/schwifty/syntax"
 	"github.com/yeqown/go-qrcode/v2"
 	"github.com/yeqown/go-qrcode/writer/standard"
 	"github.com/yeqown/go-qrcode/writer/standard/shapes"
@@ -37,7 +37,11 @@ func (q *QRBuffer) Close() error {
 }
 
 func NewLinking(window *gtk.Window, code string, link string, cancel context.CancelFunc) schwifty.AlertDialog {
-	encodedUrl, err := qrcode.New("https://" + link)
+	if !strings.Contains(link, "://") {
+		link = "https://" + link
+	}
+
+	encodedUrl, err := qrcode.New(link)
 	if err != nil {
 		slog.Error("could not generate QR code to sign in")
 	}
@@ -76,7 +80,7 @@ func NewLinking(window *gtk.Window, code string, link string, cancel context.Can
 						WithCSSClass("suggested-action").
 						HPadding(20).VPadding(10).
 						ConnectClicked(func(b gtk.Button) {
-							gtk.ShowUri(window, "https://"+link, uint32(time.Now().Unix()))
+							gtk.ShowUri(window, link, uint32(time.Now().Unix()))
 						}),
 					Button().
 						Label(gettext.Get("Cancel Login")).

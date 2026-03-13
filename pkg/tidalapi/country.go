@@ -6,6 +6,7 @@ import (
 	"fmt"
 	"net/http"
 
+	"github.com/RayZ3R0/sonami-gtk/internal/settings"
 	"github.com/RayZ3R0/sonami-gtk/pkg/tidalapi/internal"
 )
 
@@ -14,7 +15,7 @@ type countryCodeResponse struct {
 }
 
 func FetchCountryCode() (string, error) {
-	req, err := http.NewRequestWithContext(context.TODO(), http.MethodGet, "https://tidal.com/v1/country/context?countryCode=WW&locale=en_US&deviceType=BROWSER", nil)
+	req, err := http.NewRequestWithContext(context.TODO(), http.MethodGet, settings.ServiceTidal().APIBaseURL()+"/v1/country/context?countryCode=WW&locale=en_US&deviceType=BROWSER", nil)
 	if err != nil {
 		return "", err
 	}

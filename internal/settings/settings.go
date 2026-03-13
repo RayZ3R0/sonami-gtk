@@ -70,6 +70,15 @@ var Streaming = g.Lazy(func() *StreamingSettings {
 	}
 })
 
+var ServiceTidal = g.Lazy(func() *ServiceTidalSettings {
+	settings := gio.NewSettings("io.github.rayz3r0.SonamiGtk.service.tidal")
+	settings.ConnectChanged(&GioSettingsChangedCallback)
+	tracking.Track(settings.GoPointer(), "Settings")
+	return &ServiceTidalSettings{
+		finalize(settings),
+	}
+})
+
 func finalize(settings *gio.Settings) *gio.Settings {
 	tracking.SetFinalizer("Settings", settings)
 	return settings

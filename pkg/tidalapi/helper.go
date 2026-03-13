@@ -5,6 +5,7 @@ import (
 	"strings"
 	"time"
 
+	"github.com/RayZ3R0/sonami-gtk/internal/settings"
 	"github.com/RayZ3R0/sonami-gtk/pkg/tidalapi/models/openapi"
 )
 
@@ -13,7 +14,7 @@ func ImageURL(id string) string {
 }
 
 func ImageURLWithSize(id string, width int, height int) string {
-	return fmt.Sprintf("https://resources.tidal.com/images/%s/%dx%d.jpg", strings.ReplaceAll(id, "-", "/"), width, height)
+	return fmt.Sprintf("%s/images/%s/%dx%d.jpg", settings.ServiceTidal().ResourcesBaseURL(), strings.ReplaceAll(id, "-", "/"), width, height)
 }
 
 func FormatCustomDuration(duration *openapi.Duration) string {

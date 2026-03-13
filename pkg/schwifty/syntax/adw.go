@@ -1,12 +1,12 @@
 package syntax
 
 import (
+	"codeberg.org/puregotk/puregotk/v4/adw"
+	"codeberg.org/puregotk/puregotk/v4/gtk"
 	"github.com/RayZ3R0/sonami-gtk/pkg/schwifty/bindings"
 	adwbindings "github.com/RayZ3R0/sonami-gtk/pkg/schwifty/bindings/adw"
 	gtkbindings "github.com/RayZ3R0/sonami-gtk/pkg/schwifty/bindings/gtk"
 	"github.com/RayZ3R0/sonami-gtk/pkg/schwifty/callback"
-	"codeberg.org/puregotk/puregotk/v4/adw"
-	"codeberg.org/puregotk/puregotk/v4/gtk"
 )
 
 func ActionRow() adwbindings.ActionRow {
@@ -50,6 +50,16 @@ func ComboRow() adwbindings.ComboRow {
 		comboRow := adw.NewComboRow()
 		comboRow.ConnectNotify(&adwbindings.ComboRowSelectionChangedCallback)
 		return comboRow
+	})
+}
+
+func ExpanderRow(rows ...any) adwbindings.ExpanderRow {
+	return managedWidget("ExpanderRow", func() *adw.ExpanderRow {
+		expanderRow := adw.NewExpanderRow()
+		for _, row := range rows {
+			expanderRow.AddRow(gtkbindings.ResolveWidget(row))
+		}
+		return expanderRow
 	})
 }
 
