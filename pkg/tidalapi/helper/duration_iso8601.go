@@ -11,7 +11,7 @@ type DurationISO8601 struct {
 	time.Duration
 }
 
-func (r *DurationISO8601) MarshalJSON() ([]byte, error) {
+func (r DurationISO8601) MarshalJSON() ([]byte, error) {
 	return json.Marshal(duration.Format(r.Duration))
 }
 

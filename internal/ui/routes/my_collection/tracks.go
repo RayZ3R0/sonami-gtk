@@ -4,6 +4,7 @@ import (
 	"log/slog"
 
 	"codeberg.org/puregotk/puregotk/v4/gtk"
+	"github.com/RayZ3R0/sonami-gtk/internal/cache"
 	"github.com/RayZ3R0/sonami-gtk/internal/gettext"
 	"github.com/RayZ3R0/sonami-gtk/internal/notifications"
 	"github.com/RayZ3R0/sonami-gtk/internal/player"
@@ -46,12 +47,12 @@ func Tracks() *router.Response {
 		}
 	}
 
-	service, err := injector.Inject[sonami.Service]()
+	cachedService, err := injector.Inject[*cache.CachedService]()
 	if err != nil {
 		return router.FromError(gettext.Get("My Tracks"), err)
 	}
 
-	tracks := fetchAll(*ids, service.GetTrack)
+	tracks := cachedService.GetTrackBatch(*ids)
 
 	paginator := sonami.NewArrayPaginator(tracks)
 	page, err := pages.NewPaginatedTracklistPage(

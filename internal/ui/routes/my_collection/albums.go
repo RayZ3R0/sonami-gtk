@@ -1,15 +1,16 @@
 package my_collection
 
 import (
-"github.com/RayZ3R0/sonami-gtk/internal/gettext"
-"github.com/RayZ3R0/sonami-gtk/internal/router"
-appState "github.com/RayZ3R0/sonami-gtk/internal/state"
-"github.com/RayZ3R0/sonami-gtk/internal/ui/components/media_card"
-"github.com/RayZ3R0/sonami-gtk/internal/ui/pages"
-. "github.com/RayZ3R0/sonami-gtk/pkg/schwifty/syntax"
-"github.com/RayZ3R0/sonami-gtk/pkg/schwifty"
-"github.com/RayZ3R0/sonami-gtk/pkg/sonami"
-"github.com/infinytum/injector"
+	"github.com/RayZ3R0/sonami-gtk/internal/cache"
+	"github.com/RayZ3R0/sonami-gtk/internal/gettext"
+	"github.com/RayZ3R0/sonami-gtk/internal/router"
+	appState "github.com/RayZ3R0/sonami-gtk/internal/state"
+	"github.com/RayZ3R0/sonami-gtk/internal/ui/components/media_card"
+	"github.com/RayZ3R0/sonami-gtk/internal/ui/pages"
+	"github.com/RayZ3R0/sonami-gtk/pkg/schwifty"
+	. "github.com/RayZ3R0/sonami-gtk/pkg/schwifty/syntax"
+	"github.com/RayZ3R0/sonami-gtk/pkg/sonami"
+	"github.com/infinytum/injector"
 )
 
 func Albums() *router.Response {
@@ -18,18 +19,18 @@ func Albums() *router.Response {
 		return router.FromError(gettext.Get("My Albums"), err)
 	}
 
-	service, err := injector.Inject[sonami.Service]()
+	cachedService, err := injector.Inject[*cache.CachedService]()
 	if err != nil {
 		return router.FromError(gettext.Get("My Albums"), err)
 	}
 
-	albums := fetchAll(*ids, service.GetAlbum)
+	albums := cachedService.GetAlbumBatch(*ids)
 
 	return &router.Response{
 		PageTitle: gettext.Get("My Albums"),
 		View: pages.NewStaticMediaCardPage(
-albums,
-StatusPage().
+			albums,
+			StatusPage().
 				IconName("media-optical-cd-audio-symbolic").
 				Title(gettext.Get("No Albums")).
 				Description(gettext.Get("Tap the heart on an album to save it here")),

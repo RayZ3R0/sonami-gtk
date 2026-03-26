@@ -16,6 +16,35 @@ const (
 	FavouriteTrack    FavouriteType = "track"
 )
 
+// FavouriteAddHook is called when a favourite is added.
+// The hook receives the favourite type and ID.
+type FavouriteAddHook func(favType FavouriteType, id string)
+
+// favouriteAddHooks stores registered hooks for favourite additions
+var (
+	favouriteAddHooks   []FavouriteAddHook
+	favouriteAddHooksMu sync.RWMutex
+)
+
+// RegisterFavouriteAddHook registers a hook to be called when a favourite is added.
+// This is used by the cache system to prefetch newly favourited items.
+func RegisterFavouriteAddHook(hook FavouriteAddHook) {
+	favouriteAddHooksMu.Lock()
+	defer favouriteAddHooksMu.Unlock()
+	favouriteAddHooks = append(favouriteAddHooks, hook)
+}
+
+// notifyFavouriteAdded calls all registered hooks when a favourite is added
+func notifyFavouriteAdded(favType FavouriteType, id string) {
+	favouriteAddHooksMu.RLock()
+	hooks := favouriteAddHooks
+	favouriteAddHooksMu.RUnlock()
+
+	for _, hook := range hooks {
+		go hook(favType, id)
+	}
+}
+
 // LocalFavouriteCache implements state.FavouriteCache backed by SQLite.
 type LocalFavouriteCache struct {
 	favType FavouriteType
@@ -41,6 +70,10 @@ func (c *LocalFavouriteCache) Add(id string) error {
 	}
 
 	c.Bust()
+
+	// Notify hooks (e.g., cache prefetcher) about the new favourite
+	notifyFavouriteAdded(c.favType, id)
+
 	return nil
 }
 

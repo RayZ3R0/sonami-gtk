@@ -53,6 +53,26 @@ func (c *Cache) Store(key string, data []byte) error {
 	return os.WriteFile(filepath.Join(c.path, key), data, 0644)
 }
 
+// Clear removes all files in the cache directory
+func (c *Cache) Clear() error {
+	entries, err := os.ReadDir(c.path)
+	if err != nil {
+		if os.IsNotExist(err) {
+			return nil // Nothing to clear
+		}
+		return err
+	}
+
+	for _, entry := range entries {
+		if !entry.IsDir() {
+			if err := os.Remove(filepath.Join(c.path, entry.Name())); err != nil {
+				slog.Error("failed to remove cache file", "file", entry.Name(), "error", err)
+			}
+		}
+	}
+	return nil
+}
+
 func NewCache(appId string, subdir string) *Cache {
 	cacheDir := GetCacheDir(appId)
 	return &Cache{

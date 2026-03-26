@@ -1,17 +1,18 @@
 package my_collection
 
 import (
-"codeberg.org/puregotk/puregotk/v4/adw"
-"codeberg.org/puregotk/puregotk/v4/gtk"
-"github.com/RayZ3R0/sonami-gtk/internal/gettext"
-"github.com/RayZ3R0/sonami-gtk/internal/localdb"
-"github.com/RayZ3R0/sonami-gtk/internal/router"
-appState "github.com/RayZ3R0/sonami-gtk/internal/state"
-"github.com/RayZ3R0/sonami-gtk/internal/ui/components"
-"github.com/RayZ3R0/sonami-gtk/internal/ui/components/media_card"
-. "github.com/RayZ3R0/sonami-gtk/pkg/schwifty/syntax"
-"github.com/RayZ3R0/sonami-gtk/pkg/sonami"
-"github.com/infinytum/injector"
+	"codeberg.org/puregotk/puregotk/v4/adw"
+	"codeberg.org/puregotk/puregotk/v4/gtk"
+	"github.com/RayZ3R0/sonami-gtk/internal/cache"
+	"github.com/RayZ3R0/sonami-gtk/internal/gettext"
+	"github.com/RayZ3R0/sonami-gtk/internal/localdb"
+	"github.com/RayZ3R0/sonami-gtk/internal/router"
+	appState "github.com/RayZ3R0/sonami-gtk/internal/state"
+	"github.com/RayZ3R0/sonami-gtk/internal/ui/components"
+	"github.com/RayZ3R0/sonami-gtk/internal/ui/components/media_card"
+	. "github.com/RayZ3R0/sonami-gtk/pkg/schwifty/syntax"
+	"github.com/RayZ3R0/sonami-gtk/pkg/sonami"
+	"github.com/infinytum/injector"
 )
 
 func Playlists() *router.Response {
@@ -19,8 +20,8 @@ func Playlists() *router.Response {
 
 	var tidalPlaylists []sonami.Playlist
 	if ids, err := appState.PlaylistsCache.Get(); err == nil && len(*ids) > 0 {
-		if service, err := injector.Inject[sonami.Service](); err == nil {
-			tidalPlaylists = fetchAll(*ids, service.GetPlaylist)
+		if cachedService, err := injector.Inject[*cache.CachedService](); err == nil {
+			tidalPlaylists = cachedService.GetPlaylistBatch(*ids)
 		}
 	}
 
@@ -46,8 +47,8 @@ func Playlists() *router.Response {
 			grid.Append(CenterBox().CenterWidget(media_card.NewLocalPlaylist(p)).ToGTK())
 		}
 		sections = append(sections,
-Label(gettext.Get("My Playlists")).HMargin(40).WithCSSClass("title-2").HAlign(gtk.AlignStartValue),
-Widget(&grid.Widget),
+			Label(gettext.Get("My Playlists")).HMargin(40).WithCSSClass("title-2").HAlign(gtk.AlignStartValue),
+			Widget(&grid.Widget),
 		)
 	}
 
@@ -65,8 +66,8 @@ Widget(&grid.Widget),
 			grid.Append(CenterBox().CenterWidget(media_card.NewPlaylist(p)).ToGTK())
 		}
 		sections = append(sections,
-Label(title).HMargin(40).WithCSSClass("title-2").HAlign(gtk.AlignStartValue),
-Widget(&grid.Widget),
+			Label(title).HMargin(40).WithCSSClass("title-2").HAlign(gtk.AlignStartValue),
+			Widget(&grid.Widget),
 		)
 	}
 
