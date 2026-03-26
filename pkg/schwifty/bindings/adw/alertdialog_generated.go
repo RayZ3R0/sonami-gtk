@@ -1,14 +1,13 @@
 package adw
 
 import (
-	"github.com/RayZ3R0/sonami-gtk/pkg/schwifty/callback"
-	"github.com/RayZ3R0/sonami-gtk/pkg/schwifty/state"
-	"github.com/RayZ3R0/sonami-gtk/pkg/schwifty/utils/weak"
 	"codeberg.org/puregotk/puregotk/v4/adw"
 	"codeberg.org/puregotk/puregotk/v4/gtk"
 	"fmt"
+	"github.com/RayZ3R0/sonami-gtk/pkg/schwifty/callback"
+	"github.com/RayZ3R0/sonami-gtk/pkg/schwifty/state"
+	"github.com/RayZ3R0/sonami-gtk/pkg/schwifty/utils/weak"
 )
-
 
 type AlertDialog func() *adw.AlertDialog
 
@@ -246,8 +245,6 @@ func (f AlertDialog) VMargin(vertical int32) AlertDialog {
 	}
 }
 
-
-
 func (f AlertDialog) Background(color string) AlertDialog {
 	return func() *adw.AlertDialog {
 		return f.CSSWithCallback(func(elementName string) string {
@@ -395,8 +392,6 @@ func (f AlertDialog) VPadding(padding int) AlertDialog {
 		})()
 	}
 }
-
-
 
 func (f AlertDialog) BindVisible(state *state.State[bool]) AlertDialog {
 	return func() *adw.AlertDialog {

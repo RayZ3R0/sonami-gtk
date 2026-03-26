@@ -151,5 +151,3 @@ func (sr *StreamResolver) toPlaybackInfo(resp streamResponse) (*v1.PlaybackInfo,
 
 	return nil, fmt.Errorf("stream response contains neither manifest nor direct URL")
 }
-
-

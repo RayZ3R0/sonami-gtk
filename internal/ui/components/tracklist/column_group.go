@@ -1,9 +1,9 @@
 package tracklist
 
 import (
+	"codeberg.org/puregotk/puregotk/v4/gtk"
 	. "github.com/RayZ3R0/sonami-gtk/pkg/schwifty/syntax"
 	"github.com/RayZ3R0/sonami-gtk/pkg/sonami"
-	"codeberg.org/puregotk/puregotk/v4/gtk"
 )
 
 func groupedColumn(columns []any, width int32, grid *gtk.Grid, row int32, column int32) int32 {

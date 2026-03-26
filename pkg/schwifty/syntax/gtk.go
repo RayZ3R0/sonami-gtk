@@ -1,10 +1,10 @@
 package syntax
 
 import (
-	gtkbindings "github.com/RayZ3R0/sonami-gtk/pkg/schwifty/bindings/gtk"
-	"github.com/RayZ3R0/sonami-gtk/pkg/schwifty/callback"
 	"codeberg.org/puregotk/puregotk/v4/gdk"
 	"codeberg.org/puregotk/puregotk/v4/gtk"
+	gtkbindings "github.com/RayZ3R0/sonami-gtk/pkg/schwifty/bindings/gtk"
+	"github.com/RayZ3R0/sonami-gtk/pkg/schwifty/callback"
 )
 
 func AspectFrame(child any) gtkbindings.AspectFrame {

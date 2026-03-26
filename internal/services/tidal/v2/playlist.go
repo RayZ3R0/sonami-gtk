@@ -1,8 +1,8 @@
 package v2
 
 import (
-	v2 "github.com/RayZ3R0/sonami-gtk/pkg/tidalapi/models/v2"
 	"github.com/RayZ3R0/sonami-gtk/pkg/sonami"
+	v2 "github.com/RayZ3R0/sonami-gtk/pkg/tidalapi/models/v2"
 )
 
 var playlistLogger = logger.With("type", "Playlist").WithGroup("playlist")

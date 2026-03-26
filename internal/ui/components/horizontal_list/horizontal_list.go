@@ -3,15 +3,15 @@ package horizontal_list
 import (
 	"math"
 
+	"codeberg.org/puregotk/puregotk/v4/gobject"
+	"codeberg.org/puregotk/puregotk/v4/gtk"
+	"codeberg.org/puregotk/puregotk/v4/pango"
 	"github.com/RayZ3R0/sonami-gtk/internal/gettext"
 	"github.com/RayZ3R0/sonami-gtk/internal/router"
 	"github.com/RayZ3R0/sonami-gtk/pkg/schwifty"
 	"github.com/RayZ3R0/sonami-gtk/pkg/schwifty/state"
 	. "github.com/RayZ3R0/sonami-gtk/pkg/schwifty/syntax"
 	"github.com/RayZ3R0/sonami-gtk/pkg/schwifty/utils/weak"
-	"codeberg.org/puregotk/puregotk/v4/gobject"
-	"codeberg.org/puregotk/puregotk/v4/gtk"
-	"codeberg.org/puregotk/puregotk/v4/pango"
 )
 
 type HorizontalList struct {

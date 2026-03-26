@@ -1,13 +1,12 @@
 package gtk
 
 import (
+	"codeberg.org/puregotk/puregotk/v4/gtk"
+	"fmt"
 	"github.com/RayZ3R0/sonami-gtk/pkg/schwifty/callback"
 	"github.com/RayZ3R0/sonami-gtk/pkg/schwifty/state"
 	"github.com/RayZ3R0/sonami-gtk/pkg/schwifty/utils/weak"
-	"codeberg.org/puregotk/puregotk/v4/gtk"
-	"fmt"
 )
-
 
 type Overlay func() *gtk.Overlay
 
@@ -245,8 +244,6 @@ func (f Overlay) VMargin(vertical int32) Overlay {
 	}
 }
 
-
-
 func (f Overlay) Background(color string) Overlay {
 	return func() *gtk.Overlay {
 		return f.CSSWithCallback(func(elementName string) string {
@@ -394,8 +391,6 @@ func (f Overlay) VPadding(padding int) Overlay {
 		})()
 	}
 }
-
-
 
 func (f Overlay) BindVisible(state *state.State[bool]) Overlay {
 	return func() *gtk.Overlay {

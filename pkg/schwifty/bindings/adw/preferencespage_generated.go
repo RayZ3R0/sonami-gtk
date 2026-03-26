@@ -1,14 +1,13 @@
 package adw
 
 import (
-	"github.com/RayZ3R0/sonami-gtk/pkg/schwifty/callback"
-	"github.com/RayZ3R0/sonami-gtk/pkg/schwifty/state"
-	"github.com/RayZ3R0/sonami-gtk/pkg/schwifty/utils/weak"
 	"codeberg.org/puregotk/puregotk/v4/adw"
 	"codeberg.org/puregotk/puregotk/v4/gtk"
 	"fmt"
+	"github.com/RayZ3R0/sonami-gtk/pkg/schwifty/callback"
+	"github.com/RayZ3R0/sonami-gtk/pkg/schwifty/state"
+	"github.com/RayZ3R0/sonami-gtk/pkg/schwifty/utils/weak"
 )
-
 
 type PreferencesPage func() *adw.PreferencesPage
 
@@ -246,8 +245,6 @@ func (f PreferencesPage) VMargin(vertical int32) PreferencesPage {
 	}
 }
 
-
-
 func (f PreferencesPage) Background(color string) PreferencesPage {
 	return func() *adw.PreferencesPage {
 		return f.CSSWithCallback(func(elementName string) string {
@@ -395,8 +392,6 @@ func (f PreferencesPage) VPadding(padding int) PreferencesPage {
 		})()
 	}
 }
-
-
 
 func (f PreferencesPage) BindVisible(state *state.State[bool]) PreferencesPage {
 	return func() *adw.PreferencesPage {

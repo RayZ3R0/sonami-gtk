@@ -3,8 +3,8 @@ package v2
 import (
 	"fmt"
 
-	v2 "github.com/RayZ3R0/sonami-gtk/pkg/tidalapi/models/v2"
 	"github.com/RayZ3R0/sonami-gtk/pkg/sonami"
+	v2 "github.com/RayZ3R0/sonami-gtk/pkg/tidalapi/models/v2"
 )
 
 var trackLogger = logger.With("type", "Track").WithGroup("track")

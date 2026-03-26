@@ -3,14 +3,14 @@ package pages
 import (
 	"log/slog"
 
+	"codeberg.org/puregotk/puregotk/v4/adw"
+	"codeberg.org/puregotk/puregotk/v4/gtk"
 	"github.com/RayZ3R0/sonami-gtk/internal/signals"
 	"github.com/RayZ3R0/sonami-gtk/internal/ui/components"
 	"github.com/RayZ3R0/sonami-gtk/pkg/schwifty"
 	. "github.com/RayZ3R0/sonami-gtk/pkg/schwifty/syntax"
 	"github.com/RayZ3R0/sonami-gtk/pkg/schwifty/utils/weak"
 	"github.com/RayZ3R0/sonami-gtk/pkg/tidalapi/pagination"
-	"codeberg.org/puregotk/puregotk/v4/adw"
-	"codeberg.org/puregotk/puregotk/v4/gtk"
 )
 
 func NewPaginatedMediaCardPage[T any](

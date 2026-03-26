@@ -4,8 +4,8 @@ import (
 	"strings"
 	"time"
 
-	"github.com/RayZ3R0/sonami-gtk/pkg/tidalapi/models/openapi"
 	"github.com/RayZ3R0/sonami-gtk/pkg/sonami"
+	"github.com/RayZ3R0/sonami-gtk/pkg/tidalapi/models/openapi"
 )
 
 var playlistInfoLogger = logger.With("type", "PlaylistInfo").WithGroup("playlist_info")

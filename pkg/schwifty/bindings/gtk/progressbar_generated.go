@@ -1,13 +1,12 @@
 package gtk
 
 import (
+	"codeberg.org/puregotk/puregotk/v4/gtk"
+	"fmt"
 	"github.com/RayZ3R0/sonami-gtk/pkg/schwifty/callback"
 	"github.com/RayZ3R0/sonami-gtk/pkg/schwifty/state"
 	"github.com/RayZ3R0/sonami-gtk/pkg/schwifty/utils/weak"
-	"codeberg.org/puregotk/puregotk/v4/gtk"
-	"fmt"
 )
-
 
 type ProgressBar func() *gtk.ProgressBar
 
@@ -245,8 +244,6 @@ func (f ProgressBar) VMargin(vertical int32) ProgressBar {
 	}
 }
 
-
-
 func (f ProgressBar) Background(color string) ProgressBar {
 	return func() *gtk.ProgressBar {
 		return f.CSSWithCallback(func(elementName string) string {
@@ -394,8 +391,6 @@ func (f ProgressBar) VPadding(padding int) ProgressBar {
 		})()
 	}
 }
-
-
 
 func (f ProgressBar) BindVisible(state *state.State[bool]) ProgressBar {
 	return func() *gtk.ProgressBar {

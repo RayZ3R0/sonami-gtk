@@ -8,9 +8,9 @@ import (
 
 	"github.com/RayZ3R0/sonami-gtk/internal/settings"
 	"github.com/RayZ3R0/sonami-gtk/internal/signals"
+	"github.com/RayZ3R0/sonami-gtk/pkg/sonami"
 	"github.com/RayZ3R0/sonami-gtk/pkg/tidalapi"
 	v2 "github.com/RayZ3R0/sonami-gtk/pkg/tidalapi/models/v2"
-	"github.com/RayZ3R0/sonami-gtk/pkg/sonami"
 	"github.com/go-gst/go-gst/gst"
 	"github.com/infinytum/injector"
 )

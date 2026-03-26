@@ -1,13 +1,13 @@
 package media_card
 
 import (
+	"codeberg.org/puregotk/puregotk/v4/gtk"
+	"codeberg.org/puregotk/puregotk/v4/pango"
 	"github.com/RayZ3R0/sonami-gtk/internal/resources"
 	"github.com/RayZ3R0/sonami-gtk/internal/settings"
 	"github.com/RayZ3R0/sonami-gtk/pkg/schwifty"
 	. "github.com/RayZ3R0/sonami-gtk/pkg/schwifty/syntax"
 	"github.com/RayZ3R0/sonami-gtk/pkg/utils/imgutil"
-	"codeberg.org/puregotk/puregotk/v4/gtk"
-	"codeberg.org/puregotk/puregotk/v4/pango"
 	"github.com/infinytum/injector"
 )
 

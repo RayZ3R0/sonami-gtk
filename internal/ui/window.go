@@ -1,6 +1,11 @@
 package ui
 
 import (
+	"codeberg.org/puregotk/puregotk/v4/adw"
+	"codeberg.org/puregotk/puregotk/v4/gio"
+	"codeberg.org/puregotk/puregotk/v4/glib"
+	"codeberg.org/puregotk/puregotk/v4/gobject"
+	"codeberg.org/puregotk/puregotk/v4/gtk"
 	"github.com/RayZ3R0/sonami-gtk/internal/g"
 	"github.com/RayZ3R0/sonami-gtk/internal/notifications"
 	"github.com/RayZ3R0/sonami-gtk/internal/router"
@@ -8,11 +13,6 @@ import (
 	"github.com/RayZ3R0/sonami-gtk/internal/signals"
 	"github.com/RayZ3R0/sonami-gtk/pkg/schwifty"
 	. "github.com/RayZ3R0/sonami-gtk/pkg/schwifty/syntax"
-	"codeberg.org/puregotk/puregotk/v4/adw"
-	"codeberg.org/puregotk/puregotk/v4/gio"
-	"codeberg.org/puregotk/puregotk/v4/glib"
-	"codeberg.org/puregotk/puregotk/v4/gobject"
-	"codeberg.org/puregotk/puregotk/v4/gtk"
 	"github.com/infinytum/injector"
 
 	"github.com/RayZ3R0/sonami-gtk/internal/ui/components"

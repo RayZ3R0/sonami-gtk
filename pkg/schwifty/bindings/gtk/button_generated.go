@@ -1,13 +1,12 @@
 package gtk
 
 import (
+	"codeberg.org/puregotk/puregotk/v4/gtk"
+	"fmt"
 	"github.com/RayZ3R0/sonami-gtk/pkg/schwifty/callback"
 	"github.com/RayZ3R0/sonami-gtk/pkg/schwifty/state"
 	"github.com/RayZ3R0/sonami-gtk/pkg/schwifty/utils/weak"
-	"codeberg.org/puregotk/puregotk/v4/gtk"
-	"fmt"
 )
-
 
 type Button func() *gtk.Button
 
@@ -245,8 +244,6 @@ func (f Button) VMargin(vertical int32) Button {
 	}
 }
 
-
-
 func (f Button) Background(color string) Button {
 	return func() *gtk.Button {
 		return f.CSSWithCallback(func(elementName string) string {
@@ -394,8 +391,6 @@ func (f Button) VPadding(padding int) Button {
 		})()
 	}
 }
-
-
 
 func (f Button) BindVisible(state *state.State[bool]) Button {
 	return func() *gtk.Button {

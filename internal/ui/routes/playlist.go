@@ -1,6 +1,7 @@
 package routes
 
 import (
+	"codeberg.org/puregotk/puregotk/v4/gtk"
 	"github.com/RayZ3R0/sonami-gtk/internal/gettext"
 	"github.com/RayZ3R0/sonami-gtk/internal/notifications"
 	"github.com/RayZ3R0/sonami-gtk/internal/player"
@@ -14,7 +15,6 @@ import (
 	"github.com/RayZ3R0/sonami-gtk/pkg/schwifty/state"
 	. "github.com/RayZ3R0/sonami-gtk/pkg/schwifty/syntax"
 	"github.com/RayZ3R0/sonami-gtk/pkg/sonami"
-	"codeberg.org/puregotk/puregotk/v4/gtk"
 	"github.com/infinytum/injector"
 )
 

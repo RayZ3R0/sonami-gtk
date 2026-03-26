@@ -1,14 +1,13 @@
 package adw
 
 import (
-	"github.com/RayZ3R0/sonami-gtk/pkg/schwifty/callback"
-	"github.com/RayZ3R0/sonami-gtk/pkg/schwifty/state"
-	"github.com/RayZ3R0/sonami-gtk/pkg/schwifty/utils/weak"
 	"codeberg.org/puregotk/puregotk/v4/adw"
 	"codeberg.org/puregotk/puregotk/v4/gtk"
 	"fmt"
+	"github.com/RayZ3R0/sonami-gtk/pkg/schwifty/callback"
+	"github.com/RayZ3R0/sonami-gtk/pkg/schwifty/state"
+	"github.com/RayZ3R0/sonami-gtk/pkg/schwifty/utils/weak"
 )
-
 
 type EntryRow func() *adw.EntryRow
 
@@ -246,8 +245,6 @@ func (f EntryRow) VMargin(vertical int32) EntryRow {
 	}
 }
 
-
-
 func (f EntryRow) Background(color string) EntryRow {
 	return func() *adw.EntryRow {
 		return f.CSSWithCallback(func(elementName string) string {
@@ -395,8 +392,6 @@ func (f EntryRow) VPadding(padding int) EntryRow {
 		})()
 	}
 }
-
-
 
 func (f EntryRow) BindVisible(state *state.State[bool]) EntryRow {
 	return func() *adw.EntryRow {

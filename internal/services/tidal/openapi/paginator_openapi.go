@@ -4,8 +4,8 @@ import (
 	"context"
 	"fmt"
 
-	"github.com/RayZ3R0/sonami-gtk/pkg/tidalapi/models/openapi"
 	"github.com/RayZ3R0/sonami-gtk/pkg/sonami"
+	"github.com/RayZ3R0/sonami-gtk/pkg/tidalapi/models/openapi"
 )
 
 var openapiCursorEnd = "END_REACHED"

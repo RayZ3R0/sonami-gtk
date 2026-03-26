@@ -1,13 +1,12 @@
 package gtk
 
 import (
+	"codeberg.org/puregotk/puregotk/v4/gtk"
+	"fmt"
 	"github.com/RayZ3R0/sonami-gtk/pkg/schwifty/callback"
 	"github.com/RayZ3R0/sonami-gtk/pkg/schwifty/state"
 	"github.com/RayZ3R0/sonami-gtk/pkg/schwifty/utils/weak"
-	"codeberg.org/puregotk/puregotk/v4/gtk"
-	"fmt"
 )
-
 
 type CenterBox func() *gtk.CenterBox
 
@@ -245,8 +244,6 @@ func (f CenterBox) VMargin(vertical int32) CenterBox {
 	}
 }
 
-
-
 func (f CenterBox) Background(color string) CenterBox {
 	return func() *gtk.CenterBox {
 		return f.CSSWithCallback(func(elementName string) string {
@@ -394,8 +391,6 @@ func (f CenterBox) VPadding(padding int) CenterBox {
 		})()
 	}
 }
-
-
 
 func (f CenterBox) BindVisible(state *state.State[bool]) CenterBox {
 	return func() *gtk.CenterBox {

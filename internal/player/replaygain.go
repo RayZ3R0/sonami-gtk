@@ -6,8 +6,8 @@ import (
 
 	"github.com/RayZ3R0/sonami-gtk/internal/g"
 	"github.com/RayZ3R0/sonami-gtk/internal/settings"
-	v1 "github.com/RayZ3R0/sonami-gtk/pkg/tidalapi/models/v1"
 	"github.com/RayZ3R0/sonami-gtk/pkg/sonami"
+	v1 "github.com/RayZ3R0/sonami-gtk/pkg/tidalapi/models/v1"
 	"github.com/go-gst/go-gst/gst"
 )
 

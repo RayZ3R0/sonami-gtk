@@ -6,6 +6,12 @@ import (
 	"sync"
 	"unsafe"
 
+	"codeberg.org/puregotk/puregotk/v4/adw"
+	"codeberg.org/puregotk/puregotk/v4/gdk"
+	"codeberg.org/puregotk/puregotk/v4/gio"
+	"codeberg.org/puregotk/puregotk/v4/gobject"
+	"codeberg.org/puregotk/puregotk/v4/graphene"
+	"codeberg.org/puregotk/puregotk/v4/gtk"
 	"github.com/RayZ3R0/sonami-gtk/internal/player"
 	"github.com/RayZ3R0/sonami-gtk/internal/signals"
 	"github.com/RayZ3R0/sonami-gtk/pkg/schwifty"
@@ -16,12 +22,6 @@ import (
 	"github.com/RayZ3R0/sonami-gtk/pkg/schwifty/tracking"
 	"github.com/RayZ3R0/sonami-gtk/pkg/schwifty/utils/weak"
 	"github.com/RayZ3R0/sonami-gtk/pkg/sonami"
-	"codeberg.org/puregotk/puregotk/v4/adw"
-	"codeberg.org/puregotk/puregotk/v4/gdk"
-	"codeberg.org/puregotk/puregotk/v4/gio"
-	"codeberg.org/puregotk/puregotk/v4/gobject"
-	"codeberg.org/puregotk/puregotk/v4/graphene"
-	"codeberg.org/puregotk/puregotk/v4/gtk"
 )
 
 type ColumnFunc func(track sonami.Track, grid *gtk.Grid, position int, column int32) int

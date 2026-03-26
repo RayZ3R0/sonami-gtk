@@ -11,7 +11,7 @@ import (
 
 type V1 struct {
 	client     *internal.Client
-	Albums    *albums.Albums
+	Albums     *albums.Albums
 	Favourites *favourites.Favourites
 	Pages      *pages.Pages
 	Playlists  *playlists.Playlists
@@ -21,7 +21,7 @@ type V1 struct {
 func New(client *internal.Client) *V1 {
 	return &V1{
 		client:     client,
-		Albums:    albums.New(client),
+		Albums:     albums.New(client),
 		Favourites: favourites.New(client),
 		Pages:      pages.New(client),
 		Playlists:  playlists.New(client),

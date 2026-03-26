@@ -1,14 +1,13 @@
 package adw
 
 import (
-	"github.com/RayZ3R0/sonami-gtk/pkg/schwifty/callback"
-	"github.com/RayZ3R0/sonami-gtk/pkg/schwifty/state"
-	"github.com/RayZ3R0/sonami-gtk/pkg/schwifty/utils/weak"
 	"codeberg.org/puregotk/puregotk/v4/adw"
 	"codeberg.org/puregotk/puregotk/v4/gtk"
 	"fmt"
+	"github.com/RayZ3R0/sonami-gtk/pkg/schwifty/callback"
+	"github.com/RayZ3R0/sonami-gtk/pkg/schwifty/state"
+	"github.com/RayZ3R0/sonami-gtk/pkg/schwifty/utils/weak"
 )
-
 
 type StatusPage func() *adw.StatusPage
 
@@ -246,8 +245,6 @@ func (f StatusPage) VMargin(vertical int32) StatusPage {
 	}
 }
 
-
-
 func (f StatusPage) Background(color string) StatusPage {
 	return func() *adw.StatusPage {
 		return f.CSSWithCallback(func(elementName string) string {
@@ -395,8 +392,6 @@ func (f StatusPage) VPadding(padding int) StatusPage {
 		})()
 	}
 }
-
-
 
 func (f StatusPage) BindVisible(state *state.State[bool]) StatusPage {
 	return func() *adw.StatusPage {

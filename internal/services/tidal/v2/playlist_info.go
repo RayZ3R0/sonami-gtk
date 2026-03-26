@@ -3,9 +3,9 @@ package v2
 import (
 	"time"
 
+	"github.com/RayZ3R0/sonami-gtk/pkg/sonami"
 	"github.com/RayZ3R0/sonami-gtk/pkg/tidalapi"
 	v2 "github.com/RayZ3R0/sonami-gtk/pkg/tidalapi/models/v2"
-	"github.com/RayZ3R0/sonami-gtk/pkg/sonami"
 )
 
 var playlistInfoLogger = logger.With("type", "PlaylistInfo").WithGroup("playlist_info")

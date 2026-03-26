@@ -1,10 +1,10 @@
 package lyrics
 
 import (
+	"codeberg.org/puregotk/puregotk/v4/gtk"
 	"github.com/RayZ3R0/sonami-gtk/internal/player"
 	"github.com/RayZ3R0/sonami-gtk/pkg/schwifty"
 	. "github.com/RayZ3R0/sonami-gtk/pkg/schwifty/syntax"
-	"codeberg.org/puregotk/puregotk/v4/gtk"
 )
 
 func lyricLine(text string, timing *highlightTiming) schwifty.Button {

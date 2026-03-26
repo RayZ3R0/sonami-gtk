@@ -1,13 +1,12 @@
 package gtk
 
 import (
+	"codeberg.org/puregotk/puregotk/v4/gtk"
+	"fmt"
 	"github.com/RayZ3R0/sonami-gtk/pkg/schwifty/callback"
 	"github.com/RayZ3R0/sonami-gtk/pkg/schwifty/state"
 	"github.com/RayZ3R0/sonami-gtk/pkg/schwifty/utils/weak"
-	"codeberg.org/puregotk/puregotk/v4/gtk"
-	"fmt"
 )
-
 
 type Scale func() *gtk.Scale
 
@@ -245,8 +244,6 @@ func (f Scale) VMargin(vertical int32) Scale {
 	}
 }
 
-
-
 func (f Scale) Background(color string) Scale {
 	return func() *gtk.Scale {
 		return f.CSSWithCallback(func(elementName string) string {
@@ -394,8 +391,6 @@ func (f Scale) VPadding(padding int) Scale {
 		})()
 	}
 }
-
-
 
 func (f Scale) BindVisible(state *state.State[bool]) Scale {
 	return func() *gtk.Scale {

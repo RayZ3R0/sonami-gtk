@@ -4,8 +4,8 @@ import (
 	"context"
 	"fmt"
 
-	v1 "github.com/RayZ3R0/sonami-gtk/pkg/tidalapi/models/v1"
 	"github.com/RayZ3R0/sonami-gtk/pkg/sonami"
+	v1 "github.com/RayZ3R0/sonami-gtk/pkg/tidalapi/models/v1"
 )
 
 type PaginatedV1Func[Intermediary any] func(ctx context.Context, resourceID string, opts *v1.ItemsOptions) (*v1.PaginatedResponse[Intermediary], error)

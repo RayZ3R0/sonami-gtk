@@ -3,8 +3,8 @@ package player
 import (
 	"github.com/RayZ3R0/sonami-gtk/internal/settings"
 	"github.com/RayZ3R0/sonami-gtk/internal/signals"
-	v1 "github.com/RayZ3R0/sonami-gtk/pkg/tidalapi/models/v1"
 	"github.com/RayZ3R0/sonami-gtk/pkg/sonami"
+	v1 "github.com/RayZ3R0/sonami-gtk/pkg/tidalapi/models/v1"
 )
 
 // Holds the current audio stream quality.

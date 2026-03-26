@@ -6,13 +6,13 @@ import (
 
 	"github.com/RayZ3R0/sonami-gtk/internal/secrets"
 	"github.com/RayZ3R0/sonami-gtk/internal/services/tidal/openapi"
-	"github.com/RayZ3R0/sonami-gtk/internal/settings"
 	v1 "github.com/RayZ3R0/sonami-gtk/internal/services/tidal/v1"
 	v2 "github.com/RayZ3R0/sonami-gtk/internal/services/tidal/v2"
+	"github.com/RayZ3R0/sonami-gtk/internal/settings"
+	"github.com/RayZ3R0/sonami-gtk/pkg/sonami"
 	"github.com/RayZ3R0/sonami-gtk/pkg/tidalapi"
 	modelopenapi "github.com/RayZ3R0/sonami-gtk/pkg/tidalapi/models/openapi"
 	modelv1 "github.com/RayZ3R0/sonami-gtk/pkg/tidalapi/models/v1"
-	"github.com/RayZ3R0/sonami-gtk/pkg/sonami"
 	"github.com/infinytum/injector"
 )
 

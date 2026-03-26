@@ -1,14 +1,13 @@
 package adw
 
 import (
-	"github.com/RayZ3R0/sonami-gtk/pkg/schwifty/callback"
-	"github.com/RayZ3R0/sonami-gtk/pkg/schwifty/state"
-	"github.com/RayZ3R0/sonami-gtk/pkg/schwifty/utils/weak"
 	"codeberg.org/puregotk/puregotk/v4/adw"
 	"codeberg.org/puregotk/puregotk/v4/gtk"
 	"fmt"
+	"github.com/RayZ3R0/sonami-gtk/pkg/schwifty/callback"
+	"github.com/RayZ3R0/sonami-gtk/pkg/schwifty/state"
+	"github.com/RayZ3R0/sonami-gtk/pkg/schwifty/utils/weak"
 )
-
 
 type WindowTitle func() *adw.WindowTitle
 
@@ -246,8 +245,6 @@ func (f WindowTitle) VMargin(vertical int32) WindowTitle {
 	}
 }
 
-
-
 func (f WindowTitle) Background(color string) WindowTitle {
 	return func() *adw.WindowTitle {
 		return f.CSSWithCallback(func(elementName string) string {
@@ -395,8 +392,6 @@ func (f WindowTitle) VPadding(padding int) WindowTitle {
 		})()
 	}
 }
-
-
 
 func (f WindowTitle) BindVisible(state *state.State[bool]) WindowTitle {
 	return func() *adw.WindowTitle {

@@ -1,13 +1,12 @@
 package gtk
 
 import (
+	"codeberg.org/puregotk/puregotk/v4/gtk"
+	"fmt"
 	"github.com/RayZ3R0/sonami-gtk/pkg/schwifty/callback"
 	"github.com/RayZ3R0/sonami-gtk/pkg/schwifty/state"
 	"github.com/RayZ3R0/sonami-gtk/pkg/schwifty/utils/weak"
-	"codeberg.org/puregotk/puregotk/v4/gtk"
-	"fmt"
 )
-
 
 type Revealer func() *gtk.Revealer
 
@@ -245,8 +244,6 @@ func (f Revealer) VMargin(vertical int32) Revealer {
 	}
 }
 
-
-
 func (f Revealer) Background(color string) Revealer {
 	return func() *gtk.Revealer {
 		return f.CSSWithCallback(func(elementName string) string {
@@ -394,8 +391,6 @@ func (f Revealer) VPadding(padding int) Revealer {
 		})()
 	}
 }
-
-
 
 func (f Revealer) BindVisible(state *state.State[bool]) Revealer {
 	return func() *gtk.Revealer {

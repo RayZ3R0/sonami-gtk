@@ -1,9 +1,9 @@
 package shortcut_list
 
 import (
+	"codeberg.org/puregotk/puregotk/v4/glib"
 	"github.com/RayZ3R0/sonami-gtk/pkg/schwifty"
 	v2 "github.com/RayZ3R0/sonami-gtk/pkg/tidalapi/models/v2"
-	"codeberg.org/puregotk/puregotk/v4/glib"
 )
 
 func newMix(id string, title string, subtitle string, coverUrl string) schwifty.Button {

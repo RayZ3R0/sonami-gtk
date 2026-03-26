@@ -4,8 +4,8 @@ import (
 	"sync"
 	"time"
 
-	"github.com/RayZ3R0/sonami-gtk/internal/settings"
 	"codeberg.org/puregotk/puregotk/v4/gtk"
+	"github.com/RayZ3R0/sonami-gtk/internal/settings"
 )
 
 var history = &History{

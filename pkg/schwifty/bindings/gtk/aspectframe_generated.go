@@ -1,13 +1,12 @@
 package gtk
 
 import (
+	"codeberg.org/puregotk/puregotk/v4/gtk"
+	"fmt"
 	"github.com/RayZ3R0/sonami-gtk/pkg/schwifty/callback"
 	"github.com/RayZ3R0/sonami-gtk/pkg/schwifty/state"
 	"github.com/RayZ3R0/sonami-gtk/pkg/schwifty/utils/weak"
-	"codeberg.org/puregotk/puregotk/v4/gtk"
-	"fmt"
 )
-
 
 type AspectFrame func() *gtk.AspectFrame
 
@@ -245,8 +244,6 @@ func (f AspectFrame) VMargin(vertical int32) AspectFrame {
 	}
 }
 
-
-
 func (f AspectFrame) Background(color string) AspectFrame {
 	return func() *gtk.AspectFrame {
 		return f.CSSWithCallback(func(elementName string) string {
@@ -394,8 +391,6 @@ func (f AspectFrame) VPadding(padding int) AspectFrame {
 		})()
 	}
 }
-
-
 
 func (f AspectFrame) BindVisible(state *state.State[bool]) AspectFrame {
 	return func() *gtk.AspectFrame {

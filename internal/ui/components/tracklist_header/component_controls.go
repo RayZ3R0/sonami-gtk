@@ -1,10 +1,10 @@
 package tracklist_header
 
 import (
+	"codeberg.org/puregotk/puregotk/v4/gtk"
 	"github.com/RayZ3R0/sonami-gtk/internal/gettext"
 	"github.com/RayZ3R0/sonami-gtk/pkg/schwifty"
 	. "github.com/RayZ3R0/sonami-gtk/pkg/schwifty/syntax"
-	"codeberg.org/puregotk/puregotk/v4/gtk"
 )
 
 func componentControls(playFunc func(), shuffleFunc func()) schwifty.Box {

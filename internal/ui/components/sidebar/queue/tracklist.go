@@ -3,6 +3,7 @@ package queue
 import (
 	"slices"
 
+	"codeberg.org/puregotk/puregotk/v4/gtk"
 	"github.com/RayZ3R0/sonami-gtk/internal/gettext"
 	"github.com/RayZ3R0/sonami-gtk/internal/player"
 	"github.com/RayZ3R0/sonami-gtk/internal/player/queue"
@@ -12,7 +13,6 @@ import (
 	"github.com/RayZ3R0/sonami-gtk/pkg/schwifty/state"
 	. "github.com/RayZ3R0/sonami-gtk/pkg/schwifty/syntax"
 	"github.com/RayZ3R0/sonami-gtk/pkg/sonami"
-	"codeberg.org/puregotk/puregotk/v4/gtk"
 )
 
 var (

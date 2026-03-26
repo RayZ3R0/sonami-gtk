@@ -1,14 +1,13 @@
 package adw
 
 import (
-	"github.com/RayZ3R0/sonami-gtk/pkg/schwifty/callback"
-	"github.com/RayZ3R0/sonami-gtk/pkg/schwifty/state"
-	"github.com/RayZ3R0/sonami-gtk/pkg/schwifty/utils/weak"
 	"codeberg.org/puregotk/puregotk/v4/adw"
 	"codeberg.org/puregotk/puregotk/v4/gtk"
 	"fmt"
+	"github.com/RayZ3R0/sonami-gtk/pkg/schwifty/callback"
+	"github.com/RayZ3R0/sonami-gtk/pkg/schwifty/state"
+	"github.com/RayZ3R0/sonami-gtk/pkg/schwifty/utils/weak"
 )
-
 
 type PreferencesGroup func() *adw.PreferencesGroup
 
@@ -246,8 +245,6 @@ func (f PreferencesGroup) VMargin(vertical int32) PreferencesGroup {
 	}
 }
 
-
-
 func (f PreferencesGroup) Background(color string) PreferencesGroup {
 	return func() *adw.PreferencesGroup {
 		return f.CSSWithCallback(func(elementName string) string {
@@ -395,8 +392,6 @@ func (f PreferencesGroup) VPadding(padding int) PreferencesGroup {
 		})()
 	}
 }
-
-
 
 func (f PreferencesGroup) BindVisible(state *state.State[bool]) PreferencesGroup {
 	return func() *adw.PreferencesGroup {

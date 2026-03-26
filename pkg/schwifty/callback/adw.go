@@ -1,8 +1,8 @@
 package callback
 
 import (
-	"github.com/RayZ3R0/sonami-gtk/pkg/utils/cutil"
 	"codeberg.org/puregotk/puregotk/v4/adw"
+	"github.com/RayZ3R0/sonami-gtk/pkg/utils/cutil"
 )
 
 var (

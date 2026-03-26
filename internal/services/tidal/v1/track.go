@@ -3,8 +3,8 @@ package v1
 import (
 	"fmt"
 
-	v1 "github.com/RayZ3R0/sonami-gtk/pkg/tidalapi/models/v1"
 	"github.com/RayZ3R0/sonami-gtk/pkg/sonami"
+	v1 "github.com/RayZ3R0/sonami-gtk/pkg/tidalapi/models/v1"
 )
 
 type Track struct {

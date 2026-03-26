@@ -1,14 +1,14 @@
 package tracklist_header
 
 import (
+	"codeberg.org/puregotk/puregotk/v4/adw"
+	"codeberg.org/puregotk/puregotk/v4/gtk"
+	"codeberg.org/puregotk/puregotk/v4/pango"
 	"github.com/RayZ3R0/sonami-gtk/internal/player"
 	"github.com/RayZ3R0/sonami-gtk/internal/signals"
 	"github.com/RayZ3R0/sonami-gtk/pkg/schwifty"
 	"github.com/RayZ3R0/sonami-gtk/pkg/schwifty/state"
 	. "github.com/RayZ3R0/sonami-gtk/pkg/schwifty/syntax"
-	"codeberg.org/puregotk/puregotk/v4/adw"
-	"codeberg.org/puregotk/puregotk/v4/gtk"
-	"codeberg.org/puregotk/puregotk/v4/pango"
 )
 
 var playerControlsAvailableState = state.NewStateful(false)

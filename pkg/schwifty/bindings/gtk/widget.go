@@ -3,8 +3,8 @@ package gtk
 import (
 	"reflect"
 
-	"github.com/RayZ3R0/sonami-gtk/pkg/schwifty/callback"
 	"codeberg.org/puregotk/puregotk/v4/gtk"
+	"github.com/RayZ3R0/sonami-gtk/pkg/schwifty/callback"
 )
 
 //go:generate go run github.com/RayZ3R0/sonami-gtk/pkg/schwifty/gen Widget *WrappedWidget gtk

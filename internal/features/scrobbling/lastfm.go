@@ -11,11 +11,11 @@ import (
 	"github.com/RayZ3R0/sonami-gtk/pkg/schwifty"
 	"github.com/RayZ3R0/sonami-gtk/pkg/sonami"
 
+	"codeberg.org/puregotk/puregotk/v4/adw"
+	"codeberg.org/puregotk/puregotk/v4/gtk"
 	adwbindings "github.com/RayZ3R0/sonami-gtk/pkg/schwifty/bindings/adw"
 	. "github.com/RayZ3R0/sonami-gtk/pkg/schwifty/syntax"
 	"github.com/RayZ3R0/sonami-gtk/pkg/schwifty/utils/weak"
-	"codeberg.org/puregotk/puregotk/v4/adw"
-	"codeberg.org/puregotk/puregotk/v4/gtk"
 	"github.com/infinytum/injector"
 
 	lastfmlib "github.com/twoscott/gobble-fm/lastfm"

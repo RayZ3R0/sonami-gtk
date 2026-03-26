@@ -1,8 +1,8 @@
 package components
 
 import (
-	"github.com/RayZ3R0/sonami-gtk/pkg/schwifty"
 	"codeberg.org/puregotk/puregotk/v4/gtk"
+	"github.com/RayZ3R0/sonami-gtk/pkg/schwifty"
 )
 
 func SquirclePicture(picture schwifty.Picture) schwifty.Picture {

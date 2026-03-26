@@ -3,12 +3,12 @@ package player
 import (
 	"math"
 
+	"codeberg.org/puregotk/puregotk/v4/gtk"
 	"github.com/RayZ3R0/sonami-gtk/internal/player"
 	"github.com/RayZ3R0/sonami-gtk/internal/signals"
 	"github.com/RayZ3R0/sonami-gtk/pkg/schwifty"
 	"github.com/RayZ3R0/sonami-gtk/pkg/schwifty/state"
 	. "github.com/RayZ3R0/sonami-gtk/pkg/schwifty/syntax"
-	"codeberg.org/puregotk/puregotk/v4/gtk"
 )
 
 var volumeState = state.NewStateful(1.0)

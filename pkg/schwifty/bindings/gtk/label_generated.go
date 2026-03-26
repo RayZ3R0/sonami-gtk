@@ -1,13 +1,12 @@
 package gtk
 
 import (
+	"codeberg.org/puregotk/puregotk/v4/gtk"
+	"fmt"
 	"github.com/RayZ3R0/sonami-gtk/pkg/schwifty/callback"
 	"github.com/RayZ3R0/sonami-gtk/pkg/schwifty/state"
 	"github.com/RayZ3R0/sonami-gtk/pkg/schwifty/utils/weak"
-	"codeberg.org/puregotk/puregotk/v4/gtk"
-	"fmt"
 )
-
 
 type Label func() *gtk.Label
 
@@ -245,8 +244,6 @@ func (f Label) VMargin(vertical int32) Label {
 	}
 }
 
-
-
 func (f Label) Background(color string) Label {
 	return func() *gtk.Label {
 		return f.CSSWithCallback(func(elementName string) string {
@@ -394,8 +391,6 @@ func (f Label) VPadding(padding int) Label {
 		})()
 	}
 }
-
-
 
 func (f Label) BindVisible(state *state.State[bool]) Label {
 	return func() *gtk.Label {

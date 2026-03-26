@@ -1,9 +1,9 @@
 package gtk
 
 import (
-	"github.com/RayZ3R0/sonami-gtk/pkg/schwifty/callback"
 	"codeberg.org/puregotk/puregotk/v4/gdk"
 	"codeberg.org/puregotk/puregotk/v4/gtk"
+	"github.com/RayZ3R0/sonami-gtk/pkg/schwifty/callback"
 )
 
 type DragSource func() *gtk.DragSource

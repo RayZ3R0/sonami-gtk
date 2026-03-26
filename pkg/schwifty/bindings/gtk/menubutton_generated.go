@@ -1,13 +1,12 @@
 package gtk
 
 import (
+	"codeberg.org/puregotk/puregotk/v4/gtk"
+	"fmt"
 	"github.com/RayZ3R0/sonami-gtk/pkg/schwifty/callback"
 	"github.com/RayZ3R0/sonami-gtk/pkg/schwifty/state"
 	"github.com/RayZ3R0/sonami-gtk/pkg/schwifty/utils/weak"
-	"codeberg.org/puregotk/puregotk/v4/gtk"
-	"fmt"
 )
-
 
 type MenuButton func() *gtk.MenuButton
 
@@ -245,8 +244,6 @@ func (f MenuButton) VMargin(vertical int32) MenuButton {
 	}
 }
 
-
-
 func (f MenuButton) Background(color string) MenuButton {
 	return func() *gtk.MenuButton {
 		return f.CSSWithCallback(func(elementName string) string {
@@ -394,8 +391,6 @@ func (f MenuButton) VPadding(padding int) MenuButton {
 		})()
 	}
 }
-
-
 
 func (f MenuButton) BindVisible(state *state.State[bool]) MenuButton {
 	return func() *gtk.MenuButton {

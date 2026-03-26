@@ -8,6 +8,8 @@ import (
 	"strings"
 	"time"
 
+	"codeberg.org/puregotk/puregotk/v4/gtk"
+	"codeberg.org/puregotk/puregotk/v4/pango"
 	"github.com/RayZ3R0/sonami-gtk/internal/gettext"
 	"github.com/RayZ3R0/sonami-gtk/internal/router"
 	"github.com/RayZ3R0/sonami-gtk/internal/secrets"
@@ -17,8 +19,6 @@ import (
 	"github.com/RayZ3R0/sonami-gtk/pkg/tidalapi"
 	"github.com/RayZ3R0/sonami-gtk/pkg/tidalapi/models/v2/feed"
 	"github.com/RayZ3R0/sonami-gtk/pkg/utils/imgutil"
-	"codeberg.org/puregotk/puregotk/v4/gtk"
-	"codeberg.org/puregotk/puregotk/v4/pango"
 	"github.com/infinytum/injector"
 )
 

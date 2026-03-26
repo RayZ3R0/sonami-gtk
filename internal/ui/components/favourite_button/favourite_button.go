@@ -4,6 +4,8 @@ import (
 	"log/slog"
 	"slices"
 
+	"codeberg.org/puregotk/puregotk/v4/adw"
+	"codeberg.org/puregotk/puregotk/v4/gtk"
 	"github.com/RayZ3R0/sonami-gtk/internal/gettext"
 	"github.com/RayZ3R0/sonami-gtk/internal/secrets"
 	"github.com/RayZ3R0/sonami-gtk/internal/signals"
@@ -12,8 +14,6 @@ import (
 	gtkbindings "github.com/RayZ3R0/sonami-gtk/pkg/schwifty/bindings/gtk"
 	. "github.com/RayZ3R0/sonami-gtk/pkg/schwifty/syntax"
 	"github.com/RayZ3R0/sonami-gtk/pkg/schwifty/utils/weak"
-	"codeberg.org/puregotk/puregotk/v4/adw"
-	"codeberg.org/puregotk/puregotk/v4/gtk"
 )
 
 var logger = slog.With("module", "ui/components", "component", "FavouriteButton")

@@ -1,14 +1,13 @@
 package adw
 
 import (
-	"github.com/RayZ3R0/sonami-gtk/pkg/schwifty/callback"
-	"github.com/RayZ3R0/sonami-gtk/pkg/schwifty/state"
-	"github.com/RayZ3R0/sonami-gtk/pkg/schwifty/utils/weak"
 	"codeberg.org/puregotk/puregotk/v4/adw"
 	"codeberg.org/puregotk/puregotk/v4/gtk"
 	"fmt"
+	"github.com/RayZ3R0/sonami-gtk/pkg/schwifty/callback"
+	"github.com/RayZ3R0/sonami-gtk/pkg/schwifty/state"
+	"github.com/RayZ3R0/sonami-gtk/pkg/schwifty/utils/weak"
 )
-
 
 type Clamp func() *adw.Clamp
 
@@ -246,8 +245,6 @@ func (f Clamp) VMargin(vertical int32) Clamp {
 	}
 }
 
-
-
 func (f Clamp) Background(color string) Clamp {
 	return func() *adw.Clamp {
 		return f.CSSWithCallback(func(elementName string) string {
@@ -395,8 +392,6 @@ func (f Clamp) VPadding(padding int) Clamp {
 		})()
 	}
 }
-
-
 
 func (f Clamp) BindVisible(state *state.State[bool]) Clamp {
 	return func() *adw.Clamp {

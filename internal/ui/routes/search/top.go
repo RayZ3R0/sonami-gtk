@@ -1,6 +1,7 @@
 package search
 
 import (
+	"codeberg.org/puregotk/puregotk/v4/gtk"
 	"github.com/RayZ3R0/sonami-gtk/internal/gettext"
 	"github.com/RayZ3R0/sonami-gtk/internal/services/tidal/openapi"
 	"github.com/RayZ3R0/sonami-gtk/internal/ui/components"
@@ -10,7 +11,6 @@ import (
 	"github.com/RayZ3R0/sonami-gtk/pkg/schwifty"
 	. "github.com/RayZ3R0/sonami-gtk/pkg/schwifty/syntax"
 	modelopenapi "github.com/RayZ3R0/sonami-gtk/pkg/tidalapi/models/openapi"
-	"codeberg.org/puregotk/puregotk/v4/gtk"
 )
 
 func TopHits(searchResults *modelopenapi.SearchResult) schwifty.Box {

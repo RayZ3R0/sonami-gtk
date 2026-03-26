@@ -1,14 +1,13 @@
 package adw
 
 import (
-	"github.com/RayZ3R0/sonami-gtk/pkg/schwifty/callback"
-	"github.com/RayZ3R0/sonami-gtk/pkg/schwifty/state"
-	"github.com/RayZ3R0/sonami-gtk/pkg/schwifty/utils/weak"
 	"codeberg.org/puregotk/puregotk/v4/adw"
 	"codeberg.org/puregotk/puregotk/v4/gtk"
 	"fmt"
+	"github.com/RayZ3R0/sonami-gtk/pkg/schwifty/callback"
+	"github.com/RayZ3R0/sonami-gtk/pkg/schwifty/state"
+	"github.com/RayZ3R0/sonami-gtk/pkg/schwifty/utils/weak"
 )
-
 
 type Spinner func() *adw.Spinner
 
@@ -246,8 +245,6 @@ func (f Spinner) VMargin(vertical int32) Spinner {
 	}
 }
 
-
-
 func (f Spinner) Background(color string) Spinner {
 	return func() *adw.Spinner {
 		return f.CSSWithCallback(func(elementName string) string {
@@ -395,8 +392,6 @@ func (f Spinner) VPadding(padding int) Spinner {
 		})()
 	}
 }
-
-
 
 func (f Spinner) BindVisible(state *state.State[bool]) Spinner {
 	return func() *adw.Spinner {

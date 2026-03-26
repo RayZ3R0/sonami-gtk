@@ -4,8 +4,8 @@ import (
 	"slices"
 	"time"
 
-	"github.com/RayZ3R0/sonami-gtk/pkg/tidalapi/models/openapi"
 	"github.com/RayZ3R0/sonami-gtk/pkg/sonami"
+	"github.com/RayZ3R0/sonami-gtk/pkg/tidalapi/models/openapi"
 )
 
 type TrackInfo struct {

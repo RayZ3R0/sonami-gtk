@@ -1,13 +1,12 @@
 package gtk
 
 import (
+	"codeberg.org/puregotk/puregotk/v4/gtk"
+	"fmt"
 	"github.com/RayZ3R0/sonami-gtk/pkg/schwifty/callback"
 	"github.com/RayZ3R0/sonami-gtk/pkg/schwifty/state"
 	"github.com/RayZ3R0/sonami-gtk/pkg/schwifty/utils/weak"
-	"codeberg.org/puregotk/puregotk/v4/gtk"
-	"fmt"
 )
-
 
 type Widget func() *WrappedWidget
 
@@ -245,8 +244,6 @@ func (f Widget) VMargin(vertical int32) Widget {
 	}
 }
 
-
-
 func (f Widget) Background(color string) Widget {
 	return func() *WrappedWidget {
 		return f.CSSWithCallback(func(elementName string) string {
@@ -394,8 +391,6 @@ func (f Widget) VPadding(padding int) Widget {
 		})()
 	}
 }
-
-
 
 func (f Widget) BindVisible(state *state.State[bool]) Widget {
 	return func() *WrappedWidget {

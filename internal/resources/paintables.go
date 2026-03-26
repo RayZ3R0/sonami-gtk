@@ -1,10 +1,10 @@
 package resources
 
 import (
+	"codeberg.org/puregotk/puregotk/v4/gdk"
 	"github.com/RayZ3R0/sonami-gtk/internal/g"
 	"github.com/RayZ3R0/sonami-gtk/pkg/schwifty"
 	"github.com/RayZ3R0/sonami-gtk/pkg/schwifty/tracking"
-	"codeberg.org/puregotk/puregotk/v4/gdk"
 )
 
 var MissingAlbum = g.Lazy(func() schwifty.Paintable {

@@ -1,13 +1,12 @@
 package gtk
 
 import (
+	"codeberg.org/puregotk/puregotk/v4/gtk"
+	"fmt"
 	"github.com/RayZ3R0/sonami-gtk/pkg/schwifty/callback"
 	"github.com/RayZ3R0/sonami-gtk/pkg/schwifty/state"
 	"github.com/RayZ3R0/sonami-gtk/pkg/schwifty/utils/weak"
-	"codeberg.org/puregotk/puregotk/v4/gtk"
-	"fmt"
 )
-
 
 type Picture func() *gtk.Picture
 
@@ -245,8 +244,6 @@ func (f Picture) VMargin(vertical int32) Picture {
 	}
 }
 
-
-
 func (f Picture) Background(color string) Picture {
 	return func() *gtk.Picture {
 		return f.CSSWithCallback(func(elementName string) string {
@@ -394,8 +391,6 @@ func (f Picture) VPadding(padding int) Picture {
 		})()
 	}
 }
-
-
 
 func (f Picture) BindVisible(state *state.State[bool]) Picture {
 	return func() *gtk.Picture {

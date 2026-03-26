@@ -1,11 +1,11 @@
 package media_card
 
 import (
+	"codeberg.org/puregotk/puregotk/v4/glib"
 	"github.com/RayZ3R0/sonami-gtk/internal/gettext"
 	"github.com/RayZ3R0/sonami-gtk/pkg/schwifty"
 	. "github.com/RayZ3R0/sonami-gtk/pkg/schwifty/syntax"
 	"github.com/RayZ3R0/sonami-gtk/pkg/sonami"
-	"codeberg.org/puregotk/puregotk/v4/glib"
 )
 
 func NewPlaylist(playlist sonami.Playlist) schwifty.Button {

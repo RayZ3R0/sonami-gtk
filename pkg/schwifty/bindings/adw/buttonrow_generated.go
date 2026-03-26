@@ -1,14 +1,13 @@
 package adw
 
 import (
-	"github.com/RayZ3R0/sonami-gtk/pkg/schwifty/callback"
-	"github.com/RayZ3R0/sonami-gtk/pkg/schwifty/state"
-	"github.com/RayZ3R0/sonami-gtk/pkg/schwifty/utils/weak"
 	"codeberg.org/puregotk/puregotk/v4/adw"
 	"codeberg.org/puregotk/puregotk/v4/gtk"
 	"fmt"
+	"github.com/RayZ3R0/sonami-gtk/pkg/schwifty/callback"
+	"github.com/RayZ3R0/sonami-gtk/pkg/schwifty/state"
+	"github.com/RayZ3R0/sonami-gtk/pkg/schwifty/utils/weak"
 )
-
 
 type ButtonRow func() *adw.ButtonRow
 
@@ -246,8 +245,6 @@ func (f ButtonRow) VMargin(vertical int32) ButtonRow {
 	}
 }
 
-
-
 func (f ButtonRow) Background(color string) ButtonRow {
 	return func() *adw.ButtonRow {
 		return f.CSSWithCallback(func(elementName string) string {
@@ -395,8 +392,6 @@ func (f ButtonRow) VPadding(padding int) ButtonRow {
 		})()
 	}
 }
-
-
 
 func (f ButtonRow) BindVisible(state *state.State[bool]) ButtonRow {
 	return func() *adw.ButtonRow {

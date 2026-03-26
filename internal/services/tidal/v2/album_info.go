@@ -4,9 +4,9 @@ import (
 	"strconv"
 	"time"
 
+	"github.com/RayZ3R0/sonami-gtk/pkg/sonami"
 	"github.com/RayZ3R0/sonami-gtk/pkg/tidalapi"
 	v2 "github.com/RayZ3R0/sonami-gtk/pkg/tidalapi/models/v2"
-	"github.com/RayZ3R0/sonami-gtk/pkg/sonami"
 )
 
 var albumInfoLogger = logger.With("type", "AlbumInfo").WithGroup("album_info")

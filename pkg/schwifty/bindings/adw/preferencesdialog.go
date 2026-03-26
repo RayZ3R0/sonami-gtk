@@ -1,9 +1,9 @@
 package adw
 
 import (
+	"codeberg.org/puregotk/puregotk/v4/adw"
 	"github.com/RayZ3R0/sonami-gtk/pkg/schwifty/bindings"
 	"github.com/RayZ3R0/sonami-gtk/pkg/schwifty/bindings/gtk"
-	"codeberg.org/puregotk/puregotk/v4/adw"
 )
 
 //go:generate go run github.com/RayZ3R0/sonami-gtk/pkg/schwifty/gen PreferencesDialog *adw.PreferencesDialog adw

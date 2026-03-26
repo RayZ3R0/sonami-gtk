@@ -3,8 +3,8 @@ package openapi
 import (
 	"time"
 
-	"github.com/RayZ3R0/sonami-gtk/pkg/tidalapi/models/openapi"
 	"github.com/RayZ3R0/sonami-gtk/pkg/sonami"
+	"github.com/RayZ3R0/sonami-gtk/pkg/tidalapi/models/openapi"
 )
 
 var albumInfoLogger = logger.With("type", "AlbumInfo").WithGroup("album_info")

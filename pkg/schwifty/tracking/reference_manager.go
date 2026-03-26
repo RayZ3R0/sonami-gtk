@@ -4,9 +4,9 @@ import (
 	"reflect"
 	"runtime"
 
+	"codeberg.org/puregotk/puregotk/v4/gobject"
 	"github.com/RayZ3R0/sonami-gtk/pkg/schwifty/callback"
 	"github.com/RayZ3R0/sonami-gtk/pkg/schwifty/utils/weak"
-	"codeberg.org/puregotk/puregotk/v4/gobject"
 )
 
 var (

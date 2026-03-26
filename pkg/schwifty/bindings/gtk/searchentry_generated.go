@@ -1,13 +1,12 @@
 package gtk
 
 import (
+	"codeberg.org/puregotk/puregotk/v4/gtk"
+	"fmt"
 	"github.com/RayZ3R0/sonami-gtk/pkg/schwifty/callback"
 	"github.com/RayZ3R0/sonami-gtk/pkg/schwifty/state"
 	"github.com/RayZ3R0/sonami-gtk/pkg/schwifty/utils/weak"
-	"codeberg.org/puregotk/puregotk/v4/gtk"
-	"fmt"
 )
-
 
 type SearchEntry func() *gtk.SearchEntry
 
@@ -245,8 +244,6 @@ func (f SearchEntry) VMargin(vertical int32) SearchEntry {
 	}
 }
 
-
-
 func (f SearchEntry) Background(color string) SearchEntry {
 	return func() *gtk.SearchEntry {
 		return f.CSSWithCallback(func(elementName string) string {
@@ -394,8 +391,6 @@ func (f SearchEntry) VPadding(padding int) SearchEntry {
 		})()
 	}
 }
-
-
 
 func (f SearchEntry) BindVisible(state *state.State[bool]) SearchEntry {
 	return func() *gtk.SearchEntry {

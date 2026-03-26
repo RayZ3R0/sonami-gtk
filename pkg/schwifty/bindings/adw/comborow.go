@@ -1,10 +1,10 @@
 package adw
 
 import (
-	"github.com/RayZ3R0/sonami-gtk/pkg/schwifty/callback"
 	"codeberg.org/puregotk/puregotk/v4/adw"
 	"codeberg.org/puregotk/puregotk/v4/gio"
 	"codeberg.org/puregotk/puregotk/v4/gobject"
+	"github.com/RayZ3R0/sonami-gtk/pkg/schwifty/callback"
 )
 
 var (

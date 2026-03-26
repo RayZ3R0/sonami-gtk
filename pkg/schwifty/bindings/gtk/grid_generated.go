@@ -1,13 +1,12 @@
 package gtk
 
 import (
+	"codeberg.org/puregotk/puregotk/v4/gtk"
+	"fmt"
 	"github.com/RayZ3R0/sonami-gtk/pkg/schwifty/callback"
 	"github.com/RayZ3R0/sonami-gtk/pkg/schwifty/state"
 	"github.com/RayZ3R0/sonami-gtk/pkg/schwifty/utils/weak"
-	"codeberg.org/puregotk/puregotk/v4/gtk"
-	"fmt"
 )
-
 
 type Grid func() *gtk.Grid
 
@@ -245,8 +244,6 @@ func (f Grid) VMargin(vertical int32) Grid {
 	}
 }
 
-
-
 func (f Grid) Background(color string) Grid {
 	return func() *gtk.Grid {
 		return f.CSSWithCallback(func(elementName string) string {
@@ -394,8 +391,6 @@ func (f Grid) VPadding(padding int) Grid {
 		})()
 	}
 }
-
-
 
 func (f Grid) BindVisible(state *state.State[bool]) Grid {
 	return func() *gtk.Grid {

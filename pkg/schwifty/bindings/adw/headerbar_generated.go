@@ -1,14 +1,13 @@
 package adw
 
 import (
-	"github.com/RayZ3R0/sonami-gtk/pkg/schwifty/callback"
-	"github.com/RayZ3R0/sonami-gtk/pkg/schwifty/state"
-	"github.com/RayZ3R0/sonami-gtk/pkg/schwifty/utils/weak"
 	"codeberg.org/puregotk/puregotk/v4/adw"
 	"codeberg.org/puregotk/puregotk/v4/gtk"
 	"fmt"
+	"github.com/RayZ3R0/sonami-gtk/pkg/schwifty/callback"
+	"github.com/RayZ3R0/sonami-gtk/pkg/schwifty/state"
+	"github.com/RayZ3R0/sonami-gtk/pkg/schwifty/utils/weak"
 )
-
 
 type HeaderBar func() *adw.HeaderBar
 
@@ -246,8 +245,6 @@ func (f HeaderBar) VMargin(vertical int32) HeaderBar {
 	}
 }
 
-
-
 func (f HeaderBar) Background(color string) HeaderBar {
 	return func() *adw.HeaderBar {
 		return f.CSSWithCallback(func(elementName string) string {
@@ -395,8 +392,6 @@ func (f HeaderBar) VPadding(padding int) HeaderBar {
 		})()
 	}
 }
-
-
 
 func (f HeaderBar) BindVisible(state *state.State[bool]) HeaderBar {
 	return func() *adw.HeaderBar {

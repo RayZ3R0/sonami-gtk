@@ -3,9 +3,9 @@ package media_card
 import (
 	"strings"
 
+	"codeberg.org/puregotk/puregotk/v4/glib"
 	"github.com/RayZ3R0/sonami-gtk/pkg/schwifty"
 	"github.com/RayZ3R0/sonami-gtk/pkg/sonami"
-	"codeberg.org/puregotk/puregotk/v4/glib"
 )
 
 func NewTrack(track sonami.Track) schwifty.Button {

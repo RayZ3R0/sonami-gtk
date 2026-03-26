@@ -1,9 +1,9 @@
 package imgutil
 
 import (
-	"github.com/RayZ3R0/sonami-gtk/pkg/schwifty/tracking"
 	"codeberg.org/puregotk/puregotk/v4/gdk"
 	"codeberg.org/puregotk/puregotk/v4/glib"
+	"github.com/RayZ3R0/sonami-gtk/pkg/schwifty/tracking"
 )
 
 func (i *ImgUtil) Load(url string) (*gdk.Texture, error) {

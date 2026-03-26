@@ -3,12 +3,12 @@ package routes
 import (
 	"context"
 
+	"codeberg.org/puregotk/puregotk/v4/gtk"
 	"github.com/RayZ3R0/sonami-gtk/internal/gettext"
 	"github.com/RayZ3R0/sonami-gtk/internal/router"
 	"github.com/RayZ3R0/sonami-gtk/internal/ui/components"
 	. "github.com/RayZ3R0/sonami-gtk/pkg/schwifty/syntax"
 	"github.com/RayZ3R0/sonami-gtk/pkg/tidalapi"
-	"codeberg.org/puregotk/puregotk/v4/gtk"
 	"github.com/infinytum/injector"
 )
 

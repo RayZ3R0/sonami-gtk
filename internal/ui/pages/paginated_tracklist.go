@@ -4,13 +4,13 @@ import (
 	"log/slog"
 	"unsafe"
 
+	"codeberg.org/puregotk/puregotk/v4/gtk"
 	"github.com/RayZ3R0/sonami-gtk/internal/signals"
 	"github.com/RayZ3R0/sonami-gtk/internal/ui/components"
 	"github.com/RayZ3R0/sonami-gtk/internal/ui/components/tracklist"
 	"github.com/RayZ3R0/sonami-gtk/pkg/schwifty"
 	. "github.com/RayZ3R0/sonami-gtk/pkg/schwifty/syntax"
 	"github.com/RayZ3R0/sonami-gtk/pkg/sonami"
-	"codeberg.org/puregotk/puregotk/v4/gtk"
 )
 
 func NewPaginatedTracklistPage(

@@ -1,8 +1,8 @@
 package openapi
 
 import (
-	"github.com/RayZ3R0/sonami-gtk/pkg/tidalapi/models/openapi"
 	"github.com/RayZ3R0/sonami-gtk/pkg/sonami"
+	"github.com/RayZ3R0/sonami-gtk/pkg/tidalapi/models/openapi"
 )
 
 var artistInfoLogger = logger.With("type", "ArtistInfo").WithGroup("artist_info")

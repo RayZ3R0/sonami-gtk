@@ -3,9 +3,9 @@ package v2
 import (
 	"strconv"
 
+	"github.com/RayZ3R0/sonami-gtk/pkg/sonami"
 	"github.com/RayZ3R0/sonami-gtk/pkg/tidalapi"
 	v2 "github.com/RayZ3R0/sonami-gtk/pkg/tidalapi/models/v2"
-	"github.com/RayZ3R0/sonami-gtk/pkg/sonami"
 )
 
 var artistInfoLogger = logger.With("type", "ArtistInfo").WithGroup("artist_info")

@@ -1,13 +1,12 @@
 package gtk
 
 import (
+	"codeberg.org/puregotk/puregotk/v4/gtk"
+	"fmt"
 	"github.com/RayZ3R0/sonami-gtk/pkg/schwifty/callback"
 	"github.com/RayZ3R0/sonami-gtk/pkg/schwifty/state"
 	"github.com/RayZ3R0/sonami-gtk/pkg/schwifty/utils/weak"
-	"codeberg.org/puregotk/puregotk/v4/gtk"
-	"fmt"
 )
-
 
 type ScrolledWindow func() *gtk.ScrolledWindow
 
@@ -245,8 +244,6 @@ func (f ScrolledWindow) VMargin(vertical int32) ScrolledWindow {
 	}
 }
 
-
-
 func (f ScrolledWindow) Background(color string) ScrolledWindow {
 	return func() *gtk.ScrolledWindow {
 		return f.CSSWithCallback(func(elementName string) string {
@@ -394,8 +391,6 @@ func (f ScrolledWindow) VPadding(padding int) ScrolledWindow {
 		})()
 	}
 }
-
-
 
 func (f ScrolledWindow) BindVisible(state *state.State[bool]) ScrolledWindow {
 	return func() *gtk.ScrolledWindow {

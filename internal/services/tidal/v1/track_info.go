@@ -4,8 +4,8 @@ import (
 	"strconv"
 	"time"
 
-	v1 "github.com/RayZ3R0/sonami-gtk/pkg/tidalapi/models/v1"
 	"github.com/RayZ3R0/sonami-gtk/pkg/sonami"
+	v1 "github.com/RayZ3R0/sonami-gtk/pkg/tidalapi/models/v1"
 )
 
 type TrackInfo struct {

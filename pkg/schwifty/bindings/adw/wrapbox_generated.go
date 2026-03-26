@@ -1,14 +1,13 @@
 package adw
 
 import (
-	"github.com/RayZ3R0/sonami-gtk/pkg/schwifty/callback"
-	"github.com/RayZ3R0/sonami-gtk/pkg/schwifty/state"
-	"github.com/RayZ3R0/sonami-gtk/pkg/schwifty/utils/weak"
 	"codeberg.org/puregotk/puregotk/v4/adw"
 	"codeberg.org/puregotk/puregotk/v4/gtk"
 	"fmt"
+	"github.com/RayZ3R0/sonami-gtk/pkg/schwifty/callback"
+	"github.com/RayZ3R0/sonami-gtk/pkg/schwifty/state"
+	"github.com/RayZ3R0/sonami-gtk/pkg/schwifty/utils/weak"
 )
-
 
 type WrapBox func() *adw.WrapBox
 
@@ -246,8 +245,6 @@ func (f WrapBox) VMargin(vertical int32) WrapBox {
 	}
 }
 
-
-
 func (f WrapBox) Background(color string) WrapBox {
 	return func() *adw.WrapBox {
 		return f.CSSWithCallback(func(elementName string) string {
@@ -395,8 +392,6 @@ func (f WrapBox) VPadding(padding int) WrapBox {
 		})()
 	}
 }
-
-
 
 func (f WrapBox) BindVisible(state *state.State[bool]) WrapBox {
 	return func() *adw.WrapBox {

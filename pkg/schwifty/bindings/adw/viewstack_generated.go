@@ -1,14 +1,13 @@
 package adw
 
 import (
-	"github.com/RayZ3R0/sonami-gtk/pkg/schwifty/callback"
-	"github.com/RayZ3R0/sonami-gtk/pkg/schwifty/state"
-	"github.com/RayZ3R0/sonami-gtk/pkg/schwifty/utils/weak"
 	"codeberg.org/puregotk/puregotk/v4/adw"
 	"codeberg.org/puregotk/puregotk/v4/gtk"
 	"fmt"
+	"github.com/RayZ3R0/sonami-gtk/pkg/schwifty/callback"
+	"github.com/RayZ3R0/sonami-gtk/pkg/schwifty/state"
+	"github.com/RayZ3R0/sonami-gtk/pkg/schwifty/utils/weak"
 )
-
 
 type ViewStack func() *adw.ViewStack
 
@@ -246,8 +245,6 @@ func (f ViewStack) VMargin(vertical int32) ViewStack {
 	}
 }
 
-
-
 func (f ViewStack) Background(color string) ViewStack {
 	return func() *adw.ViewStack {
 		return f.CSSWithCallback(func(elementName string) string {
@@ -395,8 +392,6 @@ func (f ViewStack) VPadding(padding int) ViewStack {
 		})()
 	}
 }
-
-
 
 func (f ViewStack) BindVisible(state *state.State[bool]) ViewStack {
 	return func() *adw.ViewStack {

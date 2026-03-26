@@ -3,14 +3,14 @@ package components
 import (
 	"time"
 
-	"github.com/RayZ3R0/sonami-gtk/pkg/schwifty"
-	. "github.com/RayZ3R0/sonami-gtk/pkg/schwifty/syntax"
-	"github.com/RayZ3R0/sonami-gtk/pkg/schwifty/utils/weak"
 	"codeberg.org/puregotk/puregotk/v4/adw"
 	"codeberg.org/puregotk/puregotk/v4/gdk"
 	"codeberg.org/puregotk/puregotk/v4/gio"
 	"codeberg.org/puregotk/puregotk/v4/gsk"
 	"codeberg.org/puregotk/puregotk/v4/gtk"
+	"github.com/RayZ3R0/sonami-gtk/pkg/schwifty"
+	. "github.com/RayZ3R0/sonami-gtk/pkg/schwifty/syntax"
+	"github.com/RayZ3R0/sonami-gtk/pkg/schwifty/utils/weak"
 )
 
 type MediaViewer struct {

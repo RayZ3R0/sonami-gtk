@@ -1,11 +1,11 @@
 package shortcut_list
 
 import (
+	"codeberg.org/puregotk/puregotk/v4/glib"
 	"github.com/RayZ3R0/sonami-gtk/internal/gettext"
 	"github.com/RayZ3R0/sonami-gtk/pkg/schwifty"
 	"github.com/RayZ3R0/sonami-gtk/pkg/tidalapi"
 	v2 "github.com/RayZ3R0/sonami-gtk/pkg/tidalapi/models/v2"
-	"codeberg.org/puregotk/puregotk/v4/glib"
 )
 
 func newPlaylist(id string, title string, itemCount int, coverUrl string) schwifty.Button {

@@ -3,6 +3,8 @@ package player
 import (
 	"log/slog"
 
+	"codeberg.org/puregotk/puregotk/v4/gtk"
+	"codeberg.org/puregotk/puregotk/v4/pango"
 	"github.com/RayZ3R0/sonami-gtk/internal/gettext"
 	"github.com/RayZ3R0/sonami-gtk/internal/player"
 	"github.com/RayZ3R0/sonami-gtk/internal/resources"
@@ -13,8 +15,6 @@ import (
 	. "github.com/RayZ3R0/sonami-gtk/pkg/schwifty/syntax"
 	"github.com/RayZ3R0/sonami-gtk/pkg/sonami"
 	"github.com/RayZ3R0/sonami-gtk/pkg/utils/imgutil"
-	"codeberg.org/puregotk/puregotk/v4/gtk"
-	"codeberg.org/puregotk/puregotk/v4/pango"
 	"github.com/infinytum/injector"
 )
 

@@ -3,10 +3,10 @@ package tracklist
 import (
 	"strings"
 
-	. "github.com/RayZ3R0/sonami-gtk/pkg/schwifty/syntax"
-	"github.com/RayZ3R0/sonami-gtk/pkg/sonami"
 	"codeberg.org/puregotk/puregotk/v4/gtk"
 	"codeberg.org/puregotk/puregotk/v4/pango"
+	. "github.com/RayZ3R0/sonami-gtk/pkg/schwifty/syntax"
+	"github.com/RayZ3R0/sonami-gtk/pkg/sonami"
 )
 
 func ArtistsColumn(track sonami.Track, grid *gtk.Grid, position int, column int32) int {
