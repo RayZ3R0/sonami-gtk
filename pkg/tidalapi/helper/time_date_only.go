@@ -9,7 +9,7 @@ type TimeDateOnly struct {
 	time.Time
 }
 
-func (r *TimeDateOnly) MarshalJSON() ([]byte, error) {
+func (r TimeDateOnly) MarshalJSON() ([]byte, error) {
 	return json.Marshal(r.Time.Format(time.DateOnly))
 }
 

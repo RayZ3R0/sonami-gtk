@@ -9,7 +9,7 @@ type TidalDateTime struct {
 	time.Time
 }
 
-func (r *TidalDateTime) MarshalJSON() ([]byte, error) {
+func (r TidalDateTime) MarshalJSON() ([]byte, error) {
 	return json.Marshal(r.Time.Format("2006-01-02T15:04:05.000-0700"))
 }
 

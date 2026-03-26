@@ -1,11 +1,11 @@
 package imgutil
 
 import (
+	"codeberg.org/puregotk/puregotk/v4/gtk"
 	"github.com/RayZ3R0/sonami-gtk/pkg/schwifty"
 	"github.com/RayZ3R0/sonami-gtk/pkg/schwifty/tracking"
 	"github.com/RayZ3R0/sonami-gtk/pkg/schwifty/utils/weak"
 	"github.com/RayZ3R0/sonami-gtk/pkg/utils/cacheutil"
-	"codeberg.org/puregotk/puregotk/v4/gtk"
 )
 
 type ImgUtil struct {
@@ -53,4 +53,9 @@ func NewImgUtil(appId string) *ImgUtil {
 	return &ImgUtil{
 		cache: cacheutil.NewCache(appId, "images"),
 	}
+}
+
+// ClearCache removes all cached images from disk
+func (i *ImgUtil) ClearCache() error {
+	return i.cache.Clear()
 }

@@ -4,6 +4,7 @@ import (
 	"log/slog"
 
 	"codeberg.org/puregotk/puregotk/v4/gtk"
+	"github.com/RayZ3R0/sonami-gtk/internal/cache"
 	"github.com/RayZ3R0/sonami-gtk/internal/gettext"
 	"github.com/RayZ3R0/sonami-gtk/internal/localdb"
 	"github.com/RayZ3R0/sonami-gtk/internal/notifications"
@@ -65,12 +66,12 @@ func LocalPlaylist(playlistID string) *router.Response {
 
 	source := localPlaylistSource{*pl}
 
-	service, err := injector.Inject[sonami.Service]()
+	cachedService, err := injector.Inject[*cache.CachedService]()
 	if err != nil {
 		return router.FromError(pl.Name, err)
 	}
 
-	tracks := fetchN(trackIDs, 0, service.GetTrack)
+	tracks := cachedService.GetTrackBatch(trackIDs)
 
 	paginator := sonami.NewArrayPaginator(tracks)
 	page, err := pages.NewPaginatedTracklistPage(

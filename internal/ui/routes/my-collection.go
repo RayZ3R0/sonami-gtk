@@ -1,9 +1,10 @@
 package routes
 
 import (
-	"sync"
+	"context"
 
 	"codeberg.org/puregotk/puregotk/v4/gtk"
+	"github.com/RayZ3R0/sonami-gtk/internal/cache"
 	"github.com/RayZ3R0/sonami-gtk/internal/gettext"
 	"github.com/RayZ3R0/sonami-gtk/internal/localdb"
 	"github.com/RayZ3R0/sonami-gtk/internal/router"
@@ -14,7 +15,6 @@ import (
 	"github.com/RayZ3R0/sonami-gtk/internal/ui/components/tracklist"
 	"github.com/RayZ3R0/sonami-gtk/internal/ui/routes/my_collection"
 	. "github.com/RayZ3R0/sonami-gtk/pkg/schwifty/syntax"
-	"github.com/RayZ3R0/sonami-gtk/pkg/sonami"
 	"github.com/infinytum/injector"
 )
 
@@ -26,59 +26,8 @@ func init() {
 	router.Register("my-collection/tracks", my_collection.Tracks)
 }
 
-// fetchN fetches up to n items from ids concurrently (max 8 in-flight).
-// Results preserve the order of ids; items that fail to load are skipped.
-func fetchN[T any](ids []string, n int, fetch func(string) (T, error)) []T {
-	if n > 0 && len(ids) > n {
-		ids = ids[:n]
-	}
-
-	type indexed struct {
-		i   int
-		val T
-	}
-
-	results := make([]indexed, 0, len(ids))
-	var mu sync.Mutex
-	var wg sync.WaitGroup
-	sem := make(chan struct{}, 8)
-
-	for i, id := range ids {
-		i, id := i, id
-		wg.Add(1)
-		sem <- struct{}{}
-		go func() {
-			defer wg.Done()
-			defer func() { <-sem }()
-			val, err := fetch(id)
-			if err != nil {
-				return
-			}
-			mu.Lock()
-			results = append(results, indexed{i, val})
-			mu.Unlock()
-		}()
-	}
-	wg.Wait()
-
-	// Sort by original index to preserve added_at order from the DB.
-	out := make([]T, len(ids))
-	filled := make([]bool, len(ids))
-	for _, r := range results {
-		out[r.i] = r.val
-		filled[r.i] = true
-	}
-	ordered := make([]T, 0, len(ids))
-	for i, v := range out {
-		if filled[i] {
-			ordered = append(ordered, v)
-		}
-	}
-	return ordered
-}
-
 func MyCollection() *router.Response {
-	service, err := injector.Inject[sonami.Service]()
+	cachedService, err := injector.Inject[*cache.CachedService]()
 	if err != nil {
 		return router.FromError(gettext.Get("My Collection"), err)
 	}
@@ -107,33 +56,49 @@ func MyCollection() *router.Response {
 		maxTidalPlaylists = 0
 	}
 
-	// Fetch up to 8 items per section in parallel across sections.
-	var (
-		albums    []sonami.Album
-		artists   []sonami.Artist
-		playlists []sonami.Playlist
-		tracks    []sonami.Track
-		wg        sync.WaitGroup
-	)
+	// Limit IDs to first 8 per section
+	limitedAlbumIDs := *albumIDs
+	if len(limitedAlbumIDs) > 8 {
+		limitedAlbumIDs = limitedAlbumIDs[:8]
+	}
+	limitedArtistIDs := *artistIDs
+	if len(limitedArtistIDs) > 8 {
+		limitedArtistIDs = limitedArtistIDs[:8]
+	}
+	limitedPlaylistIDs := *playlistIDs
+	if len(limitedPlaylistIDs) > maxTidalPlaylists {
+		limitedPlaylistIDs = limitedPlaylistIDs[:maxTidalPlaylists]
+	}
+	limitedTrackIDs := *trackIDs
+	if len(limitedTrackIDs) > 8 {
+		limitedTrackIDs = limitedTrackIDs[:8]
+	}
 
-	wg.Add(4)
+	// Use batch operations for efficient cache-aware fetching
+	albums := cachedService.GetAlbumBatch(limitedAlbumIDs)
+	artists := cachedService.GetArtistBatch(limitedArtistIDs)
+	playlists := cachedService.GetPlaylistBatch(limitedPlaylistIDs)
+	tracks := cachedService.GetTrackBatch(limitedTrackIDs)
+
+	// Trigger background sync for stale entries (non-blocking)
+	if syncManager, err := injector.Inject[*cache.SyncManager](); err == nil {
+		go syncManager.SyncStaleEntries(context.Background())
+	}
+
+	// Prefetch all liked tracks and local playlist tracks in background
 	go func() {
-		defer wg.Done()
-		albums = fetchN(*albumIDs, 8, service.GetAlbum)
+		// Prefetch ALL liked tracks (not just the displayed 8)
+		if len(*trackIDs) > 0 {
+			cachedService.GetTrackBatch(*trackIDs)
+		}
+
+		// Prefetch tracks for all local playlists
+		for _, lp := range localPlaylists {
+			if trackIDs, err := localdb.GetPlaylistTrackIDs(lp.ID); err == nil && len(trackIDs) > 0 {
+				cachedService.GetTrackBatch(trackIDs)
+			}
+		}
 	}()
-	go func() {
-		defer wg.Done()
-		artists = fetchN(*artistIDs, 8, service.GetArtist)
-	}()
-	go func() {
-		defer wg.Done()
-		playlists = fetchN(*playlistIDs, maxTidalPlaylists, service.GetPlaylist)
-	}()
-	go func() {
-		defer wg.Done()
-		tracks = fetchN(*trackIDs, 8, service.GetTrack)
-	}()
-	wg.Wait()
 
 	body := VStack().Spacing(25).VMargin(20)
 

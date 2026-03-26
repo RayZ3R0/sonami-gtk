@@ -12,7 +12,7 @@ type DateTime struct {
 	time.Time
 }
 
-func (r *DateTime) MarshalJSON() ([]byte, error) {
+func (r DateTime) MarshalJSON() ([]byte, error) {
 	return json.Marshal(r.Time.Format("2006-01-02T15:04:05.000Z"))
 }
 
@@ -41,7 +41,7 @@ type Duration struct {
 	time.Duration
 }
 
-func (r *Duration) MarshalJSON() ([]byte, error) {
+func (r Duration) MarshalJSON() ([]byte, error) {
 	return json.Marshal(duration.Format(r.Duration))
 }
 

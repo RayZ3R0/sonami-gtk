@@ -96,6 +96,52 @@ func migrate(db *sql.DB) error {
 		)`,
 		// v4: add cover_url to local playlists
 		`ALTER TABLE local_playlists ADD COLUMN cover_url TEXT NOT NULL DEFAULT ''`,
+		// v5: metadata cache for albums
+		`CREATE TABLE IF NOT EXISTS cached_albums (
+			id TEXT PRIMARY KEY,
+			data BLOB NOT NULL,
+			cover_url TEXT NOT NULL DEFAULT '',
+			cached_at INTEGER NOT NULL,
+			error TEXT DEFAULT NULL
+		)`,
+		// v6: metadata cache for artists
+		`CREATE TABLE IF NOT EXISTS cached_artists (
+			id TEXT PRIMARY KEY,
+			data BLOB NOT NULL,
+			cover_url TEXT NOT NULL DEFAULT '',
+			cached_at INTEGER NOT NULL,
+			error TEXT DEFAULT NULL
+		)`,
+		// v7: metadata cache for playlists
+		`CREATE TABLE IF NOT EXISTS cached_playlists (
+			id TEXT PRIMARY KEY,
+			data BLOB NOT NULL,
+			cover_url TEXT NOT NULL DEFAULT '',
+			cached_at INTEGER NOT NULL,
+			error TEXT DEFAULT NULL
+		)`,
+		// v8: metadata cache for tracks
+		`CREATE TABLE IF NOT EXISTS cached_tracks (
+			id TEXT PRIMARY KEY,
+			data BLOB NOT NULL,
+			cover_url TEXT NOT NULL DEFAULT '',
+			cached_at INTEGER NOT NULL,
+			error TEXT DEFAULT NULL
+		)`,
+		// v9: indexes for stale entry queries
+		`CREATE INDEX IF NOT EXISTS idx_albums_cached_at ON cached_albums(cached_at)`,
+		// v10: indexes for artists
+		`CREATE INDEX IF NOT EXISTS idx_artists_cached_at ON cached_artists(cached_at)`,
+		// v11: indexes for playlists
+		`CREATE INDEX IF NOT EXISTS idx_playlists_cached_at ON cached_playlists(cached_at)`,
+		// v12: indexes for tracks
+		`CREATE INDEX IF NOT EXISTS idx_tracks_cached_at ON cached_tracks(cached_at)`,
+		// v13: page feed cache (for home, explore, etc.)
+		`CREATE TABLE IF NOT EXISTS cached_page_feeds (
+			id TEXT PRIMARY KEY,
+			data BLOB NOT NULL,
+			cached_at INTEGER NOT NULL
+		)`,
 	}
 
 	for i := version; i < len(migrations); i++ {

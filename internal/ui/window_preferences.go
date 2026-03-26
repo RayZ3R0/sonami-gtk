@@ -6,14 +6,18 @@ import (
 
 	"codeberg.org/puregotk/puregotk/v4/adw"
 	"codeberg.org/puregotk/puregotk/v4/gtk"
+	"github.com/RayZ3R0/sonami-gtk/internal/cache"
 	"github.com/RayZ3R0/sonami-gtk/internal/features/scrobbling"
 	"github.com/RayZ3R0/sonami-gtk/internal/gettext"
+	"github.com/RayZ3R0/sonami-gtk/internal/localdb"
 	"github.com/RayZ3R0/sonami-gtk/internal/settings"
 	"github.com/RayZ3R0/sonami-gtk/internal/signals"
 	"github.com/RayZ3R0/sonami-gtk/pkg/schwifty"
 	adwbindings "github.com/RayZ3R0/sonami-gtk/pkg/schwifty/bindings/adw"
 	. "github.com/RayZ3R0/sonami-gtk/pkg/schwifty/syntax"
 	"github.com/RayZ3R0/sonami-gtk/pkg/schwifty/utils/weak"
+	"github.com/RayZ3R0/sonami-gtk/pkg/utils/imgutil"
+	"github.com/infinytum/injector"
 )
 
 func buildPreferencesGeneral(dialog *adw.PreferencesDialog) adwbindings.PreferencesPage {
@@ -333,6 +337,138 @@ func buildPreferencesLyrics(*adw.PreferencesDialog) adwbindings.PreferencesPage 
 	).Title(gettext.Get("Lyrics")).IconName("chat-bubble-text-symbolic")
 }
 
+func buildPreferencesCache(dialog *adw.PreferencesDialog) adwbindings.PreferencesPage {
+	dialogRef := weak.NewWidgetRef(dialog)
+
+	// Helper to show toast notifications
+	showToast := func(message string) {
+		schwifty.OnMainThreadOncePure(func() {
+			dialogRef.Use(func(obj *gtk.Widget) {
+				d := adw.PreferencesDialogNewFromInternalPtr(obj.Ptr)
+				toast := adw.NewToast(message)
+				toast.SetTimeout(3)
+				d.AddToast(toast)
+			})
+		})
+	}
+
+	// Clear all caches helper
+	clearAllCaches := func() {
+		go func() {
+			var errors []string
+
+			// Clear metadata cache
+			if cachedService, err := injector.Inject[*cache.CachedService](); err == nil {
+				if err := cachedService.ClearMetadataCache(); err != nil {
+					errors = append(errors, "metadata")
+					slog.Error("failed to clear metadata cache", "error", err)
+				}
+			}
+
+			// Clear home feed cache
+			if err := localdb.ClearAllPageFeeds(); err != nil {
+				errors = append(errors, "home feed")
+				slog.Error("failed to clear page feed cache", "error", err)
+			}
+
+			// Clear image cache
+			if imgUtil, err := injector.Inject[*imgutil.ImgUtil](); err == nil {
+				if err := imgUtil.ClearCache(); err != nil {
+					errors = append(errors, "images")
+					slog.Error("failed to clear image cache", "error", err)
+				}
+			}
+
+			if len(errors) > 0 {
+				showToast(gettext.Get("Some caches could not be cleared"))
+			} else {
+				showToast(gettext.Get("All caches cleared"))
+			}
+		}()
+	}
+
+	return PreferencesPage(
+		PreferencesGroup(
+			ActionRow().
+				Title(gettext.Get("Clear All Caches")).
+				Subtitle(gettext.Get("Remove all cached metadata, home feed, and images")).
+				ActionSuffix(
+					Button().
+						IconName("user-trash-symbolic").
+						VAlign(gtk.AlignCenterValue).
+						WithCSSClass("destructive-action").
+						ConnectClicked(func(gtk.Button) {
+							clearAllCaches()
+						}),
+				),
+		).
+			Title(gettext.Get("Quick Actions")).
+			Description(gettext.Get("Clear all cached data at once")),
+		PreferencesGroup(
+			ActionRow().
+				Title(gettext.Get("Metadata Cache")).
+				Subtitle(gettext.Get("Cached albums, artists, playlists, and tracks")).
+				ActionSuffix(
+					Button().
+						Label(gettext.Get("Clear")).
+						VAlign(gtk.AlignCenterValue).
+						ConnectClicked(func(gtk.Button) {
+							go func() {
+								if cachedService, err := injector.Inject[*cache.CachedService](); err == nil {
+									if err := cachedService.ClearMetadataCache(); err != nil {
+										slog.Error("failed to clear metadata cache", "error", err)
+										showToast(gettext.Get("Failed to clear metadata cache"))
+									} else {
+										showToast(gettext.Get("Metadata cache cleared"))
+									}
+								}
+							}()
+						}),
+				),
+			ActionRow().
+				Title(gettext.Get("Home Feed Cache")).
+				Subtitle(gettext.Get("Cached home page content")).
+				ActionSuffix(
+					Button().
+						Label(gettext.Get("Clear")).
+						VAlign(gtk.AlignCenterValue).
+						ConnectClicked(func(gtk.Button) {
+							go func() {
+								if err := localdb.ClearAllPageFeeds(); err != nil {
+									slog.Error("failed to clear page feed cache", "error", err)
+									showToast(gettext.Get("Failed to clear home feed cache"))
+								} else {
+									showToast(gettext.Get("Home feed cache cleared"))
+								}
+							}()
+						}),
+				),
+			ActionRow().
+				Title(gettext.Get("Image Cache")).
+				Subtitle(gettext.Get("Cached cover art and thumbnails")).
+				ActionSuffix(
+					Button().
+						Label(gettext.Get("Clear")).
+						VAlign(gtk.AlignCenterValue).
+						ConnectClicked(func(gtk.Button) {
+							go func() {
+								if imgUtil, err := injector.Inject[*imgutil.ImgUtil](); err == nil {
+									if err := imgUtil.ClearCache(); err != nil {
+										slog.Error("failed to clear image cache", "error", err)
+										showToast(gettext.Get("Failed to clear image cache"))
+									} else {
+										showToast(gettext.Get("Image cache cleared"))
+									}
+								}
+							}()
+						}),
+				),
+		).
+			Title(gettext.Get("Individual Caches")).
+			Description(gettext.Get("Clear specific cache types")),
+	).Title(gettext.Get("Cache")).IconName("folder-symbolic")
+}
+
 func (w *Window) PresentPreferences() {
 	dialog := PreferencesDialog()()
 
@@ -340,6 +476,7 @@ func (w *Window) PresentPreferences() {
 	dialog.Add(buildPreferencesPlayback(dialog)())
 	dialog.Add(buildPreferencesStreaming(dialog)())
 	dialog.Add(buildPreferencesPerformance(dialog)())
+	dialog.Add(buildPreferencesCache(dialog)())
 	dialog.Add(buildPreferencesIntegrations(dialog)())
 	dialog.Add(buildPreferencesLyrics(dialog)())
 
